@@ -4,4 +4,6 @@ set -e
 
 cd $(dirname $0); __DIR__=$(pwd)
 
-./gi-crystal Gtk 4.0 -o ../src --config-paths=..:../lib/gi-crystal
+rm -rf ../src/auto/*
+
+./gi-crystal Adw 1 -o ../src/auto --config-paths=..:../lib/gi-crystal

@@ -1,25 +1,39 @@
-# GTK4 Crystal Bindings
+<p align="center">
+  <img width="256" alt="libadwaita.cr logo" src="./logo.svg" />
+</p>
+<h1 align="center">libadwaita.cr</h1>
+<h4 align="center">libadwaita bindings for Crystal</h4>
+<p align="center">
+  <br />
+    <a href="https://github.com/GeopJr/libadwaita.cr/blob/main/CODE_OF_CONDUCT.md"><img src="https://img.shields.io/badge/Contributor%20Covenant-v2.1-3584e4.svg?style=for-the-badge&labelColor=8ff0a4" alt="Code Of Conduct" /></a>
+    <a href="https://github.com/GeopJr/libadwaita.cr/blob/main/LICENSE"><img src="https://img.shields.io/badge/LICENSE-MIT-3584e4.svg?style=for-the-badge&labelColor=8ff0a4" alt="MIT Licensed" /></a>
+</p>
 
-See [examples](https://github.com/hugopl/gtk4.cr/tree/master/examples) folder and have fun.
+#
 
-## Is it ready?
+<p align="center">
+    <img src="https://i.imgur.com/H6a5Git.png" alt="screenshot of the an example libadwaita.cr app" width="512" />
+</p>
 
-Not yet, I'm porting [Tijolo](https://github.com/hugopl/tijolo) from GTK3/[crystal-gobject](https://github.com/jhass/crystal-gobject) to GTK4 using this binding, so I should release the first version of this only when the port finishes. However bug reports about things not working still welcome, so I can keep track of them.
+#
 
-## Compile time dependencies
+## Notes
 
-You need the GTK libraries and their GObjectIntrospection files.
+- This is a fork of [gtk4.cr](https://github.com/hugopl/gtk4.cr)
+- Bindings are being generated using [gi-crystal](https://github.com/hugopl/gi-crystal)
+- It includes everything gtk4.cr does plus libadwaita which means that it **cannot** be used with gtk4.cr at the same time
+- The scope of this repo, apart from supporting libadwaita, is being "stable" (so the bindings are pre-bundled rather than being generated on the spot)
+- Docs can be found on the website listed on the sidebar
 
-- Archlinux: `pacman -S gtk4 gobject-introspection`
-- Ubuntu: `apt-get install libgtk-4-0 gobject-introspection gir1.2-gtk-4.0`
-- macOS: `brew install gobject-introspection gtk4`
+#
 
-Be welcome to create a PR updating this readme once you know what packages are needed by your distro to run the
-examples.
+## Dependencies
 
-## Runtime dependencies
+- ArchLinux: `pacman -S gtk4 gobject-introspection libadwaita`
 
-Just the GTK libraries are needed at runtime.
+Other distros will probably require you to manually build libadwaita for now.
+
+#
 
 ## Installation
 
@@ -27,27 +41,25 @@ Just the GTK libraries are needed at runtime.
 
    ```yaml
    dependencies:
-     gtk4:
-       github: hugopl/gtk4.cr
+     libadwaita:
+       github: GeopJr/libadwaita.cr
    ```
 
 2. Run `shards install`
 
+#
+
 ## Usage
 
-See the [hello world tutorial](./tutorial/hello_world.md).
+Follow the instructions over at [gtk4.cr](https://github.com/hugopl/gtk4.cr) and [gi-crystal](https://github.com/hugopl/gi-crystal) as well as the [examples/](./examples/) folder
 
-For more info on how to use signals, properties, etc see the [GI-Crystal](https://github.com/hugopl/gi-crystal)
-project page, it's the binding generator used to create this binding.
+#
 
 ## Contributing
 
-1. Fork it (<https://github.com/hugopl/gtk4.cr/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
-
-## Contributors
-
-- [Hugo Parente Lima](https://github.com/hugopl) - creator and maintainer
+1. Read the [Code of Conduct](https://github.com/GeopJr/libadwaita.cr/blob/main/CODE_OF_CONDUCT.md)
+2. Fork it ( https://github.com/GeopJr/libadwaita.cr/fork )
+3. Create your feature branch (git checkout -b my-new-feature)
+4. Commit your changes (git commit -am 'Add some feature')
+5. Push to the branch (git push origin my-new-feature)
+6. Create a new Pull Request
