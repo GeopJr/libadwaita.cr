@@ -1,6 +1,6 @@
-require "../src/gtk4"
+require "../src/adw"
 
-def activate(app : Gtk::Application)
+def activate(app : Adw::Application)
   dialog = Gtk::FileChooserDialog.new(application: app, title: "Choose a file", action: :open)
   dialog.add_button("Cancel", Gtk::ResponseType::Cancel.value)
   dialog.add_button("Open", Gtk::ResponseType::Accept.value)
@@ -15,6 +15,6 @@ def activate(app : Gtk::Application)
   dialog.present
 end
 
-app = Gtk::Application.new("hello.example.com", Gio::ApplicationFlags::None)
-app.activate_signal.connect(->activate(Gtk::Application))
+app = Adw::Application.new("hello.example.com", Gio::ApplicationFlags::None)
+app.activate_signal.connect(->activate(Adw::Application))
 exit(app.run(ARGV))

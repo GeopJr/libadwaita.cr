@@ -1,11 +1,17 @@
-require "../src/gtk4"
+require "../src/adw"
 
-def activate(app : Gtk::Application)
-  window = Gtk::ApplicationWindow.new(app)
+def activate(app : Adw::Application)
+  window = Adw::ApplicationWindow.new(app)
   window.set_default_size(200, 200)
   window.title = "Message Box"
+
+  box = Gtk::Box.new(Gtk::Orientation::Vertical, 0)
+  header = Adw::HeaderBar.new
   label = Gtk::Label.new
-  window.child = label
+
+  box.append(header)
+  box.append(label)
+  window.content = box
 
   Gtk::MessageDialog.yes_no(transient_for: window, message_type: :info, title: "Title", text: "😎️") do |response|
     response = Gtk::ResponseType.from_value(response)
@@ -34,6 +40,6 @@ def activate(app : Gtk::Application)
   window.present
 end
 
-app = Gtk::Application.new("hello.example.com", Gio::ApplicationFlags::None)
-app.activate_signal.connect(->activate(Gtk::Application))
+app = Adw::Application.new("hello.example.com", Gio::ApplicationFlags::None)
+app.activate_signal.connect(->activate(Adw::Application))
 exit(app.run(ARGV))

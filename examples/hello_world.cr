@@ -1,19 +1,26 @@
-require "../src/gtk4"
+require "../src/adw"
 
-app = Gtk::Application.new("hello.example.com", Gio::ApplicationFlags::None)
+app = Adw::Application.new("hello.example.com", Gio::ApplicationFlags::None)
 count = 0
 
 app.activate_signal.connect do
-  window = Gtk::ApplicationWindow.new(app)
+  window = Adw::ApplicationWindow.new(app)
   window.title = "Hello World!"
   window.set_default_size(200, 200)
+
+  box = Gtk::Box.new(Gtk::Orientation::Vertical, 0)
+  header = Adw::HeaderBar.new
 
   button = Gtk::Button.new_with_label("Hello!!")
   button.clicked_signal.connect do
     count += 1
     button.label = "You clicked #{count} times!"
   end
-  window.child = button
+  button.vexpand = true
+
+  box.append(header)
+  box.append(button)
+  window.content = box
   window.present
 end
 

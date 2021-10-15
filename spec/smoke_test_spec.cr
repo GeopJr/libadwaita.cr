@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-describe "GTK4 Bindings smoke tests" do
+describe "GTK4+libadwaita Bindings smoke tests" do
   before_all do
     system("./bin/generate_bindings")
   end

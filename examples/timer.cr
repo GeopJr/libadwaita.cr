@@ -1,11 +1,14 @@
-require "../src/gtk4"
+require "../src/adw"
 
-def activate(app : Gtk::Application)
-  window = Gtk::ApplicationWindow.new(app)
+def activate(app : Adw::Application)
+  window = Adw::ApplicationWindow.new(app)
   window.title = "Timer"
   window.set_default_size(200, 200)
 
+  box = Gtk::Box.new(Gtk::Orientation::Vertical, 0)
+  header = Adw::HeaderBar.new
   label = Gtk::Label.new("0")
+
   GLib.timeout(1.second) do
     label.text = Time.local.to_s
     true
@@ -15,10 +18,12 @@ def activate(app : Gtk::Application)
     label.text = "I was idle..."
     false
   end
-  window.child = label
+  box.append(header)
+  box.append(label)
+  window.content = box
   window.present
 end
 
-app = Gtk::Application.new("hello.example.com", Gio::ApplicationFlags::None)
-app.activate_signal.connect(->activate(Gtk::Application))
+app = Adw::Application.new("hello.example.com", Gio::ApplicationFlags::None)
+app.activate_signal.connect(->activate(Adw::Application))
 exit(app.run(ARGV))

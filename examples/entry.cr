@@ -1,8 +1,11 @@
-require "../src/gtk4"
+require "../src/adw"
 
-def activate(app : Gtk::Application)
-  window = Gtk::ApplicationWindow.new(app)
+def activate(app : Adw::Application)
+  window = Adw::ApplicationWindow.new(app)
   window.title = "Entry"
+
+  boxRoot = Gtk::Box.new(Gtk::Orientation::Vertical, 0)
+  header = Adw::HeaderBar.new
 
   box = Gtk::Box.new(:vertical, 0)
   label = Gtk::Label.new(use_markup: true)
@@ -22,11 +25,13 @@ def activate(app : Gtk::Application)
 
   box.prepend(label)
   box.append(entry)
-  window.child = box
+  boxRoot.append(header)
+  boxRoot.append(box)
+  window.content = boxRoot
 
   window.present
 end
 
-app = Gtk::Application.new("hello.example.com", Gio::ApplicationFlags::None)
-app.activate_signal.connect(->activate(Gtk::Application))
+app = Adw::Application.new("hello.example.com", Gio::ApplicationFlags::None)
+app.activate_signal.connect(->activate(Adw::Application))
 exit(app.run(ARGV))
