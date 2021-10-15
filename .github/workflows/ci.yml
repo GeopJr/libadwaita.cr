@@ -9,9 +9,8 @@ jobs:
       options: --privileged
     steps:
       - uses: actions/checkout@v2
-      - uses: crystal-lang/install-crystal@v1
-      - name: Shards install
-        run: shards install
+      - name: Install Crystal
+        run: curl -fsSL https://crystal-lang.org/install.sh | sudo bash
       - name: Spec
         run: crystal spec || exit 1
       - name: Check formatting
