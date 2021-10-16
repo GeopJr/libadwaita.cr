@@ -241,6 +241,66 @@ module Gtk
       LibGtk.gtk_video_get_type
     end
 
+    def autoplay=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "autoplay", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def autoplay? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "autoplay", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def file=(value : Gio::File?) : Gio::File?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "file", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def file : Gio::File?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
+      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def loop=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "loop", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def loop? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "loop", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def media_stream=(value : Gtk::MediaStream?) : Gtk::MediaStream?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "media-stream", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def media_stream : Gtk::MediaStream?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "media-stream", pointerof(value), Pointer(Void).null)
+      Gtk::MediaStream.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # gtk_video_new: (Constructor)
       # Returns: (transfer none)
@@ -309,7 +369,7 @@ module Gtk
       Gtk::Video.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def autoplay? : Bool
+    def autoplay : Bool
       # gtk_video_get_autoplay: (Method)
       # Returns: (transfer none)
 
@@ -325,7 +385,7 @@ module Gtk
       Gio::File__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def loop? : Bool
+    def loop : Bool
       # gtk_video_get_loop: (Method)
       # Returns: (transfer none)
 

@@ -259,6 +259,29 @@ module Gtk
       LibGtk.gtk_file_chooser_widget_get_type
     end
 
+    def search_mode=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "search-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def search_mode? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "search-mode", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def subtitle : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "subtitle", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(action : Gtk::FileChooserAction)
       # gtk_file_chooser_widget_new: (Constructor)
       # Returns: (transfer none)

@@ -36,11 +36,19 @@ module Gio
       LibGio.g_file_icon_get_type
     end
 
-    def file=(value : File?) : File?
+    def file=(value : Gio::File?) : Gio::File?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "file", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def file : Gio::File?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
+      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize(file : Gio::File)

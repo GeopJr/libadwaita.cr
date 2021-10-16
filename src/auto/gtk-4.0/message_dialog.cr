@@ -427,11 +427,94 @@ module Gtk
       LibGtk.gtk_message_dialog_get_type
     end
 
-    def buttons=(value : ButtonsType) : ButtonsType
+    def buttons=(value : Gtk::ButtonsType) : Gtk::ButtonsType
       unsafe_value = value
 
       LibGObject.g_object_set(self, "buttons", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def message_area : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "message-area", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def message_type=(value : Gtk::MessageType) : Gtk::MessageType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "message-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def message_type : Gtk::MessageType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "message-type", pointerof(value), Pointer(Void).null)
+      Gtk::MessageType.from_value(value)
+    end
+
+    def secondary_text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "secondary-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def secondary_text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "secondary-text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def secondary_use_markup=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "secondary-use-markup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def secondary_use_markup? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "secondary-use-markup", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def use_markup=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-markup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_markup? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-markup", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def message_area : Gtk::Widget

@@ -56,6 +56,13 @@ module Gio
       LibGio.g_simple_action_get_type
     end
 
+    def enabled=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enabled", unsafe_value, Pointer(Void).null)
+      value
+    end
+
     def enabled? : Bool
       # Returns: None
 
@@ -79,14 +86,14 @@ module Gio
       ::String.new(value)
     end
 
-    def parameter_type=(value : VariantType?) : VariantType?
+    def parameter_type=(value : GLib::VariantType?) : GLib::VariantType?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "parameter-type", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def parameter_type : VariantType?
+    def parameter_type : GLib::VariantType?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -94,7 +101,14 @@ module Gio
       GLib::VariantType.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    def state : Variant?
+    def state=(value : GLib::Variant?) : GLib::Variant?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "state", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def state : GLib::Variant?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -102,7 +116,7 @@ module Gio
       GLib::Variant.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    def state_type : VariantType?
+    def state_type : GLib::VariantType?
       # Returns: None
 
       value = uninitialized Pointer(Void)

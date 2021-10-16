@@ -366,6 +366,21 @@ module Gtk
       LibGtk.gtk_color_chooser_dialog_get_type
     end
 
+    def show_editor=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-editor", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_editor? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-editor", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(title : ::String?, parent : Gtk::Window?)
       # gtk_color_chooser_dialog_new: (Constructor)
       # @title: (nullable)

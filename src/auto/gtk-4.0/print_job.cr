@@ -58,25 +58,49 @@ module Gtk
       LibGtk.gtk_print_job_get_type
     end
 
-    def page_setup=(value : PageSetup?) : PageSetup?
+    def page_setup=(value : Gtk::PageSetup?) : Gtk::PageSetup?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "page-setup", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def printer=(value : Printer?) : Printer?
+    def page_setup : Gtk::PageSetup?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "page-setup", pointerof(value), Pointer(Void).null)
+      Gtk::PageSetup.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def printer=(value : Gtk::Printer?) : Gtk::Printer?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "printer", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def settings=(value : PrintSettings?) : PrintSettings?
+    def printer : Gtk::Printer?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "printer", pointerof(value), Pointer(Void).null)
+      Gtk::Printer.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def settings=(value : Gtk::PrintSettings?) : Gtk::PrintSettings?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "settings", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def settings : Gtk::PrintSettings?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "settings", pointerof(value), Pointer(Void).null)
+      Gtk::PrintSettings.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def title=(value : ::String) : ::String
@@ -84,6 +108,29 @@ module Gtk
 
       LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def track_print_status=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "track-print-status", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def track_print_status? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "track-print-status", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def initialize(title : ::String, printer : Gtk::Printer, settings : Gtk::PrintSettings, page_setup : Gtk::PageSetup)
@@ -94,7 +141,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def collate? : Bool
+    def collate : Bool
       # gtk_print_job_get_collate: (Method)
       # Returns: (transfer none)
 
@@ -159,7 +206,7 @@ module Gtk
       Gtk::Printer.new(_retval, GICrystal::Transfer::None)
     end
 
-    def reverse? : Bool
+    def reverse : Bool
       # gtk_print_job_get_reverse: (Method)
       # Returns: (transfer none)
 
@@ -167,7 +214,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def rotate? : Bool
+    def rotate : Bool
       # gtk_print_job_get_rotate: (Method)
       # Returns: (transfer none)
 
@@ -215,7 +262,7 @@ module Gtk
       ::String.new(_retval)
     end
 
-    def track_print_status? : Bool
+    def track_print_status : Bool
       # gtk_print_job_get_track_print_status: (Method)
       # Returns: (transfer none)
 

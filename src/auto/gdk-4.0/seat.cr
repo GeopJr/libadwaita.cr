@@ -30,11 +30,19 @@ module Gdk
       LibGdk.gdk_seat_get_type
     end
 
-    def display=(value : Display?) : Display?
+    def display=(value : Gdk::Display?) : Gdk::Display?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def capabilities : Gdk::SeatCapabilities

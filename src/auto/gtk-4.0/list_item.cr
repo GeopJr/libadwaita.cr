@@ -67,7 +67,76 @@ module Gtk
       LibGtk.gtk_list_item_get_type
     end
 
+    def activatable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activatable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
     def activatable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "activatable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def item : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "item", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def position : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "position", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def selectable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selectable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selectable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "selectable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def selected? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "selected", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def activatable : Bool
       # gtk_list_item_get_activatable: (Method)
       # Returns: (transfer none)
 
@@ -99,7 +168,7 @@ module Gtk
       _retval
     end
 
-    def selectable? : Bool
+    def selectable : Bool
       # gtk_list_item_get_selectable: (Method)
       # Returns: (transfer none)
 
@@ -107,7 +176,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def selected? : Bool
+    def selected : Bool
       # gtk_list_item_get_selected: (Method)
       # Returns: (transfer none)
 

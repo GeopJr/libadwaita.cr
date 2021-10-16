@@ -286,6 +286,96 @@ module Gtk
       LibGtk.gtk_calendar_get_type
     end
 
+    def day=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "day", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def day : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "day", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def month=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "month", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def month : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "month", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def show_day_names=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-day-names", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_day_names? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-day-names", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_heading=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-heading", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_heading? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-heading", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_week_numbers=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-week-numbers", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_week_numbers? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-week-numbers", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def year=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "year", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def year : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "year", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_calendar_new: (Constructor)
       # Returns: (transfer none)
@@ -317,7 +407,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_day_names? : Bool
+    def show_day_names : Bool
       # gtk_calendar_get_show_day_names: (Method)
       # Returns: (transfer none)
 
@@ -325,7 +415,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_heading? : Bool
+    def show_heading : Bool
       # gtk_calendar_get_show_heading: (Method)
       # Returns: (transfer none)
 
@@ -333,7 +423,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_week_numbers? : Bool
+    def show_week_numbers : Bool
       # gtk_calendar_get_show_week_numbers: (Method)
       # Returns: (transfer none)
 

@@ -59,6 +59,53 @@ module Gtk
       LibGtk.gtk_tree_list_row_get_type
     end
 
+    def children : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "children", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def depth : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "depth", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def expandable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "expandable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def expanded=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expanded", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expanded? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "expanded", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def item : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "item", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def child_row(position : UInt32) : Gtk::TreeListRow?
       # gtk_tree_list_row_get_child_row: (Method)
       # Returns: (transfer full)
@@ -83,7 +130,7 @@ module Gtk
       _retval
     end
 
-    def expanded? : Bool
+    def expanded : Bool
       # gtk_tree_list_row_get_expanded: (Method)
       # Returns: (transfer none)
 

@@ -96,6 +96,22 @@ module Gtk
       value
     end
 
+    def filename : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "filename", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def size : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_recent_manager_new: (Constructor)
       # Returns: (transfer full)

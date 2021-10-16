@@ -147,6 +147,103 @@ module Gtk
       LibGtk.gtk_cell_renderer_pixbuf_get_type
     end
 
+    def gicon=(value : Gio::Icon?) : Gio::Icon?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gicon", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gicon : Gio::Icon?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "gicon", pointerof(value), Pointer(Void).null)
+      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def icon_size=(value : Gtk::IconSize) : Gtk::IconSize
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_size : Gtk::IconSize
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "icon-size", pointerof(value), Pointer(Void).null)
+      Gtk::IconSize.from_value(value)
+    end
+
+    def pixbuf=(value : GdkPixbuf::Pixbuf?) : GdkPixbuf::Pixbuf?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pixbuf", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pixbuf_expander_closed=(value : GdkPixbuf::Pixbuf?) : GdkPixbuf::Pixbuf?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pixbuf-expander-closed", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pixbuf_expander_closed : GdkPixbuf::Pixbuf?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pixbuf-expander-closed", pointerof(value), Pointer(Void).null)
+      GdkPixbuf::Pixbuf.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def pixbuf_expander_open=(value : GdkPixbuf::Pixbuf?) : GdkPixbuf::Pixbuf?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pixbuf-expander-open", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pixbuf_expander_open : GdkPixbuf::Pixbuf?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pixbuf-expander-open", pointerof(value), Pointer(Void).null)
+      GdkPixbuf::Pixbuf.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def texture=(value : Gdk::Texture?) : Gdk::Texture?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "texture", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def texture : Gdk::Texture?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "texture", pointerof(value), Pointer(Void).null)
+      Gdk::Texture.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # gtk_cell_renderer_pixbuf_new: (Constructor)
       # Returns: (transfer none)

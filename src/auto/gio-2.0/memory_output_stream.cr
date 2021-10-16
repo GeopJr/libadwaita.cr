@@ -56,10 +56,34 @@ module Gio
       value
     end
 
+    def data : Pointer(Nil)
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "data", pointerof(value), Pointer(Void).null)
+      Pointer(Void)
+    end
+
+    def data_size : UInt64
+      # Returns: None
+
+      value = uninitialized UInt64
+      LibGObject.g_object_get(self, "data-size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def size=(value : UInt64) : UInt64
       unsafe_value = value
 
       LibGObject.g_object_set(self, "size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def size : UInt64
+      # Returns: None
+
+      value = uninitialized UInt64
+      LibGObject.g_object_get(self, "size", pointerof(value), Pointer(Void).null)
       value
     end
 

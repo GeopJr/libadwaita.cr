@@ -293,6 +293,96 @@ module Adw
       LibAdw.adw_expander_row_get_type
     end
 
+    def enable_expansion=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-expansion", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_expansion? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-expansion", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def expanded=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expanded", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expanded? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "expanded", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def show_enable_switch=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-enable-switch", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_enable_switch? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-enable-switch", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def subtitle=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "subtitle", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def subtitle : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "subtitle", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # adw_expander_row_new: (Constructor)
       # Returns: (transfer none)
@@ -322,7 +412,7 @@ module Adw
       LibAdw.adw_expander_row_add_prefix(self, widget)
     end
 
-    def enable_expansion? : Bool
+    def enable_expansion : Bool
       # adw_expander_row_get_enable_expansion: (Method | Getter)
       # Returns: (transfer none)
 
@@ -330,7 +420,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def expanded? : Bool
+    def expanded : Bool
       # adw_expander_row_get_expanded: (Method | Getter)
       # Returns: (transfer none)
 
@@ -346,7 +436,7 @@ module Adw
       ::String.new(_retval) unless _retval.null?
     end
 
-    def show_enable_switch? : Bool
+    def show_enable_switch : Bool
       # adw_expander_row_get_show_enable_switch: (Method | Getter)
       # Returns: (transfer none)
 
@@ -362,7 +452,7 @@ module Adw
       ::String.new(_retval)
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # adw_expander_row_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 

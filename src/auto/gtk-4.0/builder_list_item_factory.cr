@@ -61,11 +61,19 @@ module Gtk
       LibGtk.gtk_builder_list_item_factory_get_type
     end
 
-    def bytes=(value : Bytes?) : Bytes?
+    def bytes=(value : GLib::Bytes?) : GLib::Bytes?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "bytes", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def bytes : GLib::Bytes?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "bytes", pointerof(value), Pointer(Void).null)
+      GLib::Bytes.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def resource=(value : ::String) : ::String
@@ -75,11 +83,27 @@ module Gtk
       value
     end
 
-    def scope=(value : BuilderScope?) : BuilderScope?
+    def resource : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "resource", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def scope=(value : Gtk::BuilderScope?) : Gtk::BuilderScope?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "scope", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def scope : Gtk::BuilderScope?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "scope", pointerof(value), Pointer(Void).null)
+      Gtk::BuilderScope__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def self.new_from_bytes(scope : Gtk::BuilderScope?, bytes : GLib::Bytes) : Gtk::ListItemFactory

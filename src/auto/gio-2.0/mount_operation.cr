@@ -89,6 +89,141 @@ module Gio
       LibGio.g_mount_operation_get_type
     end
 
+    def anonymous=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "anonymous", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def anonymous? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "anonymous", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def choice=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "choice", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def choice : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "choice", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def domain=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "domain", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def domain : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "domain", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def is_tcrypt_hidden_volume=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "is-tcrypt-hidden-volume", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def is_tcrypt_hidden_volume? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-tcrypt-hidden-volume", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_tcrypt_system_volume=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "is-tcrypt-system-volume", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def is_tcrypt_system_volume? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-tcrypt-system-volume", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def password=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "password", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def password : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "password", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def password_save=(value : Gio::PasswordSave) : Gio::PasswordSave
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "password-save", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def password_save : Gio::PasswordSave
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "password-save", pointerof(value), Pointer(Void).null)
+      Gio::PasswordSave.from_value(value)
+    end
+
+    def pim=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pim", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pim : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "pim", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def username=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "username", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def username : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "username", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # g_mount_operation_new: (Constructor)
       # Returns: (transfer full)
@@ -97,7 +232,7 @@ module Gio
       @pointer = _retval
     end
 
-    def anonymous? : Bool
+    def anonymous : Bool
       # g_mount_operation_get_anonymous: (Method | Getter)
       # Returns: (transfer none)
 
@@ -121,7 +256,7 @@ module Gio
       ::String.new(_retval) unless _retval.null?
     end
 
-    def is_tcrypt_hidden_volume? : Bool
+    def is_tcrypt_hidden_volume : Bool
       # g_mount_operation_get_is_tcrypt_hidden_volume: (Method | Getter)
       # Returns: (transfer none)
 
@@ -129,7 +264,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_tcrypt_system_volume? : Bool
+    def is_tcrypt_system_volume : Bool
       # g_mount_operation_get_is_tcrypt_system_volume: (Method | Getter)
       # Returns: (transfer none)
 

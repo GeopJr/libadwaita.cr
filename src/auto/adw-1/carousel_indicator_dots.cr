@@ -233,6 +233,21 @@ module Adw
       LibAdw.adw_carousel_indicator_dots_get_type
     end
 
+    def carousel=(value : Adw::Carousel?) : Adw::Carousel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "carousel", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def carousel : Adw::Carousel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "carousel", pointerof(value), Pointer(Void).null)
+      Adw::Carousel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # adw_carousel_indicator_dots_new: (Constructor)
       # Returns: (transfer none)

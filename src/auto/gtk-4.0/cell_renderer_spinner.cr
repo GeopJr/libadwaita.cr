@@ -125,6 +125,51 @@ module Gtk
       LibGtk.gtk_cell_renderer_spinner_get_type
     end
 
+    def active=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "active", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def active? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "active", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def pulse=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pulse", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pulse : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "pulse", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def size=(value : Gtk::IconSize) : Gtk::IconSize
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def size : Gtk::IconSize
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "size", pointerof(value), Pointer(Void).null)
+      Gtk::IconSize.from_value(value)
+    end
+
     def initialize
       # gtk_cell_renderer_spinner_new: (Constructor)
       # Returns: (transfer none)

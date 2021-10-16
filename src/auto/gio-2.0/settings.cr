@@ -345,14 +345,14 @@ module Gio
       LibGio.g_settings_get_type
     end
 
-    def backend=(value : SettingsBackend?) : SettingsBackend?
+    def backend=(value : Gio::SettingsBackend?) : Gio::SettingsBackend?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "backend", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def backend : SettingsBackend?
+    def backend : Gio::SettingsBackend?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -365,6 +365,14 @@ module Gio
 
       value = uninitialized LibC::Int
       LibGObject.g_object_get(self, "delay-apply", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def has_unapplied? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-unapplied", pointerof(value), Pointer(Void).null)
       GICrystal.to_bool(value)
     end
 
@@ -413,14 +421,14 @@ module Gio
       ::String.new(value)
     end
 
-    def settings_schema=(value : SettingsSchema?) : SettingsSchema?
+    def settings_schema=(value : Gio::SettingsSchema?) : Gio::SettingsSchema?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "settings-schema", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def settings_schema : SettingsSchema?
+    def settings_schema : Gio::SettingsSchema?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -595,7 +603,7 @@ module Gio
       _retval
     end
 
-    def has_unapplied? : Bool
+    def has_unapplied : Bool
       # g_settings_get_has_unapplied: (Method | Getter)
       # Returns: (transfer none)
 

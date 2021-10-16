@@ -53,6 +53,30 @@ module Gio
       LibGio.g_permission_get_type
     end
 
+    def allowed? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "allowed", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def can_acquire? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-acquire", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def can_release? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-release", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def acquire(cancellable : Gio::Cancellable?) : Bool
       # g_permission_acquire: (Method | Throws)
       # @cancellable: (nullable)
@@ -102,7 +126,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def allowed? : Bool
+    def allowed : Bool
       # g_permission_get_allowed: (Method | Getter)
       # Returns: (transfer none)
 
@@ -110,7 +134,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def can_acquire? : Bool
+    def can_acquire : Bool
       # g_permission_get_can_acquire: (Method | Getter)
       # Returns: (transfer none)
 
@@ -118,7 +142,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def can_release? : Bool
+    def can_release : Bool
       # g_permission_get_can_release: (Method | Getter)
       # Returns: (transfer none)
 

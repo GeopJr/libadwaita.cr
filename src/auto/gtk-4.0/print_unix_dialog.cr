@@ -432,6 +432,119 @@ module Gtk
       LibGtk.gtk_print_unix_dialog_get_type
     end
 
+    def current_page=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "current-page", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def current_page : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "current-page", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def embed_page_setup=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "embed-page-setup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def embed_page_setup? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "embed-page-setup", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def has_selection=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-selection", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_selection? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-selection", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def manual_capabilities=(value : Gtk::PrintCapabilities) : Gtk::PrintCapabilities
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "manual-capabilities", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def manual_capabilities : Gtk::PrintCapabilities
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "manual-capabilities", pointerof(value), Pointer(Void).null)
+      Gtk::PrintCapabilities.from_value(value)
+    end
+
+    def page_setup=(value : Gtk::PageSetup?) : Gtk::PageSetup?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "page-setup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def page_setup : Gtk::PageSetup?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "page-setup", pointerof(value), Pointer(Void).null)
+      Gtk::PageSetup.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def print_settings=(value : Gtk::PrintSettings?) : Gtk::PrintSettings?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "print-settings", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def print_settings : Gtk::PrintSettings?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "print-settings", pointerof(value), Pointer(Void).null)
+      Gtk::PrintSettings.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def selected_printer : Gtk::Printer?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "selected-printer", pointerof(value), Pointer(Void).null)
+      Gtk::Printer.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def support_selection=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "support-selection", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def support_selection? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "support-selection", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(title : ::String?, parent : Gtk::Window?)
       # gtk_print_unix_dialog_new: (Constructor)
       # @title: (nullable)
@@ -468,7 +581,7 @@ module Gtk
       _retval
     end
 
-    def embed_page_setup? : Bool
+    def embed_page_setup : Bool
       # gtk_print_unix_dialog_get_embed_page_setup: (Method)
       # Returns: (transfer none)
 
@@ -476,7 +589,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def has_selection? : Bool
+    def has_selection : Bool
       # gtk_print_unix_dialog_get_has_selection: (Method)
       # Returns: (transfer none)
 
@@ -500,7 +613,7 @@ module Gtk
       Gtk::PageSetup.new(_retval, GICrystal::Transfer::None)
     end
 
-    def page_setup_set? : Bool
+    def page_setup_set : Bool
       # gtk_print_unix_dialog_get_page_setup_set: (Method)
       # Returns: (transfer none)
 
@@ -524,7 +637,7 @@ module Gtk
       Gtk::PrintSettings.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def support_selection? : Bool
+    def support_selection : Bool
       # gtk_print_unix_dialog_get_support_selection: (Method)
       # Returns: (transfer none)
 

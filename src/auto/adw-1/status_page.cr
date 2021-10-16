@@ -238,6 +238,66 @@ module Adw
       LibAdw.adw_status_page_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def description=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "description", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def description : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "description", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # adw_status_page_new: (Constructor)
       # Returns: (transfer none)

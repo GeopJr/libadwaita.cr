@@ -44,6 +44,14 @@ module Gio
       value
     end
 
+    def filename : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "filename", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(desktop_id : ::String)
       # g_desktop_app_info_new: (Constructor)
       # Returns: (transfer full)
@@ -131,7 +139,7 @@ module Gio
       ::String.new(_retval) unless _retval.null?
     end
 
-    def is_hidden? : Bool
+    def is_hidden : Bool
       # g_desktop_app_info_get_is_hidden: (Method)
       # Returns: (transfer none)
 
@@ -155,7 +163,7 @@ module Gio
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
-    def nodisplay? : Bool
+    def nodisplay : Bool
       # g_desktop_app_info_get_nodisplay: (Method)
       # Returns: (transfer none)
 

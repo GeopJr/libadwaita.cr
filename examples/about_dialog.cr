@@ -7,7 +7,7 @@ def activate(app : Adw::Application)
     version: "1.0.0",
     logo_icon_name: "emote-love-symbolic",
     website: "https://github.com/GeopJr/libadwaita.cr",
-    website_label: "Crystal Gtk-4+Libadwaita Bindings",
+    website_label: "Crystal Gtk-4+libadwaita Bindings",
     authors: ["Hugo Parente Lima", "Evangelos \"GeopJr\" Paterakis"],
     license_type: Gtk::License::MitX11)
 end

@@ -52,6 +52,30 @@ module Gdk
       LibGdk.gdk_display_get_type
     end
 
+    def composited? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "composited", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def input_shapes? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "input-shapes", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def rgba? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "rgba", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def self.default : Gdk::Display?
       # gdk_display_get_default: (None)
       # Returns: (transfer none)

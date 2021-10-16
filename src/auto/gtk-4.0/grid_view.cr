@@ -303,6 +303,96 @@ module Gtk
       LibGtk.gtk_grid_view_get_type
     end
 
+    def enable_rubberband=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-rubberband", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_rubberband? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-rubberband", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def factory=(value : Gtk::ListItemFactory?) : Gtk::ListItemFactory?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "factory", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def factory : Gtk::ListItemFactory?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "factory", pointerof(value), Pointer(Void).null)
+      Gtk::ListItemFactory.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def max_columns=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-columns", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_columns : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "max-columns", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def min_columns=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "min-columns", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def min_columns : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "min-columns", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def model=(value : Gtk::SelectionModel?) : Gtk::SelectionModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gtk::SelectionModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def single_click_activate=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "single-click-activate", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def single_click_activate? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "single-click-activate", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(model : Gtk::SelectionModel?, factory : Gtk::ListItemFactory?)
       # gtk_grid_view_new: (Constructor)
       # @model: (transfer full) (nullable)
@@ -326,7 +416,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def enable_rubberband? : Bool
+    def enable_rubberband : Bool
       # gtk_grid_view_get_enable_rubberband: (Method)
       # Returns: (transfer none)
 
@@ -366,7 +456,7 @@ module Gtk
       Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def single_click_activate? : Bool
+    def single_click_activate : Bool
       # gtk_grid_view_get_single_click_activate: (Method)
       # Returns: (transfer none)
 

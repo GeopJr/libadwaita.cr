@@ -268,6 +268,96 @@ module Gtk
       LibGtk.gtk_app_chooser_widget_get_type
     end
 
+    def default_text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "default-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def default_text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "default-text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def show_all=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-all", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_all? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-all", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_default=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-default", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_default? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-default", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_fallback=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-fallback", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_fallback? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-fallback", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_other=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-other", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_other? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-other", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_recommended=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-recommended", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_recommended? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-recommended", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(content_type : ::String)
       # gtk_app_chooser_widget_new: (Constructor)
       # Returns: (transfer none)
@@ -284,7 +374,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def show_all? : Bool
+    def show_all : Bool
       # gtk_app_chooser_widget_get_show_all: (Method)
       # Returns: (transfer none)
 
@@ -292,7 +382,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_default? : Bool
+    def show_default : Bool
       # gtk_app_chooser_widget_get_show_default: (Method)
       # Returns: (transfer none)
 
@@ -300,7 +390,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_fallback? : Bool
+    def show_fallback : Bool
       # gtk_app_chooser_widget_get_show_fallback: (Method)
       # Returns: (transfer none)
 
@@ -308,7 +398,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_other? : Bool
+    def show_other : Bool
       # gtk_app_chooser_widget_get_show_other: (Method)
       # Returns: (transfer none)
 
@@ -316,7 +406,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_recommended? : Bool
+    def show_recommended : Bool
       # gtk_app_chooser_widget_get_show_recommended: (Method)
       # Returns: (transfer none)
 

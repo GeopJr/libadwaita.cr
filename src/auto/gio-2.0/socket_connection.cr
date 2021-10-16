@@ -59,11 +59,19 @@ module Gio
       LibGio.g_socket_connection_get_type
     end
 
-    def socket=(value : Socket?) : Socket?
+    def socket=(value : Gio::Socket?) : Gio::Socket?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "socket", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def socket : Gio::Socket?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "socket", pointerof(value), Pointer(Void).null)
+      Gio::Socket.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def self.factory_lookup_type(family : Gio::SocketFamily, type : Gio::SocketType, protocol_id : Int32) : UInt64

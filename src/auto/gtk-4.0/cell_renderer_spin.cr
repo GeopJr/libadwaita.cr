@@ -358,6 +358,51 @@ module Gtk
       LibGtk.gtk_cell_renderer_spin_get_type
     end
 
+    def adjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "adjustment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def adjustment : Gtk::Adjustment?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "adjustment", pointerof(value), Pointer(Void).null)
+      Gtk::Adjustment.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def climb_rate=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "climb-rate", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def climb_rate : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "climb-rate", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def digits=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "digits", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def digits : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "digits", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_cell_renderer_spin_new: (Constructor)
       # Returns: (transfer none)

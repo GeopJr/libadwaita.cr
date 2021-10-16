@@ -100,11 +100,19 @@ module Gio
       LibGio.g_test_dbus_get_type
     end
 
-    def flags=(value : TestDBusFlags) : TestDBusFlags
+    def flags=(value : Gio::TestDBusFlags) : Gio::TestDBusFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def flags : Gio::TestDBusFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
+      Gio::TestDBusFlags.from_value(value)
     end
 
     def initialize(flags : Gio::TestDBusFlags)

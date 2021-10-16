@@ -64,11 +64,124 @@ module Adw
       LibAdw.adw_view_stack_page_get_type
     end
 
-    def child=(value : Widget?) : Widget?
+    def badge_number=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "badge-number", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def badge_number : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "badge-number", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def needs_attention=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "needs-attention", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def needs_attention? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "needs-attention", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def badge_number : UInt32
@@ -103,7 +216,7 @@ module Adw
       ::String.new(_retval) unless _retval.null?
     end
 
-    def needs_attention? : Bool
+    def needs_attention : Bool
       # adw_view_stack_page_get_needs_attention: (Method | Getter)
       # Returns: (transfer none)
 
@@ -119,7 +232,7 @@ module Adw
       ::String.new(_retval) unless _retval.null?
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # adw_view_stack_page_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 
@@ -127,7 +240,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def visible? : Bool
+    def visible : Bool
       # adw_view_stack_page_get_visible: (Method | Getter)
       # Returns: (transfer none)
 

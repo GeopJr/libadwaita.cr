@@ -36,6 +36,21 @@ module Gtk
       LibGtk.gtk_multi_selection_get_type
     end
 
+    def model=(value : Gio::ListModel?) : Gio::ListModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(model : Gio::ListModel?)
       # gtk_multi_selection_new: (Constructor)
       # @model: (transfer full) (nullable)

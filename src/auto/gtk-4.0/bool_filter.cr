@@ -35,6 +35,36 @@ module Gtk
       LibGtk.gtk_bool_filter_get_type
     end
 
+    def expression=(value : Gtk::Expression?) : Gtk::Expression?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expression", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expression : Gtk::Expression?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "expression", pointerof(value), Pointer(Void).null)
+      Gtk::Expression.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def invert=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "invert", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def invert? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "invert", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(expression : Gtk::Expression?)
       # gtk_bool_filter_new: (Constructor)
       # @expression: (transfer full) (nullable)
@@ -59,7 +89,7 @@ module Gtk
       Gtk::Expression.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def invert? : Bool
+    def invert : Bool
       # gtk_bool_filter_get_invert: (Method)
       # Returns: (transfer none)
 

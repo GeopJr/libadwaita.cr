@@ -413,6 +413,21 @@ module Gtk
       LibGtk.gtk_application_window_get_type
     end
 
+    def show_menubar=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-menubar", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_menubar? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-menubar", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(application : Gtk::Application)
       # gtk_application_window_new: (Constructor)
       # Returns: (transfer none)
@@ -437,7 +452,7 @@ module Gtk
       _retval
     end
 
-    def show_menubar? : Bool
+    def show_menubar : Bool
       # gtk_application_window_get_show_menubar: (Method)
       # Returns: (transfer none)
 

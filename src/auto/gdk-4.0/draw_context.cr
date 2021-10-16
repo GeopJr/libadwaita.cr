@@ -42,18 +42,34 @@ module Gdk
       LibGdk.gdk_draw_context_get_type
     end
 
-    def display=(value : Display?) : Display?
+    def display=(value : Gdk::Display?) : Gdk::Display?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def surface=(value : Surface?) : Surface?
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def surface=(value : Gdk::Surface?) : Gdk::Surface?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "surface", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def surface : Gdk::Surface?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "surface", pointerof(value), Pointer(Void).null)
+      Gdk::Surface.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def begin_frame(region : Cairo::Region) : Nil

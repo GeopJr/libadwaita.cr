@@ -286,6 +286,111 @@ module Adw
       LibAdw.adw_split_button_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def direction=(value : Gtk::ArrowType) : Gtk::ArrowType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "direction", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def direction : Gtk::ArrowType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "direction", pointerof(value), Pointer(Void).null)
+      Gtk::ArrowType.from_value(value)
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def menu_model=(value : Gio::MenuModel?) : Gio::MenuModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "menu-model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def menu_model : Gio::MenuModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "menu-model", pointerof(value), Pointer(Void).null)
+      Gio::MenuModel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def popover=(value : Gtk::Popover?) : Gtk::Popover?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "popover", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def popover : Gtk::Popover?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "popover", pointerof(value), Pointer(Void).null)
+      Gtk::Popover.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # adw_split_button_new: (Constructor)
       # Returns: (transfer none)
@@ -342,7 +447,7 @@ module Adw
       Gtk::Popover.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # adw_split_button_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 

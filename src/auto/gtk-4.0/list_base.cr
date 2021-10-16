@@ -238,5 +238,20 @@ module Gtk
     def self.g_type : UInt64
       LibGtk.gtk_list_base_get_type
     end
+
+    def orientation=(value : Gtk::Orientation) : Gtk::Orientation
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "orientation", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def orientation : Gtk::Orientation
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "orientation", pointerof(value), Pointer(Void).null)
+      Gtk::Orientation.from_value(value)
+    end
   end
 end

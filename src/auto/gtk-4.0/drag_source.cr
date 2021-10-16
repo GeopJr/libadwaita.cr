@@ -149,6 +149,36 @@ module Gtk
       LibGtk.gtk_drag_source_get_type
     end
 
+    def actions=(value : Gdk::DragAction) : Gdk::DragAction
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "actions", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def actions : Gdk::DragAction
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "actions", pointerof(value), Pointer(Void).null)
+      Gdk::DragAction.from_value(value)
+    end
+
+    def content=(value : Gdk::ContentProvider?) : Gdk::ContentProvider?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "content", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def content : Gdk::ContentProvider?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "content", pointerof(value), Pointer(Void).null)
+      Gdk::ContentProvider.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # gtk_drag_source_new: (Constructor)
       # Returns: (transfer full)

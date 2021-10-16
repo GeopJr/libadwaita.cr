@@ -41,6 +41,36 @@ module Gtk
       LibGtk.gtk_string_sorter_get_type
     end
 
+    def expression=(value : Gtk::Expression?) : Gtk::Expression?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expression", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expression : Gtk::Expression?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "expression", pointerof(value), Pointer(Void).null)
+      Gtk::Expression.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def ignore_case=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "ignore-case", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def ignore_case? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "ignore-case", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(expression : Gtk::Expression?)
       # gtk_string_sorter_new: (Constructor)
       # @expression: (transfer full) (nullable)
@@ -65,7 +95,7 @@ module Gtk
       Gtk::Expression.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def ignore_case? : Bool
+    def ignore_case : Bool
       # gtk_string_sorter_get_ignore_case: (Method)
       # Returns: (transfer none)
 

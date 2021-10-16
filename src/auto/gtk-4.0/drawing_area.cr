@@ -297,6 +297,36 @@ module Gtk
       LibGtk.gtk_drawing_area_get_type
     end
 
+    def content_height=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "content-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def content_height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "content-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def content_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "content-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def content_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "content-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_drawing_area_new: (Constructor)
       # Returns: (transfer none)

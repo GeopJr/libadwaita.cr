@@ -14,14 +14,30 @@ module Gdk
       value
     end
 
-    def parent=(value : Surface?) : Surface?
+    def autohide? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "autohide", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def parent=(value : Gdk::Surface?) : Gdk::Surface?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "parent", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def autohide? : Bool
+    def parent : Gdk::Surface?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "parent", pointerof(value), Pointer(Void).null)
+      Gdk::Surface.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def autohide : Bool
       # gdk_popup_get_autohide: (Method)
       # Returns: (transfer none)
 
@@ -104,12 +120,12 @@ module Gdk
     end
 
     # Cast a `GObject::Object` to `Popup`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to Popup")
     end
 
     # Cast a `GObject::Object` to `Popup`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

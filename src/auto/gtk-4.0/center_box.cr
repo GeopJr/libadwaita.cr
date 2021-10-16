@@ -252,6 +252,21 @@ module Gtk
       LibGtk.gtk_center_box_get_type
     end
 
+    def baseline_position=(value : Gtk::BaselinePosition) : Gtk::BaselinePosition
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "baseline-position", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def baseline_position : Gtk::BaselinePosition
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "baseline-position", pointerof(value), Pointer(Void).null)
+      Gtk::BaselinePosition.from_value(value)
+    end
+
     def initialize
       # gtk_center_box_new: (Constructor)
       # Returns: (transfer none)

@@ -46,14 +46,14 @@ module Gio
       LibGio.g_simple_io_stream_get_type
     end
 
-    def input_stream=(value : InputStream?) : InputStream?
+    def input_stream=(value : Gio::InputStream?) : Gio::InputStream?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "input-stream", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def input_stream : InputStream?
+    def input_stream : Gio::InputStream?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -61,14 +61,14 @@ module Gio
       Gio::InputStream.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    def output_stream=(value : OutputStream?) : OutputStream?
+    def output_stream=(value : Gio::OutputStream?) : Gio::OutputStream?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "output-stream", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def output_stream : OutputStream?
+    def output_stream : Gio::OutputStream?
       # Returns: None
 
       value = uninitialized Pointer(Void)

@@ -36,11 +36,19 @@ module Gio
       LibGio.g_bytes_icon_get_type
     end
 
-    def bytes=(value : Bytes?) : Bytes?
+    def bytes=(value : GLib::Bytes?) : GLib::Bytes?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "bytes", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def bytes : GLib::Bytes?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "bytes", pointerof(value), Pointer(Void).null)
+      GLib::Bytes.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize(bytes : GLib::Bytes)

@@ -26,7 +26,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def deleted? : Bool
+    def deleted : Bool
       # gtk_text_child_anchor_get_deleted: (Method)
       # Returns: (transfer none)
 

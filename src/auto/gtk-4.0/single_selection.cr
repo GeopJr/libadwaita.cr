@@ -61,6 +61,74 @@ module Gtk
       LibGtk.gtk_single_selection_get_type
     end
 
+    def autoselect=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "autoselect", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def autoselect? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "autoselect", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def can_unselect=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "can-unselect", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def can_unselect? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-unselect", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def model=(value : Gio::ListModel?) : Gio::ListModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def selected=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selected", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selected : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "selected", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def selected_item : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "selected-item", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(model : Gio::ListModel?)
       # gtk_single_selection_new: (Constructor)
       # @model: (transfer full) (nullable)
@@ -77,7 +145,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def autoselect? : Bool
+    def autoselect : Bool
       # gtk_single_selection_get_autoselect: (Method)
       # Returns: (transfer none)
 
@@ -85,7 +153,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def can_unselect? : Bool
+    def can_unselect : Bool
       # gtk_single_selection_get_can_unselect: (Method)
       # Returns: (transfer none)
 

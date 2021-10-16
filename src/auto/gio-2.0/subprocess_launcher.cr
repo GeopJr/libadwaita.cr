@@ -36,7 +36,7 @@ module Gio
       LibGio.g_subprocess_launcher_get_type
     end
 
-    def flags=(value : SubprocessFlags) : SubprocessFlags
+    def flags=(value : Gio::SubprocessFlags) : Gio::SubprocessFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)

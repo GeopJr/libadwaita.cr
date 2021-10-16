@@ -112,10 +112,138 @@ module Gtk
       LibGtk.gtk_entry_completion_get_type
     end
 
-    def cell_area=(value : CellArea?) : CellArea?
+    def cell_area=(value : Gtk::CellArea?) : Gtk::CellArea?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "cell-area", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cell_area : Gtk::CellArea?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "cell-area", pointerof(value), Pointer(Void).null)
+      Gtk::CellArea.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def inline_completion=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inline-completion", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inline_completion? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "inline-completion", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def inline_selection=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inline-selection", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inline_selection? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "inline-selection", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def minimum_key_length=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "minimum-key-length", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def minimum_key_length : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "minimum-key-length", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def model=(value : Gtk::TreeModel?) : Gtk::TreeModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gtk::TreeModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def popup_completion=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "popup-completion", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def popup_completion? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "popup-completion", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def popup_set_width=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "popup-set-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def popup_set_width? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "popup-set-width", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def popup_single_match=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "popup-single-match", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def popup_single_match? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "popup-single-match", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def text_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "text-column", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -166,7 +294,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
-    def inline_completion? : Bool
+    def inline_completion : Bool
       # gtk_entry_completion_get_inline_completion: (Method)
       # Returns: (transfer none)
 
@@ -174,7 +302,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def inline_selection? : Bool
+    def inline_selection : Bool
       # gtk_entry_completion_get_inline_selection: (Method)
       # Returns: (transfer none)
 
@@ -198,7 +326,7 @@ module Gtk
       Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def popup_completion? : Bool
+    def popup_completion : Bool
       # gtk_entry_completion_get_popup_completion: (Method)
       # Returns: (transfer none)
 
@@ -206,7 +334,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def popup_set_width? : Bool
+    def popup_set_width : Bool
       # gtk_entry_completion_get_popup_set_width: (Method)
       # Returns: (transfer none)
 
@@ -214,7 +342,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def popup_single_match? : Bool
+    def popup_single_match : Bool
       # gtk_entry_completion_get_popup_single_match: (Method)
       # Returns: (transfer none)
 

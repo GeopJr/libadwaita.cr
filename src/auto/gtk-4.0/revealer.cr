@@ -253,6 +253,74 @@ module Gtk
       LibGtk.gtk_revealer_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def child_revealed? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "child-revealed", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def reveal_child=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reveal-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reveal_child? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "reveal-child", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def transition_duration=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transition-duration", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transition_duration : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "transition-duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def transition_type=(value : Gtk::RevealerTransitionType) : Gtk::RevealerTransitionType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transition-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transition_type : Gtk::RevealerTransitionType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "transition-type", pointerof(value), Pointer(Void).null)
+      Gtk::RevealerTransitionType.from_value(value)
+    end
+
     def initialize
       # gtk_revealer_new: (Constructor)
       # Returns: (transfer none)
@@ -269,7 +337,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def child_revealed? : Bool
+    def child_revealed : Bool
       # gtk_revealer_get_child_revealed: (Method)
       # Returns: (transfer none)
 
@@ -277,7 +345,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def reveal_child? : Bool
+    def reveal_child : Bool
       # gtk_revealer_get_reveal_child: (Method)
       # Returns: (transfer none)
 

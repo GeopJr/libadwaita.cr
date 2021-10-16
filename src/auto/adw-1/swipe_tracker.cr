@@ -66,11 +66,79 @@ module Adw
       LibAdw.adw_swipe_tracker_get_type
     end
 
-    def swipeable=(value : Swipeable?) : Swipeable?
+    def allow_long_swipes=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "allow-long-swipes", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def allow_long_swipes? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "allow-long-swipes", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def allow_mouse_drag=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "allow-mouse-drag", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def allow_mouse_drag? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "allow-mouse-drag", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def enabled=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enabled", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enabled? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enabled", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def reversed=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reversed", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reversed? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "reversed", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def swipeable=(value : Adw::Swipeable?) : Adw::Swipeable?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "swipeable", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def swipeable : Adw::Swipeable?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "swipeable", pointerof(value), Pointer(Void).null)
+      Adw::Swipeable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize(swipeable : Adw::Swipeable)
@@ -81,7 +149,7 @@ module Adw
       @pointer = _retval
     end
 
-    def allow_long_swipes? : Bool
+    def allow_long_swipes : Bool
       # adw_swipe_tracker_get_allow_long_swipes: (Method | Getter)
       # Returns: (transfer none)
 
@@ -89,7 +157,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def allow_mouse_drag? : Bool
+    def allow_mouse_drag : Bool
       # adw_swipe_tracker_get_allow_mouse_drag: (Method | Getter)
       # Returns: (transfer none)
 
@@ -97,7 +165,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def enabled? : Bool
+    def enabled : Bool
       # adw_swipe_tracker_get_enabled: (Method | Getter)
       # Returns: (transfer none)
 
@@ -105,7 +173,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def reversed? : Bool
+    def reversed : Bool
       # adw_swipe_tracker_get_reversed: (Method | Getter)
       # Returns: (transfer none)
 

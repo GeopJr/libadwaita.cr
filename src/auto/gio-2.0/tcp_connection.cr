@@ -50,7 +50,22 @@ module Gio
       LibGio.g_tcp_connection_get_type
     end
 
+    def graceful_disconnect=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "graceful-disconnect", unsafe_value, Pointer(Void).null)
+      value
+    end
+
     def graceful_disconnect? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "graceful-disconnect", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def graceful_disconnect : Bool
       # g_tcp_connection_get_graceful_disconnect: (Method | Getter)
       # Returns: (transfer none)
 

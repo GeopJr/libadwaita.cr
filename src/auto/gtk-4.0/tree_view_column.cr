@@ -134,10 +134,274 @@ module Gtk
       LibGtk.gtk_tree_view_column_get_type
     end
 
-    def cell_area=(value : CellArea?) : CellArea?
+    def alignment=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "alignment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def alignment : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "alignment", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def cell_area=(value : Gtk::CellArea?) : Gtk::CellArea?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "cell-area", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cell_area : Gtk::CellArea?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "cell-area", pointerof(value), Pointer(Void).null)
+      Gtk::CellArea.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def clickable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "clickable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def clickable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "clickable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def expand=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expand", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expand? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "expand", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def fixed_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fixed-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fixed_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "fixed-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def max_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def min_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "min-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def min_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "min-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def reorderable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reorderable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reorderable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "reorderable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def resizable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "resizable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def resizable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "resizable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def sizing=(value : Gtk::TreeViewColumnSizing) : Gtk::TreeViewColumnSizing
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sizing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sizing : Gtk::TreeViewColumnSizing
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "sizing", pointerof(value), Pointer(Void).null)
+      Gtk::TreeViewColumnSizing.from_value(value)
+    end
+
+    def sort_column_id=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sort-column-id", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sort_column_id : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "sort-column-id", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def sort_indicator=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sort-indicator", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sort_indicator? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "sort-indicator", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def sort_order=(value : Gtk::SortType) : Gtk::SortType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sort-order", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sort_order : Gtk::SortType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "sort-order", pointerof(value), Pointer(Void).null)
+      Gtk::SortType.from_value(value)
+    end
+
+    def spacing=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def spacing : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def x_offset : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "x-offset", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -252,7 +516,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
-    def clickable? : Bool
+    def clickable : Bool
       # gtk_tree_view_column_get_clickable: (Method)
       # Returns: (transfer none)
 
@@ -260,7 +524,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def expand? : Bool
+    def expand : Bool
       # gtk_tree_view_column_get_expand: (Method)
       # Returns: (transfer none)
 
@@ -292,7 +556,7 @@ module Gtk
       _retval
     end
 
-    def reorderable? : Bool
+    def reorderable : Bool
       # gtk_tree_view_column_get_reorderable: (Method)
       # Returns: (transfer none)
 
@@ -300,7 +564,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def resizable? : Bool
+    def resizable : Bool
       # gtk_tree_view_column_get_resizable: (Method)
       # Returns: (transfer none)
 
@@ -324,7 +588,7 @@ module Gtk
       _retval
     end
 
-    def sort_indicator? : Bool
+    def sort_indicator : Bool
       # gtk_tree_view_column_get_sort_indicator: (Method)
       # Returns: (transfer none)
 
@@ -364,7 +628,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def visible? : Bool
+    def visible : Bool
       # gtk_tree_view_column_get_visible: (Method)
       # Returns: (transfer none)
 

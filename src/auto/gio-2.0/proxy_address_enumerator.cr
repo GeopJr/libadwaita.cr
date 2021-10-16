@@ -52,14 +52,14 @@ module Gio
       LibGio.g_proxy_address_enumerator_get_type
     end
 
-    def connectable=(value : SocketConnectable?) : SocketConnectable?
+    def connectable=(value : Gio::SocketConnectable?) : Gio::SocketConnectable?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "connectable", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def connectable : SocketConnectable?
+    def connectable : Gio::SocketConnectable?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -82,14 +82,14 @@ module Gio
       value
     end
 
-    def proxy_resolver=(value : ProxyResolver?) : ProxyResolver?
+    def proxy_resolver=(value : Gio::ProxyResolver?) : Gio::ProxyResolver?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "proxy-resolver", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def proxy_resolver : ProxyResolver?
+    def proxy_resolver : Gio::ProxyResolver?
       # Returns: None
 
       value = uninitialized Pointer(Void)

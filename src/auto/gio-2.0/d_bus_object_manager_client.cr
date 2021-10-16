@@ -152,25 +152,41 @@ module Gio
       LibGio.g_dbus_object_manager_client_get_type
     end
 
-    def bus_type=(value : BusType) : BusType
+    def bus_type=(value : Gio::BusType) : Gio::BusType
       unsafe_value = value
 
       LibGObject.g_object_set(self, "bus-type", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def connection=(value : DBusConnection?) : DBusConnection?
+    def connection=(value : Gio::DBusConnection?) : Gio::DBusConnection?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "connection", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def flags=(value : DBusObjectManagerClientFlags) : DBusObjectManagerClientFlags
+    def connection : Gio::DBusConnection?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "connection", pointerof(value), Pointer(Void).null)
+      Gio::DBusConnection.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def flags=(value : Gio::DBusObjectManagerClientFlags) : Gio::DBusObjectManagerClientFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def flags : Gio::DBusObjectManagerClientFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
+      Gio::DBusObjectManagerClientFlags.from_value(value)
     end
 
     def get_proxy_type_destroy_notify=(value : Pointer(Nil)) : Pointer(Nil)
@@ -223,6 +239,22 @@ module Gio
 
       LibGObject.g_object_set(self, "name", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def name_owner : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name-owner", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def object_path=(value : ::String) : ::String

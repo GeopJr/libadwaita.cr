@@ -60,6 +60,66 @@ module Gtk
       LibGtk.gtk_native_dialog_get_type
     end
 
+    def modal=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "modal", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def modal? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "modal", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def transient_for=(value : Gtk::Window?) : Gtk::Window?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transient-for", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transient_for : Gtk::Window?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "transient-for", pointerof(value), Pointer(Void).null)
+      Gtk::Window.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def destroy : Nil
       # gtk_native_dialog_destroy: (Method)
       # Returns: (transfer none)
@@ -67,7 +127,7 @@ module Gtk
       LibGtk.gtk_native_dialog_destroy(self)
     end
 
-    def modal? : Bool
+    def modal : Bool
       # gtk_native_dialog_get_modal: (Method)
       # Returns: (transfer none)
 
@@ -91,7 +151,7 @@ module Gtk
       Gtk::Window.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def visible? : Bool
+    def visible : Bool
       # gtk_native_dialog_get_visible: (Method)
       # Returns: (transfer none)
 

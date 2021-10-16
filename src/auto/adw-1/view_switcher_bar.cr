@@ -264,6 +264,36 @@ module Adw
       LibAdw.adw_view_switcher_bar_get_type
     end
 
+    def reveal=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reveal", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reveal? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "reveal", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def stack=(value : Adw::ViewStack?) : Adw::ViewStack?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "stack", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def stack : Adw::ViewStack?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "stack", pointerof(value), Pointer(Void).null)
+      Adw::ViewStack.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # adw_view_switcher_bar_new: (Constructor)
       # Returns: (transfer none)
@@ -272,7 +302,7 @@ module Adw
       @pointer = _retval
     end
 
-    def reveal? : Bool
+    def reveal : Bool
       # adw_view_switcher_bar_get_reveal: (Method | Getter)
       # Returns: (transfer none)
 

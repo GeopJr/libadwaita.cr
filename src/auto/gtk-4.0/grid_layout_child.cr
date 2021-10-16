@@ -54,6 +54,66 @@ module Gtk
       LibGtk.gtk_grid_layout_child_get_type
     end
 
+    def column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "column", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def column_span=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "column-span", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def column_span : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "column-span", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def row=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "row", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def row : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "row", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def row_span=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "row-span", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def row_span : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "row-span", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def column : Int32
       # gtk_grid_layout_child_get_column: (Method)
       # Returns: (transfer none)

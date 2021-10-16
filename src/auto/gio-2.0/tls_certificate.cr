@@ -123,11 +123,59 @@ module Gio
       ::String.new(value)
     end
 
-    def issuer=(value : TlsCertificate?) : TlsCertificate?
+    def dns_names : Enumerable(Pointer(Nil))
+      # Returns: Container
+
+      value = uninitialized Pointer(Pointer(Void))
+      LibGObject.g_object_get(self, "dns-names", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def ip_addresses : Enumerable(Pointer(Nil))
+      # Returns: Container
+
+      value = uninitialized Pointer(Pointer(Void))
+      LibGObject.g_object_get(self, "ip-addresses", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def issuer=(value : Gio::TlsCertificate?) : Gio::TlsCertificate?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "issuer", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def issuer : Gio::TlsCertificate?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "issuer", pointerof(value), Pointer(Void).null)
+      Gio::TlsCertificate.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def issuer_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "issuer-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def not_valid_after : GLib::DateTime?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "not-valid-after", pointerof(value), Pointer(Void).null)
+      GLib::DateTime.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def not_valid_before : GLib::DateTime?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "not-valid-before", pointerof(value), Pointer(Void).null)
+      GLib::DateTime.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def pkcs11_uri=(value : ::String) : ::String
@@ -187,6 +235,14 @@ module Gio
 
       value = uninitialized Pointer(LibC::Char)
       LibGObject.g_object_get(self, "private-key-pkcs11-uri", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def subject_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "subject-name", pointerof(value), Pointer(Void).null)
       ::String.new(value)
     end
 

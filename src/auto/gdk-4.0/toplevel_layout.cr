@@ -80,7 +80,7 @@ module Gdk
       GICrystal.to_bool(_retval)
     end
 
-    def resizable? : Bool
+    def resizable : Bool
       # gdk_toplevel_layout_get_resizable: (Method)
       # Returns: (transfer none)
 

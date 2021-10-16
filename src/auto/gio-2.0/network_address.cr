@@ -58,10 +58,26 @@ module Gio
       value
     end
 
+    def hostname : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "hostname", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def port=(value : UInt32) : UInt32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "port", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def port : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "port", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -70,6 +86,14 @@ module Gio
 
       LibGObject.g_object_set(self, "scheme", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def scheme : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "scheme", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def initialize(hostname : ::String, port : UInt16)

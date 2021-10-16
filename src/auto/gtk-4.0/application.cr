@@ -152,6 +152,52 @@ module Gtk
       LibGtk.gtk_application_get_type
     end
 
+    def active_window : Gtk::Window?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "active-window", pointerof(value), Pointer(Void).null)
+      Gtk::Window.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def menubar=(value : Gio::MenuModel?) : Gio::MenuModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "menubar", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def menubar : Gio::MenuModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "menubar", pointerof(value), Pointer(Void).null)
+      Gio::MenuModel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def register_session=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "register-session", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def register_session? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "register-session", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def screensaver_active? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "screensaver-active", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(application_id : ::String?, flags : Gio::ApplicationFlags)
       # gtk_application_new: (Constructor)
       # @application_id: (nullable)

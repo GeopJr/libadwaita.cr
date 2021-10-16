@@ -29,7 +29,7 @@ module Gdk
       LibGdk.gdk_frame_timings_get_type
     end
 
-    def complete? : Bool
+    def complete : Bool
       # gdk_frame_timings_get_complete: (Method)
       # Returns: (transfer none)
 

@@ -277,6 +277,66 @@ module Gtk
       LibGtk.gtk_list_box_get_type
     end
 
+    def accept_unpaired_release=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accept-unpaired-release", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accept_unpaired_release? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "accept-unpaired-release", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def activate_on_single_click=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activate-on-single-click", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def activate_on_single_click? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "activate-on-single-click", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def selection_mode=(value : Gtk::SelectionMode) : Gtk::SelectionMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selection-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selection_mode : Gtk::SelectionMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "selection-mode", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionMode.from_value(value)
+    end
+
+    def show_separators=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-separators", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_separators? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-separators", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_list_box_new: (Constructor)
       # Returns: (transfer none)
@@ -332,7 +392,7 @@ module Gtk
       LibGtk.gtk_list_box_drag_unhighlight_row(self)
     end
 
-    def activate_on_single_click? : Bool
+    def activate_on_single_click : Bool
       # gtk_list_box_get_activate_on_single_click: (Method)
       # Returns: (transfer none)
 
@@ -388,7 +448,7 @@ module Gtk
       Gtk::SelectionMode.from_value(_retval)
     end
 
-    def show_separators? : Bool
+    def show_separators : Bool
       # gtk_list_box_get_show_separators: (Method)
       # Returns: (transfer none)
 

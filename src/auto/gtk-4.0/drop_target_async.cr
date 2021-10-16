@@ -87,6 +87,36 @@ module Gtk
       LibGtk.gtk_drop_target_async_get_type
     end
 
+    def actions=(value : Gdk::DragAction) : Gdk::DragAction
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "actions", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def actions : Gdk::DragAction
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "actions", pointerof(value), Pointer(Void).null)
+      Gdk::DragAction.from_value(value)
+    end
+
+    def formats=(value : Gdk::ContentFormats?) : Gdk::ContentFormats?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "formats", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def formats : Gdk::ContentFormats?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "formats", pointerof(value), Pointer(Void).null)
+      Gdk::ContentFormats.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(formats : Gdk::ContentFormats?, actions : Gdk::DragAction)
       # gtk_drop_target_async_new: (Constructor)
       # @formats: (transfer full) (nullable)

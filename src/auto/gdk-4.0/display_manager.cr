@@ -70,6 +70,21 @@ module Gdk
       LibGdk.gdk_display_manager_get_type
     end
 
+    def default_display=(value : Gdk::Display?) : Gdk::Display?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "default-display", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def default_display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "default-display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def self.get : Gdk::DisplayManager
       # gdk_display_manager_get: (None)
       # Returns: (transfer none)

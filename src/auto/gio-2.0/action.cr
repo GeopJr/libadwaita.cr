@@ -29,6 +29,46 @@ module Gio
   # Probably the only useful thing to do with a #GAction is to put it
   # inside of a #GSimpleActionGroup.
   module Action
+    def enabled? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enabled", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def parameter_type : GLib::VariantType?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "parameter-type", pointerof(value), Pointer(Void).null)
+      GLib::VariantType.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def state : GLib::Variant?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "state", pointerof(value), Pointer(Void).null)
+      GLib::Variant.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def state_type : GLib::VariantType?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "state-type", pointerof(value), Pointer(Void).null)
+      GLib::VariantType.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def self.name_is_valid(action_name : ::String) : Bool
       # g_action_name_is_valid: (None)
       # Returns: (transfer none)
@@ -90,7 +130,7 @@ module Gio
       LibGio.g_action_change_state(self, value)
     end
 
-    def enabled? : Bool
+    def enabled : Bool
       # g_action_get_enabled: (Method | Getter)
       # Returns: (transfer none)
 
@@ -165,12 +205,12 @@ module Gio
     end
 
     # Cast a `GObject::Object` to `Action`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to Action")
     end
 
     # Cast a `GObject::Object` to `Action`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

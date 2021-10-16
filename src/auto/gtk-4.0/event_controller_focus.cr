@@ -62,6 +62,22 @@ module Gtk
       LibGtk.gtk_event_controller_focus_get_type
     end
 
+    def contains_focus? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "contains-focus", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_focus? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-focus", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_event_controller_focus_new: (Constructor)
       # Returns: (transfer full)

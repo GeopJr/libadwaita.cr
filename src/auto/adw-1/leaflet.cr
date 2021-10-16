@@ -305,6 +305,180 @@ module Adw
       LibAdw.adw_leaflet_get_type
     end
 
+    def can_swipe_back=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "can-swipe-back", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def can_swipe_back? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-swipe-back", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def can_swipe_forward=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "can-swipe-forward", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def can_swipe_forward? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-swipe-forward", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def can_unfold=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "can-unfold", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def can_unfold? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-unfold", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def child_transition_duration=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child-transition-duration", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child_transition_duration : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "child-transition-duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def child_transition_running? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "child-transition-running", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def fold_threshold_policy=(value : Adw::FoldThresholdPolicy) : Adw::FoldThresholdPolicy
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fold-threshold-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fold_threshold_policy : Adw::FoldThresholdPolicy
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "fold-threshold-policy", pointerof(value), Pointer(Void).null)
+      Adw::FoldThresholdPolicy.from_value(value)
+    end
+
+    def folded? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "folded", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def homogeneous=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "homogeneous", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def homogeneous? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "homogeneous", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def mode_transition_duration=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "mode-transition-duration", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def mode_transition_duration : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "mode-transition-duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def pages : Gtk::SelectionModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def transition_type=(value : Adw::LeafletTransitionType) : Adw::LeafletTransitionType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transition-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transition_type : Adw::LeafletTransitionType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "transition-type", pointerof(value), Pointer(Void).null)
+      Adw::LeafletTransitionType.from_value(value)
+    end
+
+    def visible_child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible_child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "visible-child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def visible_child_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible-child-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible_child_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "visible-child-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # adw_leaflet_new: (Constructor)
       # Returns: (transfer none)
@@ -329,7 +503,7 @@ module Adw
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def can_swipe_back? : Bool
+    def can_swipe_back : Bool
       # adw_leaflet_get_can_swipe_back: (Method | Getter)
       # Returns: (transfer none)
 
@@ -337,7 +511,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def can_swipe_forward? : Bool
+    def can_swipe_forward : Bool
       # adw_leaflet_get_can_swipe_forward: (Method | Getter)
       # Returns: (transfer none)
 
@@ -345,7 +519,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def can_unfold? : Bool
+    def can_unfold : Bool
       # adw_leaflet_get_can_unfold: (Method | Getter)
       # Returns: (transfer none)
 
@@ -369,7 +543,7 @@ module Adw
       _retval
     end
 
-    def child_transition_running? : Bool
+    def child_transition_running : Bool
       # adw_leaflet_get_child_transition_running: (Method | Getter)
       # Returns: (transfer none)
 
@@ -385,7 +559,7 @@ module Adw
       Adw::FoldThresholdPolicy.from_value(_retval)
     end
 
-    def folded? : Bool
+    def folded : Bool
       # adw_leaflet_get_folded: (Method | Getter)
       # Returns: (transfer none)
 
@@ -393,7 +567,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def homogeneous? : Bool
+    def homogeneous : Bool
       # adw_leaflet_get_homogeneous: (Method | Getter)
       # Returns: (transfer none)
 

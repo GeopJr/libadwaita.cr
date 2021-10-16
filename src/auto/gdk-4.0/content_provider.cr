@@ -42,6 +42,22 @@ module Gdk
       LibGdk.gdk_content_provider_get_type
     end
 
+    def formats : Gdk::ContentFormats?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "formats", pointerof(value), Pointer(Void).null)
+      Gdk::ContentFormats.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def storable_formats : Gdk::ContentFormats?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "storable-formats", pointerof(value), Pointer(Void).null)
+      Gdk::ContentFormats.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def self.new_for_bytes(mime_type : ::String, bytes : GLib::Bytes) : Gdk::ContentProvider
       # gdk_content_provider_new_for_bytes: (Constructor)
       # Returns: (transfer full)

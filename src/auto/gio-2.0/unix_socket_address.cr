@@ -80,11 +80,19 @@ module Gio
       GICrystal.to_bool(value)
     end
 
-    def address_type=(value : UnixSocketAddressType) : UnixSocketAddressType
+    def address_type=(value : Gio::UnixSocketAddressType) : Gio::UnixSocketAddressType
       unsafe_value = value
 
       LibGObject.g_object_set(self, "address-type", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def address_type : Gio::UnixSocketAddressType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "address-type", pointerof(value), Pointer(Void).null)
+      Gio::UnixSocketAddressType.from_value(value)
     end
 
     def path=(value : ::String) : ::String
@@ -92,6 +100,14 @@ module Gio
 
       LibGObject.g_object_set(self, "path", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def path : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "path", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def path_as_array=(value : Enumerable(UInt8)) : Enumerable(UInt8)
@@ -161,7 +177,7 @@ module Gio
       Gio::UnixSocketAddressType.from_value(_retval)
     end
 
-    def is_abstract? : Bool
+    def is_abstract : Bool
       # g_unix_socket_address_get_is_abstract: (Method)
       # Returns: (transfer none)
 

@@ -106,18 +106,34 @@ module Gtk
       LibGtk.gtk_tree_model_filter_get_type
     end
 
-    def child_model=(value : TreeModel?) : TreeModel?
+    def child_model=(value : Gtk::TreeModel?) : Gtk::TreeModel?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "child-model", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def virtual_root=(value : TreePath?) : TreePath?
+    def child_model : Gtk::TreeModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child-model", pointerof(value), Pointer(Void).null)
+      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def virtual_root=(value : Gtk::TreePath?) : Gtk::TreePath?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "virtual-root", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def virtual_root : Gtk::TreePath?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "virtual-root", pointerof(value), Pointer(Void).null)
+      Gtk::TreePath.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def clear_cache : Nil

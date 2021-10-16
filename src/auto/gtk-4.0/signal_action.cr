@@ -39,6 +39,14 @@ module Gtk
       value
     end
 
+    def signal_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "signal-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(signal_name : ::String)
       # gtk_signal_action_new: (Constructor)
       # Returns: (transfer full)

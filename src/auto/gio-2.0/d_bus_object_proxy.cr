@@ -40,14 +40,14 @@ module Gio
       LibGio.g_dbus_object_proxy_get_type
     end
 
-    def g_connection=(value : DBusConnection?) : DBusConnection?
+    def g_connection=(value : Gio::DBusConnection?) : Gio::DBusConnection?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "g-connection", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def g_connection : DBusConnection?
+    def g_connection : Gio::DBusConnection?
       # Returns: None
 
       value = uninitialized Pointer(Void)

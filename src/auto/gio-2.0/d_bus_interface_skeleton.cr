@@ -32,14 +32,14 @@ module Gio
       LibGio.g_dbus_interface_skeleton_get_type
     end
 
-    def g_flags=(value : DBusInterfaceSkeletonFlags) : DBusInterfaceSkeletonFlags
+    def g_flags=(value : Gio::DBusInterfaceSkeletonFlags) : Gio::DBusInterfaceSkeletonFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "g-flags", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def g_flags : DBusInterfaceSkeletonFlags
+    def g_flags : Gio::DBusInterfaceSkeletonFlags
       # Returns: None
 
       value = uninitialized UInt32

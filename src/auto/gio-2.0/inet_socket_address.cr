@@ -53,17 +53,33 @@ module Gio
       LibGio.g_inet_socket_address_get_type
     end
 
-    def address=(value : InetAddress?) : InetAddress?
+    def address=(value : Gio::InetAddress?) : Gio::InetAddress?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "address", unsafe_value, Pointer(Void).null)
       value
     end
 
+    def address : Gio::InetAddress?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "address", pointerof(value), Pointer(Void).null)
+      Gio::InetAddress.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def flowinfo=(value : UInt32) : UInt32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "flowinfo", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def flowinfo : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flowinfo", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -74,10 +90,26 @@ module Gio
       value
     end
 
+    def port : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "port", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def scope_id=(value : UInt32) : UInt32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "scope-id", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def scope_id : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "scope-id", pointerof(value), Pointer(Void).null)
       value
     end
 

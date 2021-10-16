@@ -64,6 +64,96 @@ module Gtk
       LibGtk.gtk_adjustment_get_type
     end
 
+    def lower=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "lower", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def lower : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "lower", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def page_increment=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "page-increment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def page_increment : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "page-increment", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def page_size=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "page-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def page_size : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "page-size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def step_increment=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "step-increment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def step_increment : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "step-increment", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def upper=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "upper", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def upper : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "upper", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def value=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "value", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def value : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "value", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(value : Float64, lower : Float64, upper : Float64, step_increment : Float64, page_increment : Float64, page_size : Float64)
       # gtk_adjustment_new: (Constructor)
       # Returns: (transfer none)

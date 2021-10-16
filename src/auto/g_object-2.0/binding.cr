@@ -126,18 +126,34 @@ module GObject
       LibGObject.g_binding_get_type
     end
 
-    def flags=(value : BindingFlags) : BindingFlags
+    def flags=(value : GObject::BindingFlags) : GObject::BindingFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def source=(value : Object?) : Object?
+    def flags : GObject::BindingFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
+      GObject::BindingFlags.from_value(value)
+    end
+
+    def source=(value : GObject::Object?) : GObject::Object?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "source", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def source : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "source", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def source_property=(value : ::String) : ::String
@@ -147,11 +163,27 @@ module GObject
       value
     end
 
-    def target=(value : Object?) : Object?
+    def source_property : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "source-property", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def target=(value : GObject::Object?) : GObject::Object?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "target", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def target : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "target", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def target_property=(value : ::String) : ::String
@@ -159,6 +191,14 @@ module GObject
 
       LibGObject.g_object_set(self, "target-property", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def target_property : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "target-property", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def dup_source : GObject::Object?

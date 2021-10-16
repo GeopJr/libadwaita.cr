@@ -32,6 +32,14 @@ module Gtk
       LibGtk.gtk_string_object_get_type
     end
 
+    def string : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "string", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(string : ::String)
       # gtk_string_object_new: (Constructor)
       # Returns: (transfer full)

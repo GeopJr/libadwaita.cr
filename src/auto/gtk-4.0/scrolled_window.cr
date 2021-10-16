@@ -365,6 +365,231 @@ module Gtk
       LibGtk.gtk_scrolled_window_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def hadjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hadjustment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hadjustment : Gtk::Adjustment?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "hadjustment", pointerof(value), Pointer(Void).null)
+      Gtk::Adjustment.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def has_frame=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-frame", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_frame? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-frame", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def hscrollbar_policy=(value : Gtk::PolicyType) : Gtk::PolicyType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hscrollbar-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hscrollbar_policy : Gtk::PolicyType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "hscrollbar-policy", pointerof(value), Pointer(Void).null)
+      Gtk::PolicyType.from_value(value)
+    end
+
+    def kinetic_scrolling=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "kinetic-scrolling", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def kinetic_scrolling? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "kinetic-scrolling", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def max_content_height=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-content-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_content_height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-content-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def max_content_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-content-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_content_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-content-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def min_content_height=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "min-content-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def min_content_height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "min-content-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def min_content_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "min-content-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def min_content_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "min-content-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def overlay_scrolling=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "overlay-scrolling", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def overlay_scrolling? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "overlay-scrolling", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def propagate_natural_height=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "propagate-natural-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def propagate_natural_height? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "propagate-natural-height", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def propagate_natural_width=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "propagate-natural-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def propagate_natural_width? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "propagate-natural-width", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def vadjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "vadjustment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def vadjustment : Gtk::Adjustment?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "vadjustment", pointerof(value), Pointer(Void).null)
+      Gtk::Adjustment.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def vscrollbar_policy=(value : Gtk::PolicyType) : Gtk::PolicyType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "vscrollbar-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def vscrollbar_policy : Gtk::PolicyType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "vscrollbar-policy", pointerof(value), Pointer(Void).null)
+      Gtk::PolicyType.from_value(value)
+    end
+
+    def window_placement=(value : Gtk::CornerType) : Gtk::CornerType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "window-placement", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def window_placement : Gtk::CornerType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "window-placement", pointerof(value), Pointer(Void).null)
+      Gtk::CornerType.from_value(value)
+    end
+
     def initialize
       # gtk_scrolled_window_new: (Constructor)
       # Returns: (transfer none)
@@ -389,7 +614,7 @@ module Gtk
       Gtk::Adjustment.new(_retval, GICrystal::Transfer::None)
     end
 
-    def has_frame? : Bool
+    def has_frame : Bool
       # gtk_scrolled_window_get_has_frame: (Method)
       # Returns: (transfer none)
 
@@ -405,7 +630,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
-    def kinetic_scrolling? : Bool
+    def kinetic_scrolling : Bool
       # gtk_scrolled_window_get_kinetic_scrolling: (Method)
       # Returns: (transfer none)
 
@@ -445,7 +670,7 @@ module Gtk
       _retval
     end
 
-    def overlay_scrolling? : Bool
+    def overlay_scrolling : Bool
       # gtk_scrolled_window_get_overlay_scrolling: (Method)
       # Returns: (transfer none)
 
@@ -473,7 +698,7 @@ module Gtk
       LibGtk.gtk_scrolled_window_get_policy(self, hscrollbar_policy, vscrollbar_policy)
     end
 
-    def propagate_natural_height? : Bool
+    def propagate_natural_height : Bool
       # gtk_scrolled_window_get_propagate_natural_height: (Method)
       # Returns: (transfer none)
 
@@ -481,7 +706,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def propagate_natural_width? : Bool
+    def propagate_natural_width : Bool
       # gtk_scrolled_window_get_propagate_natural_width: (Method)
       # Returns: (transfer none)
 

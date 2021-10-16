@@ -62,6 +62,14 @@ module Gio
       value
     end
 
+    def names : Enumerable(::String)
+      # Returns: None
+
+      value = uninitialized Pointer(Pointer(LibC::Char))
+      LibGObject.g_object_get(self, "names", pointerof(value), Pointer(Void).null)
+      GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
+    end
+
     def use_default_fallbacks=(value : Bool) : Bool
       unsafe_value = value
 

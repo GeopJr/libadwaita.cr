@@ -48,6 +48,44 @@ module Gtk
       LibGtk.gtk_entry_buffer_get_type
     end
 
+    def length : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "length", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def max_length=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-length", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_length : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-length", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(initial_chars : ::String?, n_initial_chars : Int32)
       # gtk_entry_buffer_new: (Constructor)
       # @initial_chars: (nullable)

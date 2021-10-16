@@ -120,6 +120,14 @@ module Adw
       LibAdw.adw_application_get_type
     end
 
+    def style_manager : Adw::StyleManager?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "style-manager", pointerof(value), Pointer(Void).null)
+      Adw::StyleManager.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(application_id : ::String?, flags : Gio::ApplicationFlags)
       # adw_application_new: (Constructor)
       # @application_id: (nullable)

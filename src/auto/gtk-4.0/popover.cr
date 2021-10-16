@@ -329,6 +329,126 @@ module Gtk
       LibGtk.gtk_popover_get_type
     end
 
+    def autohide=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "autohide", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def autohide? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "autohide", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def cascade_popdown=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "cascade-popdown", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cascade_popdown? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "cascade-popdown", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def default_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "default-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def default_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "default-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def has_arrow=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-arrow", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_arrow? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-arrow", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def mnemonics_visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "mnemonics-visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def mnemonics_visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "mnemonics-visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def pointing_to=(value : Gdk::Rectangle?) : Gdk::Rectangle?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pointing-to", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pointing_to : Gdk::Rectangle?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pointing-to", pointerof(value), Pointer(Void).null)
+      Gdk::Rectangle.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def position=(value : Gtk::PositionType) : Gtk::PositionType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "position", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def position : Gtk::PositionType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "position", pointerof(value), Pointer(Void).null)
+      Gtk::PositionType.from_value(value)
+    end
+
     def initialize
       # gtk_popover_new: (Constructor)
       # Returns: (transfer none)
@@ -337,7 +457,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def autohide? : Bool
+    def autohide : Bool
       # gtk_popover_get_autohide: (Method)
       # Returns: (transfer none)
 
@@ -345,7 +465,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def cascade_popdown? : Bool
+    def cascade_popdown : Bool
       # gtk_popover_get_cascade_popdown: (Method)
       # Returns: (transfer none)
 
@@ -361,7 +481,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def has_arrow? : Bool
+    def has_arrow : Bool
       # gtk_popover_get_has_arrow: (Method)
       # Returns: (transfer none)
 
@@ -369,7 +489,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def mnemonics_visible? : Bool
+    def mnemonics_visible : Bool
       # gtk_popover_get_mnemonics_visible: (Method)
       # Returns: (transfer none)
 

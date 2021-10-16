@@ -133,11 +133,19 @@ module Gtk
       LibGtk.gtk_tree_model_sort_get_type
     end
 
-    def model=(value : TreeModel?) : TreeModel?
+    def model=(value : Gtk::TreeModel?) : Gtk::TreeModel?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def model : Gtk::TreeModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def self.new_with_model(child_model : Gtk::TreeModel) : Gtk::TreeModelSort

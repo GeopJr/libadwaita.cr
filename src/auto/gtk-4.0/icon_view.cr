@@ -341,10 +341,258 @@ module Gtk
       LibGtk.gtk_icon_view_get_type
     end
 
-    def cell_area=(value : CellArea?) : CellArea?
+    def activate_on_single_click=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activate-on-single-click", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def activate_on_single_click? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "activate-on-single-click", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def cell_area=(value : Gtk::CellArea?) : Gtk::CellArea?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "cell-area", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cell_area : Gtk::CellArea?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "cell-area", pointerof(value), Pointer(Void).null)
+      Gtk::CellArea.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def column_spacing=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "column-spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def column_spacing : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "column-spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def columns=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "columns", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def columns : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "columns", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def item_orientation=(value : Gtk::Orientation) : Gtk::Orientation
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "item-orientation", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def item_orientation : Gtk::Orientation
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "item-orientation", pointerof(value), Pointer(Void).null)
+      Gtk::Orientation.from_value(value)
+    end
+
+    def item_padding=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "item-padding", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def item_padding : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "item-padding", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def item_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "item-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def item_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "item-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def margin=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "margin", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def margin : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "margin", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def markup_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "markup-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def markup_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "markup-column", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def model=(value : Gtk::TreeModel?) : Gtk::TreeModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gtk::TreeModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def pixbuf_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pixbuf-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pixbuf_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "pixbuf-column", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def reorderable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reorderable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reorderable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "reorderable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def row_spacing=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "row-spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def row_spacing : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "row-spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def selection_mode=(value : Gtk::SelectionMode) : Gtk::SelectionMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selection-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selection_mode : Gtk::SelectionMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "selection-mode", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionMode.from_value(value)
+    end
+
+    def spacing=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def spacing : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def text_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "text-column", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def tooltip_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tooltip-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tooltip_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "tooltip-column", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -394,7 +642,7 @@ module Gtk
       LibGtk.gtk_icon_view_enable_model_drag_source(self, start_button_mask, formats, actions)
     end
 
-    def activate_on_single_click? : Bool
+    def activate_on_single_click : Bool
       # gtk_icon_view_get_activate_on_single_click: (Method)
       # Returns: (transfer none)
 
@@ -566,7 +814,7 @@ module Gtk
       _retval
     end
 
-    def reorderable? : Bool
+    def reorderable : Bool
       # gtk_icon_view_get_reorderable: (Method)
       # Returns: (transfer none)
 

@@ -240,6 +240,51 @@ module Gtk
       LibGtk.gtk_scale_button_get_type
     end
 
+    def adjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "adjustment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def adjustment : Gtk::Adjustment?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "adjustment", pointerof(value), Pointer(Void).null)
+      Gtk::Adjustment.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def icons=(value : Enumerable(::String)) : Enumerable(::String)
+      # handle array
+
+      LibGObject.g_object_set(self, "icons", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icons : Enumerable(::String)
+      # Returns: None
+
+      value = uninitialized Pointer(Pointer(LibC::Char))
+      LibGObject.g_object_get(self, "icons", pointerof(value), Pointer(Void).null)
+      GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
+    end
+
+    def value=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "value", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def value : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "value", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(min : Float64, max : Float64, step : Float64, icons : Enumerable(::String)?)
       # gtk_scale_button_new: (Constructor)
       # @icons: (nullable) (array zero-terminated=1 element-type Utf8)

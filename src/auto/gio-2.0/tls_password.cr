@@ -39,6 +39,51 @@ module Gio
       LibGio.g_tls_password_get_type
     end
 
+    def description=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "description", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def description : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "description", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def flags=(value : Gio::TlsPasswordFlags) : Gio::TlsPasswordFlags
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def flags : Gio::TlsPasswordFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
+      Gio::TlsPasswordFlags.from_value(value)
+    end
+
+    def warning=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "warning", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def warning : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "warning", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(flags : Gio::TlsPasswordFlags, description : ::String)
       # g_tls_password_new: (Constructor)
       # Returns: (transfer full)

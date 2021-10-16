@@ -82,6 +82,21 @@ module Gtk
       LibGtk.gtk_event_controller_scroll_get_type
     end
 
+    def flags=(value : Gtk::EventControllerScrollFlags) : Gtk::EventControllerScrollFlags
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def flags : Gtk::EventControllerScrollFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
+      Gtk::EventControllerScrollFlags.from_value(value)
+    end
+
     def initialize(flags : Gtk::EventControllerScrollFlags)
       # gtk_event_controller_scroll_new: (Constructor)
       # Returns: (transfer full)

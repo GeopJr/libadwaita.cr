@@ -58,10 +58,26 @@ module Gdk
       value
     end
 
+    def height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def width=(value : Int32) : Int32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width", pointerof(value), Pointer(Void).null)
       value
     end
 

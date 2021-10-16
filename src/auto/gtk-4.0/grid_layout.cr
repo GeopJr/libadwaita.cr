@@ -62,6 +62,81 @@ module Gtk
       LibGtk.gtk_grid_layout_get_type
     end
 
+    def baseline_row=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "baseline-row", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def baseline_row : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "baseline-row", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def column_homogeneous=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "column-homogeneous", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def column_homogeneous? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "column-homogeneous", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def column_spacing=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "column-spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def column_spacing : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "column-spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def row_homogeneous=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "row-homogeneous", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def row_homogeneous? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "row-homogeneous", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def row_spacing=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "row-spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def row_spacing : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "row-spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_grid_layout_new: (Constructor)
       # Returns: (transfer full)
@@ -78,7 +153,7 @@ module Gtk
       _retval
     end
 
-    def column_homogeneous? : Bool
+    def column_homogeneous : Bool
       # gtk_grid_layout_get_column_homogeneous: (Method)
       # Returns: (transfer none)
 
@@ -102,7 +177,7 @@ module Gtk
       Gtk::BaselinePosition.from_value(_retval)
     end
 
-    def row_homogeneous? : Bool
+    def row_homogeneous : Bool
       # gtk_grid_layout_get_row_homogeneous: (Method)
       # Returns: (transfer none)
 

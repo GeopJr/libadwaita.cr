@@ -55,6 +55,13 @@ module Gio
       GICrystal.to_bool(value)
     end
 
+    def rate_limit=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "rate-limit", unsafe_value, Pointer(Void).null)
+      value
+    end
+
     def rate_limit : Int32
       # Returns: None
 

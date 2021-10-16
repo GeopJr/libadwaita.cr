@@ -335,6 +335,112 @@ module Gtk
       LibGtk.gtk_column_view_get_type
     end
 
+    def columns : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "columns", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def enable_rubberband=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-rubberband", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_rubberband? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-rubberband", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def model=(value : Gtk::SelectionModel?) : Gtk::SelectionModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gtk::SelectionModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def reorderable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reorderable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reorderable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "reorderable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_column_separators=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-column-separators", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_column_separators? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-column-separators", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_row_separators=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-row-separators", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_row_separators? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-row-separators", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def single_click_activate=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "single-click-activate", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def single_click_activate? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "single-click-activate", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def sorter : Gtk::Sorter?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "sorter", pointerof(value), Pointer(Void).null)
+      Gtk::Sorter.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(model : Gtk::SelectionModel?)
       # gtk_column_view_new: (Constructor)
       # @model: (transfer full) (nullable)
@@ -366,7 +472,7 @@ module Gtk
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
-    def enable_rubberband? : Bool
+    def enable_rubberband : Bool
       # gtk_column_view_get_enable_rubberband: (Method)
       # Returns: (transfer none)
 
@@ -382,7 +488,7 @@ module Gtk
       Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def reorderable? : Bool
+    def reorderable : Bool
       # gtk_column_view_get_reorderable: (Method)
       # Returns: (transfer none)
 
@@ -390,7 +496,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_column_separators? : Bool
+    def show_column_separators : Bool
       # gtk_column_view_get_show_column_separators: (Method)
       # Returns: (transfer none)
 
@@ -398,7 +504,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_row_separators? : Bool
+    def show_row_separators : Bool
       # gtk_column_view_get_show_row_separators: (Method)
       # Returns: (transfer none)
 
@@ -406,7 +512,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def single_click_activate? : Bool
+    def single_click_activate : Bool
       # gtk_column_view_get_single_click_activate: (Method)
       # Returns: (transfer none)
 

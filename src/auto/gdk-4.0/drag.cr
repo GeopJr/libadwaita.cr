@@ -68,32 +68,102 @@ module Gdk
       LibGdk.gdk_drag_get_type
     end
 
-    def content=(value : ContentProvider?) : ContentProvider?
+    def actions=(value : Gdk::DragAction) : Gdk::DragAction
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "actions", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def actions : Gdk::DragAction
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "actions", pointerof(value), Pointer(Void).null)
+      Gdk::DragAction.from_value(value)
+    end
+
+    def content=(value : Gdk::ContentProvider?) : Gdk::ContentProvider?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "content", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def device=(value : Device?) : Device?
+    def content : Gdk::ContentProvider?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "content", pointerof(value), Pointer(Void).null)
+      Gdk::ContentProvider.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def device=(value : Gdk::Device?) : Gdk::Device?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "device", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def formats=(value : ContentFormats?) : ContentFormats?
+    def device : Gdk::Device?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "device", pointerof(value), Pointer(Void).null)
+      Gdk::Device.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def formats=(value : Gdk::ContentFormats?) : Gdk::ContentFormats?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "formats", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def surface=(value : Surface?) : Surface?
+    def formats : Gdk::ContentFormats?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "formats", pointerof(value), Pointer(Void).null)
+      Gdk::ContentFormats.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def selected_action=(value : Gdk::DragAction) : Gdk::DragAction
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selected-action", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selected_action : Gdk::DragAction
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "selected-action", pointerof(value), Pointer(Void).null)
+      Gdk::DragAction.from_value(value)
+    end
+
+    def surface=(value : Gdk::Surface?) : Gdk::Surface?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "surface", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def surface : Gdk::Surface?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "surface", pointerof(value), Pointer(Void).null)
+      Gdk::Surface.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def self._begin(surface : Gdk::Surface, device : Gdk::Device, content : Gdk::ContentProvider, actions : Gdk::DragAction, dx : Float64, dy : Float64) : Gdk::Drag?

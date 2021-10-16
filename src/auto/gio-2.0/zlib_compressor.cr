@@ -43,14 +43,29 @@ module Gio
       LibGio.g_zlib_compressor_get_type
     end
 
-    def format=(value : ZlibCompressorFormat) : ZlibCompressorFormat
+    def file_info=(value : Gio::FileInfo?) : Gio::FileInfo?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "file-info", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def file_info : Gio::FileInfo?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "file-info", pointerof(value), Pointer(Void).null)
+      Gio::FileInfo.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def format=(value : Gio::ZlibCompressorFormat) : Gio::ZlibCompressorFormat
       unsafe_value = value
 
       LibGObject.g_object_set(self, "format", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def format : ZlibCompressorFormat
+    def format : Gio::ZlibCompressorFormat
       # Returns: None
 
       value = uninitialized UInt32

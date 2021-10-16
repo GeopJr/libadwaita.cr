@@ -144,6 +144,14 @@ module Gtk
       value
     end
 
+    def n_points : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "n-points", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def bounding_box : Gdk::Rectangle
       # gtk_gesture_get_bounding_box: (Method)
       # @rect: (out) (caller-allocates)

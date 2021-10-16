@@ -337,6 +337,157 @@ module Gtk
       LibGtk.gtk_paned_get_type
     end
 
+    def end_child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "end-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def end_child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "end-child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def max_position : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-position", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def min_position : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "min-position", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def position=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "position", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def position : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "position", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def position_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "position-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def position_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "position-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def resize_end_child=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "resize-end-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def resize_end_child? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "resize-end-child", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def resize_start_child=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "resize-start-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def resize_start_child? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "resize-start-child", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def shrink_end_child=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "shrink-end-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def shrink_end_child? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "shrink-end-child", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def shrink_start_child=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "shrink-start-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def shrink_start_child? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "shrink-start-child", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def start_child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "start-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def start_child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "start-child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def wide_handle=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "wide-handle", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def wide_handle? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "wide-handle", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(orientation : Gtk::Orientation)
       # gtk_paned_new: (Constructor)
       # Returns: (transfer none)
@@ -361,7 +512,7 @@ module Gtk
       _retval
     end
 
-    def resize_end_child? : Bool
+    def resize_end_child : Bool
       # gtk_paned_get_resize_end_child: (Method)
       # Returns: (transfer none)
 
@@ -369,7 +520,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def resize_start_child? : Bool
+    def resize_start_child : Bool
       # gtk_paned_get_resize_start_child: (Method)
       # Returns: (transfer none)
 
@@ -377,7 +528,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def shrink_end_child? : Bool
+    def shrink_end_child : Bool
       # gtk_paned_get_shrink_end_child: (Method)
       # Returns: (transfer none)
 
@@ -385,7 +536,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def shrink_start_child? : Bool
+    def shrink_start_child : Bool
       # gtk_paned_get_shrink_start_child: (Method)
       # Returns: (transfer none)
 
@@ -401,7 +552,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def wide_handle? : Bool
+    def wide_handle : Bool
       # gtk_paned_get_wide_handle: (Method)
       # Returns: (transfer none)
 

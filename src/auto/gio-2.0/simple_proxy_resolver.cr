@@ -44,12 +44,26 @@ module Gio
       LibGio.g_simple_proxy_resolver_get_type
     end
 
+    def default_proxy=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "default-proxy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
     def default_proxy : ::String
       # Returns: None
 
       value = uninitialized Pointer(LibC::Char)
       LibGObject.g_object_get(self, "default-proxy", pointerof(value), Pointer(Void).null)
       ::String.new(value)
+    end
+
+    def ignore_hosts=(value : Enumerable(::String)) : Enumerable(::String)
+      # handle array
+
+      LibGObject.g_object_set(self, "ignore-hosts", unsafe_value, Pointer(Void).null)
+      value
     end
 
     def ignore_hosts : Enumerable(::String)

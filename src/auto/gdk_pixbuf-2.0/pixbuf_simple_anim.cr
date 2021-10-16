@@ -29,6 +29,21 @@ module GdkPixbuf
       LibGdkPixbuf.gdk_pixbuf_simple_anim_get_type
     end
 
+    def loop=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "loop", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def loop? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "loop", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(width : Int32, height : Int32, rate : Float32)
       # gdk_pixbuf_simple_anim_new: (Constructor)
       # Returns: (transfer full)
@@ -44,7 +59,7 @@ module GdkPixbuf
       LibGdkPixbuf.gdk_pixbuf_simple_anim_add_frame(self, pixbuf)
     end
 
-    def loop? : Bool
+    def loop : Bool
       # gdk_pixbuf_simple_anim_get_loop: (Method)
       # Returns: (transfer none)
 

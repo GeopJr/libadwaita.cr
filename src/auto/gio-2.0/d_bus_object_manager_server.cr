@@ -58,6 +58,21 @@ module Gio
       LibGio.g_dbus_object_manager_server_get_type
     end
 
+    def connection=(value : Gio::DBusConnection?) : Gio::DBusConnection?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "connection", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def connection : Gio::DBusConnection?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "connection", pointerof(value), Pointer(Void).null)
+      Gio::DBusConnection.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def object_path=(value : ::String) : ::String
       unsafe_value = value
 

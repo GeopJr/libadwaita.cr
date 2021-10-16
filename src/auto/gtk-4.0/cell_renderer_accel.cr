@@ -353,6 +353,66 @@ module Gtk
       LibGtk.gtk_cell_renderer_accel_get_type
     end
 
+    def accel_key=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accel-key", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accel_key : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "accel-key", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def accel_mode=(value : Gtk::CellRendererAccelMode) : Gtk::CellRendererAccelMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accel-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accel_mode : Gtk::CellRendererAccelMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "accel-mode", pointerof(value), Pointer(Void).null)
+      Gtk::CellRendererAccelMode.from_value(value)
+    end
+
+    def accel_mods=(value : Gdk::ModifierType) : Gdk::ModifierType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accel-mods", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accel_mods : Gdk::ModifierType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "accel-mods", pointerof(value), Pointer(Void).null)
+      Gdk::ModifierType.from_value(value)
+    end
+
+    def keycode=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "keycode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def keycode : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "keycode", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_cell_renderer_accel_new: (Constructor)
       # Returns: (transfer none)

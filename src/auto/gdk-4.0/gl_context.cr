@@ -87,11 +87,19 @@ module Gdk
       LibGdk.gdk_gl_context_get_type
     end
 
-    def shared_context=(value : GLContext?) : GLContext?
+    def shared_context=(value : Gdk::GLContext?) : Gdk::GLContext?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "shared-context", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def shared_context : Gdk::GLContext?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "shared-context", pointerof(value), Pointer(Void).null)
+      Gdk::GLContext.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def self.clear_current : Nil
@@ -109,7 +117,7 @@ module Gdk
       Gdk::GLContext.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def debug_enabled? : Bool
+    def debug_enabled : Bool
       # gdk_gl_context_get_debug_enabled: (Method)
       # Returns: (transfer none)
 
@@ -125,7 +133,7 @@ module Gdk
       Gdk::Display.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def forward_compatible? : Bool
+    def forward_compatible : Bool
       # gdk_gl_context_get_forward_compatible: (Method)
       # Returns: (transfer none)
 
@@ -169,7 +177,7 @@ module Gdk
       Gdk::Surface.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def use_es? : Bool
+    def use_es : Bool
       # gdk_gl_context_get_use_es: (Method)
       # Returns: (transfer none)
 

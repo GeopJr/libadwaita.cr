@@ -313,6 +313,141 @@ module Gtk
       LibGtk.gtk_menu_button_get_type
     end
 
+    def always_show_arrow=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "always-show-arrow", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def always_show_arrow? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "always-show-arrow", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def direction=(value : Gtk::ArrowType) : Gtk::ArrowType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "direction", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def direction : Gtk::ArrowType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "direction", pointerof(value), Pointer(Void).null)
+      Gtk::ArrowType.from_value(value)
+    end
+
+    def has_frame=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-frame", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_frame? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-frame", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def menu_model=(value : Gio::MenuModel?) : Gio::MenuModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "menu-model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def menu_model : Gio::MenuModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "menu-model", pointerof(value), Pointer(Void).null)
+      Gio::MenuModel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def popover=(value : Gtk::Popover?) : Gtk::Popover?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "popover", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def popover : Gtk::Popover?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "popover", pointerof(value), Pointer(Void).null)
+      Gtk::Popover.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def primary=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "primary", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def primary? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "primary", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_menu_button_new: (Constructor)
       # Returns: (transfer none)
@@ -321,7 +456,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def always_show_arrow? : Bool
+    def always_show_arrow : Bool
       # gtk_menu_button_get_always_show_arrow: (Method)
       # Returns: (transfer none)
 
@@ -337,7 +472,7 @@ module Gtk
       Gtk::ArrowType.from_value(_retval)
     end
 
-    def has_frame? : Bool
+    def has_frame : Bool
       # gtk_menu_button_get_has_frame: (Method)
       # Returns: (transfer none)
 
@@ -377,7 +512,7 @@ module Gtk
       Gtk::Popover.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def primary? : Bool
+    def primary : Bool
       # gtk_menu_button_get_primary: (Method)
       # Returns: (transfer none)
 
@@ -385,7 +520,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # gtk_menu_button_get_use_underline: (Method)
       # Returns: (transfer none)
 

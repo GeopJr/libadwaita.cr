@@ -301,6 +301,81 @@ module Adw
       LibAdw.adw_header_bar_get_type
     end
 
+    def centering_policy=(value : Adw::CenteringPolicy) : Adw::CenteringPolicy
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "centering-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def centering_policy : Adw::CenteringPolicy
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "centering-policy", pointerof(value), Pointer(Void).null)
+      Adw::CenteringPolicy.from_value(value)
+    end
+
+    def decoration_layout=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "decoration-layout", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def decoration_layout : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "decoration-layout", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def show_end_title_buttons=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-end-title-buttons", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_end_title_buttons? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-end-title-buttons", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_start_title_buttons=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-start-title-buttons", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_start_title_buttons? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-start-title-buttons", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def title_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "title-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # adw_header_bar_new: (Constructor)
       # Returns: (transfer none)
@@ -325,7 +400,7 @@ module Adw
       ::String.new(_retval) unless _retval.null?
     end
 
-    def show_end_title_buttons? : Bool
+    def show_end_title_buttons : Bool
       # adw_header_bar_get_show_end_title_buttons: (Method | Getter)
       # Returns: (transfer none)
 
@@ -333,7 +408,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def show_start_title_buttons? : Bool
+    def show_start_title_buttons : Bool
       # adw_header_bar_get_show_start_title_buttons: (Method | Getter)
       # Returns: (transfer none)
 

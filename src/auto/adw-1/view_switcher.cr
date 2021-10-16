@@ -236,6 +236,36 @@ module Adw
       LibAdw.adw_view_switcher_get_type
     end
 
+    def policy=(value : Adw::ViewSwitcherPolicy) : Adw::ViewSwitcherPolicy
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def policy : Adw::ViewSwitcherPolicy
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "policy", pointerof(value), Pointer(Void).null)
+      Adw::ViewSwitcherPolicy.from_value(value)
+    end
+
+    def stack=(value : Adw::ViewStack?) : Adw::ViewStack?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "stack", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def stack : Adw::ViewStack?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "stack", pointerof(value), Pointer(Void).null)
+      Adw::ViewStack.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # adw_view_switcher_new: (Constructor)
       # Returns: (transfer none)

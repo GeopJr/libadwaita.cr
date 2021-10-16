@@ -41,11 +41,27 @@ module Gtk
       value
     end
 
-    def modifiers=(value : ModifierType) : ModifierType
+    def keyval : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "keyval", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def modifiers=(value : Gdk::ModifierType) : Gdk::ModifierType
       unsafe_value = value
 
       LibGObject.g_object_set(self, "modifiers", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def modifiers : Gdk::ModifierType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "modifiers", pointerof(value), Pointer(Void).null)
+      Gdk::ModifierType.from_value(value)
     end
 
     def initialize(keyval : UInt32, modifiers : Gdk::ModifierType)

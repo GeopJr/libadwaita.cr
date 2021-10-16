@@ -263,6 +263,51 @@ module Adw
       LibAdw.adw_button_content_get_type
     end
 
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # adw_button_content_new: (Constructor)
       # Returns: (transfer none)
@@ -287,7 +332,7 @@ module Adw
       ::String.new(_retval)
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # adw_button_content_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 

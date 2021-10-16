@@ -291,6 +291,134 @@ module Gtk
       LibGtk.gtk_image_get_type
     end
 
+    def file=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "file", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def file : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gicon=(value : Gio::Icon?) : Gio::Icon?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gicon", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gicon : Gio::Icon?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "gicon", pointerof(value), Pointer(Void).null)
+      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def icon_size=(value : Gtk::IconSize) : Gtk::IconSize
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_size : Gtk::IconSize
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "icon-size", pointerof(value), Pointer(Void).null)
+      Gtk::IconSize.from_value(value)
+    end
+
+    def paintable=(value : Gdk::Paintable?) : Gdk::Paintable?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "paintable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def paintable : Gdk::Paintable?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "paintable", pointerof(value), Pointer(Void).null)
+      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def pixel_size=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pixel-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pixel_size : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "pixel-size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def resource=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "resource", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def resource : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "resource", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def storage_type : Gtk::ImageType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "storage-type", pointerof(value), Pointer(Void).null)
+      Gtk::ImageType.from_value(value)
+    end
+
+    def use_fallback=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-fallback", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_fallback? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-fallback", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_image_new: (Constructor)
       # Returns: (transfer none)

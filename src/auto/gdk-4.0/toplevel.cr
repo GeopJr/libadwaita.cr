@@ -5,6 +5,142 @@ module Gdk
   # the windowing system, such as controlling maximization and size of the
   # surface, setting icons and transient parents for dialogs.
   module Toplevel
+    def decorated=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "decorated", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def decorated? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "decorated", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def deletable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "deletable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def deletable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "deletable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def fullscreen_mode=(value : Gdk::FullscreenMode) : Gdk::FullscreenMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fullscreen-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fullscreen_mode : Gdk::FullscreenMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "fullscreen-mode", pointerof(value), Pointer(Void).null)
+      Gdk::FullscreenMode.from_value(value)
+    end
+
+    def icon_list=(value : Pointer(Nil)) : Pointer(Nil)
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-list", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_list : Pointer(Nil)
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "icon-list", pointerof(value), Pointer(Void).null)
+      Pointer(Void)
+    end
+
+    def modal=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "modal", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def modal? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "modal", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def shortcuts_inhibited? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "shortcuts-inhibited", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def startup_id=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "startup-id", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def startup_id : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "startup-id", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def state : Gdk::ToplevelState
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "state", pointerof(value), Pointer(Void).null)
+      Gdk::ToplevelState.from_value(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def transient_for=(value : Gdk::Surface?) : Gdk::Surface?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transient-for", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transient_for : Gdk::Surface?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "transient-for", pointerof(value), Pointer(Void).null)
+      Gdk::Surface.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def begin_move(device : Gdk::Device, button : Int32, x : Float64, y : Float64, timestamp : UInt32) : Nil
       # gdk_toplevel_begin_move: (Method)
       # Returns: (transfer none)
@@ -185,12 +321,12 @@ module Gdk
     end
 
     # Cast a `GObject::Object` to `Toplevel`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to Toplevel")
     end
 
     # Cast a `GObject::Object` to `Toplevel`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

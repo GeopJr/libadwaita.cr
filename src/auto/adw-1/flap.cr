@@ -345,6 +345,232 @@ module Adw
       LibAdw.adw_flap_get_type
     end
 
+    def content=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "content", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def content : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "content", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def flap=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "flap", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def flap : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "flap", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def flap_position=(value : Gtk::PackType) : Gtk::PackType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "flap-position", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def flap_position : Gtk::PackType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flap-position", pointerof(value), Pointer(Void).null)
+      Gtk::PackType.from_value(value)
+    end
+
+    def fold_duration=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fold-duration", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fold_duration : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "fold-duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def fold_policy=(value : Adw::FlapFoldPolicy) : Adw::FlapFoldPolicy
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fold-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fold_policy : Adw::FlapFoldPolicy
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "fold-policy", pointerof(value), Pointer(Void).null)
+      Adw::FlapFoldPolicy.from_value(value)
+    end
+
+    def fold_threshold_policy=(value : Adw::FoldThresholdPolicy) : Adw::FoldThresholdPolicy
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fold-threshold-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fold_threshold_policy : Adw::FoldThresholdPolicy
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "fold-threshold-policy", pointerof(value), Pointer(Void).null)
+      Adw::FoldThresholdPolicy.from_value(value)
+    end
+
+    def folded? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "folded", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def locked=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "locked", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def locked? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "locked", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def modal=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "modal", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def modal? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "modal", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def reveal_duration=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reveal-duration", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reveal_duration : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "reveal-duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def reveal_flap=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reveal-flap", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reveal_flap? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "reveal-flap", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def reveal_progress : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "reveal-progress", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def separator=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "separator", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def separator : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "separator", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def swipe_to_close=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "swipe-to-close", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def swipe_to_close? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "swipe-to-close", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def swipe_to_open=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "swipe-to-open", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def swipe_to_open? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "swipe-to-open", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def transition_type=(value : Adw::FlapTransitionType) : Adw::FlapTransitionType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transition-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transition_type : Adw::FlapTransitionType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "transition-type", pointerof(value), Pointer(Void).null)
+      Adw::FlapTransitionType.from_value(value)
+    end
+
     def initialize
       # adw_flap_new: (Constructor)
       # Returns: (transfer none)
@@ -401,7 +627,7 @@ module Adw
       Adw::FoldThresholdPolicy.from_value(_retval)
     end
 
-    def folded? : Bool
+    def folded : Bool
       # adw_flap_get_folded: (Method | Getter)
       # Returns: (transfer none)
 
@@ -409,7 +635,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def locked? : Bool
+    def locked : Bool
       # adw_flap_get_locked: (Method | Getter)
       # Returns: (transfer none)
 
@@ -417,7 +643,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def modal? : Bool
+    def modal : Bool
       # adw_flap_get_modal: (Method | Getter)
       # Returns: (transfer none)
 
@@ -433,7 +659,7 @@ module Adw
       _retval
     end
 
-    def reveal_flap? : Bool
+    def reveal_flap : Bool
       # adw_flap_get_reveal_flap: (Method | Getter)
       # Returns: (transfer none)
 
@@ -457,7 +683,7 @@ module Adw
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def swipe_to_close? : Bool
+    def swipe_to_close : Bool
       # adw_flap_get_swipe_to_close: (Method | Getter)
       # Returns: (transfer none)
 
@@ -465,7 +691,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def swipe_to_open? : Bool
+    def swipe_to_open : Bool
       # adw_flap_get_swipe_to_open: (Method | Getter)
       # Returns: (transfer none)
 

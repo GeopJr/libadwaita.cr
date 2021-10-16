@@ -78,6 +78,126 @@ module Gtk
       LibGtk.gtk_constraint_guide_get_type
     end
 
+    def max_height=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def max_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def min_height=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "min-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def min_height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "min-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def min_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "min-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def min_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "min-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def nat_height=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "nat-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def nat_height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "nat-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def nat_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "nat-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def nat_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "nat-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def strength=(value : Gtk::ConstraintStrength) : Gtk::ConstraintStrength
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "strength", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def strength : Gtk::ConstraintStrength
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "strength", pointerof(value), Pointer(Void).null)
+      Gtk::ConstraintStrength.from_value(value)
+    end
+
     def initialize
       # gtk_constraint_guide_new: (Constructor)
       # Returns: (transfer full)

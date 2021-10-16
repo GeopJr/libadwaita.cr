@@ -97,7 +97,7 @@ module Gio
       value
     end
 
-    def flags=(value : SubprocessFlags) : SubprocessFlags
+    def flags=(value : Gio::SubprocessFlags) : Gio::SubprocessFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)
@@ -318,7 +318,7 @@ module Gio
       ::String.new(_retval) unless _retval.null?
     end
 
-    def if_exited? : Bool
+    def if_exited : Bool
       # g_subprocess_get_if_exited: (Method)
       # Returns: (transfer none)
 
@@ -326,7 +326,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def if_signaled? : Bool
+    def if_signaled : Bool
       # g_subprocess_get_if_signaled: (Method)
       # Returns: (transfer none)
 
@@ -366,7 +366,7 @@ module Gio
       Gio::InputStream.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def successful? : Bool
+    def successful : Bool
       # g_subprocess_get_successful: (Method)
       # Returns: (transfer none)
 

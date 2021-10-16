@@ -464,6 +464,14 @@ module Gtk
       value
     end
 
+    def use_header_bar : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "use-header-bar", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_dialog_new: (Constructor)
       # Returns: (transfer none)

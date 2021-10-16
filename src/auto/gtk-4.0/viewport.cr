@@ -256,6 +256,36 @@ module Gtk
       LibGtk.gtk_viewport_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def scroll_to_focus=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "scroll-to-focus", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def scroll_to_focus? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "scroll-to-focus", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(hadjustment : Gtk::Adjustment?, vadjustment : Gtk::Adjustment?)
       # gtk_viewport_new: (Constructor)
       # @hadjustment: (nullable)
@@ -285,7 +315,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def scroll_to_focus? : Bool
+    def scroll_to_focus : Bool
       # gtk_viewport_get_scroll_to_focus: (Method)
       # Returns: (transfer none)
 

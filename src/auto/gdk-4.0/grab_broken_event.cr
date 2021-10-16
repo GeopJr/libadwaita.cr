@@ -23,7 +23,7 @@ module Gdk
       Gdk::Surface.new(_retval, GICrystal::Transfer::None)
     end
 
-    def implicit? : Bool
+    def implicit : Bool
       # gdk_grab_broken_event_get_implicit: (Method)
       # Returns: (transfer none)
 

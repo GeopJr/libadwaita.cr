@@ -240,6 +240,81 @@ module Gtk
       LibGtk.gtk_aspect_frame_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def obey_child=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "obey-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def obey_child? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "obey-child", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def ratio=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "ratio", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def ratio : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "ratio", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def xalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "xalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def xalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "xalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def yalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "yalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def yalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "yalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(xalign : Float32, yalign : Float32, ratio : Float32, obey_child : Bool)
       # gtk_aspect_frame_new: (Constructor)
       # Returns: (transfer none)
@@ -256,7 +331,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def obey_child? : Bool
+    def obey_child : Bool
       # gtk_aspect_frame_get_obey_child: (Method)
       # Returns: (transfer none)
 

@@ -109,6 +109,36 @@ module Gtk
       LibGtk.gtk_media_file_get_type
     end
 
+    def file=(value : Gio::File?) : Gio::File?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "file", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def file : Gio::File?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
+      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def input_stream=(value : Gio::InputStream?) : Gio::InputStream?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "input-stream", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def input_stream : Gio::InputStream?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "input-stream", pointerof(value), Pointer(Void).null)
+      Gio::InputStream.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # gtk_media_file_new: (Constructor)
       # Returns: (transfer full)

@@ -124,6 +124,66 @@ module Gtk
       LibGtk.gtk_cell_renderer_toggle_get_type
     end
 
+    def activatable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activatable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def activatable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "activatable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def active=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "active", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def active? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "active", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def inconsistent=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inconsistent", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inconsistent? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "inconsistent", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def radio=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "radio", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def radio? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "radio", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_cell_renderer_toggle_new: (Constructor)
       # Returns: (transfer none)
@@ -132,7 +192,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def activatable? : Bool
+    def activatable : Bool
       # gtk_cell_renderer_toggle_get_activatable: (Method)
       # Returns: (transfer none)
 
@@ -140,7 +200,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def active? : Bool
+    def active : Bool
       # gtk_cell_renderer_toggle_get_active: (Method)
       # Returns: (transfer none)
 
@@ -148,7 +208,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def radio? : Bool
+    def radio : Bool
       # gtk_cell_renderer_toggle_get_radio: (Method)
       # Returns: (transfer none)
 

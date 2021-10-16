@@ -46,6 +46,51 @@ module Gtk
       LibGtk.gtk_slice_list_model_get_type
     end
 
+    def model=(value : Gio::ListModel?) : Gio::ListModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def offset=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "offset", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def offset : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "offset", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def size=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def size : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(model : Gio::ListModel?, offset : UInt32, size : UInt32)
       # gtk_slice_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)

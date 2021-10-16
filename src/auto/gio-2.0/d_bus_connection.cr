@@ -130,11 +130,19 @@ module Gio
       value
     end
 
-    def authentication_observer=(value : DBusAuthObserver?) : DBusAuthObserver?
+    def authentication_observer=(value : Gio::DBusAuthObserver?) : Gio::DBusAuthObserver?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "authentication-observer", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def capabilities : Gio::DBusCapabilityFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "capabilities", pointerof(value), Pointer(Void).null)
+      Gio::DBusCapabilityFlags.from_value(value)
     end
 
     def closed? : Bool
@@ -145,11 +153,34 @@ module Gio
       GICrystal.to_bool(value)
     end
 
-    def flags=(value : DBusConnectionFlags) : DBusConnectionFlags
+    def exit_on_close=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "exit-on-close", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def exit_on_close? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "exit-on-close", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def flags=(value : Gio::DBusConnectionFlags) : Gio::DBusConnectionFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def flags : Gio::DBusConnectionFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
+      Gio::DBusConnectionFlags.from_value(value)
     end
 
     def guid=(value : ::String) : ::String
@@ -159,11 +190,35 @@ module Gio
       value
     end
 
-    def stream=(value : IOStream?) : IOStream?
+    def guid : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "guid", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def stream=(value : Gio::IOStream?) : Gio::IOStream?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "stream", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def stream : Gio::IOStream?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "stream", pointerof(value), Pointer(Void).null)
+      Gio::IOStream.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def unique_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "unique-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def self.new_finish(res : Gio::AsyncResult) : Gio::DBusConnection
@@ -650,7 +705,7 @@ module Gio
       Gio::DBusCapabilityFlags.from_value(_retval)
     end
 
-    def exit_on_close? : Bool
+    def exit_on_close : Bool
       # g_dbus_connection_get_exit_on_close: (Method | Getter)
       # Returns: (transfer none)
 

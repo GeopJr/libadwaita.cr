@@ -81,14 +81,134 @@ module Gio
       LibGio.g_socket_client_get_type
     end
 
-    def type=(value : SocketType) : SocketType
+    def enable_proxy=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-proxy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_proxy? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-proxy", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def family=(value : Gio::SocketFamily) : Gio::SocketFamily
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "family", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def family : Gio::SocketFamily
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "family", pointerof(value), Pointer(Void).null)
+      Gio::SocketFamily.from_value(value)
+    end
+
+    def local_address=(value : Gio::SocketAddress?) : Gio::SocketAddress?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "local-address", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def local_address : Gio::SocketAddress?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "local-address", pointerof(value), Pointer(Void).null)
+      Gio::SocketAddress.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def protocol=(value : Gio::SocketProtocol) : Gio::SocketProtocol
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "protocol", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def protocol : Gio::SocketProtocol
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "protocol", pointerof(value), Pointer(Void).null)
+      Gio::SocketProtocol.from_value(value)
+    end
+
+    def proxy_resolver=(value : Gio::ProxyResolver?) : Gio::ProxyResolver?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "proxy-resolver", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def proxy_resolver : Gio::ProxyResolver?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "proxy-resolver", pointerof(value), Pointer(Void).null)
+      Gio::ProxyResolver__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def timeout=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "timeout", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def timeout : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "timeout", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def tls=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tls", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tls? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "tls", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def tls_validation_flags=(value : Gio::TlsCertificateFlags) : Gio::TlsCertificateFlags
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tls-validation-flags", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tls_validation_flags : Gio::TlsCertificateFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "tls-validation-flags", pointerof(value), Pointer(Void).null)
+      Gio::TlsCertificateFlags.from_value(value)
+    end
+
+    def type=(value : Gio::SocketType) : Gio::SocketType
       unsafe_value = value
 
       LibGObject.g_object_set(self, "type", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def type : SocketType
+    def type : Gio::SocketType
       # Returns: None
 
       value = uninitialized UInt32
@@ -307,7 +427,7 @@ module Gio
       Gio::SocketConnection.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def enable_proxy? : Bool
+    def enable_proxy : Bool
       # g_socket_client_get_enable_proxy: (Method | Getter)
       # Returns: (transfer none)
 
@@ -363,7 +483,7 @@ module Gio
       _retval
     end
 
-    def tls? : Bool
+    def tls : Bool
       # g_socket_client_get_tls: (Method | Getter)
       # Returns: (transfer none)
 

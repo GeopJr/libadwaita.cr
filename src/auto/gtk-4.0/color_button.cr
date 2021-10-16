@@ -253,6 +253,51 @@ module Gtk
       LibGtk.gtk_color_button_get_type
     end
 
+    def modal=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "modal", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def modal? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "modal", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_editor=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-editor", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_editor? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-editor", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # gtk_color_button_new: (Constructor)
       # Returns: (transfer none)
@@ -269,7 +314,7 @@ module Gtk
       Gtk::ColorButton.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def modal? : Bool
+    def modal : Bool
       # gtk_color_button_get_modal: (Method)
       # Returns: (transfer none)
 

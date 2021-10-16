@@ -250,6 +250,81 @@ module Adw
       LibAdw.adw_avatar_get_type
     end
 
+    def custom_image=(value : Gdk::Paintable?) : Gdk::Paintable?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "custom-image", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def custom_image : Gdk::Paintable?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "custom-image", pointerof(value), Pointer(Void).null)
+      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def show_initials=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-initials", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_initials? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-initials", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def size=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def size : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(size : Int32, text : ::String?, show_initials : Bool)
       # adw_avatar_new: (Constructor)
       # @text: (nullable)
@@ -289,7 +364,7 @@ module Adw
       ::String.new(_retval) unless _retval.null?
     end
 
-    def show_initials? : Bool
+    def show_initials : Bool
       # adw_avatar_get_show_initials: (Method | Getter)
       # Returns: (transfer none)
 

@@ -277,7 +277,7 @@ module Gio
       LibGio.g_simple_async_result_complete_in_idle(self)
     end
 
-    def op_res_gboolean? : Bool
+    def op_res_gboolean : Bool
       # g_simple_async_result_get_op_res_gboolean: (Method)
       # Returns: (transfer none)
 

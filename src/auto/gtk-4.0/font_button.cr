@@ -282,6 +282,66 @@ module Gtk
       LibGtk.gtk_font_button_get_type
     end
 
+    def modal=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "modal", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def modal? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "modal", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def use_font=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-font", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_font? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-font", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def use_size=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_size? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-size", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_font_button_new: (Constructor)
       # Returns: (transfer none)
@@ -298,7 +358,7 @@ module Gtk
       Gtk::FontButton.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def modal? : Bool
+    def modal : Bool
       # gtk_font_button_get_modal: (Method)
       # Returns: (transfer none)
 
@@ -314,7 +374,7 @@ module Gtk
       ::String.new(_retval)
     end
 
-    def use_font? : Bool
+    def use_font : Bool
       # gtk_font_button_get_use_font: (Method)
       # Returns: (transfer none)
 
@@ -322,7 +382,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def use_size? : Bool
+    def use_size : Bool
       # gtk_font_button_get_use_size: (Method)
       # Returns: (transfer none)
 

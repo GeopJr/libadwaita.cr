@@ -29,6 +29,66 @@ module Gtk
   # - When any of the adjustments emits the [signal@Gtk.Adjustment::value-changed]
   #   signal, the scrollable widget should scroll its contents.
   module Scrollable
+    def hadjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hadjustment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hadjustment : Gtk::Adjustment?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "hadjustment", pointerof(value), Pointer(Void).null)
+      Gtk::Adjustment.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def hscroll_policy=(value : Gtk::ScrollablePolicy) : Gtk::ScrollablePolicy
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hscroll-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hscroll_policy : Gtk::ScrollablePolicy
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "hscroll-policy", pointerof(value), Pointer(Void).null)
+      Gtk::ScrollablePolicy.from_value(value)
+    end
+
+    def vadjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "vadjustment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def vadjustment : Gtk::Adjustment?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "vadjustment", pointerof(value), Pointer(Void).null)
+      Gtk::Adjustment.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def vscroll_policy=(value : Gtk::ScrollablePolicy) : Gtk::ScrollablePolicy
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "vscroll-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def vscroll_policy : Gtk::ScrollablePolicy
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "vscroll-policy", pointerof(value), Pointer(Void).null)
+      Gtk::ScrollablePolicy.from_value(value)
+    end
+
     def border : Gtk::Border
       # gtk_scrollable_get_border: (Method)
       # @border: (out) (caller-allocates)
@@ -141,12 +201,12 @@ module Gtk
     end
 
     # Cast a `GObject::Object` to `Scrollable`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to Scrollable")
     end
 
     # Cast a `GObject::Object` to `Scrollable`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

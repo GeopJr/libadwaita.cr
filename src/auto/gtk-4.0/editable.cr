@@ -128,6 +128,112 @@ module Gtk
   # and [signal@Gtk.Editable::delete-text] signals, you will need to connect
   # to them on the delegate obtained via [method@Gtk.Editable.get_delegate].
   module Editable
+    def cursor_position : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "cursor-position", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def editable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "editable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def editable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "editable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def enable_undo=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-undo", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_undo? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-undo", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def max_width_chars=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-width-chars", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_width_chars : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-width-chars", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def selection_bound : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "selection-bound", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def width_chars=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "width-chars", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def width_chars : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width-chars", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def xalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "xalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def xalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "xalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def self.delegate_get_property(object : GObject::Object, prop_id : UInt32, value : _, pspec : GObject::ParamSpec) : Bool
       # gtk_editable_delegate_get_property: (None)
       # Returns: (transfer none)
@@ -201,7 +307,7 @@ module Gtk
       Gtk::Editable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def editable? : Bool
+    def editable : Bool
       # gtk_editable_get_editable: (Method)
       # Returns: (transfer none)
 
@@ -209,7 +315,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def enable_undo? : Bool
+    def enable_undo : Bool
       # gtk_editable_get_enable_undo: (Method)
       # Returns: (transfer none)
 
@@ -360,12 +466,12 @@ module Gtk
     end
 
     # Cast a `GObject::Object` to `Editable`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to Editable")
     end
 
     # Cast a `GObject::Object` to `Editable`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

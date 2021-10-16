@@ -22,6 +22,14 @@ module Gio
   # Don't forget to disconnect the #GPowerProfileMonitor::notify::power-saver-enabled
   # signal, and unref the #GPowerProfileMonitor itself when exiting.
   module PowerProfileMonitor
+    def power_saver_enabled? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "power-saver-enabled", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def self.dup_default : Gio::PowerProfileMonitor
       # g_power_profile_monitor_dup_default: (None)
       # Returns: (transfer full)
@@ -30,7 +38,7 @@ module Gio
       Gio::PowerProfileMonitor__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def power_saver_enabled? : Bool
+    def power_saver_enabled : Bool
       # g_power_profile_monitor_get_power_saver_enabled: (Method | Getter)
       # Returns: (transfer none)
 
@@ -65,12 +73,12 @@ module Gio
     end
 
     # Cast a `GObject::Object` to `PowerProfileMonitor`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to PowerProfileMonitor")
     end
 
     # Cast a `GObject::Object` to `PowerProfileMonitor`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

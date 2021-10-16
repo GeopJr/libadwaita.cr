@@ -355,6 +355,51 @@ module Gtk
       LibGtk.gtk_cell_renderer_combo_get_type
     end
 
+    def has_entry=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-entry", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_entry? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-entry", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def model=(value : Gtk::TreeModel?) : Gtk::TreeModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gtk::TreeModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def text_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "text-column", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_cell_renderer_combo_new: (Constructor)
       # Returns: (transfer none)

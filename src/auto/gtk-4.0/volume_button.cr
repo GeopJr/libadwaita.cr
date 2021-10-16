@@ -239,6 +239,21 @@ module Gtk
       LibGtk.gtk_volume_button_get_type
     end
 
+    def use_symbolic=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-symbolic", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_symbolic? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-symbolic", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_volume_button_new: (Constructor)
       # Returns: (transfer none)

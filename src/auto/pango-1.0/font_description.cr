@@ -113,7 +113,7 @@ module Pango
       _retval
     end
 
-    def size_is_absolute? : Bool
+    def size_is_absolute : Bool
       # pango_font_description_get_size_is_absolute: (Method)
       # Returns: (transfer none)
 

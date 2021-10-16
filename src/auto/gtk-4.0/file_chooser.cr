@@ -40,6 +40,82 @@ module Gtk
   # check button with the given label; if a choice has options, it will
   # be rendered as a combo box.
   module FileChooser
+    def action=(value : Gtk::FileChooserAction) : Gtk::FileChooserAction
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "action", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def action : Gtk::FileChooserAction
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "action", pointerof(value), Pointer(Void).null)
+      Gtk::FileChooserAction.from_value(value)
+    end
+
+    def create_folders=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "create-folders", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def create_folders? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "create-folders", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def filter=(value : Gtk::FileFilter?) : Gtk::FileFilter?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "filter", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def filter : Gtk::FileFilter?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "filter", pointerof(value), Pointer(Void).null)
+      Gtk::FileFilter.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def filters : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "filters", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def select_multiple=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "select-multiple", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def select_multiple? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "select-multiple", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def shortcut_folders : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "shortcut-folders", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def add_choice(id : ::String, label : ::String, options : Enumerable(::String)?, option_labels : Enumerable(::String)?) : Nil
       # gtk_file_chooser_add_choice: (Method)
       # @options: (nullable) (array zero-terminated=1 element-type Utf8)
@@ -91,7 +167,7 @@ module Gtk
       ::String.new(_retval)
     end
 
-    def create_folders? : Bool
+    def create_folders : Bool
       # gtk_file_chooser_get_create_folders: (Method)
       # Returns: (transfer none)
 
@@ -147,7 +223,7 @@ module Gtk
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def select_multiple? : Bool
+    def select_multiple : Bool
       # gtk_file_chooser_get_select_multiple: (Method)
       # Returns: (transfer none)
 
@@ -270,12 +346,12 @@ module Gtk
     end
 
     # Cast a `GObject::Object` to `FileChooser`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to FileChooser")
     end
 
     # Cast a `GObject::Object` to `FileChooser`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

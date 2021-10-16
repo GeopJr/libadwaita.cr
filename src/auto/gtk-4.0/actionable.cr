@@ -13,6 +13,36 @@ module Gtk
   # are added with [method@Gtk.Widget.insert_action_group] will be consulted
   # as well.
   module Actionable
+    def action_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "action-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def action_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "action-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def action_target=(value : GLib::Variant?) : GLib::Variant?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "action-target", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def action_target : GLib::Variant?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "action-target", pointerof(value), Pointer(Void).null)
+      GLib::Variant.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def action_name : ::String?
       # gtk_actionable_get_action_name: (Method)
       # Returns: (transfer none)
@@ -92,12 +122,12 @@ module Gtk
     end
 
     # Cast a `GObject::Object` to `Actionable`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to Actionable")
     end
 
     # Cast a `GObject::Object` to `Actionable`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

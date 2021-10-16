@@ -85,10 +85,98 @@ module Gdk
       LibGdk.gdk_monitor_get_type
     end
 
-    def display=(value : Display?) : Display?
+    def connector : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "connector", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def display=(value : Gdk::Display?) : Gdk::Display?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def geometry : Gdk::Rectangle?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "geometry", pointerof(value), Pointer(Void).null)
+      Gdk::Rectangle.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def height_mm : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "height-mm", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def manufacturer : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "manufacturer", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def model : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def refresh_rate : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "refresh-rate", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def scale_factor : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "scale-factor", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def subpixel_layout : Gdk::SubpixelLayout
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "subpixel-layout", pointerof(value), Pointer(Void).null)
+      Gdk::SubpixelLayout.from_value(value)
+    end
+
+    def valid? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "valid", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def width_mm : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width-mm", pointerof(value), Pointer(Void).null)
       value
     end
 

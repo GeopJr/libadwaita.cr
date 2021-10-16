@@ -54,11 +54,57 @@ module Gtk
       LibGtk.gtk_bookmark_list_get_type
     end
 
+    def attributes=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "attributes", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def attributes : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "attributes", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def filename=(value : ::String) : ::String
       unsafe_value = value
 
       LibGObject.g_object_set(self, "filename", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def filename : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "filename", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def io_priority=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "io-priority", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def io_priority : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "io-priority", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def loading? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "loading", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def initialize(filename : ::String?, attributes : ::String?)

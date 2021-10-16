@@ -327,6 +327,104 @@ module Adw
       LibAdw.adw_combo_row_get_type
     end
 
+    def expression=(value : Gtk::Expression?) : Gtk::Expression?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expression", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expression : Gtk::Expression?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "expression", pointerof(value), Pointer(Void).null)
+      Gtk::Expression.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def factory=(value : Gtk::ListItemFactory?) : Gtk::ListItemFactory?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "factory", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def factory : Gtk::ListItemFactory?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "factory", pointerof(value), Pointer(Void).null)
+      Gtk::ListItemFactory.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def list_factory=(value : Gtk::ListItemFactory?) : Gtk::ListItemFactory?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "list-factory", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def list_factory : Gtk::ListItemFactory?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "list-factory", pointerof(value), Pointer(Void).null)
+      Gtk::ListItemFactory.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def model=(value : Gio::ListModel?) : Gio::ListModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def selected=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selected", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selected : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "selected", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def selected_item : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "selected-item", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def use_subtitle=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-subtitle", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_subtitle? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-subtitle", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # adw_combo_row_new: (Constructor)
       # Returns: (transfer none)
@@ -383,7 +481,7 @@ module Adw
       GObject::Object.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def use_subtitle? : Bool
+    def use_subtitle : Bool
       # adw_combo_row_get_use_subtitle: (Method | Getter)
       # Returns: (transfer none)
 

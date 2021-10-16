@@ -39,6 +39,14 @@ module Gtk
       value
     end
 
+    def keyval : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "keyval", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(keyval : UInt32)
       # gtk_mnemonic_trigger_new: (Constructor)
       # Returns: (transfer full)

@@ -5,6 +5,21 @@ module Gtk
   # to edit the contents of a `GtkTreeView` cell. It provides a way to specify how
   # temporary widgets should be configured for editing, get the new value, etc.
   module CellEditable
+    def editing_canceled=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "editing-canceled", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def editing_canceled? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "editing-canceled", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def editing_done : Nil
       # gtk_cell_editable_editing_done: (Method)
       # Returns: (transfer none)
@@ -60,12 +75,12 @@ module Gtk
     end
 
     # Cast a `GObject::Object` to `CellEditable`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to CellEditable")
     end
 
     # Cast a `GObject::Object` to `CellEditable`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

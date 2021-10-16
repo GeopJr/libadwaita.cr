@@ -382,6 +382,36 @@ module Gtk
       LibGtk.gtk_shortcuts_window_get_type
     end
 
+    def section_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "section-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def section_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "section-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def view_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "view-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def view_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "view-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     struct CloseSignal
       @source : GObject::Object
       @detail : String?

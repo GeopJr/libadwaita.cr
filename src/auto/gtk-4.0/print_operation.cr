@@ -178,6 +178,255 @@ module Gtk
       LibGtk.gtk_print_operation_get_type
     end
 
+    def allow_async=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "allow-async", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def allow_async? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "allow-async", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def current_page=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "current-page", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def current_page : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "current-page", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def custom_tab_label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "custom-tab-label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def custom_tab_label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "custom-tab-label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def default_page_setup=(value : Gtk::PageSetup?) : Gtk::PageSetup?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "default-page-setup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def default_page_setup : Gtk::PageSetup?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "default-page-setup", pointerof(value), Pointer(Void).null)
+      Gtk::PageSetup.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def embed_page_setup=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "embed-page-setup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def embed_page_setup? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "embed-page-setup", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def export_filename=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "export-filename", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def export_filename : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "export-filename", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def has_selection=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-selection", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_selection? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-selection", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def job_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "job-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def job_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "job-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def n_pages=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "n-pages", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def n_pages : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "n-pages", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def n_pages_to_print : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "n-pages-to-print", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def print_settings=(value : Gtk::PrintSettings?) : Gtk::PrintSettings?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "print-settings", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def print_settings : Gtk::PrintSettings?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "print-settings", pointerof(value), Pointer(Void).null)
+      Gtk::PrintSettings.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def show_progress=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-progress", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_progress? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-progress", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def status : Gtk::PrintStatus
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "status", pointerof(value), Pointer(Void).null)
+      Gtk::PrintStatus.from_value(value)
+    end
+
+    def status_string : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "status-string", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def support_selection=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "support-selection", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def support_selection? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "support-selection", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def track_print_status=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "track-print-status", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def track_print_status? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "track-print-status", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def unit=(value : Gtk::Unit) : Gtk::Unit
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "unit", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def unit : Gtk::Unit
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "unit", pointerof(value), Pointer(Void).null)
+      Gtk::Unit.from_value(value)
+    end
+
+    def use_full_page=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-full-page", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_full_page? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-full-page", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_print_operation_new: (Constructor)
       # Returns: (transfer full)
@@ -208,7 +457,7 @@ module Gtk
       Gtk::PageSetup.new(_retval, GICrystal::Transfer::None)
     end
 
-    def embed_page_setup? : Bool
+    def embed_page_setup : Bool
       # gtk_print_operation_get_embed_page_setup: (Method)
       # Returns: (transfer none)
 
@@ -223,7 +472,7 @@ module Gtk
       LibGtk.gtk_print_operation_get_error(self)
     end
 
-    def has_selection? : Bool
+    def has_selection : Bool
       # gtk_print_operation_get_has_selection: (Method)
       # Returns: (transfer none)
 
@@ -263,7 +512,7 @@ module Gtk
       ::String.new(_retval)
     end
 
-    def support_selection? : Bool
+    def support_selection : Bool
       # gtk_print_operation_get_support_selection: (Method)
       # Returns: (transfer none)
 

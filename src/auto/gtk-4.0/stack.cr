@@ -299,6 +299,127 @@ module Gtk
       LibGtk.gtk_stack_get_type
     end
 
+    def hhomogeneous=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hhomogeneous", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hhomogeneous? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "hhomogeneous", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def interpolate_size=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "interpolate-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def interpolate_size? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "interpolate-size", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def pages : Gtk::SelectionModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def transition_duration=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transition-duration", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transition_duration : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "transition-duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def transition_running? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "transition-running", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def transition_type=(value : Gtk::StackTransitionType) : Gtk::StackTransitionType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transition-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transition_type : Gtk::StackTransitionType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "transition-type", pointerof(value), Pointer(Void).null)
+      Gtk::StackTransitionType.from_value(value)
+    end
+
+    def vhomogeneous=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "vhomogeneous", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def vhomogeneous? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "vhomogeneous", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def visible_child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible-child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible_child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "visible-child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def visible_child_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible-child-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible_child_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "visible-child-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # gtk_stack_new: (Constructor)
       # Returns: (transfer none)
@@ -353,7 +474,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def hhomogeneous? : Bool
+    def hhomogeneous : Bool
       # gtk_stack_get_hhomogeneous: (Method)
       # Returns: (transfer none)
 
@@ -361,7 +482,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def interpolate_size? : Bool
+    def interpolate_size : Bool
       # gtk_stack_get_interpolate_size: (Method)
       # Returns: (transfer none)
 
@@ -393,7 +514,7 @@ module Gtk
       _retval
     end
 
-    def transition_running? : Bool
+    def transition_running : Bool
       # gtk_stack_get_transition_running: (Method)
       # Returns: (transfer none)
 
@@ -409,7 +530,7 @@ module Gtk
       Gtk::StackTransitionType.from_value(_retval)
     end
 
-    def vhomogeneous? : Bool
+    def vhomogeneous : Bool
       # gtk_stack_get_vhomogeneous: (Method)
       # Returns: (transfer none)
 

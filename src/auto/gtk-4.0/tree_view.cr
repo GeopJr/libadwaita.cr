@@ -401,6 +401,261 @@ module Gtk
       LibGtk.gtk_tree_view_get_type
     end
 
+    def activate_on_single_click=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activate-on-single-click", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def activate_on_single_click? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "activate-on-single-click", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def enable_grid_lines=(value : Gtk::TreeViewGridLines) : Gtk::TreeViewGridLines
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-grid-lines", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_grid_lines : Gtk::TreeViewGridLines
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "enable-grid-lines", pointerof(value), Pointer(Void).null)
+      Gtk::TreeViewGridLines.from_value(value)
+    end
+
+    def enable_search=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-search", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_search? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-search", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def enable_tree_lines=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-tree-lines", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_tree_lines? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-tree-lines", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def expander_column=(value : Gtk::TreeViewColumn?) : Gtk::TreeViewColumn?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expander-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expander_column : Gtk::TreeViewColumn?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "expander-column", pointerof(value), Pointer(Void).null)
+      Gtk::TreeViewColumn.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def fixed_height_mode=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fixed-height-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fixed_height_mode? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "fixed-height-mode", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def headers_clickable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "headers-clickable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def headers_clickable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "headers-clickable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def headers_visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "headers-visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def headers_visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "headers-visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def hover_expand=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hover-expand", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hover_expand? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "hover-expand", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def hover_selection=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hover-selection", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hover_selection? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "hover-selection", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def level_indentation=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "level-indentation", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def level_indentation : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "level-indentation", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def model=(value : Gtk::TreeModel?) : Gtk::TreeModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gtk::TreeModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def reorderable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reorderable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reorderable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "reorderable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def rubber_banding=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "rubber-banding", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def rubber_banding? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "rubber-banding", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def search_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "search-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def search_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "search-column", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def show_expanders=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-expanders", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_expanders? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-expanders", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def tooltip_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tooltip-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tooltip_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "tooltip-column", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_tree_view_new: (Constructor)
       # Returns: (transfer none)
@@ -545,7 +800,7 @@ module Gtk
       LibGtk.gtk_tree_view_expand_to_path(self, path)
     end
 
-    def activate_on_single_click? : Bool
+    def activate_on_single_click : Bool
       # gtk_tree_view_get_activate_on_single_click: (Method)
       # Returns: (transfer none)
 
@@ -672,7 +927,7 @@ module Gtk
       LibGtk.gtk_tree_view_get_drag_dest_row(self, path, pos)
     end
 
-    def enable_search? : Bool
+    def enable_search : Bool
       # gtk_tree_view_get_enable_search: (Method)
       # Returns: (transfer none)
 
@@ -680,7 +935,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def enable_tree_lines? : Bool
+    def enable_tree_lines : Bool
       # gtk_tree_view_get_enable_tree_lines: (Method)
       # Returns: (transfer none)
 
@@ -696,7 +951,7 @@ module Gtk
       Gtk::TreeViewColumn.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def fixed_height_mode? : Bool
+    def fixed_height_mode : Bool
       # gtk_tree_view_get_fixed_height_mode: (Method)
       # Returns: (transfer none)
 
@@ -712,7 +967,7 @@ module Gtk
       Gtk::TreeViewGridLines.from_value(_retval)
     end
 
-    def headers_clickable? : Bool
+    def headers_clickable : Bool
       # gtk_tree_view_get_headers_clickable: (Method)
       # Returns: (transfer none)
 
@@ -720,7 +975,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def headers_visible? : Bool
+    def headers_visible : Bool
       # gtk_tree_view_get_headers_visible: (Method)
       # Returns: (transfer none)
 
@@ -728,7 +983,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def hover_expand? : Bool
+    def hover_expand : Bool
       # gtk_tree_view_get_hover_expand: (Method)
       # Returns: (transfer none)
 
@@ -736,7 +991,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def hover_selection? : Bool
+    def hover_selection : Bool
       # gtk_tree_view_get_hover_selection: (Method)
       # Returns: (transfer none)
 
@@ -795,7 +1050,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def reorderable? : Bool
+    def reorderable : Bool
       # gtk_tree_view_get_reorderable: (Method)
       # Returns: (transfer none)
 
@@ -803,7 +1058,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def rubber_banding? : Bool
+    def rubber_banding : Bool
       # gtk_tree_view_get_rubber_banding: (Method)
       # Returns: (transfer none)
 
@@ -835,7 +1090,7 @@ module Gtk
       Gtk::TreeSelection.new(_retval, GICrystal::Transfer::None)
     end
 
-    def show_expanders? : Bool
+    def show_expanders : Bool
       # gtk_tree_view_get_show_expanders: (Method)
       # Returns: (transfer none)
 

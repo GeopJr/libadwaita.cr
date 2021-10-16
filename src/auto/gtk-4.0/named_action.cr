@@ -36,6 +36,14 @@ module Gtk
       value
     end
 
+    def action_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "action-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(name : ::String)
       # gtk_named_action_new: (Constructor)
       # Returns: (transfer full)

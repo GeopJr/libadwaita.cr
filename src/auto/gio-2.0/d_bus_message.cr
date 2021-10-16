@@ -30,6 +30,14 @@ module Gio
       LibGio.g_dbus_message_get_type
     end
 
+    def locked? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "locked", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # g_dbus_message_new: (Constructor)
       # Returns: (transfer full)
@@ -175,7 +183,7 @@ module Gio
       ::String.new(_retval) unless _retval.null?
     end
 
-    def locked? : Bool
+    def locked : Bool
       # g_dbus_message_get_locked: (Method | Getter)
       # Returns: (transfer none)
 

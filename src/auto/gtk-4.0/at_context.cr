@@ -44,11 +44,49 @@ module Gtk
       LibGtk.gtk_at_context_get_type
     end
 
-    def accessible=(value : Accessible?) : Accessible?
+    def accessible=(value : Gtk::Accessible?) : Gtk::Accessible?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "accessible", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def accessible : Gtk::Accessible?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "accessible", pointerof(value), Pointer(Void).null)
+      Gtk::Accessible__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def accessible_role=(value : Gtk::AccessibleRole) : Gtk::AccessibleRole
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accessible-role", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accessible_role : Gtk::AccessibleRole
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "accessible-role", pointerof(value), Pointer(Void).null)
+      Gtk::AccessibleRole.from_value(value)
+    end
+
+    def display=(value : Gdk::Display?) : Gdk::Display?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def self.create(accessible_role : Gtk::AccessibleRole, accessible : Gtk::Accessible, display : Gdk::Display) : Gtk::ATContext?

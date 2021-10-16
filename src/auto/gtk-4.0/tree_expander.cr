@@ -261,6 +261,44 @@ module Gtk
       LibGtk.gtk_tree_expander_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def item : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "item", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def list_row=(value : Gtk::TreeListRow?) : Gtk::TreeListRow?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "list-row", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def list_row : Gtk::TreeListRow?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "list-row", pointerof(value), Pointer(Void).null)
+      Gtk::TreeListRow.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # gtk_tree_expander_new: (Constructor)
       # Returns: (transfer none)

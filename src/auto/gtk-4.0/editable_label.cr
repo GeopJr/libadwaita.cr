@@ -283,6 +283,14 @@ module Gtk
       LibGtk.gtk_editable_label_get_type
     end
 
+    def editing? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "editing", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(str : ::String)
       # gtk_editable_label_new: (Constructor)
       # Returns: (transfer none)
@@ -291,7 +299,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def editing? : Bool
+    def editing : Bool
       # gtk_editable_label_get_editing: (Method)
       # Returns: (transfer none)
 

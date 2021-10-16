@@ -53,6 +53,36 @@ module Gio
       LibGio.g_data_input_stream_get_type
     end
 
+    def byte_order=(value : Gio::DataStreamByteOrder) : Gio::DataStreamByteOrder
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "byte-order", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def byte_order : Gio::DataStreamByteOrder
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "byte-order", pointerof(value), Pointer(Void).null)
+      Gio::DataStreamByteOrder.from_value(value)
+    end
+
+    def newline_type=(value : Gio::DataStreamNewlineType) : Gio::DataStreamNewlineType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "newline-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def newline_type : Gio::DataStreamNewlineType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "newline-type", pointerof(value), Pointer(Void).null)
+      Gio::DataStreamNewlineType.from_value(value)
+    end
+
     def initialize(base_stream : Gio::InputStream)
       # g_data_input_stream_new: (Constructor)
       # Returns: (transfer full)

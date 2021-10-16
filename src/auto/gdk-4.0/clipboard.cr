@@ -60,11 +60,43 @@ module Gdk
       LibGdk.gdk_clipboard_get_type
     end
 
-    def display=(value : Display?) : Display?
+    def content : Gdk::ContentProvider?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "content", pointerof(value), Pointer(Void).null)
+      Gdk::ContentProvider.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def display=(value : Gdk::Display?) : Gdk::Display?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def formats : Gdk::ContentFormats?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "formats", pointerof(value), Pointer(Void).null)
+      Gdk::ContentFormats.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def local? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "local", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def content : Gdk::ContentProvider?

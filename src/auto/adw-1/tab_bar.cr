@@ -262,6 +262,112 @@ module Adw
       LibAdw.adw_tab_bar_get_type
     end
 
+    def autohide=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "autohide", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def autohide? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "autohide", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def end_action_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "end-action-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def end_action_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "end-action-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def expand_tabs=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expand-tabs", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expand_tabs? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "expand-tabs", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def inverted=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inverted", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inverted? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "inverted", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_overflowing? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-overflowing", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def start_action_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "start-action-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def start_action_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "start-action-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def tabs_revealed? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "tabs-revealed", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def view=(value : Adw::TabView?) : Adw::TabView?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "view", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def view : Adw::TabView?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "view", pointerof(value), Pointer(Void).null)
+      Adw::TabView.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # adw_tab_bar_new: (Constructor)
       # Returns: (transfer none)
@@ -270,7 +376,7 @@ module Adw
       @pointer = _retval
     end
 
-    def autohide? : Bool
+    def autohide : Bool
       # adw_tab_bar_get_autohide: (Method | Getter)
       # Returns: (transfer none)
 
@@ -286,7 +392,7 @@ module Adw
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def expand_tabs? : Bool
+    def expand_tabs : Bool
       # adw_tab_bar_get_expand_tabs: (Method | Getter)
       # Returns: (transfer none)
 
@@ -294,7 +400,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def inverted? : Bool
+    def inverted : Bool
       # adw_tab_bar_get_inverted: (Method | Getter)
       # Returns: (transfer none)
 
@@ -302,7 +408,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def is_overflowing? : Bool
+    def is_overflowing : Bool
       # adw_tab_bar_get_is_overflowing: (Method | Getter)
       # Returns: (transfer none)
 
@@ -318,7 +424,7 @@ module Adw
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def tabs_revealed? : Bool
+    def tabs_revealed : Bool
       # adw_tab_bar_get_tabs_revealed: (Method | Getter)
       # Returns: (transfer none)
 

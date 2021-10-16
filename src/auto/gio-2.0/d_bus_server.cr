@@ -97,14 +97,14 @@ module Gio
       ::String.new(value)
     end
 
-    def authentication_observer=(value : DBusAuthObserver?) : DBusAuthObserver?
+    def authentication_observer=(value : Gio::DBusAuthObserver?) : Gio::DBusAuthObserver?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "authentication-observer", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def authentication_observer : DBusAuthObserver?
+    def authentication_observer : Gio::DBusAuthObserver?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -112,11 +112,27 @@ module Gio
       Gio::DBusAuthObserver.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    def flags=(value : DBusServerFlags) : DBusServerFlags
+    def client_address : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "client-address", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def flags=(value : Gio::DBusServerFlags) : Gio::DBusServerFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def flags : Gio::DBusServerFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
+      Gio::DBusServerFlags.from_value(value)
     end
 
     def guid=(value : ::String) : ::String
@@ -124,6 +140,14 @@ module Gio
 
       LibGObject.g_object_set(self, "guid", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def guid : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "guid", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def self.new_sync(address : ::String, flags : Gio::DBusServerFlags, guid : ::String, observer : Gio::DBusAuthObserver?, cancellable : Gio::Cancellable?) : Gio::DBusServer

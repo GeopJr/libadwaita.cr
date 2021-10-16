@@ -15,7 +15,7 @@ module Gdk
       LibGdk.gdk_focus_event_get_type
     end
 
-    def in? : Bool
+    def in : Bool
       # gdk_focus_event_get_in: (Method)
       # Returns: (transfer none)
 

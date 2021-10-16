@@ -67,11 +67,81 @@ module Gtk
       LibGtk.gtk_text_buffer_get_type
     end
 
-    def tag_table=(value : TextTagTable?) : TextTagTable?
+    def can_redo? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-redo", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def can_undo? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-undo", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def cursor_position : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "cursor-position", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def enable_undo=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-undo", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_undo? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-undo", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def has_selection? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-selection", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def tag_table=(value : Gtk::TextTagTable?) : Gtk::TextTagTable?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "tag-table", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def tag_table : Gtk::TextTagTable?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "tag-table", pointerof(value), Pointer(Void).null)
+      Gtk::TextTagTable.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def initialize(table : Gtk::TextTagTable?)
@@ -239,7 +309,7 @@ module Gtk
       start
     end
 
-    def can_redo? : Bool
+    def can_redo : Bool
       # gtk_text_buffer_get_can_redo: (Method)
       # Returns: (transfer none)
 
@@ -247,7 +317,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def can_undo? : Bool
+    def can_undo : Bool
       # gtk_text_buffer_get_can_undo: (Method)
       # Returns: (transfer none)
 
@@ -263,7 +333,7 @@ module Gtk
       _retval
     end
 
-    def enable_undo? : Bool
+    def enable_undo : Bool
       # gtk_text_buffer_get_enable_undo: (Method)
       # Returns: (transfer none)
 
@@ -282,7 +352,7 @@ module Gtk
       iter
     end
 
-    def has_selection? : Bool
+    def has_selection : Bool
       # gtk_text_buffer_get_has_selection: (Method)
       # Returns: (transfer none)
 
@@ -388,7 +458,7 @@ module Gtk
       _retval
     end
 
-    def modified? : Bool
+    def modified : Bool
       # gtk_text_buffer_get_modified: (Method)
       # Returns: (transfer none)
 

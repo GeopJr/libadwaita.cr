@@ -2,14 +2,14 @@ module Gio
   # #GDtlsServerConnection is the server-side subclass of #GDtlsConnection,
   # representing a server-side DTLS connection.
   module DtlsServerConnection
-    def authentication_mode=(value : TlsAuthenticationMode) : TlsAuthenticationMode
+    def authentication_mode=(value : Gio::TlsAuthenticationMode) : Gio::TlsAuthenticationMode
       unsafe_value = value
 
       LibGObject.g_object_set(self, "authentication-mode", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def authentication_mode : TlsAuthenticationMode
+    def authentication_mode : Gio::TlsAuthenticationMode
       # Returns: None
 
       value = uninitialized UInt32
@@ -59,12 +59,12 @@ module Gio
     end
 
     # Cast a `GObject::Object` to `DtlsServerConnection`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to DtlsServerConnection")
     end
 
     # Cast a `GObject::Object` to `DtlsServerConnection`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

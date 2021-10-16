@@ -299,6 +299,96 @@ module Adw
       LibAdw.adw_action_row_get_type
     end
 
+    def activatable_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activatable-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def activatable_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "activatable-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def subtitle=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "subtitle", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def subtitle : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "subtitle", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def subtitle_lines=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "subtitle-lines", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def subtitle_lines : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "subtitle-lines", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def title_lines=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title-lines", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title_lines : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "title-lines", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # adw_action_row_new: (Constructor)
       # Returns: (transfer none)
@@ -368,7 +458,7 @@ module Adw
       _retval
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # adw_action_row_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 

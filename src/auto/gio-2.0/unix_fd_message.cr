@@ -41,11 +41,19 @@ module Gio
       LibGio.g_unix_fd_message_get_type
     end
 
-    def fd_list=(value : UnixFDList?) : UnixFDList?
+    def fd_list=(value : Gio::UnixFDList?) : Gio::UnixFDList?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "fd-list", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def fd_list : Gio::UnixFDList?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "fd-list", pointerof(value), Pointer(Void).null)
+      Gio::UnixFDList.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize

@@ -96,6 +96,44 @@ module Gtk
       LibGtk.gtk_mount_operation_get_type
     end
 
+    def display=(value : Gdk::Display?) : Gdk::Display?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def is_showing? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-showing", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def parent=(value : Gtk::Window?) : Gtk::Window?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "parent", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def parent : Gtk::Window?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "parent", pointerof(value), Pointer(Void).null)
+      Gtk::Window.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(parent : Gtk::Window?)
       # gtk_mount_operation_new: (Constructor)
       # @parent: (nullable)

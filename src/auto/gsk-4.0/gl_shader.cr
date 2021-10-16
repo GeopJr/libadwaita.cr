@@ -153,11 +153,27 @@ module Gsk
       value
     end
 
-    def source=(value : Bytes?) : Bytes?
+    def resource : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "resource", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def source=(value : GLib::Bytes?) : GLib::Bytes?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "source", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def source : GLib::Bytes?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "source", pointerof(value), Pointer(Void).null)
+      GLib::Bytes.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def self.new_from_bytes(sourcecode : GLib::Bytes) : Gsk::GLShader

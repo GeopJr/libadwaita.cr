@@ -229,6 +229,36 @@ module Adw
       LibAdw.adw_preferences_group_get_type
     end
 
+    def description=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "description", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def description : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "description", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # adw_preferences_group_new: (Constructor)
       # Returns: (transfer none)

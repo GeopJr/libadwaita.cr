@@ -312,6 +312,96 @@ module Gtk
       LibGtk.gtk_lock_button_get_type
     end
 
+    def permission=(value : Gio::Permission?) : Gio::Permission?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "permission", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def permission : Gio::Permission?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "permission", pointerof(value), Pointer(Void).null)
+      Gio::Permission.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def text_lock=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text-lock", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text_lock : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text-lock", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def text_unlock=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text-unlock", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text_unlock : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text-unlock", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def tooltip_lock=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tooltip-lock", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tooltip_lock : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "tooltip-lock", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def tooltip_not_authorized=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tooltip-not-authorized", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tooltip_not_authorized : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "tooltip-not-authorized", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def tooltip_unlock=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tooltip-unlock", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tooltip_unlock : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "tooltip-unlock", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(permission : Gio::Permission?)
       # gtk_lock_button_new: (Constructor)
       # @permission: (nullable)

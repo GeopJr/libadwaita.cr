@@ -82,6 +82,21 @@ module Gtk
       LibGtk.gtk_gesture_pan_get_type
     end
 
+    def orientation=(value : Gtk::Orientation) : Gtk::Orientation
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "orientation", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def orientation : Gtk::Orientation
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "orientation", pointerof(value), Pointer(Void).null)
+      Gtk::Orientation.from_value(value)
+    end
+
     def initialize(orientation : Gtk::Orientation)
       # gtk_gesture_pan_new: (Constructor)
       # Returns: (transfer full)

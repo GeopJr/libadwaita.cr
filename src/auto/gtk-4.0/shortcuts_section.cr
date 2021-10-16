@@ -263,6 +263,66 @@ module Gtk
       LibGtk.gtk_shortcuts_section_get_type
     end
 
+    def max_height=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_height : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "max-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def section_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "section-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def section_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "section-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def view_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "view-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def view_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "view-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     struct ChangeCurrentPageSignal
       @source : GObject::Object
       @detail : String?

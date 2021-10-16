@@ -108,17 +108,73 @@ module Gdk
       LibGdk.gdk_device_get_type
     end
 
-    def display=(value : Display?) : Display?
+    def caps_lock_state? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "caps-lock-state", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def direction : Pango::Direction
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "direction", pointerof(value), Pointer(Void).null)
+      Pango::Direction.from_value(value)
+    end
+
+    def display=(value : Gdk::Display?) : Gdk::Display?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
       value
     end
 
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def has_bidi_layouts? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-bidi-layouts", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def has_cursor=(value : Bool) : Bool
       unsafe_value = value
 
       LibGObject.g_object_set(self, "has-cursor", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_cursor? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-cursor", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def modifier_state : Gdk::ModifierType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "modifier-state", pointerof(value), Pointer(Void).null)
+      Gdk::ModifierType.from_value(value)
+    end
+
+    def n_axes : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "n-axes", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -129,10 +185,34 @@ module Gdk
       value
     end
 
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def num_lock_state? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "num-lock-state", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def num_touches=(value : UInt32) : UInt32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "num-touches", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def num_touches : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "num-touches", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -143,11 +223,58 @@ module Gdk
       value
     end
 
-    def source=(value : InputSource) : InputSource
+    def product_id : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "product-id", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def scroll_lock_state? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "scroll-lock-state", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def seat=(value : Gdk::Seat?) : Gdk::Seat?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "seat", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def seat : Gdk::Seat?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "seat", pointerof(value), Pointer(Void).null)
+      Gdk::Seat.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def source=(value : Gdk::InputSource) : Gdk::InputSource
       unsafe_value = value
 
       LibGObject.g_object_set(self, "source", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def source : Gdk::InputSource
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "source", pointerof(value), Pointer(Void).null)
+      Gdk::InputSource.from_value(value)
+    end
+
+    def tool : Gdk::DeviceTool?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "tool", pointerof(value), Pointer(Void).null)
+      Gdk::DeviceTool.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def vendor_id=(value : ::String) : ::String
@@ -157,7 +284,15 @@ module Gdk
       value
     end
 
-    def caps_lock_state? : Bool
+    def vendor_id : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "vendor-id", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def caps_lock_state : Bool
       # gdk_device_get_caps_lock_state: (Method)
       # Returns: (transfer none)
 
@@ -189,7 +324,7 @@ module Gdk
       Gdk::Display.new(_retval, GICrystal::Transfer::None)
     end
 
-    def has_cursor? : Bool
+    def has_cursor : Bool
       # gdk_device_get_has_cursor: (Method)
       # Returns: (transfer none)
 
@@ -213,7 +348,7 @@ module Gdk
       ::String.new(_retval)
     end
 
-    def num_lock_state? : Bool
+    def num_lock_state : Bool
       # gdk_device_get_num_lock_state: (Method)
       # Returns: (transfer none)
 
@@ -237,7 +372,7 @@ module Gdk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def scroll_lock_state? : Bool
+    def scroll_lock_state : Bool
       # gdk_device_get_scroll_lock_state: (Method)
       # Returns: (transfer none)
 

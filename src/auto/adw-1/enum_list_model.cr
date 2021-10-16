@@ -41,6 +41,14 @@ module Adw
       value
     end
 
+    def enum_type : UInt64
+      # Returns: None
+
+      value = uninitialized UInt64
+      LibGObject.g_object_get(self, "enum-type", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(enum_type : UInt64)
       # adw_enum_list_model_new: (Constructor)
       # Returns: (transfer full)

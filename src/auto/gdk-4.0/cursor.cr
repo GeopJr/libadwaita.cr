@@ -82,17 +82,33 @@ module Gdk
       LibGdk.gdk_cursor_get_type
     end
 
-    def fallback=(value : Cursor?) : Cursor?
+    def fallback=(value : Gdk::Cursor?) : Gdk::Cursor?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "fallback", unsafe_value, Pointer(Void).null)
       value
     end
 
+    def fallback : Gdk::Cursor?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "fallback", pointerof(value), Pointer(Void).null)
+      Gdk::Cursor.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def hotspot_x=(value : Int32) : Int32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "hotspot-x", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hotspot_x : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "hotspot-x", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -103,6 +119,14 @@ module Gdk
       value
     end
 
+    def hotspot_y : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "hotspot-y", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def name=(value : ::String) : ::String
       unsafe_value = value
 
@@ -110,11 +134,27 @@ module Gdk
       value
     end
 
-    def texture=(value : Texture?) : Texture?
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def texture=(value : Gdk::Texture?) : Gdk::Texture?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "texture", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def texture : Gdk::Texture?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "texture", pointerof(value), Pointer(Void).null)
+      Gdk::Texture.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def self.new_from_name(name : ::String, fallback : Gdk::Cursor?) : Gdk::Cursor?

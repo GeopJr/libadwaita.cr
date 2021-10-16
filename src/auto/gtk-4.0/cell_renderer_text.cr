@@ -336,6 +336,672 @@ module Gtk
       LibGtk.gtk_cell_renderer_text_get_type
     end
 
+    def align_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "align-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def align_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "align-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def alignment=(value : Pango::Alignment) : Pango::Alignment
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "alignment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def alignment : Pango::Alignment
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "alignment", pointerof(value), Pointer(Void).null)
+      Pango::Alignment.from_value(value)
+    end
+
+    def attributes=(value : Pango::AttrList?) : Pango::AttrList?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "attributes", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def attributes : Pango::AttrList?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "attributes", pointerof(value), Pointer(Void).null)
+      Pango::AttrList.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def background=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "background", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def background_rgba=(value : Gdk::RGBA?) : Gdk::RGBA?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "background-rgba", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def background_rgba : Gdk::RGBA?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "background-rgba", pointerof(value), Pointer(Void).null)
+      Gdk::RGBA.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def background_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "background-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def background_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "background-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def editable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "editable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def editable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "editable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def editable_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "editable-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def editable_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "editable-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def ellipsize=(value : Pango::EllipsizeMode) : Pango::EllipsizeMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "ellipsize", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def ellipsize : Pango::EllipsizeMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "ellipsize", pointerof(value), Pointer(Void).null)
+      Pango::EllipsizeMode.from_value(value)
+    end
+
+    def ellipsize_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "ellipsize-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def ellipsize_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "ellipsize-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def family=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "family", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def family : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "family", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def family_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "family-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def family_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "family-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def font=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "font", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def font : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "font", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def font_desc=(value : Pango::FontDescription?) : Pango::FontDescription?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "font-desc", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def font_desc : Pango::FontDescription?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "font-desc", pointerof(value), Pointer(Void).null)
+      Pango::FontDescription.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def foreground=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "foreground", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def foreground_rgba=(value : Gdk::RGBA?) : Gdk::RGBA?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "foreground-rgba", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def foreground_rgba : Gdk::RGBA?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "foreground-rgba", pointerof(value), Pointer(Void).null)
+      Gdk::RGBA.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def foreground_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "foreground-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def foreground_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "foreground-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def language=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "language", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def language : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "language", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def language_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "language-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def language_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "language-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def markup=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "markup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_width_chars=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-width-chars", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_width_chars : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-width-chars", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def placeholder_text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "placeholder-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def placeholder_text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "placeholder-text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def rise=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "rise", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def rise : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "rise", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def rise_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "rise-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def rise_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "rise-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def scale=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "scale", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def scale : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "scale", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def scale_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "scale-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def scale_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "scale-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def single_paragraph_mode=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "single-paragraph-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def single_paragraph_mode? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "single-paragraph-mode", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def size=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def size : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def size_points=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "size-points", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def size_points : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "size-points", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def size_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "size-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def size_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "size-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def stretch=(value : Pango::Stretch) : Pango::Stretch
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "stretch", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def stretch : Pango::Stretch
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "stretch", pointerof(value), Pointer(Void).null)
+      Pango::Stretch.from_value(value)
+    end
+
+    def stretch_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "stretch-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def stretch_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "stretch-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def strikethrough=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "strikethrough", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def strikethrough? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "strikethrough", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def strikethrough_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "strikethrough-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def strikethrough_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "strikethrough-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def style=(value : Pango::Style) : Pango::Style
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "style", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def style : Pango::Style
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "style", pointerof(value), Pointer(Void).null)
+      Pango::Style.from_value(value)
+    end
+
+    def style_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "style-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def style_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "style-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def underline=(value : Pango::Underline) : Pango::Underline
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def underline : Pango::Underline
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "underline", pointerof(value), Pointer(Void).null)
+      Pango::Underline.from_value(value)
+    end
+
+    def underline_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "underline-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def underline_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "underline-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def variant=(value : Pango::Variant) : Pango::Variant
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "variant", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def variant : Pango::Variant
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "variant", pointerof(value), Pointer(Void).null)
+      Pango::Variant.from_value(value)
+    end
+
+    def variant_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "variant-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def variant_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "variant-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def weight=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "weight", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def weight : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "weight", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def weight_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "weight-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def weight_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "weight-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def width_chars=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "width-chars", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def width_chars : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width-chars", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def wrap_mode=(value : Pango::WrapMode) : Pango::WrapMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "wrap-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def wrap_mode : Pango::WrapMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "wrap-mode", pointerof(value), Pointer(Void).null)
+      Pango::WrapMode.from_value(value)
+    end
+
+    def wrap_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "wrap-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def wrap_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "wrap-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_cell_renderer_text_new: (Constructor)
       # Returns: (transfer none)

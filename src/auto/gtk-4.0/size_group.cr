@@ -95,6 +95,21 @@ module Gtk
       LibGtk.gtk_size_group_get_type
     end
 
+    def mode=(value : Gtk::SizeGroupMode) : Gtk::SizeGroupMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def mode : Gtk::SizeGroupMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "mode", pointerof(value), Pointer(Void).null)
+      Gtk::SizeGroupMode.from_value(value)
+    end
+
     def initialize(mode : Gtk::SizeGroupMode)
       # gtk_size_group_new: (Constructor)
       # Returns: (transfer full)

@@ -270,6 +270,98 @@ module Adw
       LibAdw.adw_tab_view_get_type
     end
 
+    def default_icon=(value : Gio::Icon?) : Gio::Icon?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "default-icon", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def default_icon : Gio::Icon?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "default-icon", pointerof(value), Pointer(Void).null)
+      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def is_transferring_page? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-transferring-page", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def menu_model=(value : Gio::MenuModel?) : Gio::MenuModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "menu-model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def menu_model : Gio::MenuModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "menu-model", pointerof(value), Pointer(Void).null)
+      Gio::MenuModel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def n_pages : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "n-pages", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def n_pinned_pages : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "n-pinned-pages", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def pages : Gtk::SelectionModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def selected_page=(value : Adw::TabPage?) : Adw::TabPage?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selected-page", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selected_page : Adw::TabPage?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "selected-page", pointerof(value), Pointer(Void).null)
+      Adw::TabPage.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def shortcut_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "shortcut-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def shortcut_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "shortcut-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # adw_tab_view_new: (Constructor)
       # Returns: (transfer none)
@@ -352,7 +444,7 @@ module Adw
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
-    def is_transferring_page? : Bool
+    def is_transferring_page : Bool
       # adw_tab_view_get_is_transferring_page: (Method | Getter)
       # Returns: (transfer none)
 

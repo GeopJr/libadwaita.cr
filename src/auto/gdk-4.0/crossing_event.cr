@@ -23,7 +23,7 @@ module Gdk
       Gdk::NotifyType.from_value(_retval)
     end
 
-    def focus? : Bool
+    def focus : Bool
       # gdk_crossing_event_get_focus: (Method)
       # Returns: (transfer none)
 

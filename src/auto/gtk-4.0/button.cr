@@ -275,6 +275,81 @@ module Gtk
       LibGtk.gtk_button_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def has_frame=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-frame", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_frame? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-frame", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_button_new: (Constructor)
       # Returns: (transfer none)
@@ -322,7 +397,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def has_frame? : Bool
+    def has_frame : Bool
       # gtk_button_get_has_frame: (Method)
       # Returns: (transfer none)
 
@@ -346,7 +421,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # gtk_button_get_use_underline: (Method)
       # Returns: (transfer none)
 

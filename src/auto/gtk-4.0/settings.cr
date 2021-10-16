@@ -297,6 +297,741 @@ module Gtk
       LibGtk.gtk_settings_get_type
     end
 
+    def gtk_alternative_button_order=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-alternative-button-order", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_alternative_button_order? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-alternative-button-order", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_alternative_sort_arrows=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-alternative-sort-arrows", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_alternative_sort_arrows? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-alternative-sort-arrows", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_application_prefer_dark_theme=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-application-prefer-dark-theme", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_application_prefer_dark_theme? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-application-prefer-dark-theme", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_cursor_aspect_ratio=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-cursor-aspect-ratio", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_cursor_aspect_ratio : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "gtk-cursor-aspect-ratio", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_cursor_blink=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-cursor-blink", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_cursor_blink? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-cursor-blink", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_cursor_blink_time=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-cursor-blink-time", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_cursor_blink_time : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-cursor-blink-time", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_cursor_blink_timeout=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-cursor-blink-timeout", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_cursor_blink_timeout : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-cursor-blink-timeout", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_cursor_theme_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-cursor-theme-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_cursor_theme_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-cursor-theme-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_cursor_theme_size=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-cursor-theme-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_cursor_theme_size : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-cursor-theme-size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_decoration_layout=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-decoration-layout", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_decoration_layout : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-decoration-layout", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_dialogs_use_header=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-dialogs-use-header", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_dialogs_use_header? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-dialogs-use-header", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_dnd_drag_threshold=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-dnd-drag-threshold", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_dnd_drag_threshold : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-dnd-drag-threshold", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_double_click_distance=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-double-click-distance", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_double_click_distance : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-double-click-distance", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_double_click_time=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-double-click-time", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_double_click_time : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-double-click-time", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_enable_accels=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-enable-accels", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_enable_accels? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-enable-accels", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_enable_animations=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-enable-animations", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_enable_animations? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-enable-animations", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_enable_event_sounds=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-enable-event-sounds", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_enable_event_sounds? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-enable-event-sounds", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_enable_input_feedback_sounds=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-enable-input-feedback-sounds", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_enable_input_feedback_sounds? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-enable-input-feedback-sounds", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_enable_primary_paste=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-enable-primary-paste", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_enable_primary_paste? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-enable-primary-paste", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_entry_password_hint_timeout=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-entry-password-hint-timeout", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_entry_password_hint_timeout : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "gtk-entry-password-hint-timeout", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_entry_select_on_focus=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-entry-select-on-focus", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_entry_select_on_focus? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-entry-select-on-focus", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_error_bell=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-error-bell", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_error_bell? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-error-bell", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_font_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-font-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_font_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-font-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_fontconfig_timestamp=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-fontconfig-timestamp", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_fontconfig_timestamp : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "gtk-fontconfig-timestamp", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_icon_theme_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-icon-theme-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_icon_theme_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-icon-theme-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_im_module=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-im-module", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_im_module : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-im-module", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_keynav_use_caret=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-keynav-use-caret", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_keynav_use_caret? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-keynav-use-caret", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_label_select_on_focus=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-label-select-on-focus", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_label_select_on_focus? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-label-select-on-focus", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_long_press_time=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-long-press-time", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_long_press_time : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "gtk-long-press-time", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_overlay_scrolling=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-overlay-scrolling", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_overlay_scrolling? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-overlay-scrolling", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_primary_button_warps_slider=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-primary-button-warps-slider", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_primary_button_warps_slider? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-primary-button-warps-slider", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_print_backends=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-print-backends", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_print_backends : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-print-backends", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_print_preview_command=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-print-preview-command", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_print_preview_command : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-print-preview-command", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_recent_files_enabled=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-recent-files-enabled", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_recent_files_enabled? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-recent-files-enabled", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_recent_files_max_age=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-recent-files-max-age", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_recent_files_max_age : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-recent-files-max-age", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_shell_shows_app_menu=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-shell-shows-app-menu", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_shell_shows_app_menu? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-shell-shows-app-menu", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_shell_shows_desktop=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-shell-shows-desktop", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_shell_shows_desktop? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-shell-shows-desktop", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_shell_shows_menubar=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-shell-shows-menubar", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_shell_shows_menubar? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-shell-shows-menubar", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_sound_theme_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-sound-theme-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_sound_theme_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-sound-theme-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_split_cursor=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-split-cursor", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_split_cursor? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-split-cursor", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def gtk_theme_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-theme-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_theme_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-theme-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_titlebar_double_click=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-titlebar-double-click", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_titlebar_double_click : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-titlebar-double-click", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_titlebar_middle_click=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-titlebar-middle-click", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_titlebar_middle_click : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-titlebar-middle-click", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_titlebar_right_click=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-titlebar-right-click", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_titlebar_right_click : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-titlebar-right-click", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_xft_antialias=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-xft-antialias", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_xft_antialias : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-xft-antialias", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_xft_dpi=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-xft-dpi", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_xft_dpi : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-xft-dpi", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_xft_hinting=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-xft-hinting", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_xft_hinting : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "gtk-xft-hinting", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def gtk_xft_hintstyle=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-xft-hintstyle", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_xft_hintstyle : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-xft-hintstyle", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def gtk_xft_rgba=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-xft-rgba", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_xft_rgba : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "gtk-xft-rgba", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def self.default : Gtk::Settings?
       # gtk_settings_get_default: (None)
       # Returns: (transfer none)

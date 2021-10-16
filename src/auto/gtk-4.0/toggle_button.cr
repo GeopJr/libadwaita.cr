@@ -321,6 +321,28 @@ module Gtk
       LibGtk.gtk_toggle_button_get_type
     end
 
+    def active=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "active", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def active? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "active", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def group=(value : Gtk::ToggleButton?) : Gtk::ToggleButton?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "group", unsafe_value, Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_toggle_button_new: (Constructor)
       # Returns: (transfer none)
@@ -345,7 +367,7 @@ module Gtk
       Gtk::ToggleButton.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def active? : Bool
+    def active : Bool
       # gtk_toggle_button_get_active: (Method)
       # Returns: (transfer none)
 

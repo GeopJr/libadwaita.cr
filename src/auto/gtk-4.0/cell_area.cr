@@ -357,6 +357,37 @@ module Gtk
       LibGtk.gtk_cell_area_get_type
     end
 
+    def edit_widget : Gtk::CellEditable?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "edit-widget", pointerof(value), Pointer(Void).null)
+      Gtk::CellEditable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def edited_cell : Gtk::CellRenderer?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "edited-cell", pointerof(value), Pointer(Void).null)
+      Gtk::CellRenderer.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def focus_cell=(value : Gtk::CellRenderer?) : Gtk::CellRenderer?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "focus-cell", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def focus_cell : Gtk::CellRenderer?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "focus-cell", pointerof(value), Pointer(Void).null)
+      Gtk::CellRenderer.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def activate(context : Gtk::CellAreaContext, widget : Gtk::Widget, cell_area : Gdk::Rectangle, flags : Gtk::CellRendererState, edit_only : Bool) : Bool
       # gtk_cell_area_activate: (Method)
       # Returns: (transfer none)

@@ -55,6 +55,21 @@ module Gio
       LibGio.g_buffered_input_stream_get_type
     end
 
+    def buffer_size=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "buffer-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def buffer_size : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "buffer-size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(base_stream : Gio::InputStream)
       # g_buffered_input_stream_new: (Constructor)
       # Returns: (transfer full)

@@ -333,6 +333,111 @@ module Gtk
       LibGtk.gtk_expander_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def expanded=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expanded", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expanded? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "expanded", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def label_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "label-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def label_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "label-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def resize_toplevel=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "resize-toplevel", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def resize_toplevel? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "resize-toplevel", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def use_markup=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-markup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_markup? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-markup", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(label : ::String?)
       # gtk_expander_new: (Constructor)
       # @label: (nullable)
@@ -371,7 +476,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def expanded? : Bool
+    def expanded : Bool
       # gtk_expander_get_expanded: (Method)
       # Returns: (transfer none)
 
@@ -395,7 +500,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def resize_toplevel? : Bool
+    def resize_toplevel : Bool
       # gtk_expander_get_resize_toplevel: (Method)
       # Returns: (transfer none)
 
@@ -403,7 +508,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def use_markup? : Bool
+    def use_markup : Bool
       # gtk_expander_get_use_markup: (Method)
       # Returns: (transfer none)
 
@@ -411,7 +516,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # gtk_expander_get_use_underline: (Method)
       # Returns: (transfer none)
 

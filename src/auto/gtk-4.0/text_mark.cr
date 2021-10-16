@@ -73,11 +73,27 @@ module Gtk
       value
     end
 
+    def left_gravity? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "left-gravity", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def name=(value : ::String) : ::String
       unsafe_value = value
 
       LibGObject.g_object_set(self, "name", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def initialize(name : ::String?, left_gravity : Bool)
@@ -103,7 +119,7 @@ module Gtk
       Gtk::TextBuffer.new(_retval, GICrystal::Transfer::None)
     end
 
-    def deleted? : Bool
+    def deleted : Bool
       # gtk_text_mark_get_deleted: (Method)
       # Returns: (transfer none)
 
@@ -111,7 +127,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def left_gravity? : Bool
+    def left_gravity : Bool
       # gtk_text_mark_get_left_gravity: (Method)
       # Returns: (transfer none)
 
@@ -127,7 +143,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def visible? : Bool
+    def visible : Bool
       # gtk_text_mark_get_visible: (Method)
       # Returns: (transfer none)
 

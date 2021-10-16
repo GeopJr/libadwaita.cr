@@ -378,6 +378,336 @@ module Gtk
       LibGtk.gtk_window_get_type
     end
 
+    def application=(value : Gtk::Application?) : Gtk::Application?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "application", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def application : Gtk::Application?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "application", pointerof(value), Pointer(Void).null)
+      Gtk::Application.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def decorated=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "decorated", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def decorated? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "decorated", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def default_height=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "default-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def default_height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "default-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def default_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "default-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def default_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "default-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def default_width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "default-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def default_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "default-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def deletable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "deletable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def deletable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "deletable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def destroy_with_parent=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "destroy-with-parent", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def destroy_with_parent? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "destroy-with-parent", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def display=(value : Gdk::Display?) : Gdk::Display?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def focus_visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "focus-visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def focus_visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "focus-visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def focus_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "focus-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def focus_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "focus-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def fullscreened=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fullscreened", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fullscreened? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "fullscreened", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def handle_menubar_accel=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "handle-menubar-accel", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def handle_menubar_accel? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "handle-menubar-accel", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def hide_on_close=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hide-on-close", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hide_on_close? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "hide-on-close", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def is_active? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-active", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def maximized=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "maximized", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def maximized? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "maximized", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def mnemonics_visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "mnemonics-visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def mnemonics_visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "mnemonics-visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def modal=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "modal", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def modal? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "modal", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def resizable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "resizable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def resizable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "resizable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def startup_id=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "startup-id", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def transient_for=(value : Gtk::Window?) : Gtk::Window?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transient-for", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transient_for : Gtk::Window?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "transient-for", pointerof(value), Pointer(Void).null)
+      Gtk::Window.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # gtk_window_new: (Constructor)
       # Returns: (transfer none)
@@ -475,7 +805,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def decorated? : Bool
+    def decorated : Bool
       # gtk_window_get_decorated: (Method)
       # Returns: (transfer none)
 
@@ -503,7 +833,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def deletable? : Bool
+    def deletable : Bool
       # gtk_window_get_deletable: (Method)
       # Returns: (transfer none)
 
@@ -511,7 +841,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def destroy_with_parent? : Bool
+    def destroy_with_parent : Bool
       # gtk_window_get_destroy_with_parent: (Method)
       # Returns: (transfer none)
 
@@ -527,7 +857,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def focus_visible? : Bool
+    def focus_visible : Bool
       # gtk_window_get_focus_visible: (Method)
       # Returns: (transfer none)
 
@@ -543,7 +873,7 @@ module Gtk
       Gtk::WindowGroup.new(_retval, GICrystal::Transfer::None)
     end
 
-    def handle_menubar_accel? : Bool
+    def handle_menubar_accel : Bool
       # gtk_window_get_handle_menubar_accel: (Method)
       # Returns: (transfer none)
 
@@ -551,7 +881,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def hide_on_close? : Bool
+    def hide_on_close : Bool
       # gtk_window_get_hide_on_close: (Method)
       # Returns: (transfer none)
 
@@ -567,7 +897,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def mnemonics_visible? : Bool
+    def mnemonics_visible : Bool
       # gtk_window_get_mnemonics_visible: (Method)
       # Returns: (transfer none)
 
@@ -575,7 +905,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def modal? : Bool
+    def modal : Bool
       # gtk_window_get_modal: (Method)
       # Returns: (transfer none)
 
@@ -583,7 +913,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def resizable? : Bool
+    def resizable : Bool
       # gtk_window_get_resizable: (Method)
       # Returns: (transfer none)
 

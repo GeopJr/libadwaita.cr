@@ -366,11 +366,34 @@ module Gtk
       LibGtk.gtk_app_chooser_dialog_get_type
     end
 
-    def gfile=(value : File?) : File?
+    def gfile=(value : Gio::File?) : Gio::File?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "gfile", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def gfile : Gio::File?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "gfile", pointerof(value), Pointer(Void).null)
+      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def heading=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "heading", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def heading : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "heading", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def initialize(parent : Gtk::Window?, flags : Gtk::DialogFlags, file : Gio::File)

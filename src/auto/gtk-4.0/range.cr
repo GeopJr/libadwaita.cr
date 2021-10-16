@@ -254,6 +254,96 @@ module Gtk
       LibGtk.gtk_range_get_type
     end
 
+    def adjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "adjustment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def adjustment : Gtk::Adjustment?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "adjustment", pointerof(value), Pointer(Void).null)
+      Gtk::Adjustment.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def fill_level=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fill-level", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fill_level : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "fill-level", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def inverted=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inverted", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inverted? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "inverted", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def restrict_to_fill_level=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "restrict-to-fill-level", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def restrict_to_fill_level? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "restrict-to-fill-level", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def round_digits=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "round-digits", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def round_digits : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "round-digits", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def show_fill_level=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-fill-level", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_fill_level? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-fill-level", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def adjustment : Gtk::Adjustment
       # gtk_range_get_adjustment: (Method)
       # Returns: (transfer none)
@@ -270,7 +360,7 @@ module Gtk
       _retval
     end
 
-    def flippable? : Bool
+    def flippable : Bool
       # gtk_range_get_flippable: (Method)
       # Returns: (transfer none)
 
@@ -278,7 +368,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def inverted? : Bool
+    def inverted : Bool
       # gtk_range_get_inverted: (Method)
       # Returns: (transfer none)
 
@@ -297,7 +387,7 @@ module Gtk
       range_rect
     end
 
-    def restrict_to_fill_level? : Bool
+    def restrict_to_fill_level : Bool
       # gtk_range_get_restrict_to_fill_level: (Method)
       # Returns: (transfer none)
 
@@ -313,7 +403,7 @@ module Gtk
       _retval
     end
 
-    def show_fill_level? : Bool
+    def show_fill_level : Bool
       # gtk_range_get_show_fill_level: (Method)
       # Returns: (transfer none)
 
@@ -333,7 +423,7 @@ module Gtk
       LibGtk.gtk_range_get_slider_range(self, slider_start, slider_end)
     end
 
-    def slider_size_fixed? : Bool
+    def slider_size_fixed : Bool
       # gtk_range_get_slider_size_fixed: (Method)
       # Returns: (transfer none)
 

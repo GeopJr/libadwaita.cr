@@ -262,5 +262,57 @@ module Gtk
     def self.g_type : UInt64
       LibGtk.gtk_shortcuts_group_get_type
     end
+
+    def accel_size_group=(value : Gtk::SizeGroup?) : Gtk::SizeGroup?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accel-size-group", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def height : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def title_size_group=(value : Gtk::SizeGroup?) : Gtk::SizeGroup?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title-size-group", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def view=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "view", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def view : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "view", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
   end
 end

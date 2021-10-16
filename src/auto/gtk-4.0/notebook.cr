@@ -339,6 +339,119 @@ module Gtk
       LibGtk.gtk_notebook_get_type
     end
 
+    def enable_popup=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-popup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_popup? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-popup", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def group_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "group-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def group_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "group-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def page=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "page", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def page : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "page", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def pages : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def scrollable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "scrollable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def scrollable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "scrollable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_border=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-border", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_border? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-border", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_tabs=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-tabs", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_tabs? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-tabs", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def tab_pos=(value : Gtk::PositionType) : Gtk::PositionType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tab-pos", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tab_pos : Gtk::PositionType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "tab-pos", pointerof(value), Pointer(Void).null)
+      Gtk::PositionType.from_value(value)
+    end
+
     def initialize
       # gtk_notebook_new: (Constructor)
       # Returns: (transfer none)
@@ -462,7 +575,7 @@ module Gtk
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def scrollable? : Bool
+    def scrollable : Bool
       # gtk_notebook_get_scrollable: (Method)
       # Returns: (transfer none)
 
@@ -470,7 +583,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_border? : Bool
+    def show_border : Bool
       # gtk_notebook_get_show_border: (Method)
       # Returns: (transfer none)
 
@@ -478,7 +591,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_tabs? : Bool
+    def show_tabs : Bool
       # gtk_notebook_get_show_tabs: (Method)
       # Returns: (transfer none)
 

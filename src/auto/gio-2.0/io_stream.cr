@@ -92,6 +92,22 @@ module Gio
       GICrystal.to_bool(value)
     end
 
+    def input_stream : Gio::InputStream?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "input-stream", pointerof(value), Pointer(Void).null)
+      Gio::InputStream.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def output_stream : Gio::OutputStream?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "output-stream", pointerof(value), Pointer(Void).null)
+      Gio::OutputStream.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def splice_finish(result : Gio::AsyncResult) : Bool
       # g_io_stream_splice_finish: (Throws)
       # Returns: (transfer none)

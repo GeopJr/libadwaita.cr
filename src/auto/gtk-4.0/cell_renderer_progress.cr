@@ -140,6 +140,96 @@ module Gtk
       LibGtk.gtk_cell_renderer_progress_get_type
     end
 
+    def inverted=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inverted", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inverted? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "inverted", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def pulse=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pulse", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pulse : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "pulse", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def text_xalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text-xalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text_xalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "text-xalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def text_yalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text-yalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text_yalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "text-yalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def value=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "value", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def value : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "value", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_cell_renderer_progress_new: (Constructor)
       # Returns: (transfer none)

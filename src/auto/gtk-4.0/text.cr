@@ -402,6 +402,269 @@ module Gtk
       LibGtk.gtk_text_get_type
     end
 
+    def activates_default=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activates-default", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def activates_default? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "activates-default", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def attributes=(value : Pango::AttrList?) : Pango::AttrList?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "attributes", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def attributes : Pango::AttrList?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "attributes", pointerof(value), Pointer(Void).null)
+      Pango::AttrList.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def buffer=(value : Gtk::EntryBuffer?) : Gtk::EntryBuffer?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "buffer", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def buffer : Gtk::EntryBuffer?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "buffer", pointerof(value), Pointer(Void).null)
+      Gtk::EntryBuffer.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def enable_emoji_completion=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-emoji-completion", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_emoji_completion? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-emoji-completion", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def extra_menu=(value : Gio::MenuModel?) : Gio::MenuModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "extra-menu", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def extra_menu : Gio::MenuModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "extra-menu", pointerof(value), Pointer(Void).null)
+      Gio::MenuModel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def im_module=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "im-module", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def im_module : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "im-module", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def input_hints=(value : Gtk::InputHints) : Gtk::InputHints
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "input-hints", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def input_hints : Gtk::InputHints
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "input-hints", pointerof(value), Pointer(Void).null)
+      Gtk::InputHints.from_value(value)
+    end
+
+    def input_purpose=(value : Gtk::InputPurpose) : Gtk::InputPurpose
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "input-purpose", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def input_purpose : Gtk::InputPurpose
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "input-purpose", pointerof(value), Pointer(Void).null)
+      Gtk::InputPurpose.from_value(value)
+    end
+
+    def invisible_char=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "invisible-char", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def invisible_char : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "invisible-char", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def invisible_char_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "invisible-char-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def invisible_char_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "invisible-char-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def max_length=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-length", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_length : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-length", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def overwrite_mode=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "overwrite-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def overwrite_mode? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "overwrite-mode", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def placeholder_text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "placeholder-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def placeholder_text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "placeholder-text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def propagate_text_width=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "propagate-text-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def propagate_text_width? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "propagate-text-width", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def scroll_offset : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "scroll-offset", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def tabs=(value : Pango::TabArray?) : Pango::TabArray?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tabs", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tabs : Pango::TabArray?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "tabs", pointerof(value), Pointer(Void).null)
+      Pango::TabArray.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def truncate_multiline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "truncate-multiline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def truncate_multiline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "truncate-multiline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def visibility=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visibility", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visibility? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "visibility", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_text_new: (Constructor)
       # Returns: (transfer none)
@@ -432,7 +695,7 @@ module Gtk
       strong
     end
 
-    def activates_default? : Bool
+    def activates_default : Bool
       # gtk_text_get_activates_default: (Method)
       # Returns: (transfer none)
 
@@ -456,7 +719,7 @@ module Gtk
       Gtk::EntryBuffer.new(_retval, GICrystal::Transfer::None)
     end
 
-    def enable_emoji_completion? : Bool
+    def enable_emoji_completion : Bool
       # gtk_text_get_enable_emoji_completion: (Method)
       # Returns: (transfer none)
 
@@ -504,7 +767,7 @@ module Gtk
       _retval
     end
 
-    def overwrite_mode? : Bool
+    def overwrite_mode : Bool
       # gtk_text_get_overwrite_mode: (Method)
       # Returns: (transfer none)
 
@@ -520,7 +783,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def propagate_text_width? : Bool
+    def propagate_text_width : Bool
       # gtk_text_get_propagate_text_width: (Method)
       # Returns: (transfer none)
 
@@ -544,7 +807,7 @@ module Gtk
       _retval
     end
 
-    def truncate_multiline? : Bool
+    def truncate_multiline : Bool
       # gtk_text_get_truncate_multiline: (Method)
       # Returns: (transfer none)
 
@@ -552,7 +815,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def visibility? : Bool
+    def visibility : Bool
       # gtk_text_get_visibility: (Method)
       # Returns: (transfer none)
 

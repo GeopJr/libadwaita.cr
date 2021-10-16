@@ -76,6 +76,21 @@ module Gio
       ::String.new(value)
     end
 
+    def use_fallback=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-fallback", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_fallback? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-fallback", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(to_charset : ::String, from_charset : ::String)
       # g_charset_converter_new: (Constructor | Throws)
       # Returns: (transfer full)
@@ -92,7 +107,7 @@ module Gio
       _retval
     end
 
-    def use_fallback? : Bool
+    def use_fallback : Bool
       # g_charset_converter_get_use_fallback: (Method | Getter)
       # Returns: (transfer none)
 

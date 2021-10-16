@@ -272,6 +272,44 @@ module Gtk
       LibGtk.gtk_window_controls_get_type
     end
 
+    def decoration_layout=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "decoration-layout", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def decoration_layout : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "decoration-layout", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def empty? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "empty", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def side=(value : Gtk::PackType) : Gtk::PackType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "side", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def side : Gtk::PackType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "side", pointerof(value), Pointer(Void).null)
+      Gtk::PackType.from_value(value)
+    end
+
     def initialize(side : Gtk::PackType)
       # gtk_window_controls_new: (Constructor)
       # Returns: (transfer none)
@@ -288,7 +326,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def empty? : Bool
+    def empty : Bool
       # gtk_window_controls_get_empty: (Method)
       # Returns: (transfer none)
 

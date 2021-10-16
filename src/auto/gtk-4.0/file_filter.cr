@@ -77,6 +77,21 @@ module Gtk
       LibGtk.gtk_file_filter_get_type
     end
 
+    def name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # gtk_file_filter_new: (Constructor)
       # Returns: (transfer full)

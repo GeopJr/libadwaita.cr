@@ -15,7 +15,7 @@ module Gdk
       LibGdk.gdk_touch_event_get_type
     end
 
-    def emulating_pointer? : Bool
+    def emulating_pointer : Bool
       # gdk_touch_event_get_emulating_pointer: (Method)
       # Returns: (transfer none)
 

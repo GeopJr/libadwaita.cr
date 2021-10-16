@@ -183,6 +183,97 @@ module Gio
       LibGio.g_application_get_type
     end
 
+    def action_group=(value : Gio::ActionGroup?) : Gio::ActionGroup?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "action-group", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def application_id=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "application-id", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def application_id : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "application-id", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def flags=(value : Gio::ApplicationFlags) : Gio::ApplicationFlags
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "flags", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def flags : Gio::ApplicationFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
+      Gio::ApplicationFlags.from_value(value)
+    end
+
+    def inactivity_timeout=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inactivity-timeout", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inactivity_timeout : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "inactivity-timeout", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def is_busy? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-busy", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_registered? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-registered", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_remote? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-remote", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def resource_base_path=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "resource-base-path", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def resource_base_path : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "resource-base-path", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(application_id : ::String?, flags : Gio::ApplicationFlags)
       # g_application_new: (Constructor)
       # @application_id: (nullable)
@@ -306,7 +397,7 @@ module Gio
       _retval
     end
 
-    def is_busy? : Bool
+    def is_busy : Bool
       # g_application_get_is_busy: (Method | Getter)
       # Returns: (transfer none)
 
@@ -314,7 +405,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_registered? : Bool
+    def is_registered : Bool
       # g_application_get_is_registered: (Method | Getter)
       # Returns: (transfer none)
 
@@ -322,7 +413,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_remote? : Bool
+    def is_remote : Bool
       # g_application_get_is_remote: (Method | Getter)
       # Returns: (transfer none)
 

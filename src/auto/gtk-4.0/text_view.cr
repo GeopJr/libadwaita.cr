@@ -369,6 +369,321 @@ module Gtk
       LibGtk.gtk_text_view_get_type
     end
 
+    def accepts_tab=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accepts-tab", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accepts_tab? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "accepts-tab", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def bottom_margin=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "bottom-margin", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def bottom_margin : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "bottom-margin", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def buffer=(value : Gtk::TextBuffer?) : Gtk::TextBuffer?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "buffer", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def buffer : Gtk::TextBuffer?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "buffer", pointerof(value), Pointer(Void).null)
+      Gtk::TextBuffer.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def cursor_visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "cursor-visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cursor_visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "cursor-visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def editable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "editable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def editable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "editable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def extra_menu=(value : Gio::MenuModel?) : Gio::MenuModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "extra-menu", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def extra_menu : Gio::MenuModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "extra-menu", pointerof(value), Pointer(Void).null)
+      Gio::MenuModel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def im_module=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "im-module", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def im_module : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "im-module", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def indent=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "indent", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def indent : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "indent", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def input_hints=(value : Gtk::InputHints) : Gtk::InputHints
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "input-hints", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def input_hints : Gtk::InputHints
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "input-hints", pointerof(value), Pointer(Void).null)
+      Gtk::InputHints.from_value(value)
+    end
+
+    def input_purpose=(value : Gtk::InputPurpose) : Gtk::InputPurpose
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "input-purpose", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def input_purpose : Gtk::InputPurpose
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "input-purpose", pointerof(value), Pointer(Void).null)
+      Gtk::InputPurpose.from_value(value)
+    end
+
+    def justification=(value : Gtk::Justification) : Gtk::Justification
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "justification", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def justification : Gtk::Justification
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "justification", pointerof(value), Pointer(Void).null)
+      Gtk::Justification.from_value(value)
+    end
+
+    def left_margin=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "left-margin", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def left_margin : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "left-margin", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def monospace=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "monospace", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def monospace? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "monospace", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def overwrite=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "overwrite", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def overwrite? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "overwrite", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def pixels_above_lines=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pixels-above-lines", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pixels_above_lines : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "pixels-above-lines", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def pixels_below_lines=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pixels-below-lines", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pixels_below_lines : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "pixels-below-lines", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def pixels_inside_wrap=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pixels-inside-wrap", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pixels_inside_wrap : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "pixels-inside-wrap", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def right_margin=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "right-margin", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def right_margin : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "right-margin", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def tabs=(value : Pango::TabArray?) : Pango::TabArray?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tabs", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tabs : Pango::TabArray?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "tabs", pointerof(value), Pointer(Void).null)
+      Pango::TabArray.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def top_margin=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "top-margin", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def top_margin : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "top-margin", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def wrap_mode=(value : Gtk::WrapMode) : Gtk::WrapMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "wrap-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def wrap_mode : Gtk::WrapMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "wrap-mode", pointerof(value), Pointer(Void).null)
+      Gtk::WrapMode.from_value(value)
+    end
+
     def initialize
       # gtk_text_view_new: (Constructor)
       # Returns: (transfer none)
@@ -443,7 +758,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def accepts_tab? : Bool
+    def accepts_tab : Bool
       # gtk_text_view_get_accepts_tab: (Method)
       # Returns: (transfer none)
 
@@ -487,7 +802,7 @@ module Gtk
       strong
     end
 
-    def cursor_visible? : Bool
+    def cursor_visible : Bool
       # gtk_text_view_get_cursor_visible: (Method)
       # Returns: (transfer none)
 
@@ -495,7 +810,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def editable? : Bool
+    def editable : Bool
       # gtk_text_view_get_editable: (Method)
       # Returns: (transfer none)
 
@@ -623,7 +938,7 @@ module Gtk
       Pango::Context.new(_retval, GICrystal::Transfer::None)
     end
 
-    def monospace? : Bool
+    def monospace : Bool
       # gtk_text_view_get_monospace: (Method)
       # Returns: (transfer none)
 
@@ -631,7 +946,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def overwrite? : Bool
+    def overwrite : Bool
       # gtk_text_view_get_overwrite: (Method)
       # Returns: (transfer none)
 

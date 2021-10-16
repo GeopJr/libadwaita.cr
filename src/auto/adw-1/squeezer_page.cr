@@ -34,11 +34,34 @@ module Adw
       LibAdw.adw_squeezer_page_get_type
     end
 
-    def child=(value : Widget?) : Widget?
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def enabled=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enabled", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enabled? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enabled", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def child : Gtk::Widget
@@ -49,7 +72,7 @@ module Adw
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
-    def enabled? : Bool
+    def enabled : Bool
       # adw_squeezer_page_get_enabled: (Method | Getter)
       # Returns: (transfer none)
 

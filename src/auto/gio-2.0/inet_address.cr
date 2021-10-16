@@ -108,11 +108,99 @@ module Gio
       Pointer(Void)
     end
 
-    def family=(value : SocketFamily) : SocketFamily
+    def family=(value : Gio::SocketFamily) : Gio::SocketFamily
       unsafe_value = value
 
       LibGObject.g_object_set(self, "family", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def family : Gio::SocketFamily
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "family", pointerof(value), Pointer(Void).null)
+      Gio::SocketFamily.from_value(value)
+    end
+
+    def is_any? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-any", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_link_local? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-link-local", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_loopback? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-loopback", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_mc_global? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-mc-global", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_mc_link_local? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-mc-link-local", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_mc_node_local? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-mc-node-local", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_mc_org_local? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-mc-org-local", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_mc_site_local? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-mc-site-local", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_multicast? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-multicast", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_site_local? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-site-local", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def self.new_any(family : Gio::SocketFamily) : Gio::InetAddress
@@ -166,7 +254,7 @@ module Gio
       Gio::SocketFamily.from_value(_retval)
     end
 
-    def is_any? : Bool
+    def is_any : Bool
       # g_inet_address_get_is_any: (Method | Getter)
       # Returns: (transfer none)
 
@@ -174,7 +262,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_link_local? : Bool
+    def is_link_local : Bool
       # g_inet_address_get_is_link_local: (Method | Getter)
       # Returns: (transfer none)
 
@@ -182,7 +270,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_loopback? : Bool
+    def is_loopback : Bool
       # g_inet_address_get_is_loopback: (Method | Getter)
       # Returns: (transfer none)
 
@@ -190,7 +278,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_mc_global? : Bool
+    def is_mc_global : Bool
       # g_inet_address_get_is_mc_global: (Method | Getter)
       # Returns: (transfer none)
 
@@ -198,7 +286,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_mc_link_local? : Bool
+    def is_mc_link_local : Bool
       # g_inet_address_get_is_mc_link_local: (Method | Getter)
       # Returns: (transfer none)
 
@@ -206,7 +294,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_mc_node_local? : Bool
+    def is_mc_node_local : Bool
       # g_inet_address_get_is_mc_node_local: (Method | Getter)
       # Returns: (transfer none)
 
@@ -214,7 +302,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_mc_org_local? : Bool
+    def is_mc_org_local : Bool
       # g_inet_address_get_is_mc_org_local: (Method | Getter)
       # Returns: (transfer none)
 
@@ -222,7 +310,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_mc_site_local? : Bool
+    def is_mc_site_local : Bool
       # g_inet_address_get_is_mc_site_local: (Method | Getter)
       # Returns: (transfer none)
 
@@ -230,7 +318,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_multicast? : Bool
+    def is_multicast : Bool
       # g_inet_address_get_is_multicast: (Method | Getter)
       # Returns: (transfer none)
 
@@ -238,7 +326,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_site_local? : Bool
+    def is_site_local : Bool
       # g_inet_address_get_is_site_local: (Method | Getter)
       # Returns: (transfer none)
 

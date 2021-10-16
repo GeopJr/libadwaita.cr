@@ -526,6 +526,14 @@ module Gio
       LibGio.g_task_get_type
     end
 
+    def completed? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "completed", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(source_object : GObject::Object?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, callback_data : Pointer(Nil)?)
       # g_task_new: (Constructor)
       # @source_object: (nullable)
@@ -615,7 +623,7 @@ module Gio
       Gio::Cancellable.new(_retval, GICrystal::Transfer::None)
     end
 
-    def check_cancellable? : Bool
+    def check_cancellable : Bool
       # g_task_get_check_cancellable: (Method)
       # Returns: (transfer none)
 
@@ -623,7 +631,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def completed? : Bool
+    def completed : Bool
       # g_task_get_completed: (Method | Getter)
       # Returns: (transfer none)
 
@@ -655,7 +663,7 @@ module Gio
       _retval
     end
 
-    def return_on_cancel? : Bool
+    def return_on_cancel : Bool
       # g_task_get_return_on_cancel: (Method)
       # Returns: (transfer none)
 

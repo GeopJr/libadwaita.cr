@@ -458,6 +458,246 @@ module Gtk
       LibGtk.gtk_about_dialog_get_type
     end
 
+    def artists=(value : Enumerable(::String)) : Enumerable(::String)
+      # handle array
+
+      LibGObject.g_object_set(self, "artists", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def artists : Enumerable(::String)
+      # Returns: None
+
+      value = uninitialized Pointer(Pointer(LibC::Char))
+      LibGObject.g_object_get(self, "artists", pointerof(value), Pointer(Void).null)
+      GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
+    end
+
+    def authors=(value : Enumerable(::String)) : Enumerable(::String)
+      # handle array
+
+      LibGObject.g_object_set(self, "authors", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def authors : Enumerable(::String)
+      # Returns: None
+
+      value = uninitialized Pointer(Pointer(LibC::Char))
+      LibGObject.g_object_get(self, "authors", pointerof(value), Pointer(Void).null)
+      GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
+    end
+
+    def comments=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "comments", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def comments : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "comments", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def copyright=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "copyright", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def copyright : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "copyright", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def documenters=(value : Enumerable(::String)) : Enumerable(::String)
+      # handle array
+
+      LibGObject.g_object_set(self, "documenters", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def documenters : Enumerable(::String)
+      # Returns: None
+
+      value = uninitialized Pointer(Pointer(LibC::Char))
+      LibGObject.g_object_get(self, "documenters", pointerof(value), Pointer(Void).null)
+      GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
+    end
+
+    def license=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "license", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def license : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "license", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def license_type=(value : Gtk::License) : Gtk::License
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "license-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def license_type : Gtk::License
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "license-type", pointerof(value), Pointer(Void).null)
+      Gtk::License.from_value(value)
+    end
+
+    def logo=(value : Gdk::Paintable?) : Gdk::Paintable?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "logo", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def logo : Gdk::Paintable?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "logo", pointerof(value), Pointer(Void).null)
+      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def logo_icon_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "logo-icon-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def logo_icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "logo-icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def program_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "program-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def program_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "program-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def system_information=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "system-information", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def system_information : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "system-information", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def translator_credits=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "translator-credits", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def translator_credits : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "translator-credits", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def version=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "version", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def version : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "version", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def website=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "website", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def website : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "website", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def website_label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "website-label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def website_label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "website-label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def wrap_license=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "wrap-license", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def wrap_license? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "wrap-license", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_about_dialog_new: (Constructor)
       # Returns: (transfer none)
@@ -596,7 +836,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def wrap_license? : Bool
+    def wrap_license : Bool
       # gtk_about_dialog_get_wrap_license: (Method)
       # Returns: (transfer none)
 

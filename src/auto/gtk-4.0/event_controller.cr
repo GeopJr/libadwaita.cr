@@ -55,6 +55,59 @@ module Gtk
       LibGtk.gtk_event_controller_get_type
     end
 
+    def name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def propagation_limit=(value : Gtk::PropagationLimit) : Gtk::PropagationLimit
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "propagation-limit", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def propagation_limit : Gtk::PropagationLimit
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "propagation-limit", pointerof(value), Pointer(Void).null)
+      Gtk::PropagationLimit.from_value(value)
+    end
+
+    def propagation_phase=(value : Gtk::PropagationPhase) : Gtk::PropagationPhase
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "propagation-phase", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def propagation_phase : Gtk::PropagationPhase
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "propagation-phase", pointerof(value), Pointer(Void).null)
+      Gtk::PropagationPhase.from_value(value)
+    end
+
+    def widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def current_event : Gdk::Event?
       # gtk_event_controller_get_current_event: (Method)
       # Returns: (transfer none)

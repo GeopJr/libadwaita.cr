@@ -79,18 +79,155 @@ module Adw
       LibAdw.adw_tab_page_get_type
     end
 
-    def child=(value : Widget?) : Widget?
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def parent=(value : TabPage?) : TabPage?
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def icon=(value : Gio::Icon?) : Gio::Icon?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon : Gio::Icon?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "icon", pointerof(value), Pointer(Void).null)
+      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def indicator_activatable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "indicator-activatable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def indicator_activatable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "indicator-activatable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def indicator_icon=(value : Gio::Icon?) : Gio::Icon?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "indicator-icon", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def indicator_icon : Gio::Icon?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "indicator-icon", pointerof(value), Pointer(Void).null)
+      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def loading=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "loading", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def loading? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "loading", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def needs_attention=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "needs-attention", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def needs_attention? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "needs-attention", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def parent=(value : Adw::TabPage?) : Adw::TabPage?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "parent", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def parent : Adw::TabPage?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "parent", pointerof(value), Pointer(Void).null)
+      Adw::TabPage.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def pinned? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "pinned", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def selected? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "selected", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def tooltip=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tooltip", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tooltip : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "tooltip", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def child : Gtk::Widget
@@ -109,7 +246,7 @@ module Adw
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def indicator_activatable? : Bool
+    def indicator_activatable : Bool
       # adw_tab_page_get_indicator_activatable: (Method | Getter)
       # Returns: (transfer none)
 
@@ -125,7 +262,7 @@ module Adw
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def loading? : Bool
+    def loading : Bool
       # adw_tab_page_get_loading: (Method | Getter)
       # Returns: (transfer none)
 
@@ -133,7 +270,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def needs_attention? : Bool
+    def needs_attention : Bool
       # adw_tab_page_get_needs_attention: (Method | Getter)
       # Returns: (transfer none)
 
@@ -149,7 +286,7 @@ module Adw
       Adw::TabPage.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def pinned? : Bool
+    def pinned : Bool
       # adw_tab_page_get_pinned: (Method | Getter)
       # Returns: (transfer none)
 
@@ -157,7 +294,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def selected? : Bool
+    def selected : Bool
       # adw_tab_page_get_selected: (Method | Getter)
       # Returns: (transfer none)
 

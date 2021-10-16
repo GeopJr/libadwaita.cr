@@ -58,11 +58,19 @@ module Gio
       LibGio.g_tcp_wrapper_connection_get_type
     end
 
-    def base_io_stream=(value : IOStream?) : IOStream?
+    def base_io_stream=(value : Gio::IOStream?) : Gio::IOStream?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "base-io-stream", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def base_io_stream : Gio::IOStream?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "base-io-stream", pointerof(value), Pointer(Void).null)
+      Gio::IOStream.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize(base_io_stream : Gio::IOStream, socket : Gio::Socket)

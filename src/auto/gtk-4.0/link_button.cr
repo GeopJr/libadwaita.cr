@@ -281,6 +281,36 @@ module Gtk
       LibGtk.gtk_link_button_get_type
     end
 
+    def uri=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "uri", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def uri : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "uri", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def visited=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visited", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visited? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "visited", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(uri : ::String)
       # gtk_link_button_new: (Constructor)
       # Returns: (transfer none)
@@ -312,7 +342,7 @@ module Gtk
       ::String.new(_retval)
     end
 
-    def visited? : Bool
+    def visited : Bool
       # gtk_link_button_get_visited: (Method)
       # Returns: (transfer none)
 

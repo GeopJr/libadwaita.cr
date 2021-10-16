@@ -37,14 +37,14 @@ module Gio
       LibGio.g_emblemed_icon_get_type
     end
 
-    def gicon=(value : Icon?) : Icon?
+    def gicon=(value : Gio::Icon?) : Gio::Icon?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "gicon", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def gicon : Icon?
+    def gicon : Gio::Icon?
       # Returns: None
 
       value = uninitialized Pointer(Void)

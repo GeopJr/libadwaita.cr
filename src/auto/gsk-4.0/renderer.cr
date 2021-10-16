@@ -44,6 +44,22 @@ module Gsk
       LibGsk.gsk_renderer_get_type
     end
 
+    def realized? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "realized", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def surface : Gdk::Surface?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "surface", pointerof(value), Pointer(Void).null)
+      Gdk::Surface.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def self.new_for_surface(surface : Gdk::Surface) : Gsk::Renderer?
       # gsk_renderer_new_for_surface: (Constructor)
       # Returns: (transfer full)

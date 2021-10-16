@@ -42,18 +42,34 @@ module Gio
       LibGio.g_emblem_get_type
     end
 
-    def icon=(value : Object?) : Object?
+    def icon=(value : GObject::Object?) : GObject::Object?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "icon", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def origin=(value : EmblemOrigin) : EmblemOrigin
+    def icon : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "icon", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def origin=(value : Gio::EmblemOrigin) : Gio::EmblemOrigin
       unsafe_value = value
 
       LibGObject.g_object_set(self, "origin", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def origin : Gio::EmblemOrigin
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "origin", pointerof(value), Pointer(Void).null)
+      Gio::EmblemOrigin.from_value(value)
     end
 
     def initialize(icon : Gio::Icon)

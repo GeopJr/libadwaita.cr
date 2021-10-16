@@ -37,6 +37,36 @@ module Gtk
       LibGtk.gtk_numeric_sorter_get_type
     end
 
+    def expression=(value : Gtk::Expression?) : Gtk::Expression?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expression", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expression : Gtk::Expression?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "expression", pointerof(value), Pointer(Void).null)
+      Gtk::Expression.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def sort_order=(value : Gtk::SortType) : Gtk::SortType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sort-order", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sort_order : Gtk::SortType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "sort-order", pointerof(value), Pointer(Void).null)
+      Gtk::SortType.from_value(value)
+    end
+
     def initialize(expression : Gtk::Expression?)
       # gtk_numeric_sorter_new: (Constructor)
       # @expression: (transfer full) (nullable)

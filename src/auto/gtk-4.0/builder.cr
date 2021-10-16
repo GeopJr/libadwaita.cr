@@ -218,6 +218,51 @@ module Gtk
       LibGtk.gtk_builder_get_type
     end
 
+    def current_object=(value : GObject::Object?) : GObject::Object?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "current-object", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def current_object : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "current-object", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def scope=(value : Gtk::BuilderScope?) : Gtk::BuilderScope?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "scope", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def scope : Gtk::BuilderScope?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "scope", pointerof(value), Pointer(Void).null)
+      Gtk::BuilderScope__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def translation_domain=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "translation-domain", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def translation_domain : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "translation-domain", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # gtk_builder_new: (Constructor)
       # Returns: (transfer full)

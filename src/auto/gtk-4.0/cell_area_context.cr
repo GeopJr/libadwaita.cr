@@ -60,10 +60,50 @@ module Gtk
       LibGtk.gtk_cell_area_context_get_type
     end
 
-    def area=(value : CellArea?) : CellArea?
+    def area=(value : Gtk::CellArea?) : Gtk::CellArea?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "area", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def area : Gtk::CellArea?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "area", pointerof(value), Pointer(Void).null)
+      Gtk::CellArea.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def minimum_height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "minimum-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def minimum_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "minimum-width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def natural_height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "natural-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def natural_width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "natural-width", pointerof(value), Pointer(Void).null)
       value
     end
 

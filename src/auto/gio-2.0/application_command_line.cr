@@ -197,21 +197,29 @@ module Gio
       LibGio.g_application_command_line_get_type
     end
 
-    def arguments=(value : Variant?) : Variant?
+    def arguments=(value : GLib::Variant?) : GLib::Variant?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "arguments", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def options=(value : Variant?) : Variant?
+    def is_remote? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-remote", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def options=(value : GLib::Variant?) : GLib::Variant?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "options", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def platform_data=(value : Variant?) : Variant?
+    def platform_data=(value : GLib::Variant?) : GLib::Variant?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "platform-data", unsafe_value, Pointer(Void).null)
@@ -261,7 +269,7 @@ module Gio
       _retval
     end
 
-    def is_remote? : Bool
+    def is_remote : Bool
       # g_application_command_line_get_is_remote: (Method | Getter)
       # Returns: (transfer none)
 

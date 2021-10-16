@@ -54,7 +54,7 @@ module Gio
       LibGio.g_file_enumerator_get_type
     end
 
-    def container=(value : File?) : File?
+    def container=(value : Gio::File?) : Gio::File?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "container", unsafe_value, Pointer(Void).null)

@@ -44,7 +44,37 @@ module Gtk
       LibGtk.gtk_overlay_layout_child_get_type
     end
 
+    def clip_overlay=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "clip-overlay", unsafe_value, Pointer(Void).null)
+      value
+    end
+
     def clip_overlay? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "clip-overlay", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def measure=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "measure", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def measure? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "measure", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def clip_overlay : Bool
       # gtk_overlay_layout_child_get_clip_overlay: (Method)
       # Returns: (transfer none)
 
@@ -52,7 +82,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def measure? : Bool
+    def measure : Bool
       # gtk_overlay_layout_child_get_measure: (Method)
       # Returns: (transfer none)
 

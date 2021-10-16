@@ -365,6 +365,66 @@ module Adw
       LibAdw.adw_preferences_window_get_type
     end
 
+    def can_swipe_back=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "can-swipe-back", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def can_swipe_back? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-swipe-back", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def search_enabled=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "search-enabled", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def search_enabled? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "search-enabled", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def visible_page=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible-page", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible_page : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "visible-page", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def visible_page_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible-page-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible_page_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "visible-page-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # adw_preferences_window_new: (Constructor)
       # Returns: (transfer none)
@@ -387,7 +447,7 @@ module Adw
       LibAdw.adw_preferences_window_close_subpage(self)
     end
 
-    def can_swipe_back? : Bool
+    def can_swipe_back : Bool
       # adw_preferences_window_get_can_swipe_back: (Method | Getter)
       # Returns: (transfer none)
 
@@ -395,7 +455,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def search_enabled? : Bool
+    def search_enabled : Bool
       # adw_preferences_window_get_search_enabled: (Method | Getter)
       # Returns: (transfer none)
 

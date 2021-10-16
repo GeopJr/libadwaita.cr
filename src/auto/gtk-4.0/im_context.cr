@@ -62,6 +62,36 @@ module Gtk
       LibGtk.gtk_im_context_get_type
     end
 
+    def input_hints=(value : Gtk::InputHints) : Gtk::InputHints
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "input-hints", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def input_hints : Gtk::InputHints
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "input-hints", pointerof(value), Pointer(Void).null)
+      Gtk::InputHints.from_value(value)
+    end
+
+    def input_purpose=(value : Gtk::InputPurpose) : Gtk::InputPurpose
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "input-purpose", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def input_purpose : Gtk::InputPurpose
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "input-purpose", pointerof(value), Pointer(Void).null)
+      Gtk::InputPurpose.from_value(value)
+    end
+
     def delete_surrounding(offset : Int32, n_chars : Int32) : Bool
       # gtk_im_context_delete_surrounding: (Method)
       # Returns: (transfer none)

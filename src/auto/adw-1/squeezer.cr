@@ -283,6 +283,150 @@ module Adw
       LibAdw.adw_squeezer_get_type
     end
 
+    def allow_none=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "allow-none", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def allow_none? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "allow-none", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def homogeneous=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "homogeneous", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def homogeneous? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "homogeneous", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def interpolate_size=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "interpolate-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def interpolate_size? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "interpolate-size", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def pages : Gtk::SelectionModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def switch_threshold_policy=(value : Adw::FoldThresholdPolicy) : Adw::FoldThresholdPolicy
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "switch-threshold-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def switch_threshold_policy : Adw::FoldThresholdPolicy
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "switch-threshold-policy", pointerof(value), Pointer(Void).null)
+      Adw::FoldThresholdPolicy.from_value(value)
+    end
+
+    def transition_duration=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transition-duration", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transition_duration : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "transition-duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def transition_running? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "transition-running", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def transition_type=(value : Adw::SqueezerTransitionType) : Adw::SqueezerTransitionType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transition-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transition_type : Adw::SqueezerTransitionType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "transition-type", pointerof(value), Pointer(Void).null)
+      Adw::SqueezerTransitionType.from_value(value)
+    end
+
+    def visible_child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "visible-child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def xalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "xalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def xalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "xalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def yalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "yalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def yalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "yalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # adw_squeezer_new: (Constructor)
       # Returns: (transfer none)
@@ -299,7 +443,7 @@ module Adw
       Adw::SqueezerPage.new(_retval, GICrystal::Transfer::None)
     end
 
-    def allow_none? : Bool
+    def allow_none : Bool
       # adw_squeezer_get_allow_none: (Method | Getter)
       # Returns: (transfer none)
 
@@ -307,7 +451,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def homogeneous? : Bool
+    def homogeneous : Bool
       # adw_squeezer_get_homogeneous: (Method | Getter)
       # Returns: (transfer none)
 
@@ -315,7 +459,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def interpolate_size? : Bool
+    def interpolate_size : Bool
       # adw_squeezer_get_interpolate_size: (Method | Getter)
       # Returns: (transfer none)
 
@@ -355,7 +499,7 @@ module Adw
       _retval
     end
 
-    def transition_running? : Bool
+    def transition_running : Bool
       # adw_squeezer_get_transition_running: (Method | Getter)
       # Returns: (transfer none)
 

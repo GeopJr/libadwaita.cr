@@ -260,6 +260,51 @@ module Adw
       LibAdw.adw_clamp_scrollable_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def maximum_size=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "maximum-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def maximum_size : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "maximum-size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def tightening_threshold=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tightening-threshold", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tightening_threshold : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "tightening-threshold", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # adw_clamp_scrollable_new: (Constructor)
       # Returns: (transfer none)

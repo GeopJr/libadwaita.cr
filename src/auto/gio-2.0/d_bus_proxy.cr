@@ -121,21 +121,21 @@ module Gio
       LibGio.g_dbus_proxy_get_type
     end
 
-    def g_bus_type=(value : BusType) : BusType
+    def g_bus_type=(value : Gio::BusType) : Gio::BusType
       unsafe_value = value
 
       LibGObject.g_object_set(self, "g-bus-type", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def g_connection=(value : DBusConnection?) : DBusConnection?
+    def g_connection=(value : Gio::DBusConnection?) : Gio::DBusConnection?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "g-connection", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def g_connection : DBusConnection?
+    def g_connection : Gio::DBusConnection?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -158,14 +158,14 @@ module Gio
       value
     end
 
-    def g_flags=(value : DBusProxyFlags) : DBusProxyFlags
+    def g_flags=(value : Gio::DBusProxyFlags) : Gio::DBusProxyFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "g-flags", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def g_flags : DBusProxyFlags
+    def g_flags : Gio::DBusProxyFlags
       # Returns: None
 
       value = uninitialized UInt32
@@ -173,14 +173,14 @@ module Gio
       Gio::DBusProxyFlags.from_value(value)
     end
 
-    def g_interface_info=(value : DBusInterfaceInfo?) : DBusInterfaceInfo?
+    def g_interface_info=(value : Gio::DBusInterfaceInfo?) : Gio::DBusInterfaceInfo?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "g-interface-info", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def g_interface_info : DBusInterfaceInfo?
+    def g_interface_info : Gio::DBusInterfaceInfo?
       # Returns: None
 
       value = uninitialized Pointer(Void)

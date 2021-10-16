@@ -19,6 +19,13 @@ module Gio
   # base socket, the #GDtlsConnection will not raise a %G_IO_ERROR_NOT_CONNECTED
   # error on further I/O.
   module DtlsConnection
+    def advertised_protocols=(value : Enumerable(::String)) : Enumerable(::String)
+      # handle array
+
+      LibGObject.g_object_set(self, "advertised-protocols", unsafe_value, Pointer(Void).null)
+      value
+    end
+
     def advertised_protocols : Enumerable(::String)
       # Returns: None
 
@@ -27,19 +34,134 @@ module Gio
       GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
     end
 
-    def base_socket=(value : DatagramBased?) : DatagramBased?
+    def base_socket=(value : Gio::DatagramBased?) : Gio::DatagramBased?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "base-socket", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def base_socket : DatagramBased?
+    def base_socket : Gio::DatagramBased?
       # Returns: None
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "base-socket", pointerof(value), Pointer(Void).null)
       Gio::DatagramBased__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def certificate=(value : Gio::TlsCertificate?) : Gio::TlsCertificate?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "certificate", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def certificate : Gio::TlsCertificate?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "certificate", pointerof(value), Pointer(Void).null)
+      Gio::TlsCertificate.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def ciphersuite_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "ciphersuite-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def database=(value : Gio::TlsDatabase?) : Gio::TlsDatabase?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "database", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def database : Gio::TlsDatabase?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "database", pointerof(value), Pointer(Void).null)
+      Gio::TlsDatabase.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def interaction=(value : Gio::TlsInteraction?) : Gio::TlsInteraction?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "interaction", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def interaction : Gio::TlsInteraction?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "interaction", pointerof(value), Pointer(Void).null)
+      Gio::TlsInteraction.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def negotiated_protocol : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "negotiated-protocol", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def peer_certificate : Gio::TlsCertificate?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "peer-certificate", pointerof(value), Pointer(Void).null)
+      Gio::TlsCertificate.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def peer_certificate_errors : Gio::TlsCertificateFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "peer-certificate-errors", pointerof(value), Pointer(Void).null)
+      Gio::TlsCertificateFlags.from_value(value)
+    end
+
+    def protocol_version : Gio::TlsProtocolVersion
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "protocol-version", pointerof(value), Pointer(Void).null)
+      Gio::TlsProtocolVersion.from_value(value)
+    end
+
+    def rehandshake_mode=(value : Gio::TlsRehandshakeMode) : Gio::TlsRehandshakeMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "rehandshake-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def rehandshake_mode : Gio::TlsRehandshakeMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "rehandshake-mode", pointerof(value), Pointer(Void).null)
+      Gio::TlsRehandshakeMode.from_value(value)
+    end
+
+    def require_close_notify=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "require-close-notify", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def require_close_notify? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "require-close-notify", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def close(cancellable : Gio::Cancellable?) : Bool
@@ -183,7 +305,7 @@ module Gio
       Gio::TlsRehandshakeMode.from_value(_retval)
     end
 
-    def require_close_notify? : Bool
+    def require_close_notify : Bool
       # g_dtls_connection_get_require_close_notify: (Method | Getter)
       # Returns: (transfer none)
 
@@ -379,12 +501,12 @@ module Gio
     end
 
     # Cast a `GObject::Object` to `DtlsConnection`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to DtlsConnection")
     end
 
     # Cast a `GObject::Object` to `DtlsConnection`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

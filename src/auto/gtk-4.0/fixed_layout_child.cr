@@ -39,6 +39,21 @@ module Gtk
       LibGtk.gtk_fixed_layout_child_get_type
     end
 
+    def transform=(value : Gsk::Transform?) : Gsk::Transform?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "transform", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def transform : Gsk::Transform?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "transform", pointerof(value), Pointer(Void).null)
+      Gsk::Transform.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def transform : Gsk::Transform?
       # gtk_fixed_layout_child_get_transform: (Method)
       # Returns: (transfer none)

@@ -220,6 +220,36 @@ module Gtk
       LibGtk.gtk_shortcut_label_get_type
     end
 
+    def accelerator=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accelerator", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accelerator : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "accelerator", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def disabled_text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "disabled-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def disabled_text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "disabled-text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(accelerator : ::String)
       # gtk_shortcut_label_new: (Constructor)
       # Returns: (transfer none)

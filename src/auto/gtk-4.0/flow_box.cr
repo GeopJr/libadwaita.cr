@@ -301,6 +301,126 @@ module Gtk
       LibGtk.gtk_flow_box_get_type
     end
 
+    def accept_unpaired_release=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accept-unpaired-release", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accept_unpaired_release? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "accept-unpaired-release", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def activate_on_single_click=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activate-on-single-click", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def activate_on_single_click? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "activate-on-single-click", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def column_spacing=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "column-spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def column_spacing : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "column-spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def homogeneous=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "homogeneous", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def homogeneous? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "homogeneous", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def max_children_per_line=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-children-per-line", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_children_per_line : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "max-children-per-line", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def min_children_per_line=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "min-children-per-line", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def min_children_per_line : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "min-children-per-line", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def row_spacing=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "row-spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def row_spacing : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "row-spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def selection_mode=(value : Gtk::SelectionMode) : Gtk::SelectionMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selection-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selection_mode : Gtk::SelectionMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "selection-mode", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionMode.from_value(value)
+    end
+
     def initialize
       # gtk_flow_box_new: (Constructor)
       # Returns: (transfer none)
@@ -329,7 +449,7 @@ module Gtk
       LibGtk.gtk_flow_box_bind_model(self, model, create_widget_func, user_data, user_data_free_func)
     end
 
-    def activate_on_single_click? : Bool
+    def activate_on_single_click : Bool
       # gtk_flow_box_get_activate_on_single_click: (Method)
       # Returns: (transfer none)
 
@@ -361,7 +481,7 @@ module Gtk
       _retval
     end
 
-    def homogeneous? : Bool
+    def homogeneous : Bool
       # gtk_flow_box_get_homogeneous: (Method)
       # Returns: (transfer none)
 

@@ -48,10 +48,33 @@ module Gio
       LibGio.g_unix_input_stream_get_type
     end
 
+    def close_fd=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "close-fd", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def close_fd? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "close-fd", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def fd=(value : Int32) : Int32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "fd", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fd : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "fd", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -63,7 +86,7 @@ module Gio
       @pointer = _retval
     end
 
-    def close_fd? : Bool
+    def close_fd : Bool
       # g_unix_input_stream_get_close_fd: (Method | Getter)
       # Returns: (transfer none)
 

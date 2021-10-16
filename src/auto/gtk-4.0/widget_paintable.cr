@@ -51,6 +51,21 @@ module Gtk
       LibGtk.gtk_widget_paintable_get_type
     end
 
+    def widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(widget : Gtk::Widget?)
       # gtk_widget_paintable_new: (Constructor)
       # @widget: (nullable)

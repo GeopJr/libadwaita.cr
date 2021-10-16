@@ -42,18 +42,34 @@ module Gtk
       LibGtk.gtk_layout_child_get_type
     end
 
-    def child_widget=(value : Widget?) : Widget?
+    def child_widget=(value : Gtk::Widget?) : Gtk::Widget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "child-widget", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def layout_manager=(value : LayoutManager?) : LayoutManager?
+    def child_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def layout_manager=(value : Gtk::LayoutManager?) : Gtk::LayoutManager?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "layout-manager", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def layout_manager : Gtk::LayoutManager?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "layout-manager", pointerof(value), Pointer(Void).null)
+      Gtk::LayoutManager.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def child_widget : Gtk::Widget

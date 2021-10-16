@@ -243,6 +243,21 @@ module Gtk
       LibGtk.gtk_action_bar_get_type
     end
 
+    def revealed=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "revealed", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def revealed? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "revealed", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_action_bar_new: (Constructor)
       # Returns: (transfer none)
@@ -259,7 +274,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def revealed? : Bool
+    def revealed : Bool
       # gtk_action_bar_get_revealed: (Method)
       # Returns: (transfer none)
 

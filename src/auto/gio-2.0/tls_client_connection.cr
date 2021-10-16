@@ -2,6 +2,59 @@ module Gio
   # #GTlsClientConnection is the client-side subclass of
   # #GTlsConnection, representing a client-side TLS connection.
   module TlsClientConnection
+    def accepted_cas : GLib::List
+      # Returns: None
+
+      value = uninitialized Pointer(LibGLib::List)
+      LibGObject.g_object_get(self, "accepted-cas", pointerof(value), Pointer(Void).null)
+      GLib::List(Pointer(Nil)).new(value, GICrystal::Transfer::None)
+    end
+
+    def server_identity=(value : Gio::SocketConnectable?) : Gio::SocketConnectable?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "server-identity", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def server_identity : Gio::SocketConnectable?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "server-identity", pointerof(value), Pointer(Void).null)
+      Gio::SocketConnectable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def use_ssl3=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-ssl3", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_ssl3? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-ssl3", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def validation_flags=(value : Gio::TlsCertificateFlags) : Gio::TlsCertificateFlags
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "validation-flags", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def validation_flags : Gio::TlsCertificateFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "validation-flags", pointerof(value), Pointer(Void).null)
+      Gio::TlsCertificateFlags.from_value(value)
+    end
+
     def new(base_io_stream : Gio::IOStream, server_identity : Gio::SocketConnectable?) : Gio::TlsClientConnection
       # g_tls_client_connection_new: (Throws)
       # @server_identity: (nullable)
@@ -40,7 +93,7 @@ module Gio
       Gio::SocketConnectable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def use_ssl3? : Bool
+    def use_ssl3 : Bool
       # g_tls_client_connection_get_use_ssl3: (Method | Getter)
       # Returns: (transfer none)
 
@@ -104,12 +157,12 @@ module Gio
     end
 
     # Cast a `GObject::Object` to `TlsClientConnection`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to TlsClientConnection")
     end
 
     # Cast a `GObject::Object` to `TlsClientConnection`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

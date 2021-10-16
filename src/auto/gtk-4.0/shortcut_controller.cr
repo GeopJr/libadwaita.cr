@@ -104,11 +104,41 @@ module Gtk
       LibGtk.gtk_shortcut_controller_get_type
     end
 
-    def model=(value : ListModel?) : ListModel?
+    def mnemonic_modifiers=(value : Gdk::ModifierType) : Gdk::ModifierType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "mnemonic-modifiers", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def mnemonic_modifiers : Gdk::ModifierType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "mnemonic-modifiers", pointerof(value), Pointer(Void).null)
+      Gdk::ModifierType.from_value(value)
+    end
+
+    def model=(value : Gio::ListModel?) : Gio::ListModel?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def scope=(value : Gtk::ShortcutScope) : Gtk::ShortcutScope
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "scope", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def scope : Gtk::ShortcutScope
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "scope", pointerof(value), Pointer(Void).null)
+      Gtk::ShortcutScope.from_value(value)
     end
 
     def initialize

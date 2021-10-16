@@ -377,10 +377,26 @@ module Gtk
       LibGtk.gtk_assistant_get_type
     end
 
+    def pages : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def use_header_bar=(value : Int32) : Int32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "use-header-bar", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_header_bar : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "use-header-bar", pointerof(value), Pointer(Void).null)
       value
     end
 

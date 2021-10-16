@@ -6,6 +6,104 @@ module Gtk
   # [class@Gtk.FontChooserWidget], [class@Gtk.FontChooserDialog] and
   # [class@Gtk.FontButton].
   module FontChooser
+    def font=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "font", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def font : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "font", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def font_desc=(value : Pango::FontDescription?) : Pango::FontDescription?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "font-desc", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def font_desc : Pango::FontDescription?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "font-desc", pointerof(value), Pointer(Void).null)
+      Pango::FontDescription.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def font_features : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "font-features", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def language=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "language", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def language : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "language", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def level=(value : Gtk::FontChooserLevel) : Gtk::FontChooserLevel
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "level", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def level : Gtk::FontChooserLevel
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "level", pointerof(value), Pointer(Void).null)
+      Gtk::FontChooserLevel.from_value(value)
+    end
+
+    def preview_text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "preview-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def preview_text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "preview-text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def show_preview_entry=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-preview-entry", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_preview_entry? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-preview-entry", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def font : ::String?
       # gtk_font_chooser_get_font: (Method)
       # Returns: (transfer full)
@@ -86,7 +184,7 @@ module Gtk
       GICrystal.transfer_full(_retval)
     end
 
-    def show_preview_entry? : Bool
+    def show_preview_entry : Bool
       # gtk_font_chooser_get_show_preview_entry: (Method)
       # Returns: (transfer none)
 
@@ -197,12 +295,12 @@ module Gtk
     end
 
     # Cast a `GObject::Object` to `FontChooser`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to FontChooser")
     end
 
     # Cast a `GObject::Object` to `FontChooser`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

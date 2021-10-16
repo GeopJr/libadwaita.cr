@@ -256,6 +256,36 @@ module Gtk
       LibGtk.gtk_switch_get_type
     end
 
+    def active=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "active", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def active? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "active", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def state=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "state", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def state? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "state", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_switch_new: (Constructor)
       # Returns: (transfer none)
@@ -264,7 +294,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def active? : Bool
+    def active : Bool
       # gtk_switch_get_active: (Method)
       # Returns: (transfer none)
 
@@ -272,7 +302,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def state? : Bool
+    def state : Bool
       # gtk_switch_get_state: (Method)
       # Returns: (transfer none)
 

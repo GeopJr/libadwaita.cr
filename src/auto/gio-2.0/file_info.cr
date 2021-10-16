@@ -256,7 +256,7 @@ module Gio
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def is_backup? : Bool
+    def is_backup : Bool
       # g_file_info_get_is_backup: (Method)
       # Returns: (transfer none)
 
@@ -264,7 +264,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_hidden? : Bool
+    def is_hidden : Bool
       # g_file_info_get_is_hidden: (Method)
       # Returns: (transfer none)
 
@@ -272,7 +272,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def is_symlink? : Bool
+    def is_symlink : Bool
       # g_file_info_get_is_symlink: (Method)
       # Returns: (transfer none)
 

@@ -135,7 +135,7 @@ module Gtk
       GLib::DateTime.new(_retval, GICrystal::Transfer::None)
     end
 
-    def private_hint? : Bool
+    def private_hint : Bool
       # gtk_recent_info_get_private_hint: (Method)
       # Returns: (transfer none)
 

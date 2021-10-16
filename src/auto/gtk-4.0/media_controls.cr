@@ -217,6 +217,21 @@ module Gtk
       LibGtk.gtk_media_controls_get_type
     end
 
+    def media_stream=(value : Gtk::MediaStream?) : Gtk::MediaStream?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "media-stream", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def media_stream : Gtk::MediaStream?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "media-stream", pointerof(value), Pointer(Void).null)
+      Gtk::MediaStream.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(stream : Gtk::MediaStream?)
       # gtk_media_controls_new: (Constructor)
       # @stream: (nullable)

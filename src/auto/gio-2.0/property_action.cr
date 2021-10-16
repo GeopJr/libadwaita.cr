@@ -155,14 +155,14 @@ module Gio
       ::String.new(value)
     end
 
-    def object=(value : Object?) : Object?
+    def object=(value : GObject::Object?) : GObject::Object?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "object", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def parameter_type : VariantType?
+    def parameter_type : GLib::VariantType?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -177,7 +177,7 @@ module Gio
       value
     end
 
-    def state : Variant?
+    def state : GLib::Variant?
       # Returns: None
 
       value = uninitialized Pointer(Void)
@@ -185,7 +185,7 @@ module Gio
       GLib::Variant.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    def state_type : VariantType?
+    def state_type : GLib::VariantType?
       # Returns: None
 
       value = uninitialized Pointer(Void)

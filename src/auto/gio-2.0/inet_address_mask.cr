@@ -45,17 +45,41 @@ module Gio
       LibGio.g_inet_address_mask_get_type
     end
 
-    def address=(value : InetAddress?) : InetAddress?
+    def address=(value : Gio::InetAddress?) : Gio::InetAddress?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "address", unsafe_value, Pointer(Void).null)
       value
     end
 
+    def address : Gio::InetAddress?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "address", pointerof(value), Pointer(Void).null)
+      Gio::InetAddress.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def family : Gio::SocketFamily
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "family", pointerof(value), Pointer(Void).null)
+      Gio::SocketFamily.from_value(value)
+    end
+
     def length=(value : UInt32) : UInt32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "length", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def length : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "length", pointerof(value), Pointer(Void).null)
       value
     end
 

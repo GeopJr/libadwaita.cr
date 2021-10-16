@@ -80,6 +80,74 @@ module Gtk
       LibGtk.gtk_icon_theme_get_type
     end
 
+    def display=(value : Gdk::Display?) : Gdk::Display?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def icon_names : Enumerable(::String)
+      # Returns: None
+
+      value = uninitialized Pointer(Pointer(LibC::Char))
+      LibGObject.g_object_get(self, "icon-names", pointerof(value), Pointer(Void).null)
+      GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
+    end
+
+    def resource_path=(value : Enumerable(::String)) : Enumerable(::String)
+      # handle array
+
+      LibGObject.g_object_set(self, "resource-path", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def resource_path : Enumerable(::String)
+      # Returns: None
+
+      value = uninitialized Pointer(Pointer(LibC::Char))
+      LibGObject.g_object_get(self, "resource-path", pointerof(value), Pointer(Void).null)
+      GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
+    end
+
+    def search_path=(value : Enumerable(::String)) : Enumerable(::String)
+      # handle array
+
+      LibGObject.g_object_set(self, "search-path", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def search_path : Enumerable(::String)
+      # Returns: None
+
+      value = uninitialized Pointer(Pointer(LibC::Char))
+      LibGObject.g_object_get(self, "search-path", pointerof(value), Pointer(Void).null)
+      GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
+    end
+
+    def theme_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "theme-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def theme_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "theme-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # gtk_icon_theme_new: (Constructor)
       # Returns: (transfer full)

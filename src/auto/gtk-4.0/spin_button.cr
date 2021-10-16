@@ -418,6 +418,126 @@ module Gtk
       LibGtk.gtk_spin_button_get_type
     end
 
+    def adjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "adjustment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def adjustment : Gtk::Adjustment?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "adjustment", pointerof(value), Pointer(Void).null)
+      Gtk::Adjustment.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def climb_rate=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "climb-rate", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def climb_rate : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "climb-rate", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def digits=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "digits", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def digits : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "digits", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def numeric=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "numeric", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def numeric? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "numeric", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def snap_to_ticks=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "snap-to-ticks", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def snap_to_ticks? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "snap-to-ticks", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def update_policy=(value : Gtk::SpinButtonUpdatePolicy) : Gtk::SpinButtonUpdatePolicy
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "update-policy", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def update_policy : Gtk::SpinButtonUpdatePolicy
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "update-policy", pointerof(value), Pointer(Void).null)
+      Gtk::SpinButtonUpdatePolicy.from_value(value)
+    end
+
+    def value=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "value", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def value : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "value", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def wrap=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "wrap", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def wrap? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "wrap", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(adjustment : Gtk::Adjustment?, climb_rate : Float64, digits : UInt32)
       # gtk_spin_button_new: (Constructor)
       # @adjustment: (nullable)
@@ -491,7 +611,7 @@ module Gtk
       LibGtk.gtk_spin_button_get_increments(self, step, page)
     end
 
-    def numeric? : Bool
+    def numeric : Bool
       # gtk_spin_button_get_numeric: (Method)
       # Returns: (transfer none)
 
@@ -511,7 +631,7 @@ module Gtk
       LibGtk.gtk_spin_button_get_range(self, min, max)
     end
 
-    def snap_to_ticks? : Bool
+    def snap_to_ticks : Bool
       # gtk_spin_button_get_snap_to_ticks: (Method)
       # Returns: (transfer none)
 
@@ -543,7 +663,7 @@ module Gtk
       _retval
     end
 
-    def wrap? : Bool
+    def wrap : Bool
       # gtk_spin_button_get_wrap: (Method)
       # Returns: (transfer none)
 

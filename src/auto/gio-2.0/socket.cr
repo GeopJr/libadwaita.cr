@@ -150,11 +150,49 @@ module Gio
       LibGio.g_socket_get_type
     end
 
-    def family=(value : SocketFamily) : SocketFamily
+    def blocking=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "blocking", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def blocking? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "blocking", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def broadcast=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "broadcast", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def broadcast? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "broadcast", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def family=(value : Gio::SocketFamily) : Gio::SocketFamily
       unsafe_value = value
 
       LibGObject.g_object_set(self, "family", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def family : Gio::SocketFamily
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "family", pointerof(value), Pointer(Void).null)
+      Gio::SocketFamily.from_value(value)
     end
 
     def fd=(value : Int32) : Int32
@@ -164,21 +202,143 @@ module Gio
       value
     end
 
-    def protocol=(value : SocketProtocol) : SocketProtocol
+    def fd : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "fd", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def keepalive=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "keepalive", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def keepalive? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "keepalive", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def listen_backlog=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "listen-backlog", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def listen_backlog : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "listen-backlog", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def local_address : Gio::SocketAddress?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "local-address", pointerof(value), Pointer(Void).null)
+      Gio::SocketAddress.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def multicast_loopback=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "multicast-loopback", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def multicast_loopback? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "multicast-loopback", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def multicast_ttl=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "multicast-ttl", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def multicast_ttl : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "multicast-ttl", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def protocol=(value : Gio::SocketProtocol) : Gio::SocketProtocol
       unsafe_value = value
 
       LibGObject.g_object_set(self, "protocol", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def type=(value : SocketType) : SocketType
+    def protocol : Gio::SocketProtocol
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "protocol", pointerof(value), Pointer(Void).null)
+      Gio::SocketProtocol.from_value(value)
+    end
+
+    def remote_address : Gio::SocketAddress?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "remote-address", pointerof(value), Pointer(Void).null)
+      Gio::SocketAddress.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def timeout=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "timeout", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def timeout : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "timeout", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def ttl=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "ttl", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def ttl : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "ttl", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def type=(value : Gio::SocketType) : Gio::SocketType
       unsafe_value = value
 
       LibGObject.g_object_set(self, "type", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def type : SocketType
+    def type : Gio::SocketType
       # Returns: None
 
       value = uninitialized UInt32
@@ -310,7 +470,7 @@ module Gio
       _retval
     end
 
-    def blocking? : Bool
+    def blocking : Bool
       # g_socket_get_blocking: (Method | Getter)
       # Returns: (transfer none)
 
@@ -318,7 +478,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def broadcast? : Bool
+    def broadcast : Bool
       # g_socket_get_broadcast: (Method | Getter)
       # Returns: (transfer none)
 
@@ -350,7 +510,7 @@ module Gio
       _retval
     end
 
-    def keepalive? : Bool
+    def keepalive : Bool
       # g_socket_get_keepalive: (Method | Getter)
       # Returns: (transfer none)
 
@@ -374,7 +534,7 @@ module Gio
       Gio::SocketAddress.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def multicast_loopback? : Bool
+    def multicast_loopback : Bool
       # g_socket_get_multicast_loopback: (Method | Getter)
       # Returns: (transfer none)
 

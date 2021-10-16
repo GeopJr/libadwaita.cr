@@ -33,6 +33,21 @@ module Gtk
       LibGtk.gtk_selection_filter_model_get_type
     end
 
+    def model=(value : Gtk::SelectionModel?) : Gtk::SelectionModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gtk::SelectionModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(model : Gtk::SelectionModel?)
       # gtk_selection_filter_model_new: (Constructor)
       # @model: (nullable)

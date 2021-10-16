@@ -42,11 +42,42 @@ module Gtk
       LibGtk.gtk_tree_list_model_get_type
     end
 
+    def autoexpand=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "autoexpand", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def autoexpand? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "autoexpand", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def model : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def passthrough=(value : Bool) : Bool
       unsafe_value = value
 
       LibGObject.g_object_set(self, "passthrough", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def passthrough? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "passthrough", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def initialize(root : Gio::ListModel, passthrough : Bool, autoexpand : Bool, create_func : Pointer(Void), user_data : Pointer(Nil)?, user_destroy : Pointer(Void))
@@ -66,7 +97,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def autoexpand? : Bool
+    def autoexpand : Bool
       # gtk_tree_list_model_get_autoexpand: (Method)
       # Returns: (transfer none)
 
@@ -90,7 +121,7 @@ module Gtk
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
-    def passthrough? : Bool
+    def passthrough : Bool
       # gtk_tree_list_model_get_passthrough: (Method)
       # Returns: (transfer none)
 

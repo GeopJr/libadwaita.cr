@@ -85,6 +85,14 @@ module Gtk
       value
     end
 
+    def constant : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "constant", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def multiplier=(value : Float64) : Float64
       unsafe_value = value
 
@@ -92,25 +100,57 @@ module Gtk
       value
     end
 
-    def relation=(value : ConstraintRelation) : ConstraintRelation
+    def multiplier : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "multiplier", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def relation=(value : Gtk::ConstraintRelation) : Gtk::ConstraintRelation
       unsafe_value = value
 
       LibGObject.g_object_set(self, "relation", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def source=(value : ConstraintTarget?) : ConstraintTarget?
+    def relation : Gtk::ConstraintRelation
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "relation", pointerof(value), Pointer(Void).null)
+      Gtk::ConstraintRelation.from_value(value)
+    end
+
+    def source=(value : Gtk::ConstraintTarget?) : Gtk::ConstraintTarget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "source", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def source_attribute=(value : ConstraintAttribute) : ConstraintAttribute
+    def source : Gtk::ConstraintTarget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "source", pointerof(value), Pointer(Void).null)
+      Gtk::ConstraintTarget__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def source_attribute=(value : Gtk::ConstraintAttribute) : Gtk::ConstraintAttribute
       unsafe_value = value
 
       LibGObject.g_object_set(self, "source-attribute", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def source_attribute : Gtk::ConstraintAttribute
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "source-attribute", pointerof(value), Pointer(Void).null)
+      Gtk::ConstraintAttribute.from_value(value)
     end
 
     def strength=(value : Int32) : Int32
@@ -120,18 +160,42 @@ module Gtk
       value
     end
 
-    def target=(value : ConstraintTarget?) : ConstraintTarget?
+    def strength : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "strength", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def target=(value : Gtk::ConstraintTarget?) : Gtk::ConstraintTarget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "target", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def target_attribute=(value : ConstraintAttribute) : ConstraintAttribute
+    def target : Gtk::ConstraintTarget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "target", pointerof(value), Pointer(Void).null)
+      Gtk::ConstraintTarget__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def target_attribute=(value : Gtk::ConstraintAttribute) : Gtk::ConstraintAttribute
       unsafe_value = value
 
       LibGObject.g_object_set(self, "target-attribute", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def target_attribute : Gtk::ConstraintAttribute
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "target-attribute", pointerof(value), Pointer(Void).null)
+      Gtk::ConstraintAttribute.from_value(value)
     end
 
     def initialize(target : Gtk::ConstraintTarget?, target_attribute : Gtk::ConstraintAttribute, relation : Gtk::ConstraintRelation, source : Gtk::ConstraintTarget?, source_attribute : Gtk::ConstraintAttribute, multiplier : Float64, constant : Float64, strength : Int32)

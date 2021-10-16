@@ -39,11 +39,49 @@ module Adw
       LibAdw.adw_leaflet_page_get_type
     end
 
-    def child=(value : Widget?) : Widget?
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def navigatable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "navigatable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def navigatable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "navigatable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def child : Gtk::Widget
@@ -62,7 +100,7 @@ module Adw
       ::String.new(_retval) unless _retval.null?
     end
 
-    def navigatable? : Bool
+    def navigatable : Bool
       # adw_leaflet_page_get_navigatable: (Method | Getter)
       # Returns: (transfer none)
 

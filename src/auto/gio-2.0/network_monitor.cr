@@ -6,6 +6,30 @@ module Gio
   #
   # There is also an implementation for use inside Flatpak sandboxes.
   module NetworkMonitor
+    def connectivity : Gio::NetworkConnectivity
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "connectivity", pointerof(value), Pointer(Void).null)
+      Gio::NetworkConnectivity.from_value(value)
+    end
+
+    def network_available? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "network-available", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def network_metered? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "network-metered", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def self.default : Gio::NetworkMonitor
       # g_network_monitor_get_default: (None)
       # Returns: (transfer none)
@@ -71,7 +95,7 @@ module Gio
       Gio::NetworkConnectivity.from_value(_retval)
     end
 
-    def network_available? : Bool
+    def network_available : Bool
       # g_network_monitor_get_network_available: (Method | Getter)
       # Returns: (transfer none)
 
@@ -79,7 +103,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def network_metered? : Bool
+    def network_metered : Bool
       # g_network_monitor_get_network_metered: (Method | Getter)
       # Returns: (transfer none)
 
@@ -114,12 +138,12 @@ module Gio
     end
 
     # Cast a `GObject::Object` to `NetworkMonitor`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to NetworkMonitor")
     end
 
     # Cast a `GObject::Object` to `NetworkMonitor`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

@@ -216,11 +216,27 @@ module GdkPixbuf
       value
     end
 
-    def colorspace=(value : Colorspace) : Colorspace
+    def bits_per_sample : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "bits-per-sample", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def colorspace=(value : GdkPixbuf::Colorspace) : GdkPixbuf::Colorspace
       unsafe_value = value
 
       LibGObject.g_object_set(self, "colorspace", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def colorspace : GdkPixbuf::Colorspace
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "colorspace", pointerof(value), Pointer(Void).null)
+      GdkPixbuf::Colorspace.from_value(value)
     end
 
     def has_alpha=(value : Bool) : Bool
@@ -230,10 +246,26 @@ module GdkPixbuf
       value
     end
 
+    def has_alpha? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-alpha", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def height=(value : Int32) : Int32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "height", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -244,11 +276,27 @@ module GdkPixbuf
       value
     end
 
-    def pixel_bytes=(value : Bytes?) : Bytes?
+    def n_channels : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "n-channels", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def pixel_bytes=(value : GLib::Bytes?) : GLib::Bytes?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "pixel-bytes", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def pixel_bytes : GLib::Bytes?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pixel-bytes", pointerof(value), Pointer(Void).null)
+      GLib::Bytes.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def pixels=(value : Pointer(Nil)) : Pointer(Nil)
@@ -258,6 +306,14 @@ module GdkPixbuf
       value
     end
 
+    def pixels : Pointer(Nil)
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pixels", pointerof(value), Pointer(Void).null)
+      Pointer(Void)
+    end
+
     def rowstride=(value : Int32) : Int32
       unsafe_value = value
 
@@ -265,10 +321,26 @@ module GdkPixbuf
       value
     end
 
+    def rowstride : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "rowstride", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def width=(value : Int32) : Int32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -649,7 +721,7 @@ module GdkPixbuf
       GdkPixbuf::Colorspace.from_value(_retval)
     end
 
-    def has_alpha? : Bool
+    def has_alpha : Bool
       # gdk_pixbuf_get_has_alpha: (Method)
       # Returns: (transfer none)
 

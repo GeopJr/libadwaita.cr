@@ -100,18 +100,34 @@ module Gtk
       LibGtk.gtk_pad_controller_get_type
     end
 
-    def action_group=(value : ActionGroup?) : ActionGroup?
+    def action_group=(value : Gio::ActionGroup?) : Gio::ActionGroup?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "action-group", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def pad=(value : Device?) : Device?
+    def action_group : Gio::ActionGroup?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "action-group", pointerof(value), Pointer(Void).null)
+      Gio::ActionGroup__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def pad=(value : Gdk::Device?) : Gdk::Device?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "pad", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def pad : Gdk::Device?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "pad", pointerof(value), Pointer(Void).null)
+      Gdk::Device.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize(group : Gio::ActionGroup, pad : Gdk::Device?)

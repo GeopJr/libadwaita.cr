@@ -8,6 +8,36 @@ module Gtk
   # [class@Gtk.ColorChooserWidget], [class@Gtk.ColorChooserDialog] and
   # [class@Gtk.ColorButton].
   module ColorChooser
+    def rgba=(value : Gdk::RGBA?) : Gdk::RGBA?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "rgba", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def rgba : Gdk::RGBA?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "rgba", pointerof(value), Pointer(Void).null)
+      Gdk::RGBA.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def use_alpha=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-alpha", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_alpha? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-alpha", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def add_palette(orientation : Gtk::Orientation, colors_per_line : Int32, colors : Enumerable(Gdk::RGBA)?) : Nil
       # gtk_color_chooser_add_palette: (Method)
       # @colors: (nullable) (array length=n_colors element-type Interface)
@@ -34,7 +64,7 @@ module Gtk
       color
     end
 
-    def use_alpha? : Bool
+    def use_alpha : Bool
       # gtk_color_chooser_get_use_alpha: (Method)
       # Returns: (transfer none)
 
@@ -83,12 +113,12 @@ module Gtk
     end
 
     # Cast a `GObject::Object` to `ColorChooser`, throw `TypeCastError` if cast can't be made.
-    def self.cast(obj : GObject::Object)
+    def self.cast(obj : GObject::Object) : self
       cast?(obj) || raise TypeCastError.new("can't cast #{typeof(obj).name} to ColorChooser")
     end
 
     # Cast a `GObject::Object` to `ColorChooser`, returns nil if cast can't be made.
-    def self.cast?(obj : GObject::Object)
+    def self.cast?(obj : GObject::Object) : self?
       new(obj.to_unsafe, GICrystal::Transfer::None) unless LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
     end
 

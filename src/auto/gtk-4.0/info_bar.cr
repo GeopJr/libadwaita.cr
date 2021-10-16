@@ -295,6 +295,51 @@ module Gtk
       LibGtk.gtk_info_bar_get_type
     end
 
+    def message_type=(value : Gtk::MessageType) : Gtk::MessageType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "message-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def message_type : Gtk::MessageType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "message-type", pointerof(value), Pointer(Void).null)
+      Gtk::MessageType.from_value(value)
+    end
+
+    def revealed=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "revealed", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def revealed? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "revealed", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_close_button=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-close-button", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_close_button? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-close-button", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_info_bar_new: (Constructor)
       # Returns: (transfer none)
@@ -333,7 +378,7 @@ module Gtk
       Gtk::MessageType.from_value(_retval)
     end
 
-    def revealed? : Bool
+    def revealed : Bool
       # gtk_info_bar_get_revealed: (Method)
       # Returns: (transfer none)
 
@@ -341,7 +386,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_close_button? : Bool
+    def show_close_button : Bool
       # gtk_info_bar_get_show_close_button: (Method)
       # Returns: (transfer none)
 

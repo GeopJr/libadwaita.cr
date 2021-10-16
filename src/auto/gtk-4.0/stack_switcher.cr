@@ -253,6 +253,21 @@ module Gtk
       LibGtk.gtk_stack_switcher_get_type
     end
 
+    def stack=(value : Gtk::Stack?) : Gtk::Stack?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "stack", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def stack : Gtk::Stack?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "stack", pointerof(value), Pointer(Void).null)
+      Gtk::Stack.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # gtk_stack_switcher_new: (Constructor)
       # Returns: (transfer none)

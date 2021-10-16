@@ -236,6 +236,51 @@ module Gtk
       LibGtk.gtk_list_box_row_get_type
     end
 
+    def activatable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activatable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def activatable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "activatable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def selectable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selectable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selectable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "selectable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_list_box_row_new: (Constructor)
       # Returns: (transfer none)
@@ -251,7 +296,7 @@ module Gtk
       LibGtk.gtk_list_box_row_changed(self)
     end
 
-    def activatable? : Bool
+    def activatable : Bool
       # gtk_list_box_row_get_activatable: (Method)
       # Returns: (transfer none)
 
@@ -283,7 +328,7 @@ module Gtk
       _retval
     end
 
-    def selectable? : Bool
+    def selectable : Bool
       # gtk_list_box_row_get_selectable: (Method)
       # Returns: (transfer none)
 

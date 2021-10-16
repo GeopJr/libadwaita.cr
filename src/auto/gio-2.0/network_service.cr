@@ -62,6 +62,14 @@ module Gio
       value
     end
 
+    def domain : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "domain", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def protocol=(value : ::String) : ::String
       unsafe_value = value
 
@@ -69,11 +77,42 @@ module Gio
       value
     end
 
+    def protocol : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "protocol", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def scheme=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "scheme", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def scheme : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "scheme", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def service=(value : ::String) : ::String
       unsafe_value = value
 
       LibGObject.g_object_set(self, "service", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def service : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "service", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def initialize(service : ::String, protocol : ::String, domain : ::String)

@@ -269,6 +269,104 @@ module Gtk
       LibGtk.gtk_drop_down_get_type
     end
 
+    def enable_search=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "enable-search", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def enable_search? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "enable-search", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def expression=(value : Gtk::Expression?) : Gtk::Expression?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expression", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expression : Gtk::Expression?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "expression", pointerof(value), Pointer(Void).null)
+      Gtk::Expression.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def factory=(value : Gtk::ListItemFactory?) : Gtk::ListItemFactory?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "factory", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def factory : Gtk::ListItemFactory?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "factory", pointerof(value), Pointer(Void).null)
+      Gtk::ListItemFactory.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def list_factory=(value : Gtk::ListItemFactory?) : Gtk::ListItemFactory?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "list-factory", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def list_factory : Gtk::ListItemFactory?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "list-factory", pointerof(value), Pointer(Void).null)
+      Gtk::ListItemFactory.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def model=(value : Gio::ListModel?) : Gio::ListModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def selected=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selected", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selected : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "selected", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def selected_item : GObject::Object?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "selected-item", pointerof(value), Pointer(Void).null)
+      GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(model : Gio::ListModel?, expression : Gtk::Expression?)
       # gtk_drop_down_new: (Constructor)
       # @model: (transfer full) (nullable)
@@ -307,7 +405,7 @@ module Gtk
       self.new_from_strings(strings)
     end
 
-    def enable_search? : Bool
+    def enable_search : Bool
       # gtk_drop_down_get_enable_search: (Method)
       # Returns: (transfer none)
 

@@ -281,6 +281,74 @@ module Adw
       LibAdw.adw_view_switcher_title_get_type
     end
 
+    def stack=(value : Adw::ViewStack?) : Adw::ViewStack?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "stack", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def stack : Adw::ViewStack?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "stack", pointerof(value), Pointer(Void).null)
+      Adw::ViewStack.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def subtitle=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "subtitle", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def subtitle : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "subtitle", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def title_visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "title-visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def view_switcher_enabled=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "view-switcher-enabled", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def view_switcher_enabled? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "view-switcher-enabled", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # adw_view_switcher_title_new: (Constructor)
       # Returns: (transfer none)
@@ -313,7 +381,7 @@ module Adw
       ::String.new(_retval)
     end
 
-    def title_visible? : Bool
+    def title_visible : Bool
       # adw_view_switcher_title_get_title_visible: (Method | Getter)
       # Returns: (transfer none)
 
@@ -321,7 +389,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def view_switcher_enabled? : Bool
+    def view_switcher_enabled : Bool
       # adw_view_switcher_title_get_view_switcher_enabled: (Method | Getter)
       # Returns: (transfer none)
 

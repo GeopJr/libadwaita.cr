@@ -94,10 +94,26 @@ module Gio
       value
     end
 
+    def destination_hostname : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "destination-hostname", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def destination_port=(value : UInt32) : UInt32
       unsafe_value = value
 
       LibGObject.g_object_set(self, "destination-port", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def destination_port : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "destination-port", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -108,11 +124,27 @@ module Gio
       value
     end
 
+    def destination_protocol : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "destination-protocol", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def password=(value : ::String) : ::String
       unsafe_value = value
 
       LibGObject.g_object_set(self, "password", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def password : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "password", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def protocol=(value : ::String) : ::String
@@ -122,6 +154,14 @@ module Gio
       value
     end
 
+    def protocol : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "protocol", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def uri=(value : ::String) : ::String
       unsafe_value = value
 
@@ -129,11 +169,27 @@ module Gio
       value
     end
 
+    def uri : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "uri", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def username=(value : ::String) : ::String
       unsafe_value = value
 
       LibGObject.g_object_set(self, "username", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def username : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "username", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def initialize(inetaddr : Gio::InetAddress, port : UInt16, protocol : ::String, dest_hostname : ::String, dest_port : UInt16, username : ::String?, password : ::String?)

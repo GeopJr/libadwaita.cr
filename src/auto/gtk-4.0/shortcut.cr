@@ -53,6 +53,51 @@ module Gtk
       LibGtk.gtk_shortcut_get_type
     end
 
+    def action=(value : Gtk::ShortcutAction?) : Gtk::ShortcutAction?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "action", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def action : Gtk::ShortcutAction?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "action", pointerof(value), Pointer(Void).null)
+      Gtk::ShortcutAction.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def arguments=(value : GLib::Variant?) : GLib::Variant?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "arguments", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def arguments : GLib::Variant?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "arguments", pointerof(value), Pointer(Void).null)
+      GLib::Variant.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def trigger=(value : Gtk::ShortcutTrigger?) : Gtk::ShortcutTrigger?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "trigger", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def trigger : Gtk::ShortcutTrigger?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "trigger", pointerof(value), Pointer(Void).null)
+      Gtk::ShortcutTrigger.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(trigger : Gtk::ShortcutTrigger?, action : Gtk::ShortcutAction?)
       # gtk_shortcut_new: (Constructor)
       # @trigger: (transfer full) (nullable)

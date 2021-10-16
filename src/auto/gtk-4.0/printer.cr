@@ -82,11 +82,27 @@ module Gtk
       LibGtk.gtk_printer_get_type
     end
 
+    def accepting_jobs? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "accepting-jobs", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def accepts_pdf=(value : Bool) : Bool
       unsafe_value = value
 
       LibGObject.g_object_set(self, "accepts-pdf", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def accepts_pdf? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "accepts-pdf", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def accepts_ps=(value : Bool) : Bool
@@ -96,6 +112,22 @@ module Gtk
       value
     end
 
+    def accepts_ps? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "accepts-ps", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def is_virtual=(value : Bool) : Bool
       unsafe_value = value
 
@@ -103,11 +135,59 @@ module Gtk
       value
     end
 
+    def is_virtual? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-virtual", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def job_count : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "job-count", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def location : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "location", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def name=(value : ::String) : ::String
       unsafe_value = value
 
       LibGObject.g_object_set(self, "name", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def paused? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "paused", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def state_message : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "state-message", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def initialize(name : ::String, backend : Gtk::PrintBackend, virtual_ : Bool)

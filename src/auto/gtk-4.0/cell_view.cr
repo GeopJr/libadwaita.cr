@@ -262,18 +262,79 @@ module Gtk
       LibGtk.gtk_cell_view_get_type
     end
 
-    def cell_area=(value : CellArea?) : CellArea?
+    def cell_area=(value : Gtk::CellArea?) : Gtk::CellArea?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "cell-area", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def cell_area_context=(value : CellAreaContext?) : CellAreaContext?
+    def cell_area : Gtk::CellArea?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "cell-area", pointerof(value), Pointer(Void).null)
+      Gtk::CellArea.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def cell_area_context=(value : Gtk::CellAreaContext?) : Gtk::CellAreaContext?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "cell-area-context", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def cell_area_context : Gtk::CellAreaContext?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "cell-area-context", pointerof(value), Pointer(Void).null)
+      Gtk::CellAreaContext.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def draw_sensitive=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "draw-sensitive", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def draw_sensitive? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "draw-sensitive", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def fit_model=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fit-model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fit_model? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "fit-model", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def model=(value : Gtk::TreeModel?) : Gtk::TreeModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gtk::TreeModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize
@@ -324,7 +385,7 @@ module Gtk
       Gtk::TreePath.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
-    def draw_sensitive? : Bool
+    def draw_sensitive : Bool
       # gtk_cell_view_get_draw_sensitive: (Method)
       # Returns: (transfer none)
 
@@ -332,7 +393,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def fit_model? : Bool
+    def fit_model : Bool
       # gtk_cell_view_get_fit_model: (Method)
       # Returns: (transfer none)
 

@@ -241,7 +241,7 @@ module GLib
       LibGLib.g_source_destroy(self)
     end
 
-    def can_recurse? : Bool
+    def can_recurse : Bool
       # g_source_get_can_recurse: (Method)
       # Returns: (transfer none)
 

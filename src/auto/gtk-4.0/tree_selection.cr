@@ -53,6 +53,21 @@ module Gtk
       LibGtk.gtk_tree_selection_get_type
     end
 
+    def mode=(value : Gtk::SelectionMode) : Gtk::SelectionMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def mode : Gtk::SelectionMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "mode", pointerof(value), Pointer(Void).null)
+      Gtk::SelectionMode.from_value(value)
+    end
+
     def count_selected_rows : Int32
       # gtk_tree_selection_count_selected_rows: (Method)
       # Returns: (transfer none)

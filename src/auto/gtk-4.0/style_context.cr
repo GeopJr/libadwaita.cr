@@ -65,6 +65,21 @@ module Gtk
       LibGtk.gtk_style_context_get_type
     end
 
+    def display=(value : Gdk::Display?) : Gdk::Display?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def self.add_provider_for_display(display : Gdk::Display, provider : Gtk::StyleProvider, priority : UInt32) : Nil
       # gtk_style_context_add_provider_for_display: (None)
       # Returns: (transfer none)

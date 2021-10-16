@@ -278,6 +278,81 @@ module Gtk
       LibGtk.gtk_picture_get_type
     end
 
+    def alternative_text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "alternative-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def alternative_text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "alternative-text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def can_shrink=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "can-shrink", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def can_shrink? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-shrink", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def file=(value : Gio::File?) : Gio::File?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "file", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def file : Gio::File?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
+      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def keep_aspect_ratio=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "keep-aspect-ratio", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def keep_aspect_ratio? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "keep-aspect-ratio", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def paintable=(value : Gdk::Paintable?) : Gdk::Paintable?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "paintable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def paintable : Gdk::Paintable?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "paintable", pointerof(value), Pointer(Void).null)
+      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # gtk_picture_new: (Constructor)
       # Returns: (transfer none)
@@ -369,7 +444,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def can_shrink? : Bool
+    def can_shrink : Bool
       # gtk_picture_get_can_shrink: (Method)
       # Returns: (transfer none)
 
@@ -385,7 +460,7 @@ module Gtk
       Gio::File__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def keep_aspect_ratio? : Bool
+    def keep_aspect_ratio : Bool
       # gtk_picture_get_keep_aspect_ratio: (Method)
       # Returns: (transfer none)
 

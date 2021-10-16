@@ -56,6 +56,66 @@ module Gtk
       LibGtk.gtk_string_filter_get_type
     end
 
+    def expression=(value : Gtk::Expression?) : Gtk::Expression?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "expression", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def expression : Gtk::Expression?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "expression", pointerof(value), Pointer(Void).null)
+      Gtk::Expression.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def ignore_case=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "ignore-case", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def ignore_case? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "ignore-case", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def match_mode=(value : Gtk::StringFilterMatchMode) : Gtk::StringFilterMatchMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "match-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def match_mode : Gtk::StringFilterMatchMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "match-mode", pointerof(value), Pointer(Void).null)
+      Gtk::StringFilterMatchMode.from_value(value)
+    end
+
+    def search=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "search", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def search : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "search", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(expression : Gtk::Expression?)
       # gtk_string_filter_new: (Constructor)
       # @expression: (transfer full) (nullable)
@@ -80,7 +140,7 @@ module Gtk
       Gtk::Expression.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def ignore_case? : Bool
+    def ignore_case : Bool
       # gtk_string_filter_get_ignore_case: (Method)
       # Returns: (transfer none)
 

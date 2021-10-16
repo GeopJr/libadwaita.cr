@@ -135,6 +135,216 @@ module Gtk
       LibGtk.gtk_cell_renderer_get_type
     end
 
+    def cell_background=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "cell-background", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cell_background_rgba=(value : Gdk::RGBA?) : Gdk::RGBA?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "cell-background-rgba", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cell_background_rgba : Gdk::RGBA?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "cell-background-rgba", pointerof(value), Pointer(Void).null)
+      Gdk::RGBA.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def cell_background_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "cell-background-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cell_background_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "cell-background-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def editing? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "editing", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def height=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def is_expanded=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "is-expanded", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def is_expanded? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-expanded", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_expander=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "is-expander", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def is_expander? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-expander", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def mode=(value : Gtk::CellRendererMode) : Gtk::CellRendererMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def mode : Gtk::CellRendererMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "mode", pointerof(value), Pointer(Void).null)
+      Gtk::CellRendererMode.from_value(value)
+    end
+
+    def sensitive=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sensitive", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sensitive? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "sensitive", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def width=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def xalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "xalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def xalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "xalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def xpad=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "xpad", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def xpad : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "xpad", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def yalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "yalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def yalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "yalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def ypad=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "ypad", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def ypad : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "ypad", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def activate(event : Gdk::Event, widget : Gtk::Widget, path : ::String, background_area : Gdk::Rectangle, cell_area : Gdk::Rectangle, flags : Gtk::CellRendererState) : Bool
       # gtk_cell_renderer_activate: (Method)
       # Returns: (transfer none)
@@ -178,7 +388,7 @@ module Gtk
       LibGtk.gtk_cell_renderer_get_fixed_size(self, width, height)
     end
 
-    def is_expanded? : Bool
+    def is_expanded : Bool
       # gtk_cell_renderer_get_is_expanded: (Method)
       # Returns: (transfer none)
 
@@ -186,7 +396,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def is_expander? : Bool
+    def is_expander : Bool
       # gtk_cell_renderer_get_is_expander: (Method)
       # Returns: (transfer none)
 
@@ -276,7 +486,7 @@ module Gtk
       Gtk::SizeRequestMode.from_value(_retval)
     end
 
-    def sensitive? : Bool
+    def sensitive : Bool
       # gtk_cell_renderer_get_sensitive: (Method)
       # Returns: (transfer none)
 
@@ -299,7 +509,7 @@ module Gtk
       Gtk::StateFlags.from_value(_retval)
     end
 
-    def visible? : Bool
+    def visible : Bool
       # gtk_cell_renderer_get_visible: (Method)
       # Returns: (transfer none)
 

@@ -476,6 +476,269 @@ module Gtk
       LibGtk.gtk_label_get_type
     end
 
+    def attributes=(value : Pango::AttrList?) : Pango::AttrList?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "attributes", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def attributes : Pango::AttrList?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "attributes", pointerof(value), Pointer(Void).null)
+      Pango::AttrList.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def ellipsize=(value : Pango::EllipsizeMode) : Pango::EllipsizeMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "ellipsize", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def ellipsize : Pango::EllipsizeMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "ellipsize", pointerof(value), Pointer(Void).null)
+      Pango::EllipsizeMode.from_value(value)
+    end
+
+    def extra_menu=(value : Gio::MenuModel?) : Gio::MenuModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "extra-menu", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def extra_menu : Gio::MenuModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "extra-menu", pointerof(value), Pointer(Void).null)
+      Gio::MenuModel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def justify=(value : Gtk::Justification) : Gtk::Justification
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "justify", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def justify : Gtk::Justification
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "justify", pointerof(value), Pointer(Void).null)
+      Gtk::Justification.from_value(value)
+    end
+
+    def label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def lines=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "lines", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def lines : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "lines", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def max_width_chars=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-width-chars", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_width_chars : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "max-width-chars", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def mnemonic_keyval : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "mnemonic-keyval", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def mnemonic_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "mnemonic-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def mnemonic_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "mnemonic-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def selectable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "selectable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def selectable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "selectable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def single_line_mode=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "single-line-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def single_line_mode? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "single-line-mode", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def use_markup=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-markup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_markup? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-markup", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def width_chars=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "width-chars", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def width_chars : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width-chars", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def wrap=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "wrap", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def wrap? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "wrap", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def wrap_mode=(value : Pango::WrapMode) : Pango::WrapMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "wrap-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def wrap_mode : Pango::WrapMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "wrap-mode", pointerof(value), Pointer(Void).null)
+      Pango::WrapMode.from_value(value)
+    end
+
+    def xalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "xalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def xalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "xalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def yalign=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "yalign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def yalign : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "yalign", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(str : ::String?)
       # gtk_label_new: (Constructor)
       # @str: (nullable)
@@ -606,7 +869,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def selectable? : Bool
+    def selectable : Bool
       # gtk_label_get_selectable: (Method)
       # Returns: (transfer none)
 
@@ -624,7 +887,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def single_line_mode? : Bool
+    def single_line_mode : Bool
       # gtk_label_get_single_line_mode: (Method)
       # Returns: (transfer none)
 
@@ -640,7 +903,7 @@ module Gtk
       ::String.new(_retval)
     end
 
-    def use_markup? : Bool
+    def use_markup : Bool
       # gtk_label_get_use_markup: (Method)
       # Returns: (transfer none)
 
@@ -648,7 +911,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # gtk_label_get_use_underline: (Method)
       # Returns: (transfer none)
 
@@ -664,7 +927,7 @@ module Gtk
       _retval
     end
 
-    def wrap? : Bool
+    def wrap : Bool
       # gtk_label_get_wrap: (Method)
       # Returns: (transfer none)
 

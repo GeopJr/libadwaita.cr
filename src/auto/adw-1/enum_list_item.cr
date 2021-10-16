@@ -40,6 +40,30 @@ module Adw
     end
 
     def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def nick : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "nick", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def value : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "value", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def name : ::String
       # adw_enum_list_item_get_name: (Method | Getter)
       # Returns: (transfer none)
 

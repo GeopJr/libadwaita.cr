@@ -265,5 +265,154 @@ module Gtk
     def self.g_type : UInt64
       LibGtk.gtk_shortcuts_shortcut_get_type
     end
+
+    def accel_size_group=(value : Gtk::SizeGroup?) : Gtk::SizeGroup?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accel-size-group", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accelerator=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accelerator", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accelerator : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "accelerator", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def action_name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "action-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def action_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "action-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def direction=(value : Gtk::TextDirection) : Gtk::TextDirection
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "direction", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def direction : Gtk::TextDirection
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "direction", pointerof(value), Pointer(Void).null)
+      Gtk::TextDirection.from_value(value)
+    end
+
+    def icon=(value : Gio::Icon?) : Gio::Icon?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon : Gio::Icon?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "icon", pointerof(value), Pointer(Void).null)
+      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def icon_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "icon-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def icon_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "icon-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def shortcut_type=(value : Gtk::ShortcutType) : Gtk::ShortcutType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "shortcut-type", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def shortcut_type : Gtk::ShortcutType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "shortcut-type", pointerof(value), Pointer(Void).null)
+      Gtk::ShortcutType.from_value(value)
+    end
+
+    def subtitle=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "subtitle", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def subtitle : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "subtitle", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def subtitle_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "subtitle-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def subtitle_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "subtitle-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def title_size_group=(value : Gtk::SizeGroup?) : Gtk::SizeGroup?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title-size-group", unsafe_value, Pointer(Void).null)
+      value
+    end
   end
 end

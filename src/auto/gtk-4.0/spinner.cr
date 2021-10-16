@@ -227,6 +227,21 @@ module Gtk
       LibGtk.gtk_spinner_get_type
     end
 
+    def spinning=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "spinning", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def spinning? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "spinning", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_spinner_new: (Constructor)
       # Returns: (transfer none)
@@ -235,7 +250,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def spinning? : Bool
+    def spinning : Bool
       # gtk_spinner_get_spinning: (Method)
       # Returns: (transfer none)
 

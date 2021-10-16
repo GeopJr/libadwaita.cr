@@ -66,6 +66,30 @@ module Gtk
       LibGtk.gtk_drop_controller_motion_get_type
     end
 
+    def contains_pointer? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "contains-pointer", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def drop : Gdk::Drop?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "drop", pointerof(value), Pointer(Void).null)
+      Gdk::Drop.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def is_pointer? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-pointer", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_drop_controller_motion_new: (Constructor)
       # Returns: (transfer full)

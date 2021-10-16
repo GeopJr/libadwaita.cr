@@ -62,6 +62,22 @@ module Gtk
       LibGtk.gtk_event_controller_motion_get_type
     end
 
+    def contains_pointer? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "contains-pointer", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def is_pointer? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-pointer", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_event_controller_motion_new: (Constructor)
       # Returns: (transfer full)

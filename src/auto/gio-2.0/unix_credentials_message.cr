@@ -39,11 +39,19 @@ module Gio
       LibGio.g_unix_credentials_message_get_type
     end
 
-    def credentials=(value : Credentials?) : Credentials?
+    def credentials=(value : Gio::Credentials?) : Gio::Credentials?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "credentials", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def credentials : Gio::Credentials?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "credentials", pointerof(value), Pointer(Void).null)
+      Gio::Credentials.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize

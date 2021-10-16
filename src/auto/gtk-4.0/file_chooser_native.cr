@@ -232,6 +232,36 @@ module Gtk
       LibGtk.gtk_file_chooser_native_get_type
     end
 
+    def accept_label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "accept-label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def accept_label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "accept-label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def cancel_label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "cancel-label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cancel_label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "cancel-label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize(title : ::String?, parent : Gtk::Window?, action : Gtk::FileChooserAction, accept_label : ::String?, cancel_label : ::String?)
       # gtk_file_chooser_native_new: (Constructor)
       # @title: (nullable)

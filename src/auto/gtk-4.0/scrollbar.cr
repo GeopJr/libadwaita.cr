@@ -262,6 +262,21 @@ module Gtk
       LibGtk.gtk_scrollbar_get_type
     end
 
+    def adjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "adjustment", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def adjustment : Gtk::Adjustment?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "adjustment", pointerof(value), Pointer(Void).null)
+      Gtk::Adjustment.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(orientation : Gtk::Orientation, adjustment : Gtk::Adjustment?)
       # gtk_scrollbar_new: (Constructor)
       # @adjustment: (nullable)

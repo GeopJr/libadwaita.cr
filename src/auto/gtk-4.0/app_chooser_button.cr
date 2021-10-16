@@ -262,6 +262,66 @@ module Gtk
       LibGtk.gtk_app_chooser_button_get_type
     end
 
+    def heading=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "heading", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def heading : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "heading", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def modal=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "modal", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def modal? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "modal", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_default_item=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-default-item", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_default_item? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-default-item", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_dialog_item=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-dialog-item", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_dialog_item? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-dialog-item", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(content_type : ::String)
       # gtk_app_chooser_button_new: (Constructor)
       # Returns: (transfer none)
@@ -292,7 +352,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def modal? : Bool
+    def modal : Bool
       # gtk_app_chooser_button_get_modal: (Method)
       # Returns: (transfer none)
 
@@ -300,7 +360,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_default_item? : Bool
+    def show_default_item : Bool
       # gtk_app_chooser_button_get_show_default_item: (Method)
       # Returns: (transfer none)
 
@@ -308,7 +368,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_dialog_item? : Bool
+    def show_dialog_item : Bool
       # gtk_app_chooser_button_get_show_dialog_item: (Method)
       # Returns: (transfer none)
 

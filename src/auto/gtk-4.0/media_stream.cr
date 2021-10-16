@@ -108,6 +108,145 @@ module Gtk
       LibGtk.gtk_media_stream_get_type
     end
 
+    def duration : Int64
+      # Returns: None
+
+      value = uninitialized Int64
+      LibGObject.g_object_get(self, "duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def ended? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "ended", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def error : GLib::Error
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "error", pointerof(value), Pointer(Void).null)
+      GLib::Error.new(value, GICrystal::Transfer::None)
+    end
+
+    def has_audio? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-audio", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def has_video? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-video", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def loop=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "loop", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def loop? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "loop", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def muted=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "muted", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def muted? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "muted", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def playing=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "playing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def playing? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "playing", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def prepared=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "prepared", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def prepared? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "prepared", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def seekable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "seekable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def seeking? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "seeking", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def timestamp : Int64
+      # Returns: None
+
+      value = uninitialized Int64
+      LibGObject.g_object_get(self, "timestamp", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def volume=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "volume", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def volume : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "volume", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def gerror(error : GLib::Error) : Nil
       # gtk_media_stream_gerror: (Method)
       # @error: (transfer full)
@@ -124,7 +263,7 @@ module Gtk
       _retval
     end
 
-    def ended? : Bool
+    def ended : Bool
       # gtk_media_stream_get_ended: (Method)
       # Returns: (transfer none)
 
@@ -140,7 +279,7 @@ module Gtk
       GLib::Error.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def loop? : Bool
+    def loop : Bool
       # gtk_media_stream_get_loop: (Method)
       # Returns: (transfer none)
 
@@ -148,7 +287,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def muted? : Bool
+    def muted : Bool
       # gtk_media_stream_get_muted: (Method)
       # Returns: (transfer none)
 
@@ -156,7 +295,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def playing? : Bool
+    def playing : Bool
       # gtk_media_stream_get_playing: (Method)
       # Returns: (transfer none)
 

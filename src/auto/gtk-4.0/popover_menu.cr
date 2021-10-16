@@ -364,6 +364,36 @@ module Gtk
       LibGtk.gtk_popover_menu_get_type
     end
 
+    def menu_model=(value : Gio::MenuModel?) : Gio::MenuModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "menu-model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def menu_model : Gio::MenuModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "menu-model", pointerof(value), Pointer(Void).null)
+      Gio::MenuModel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def visible_submenu=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible-submenu", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible_submenu : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "visible-submenu", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def self.new_from_model(model : Gio::MenuModel?) : Gtk::Widget
       # gtk_popover_menu_new_from_model: (Constructor)
       # @model: (nullable)

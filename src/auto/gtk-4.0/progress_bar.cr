@@ -291,6 +291,96 @@ module Gtk
       LibGtk.gtk_progress_bar_get_type
     end
 
+    def ellipsize=(value : Pango::EllipsizeMode) : Pango::EllipsizeMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "ellipsize", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def ellipsize : Pango::EllipsizeMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "ellipsize", pointerof(value), Pointer(Void).null)
+      Pango::EllipsizeMode.from_value(value)
+    end
+
+    def fraction=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "fraction", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def fraction : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "fraction", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def inverted=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inverted", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inverted? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "inverted", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def pulse_step=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "pulse-step", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def pulse_step : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "pulse-step", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def show_text=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_text? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-text", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def initialize
       # gtk_progress_bar_new: (Constructor)
       # Returns: (transfer none)
@@ -315,7 +405,7 @@ module Gtk
       _retval
     end
 
-    def inverted? : Bool
+    def inverted : Bool
       # gtk_progress_bar_get_inverted: (Method)
       # Returns: (transfer none)
 
@@ -331,7 +421,7 @@ module Gtk
       _retval
     end
 
-    def show_text? : Bool
+    def show_text : Bool
       # gtk_progress_bar_get_show_text: (Method)
       # Returns: (transfer none)
 

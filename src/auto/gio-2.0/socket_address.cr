@@ -34,6 +34,14 @@ module Gio
       LibGio.g_socket_address_get_type
     end
 
+    def family : Gio::SocketFamily
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "family", pointerof(value), Pointer(Void).null)
+      Gio::SocketFamily.from_value(value)
+    end
+
     def self.new_from_native(native : Pointer(Nil), len : UInt64) : Gio::SocketAddress
       # g_socket_address_new_from_native: (Constructor)
       # Returns: (transfer full)

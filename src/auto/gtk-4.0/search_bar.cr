@@ -271,6 +271,66 @@ module Gtk
       LibGtk.gtk_search_bar_get_type
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def key_capture_widget=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "key-capture-widget", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def key_capture_widget : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "key-capture-widget", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def search_mode_enabled=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "search-mode-enabled", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def search_mode_enabled? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "search-mode-enabled", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def show_close_button=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-close-button", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_close_button? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-close-button", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_search_bar_new: (Constructor)
       # Returns: (transfer none)
@@ -302,7 +362,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
-    def search_mode? : Bool
+    def search_mode : Bool
       # gtk_search_bar_get_search_mode: (Method)
       # Returns: (transfer none)
 
@@ -310,7 +370,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def show_close_button? : Bool
+    def show_close_button : Bool
       # gtk_search_bar_get_show_close_button: (Method)
       # Returns: (transfer none)
 

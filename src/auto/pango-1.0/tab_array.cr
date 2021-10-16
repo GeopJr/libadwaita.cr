@@ -48,7 +48,7 @@ module Pango
       LibPango.pango_tab_array_free(self)
     end
 
-    def positions_in_pixels? : Bool
+    def positions_in_pixels : Bool
       # pango_tab_array_get_positions_in_pixels: (Method)
       # Returns: (transfer none)
 

@@ -78,6 +78,82 @@ module Gtk
       LibGtk.gtk_directory_list_get_type
     end
 
+    def attributes=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "attributes", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def attributes : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "attributes", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def error : GLib::Error
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "error", pointerof(value), Pointer(Void).null)
+      GLib::Error.new(value, GICrystal::Transfer::None)
+    end
+
+    def file=(value : Gio::File?) : Gio::File?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "file", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def file : Gio::File?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
+      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def io_priority=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "io-priority", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def io_priority : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "io-priority", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def loading? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "loading", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def monitored=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "monitored", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def monitored? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "monitored", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(attributes : ::String?, file : Gio::File?)
       # gtk_directory_list_new: (Constructor)
       # @attributes: (nullable)
@@ -131,7 +207,7 @@ module Gtk
       _retval
     end
 
-    def monitored? : Bool
+    def monitored : Bool
       # gtk_directory_list_get_monitored: (Method)
       # Returns: (transfer none)
 

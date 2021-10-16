@@ -337,6 +337,81 @@ module Gtk
       LibGtk.gtk_level_bar_get_type
     end
 
+    def inverted=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inverted", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inverted? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "inverted", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def max_value=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "max-value", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def max_value : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "max-value", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def min_value=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "min-value", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def min_value : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "min-value", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def mode=(value : Gtk::LevelBarMode) : Gtk::LevelBarMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def mode : Gtk::LevelBarMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "mode", pointerof(value), Pointer(Void).null)
+      Gtk::LevelBarMode.from_value(value)
+    end
+
+    def value=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "value", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def value : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "value", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_level_bar_new: (Constructor)
       # Returns: (transfer none)
@@ -360,7 +435,7 @@ module Gtk
       LibGtk.gtk_level_bar_add_offset_value(self, name, value)
     end
 
-    def inverted? : Bool
+    def inverted : Bool
       # gtk_level_bar_get_inverted: (Method)
       # Returns: (transfer none)
 

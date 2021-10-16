@@ -254,6 +254,36 @@ module Adw
       LibAdw.adw_preferences_row_get_type
     end
 
+    def title=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "title", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # adw_preferences_row_new: (Constructor)
       # Returns: (transfer none)
@@ -270,7 +300,7 @@ module Adw
       ::String.new(_retval)
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # adw_preferences_row_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 

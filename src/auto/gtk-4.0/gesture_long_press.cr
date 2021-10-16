@@ -83,6 +83,21 @@ module Gtk
       LibGtk.gtk_gesture_long_press_get_type
     end
 
+    def delay_factor=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "delay-factor", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def delay_factor : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "delay-factor", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # gtk_gesture_long_press_new: (Constructor)
       # Returns: (transfer full)

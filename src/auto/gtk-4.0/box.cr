@@ -262,6 +262,51 @@ module Gtk
       LibGtk.gtk_box_get_type
     end
 
+    def baseline_position=(value : Gtk::BaselinePosition) : Gtk::BaselinePosition
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "baseline-position", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def baseline_position : Gtk::BaselinePosition
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "baseline-position", pointerof(value), Pointer(Void).null)
+      Gtk::BaselinePosition.from_value(value)
+    end
+
+    def homogeneous=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "homogeneous", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def homogeneous? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "homogeneous", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def spacing=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def spacing : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(orientation : Gtk::Orientation, spacing : Int32)
       # gtk_box_new: (Constructor)
       # Returns: (transfer none)
@@ -285,7 +330,7 @@ module Gtk
       Gtk::BaselinePosition.from_value(_retval)
     end
 
-    def homogeneous? : Bool
+    def homogeneous : Bool
       # gtk_box_get_homogeneous: (Method)
       # Returns: (transfer none)
 

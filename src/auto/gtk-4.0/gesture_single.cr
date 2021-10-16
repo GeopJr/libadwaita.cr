@@ -77,6 +77,51 @@ module Gtk
       LibGtk.gtk_gesture_single_get_type
     end
 
+    def button=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "button", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def button : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "button", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def exclusive=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "exclusive", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def exclusive? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "exclusive", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def touch_only=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "touch-only", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def touch_only? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "touch-only", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def button : UInt32
       # gtk_gesture_single_get_button: (Method)
       # Returns: (transfer none)
@@ -101,7 +146,7 @@ module Gtk
       Gdk::EventSequence.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
-    def exclusive? : Bool
+    def exclusive : Bool
       # gtk_gesture_single_get_exclusive: (Method)
       # Returns: (transfer none)
 
@@ -109,7 +154,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def touch_only? : Bool
+    def touch_only : Bool
       # gtk_gesture_single_get_touch_only: (Method)
       # Returns: (transfer none)
 

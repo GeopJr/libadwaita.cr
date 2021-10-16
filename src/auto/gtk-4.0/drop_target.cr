@@ -138,11 +138,65 @@ module Gtk
       LibGtk.gtk_drop_target_get_type
     end
 
-    def formats=(value : ContentFormats?) : ContentFormats?
+    def actions=(value : Gdk::DragAction) : Gdk::DragAction
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "actions", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def actions : Gdk::DragAction
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "actions", pointerof(value), Pointer(Void).null)
+      Gdk::DragAction.from_value(value)
+    end
+
+    def current_drop : Gdk::Drop?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "current-drop", pointerof(value), Pointer(Void).null)
+      Gdk::Drop.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def formats=(value : Gdk::ContentFormats?) : Gdk::ContentFormats?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "formats", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def formats : Gdk::ContentFormats?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "formats", pointerof(value), Pointer(Void).null)
+      Gdk::ContentFormats.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def preload=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "preload", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def preload? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "preload", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def value : GObject::Value?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "value", pointerof(value), Pointer(Void).null)
+      GObject::Value.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize(type : UInt64, actions : Gdk::DragAction)
@@ -196,7 +250,7 @@ module Gtk
       _retval unless _retval.null?
     end
 
-    def preload? : Bool
+    def preload : Bool
       # gtk_drop_target_get_preload: (Method)
       # Returns: (transfer none)
 

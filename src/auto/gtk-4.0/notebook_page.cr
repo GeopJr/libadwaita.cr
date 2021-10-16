@@ -74,25 +74,154 @@ module Gtk
       LibGtk.gtk_notebook_page_get_type
     end
 
-    def child=(value : Widget?) : Widget?
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def menu=(value : Widget?) : Widget?
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def detachable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "detachable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def detachable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "detachable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def menu=(value : Gtk::Widget?) : Gtk::Widget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "menu", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def tab=(value : Widget?) : Widget?
+    def menu : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "menu", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def menu_label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "menu-label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def menu_label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "menu-label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def position=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "position", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def position : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "position", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def reorderable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reorderable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reorderable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "reorderable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def tab=(value : Gtk::Widget?) : Gtk::Widget?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "tab", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def tab : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "tab", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def tab_expand=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tab-expand", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tab_expand? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "tab-expand", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def tab_fill=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tab-fill", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tab_fill? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "tab-fill", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def tab_label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tab-label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tab_label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "tab-label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
     end
 
     def child : Gtk::Widget

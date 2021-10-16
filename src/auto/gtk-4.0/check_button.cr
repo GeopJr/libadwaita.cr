@@ -296,6 +296,73 @@ module Gtk
       LibGtk.gtk_check_button_get_type
     end
 
+    def active=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "active", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def active? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "active", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def group=(value : Gtk::CheckButton?) : Gtk::CheckButton?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "group", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inconsistent=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "inconsistent", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def inconsistent? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "inconsistent", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def label=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "label", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def label : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "label", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def use_underline=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_underline? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_check_button_new: (Constructor)
       # Returns: (transfer none)
@@ -334,7 +401,7 @@ module Gtk
       Gtk::CheckButton.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def active? : Bool
+    def active : Bool
       # gtk_check_button_get_active: (Method)
       # Returns: (transfer none)
 
@@ -342,7 +409,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def inconsistent? : Bool
+    def inconsistent : Bool
       # gtk_check_button_get_inconsistent: (Method)
       # Returns: (transfer none)
 
@@ -358,7 +425,7 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def use_underline? : Bool
+    def use_underline : Bool
       # gtk_check_button_get_use_underline: (Method)
       # Returns: (transfer none)
 

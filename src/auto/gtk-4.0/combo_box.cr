@@ -333,11 +333,162 @@ module Gtk
       LibGtk.gtk_combo_box_get_type
     end
 
+    def active=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "active", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def active : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "active", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def active_id=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "active-id", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def active_id : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "active-id", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def button_sensitivity=(value : Gtk::SensitivityType) : Gtk::SensitivityType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "button-sensitivity", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def button_sensitivity : Gtk::SensitivityType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "button-sensitivity", pointerof(value), Pointer(Void).null)
+      Gtk::SensitivityType.from_value(value)
+    end
+
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def entry_text_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "entry-text-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def entry_text_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "entry-text-column", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def has_entry=(value : Bool) : Bool
       unsafe_value = value
 
       LibGObject.g_object_set(self, "has-entry", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def has_entry? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-entry", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def has_frame=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-frame", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_frame? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-frame", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def id_column=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "id-column", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def id_column : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "id-column", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def model=(value : Gtk::TreeModel?) : Gtk::TreeModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gtk::TreeModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def popup_fixed_width=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "popup-fixed-width", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def popup_fixed_width? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "popup-fixed-width", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def popup_shown? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "popup-shown", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def initialize
@@ -423,7 +574,7 @@ module Gtk
       _retval
     end
 
-    def has_entry? : Bool
+    def has_entry : Bool
       # gtk_combo_box_get_has_entry: (Method)
       # Returns: (transfer none)
 
@@ -447,7 +598,7 @@ module Gtk
       Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def popup_fixed_width? : Bool
+    def popup_fixed_width : Bool
       # gtk_combo_box_get_popup_fixed_width: (Method)
       # Returns: (transfer none)
 

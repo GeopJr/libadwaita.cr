@@ -56,11 +56,58 @@ module Adw
       LibAdw.adw_style_manager_get_type
     end
 
-    def display=(value : Display?) : Display?
+    def color_scheme=(value : Adw::ColorScheme) : Adw::ColorScheme
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "color-scheme", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def color_scheme : Adw::ColorScheme
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "color-scheme", pointerof(value), Pointer(Void).null)
+      Adw::ColorScheme.from_value(value)
+    end
+
+    def dark? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "dark", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def display=(value : Gdk::Display?) : Gdk::Display?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def high_contrast? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "high-contrast", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def system_supports_color_schemes? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "system-supports-color-schemes", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def self.default : Adw::StyleManager
@@ -87,7 +134,7 @@ module Adw
       Adw::ColorScheme.from_value(_retval)
     end
 
-    def dark? : Bool
+    def dark : Bool
       # adw_style_manager_get_dark: (Method | Getter)
       # Returns: (transfer none)
 
@@ -103,7 +150,7 @@ module Adw
       Gdk::Display.new(_retval, GICrystal::Transfer::None)
     end
 
-    def high_contrast? : Bool
+    def high_contrast : Bool
       # adw_style_manager_get_high_contrast: (Method | Getter)
       # Returns: (transfer none)
 
@@ -111,7 +158,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def system_supports_color_schemes? : Bool
+    def system_supports_color_schemes : Bool
       # adw_style_manager_get_system_supports_color_schemes: (Method | Getter)
       # Returns: (transfer none)
 

@@ -41,6 +41,21 @@ module Gtk
       LibGtk.gtk_tree_list_row_sorter_get_type
     end
 
+    def sorter=(value : Gtk::Sorter?) : Gtk::Sorter?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sorter", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sorter : Gtk::Sorter?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "sorter", pointerof(value), Pointer(Void).null)
+      Gtk::Sorter.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize(sorter : Gtk::Sorter?)
       # gtk_tree_list_row_sorter_new: (Constructor)
       # @sorter: (transfer full) (nullable)

@@ -274,6 +274,127 @@ module Adw
       LibAdw.adw_carousel_get_type
     end
 
+    def allow_long_swipes=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "allow-long-swipes", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def allow_long_swipes? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "allow-long-swipes", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def allow_mouse_drag=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "allow-mouse-drag", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def allow_mouse_drag? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "allow-mouse-drag", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def allow_scroll_wheel=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "allow-scroll-wheel", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def allow_scroll_wheel? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "allow-scroll-wheel", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def animation_duration=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "animation-duration", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def animation_duration : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "animation-duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def interactive=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "interactive", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def interactive? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "interactive", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def n_pages : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "n-pages", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def position : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "position", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def reveal_duration=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reveal-duration", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reveal_duration : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "reveal-duration", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def spacing=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "spacing", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def spacing : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "spacing", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize
       # adw_carousel_new: (Constructor)
       # Returns: (transfer none)
@@ -289,7 +410,7 @@ module Adw
       LibAdw.adw_carousel_append(self, child)
     end
 
-    def allow_long_swipes? : Bool
+    def allow_long_swipes : Bool
       # adw_carousel_get_allow_long_swipes: (Method | Getter)
       # Returns: (transfer none)
 
@@ -297,7 +418,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def allow_mouse_drag? : Bool
+    def allow_mouse_drag : Bool
       # adw_carousel_get_allow_mouse_drag: (Method | Getter)
       # Returns: (transfer none)
 
@@ -305,7 +426,7 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def allow_scroll_wheel? : Bool
+    def allow_scroll_wheel : Bool
       # adw_carousel_get_allow_scroll_wheel: (Method | Getter)
       # Returns: (transfer none)
 
@@ -321,7 +442,7 @@ module Adw
       _retval
     end
 
-    def interactive? : Bool
+    def interactive : Bool
       # adw_carousel_get_interactive: (Method | Getter)
       # Returns: (transfer none)
 

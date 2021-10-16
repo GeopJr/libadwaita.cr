@@ -46,11 +46,19 @@ module Gio
       LibGio.g_converter_input_stream_get_type
     end
 
-    def converter=(value : Converter?) : Converter?
+    def converter=(value : Gio::Converter?) : Gio::Converter?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "converter", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def converter : Gio::Converter?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "converter", pointerof(value), Pointer(Void).null)
+      Gio::Converter__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize(base_stream : Gio::InputStream, converter : Gio::Converter)

@@ -55,6 +55,59 @@ module Gtk
       LibGtk.gtk_filter_list_model_get_type
     end
 
+    def filter=(value : Gtk::Filter?) : Gtk::Filter?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "filter", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def filter : Gtk::Filter?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "filter", pointerof(value), Pointer(Void).null)
+      Gtk::Filter.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def incremental=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "incremental", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def incremental? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "incremental", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def model=(value : Gio::ListModel?) : Gio::ListModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "model", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def model : Gio::ListModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
+      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def pending : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "pending", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(model : Gio::ListModel?, filter : Gtk::Filter?)
       # gtk_filter_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)
@@ -86,7 +139,7 @@ module Gtk
       Gtk::Filter.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def incremental? : Bool
+    def incremental : Bool
       # gtk_filter_list_model_get_incremental: (Method)
       # Returns: (transfer none)
 

@@ -345,6 +345,66 @@ module Gtk
       LibGtk.gtk_scale_get_type
     end
 
+    def digits=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "digits", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def digits : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "digits", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def draw_value=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "draw-value", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def draw_value? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "draw-value", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def has_origin=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-origin", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_origin? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-origin", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def value_pos=(value : Gtk::PositionType) : Gtk::PositionType
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "value-pos", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def value_pos : Gtk::PositionType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "value-pos", pointerof(value), Pointer(Void).null)
+      Gtk::PositionType.from_value(value)
+    end
+
     def initialize(orientation : Gtk::Orientation, adjustment : Gtk::Adjustment?)
       # gtk_scale_new: (Constructor)
       # @adjustment: (nullable)
@@ -397,7 +457,7 @@ module Gtk
       _retval
     end
 
-    def draw_value? : Bool
+    def draw_value : Bool
       # gtk_scale_get_draw_value: (Method)
       # Returns: (transfer none)
 
@@ -405,7 +465,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def has_origin? : Bool
+    def has_origin : Bool
       # gtk_scale_get_has_origin: (Method)
       # Returns: (transfer none)
 

@@ -44,11 +44,19 @@ module Gtk
       LibGtk.gtk_icon_paintable_get_type
     end
 
-    def file=(value : File?) : File?
+    def file=(value : Gio::File?) : Gio::File?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "file", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def file : Gio::File?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
+      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def icon_name=(value : ::String) : ::String
@@ -58,11 +66,27 @@ module Gtk
       value
     end
 
+    def icon_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "icon-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
     def is_symbolic=(value : Bool) : Bool
       unsafe_value = value
 
       LibGObject.g_object_set(self, "is-symbolic", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def is_symbolic? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "is-symbolic", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def self.new_for_file(file : Gio::File, size : Int32, scale : Int32) : Gtk::IconPaintable

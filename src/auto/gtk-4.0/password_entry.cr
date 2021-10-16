@@ -302,6 +302,66 @@ module Gtk
       LibGtk.gtk_password_entry_get_type
     end
 
+    def activates_default=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "activates-default", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def activates_default? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "activates-default", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def extra_menu=(value : Gio::MenuModel?) : Gio::MenuModel?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "extra-menu", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def extra_menu : Gio::MenuModel?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "extra-menu", pointerof(value), Pointer(Void).null)
+      Gio::MenuModel.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def placeholder_text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "placeholder-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def placeholder_text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "placeholder-text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def show_peek_icon=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-peek-icon", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_peek_icon? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-peek-icon", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_password_entry_new: (Constructor)
       # Returns: (transfer none)
@@ -318,7 +378,7 @@ module Gtk
       Gio::MenuModel.new(_retval, GICrystal::Transfer::None)
     end
 
-    def show_peek_icon? : Bool
+    def show_peek_icon : Bool
       # gtk_password_entry_get_show_peek_icon: (Method)
       # Returns: (transfer none)
 

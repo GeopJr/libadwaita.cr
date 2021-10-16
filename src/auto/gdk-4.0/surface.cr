@@ -67,17 +67,80 @@ module Gdk
       LibGdk.gdk_surface_get_type
     end
 
-    def display=(value : Display?) : Display?
+    def cursor=(value : Gdk::Cursor?) : Gdk::Cursor?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "cursor", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cursor : Gdk::Cursor?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "cursor", pointerof(value), Pointer(Void).null)
+      Gdk::Cursor.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def display=(value : Gdk::Display?) : Gdk::Display?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "display", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def frame_clock=(value : FrameClock?) : FrameClock?
+    def display : Gdk::Display?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "display", pointerof(value), Pointer(Void).null)
+      Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def frame_clock=(value : Gdk::FrameClock?) : Gdk::FrameClock?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "frame-clock", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def frame_clock : Gdk::FrameClock?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "frame-clock", pointerof(value), Pointer(Void).null)
+      Gdk::FrameClock.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def height : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def mapped? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "mapped", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def scale_factor : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "scale-factor", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def width : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -198,7 +261,7 @@ module Gdk
       _retval
     end
 
-    def mapped? : Bool
+    def mapped : Bool
       # gdk_surface_get_mapped: (Method)
       # Returns: (transfer none)
 

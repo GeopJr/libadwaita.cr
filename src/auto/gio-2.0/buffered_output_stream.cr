@@ -60,6 +60,36 @@ module Gio
       LibGio.g_buffered_output_stream_get_type
     end
 
+    def auto_grow=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "auto-grow", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def auto_grow? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "auto-grow", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def buffer_size=(value : UInt32) : UInt32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "buffer-size", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def buffer_size : UInt32
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "buffer-size", pointerof(value), Pointer(Void).null)
+      value
+    end
+
     def initialize(base_stream : Gio::OutputStream)
       # g_buffered_output_stream_new: (Constructor)
       # Returns: (transfer full)
@@ -76,7 +106,7 @@ module Gio
       Gio::BufferedOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def auto_grow? : Bool
+    def auto_grow : Bool
       # g_buffered_output_stream_get_auto_grow: (Method | Getter)
       # Returns: (transfer none)
 

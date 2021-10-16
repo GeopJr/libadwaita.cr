@@ -38,18 +38,34 @@ module Gtk
       LibGtk.gtk_alternative_trigger_get_type
     end
 
-    def first=(value : ShortcutTrigger?) : ShortcutTrigger?
+    def first=(value : Gtk::ShortcutTrigger?) : Gtk::ShortcutTrigger?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "first", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def second=(value : ShortcutTrigger?) : ShortcutTrigger?
+    def first : Gtk::ShortcutTrigger?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "first", pointerof(value), Pointer(Void).null)
+      Gtk::ShortcutTrigger.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def second=(value : Gtk::ShortcutTrigger?) : Gtk::ShortcutTrigger?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "second", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def second : Gtk::ShortcutTrigger?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "second", pointerof(value), Pointer(Void).null)
+      Gtk::ShortcutTrigger.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize(first : Gtk::ShortcutTrigger, second : Gtk::ShortcutTrigger)

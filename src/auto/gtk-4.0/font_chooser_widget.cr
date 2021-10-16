@@ -267,6 +267,14 @@ module Gtk
       LibGtk.gtk_font_chooser_widget_get_type
     end
 
+    def tweak_action : Gio::Action?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "tweak-action", pointerof(value), Pointer(Void).null)
+      Gio::Action__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def initialize
       # gtk_font_chooser_widget_new: (Constructor)
       # Returns: (transfer none)

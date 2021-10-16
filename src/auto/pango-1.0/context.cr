@@ -122,7 +122,7 @@ module Pango
       Pango::FontMetrics.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def round_glyph_positions? : Bool
+    def round_glyph_positions : Bool
       # pango_context_get_round_glyph_positions: (Method)
       # Returns: (transfer none)
 

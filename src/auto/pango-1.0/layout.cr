@@ -78,7 +78,7 @@ module Pango
       Pango::AttrList.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def auto_dir? : Bool
+    def auto_dir : Bool
       # pango_layout_get_auto_dir: (Method)
       # Returns: (transfer none)
 
@@ -186,7 +186,7 @@ module Pango
       Pango::LayoutIter.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def justify? : Bool
+    def justify : Bool
       # pango_layout_get_justify: (Method)
       # Returns: (transfer none)
 
@@ -301,7 +301,7 @@ module Pango
       _retval
     end
 
-    def single_paragraph_mode? : Bool
+    def single_paragraph_mode : Bool
       # pango_layout_get_single_paragraph_mode: (Method)
       # Returns: (transfer none)
 

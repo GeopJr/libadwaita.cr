@@ -334,6 +334,74 @@ module Gtk
       LibGtk.gtk_gl_area_get_type
     end
 
+    def auto_render=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "auto-render", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def auto_render? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "auto-render", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def context : Gdk::GLContext?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "context", pointerof(value), Pointer(Void).null)
+      Gdk::GLContext.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def has_depth_buffer=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-depth-buffer", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_depth_buffer? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-depth-buffer", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def has_stencil_buffer=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-stencil-buffer", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_stencil_buffer? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-stencil-buffer", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def use_es=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "use-es", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def use_es? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "use-es", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize
       # gtk_gl_area_new: (Constructor)
       # Returns: (transfer none)
@@ -349,7 +417,7 @@ module Gtk
       LibGtk.gtk_gl_area_attach_buffers(self)
     end
 
-    def auto_render? : Bool
+    def auto_render : Bool
       # gtk_gl_area_get_auto_render: (Method)
       # Returns: (transfer none)
 
@@ -373,7 +441,7 @@ module Gtk
       GLib::Error.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def has_depth_buffer? : Bool
+    def has_depth_buffer : Bool
       # gtk_gl_area_get_has_depth_buffer: (Method)
       # Returns: (transfer none)
 
@@ -381,7 +449,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def has_stencil_buffer? : Bool
+    def has_stencil_buffer : Bool
       # gtk_gl_area_get_has_stencil_buffer: (Method)
       # Returns: (transfer none)
 
@@ -398,7 +466,7 @@ module Gtk
       LibGtk.gtk_gl_area_get_required_version(self, major, minor)
     end
 
-    def use_es? : Bool
+    def use_es : Bool
       # gtk_gl_area_get_use_es: (Method)
       # Returns: (transfer none)
 

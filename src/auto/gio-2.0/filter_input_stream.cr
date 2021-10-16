@@ -37,11 +37,34 @@ module Gio
       LibGio.g_filter_input_stream_get_type
     end
 
-    def base_stream=(value : InputStream?) : InputStream?
+    def base_stream=(value : Gio::InputStream?) : Gio::InputStream?
       unsafe_value = value
 
       LibGObject.g_object_set(self, "base-stream", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def base_stream : Gio::InputStream?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "base-stream", pointerof(value), Pointer(Void).null)
+      Gio::InputStream.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def close_base_stream=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "close-base-stream", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def close_base_stream? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "close-base-stream", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def base_stream : Gio::InputStream
@@ -52,7 +75,7 @@ module Gio
       Gio::InputStream.new(_retval, GICrystal::Transfer::None)
     end
 
-    def close_base_stream? : Bool
+    def close_base_stream : Bool
       # g_filter_input_stream_get_close_base_stream: (Method | Getter)
       # Returns: (transfer none)
 

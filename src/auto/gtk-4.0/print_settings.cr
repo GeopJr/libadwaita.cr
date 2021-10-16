@@ -105,7 +105,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def collate? : Bool
+    def collate : Bool
       # gtk_print_settings_get_collate: (Method)
       # Returns: (transfer none)
 
@@ -330,7 +330,7 @@ module Gtk
       _retval
     end
 
-    def reverse? : Bool
+    def reverse : Bool
       # gtk_print_settings_get_reverse: (Method)
       # Returns: (transfer none)
 
@@ -346,7 +346,7 @@ module Gtk
       _retval
     end
 
-    def use_color? : Bool
+    def use_color : Bool
       # gtk_print_settings_get_use_color: (Method)
       # Returns: (transfer none)
 

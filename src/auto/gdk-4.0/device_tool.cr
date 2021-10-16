@@ -44,17 +44,33 @@ module Gdk
       LibGdk.gdk_device_tool_get_type
     end
 
-    def axes=(value : AxisFlags) : AxisFlags
+    def axes=(value : Gdk::AxisFlags) : Gdk::AxisFlags
       unsafe_value = value
 
       LibGObject.g_object_set(self, "axes", unsafe_value, Pointer(Void).null)
       value
     end
 
+    def axes : Gdk::AxisFlags
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "axes", pointerof(value), Pointer(Void).null)
+      Gdk::AxisFlags.from_value(value)
+    end
+
     def hardware_id=(value : UInt64) : UInt64
       unsafe_value = value
 
       LibGObject.g_object_set(self, "hardware-id", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hardware_id : UInt64
+      # Returns: None
+
+      value = uninitialized UInt64
+      LibGObject.g_object_get(self, "hardware-id", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -65,11 +81,27 @@ module Gdk
       value
     end
 
-    def tool_type=(value : DeviceToolType) : DeviceToolType
+    def serial : UInt64
+      # Returns: None
+
+      value = uninitialized UInt64
+      LibGObject.g_object_get(self, "serial", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def tool_type=(value : Gdk::DeviceToolType) : Gdk::DeviceToolType
       unsafe_value = value
 
       LibGObject.g_object_set(self, "tool-type", unsafe_value, Pointer(Void).null)
       value
+    end
+
+    def tool_type : Gdk::DeviceToolType
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "tool-type", pointerof(value), Pointer(Void).null)
+      Gdk::DeviceToolType.from_value(value)
     end
 
     def axes : Gdk::AxisFlags

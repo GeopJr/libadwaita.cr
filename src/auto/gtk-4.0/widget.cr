@@ -565,10 +565,478 @@ module Gtk
       LibGtk.gtk_widget_get_type
     end
 
+    def can_focus=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "can-focus", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def can_focus? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-focus", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def can_target=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "can-target", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def can_target? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "can-target", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def css_classes=(value : Enumerable(::String)) : Enumerable(::String)
+      # handle array
+
+      LibGObject.g_object_set(self, "css-classes", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def css_classes : Enumerable(::String)
+      # Returns: None
+
+      value = uninitialized Pointer(Pointer(LibC::Char))
+      LibGObject.g_object_get(self, "css-classes", pointerof(value), Pointer(Void).null)
+      GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
+    end
+
     def css_name=(value : ::String) : ::String
       unsafe_value = value
 
       LibGObject.g_object_set(self, "css-name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def css_name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "css-name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def cursor=(value : Gdk::Cursor?) : Gdk::Cursor?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "cursor", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def cursor : Gdk::Cursor?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "cursor", pointerof(value), Pointer(Void).null)
+      Gdk::Cursor.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def focus_on_click=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "focus-on-click", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def focus_on_click? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "focus-on-click", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def focusable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "focusable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def focusable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "focusable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def halign=(value : Gtk::Align) : Gtk::Align
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "halign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def halign : Gtk::Align
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "halign", pointerof(value), Pointer(Void).null)
+      Gtk::Align.from_value(value)
+    end
+
+    def has_default? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-default", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def has_focus? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-focus", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def has_tooltip=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "has-tooltip", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def has_tooltip? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "has-tooltip", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def height_request=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "height-request", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def height_request : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "height-request", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def hexpand=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hexpand", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hexpand? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "hexpand", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def hexpand_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "hexpand-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def hexpand_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "hexpand-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def layout_manager=(value : Gtk::LayoutManager?) : Gtk::LayoutManager?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "layout-manager", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def layout_manager : Gtk::LayoutManager?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "layout-manager", pointerof(value), Pointer(Void).null)
+      Gtk::LayoutManager.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def margin_bottom=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "margin-bottom", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def margin_bottom : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "margin-bottom", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def margin_end=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "margin-end", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def margin_end : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "margin-end", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def margin_start=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "margin-start", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def margin_start : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "margin-start", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def margin_top=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "margin-top", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def margin_top : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "margin-top", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def name=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "name", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def name : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def opacity=(value : Float64) : Float64
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "opacity", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def opacity : Float64
+      # Returns: None
+
+      value = uninitialized Float64
+      LibGObject.g_object_get(self, "opacity", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def overflow=(value : Gtk::Overflow) : Gtk::Overflow
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "overflow", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def overflow : Gtk::Overflow
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "overflow", pointerof(value), Pointer(Void).null)
+      Gtk::Overflow.from_value(value)
+    end
+
+    def parent : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "parent", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def receives_default=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "receives-default", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def receives_default? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "receives-default", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def root : Gtk::Root?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "root", pointerof(value), Pointer(Void).null)
+      Gtk::Root__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def scale_factor : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "scale-factor", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def sensitive=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sensitive", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sensitive? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "sensitive", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def tooltip_markup=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tooltip-markup", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tooltip_markup : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "tooltip-markup", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def tooltip_text=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "tooltip-text", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def tooltip_text : ::String
+      # Returns: None
+
+      value = uninitialized Pointer(LibC::Char)
+      LibGObject.g_object_get(self, "tooltip-text", pointerof(value), Pointer(Void).null)
+      ::String.new(value)
+    end
+
+    def valign=(value : Gtk::Align) : Gtk::Align
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "valign", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def valign : Gtk::Align
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "valign", pointerof(value), Pointer(Void).null)
+      Gtk::Align.from_value(value)
+    end
+
+    def vexpand=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "vexpand", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def vexpand? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "vexpand", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def vexpand_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "vexpand-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def vexpand_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "vexpand-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def visible=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "visible", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def visible? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "visible", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def width_request=(value : Int32) : Int32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "width-request", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def width_request : Int32
+      # Returns: None
+
+      value = uninitialized Int32
+      LibGObject.g_object_get(self, "width-request", pointerof(value), Pointer(Void).null)
       value
     end
 
@@ -817,7 +1285,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def can_focus? : Bool
+    def can_focus : Bool
       # gtk_widget_get_can_focus: (Method)
       # Returns: (transfer none)
 
@@ -825,7 +1293,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def can_target? : Bool
+    def can_target : Bool
       # gtk_widget_get_can_target: (Method)
       # Returns: (transfer none)
 
@@ -833,7 +1301,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def child_visible? : Bool
+    def child_visible : Bool
       # gtk_widget_get_child_visible: (Method)
       # Returns: (transfer none)
 
@@ -905,7 +1373,7 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def focus_on_click? : Bool
+    def focus_on_click : Bool
       # gtk_widget_get_focus_on_click: (Method)
       # Returns: (transfer none)
 
@@ -913,7 +1381,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def focusable? : Bool
+    def focusable : Bool
       # gtk_widget_get_focusable: (Method)
       # Returns: (transfer none)
 
@@ -953,7 +1421,7 @@ module Gtk
       Gtk::Align.from_value(_retval)
     end
 
-    def has_tooltip? : Bool
+    def has_tooltip : Bool
       # gtk_widget_get_has_tooltip: (Method)
       # Returns: (transfer none)
 
@@ -969,7 +1437,7 @@ module Gtk
       _retval
     end
 
-    def hexpand? : Bool
+    def hexpand : Bool
       # gtk_widget_get_hexpand: (Method)
       # Returns: (transfer none)
 
@@ -977,7 +1445,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def hexpand_set? : Bool
+    def hexpand_set : Bool
       # gtk_widget_get_hexpand_set: (Method)
       # Returns: (transfer none)
 
@@ -1001,7 +1469,7 @@ module Gtk
       Gtk::LayoutManager.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def mapped? : Bool
+    def mapped : Bool
       # gtk_widget_get_mapped: (Method)
       # Returns: (transfer none)
 
@@ -1127,7 +1595,7 @@ module Gtk
       Gdk::Clipboard.new(_retval, GICrystal::Transfer::None)
     end
 
-    def realized? : Bool
+    def realized : Bool
       # gtk_widget_get_realized: (Method)
       # Returns: (transfer none)
 
@@ -1135,7 +1603,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def receives_default? : Bool
+    def receives_default : Bool
       # gtk_widget_get_receives_default: (Method)
       # Returns: (transfer none)
 
@@ -1167,7 +1635,7 @@ module Gtk
       _retval
     end
 
-    def sensitive? : Bool
+    def sensitive : Bool
       # gtk_widget_get_sensitive: (Method)
       # Returns: (transfer none)
 
@@ -1251,7 +1719,7 @@ module Gtk
       Gtk::Align.from_value(_retval)
     end
 
-    def vexpand? : Bool
+    def vexpand : Bool
       # gtk_widget_get_vexpand: (Method)
       # Returns: (transfer none)
 
@@ -1259,7 +1727,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def vexpand_set? : Bool
+    def vexpand_set : Bool
       # gtk_widget_get_vexpand_set: (Method)
       # Returns: (transfer none)
 
@@ -1267,7 +1735,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def visible? : Bool
+    def visible : Bool
       # gtk_widget_get_visible: (Method)
       # Returns: (transfer none)
 
