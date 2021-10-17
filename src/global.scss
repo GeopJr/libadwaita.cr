@@ -1,0 +1,59 @@
+@import '$lib/fonts/Cantarell-400.css';
+@import '$lib/fonts/Cantarell-700.css';
+
+html {
+	background-color: var(--background-color);
+	color: var(--text-color);
+	transition-duration: 200ms;
+	font-family: 'Cantarell', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Ubuntu', 'Noto Sans',
+		sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+:root {
+	--window-header: #dfdcd8;
+	--window-header-border: #c4c3c0;
+	--window-border: #9b9b9b;
+	--window-background: #f6f5f4;
+	--window-text-color: black;
+	--button: #e2e2e1;
+	--button-hover: #d8d8d7;
+	--button-focus: #c0c0c0;
+	--codeblock: #1e1e1e;
+	--background-color: #131416;
+	--text-color: white;
+}
+
+:root[theme='dark'] {
+	--window-header: #282828;
+	--window-header-border: #464645;
+	--window-border: #494949;
+	--window-background: #353535;
+	--window-text-color: white;
+	--button: #474747;
+	--button-hover: #515150;
+	--button-focus: #636363;
+	--codeblock: #1e1e1e;
+	--background-color: #131416;
+	--text-color: white;
+}
+
+html,
+body {
+	overflow-x: hidden;
+}
+
+pre {
+	background-color: var(--codeblock);
+	color: white;
+	padding: 1rem;
+	border-radius: 10px;
+	> code {
+		white-space: pre-wrap;
+	}
+}
+
+.force-prefers-color {
+	path {
+		fill: var(--window-text-color);
+	}
+}
