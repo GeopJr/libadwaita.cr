@@ -1,4 +1,4 @@
-require "../src/adw"
+require "../src/libadwaita"
 
 def activate(app : Adw::Application)
   window = Adw::ApplicationWindow.new(app)

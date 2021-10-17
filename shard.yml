@@ -1,4 +1,5 @@
 name: libadwaita
+description: libadwaita bindings for Crystal
 version: 1.0.0
 
 authors:

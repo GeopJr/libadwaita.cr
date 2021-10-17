@@ -1,4 +1,4 @@
-require "../src/adw"
+require "../src/libadwaita"
 
 def activate(app : Adw::Application)
   dialog = Gtk::FileChooserDialog.new(application: app, title: "Choose a file", action: :open)

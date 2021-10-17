@@ -1,4 +1,4 @@
-require "../src/adw"
+require "../src/libadwaita"
 
 app = Adw::Application.new("hello.example.com", Gio::ApplicationFlags::None)
 count = 0
