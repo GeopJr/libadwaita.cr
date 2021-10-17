@@ -11,7 +11,7 @@
 		{href}
 		class={`btn ${circle ? 'circle' : ''}`}
 		target={external ? '_blank' : undefined}
-		rel={external ? 'noopener' : undefined}
+		rel={'external ' + external ? 'noopener' : ''}
 		on:click
 		aria-label={ariaLabel}
 	>
