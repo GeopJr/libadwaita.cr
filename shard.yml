@@ -10,9 +10,6 @@ development_dependencies:
     github: hugopl/gi-crystal
     commit: f4975de4e0d5360ad702ef5db9261cf993db369a
 
-scripts:
-  postinstall: ./bin/generate_bindings
-
 crystal: ">= 1.0.0"
 
 license: MIT
