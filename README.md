@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="256" alt="libadwaita.cr logo" src="./logo.svg" />
+  <img width="256" alt="libadwaita.cr logo" src="https://raw.githubusercontent.com/GeopJr/libadwaita.cr/main/logo.svg" />
 </p>
 <h1 align="center">libadwaita.cr</h1>
 <h4 align="center">libadwaita bindings for Crystal</h4>
