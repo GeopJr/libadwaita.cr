@@ -188,7 +188,7 @@ module Gdk
     end
 
     def fallback : Gdk::Cursor?
-      # gdk_cursor_get_fallback: (Method)
+      # gdk_cursor_get_fallback: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_cursor_get_fallback(self)
@@ -196,7 +196,7 @@ module Gdk
     end
 
     def hotspot_x : Int32
-      # gdk_cursor_get_hotspot_x: (Method)
+      # gdk_cursor_get_hotspot_x: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_cursor_get_hotspot_x(self)
@@ -204,7 +204,7 @@ module Gdk
     end
 
     def hotspot_y : Int32
-      # gdk_cursor_get_hotspot_y: (Method)
+      # gdk_cursor_get_hotspot_y: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_cursor_get_hotspot_y(self)
@@ -212,7 +212,7 @@ module Gdk
     end
 
     def name : ::String?
-      # gdk_cursor_get_name: (Method)
+      # gdk_cursor_get_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_cursor_get_name(self)
@@ -220,7 +220,7 @@ module Gdk
     end
 
     def texture : Gdk::Texture?
-      # gdk_cursor_get_texture: (Method)
+      # gdk_cursor_get_texture: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_cursor_get_texture(self)

@@ -437,7 +437,7 @@ module Gtk
     end
 
     def alternative_text : ::String?
-      # gtk_picture_get_alternative_text: (Method)
+      # gtk_picture_get_alternative_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_picture_get_alternative_text(self)
@@ -445,7 +445,7 @@ module Gtk
     end
 
     def can_shrink : Bool
-      # gtk_picture_get_can_shrink: (Method)
+      # gtk_picture_get_can_shrink: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_picture_get_can_shrink(self)
@@ -453,7 +453,7 @@ module Gtk
     end
 
     def file : Gio::File?
-      # gtk_picture_get_file: (Method)
+      # gtk_picture_get_file: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_picture_get_file(self)
@@ -461,7 +461,7 @@ module Gtk
     end
 
     def keep_aspect_ratio : Bool
-      # gtk_picture_get_keep_aspect_ratio: (Method)
+      # gtk_picture_get_keep_aspect_ratio: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_picture_get_keep_aspect_ratio(self)
@@ -469,7 +469,7 @@ module Gtk
     end
 
     def paintable : Gdk::Paintable?
-      # gtk_picture_get_paintable: (Method)
+      # gtk_picture_get_paintable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_picture_get_paintable(self)
@@ -477,7 +477,7 @@ module Gtk
     end
 
     def alternative_text=(alternative_text : ::String?) : Nil
-      # gtk_picture_set_alternative_text: (Method)
+      # gtk_picture_set_alternative_text: (Method | Setter)
       # @alternative_text: (nullable)
       # Returns: (transfer none)
 
@@ -491,14 +491,14 @@ module Gtk
     end
 
     def can_shrink=(can_shrink : Bool) : Nil
-      # gtk_picture_set_can_shrink: (Method)
+      # gtk_picture_set_can_shrink: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_picture_set_can_shrink(self, can_shrink)
     end
 
     def file=(file : Gio::File?) : Nil
-      # gtk_picture_set_file: (Method)
+      # gtk_picture_set_file: (Method | Setter)
       # @file: (nullable)
       # Returns: (transfer none)
 
@@ -526,14 +526,14 @@ module Gtk
     end
 
     def keep_aspect_ratio=(keep_aspect_ratio : Bool) : Nil
-      # gtk_picture_set_keep_aspect_ratio: (Method)
+      # gtk_picture_set_keep_aspect_ratio: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_picture_set_keep_aspect_ratio(self, keep_aspect_ratio)
     end
 
     def paintable=(paintable : Gdk::Paintable?) : Nil
-      # gtk_picture_set_paintable: (Method)
+      # gtk_picture_set_paintable: (Method | Setter)
       # @paintable: (nullable)
       # Returns: (transfer none)
 

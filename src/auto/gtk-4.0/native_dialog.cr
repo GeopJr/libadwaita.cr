@@ -128,7 +128,7 @@ module Gtk
     end
 
     def modal : Bool
-      # gtk_native_dialog_get_modal: (Method)
+      # gtk_native_dialog_get_modal: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_native_dialog_get_modal(self)
@@ -136,7 +136,7 @@ module Gtk
     end
 
     def title : ::String?
-      # gtk_native_dialog_get_title: (Method)
+      # gtk_native_dialog_get_title: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_native_dialog_get_title(self)
@@ -144,7 +144,7 @@ module Gtk
     end
 
     def transient_for : Gtk::Window?
-      # gtk_native_dialog_get_transient_for: (Method)
+      # gtk_native_dialog_get_transient_for: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_native_dialog_get_transient_for(self)
@@ -152,7 +152,7 @@ module Gtk
     end
 
     def visible : Bool
-      # gtk_native_dialog_get_visible: (Method)
+      # gtk_native_dialog_get_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_native_dialog_get_visible(self)
@@ -167,21 +167,21 @@ module Gtk
     end
 
     def modal=(modal : Bool) : Nil
-      # gtk_native_dialog_set_modal: (Method)
+      # gtk_native_dialog_set_modal: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_native_dialog_set_modal(self, modal)
     end
 
     def title=(title : ::String) : Nil
-      # gtk_native_dialog_set_title: (Method)
+      # gtk_native_dialog_set_title: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_native_dialog_set_title(self, title)
     end
 
     def transient_for=(parent : Gtk::Window?) : Nil
-      # gtk_native_dialog_set_transient_for: (Method)
+      # gtk_native_dialog_set_transient_for: (Method | Setter)
       # @parent: (nullable)
       # Returns: (transfer none)
 

@@ -132,7 +132,7 @@ module Gtk
     end
 
     def filter : Gtk::Filter?
-      # gtk_filter_list_model_get_filter: (Method)
+      # gtk_filter_list_model_get_filter: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_filter_list_model_get_filter(self)
@@ -140,7 +140,7 @@ module Gtk
     end
 
     def incremental : Bool
-      # gtk_filter_list_model_get_incremental: (Method)
+      # gtk_filter_list_model_get_incremental: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_filter_list_model_get_incremental(self)
@@ -148,7 +148,7 @@ module Gtk
     end
 
     def model : Gio::ListModel?
-      # gtk_filter_list_model_get_model: (Method)
+      # gtk_filter_list_model_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_filter_list_model_get_model(self)
@@ -156,7 +156,7 @@ module Gtk
     end
 
     def pending : UInt32
-      # gtk_filter_list_model_get_pending: (Method)
+      # gtk_filter_list_model_get_pending: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_filter_list_model_get_pending(self)
@@ -164,7 +164,7 @@ module Gtk
     end
 
     def filter=(filter : Gtk::Filter?) : Nil
-      # gtk_filter_list_model_set_filter: (Method)
+      # gtk_filter_list_model_set_filter: (Method | Setter)
       # @filter: (nullable)
       # Returns: (transfer none)
 
@@ -178,14 +178,14 @@ module Gtk
     end
 
     def incremental=(incremental : Bool) : Nil
-      # gtk_filter_list_model_set_incremental: (Method)
+      # gtk_filter_list_model_set_incremental: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_filter_list_model_set_incremental(self, incremental)
     end
 
     def model=(model : Gio::ListModel?) : Nil
-      # gtk_filter_list_model_set_model: (Method)
+      # gtk_filter_list_model_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 

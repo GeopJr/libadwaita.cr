@@ -389,7 +389,7 @@ module Gtk
     end
 
     def is_expanded : Bool
-      # gtk_cell_renderer_get_is_expanded: (Method)
+      # gtk_cell_renderer_get_is_expanded: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_renderer_get_is_expanded(self)
@@ -397,7 +397,7 @@ module Gtk
     end
 
     def is_expander : Bool
-      # gtk_cell_renderer_get_is_expander: (Method)
+      # gtk_cell_renderer_get_is_expander: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_renderer_get_is_expander(self)
@@ -487,7 +487,7 @@ module Gtk
     end
 
     def sensitive : Bool
-      # gtk_cell_renderer_get_sensitive: (Method)
+      # gtk_cell_renderer_get_sensitive: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_renderer_get_sensitive(self)
@@ -510,7 +510,7 @@ module Gtk
     end
 
     def visible : Bool
-      # gtk_cell_renderer_get_visible: (Method)
+      # gtk_cell_renderer_get_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_renderer_get_visible(self)
@@ -540,14 +540,14 @@ module Gtk
     end
 
     def is_expanded=(is_expanded : Bool) : Nil
-      # gtk_cell_renderer_set_is_expanded: (Method)
+      # gtk_cell_renderer_set_is_expanded: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_renderer_set_is_expanded(self, is_expanded)
     end
 
     def is_expander=(is_expander : Bool) : Nil
-      # gtk_cell_renderer_set_is_expander: (Method)
+      # gtk_cell_renderer_set_is_expander: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_renderer_set_is_expander(self, is_expander)
@@ -561,14 +561,14 @@ module Gtk
     end
 
     def sensitive=(sensitive : Bool) : Nil
-      # gtk_cell_renderer_set_sensitive: (Method)
+      # gtk_cell_renderer_set_sensitive: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_renderer_set_sensitive(self, sensitive)
     end
 
     def visible=(visible : Bool) : Nil
-      # gtk_cell_renderer_set_visible: (Method)
+      # gtk_cell_renderer_set_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_renderer_set_visible(self, visible)

@@ -116,7 +116,7 @@ module Gtk
     end
 
     def model : Gio::ListModel?
-      # gtk_map_list_model_get_model: (Method)
+      # gtk_map_list_model_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_map_list_model_get_model(self)
@@ -124,7 +124,7 @@ module Gtk
     end
 
     def has_map : Bool
-      # gtk_map_list_model_has_map: (Method)
+      # gtk_map_list_model_has_map: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_map_list_model_has_map(self)

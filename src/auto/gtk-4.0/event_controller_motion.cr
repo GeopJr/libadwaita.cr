@@ -87,7 +87,7 @@ module Gtk
     end
 
     def contains_pointer : Bool
-      # gtk_event_controller_motion_contains_pointer: (Method)
+      # gtk_event_controller_motion_contains_pointer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_event_controller_motion_contains_pointer(self)
@@ -95,7 +95,7 @@ module Gtk
     end
 
     def is_pointer : Bool
-      # gtk_event_controller_motion_is_pointer: (Method)
+      # gtk_event_controller_motion_is_pointer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_event_controller_motion_is_pointer(self)

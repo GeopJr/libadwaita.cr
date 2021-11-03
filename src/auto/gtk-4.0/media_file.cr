@@ -187,7 +187,7 @@ module Gtk
     end
 
     def file : Gio::File?
-      # gtk_media_file_get_file: (Method)
+      # gtk_media_file_get_file: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_file_get_file(self)
@@ -195,7 +195,7 @@ module Gtk
     end
 
     def input_stream : Gio::InputStream?
-      # gtk_media_file_get_input_stream: (Method)
+      # gtk_media_file_get_input_stream: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_file_get_input_stream(self)
@@ -203,7 +203,7 @@ module Gtk
     end
 
     def file=(file : Gio::File?) : Nil
-      # gtk_media_file_set_file: (Method)
+      # gtk_media_file_set_file: (Method | Setter)
       # @file: (nullable)
       # Returns: (transfer none)
 
@@ -231,7 +231,7 @@ module Gtk
     end
 
     def input_stream=(stream : Gio::InputStream?) : Nil
-      # gtk_media_file_set_input_stream: (Method)
+      # gtk_media_file_set_input_stream: (Method | Setter)
       # @stream: (nullable)
       # Returns: (transfer none)
 

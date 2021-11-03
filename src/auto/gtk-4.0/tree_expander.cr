@@ -308,7 +308,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_tree_expander_get_child: (Method)
+      # gtk_tree_expander_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_expander_get_child(self)
@@ -316,7 +316,7 @@ module Gtk
     end
 
     def item : GObject::Object?
-      # gtk_tree_expander_get_item: (Method)
+      # gtk_tree_expander_get_item: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_tree_expander_get_item(self)
@@ -324,7 +324,7 @@ module Gtk
     end
 
     def list_row : Gtk::TreeListRow?
-      # gtk_tree_expander_get_list_row: (Method)
+      # gtk_tree_expander_get_list_row: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_expander_get_list_row(self)
@@ -332,7 +332,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_tree_expander_set_child: (Method)
+      # gtk_tree_expander_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -346,7 +346,7 @@ module Gtk
     end
 
     def list_row=(list_row : Gtk::TreeListRow?) : Nil
-      # gtk_tree_expander_set_list_row: (Method)
+      # gtk_tree_expander_set_list_row: (Method | Setter)
       # @list_row: (nullable)
       # Returns: (transfer none)
 

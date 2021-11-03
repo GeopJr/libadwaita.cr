@@ -717,7 +717,7 @@ module Gtk
     end
 
     def artists : Enumerable(::String)
-      # gtk_about_dialog_get_artists: (Method)
+      # gtk_about_dialog_get_artists: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_artists(self)
@@ -725,7 +725,7 @@ module Gtk
     end
 
     def authors : Enumerable(::String)
-      # gtk_about_dialog_get_authors: (Method)
+      # gtk_about_dialog_get_authors: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_authors(self)
@@ -733,7 +733,7 @@ module Gtk
     end
 
     def comments : ::String?
-      # gtk_about_dialog_get_comments: (Method)
+      # gtk_about_dialog_get_comments: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_comments(self)
@@ -741,7 +741,7 @@ module Gtk
     end
 
     def copyright : ::String?
-      # gtk_about_dialog_get_copyright: (Method)
+      # gtk_about_dialog_get_copyright: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_copyright(self)
@@ -749,7 +749,7 @@ module Gtk
     end
 
     def documenters : Enumerable(::String)
-      # gtk_about_dialog_get_documenters: (Method)
+      # gtk_about_dialog_get_documenters: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_documenters(self)
@@ -757,7 +757,7 @@ module Gtk
     end
 
     def license : ::String?
-      # gtk_about_dialog_get_license: (Method)
+      # gtk_about_dialog_get_license: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_license(self)
@@ -765,7 +765,7 @@ module Gtk
     end
 
     def license_type : Gtk::License
-      # gtk_about_dialog_get_license_type: (Method)
+      # gtk_about_dialog_get_license_type: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_license_type(self)
@@ -773,7 +773,7 @@ module Gtk
     end
 
     def logo : Gdk::Paintable?
-      # gtk_about_dialog_get_logo: (Method)
+      # gtk_about_dialog_get_logo: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_logo(self)
@@ -781,7 +781,7 @@ module Gtk
     end
 
     def logo_icon_name : ::String?
-      # gtk_about_dialog_get_logo_icon_name: (Method)
+      # gtk_about_dialog_get_logo_icon_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_logo_icon_name(self)
@@ -789,7 +789,7 @@ module Gtk
     end
 
     def program_name : ::String?
-      # gtk_about_dialog_get_program_name: (Method)
+      # gtk_about_dialog_get_program_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_program_name(self)
@@ -797,7 +797,7 @@ module Gtk
     end
 
     def system_information : ::String?
-      # gtk_about_dialog_get_system_information: (Method)
+      # gtk_about_dialog_get_system_information: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_system_information(self)
@@ -805,7 +805,7 @@ module Gtk
     end
 
     def translator_credits : ::String?
-      # gtk_about_dialog_get_translator_credits: (Method)
+      # gtk_about_dialog_get_translator_credits: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_translator_credits(self)
@@ -813,7 +813,7 @@ module Gtk
     end
 
     def version : ::String?
-      # gtk_about_dialog_get_version: (Method)
+      # gtk_about_dialog_get_version: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_version(self)
@@ -821,7 +821,7 @@ module Gtk
     end
 
     def website : ::String?
-      # gtk_about_dialog_get_website: (Method)
+      # gtk_about_dialog_get_website: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_website(self)
@@ -829,7 +829,7 @@ module Gtk
     end
 
     def website_label : ::String?
-      # gtk_about_dialog_get_website_label: (Method)
+      # gtk_about_dialog_get_website_label: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_website_label(self)
@@ -837,7 +837,7 @@ module Gtk
     end
 
     def wrap_license : Bool
-      # gtk_about_dialog_get_wrap_license: (Method)
+      # gtk_about_dialog_get_wrap_license: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_about_dialog_get_wrap_license(self)
@@ -845,7 +845,7 @@ module Gtk
     end
 
     def artists=(artists : Enumerable(::String)) : Nil
-      # gtk_about_dialog_set_artists: (Method)
+      # gtk_about_dialog_set_artists: (Method | Setter)
       # @artists: (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
@@ -855,7 +855,7 @@ module Gtk
     end
 
     def authors=(authors : Enumerable(::String)) : Nil
-      # gtk_about_dialog_set_authors: (Method)
+      # gtk_about_dialog_set_authors: (Method | Setter)
       # @authors: (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
@@ -865,7 +865,7 @@ module Gtk
     end
 
     def comments=(comments : ::String?) : Nil
-      # gtk_about_dialog_set_comments: (Method)
+      # gtk_about_dialog_set_comments: (Method | Setter)
       # @comments: (nullable)
       # Returns: (transfer none)
 
@@ -879,7 +879,7 @@ module Gtk
     end
 
     def copyright=(copyright : ::String?) : Nil
-      # gtk_about_dialog_set_copyright: (Method)
+      # gtk_about_dialog_set_copyright: (Method | Setter)
       # @copyright: (nullable)
       # Returns: (transfer none)
 
@@ -893,7 +893,7 @@ module Gtk
     end
 
     def documenters=(documenters : Enumerable(::String)) : Nil
-      # gtk_about_dialog_set_documenters: (Method)
+      # gtk_about_dialog_set_documenters: (Method | Setter)
       # @documenters: (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
@@ -903,7 +903,7 @@ module Gtk
     end
 
     def license=(license : ::String?) : Nil
-      # gtk_about_dialog_set_license: (Method)
+      # gtk_about_dialog_set_license: (Method | Setter)
       # @license: (nullable)
       # Returns: (transfer none)
 
@@ -917,14 +917,14 @@ module Gtk
     end
 
     def license_type=(license_type : Gtk::License) : Nil
-      # gtk_about_dialog_set_license_type: (Method)
+      # gtk_about_dialog_set_license_type: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_about_dialog_set_license_type(self, license_type)
     end
 
     def logo=(logo : Gdk::Paintable?) : Nil
-      # gtk_about_dialog_set_logo: (Method)
+      # gtk_about_dialog_set_logo: (Method | Setter)
       # @logo: (nullable)
       # Returns: (transfer none)
 
@@ -938,7 +938,7 @@ module Gtk
     end
 
     def logo_icon_name=(icon_name : ::String?) : Nil
-      # gtk_about_dialog_set_logo_icon_name: (Method)
+      # gtk_about_dialog_set_logo_icon_name: (Method | Setter)
       # @icon_name: (nullable)
       # Returns: (transfer none)
 
@@ -952,7 +952,7 @@ module Gtk
     end
 
     def program_name=(name : ::String?) : Nil
-      # gtk_about_dialog_set_program_name: (Method)
+      # gtk_about_dialog_set_program_name: (Method | Setter)
       # @name: (nullable)
       # Returns: (transfer none)
 
@@ -966,7 +966,7 @@ module Gtk
     end
 
     def system_information=(system_information : ::String?) : Nil
-      # gtk_about_dialog_set_system_information: (Method)
+      # gtk_about_dialog_set_system_information: (Method | Setter)
       # @system_information: (nullable)
       # Returns: (transfer none)
 
@@ -980,7 +980,7 @@ module Gtk
     end
 
     def translator_credits=(translator_credits : ::String?) : Nil
-      # gtk_about_dialog_set_translator_credits: (Method)
+      # gtk_about_dialog_set_translator_credits: (Method | Setter)
       # @translator_credits: (nullable)
       # Returns: (transfer none)
 
@@ -994,7 +994,7 @@ module Gtk
     end
 
     def version=(version : ::String?) : Nil
-      # gtk_about_dialog_set_version: (Method)
+      # gtk_about_dialog_set_version: (Method | Setter)
       # @version: (nullable)
       # Returns: (transfer none)
 
@@ -1008,7 +1008,7 @@ module Gtk
     end
 
     def website=(website : ::String?) : Nil
-      # gtk_about_dialog_set_website: (Method)
+      # gtk_about_dialog_set_website: (Method | Setter)
       # @website: (nullable)
       # Returns: (transfer none)
 
@@ -1022,14 +1022,14 @@ module Gtk
     end
 
     def website_label=(website_label : ::String) : Nil
-      # gtk_about_dialog_set_website_label: (Method)
+      # gtk_about_dialog_set_website_label: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_about_dialog_set_website_label(self, website_label)
     end
 
     def wrap_license=(wrap_license : Bool) : Nil
-      # gtk_about_dialog_set_wrap_license: (Method)
+      # gtk_about_dialog_set_wrap_license: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_about_dialog_set_wrap_license(self, wrap_license)

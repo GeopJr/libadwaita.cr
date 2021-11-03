@@ -114,7 +114,7 @@ module Gtk
     end
 
     def baseline_position : Gtk::BaselinePosition
-      # gtk_box_layout_get_baseline_position: (Method)
+      # gtk_box_layout_get_baseline_position: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_box_layout_get_baseline_position(self)
@@ -122,7 +122,7 @@ module Gtk
     end
 
     def homogeneous : Bool
-      # gtk_box_layout_get_homogeneous: (Method)
+      # gtk_box_layout_get_homogeneous: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_box_layout_get_homogeneous(self)
@@ -130,7 +130,7 @@ module Gtk
     end
 
     def spacing : UInt32
-      # gtk_box_layout_get_spacing: (Method)
+      # gtk_box_layout_get_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_box_layout_get_spacing(self)
@@ -138,21 +138,21 @@ module Gtk
     end
 
     def baseline_position=(position : Gtk::BaselinePosition) : Nil
-      # gtk_box_layout_set_baseline_position: (Method)
+      # gtk_box_layout_set_baseline_position: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_box_layout_set_baseline_position(self, position)
     end
 
     def homogeneous=(homogeneous : Bool) : Nil
-      # gtk_box_layout_set_homogeneous: (Method)
+      # gtk_box_layout_set_homogeneous: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_box_layout_set_homogeneous(self, homogeneous)
     end
 
     def spacing=(spacing : UInt32) : Nil
-      # gtk_box_layout_set_spacing: (Method)
+      # gtk_box_layout_set_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_box_layout_set_spacing(self, spacing)

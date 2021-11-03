@@ -181,7 +181,7 @@ module Gdk
     end
 
     def connector : ::String?
-      # gdk_monitor_get_connector: (Method)
+      # gdk_monitor_get_connector: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_monitor_get_connector(self)
@@ -189,7 +189,7 @@ module Gdk
     end
 
     def display : Gdk::Display
-      # gdk_monitor_get_display: (Method)
+      # gdk_monitor_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_monitor_get_display(self)
@@ -197,7 +197,7 @@ module Gdk
     end
 
     def geometry : Gdk::Rectangle
-      # gdk_monitor_get_geometry: (Method)
+      # gdk_monitor_get_geometry: (Method | Getter)
       # @geometry: (out) (caller-allocates)
       # Returns: (transfer none)
 
@@ -208,7 +208,7 @@ module Gdk
     end
 
     def height_mm : Int32
-      # gdk_monitor_get_height_mm: (Method)
+      # gdk_monitor_get_height_mm: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_monitor_get_height_mm(self)
@@ -216,7 +216,7 @@ module Gdk
     end
 
     def manufacturer : ::String?
-      # gdk_monitor_get_manufacturer: (Method)
+      # gdk_monitor_get_manufacturer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_monitor_get_manufacturer(self)
@@ -224,7 +224,7 @@ module Gdk
     end
 
     def model : ::String?
-      # gdk_monitor_get_model: (Method)
+      # gdk_monitor_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_monitor_get_model(self)
@@ -232,7 +232,7 @@ module Gdk
     end
 
     def refresh_rate : Int32
-      # gdk_monitor_get_refresh_rate: (Method)
+      # gdk_monitor_get_refresh_rate: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_monitor_get_refresh_rate(self)
@@ -240,7 +240,7 @@ module Gdk
     end
 
     def scale_factor : Int32
-      # gdk_monitor_get_scale_factor: (Method)
+      # gdk_monitor_get_scale_factor: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_monitor_get_scale_factor(self)
@@ -248,7 +248,7 @@ module Gdk
     end
 
     def subpixel_layout : Gdk::SubpixelLayout
-      # gdk_monitor_get_subpixel_layout: (Method)
+      # gdk_monitor_get_subpixel_layout: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_monitor_get_subpixel_layout(self)
@@ -256,7 +256,7 @@ module Gdk
     end
 
     def width_mm : Int32
-      # gdk_monitor_get_width_mm: (Method)
+      # gdk_monitor_get_width_mm: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_monitor_get_width_mm(self)

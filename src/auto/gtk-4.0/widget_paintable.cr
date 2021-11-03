@@ -82,7 +82,7 @@ module Gtk
     end
 
     def widget : Gtk::Widget?
-      # gtk_widget_paintable_get_widget: (Method)
+      # gtk_widget_paintable_get_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_paintable_get_widget(self)
@@ -90,7 +90,7 @@ module Gtk
     end
 
     def widget=(widget : Gtk::Widget?) : Nil
-      # gtk_widget_paintable_set_widget: (Method)
+      # gtk_widget_paintable_set_widget: (Method | Setter)
       # @widget: (nullable)
       # Returns: (transfer none)
 

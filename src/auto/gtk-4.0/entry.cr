@@ -1114,7 +1114,7 @@ module Gtk
     end
 
     def activates_default : Bool
-      # gtk_entry_get_activates_default: (Method)
+      # gtk_entry_get_activates_default: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_activates_default(self)
@@ -1130,7 +1130,7 @@ module Gtk
     end
 
     def attributes : Pango::AttrList?
-      # gtk_entry_get_attributes: (Method)
+      # gtk_entry_get_attributes: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_attributes(self)
@@ -1138,7 +1138,7 @@ module Gtk
     end
 
     def buffer : Gtk::EntryBuffer
-      # gtk_entry_get_buffer: (Method)
+      # gtk_entry_get_buffer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_buffer(self)
@@ -1146,7 +1146,7 @@ module Gtk
     end
 
     def completion : Gtk::EntryCompletion?
-      # gtk_entry_get_completion: (Method)
+      # gtk_entry_get_completion: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_completion(self)
@@ -1162,7 +1162,7 @@ module Gtk
     end
 
     def extra_menu : Gio::MenuModel?
-      # gtk_entry_get_extra_menu: (Method)
+      # gtk_entry_get_extra_menu: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_extra_menu(self)
@@ -1170,7 +1170,7 @@ module Gtk
     end
 
     def has_frame : Bool
-      # gtk_entry_get_has_frame: (Method)
+      # gtk_entry_get_has_frame: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_has_frame(self)
@@ -1261,7 +1261,7 @@ module Gtk
     end
 
     def input_hints : Gtk::InputHints
-      # gtk_entry_get_input_hints: (Method)
+      # gtk_entry_get_input_hints: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_input_hints(self)
@@ -1269,7 +1269,7 @@ module Gtk
     end
 
     def input_purpose : Gtk::InputPurpose
-      # gtk_entry_get_input_purpose: (Method)
+      # gtk_entry_get_input_purpose: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_input_purpose(self)
@@ -1277,7 +1277,7 @@ module Gtk
     end
 
     def invisible_char : UInt32
-      # gtk_entry_get_invisible_char: (Method)
+      # gtk_entry_get_invisible_char: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_invisible_char(self)
@@ -1285,7 +1285,7 @@ module Gtk
     end
 
     def max_length : Int32
-      # gtk_entry_get_max_length: (Method)
+      # gtk_entry_get_max_length: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_max_length(self)
@@ -1293,7 +1293,7 @@ module Gtk
     end
 
     def overwrite_mode : Bool
-      # gtk_entry_get_overwrite_mode: (Method)
+      # gtk_entry_get_overwrite_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_overwrite_mode(self)
@@ -1301,7 +1301,7 @@ module Gtk
     end
 
     def placeholder_text : ::String?
-      # gtk_entry_get_placeholder_text: (Method)
+      # gtk_entry_get_placeholder_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_placeholder_text(self)
@@ -1309,7 +1309,7 @@ module Gtk
     end
 
     def progress_fraction : Float64
-      # gtk_entry_get_progress_fraction: (Method)
+      # gtk_entry_get_progress_fraction: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_progress_fraction(self)
@@ -1317,7 +1317,7 @@ module Gtk
     end
 
     def progress_pulse_step : Float64
-      # gtk_entry_get_progress_pulse_step: (Method)
+      # gtk_entry_get_progress_pulse_step: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_progress_pulse_step(self)
@@ -1325,7 +1325,7 @@ module Gtk
     end
 
     def tabs : Pango::TabArray?
-      # gtk_entry_get_tabs: (Method)
+      # gtk_entry_get_tabs: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_tabs(self)
@@ -1333,7 +1333,7 @@ module Gtk
     end
 
     def text_length : UInt16
-      # gtk_entry_get_text_length: (Method)
+      # gtk_entry_get_text_length: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_text_length(self)
@@ -1341,7 +1341,7 @@ module Gtk
     end
 
     def visibility : Bool
-      # gtk_entry_get_visibility: (Method)
+      # gtk_entry_get_visibility: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_get_visibility(self)
@@ -1371,7 +1371,7 @@ module Gtk
     end
 
     def activates_default=(setting : Bool) : Nil
-      # gtk_entry_set_activates_default: (Method)
+      # gtk_entry_set_activates_default: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_activates_default(self, setting)
@@ -1385,21 +1385,21 @@ module Gtk
     end
 
     def attributes=(attrs : Pango::AttrList) : Nil
-      # gtk_entry_set_attributes: (Method)
+      # gtk_entry_set_attributes: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_attributes(self, attrs)
     end
 
     def buffer=(buffer : Gtk::EntryBuffer) : Nil
-      # gtk_entry_set_buffer: (Method)
+      # gtk_entry_set_buffer: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_buffer(self, buffer)
     end
 
     def completion=(completion : Gtk::EntryCompletion?) : Nil
-      # gtk_entry_set_completion: (Method)
+      # gtk_entry_set_completion: (Method | Setter)
       # @completion: (nullable)
       # Returns: (transfer none)
 
@@ -1413,7 +1413,7 @@ module Gtk
     end
 
     def extra_menu=(model : Gio::MenuModel?) : Nil
-      # gtk_entry_set_extra_menu: (Method)
+      # gtk_entry_set_extra_menu: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -1427,7 +1427,7 @@ module Gtk
     end
 
     def has_frame=(setting : Bool) : Nil
-      # gtk_entry_set_has_frame: (Method)
+      # gtk_entry_set_has_frame: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_has_frame(self, setting)
@@ -1525,42 +1525,42 @@ module Gtk
     end
 
     def input_hints=(hints : Gtk::InputHints) : Nil
-      # gtk_entry_set_input_hints: (Method)
+      # gtk_entry_set_input_hints: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_input_hints(self, hints)
     end
 
     def input_purpose=(purpose : Gtk::InputPurpose) : Nil
-      # gtk_entry_set_input_purpose: (Method)
+      # gtk_entry_set_input_purpose: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_input_purpose(self, purpose)
     end
 
     def invisible_char=(ch : UInt32) : Nil
-      # gtk_entry_set_invisible_char: (Method)
+      # gtk_entry_set_invisible_char: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_invisible_char(self, ch)
     end
 
     def max_length=(max : Int32) : Nil
-      # gtk_entry_set_max_length: (Method)
+      # gtk_entry_set_max_length: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_max_length(self, max)
     end
 
     def overwrite_mode=(overwrite : Bool) : Nil
-      # gtk_entry_set_overwrite_mode: (Method)
+      # gtk_entry_set_overwrite_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_overwrite_mode(self, overwrite)
     end
 
     def placeholder_text=(text : ::String?) : Nil
-      # gtk_entry_set_placeholder_text: (Method)
+      # gtk_entry_set_placeholder_text: (Method | Setter)
       # @text: (nullable)
       # Returns: (transfer none)
 
@@ -1574,21 +1574,21 @@ module Gtk
     end
 
     def progress_fraction=(fraction : Float64) : Nil
-      # gtk_entry_set_progress_fraction: (Method)
+      # gtk_entry_set_progress_fraction: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_progress_fraction(self, fraction)
     end
 
     def progress_pulse_step=(fraction : Float64) : Nil
-      # gtk_entry_set_progress_pulse_step: (Method)
+      # gtk_entry_set_progress_pulse_step: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_progress_pulse_step(self, fraction)
     end
 
     def tabs=(tabs : Pango::TabArray?) : Nil
-      # gtk_entry_set_tabs: (Method)
+      # gtk_entry_set_tabs: (Method | Setter)
       # @tabs: (nullable)
       # Returns: (transfer none)
 
@@ -1602,7 +1602,7 @@ module Gtk
     end
 
     def visibility=(visible : Bool) : Nil
-      # gtk_entry_set_visibility: (Method)
+      # gtk_entry_set_visibility: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_set_visibility(self, visible)

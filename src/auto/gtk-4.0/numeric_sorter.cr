@@ -84,7 +84,7 @@ module Gtk
     end
 
     def expression : Gtk::Expression?
-      # gtk_numeric_sorter_get_expression: (Method)
+      # gtk_numeric_sorter_get_expression: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_numeric_sorter_get_expression(self)
@@ -92,7 +92,7 @@ module Gtk
     end
 
     def sort_order : Gtk::SortType
-      # gtk_numeric_sorter_get_sort_order: (Method)
+      # gtk_numeric_sorter_get_sort_order: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_numeric_sorter_get_sort_order(self)
@@ -100,7 +100,7 @@ module Gtk
     end
 
     def expression=(expression : Gtk::Expression?) : Nil
-      # gtk_numeric_sorter_set_expression: (Method)
+      # gtk_numeric_sorter_set_expression: (Method | Setter)
       # @expression: (nullable)
       # Returns: (transfer none)
 
@@ -114,7 +114,7 @@ module Gtk
     end
 
     def sort_order=(sort_order : Gtk::SortType) : Nil
-      # gtk_numeric_sorter_set_sort_order: (Method)
+      # gtk_numeric_sorter_set_sort_order: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_numeric_sorter_set_sort_order(self, sort_order)

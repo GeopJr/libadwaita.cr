@@ -295,7 +295,7 @@ module Gtk
     end
 
     def active : Bool
-      # gtk_switch_get_active: (Method)
+      # gtk_switch_get_active: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_switch_get_active(self)
@@ -303,7 +303,7 @@ module Gtk
     end
 
     def state : Bool
-      # gtk_switch_get_state: (Method)
+      # gtk_switch_get_state: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_switch_get_state(self)
@@ -311,14 +311,14 @@ module Gtk
     end
 
     def active=(is_active : Bool) : Nil
-      # gtk_switch_set_active: (Method)
+      # gtk_switch_set_active: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_switch_set_active(self, is_active)
     end
 
     def state=(state : Bool) : Nil
-      # gtk_switch_set_state: (Method)
+      # gtk_switch_set_state: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_switch_set_state(self, state)

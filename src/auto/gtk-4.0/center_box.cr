@@ -276,7 +276,7 @@ module Gtk
     end
 
     def baseline_position : Gtk::BaselinePosition
-      # gtk_center_box_get_baseline_position: (Method)
+      # gtk_center_box_get_baseline_position: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_center_box_get_baseline_position(self)
@@ -308,7 +308,7 @@ module Gtk
     end
 
     def baseline_position=(position : Gtk::BaselinePosition) : Nil
-      # gtk_center_box_set_baseline_position: (Method)
+      # gtk_center_box_set_baseline_position: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_center_box_set_baseline_position(self, position)

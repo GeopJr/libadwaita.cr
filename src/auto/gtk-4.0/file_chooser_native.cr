@@ -296,7 +296,7 @@ module Gtk
     end
 
     def accept_label : ::String?
-      # gtk_file_chooser_native_get_accept_label: (Method)
+      # gtk_file_chooser_native_get_accept_label: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_file_chooser_native_get_accept_label(self)
@@ -304,7 +304,7 @@ module Gtk
     end
 
     def cancel_label : ::String?
-      # gtk_file_chooser_native_get_cancel_label: (Method)
+      # gtk_file_chooser_native_get_cancel_label: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_file_chooser_native_get_cancel_label(self)
@@ -312,7 +312,7 @@ module Gtk
     end
 
     def accept_label=(accept_label : ::String?) : Nil
-      # gtk_file_chooser_native_set_accept_label: (Method)
+      # gtk_file_chooser_native_set_accept_label: (Method | Setter)
       # @accept_label: (nullable)
       # Returns: (transfer none)
 
@@ -326,7 +326,7 @@ module Gtk
     end
 
     def cancel_label=(cancel_label : ::String?) : Nil
-      # gtk_file_chooser_native_set_cancel_label: (Method)
+      # gtk_file_chooser_native_set_cancel_label: (Method | Setter)
       # @cancel_label: (nullable)
       # Returns: (transfer none)
 

@@ -383,7 +383,7 @@ module Gtk
     end
 
     def current_object : GObject::Object?
-      # gtk_builder_get_current_object: (Method)
+      # gtk_builder_get_current_object: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_builder_get_current_object(self)
@@ -407,7 +407,7 @@ module Gtk
     end
 
     def scope : Gtk::BuilderScope
-      # gtk_builder_get_scope: (Method)
+      # gtk_builder_get_scope: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_builder_get_scope(self)
@@ -415,7 +415,7 @@ module Gtk
     end
 
     def translation_domain : ::String?
-      # gtk_builder_get_translation_domain: (Method)
+      # gtk_builder_get_translation_domain: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_builder_get_translation_domain(self)
@@ -431,7 +431,7 @@ module Gtk
     end
 
     def current_object=(current_object : GObject::Object?) : Nil
-      # gtk_builder_set_current_object: (Method)
+      # gtk_builder_set_current_object: (Method | Setter)
       # @current_object: (nullable)
       # Returns: (transfer none)
 
@@ -445,7 +445,7 @@ module Gtk
     end
 
     def scope=(scope : Gtk::BuilderScope?) : Nil
-      # gtk_builder_set_scope: (Method)
+      # gtk_builder_set_scope: (Method | Setter)
       # @scope: (nullable)
       # Returns: (transfer none)
 
@@ -459,7 +459,7 @@ module Gtk
     end
 
     def translation_domain=(domain : ::String?) : Nil
-      # gtk_builder_set_translation_domain: (Method)
+      # gtk_builder_set_translation_domain: (Method | Setter)
       # @domain: (nullable)
       # Returns: (transfer none)
 

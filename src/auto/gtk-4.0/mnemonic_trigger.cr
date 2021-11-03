@@ -56,7 +56,7 @@ module Gtk
     end
 
     def keyval : UInt32
-      # gtk_mnemonic_trigger_get_keyval: (Method)
+      # gtk_mnemonic_trigger_get_keyval: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_mnemonic_trigger_get_keyval(self)

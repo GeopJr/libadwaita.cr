@@ -105,7 +105,7 @@ module Gdk
     end
 
     def axes : Gdk::AxisFlags
-      # gdk_device_tool_get_axes: (Method)
+      # gdk_device_tool_get_axes: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_tool_get_axes(self)
@@ -113,7 +113,7 @@ module Gdk
     end
 
     def hardware_id : UInt64
-      # gdk_device_tool_get_hardware_id: (Method)
+      # gdk_device_tool_get_hardware_id: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_tool_get_hardware_id(self)
@@ -121,7 +121,7 @@ module Gdk
     end
 
     def serial : UInt64
-      # gdk_device_tool_get_serial: (Method)
+      # gdk_device_tool_get_serial: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_tool_get_serial(self)
@@ -129,7 +129,7 @@ module Gdk
     end
 
     def tool_type : Gdk::DeviceToolType
-      # gdk_device_tool_get_tool_type: (Method)
+      # gdk_device_tool_get_tool_type: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_tool_get_tool_type(self)

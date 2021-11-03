@@ -73,7 +73,7 @@ module Gtk
     end
 
     def sorter : Gtk::Sorter?
-      # gtk_tree_list_row_sorter_get_sorter: (Method)
+      # gtk_tree_list_row_sorter_get_sorter: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_list_row_sorter_get_sorter(self)
@@ -81,7 +81,7 @@ module Gtk
     end
 
     def sorter=(sorter : Gtk::Sorter?) : Nil
-      # gtk_tree_list_row_sorter_set_sorter: (Method)
+      # gtk_tree_list_row_sorter_set_sorter: (Method | Setter)
       # @sorter: (nullable)
       # Returns: (transfer none)
 

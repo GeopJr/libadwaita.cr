@@ -38,7 +38,7 @@ module Gdk
     end
 
     def autohide : Bool
-      # gdk_popup_get_autohide: (Method)
+      # gdk_popup_get_autohide: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_popup_get_autohide(self)
@@ -46,7 +46,7 @@ module Gdk
     end
 
     def parent : Gdk::Surface
-      # gdk_popup_get_parent: (Method)
+      # gdk_popup_get_parent: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_popup_get_parent(self)

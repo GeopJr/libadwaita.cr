@@ -199,7 +199,7 @@ module Gtk
     end
 
     def printer : Gtk::Printer
-      # gtk_print_job_get_printer: (Method)
+      # gtk_print_job_get_printer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_job_get_printer(self)
@@ -231,7 +231,7 @@ module Gtk
     end
 
     def settings : Gtk::PrintSettings
-      # gtk_print_job_get_settings: (Method)
+      # gtk_print_job_get_settings: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_job_get_settings(self)
@@ -255,7 +255,7 @@ module Gtk
     end
 
     def title : ::String
-      # gtk_print_job_get_title: (Method)
+      # gtk_print_job_get_title: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_job_get_title(self)
@@ -263,7 +263,7 @@ module Gtk
     end
 
     def track_print_status : Bool
-      # gtk_print_job_get_track_print_status: (Method)
+      # gtk_print_job_get_track_print_status: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_job_get_track_print_status(self)
@@ -379,7 +379,7 @@ module Gtk
     end
 
     def track_print_status=(track_status : Bool) : Nil
-      # gtk_print_job_set_track_print_status: (Method)
+      # gtk_print_job_set_track_print_status: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_job_set_track_print_status(self, track_status)

@@ -345,7 +345,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_frame_get_child: (Method)
+      # gtk_frame_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_frame_get_child(self)
@@ -353,7 +353,7 @@ module Gtk
     end
 
     def label : ::String?
-      # gtk_frame_get_label: (Method)
+      # gtk_frame_get_label: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_frame_get_label(self)
@@ -369,7 +369,7 @@ module Gtk
     end
 
     def label_widget : Gtk::Widget?
-      # gtk_frame_get_label_widget: (Method)
+      # gtk_frame_get_label_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_frame_get_label_widget(self)
@@ -377,7 +377,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_frame_set_child: (Method)
+      # gtk_frame_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -391,7 +391,7 @@ module Gtk
     end
 
     def label=(label : ::String?) : Nil
-      # gtk_frame_set_label: (Method)
+      # gtk_frame_set_label: (Method | Setter)
       # @label: (nullable)
       # Returns: (transfer none)
 
@@ -412,7 +412,7 @@ module Gtk
     end
 
     def label_widget=(label_widget : Gtk::Widget?) : Nil
-      # gtk_frame_set_label_widget: (Method)
+      # gtk_frame_set_label_widget: (Method | Setter)
       # @label_widget: (nullable)
       # Returns: (transfer none)
 

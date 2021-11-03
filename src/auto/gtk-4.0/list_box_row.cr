@@ -297,7 +297,7 @@ module Gtk
     end
 
     def activatable : Bool
-      # gtk_list_box_row_get_activatable: (Method)
+      # gtk_list_box_row_get_activatable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_box_row_get_activatable(self)
@@ -305,7 +305,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_list_box_row_get_child: (Method)
+      # gtk_list_box_row_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_box_row_get_child(self)
@@ -329,7 +329,7 @@ module Gtk
     end
 
     def selectable : Bool
-      # gtk_list_box_row_get_selectable: (Method)
+      # gtk_list_box_row_get_selectable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_box_row_get_selectable(self)
@@ -345,14 +345,14 @@ module Gtk
     end
 
     def activatable=(activatable : Bool) : Nil
-      # gtk_list_box_row_set_activatable: (Method)
+      # gtk_list_box_row_set_activatable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_box_row_set_activatable(self, activatable)
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_list_box_row_set_child: (Method)
+      # gtk_list_box_row_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -380,7 +380,7 @@ module Gtk
     end
 
     def selectable=(selectable : Bool) : Nil
-      # gtk_list_box_row_set_selectable: (Method)
+      # gtk_list_box_row_set_selectable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_box_row_set_selectable(self, selectable)

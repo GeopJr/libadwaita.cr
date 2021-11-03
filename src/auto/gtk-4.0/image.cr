@@ -504,7 +504,7 @@ module Gtk
     end
 
     def gicon : Gio::Icon?
-      # gtk_image_get_gicon: (Method)
+      # gtk_image_get_gicon: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_image_get_gicon(self)
@@ -512,7 +512,7 @@ module Gtk
     end
 
     def icon_name : ::String?
-      # gtk_image_get_icon_name: (Method)
+      # gtk_image_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_image_get_icon_name(self)
@@ -520,7 +520,7 @@ module Gtk
     end
 
     def icon_size : Gtk::IconSize
-      # gtk_image_get_icon_size: (Method)
+      # gtk_image_get_icon_size: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_image_get_icon_size(self)
@@ -528,7 +528,7 @@ module Gtk
     end
 
     def paintable : Gdk::Paintable?
-      # gtk_image_get_paintable: (Method)
+      # gtk_image_get_paintable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_image_get_paintable(self)
@@ -536,7 +536,7 @@ module Gtk
     end
 
     def pixel_size : Int32
-      # gtk_image_get_pixel_size: (Method)
+      # gtk_image_get_pixel_size: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_image_get_pixel_size(self)
@@ -544,7 +544,7 @@ module Gtk
     end
 
     def storage_type : Gtk::ImageType
-      # gtk_image_get_storage_type: (Method)
+      # gtk_image_get_storage_type: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_image_get_storage_type(self)
@@ -629,14 +629,14 @@ module Gtk
     end
 
     def icon_size=(icon_size : Gtk::IconSize) : Nil
-      # gtk_image_set_icon_size: (Method)
+      # gtk_image_set_icon_size: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_image_set_icon_size(self, icon_size)
     end
 
     def pixel_size=(pixel_size : Int32) : Nil
-      # gtk_image_set_pixel_size: (Method)
+      # gtk_image_set_pixel_size: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_image_set_pixel_size(self, pixel_size)

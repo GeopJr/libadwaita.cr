@@ -137,7 +137,6 @@ lib LibAdw
   fun adw_action_row_get_subtitle_lines(this : Void*) : Int32
   fun adw_action_row_get_title_lines(this : Void*) : Int32
   fun adw_action_row_get_type : UInt64
-  fun adw_action_row_get_use_underline(this : Void*) : LibC::Int
   fun adw_action_row_new : Pointer(Void)
   fun adw_action_row_remove(this : Void*, widget : Pointer(Void)) : Void
   fun adw_action_row_set_activatable_widget(this : Void*, widget : Pointer(Void)) : Void
@@ -145,7 +144,6 @@ lib LibAdw
   fun adw_action_row_set_subtitle(this : Void*, subtitle : Pointer(LibC::Char)) : Void
   fun adw_action_row_set_subtitle_lines(this : Void*, subtitle_lines : Int32) : Void
   fun adw_action_row_set_title_lines(this : Void*, title_lines : Int32) : Void
-  fun adw_action_row_set_use_underline(this : Void*, use_underline : LibC::Int) : Void
   fun adw_application_get_style_manager(this : Void*) : Pointer(Void)
   fun adw_application_get_type : UInt64
   fun adw_application_new(application_id : Pointer(LibC::Char), flags : UInt32) : Pointer(Void)
@@ -258,16 +256,15 @@ lib LibAdw
   fun adw_enum_list_model_get_enum_type(this : Void*) : UInt64
   fun adw_enum_list_model_get_type : UInt64
   fun adw_enum_list_model_new(enum_type : UInt64) : Pointer(Void)
-  fun adw_expander_row_add(this : Void*, child : Pointer(Void)) : Void
   fun adw_expander_row_add_action(this : Void*, widget : Pointer(Void)) : Void
   fun adw_expander_row_add_prefix(this : Void*, widget : Pointer(Void)) : Void
+  fun adw_expander_row_add_row(this : Void*, child : Pointer(Void)) : Void
   fun adw_expander_row_get_enable_expansion(this : Void*) : LibC::Int
   fun adw_expander_row_get_expanded(this : Void*) : LibC::Int
   fun adw_expander_row_get_icon_name(this : Void*) : Pointer(LibC::Char)
   fun adw_expander_row_get_show_enable_switch(this : Void*) : LibC::Int
   fun adw_expander_row_get_subtitle(this : Void*) : Pointer(LibC::Char)
   fun adw_expander_row_get_type : UInt64
-  fun adw_expander_row_get_use_underline(this : Void*) : LibC::Int
   fun adw_expander_row_new : Pointer(Void)
   fun adw_expander_row_remove(this : Void*, child : Pointer(Void)) : Void
   fun adw_expander_row_set_enable_expansion(this : Void*, enable_expansion : LibC::Int) : Void
@@ -275,7 +272,6 @@ lib LibAdw
   fun adw_expander_row_set_icon_name(this : Void*, icon_name : Pointer(LibC::Char)) : Void
   fun adw_expander_row_set_show_enable_switch(this : Void*, show_enable_switch : LibC::Int) : Void
   fun adw_expander_row_set_subtitle(this : Void*, subtitle : Pointer(LibC::Char)) : Void
-  fun adw_expander_row_set_use_underline(this : Void*, use_underline : LibC::Int) : Void
   fun adw_flap_get_content(this : Void*) : Pointer(Void)
   fun adw_flap_get_flap(this : Void*) : Pointer(Void)
   fun adw_flap_get_flap_position(this : Void*) : UInt32
@@ -309,6 +305,9 @@ lib LibAdw
   fun adw_flap_set_swipe_to_open(this : Void*, swipe_to_open : LibC::Int) : Void
   fun adw_flap_set_transition_type(this : Void*, transition_type : UInt32) : Void
   fun adw_get_enable_animations(widget : Pointer(Void)) : LibC::Int
+  fun adw_get_major_version : UInt32
+  fun adw_get_micro_version : UInt32
+  fun adw_get_minor_version : UInt32
   fun adw_header_bar_get_centering_policy(this : Void*) : UInt32
   fun adw_header_bar_get_decoration_layout(this : Void*) : Pointer(LibC::Char)
   fun adw_header_bar_get_show_end_title_buttons(this : Void*) : LibC::Int
@@ -455,12 +454,14 @@ lib LibAdw
   fun adw_status_page_get_child(this : Void*) : Pointer(Void)
   fun adw_status_page_get_description(this : Void*) : Pointer(LibC::Char)
   fun adw_status_page_get_icon_name(this : Void*) : Pointer(LibC::Char)
+  fun adw_status_page_get_paintable(this : Void*) : Pointer(Void)
   fun adw_status_page_get_title(this : Void*) : Pointer(LibC::Char)
   fun adw_status_page_get_type : UInt64
   fun adw_status_page_new : Pointer(Void)
   fun adw_status_page_set_child(this : Void*, child : Pointer(Void)) : Void
   fun adw_status_page_set_description(this : Void*, description : Pointer(LibC::Char)) : Void
   fun adw_status_page_set_icon_name(this : Void*, icon_name : Pointer(LibC::Char)) : Void
+  fun adw_status_page_set_paintable(this : Void*, paintable : Pointer(Void)) : Void
   fun adw_status_page_set_title(this : Void*, title : Pointer(LibC::Char)) : Void
   fun adw_style_manager_get_color_scheme(this : Void*) : UInt32
   fun adw_style_manager_get_dark(this : Void*) : LibC::Int

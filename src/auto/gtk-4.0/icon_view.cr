@@ -643,7 +643,7 @@ module Gtk
     end
 
     def activate_on_single_click : Bool
-      # gtk_icon_view_get_activate_on_single_click: (Method)
+      # gtk_icon_view_get_activate_on_single_click: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_activate_on_single_click(self)
@@ -668,7 +668,7 @@ module Gtk
     end
 
     def column_spacing : Int32
-      # gtk_icon_view_get_column_spacing: (Method)
+      # gtk_icon_view_get_column_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_column_spacing(self)
@@ -676,7 +676,7 @@ module Gtk
     end
 
     def columns : Int32
-      # gtk_icon_view_get_columns: (Method)
+      # gtk_icon_view_get_columns: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_columns(self)
@@ -743,7 +743,7 @@ module Gtk
     end
 
     def item_orientation : Gtk::Orientation
-      # gtk_icon_view_get_item_orientation: (Method)
+      # gtk_icon_view_get_item_orientation: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_item_orientation(self)
@@ -751,7 +751,7 @@ module Gtk
     end
 
     def item_padding : Int32
-      # gtk_icon_view_get_item_padding: (Method)
+      # gtk_icon_view_get_item_padding: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_item_padding(self)
@@ -767,7 +767,7 @@ module Gtk
     end
 
     def item_width : Int32
-      # gtk_icon_view_get_item_width: (Method)
+      # gtk_icon_view_get_item_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_item_width(self)
@@ -775,7 +775,7 @@ module Gtk
     end
 
     def margin : Int32
-      # gtk_icon_view_get_margin: (Method)
+      # gtk_icon_view_get_margin: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_margin(self)
@@ -783,7 +783,7 @@ module Gtk
     end
 
     def markup_column : Int32
-      # gtk_icon_view_get_markup_column: (Method)
+      # gtk_icon_view_get_markup_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_markup_column(self)
@@ -791,7 +791,7 @@ module Gtk
     end
 
     def model : Gtk::TreeModel?
-      # gtk_icon_view_get_model: (Method)
+      # gtk_icon_view_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_model(self)
@@ -807,7 +807,7 @@ module Gtk
     end
 
     def pixbuf_column : Int32
-      # gtk_icon_view_get_pixbuf_column: (Method)
+      # gtk_icon_view_get_pixbuf_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_pixbuf_column(self)
@@ -815,7 +815,7 @@ module Gtk
     end
 
     def reorderable : Bool
-      # gtk_icon_view_get_reorderable: (Method)
+      # gtk_icon_view_get_reorderable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_reorderable(self)
@@ -823,7 +823,7 @@ module Gtk
     end
 
     def row_spacing : Int32
-      # gtk_icon_view_get_row_spacing: (Method)
+      # gtk_icon_view_get_row_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_row_spacing(self)
@@ -839,7 +839,7 @@ module Gtk
     end
 
     def selection_mode : Gtk::SelectionMode
-      # gtk_icon_view_get_selection_mode: (Method)
+      # gtk_icon_view_get_selection_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_selection_mode(self)
@@ -847,7 +847,7 @@ module Gtk
     end
 
     def spacing : Int32
-      # gtk_icon_view_get_spacing: (Method)
+      # gtk_icon_view_get_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_spacing(self)
@@ -855,7 +855,7 @@ module Gtk
     end
 
     def text_column : Int32
-      # gtk_icon_view_get_text_column: (Method)
+      # gtk_icon_view_get_text_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_text_column(self)
@@ -863,7 +863,7 @@ module Gtk
     end
 
     def tooltip_column : Int32
-      # gtk_icon_view_get_tooltip_column: (Method)
+      # gtk_icon_view_get_tooltip_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_view_get_tooltip_column(self)
@@ -950,21 +950,21 @@ module Gtk
     end
 
     def activate_on_single_click=(single : Bool) : Nil
-      # gtk_icon_view_set_activate_on_single_click: (Method)
+      # gtk_icon_view_set_activate_on_single_click: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_activate_on_single_click(self, single)
     end
 
     def column_spacing=(column_spacing : Int32) : Nil
-      # gtk_icon_view_set_column_spacing: (Method)
+      # gtk_icon_view_set_column_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_column_spacing(self, column_spacing)
     end
 
     def columns=(columns : Int32) : Nil
-      # gtk_icon_view_set_columns: (Method)
+      # gtk_icon_view_set_columns: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_columns(self, columns)
@@ -999,42 +999,42 @@ module Gtk
     end
 
     def item_orientation=(orientation : Gtk::Orientation) : Nil
-      # gtk_icon_view_set_item_orientation: (Method)
+      # gtk_icon_view_set_item_orientation: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_item_orientation(self, orientation)
     end
 
     def item_padding=(item_padding : Int32) : Nil
-      # gtk_icon_view_set_item_padding: (Method)
+      # gtk_icon_view_set_item_padding: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_item_padding(self, item_padding)
     end
 
     def item_width=(item_width : Int32) : Nil
-      # gtk_icon_view_set_item_width: (Method)
+      # gtk_icon_view_set_item_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_item_width(self, item_width)
     end
 
     def margin=(margin : Int32) : Nil
-      # gtk_icon_view_set_margin: (Method)
+      # gtk_icon_view_set_margin: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_margin(self, margin)
     end
 
     def markup_column=(column : Int32) : Nil
-      # gtk_icon_view_set_markup_column: (Method)
+      # gtk_icon_view_set_markup_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_markup_column(self, column)
     end
 
     def model=(model : Gtk::TreeModel?) : Nil
-      # gtk_icon_view_set_model: (Method)
+      # gtk_icon_view_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -1048,42 +1048,42 @@ module Gtk
     end
 
     def pixbuf_column=(column : Int32) : Nil
-      # gtk_icon_view_set_pixbuf_column: (Method)
+      # gtk_icon_view_set_pixbuf_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_pixbuf_column(self, column)
     end
 
     def reorderable=(reorderable : Bool) : Nil
-      # gtk_icon_view_set_reorderable: (Method)
+      # gtk_icon_view_set_reorderable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_reorderable(self, reorderable)
     end
 
     def row_spacing=(row_spacing : Int32) : Nil
-      # gtk_icon_view_set_row_spacing: (Method)
+      # gtk_icon_view_set_row_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_row_spacing(self, row_spacing)
     end
 
     def selection_mode=(mode : Gtk::SelectionMode) : Nil
-      # gtk_icon_view_set_selection_mode: (Method)
+      # gtk_icon_view_set_selection_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_selection_mode(self, mode)
     end
 
     def spacing=(spacing : Int32) : Nil
-      # gtk_icon_view_set_spacing: (Method)
+      # gtk_icon_view_set_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_spacing(self, spacing)
     end
 
     def text_column=(column : Int32) : Nil
-      # gtk_icon_view_set_text_column: (Method)
+      # gtk_icon_view_set_text_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_text_column(self, column)
@@ -1104,7 +1104,7 @@ module Gtk
     end
 
     def tooltip_column=(column : Int32) : Nil
-      # gtk_icon_view_set_tooltip_column: (Method)
+      # gtk_icon_view_set_tooltip_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_icon_view_set_tooltip_column(self, column)

@@ -418,7 +418,7 @@ module Gtk
     end
 
     def auto_render : Bool
-      # gtk_gl_area_get_auto_render: (Method)
+      # gtk_gl_area_get_auto_render: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gl_area_get_auto_render(self)
@@ -426,7 +426,7 @@ module Gtk
     end
 
     def context : Gdk::GLContext
-      # gtk_gl_area_get_context: (Method)
+      # gtk_gl_area_get_context: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gl_area_get_context(self)
@@ -442,7 +442,7 @@ module Gtk
     end
 
     def has_depth_buffer : Bool
-      # gtk_gl_area_get_has_depth_buffer: (Method)
+      # gtk_gl_area_get_has_depth_buffer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gl_area_get_has_depth_buffer(self)
@@ -450,7 +450,7 @@ module Gtk
     end
 
     def has_stencil_buffer : Bool
-      # gtk_gl_area_get_has_stencil_buffer: (Method)
+      # gtk_gl_area_get_has_stencil_buffer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gl_area_get_has_stencil_buffer(self)
@@ -467,7 +467,7 @@ module Gtk
     end
 
     def use_es : Bool
-      # gtk_gl_area_get_use_es: (Method)
+      # gtk_gl_area_get_use_es: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gl_area_get_use_es(self)
@@ -489,7 +489,7 @@ module Gtk
     end
 
     def auto_render=(auto_render : Bool) : Nil
-      # gtk_gl_area_set_auto_render: (Method)
+      # gtk_gl_area_set_auto_render: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_gl_area_set_auto_render(self, auto_render)
@@ -510,14 +510,14 @@ module Gtk
     end
 
     def has_depth_buffer=(has_depth_buffer : Bool) : Nil
-      # gtk_gl_area_set_has_depth_buffer: (Method)
+      # gtk_gl_area_set_has_depth_buffer: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_gl_area_set_has_depth_buffer(self, has_depth_buffer)
     end
 
     def has_stencil_buffer=(has_stencil_buffer : Bool) : Nil
-      # gtk_gl_area_set_has_stencil_buffer: (Method)
+      # gtk_gl_area_set_has_stencil_buffer: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_gl_area_set_has_stencil_buffer(self, has_stencil_buffer)
@@ -531,7 +531,7 @@ module Gtk
     end
 
     def use_es=(use_es : Bool) : Nil
-      # gtk_gl_area_set_use_es: (Method)
+      # gtk_gl_area_set_use_es: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_gl_area_set_use_es(self, use_es)

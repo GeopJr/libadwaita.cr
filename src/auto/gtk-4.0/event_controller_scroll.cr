@@ -106,7 +106,7 @@ module Gtk
     end
 
     def flags : Gtk::EventControllerScrollFlags
-      # gtk_event_controller_scroll_get_flags: (Method)
+      # gtk_event_controller_scroll_get_flags: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_event_controller_scroll_get_flags(self)
@@ -114,7 +114,7 @@ module Gtk
     end
 
     def flags=(flags : Gtk::EventControllerScrollFlags) : Nil
-      # gtk_event_controller_scroll_set_flags: (Method)
+      # gtk_event_controller_scroll_set_flags: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_event_controller_scroll_set_flags(self, flags)

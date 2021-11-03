@@ -141,7 +141,7 @@ module Gtk
     end
 
     def name : ::String
-      # gtk_event_controller_get_name: (Method)
+      # gtk_event_controller_get_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_event_controller_get_name(self)
@@ -149,7 +149,7 @@ module Gtk
     end
 
     def propagation_limit : Gtk::PropagationLimit
-      # gtk_event_controller_get_propagation_limit: (Method)
+      # gtk_event_controller_get_propagation_limit: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_event_controller_get_propagation_limit(self)
@@ -157,7 +157,7 @@ module Gtk
     end
 
     def propagation_phase : Gtk::PropagationPhase
-      # gtk_event_controller_get_propagation_phase: (Method)
+      # gtk_event_controller_get_propagation_phase: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_event_controller_get_propagation_phase(self)
@@ -165,7 +165,7 @@ module Gtk
     end
 
     def widget : Gtk::Widget
-      # gtk_event_controller_get_widget: (Method)
+      # gtk_event_controller_get_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_event_controller_get_widget(self)
@@ -180,21 +180,21 @@ module Gtk
     end
 
     def name=(name : ::String) : Nil
-      # gtk_event_controller_set_name: (Method)
+      # gtk_event_controller_set_name: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_event_controller_set_name(self, name)
     end
 
     def propagation_limit=(limit : Gtk::PropagationLimit) : Nil
-      # gtk_event_controller_set_propagation_limit: (Method)
+      # gtk_event_controller_set_propagation_limit: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_event_controller_set_propagation_limit(self, limit)
     end
 
     def propagation_phase=(phase : Gtk::PropagationPhase) : Nil
-      # gtk_event_controller_set_propagation_phase: (Method)
+      # gtk_event_controller_set_propagation_phase: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_event_controller_set_propagation_phase(self, phase)

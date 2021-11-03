@@ -336,7 +336,7 @@ module Gtk
     end
 
     def content_height : Int32
-      # gtk_drawing_area_get_content_height: (Method)
+      # gtk_drawing_area_get_content_height: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drawing_area_get_content_height(self)
@@ -344,7 +344,7 @@ module Gtk
     end
 
     def content_width : Int32
-      # gtk_drawing_area_get_content_width: (Method)
+      # gtk_drawing_area_get_content_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drawing_area_get_content_width(self)
@@ -352,14 +352,14 @@ module Gtk
     end
 
     def content_height=(height : Int32) : Nil
-      # gtk_drawing_area_set_content_height: (Method)
+      # gtk_drawing_area_set_content_height: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_drawing_area_set_content_height(self, height)
     end
 
     def content_width=(width : Int32) : Nil
-      # gtk_drawing_area_set_content_width: (Method)
+      # gtk_drawing_area_set_content_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_drawing_area_set_content_width(self, width)

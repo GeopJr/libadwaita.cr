@@ -759,7 +759,7 @@ module Gtk
     end
 
     def accepts_tab : Bool
-      # gtk_text_view_get_accepts_tab: (Method)
+      # gtk_text_view_get_accepts_tab: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_accepts_tab(self)
@@ -767,7 +767,7 @@ module Gtk
     end
 
     def bottom_margin : Int32
-      # gtk_text_view_get_bottom_margin: (Method)
+      # gtk_text_view_get_bottom_margin: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_bottom_margin(self)
@@ -775,7 +775,7 @@ module Gtk
     end
 
     def buffer : Gtk::TextBuffer
-      # gtk_text_view_get_buffer: (Method)
+      # gtk_text_view_get_buffer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_buffer(self)
@@ -803,7 +803,7 @@ module Gtk
     end
 
     def cursor_visible : Bool
-      # gtk_text_view_get_cursor_visible: (Method)
+      # gtk_text_view_get_cursor_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_cursor_visible(self)
@@ -811,7 +811,7 @@ module Gtk
     end
 
     def editable : Bool
-      # gtk_text_view_get_editable: (Method)
+      # gtk_text_view_get_editable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_editable(self)
@@ -819,7 +819,7 @@ module Gtk
     end
 
     def extra_menu : Gio::MenuModel
-      # gtk_text_view_get_extra_menu: (Method)
+      # gtk_text_view_get_extra_menu: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_extra_menu(self)
@@ -835,7 +835,7 @@ module Gtk
     end
 
     def indent : Int32
-      # gtk_text_view_get_indent: (Method)
+      # gtk_text_view_get_indent: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_indent(self)
@@ -843,7 +843,7 @@ module Gtk
     end
 
     def input_hints : Gtk::InputHints
-      # gtk_text_view_get_input_hints: (Method)
+      # gtk_text_view_get_input_hints: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_input_hints(self)
@@ -851,7 +851,7 @@ module Gtk
     end
 
     def input_purpose : Gtk::InputPurpose
-      # gtk_text_view_get_input_purpose: (Method)
+      # gtk_text_view_get_input_purpose: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_input_purpose(self)
@@ -894,7 +894,7 @@ module Gtk
     end
 
     def justification : Gtk::Justification
-      # gtk_text_view_get_justification: (Method)
+      # gtk_text_view_get_justification: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_justification(self)
@@ -902,7 +902,7 @@ module Gtk
     end
 
     def left_margin : Int32
-      # gtk_text_view_get_left_margin: (Method)
+      # gtk_text_view_get_left_margin: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_left_margin(self)
@@ -939,7 +939,7 @@ module Gtk
     end
 
     def monospace : Bool
-      # gtk_text_view_get_monospace: (Method)
+      # gtk_text_view_get_monospace: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_monospace(self)
@@ -947,7 +947,7 @@ module Gtk
     end
 
     def overwrite : Bool
-      # gtk_text_view_get_overwrite: (Method)
+      # gtk_text_view_get_overwrite: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_overwrite(self)
@@ -955,7 +955,7 @@ module Gtk
     end
 
     def pixels_above_lines : Int32
-      # gtk_text_view_get_pixels_above_lines: (Method)
+      # gtk_text_view_get_pixels_above_lines: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_pixels_above_lines(self)
@@ -963,7 +963,7 @@ module Gtk
     end
 
     def pixels_below_lines : Int32
-      # gtk_text_view_get_pixels_below_lines: (Method)
+      # gtk_text_view_get_pixels_below_lines: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_pixels_below_lines(self)
@@ -971,7 +971,7 @@ module Gtk
     end
 
     def pixels_inside_wrap : Int32
-      # gtk_text_view_get_pixels_inside_wrap: (Method)
+      # gtk_text_view_get_pixels_inside_wrap: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_pixels_inside_wrap(self)
@@ -979,7 +979,7 @@ module Gtk
     end
 
     def right_margin : Int32
-      # gtk_text_view_get_right_margin: (Method)
+      # gtk_text_view_get_right_margin: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_right_margin(self)
@@ -995,7 +995,7 @@ module Gtk
     end
 
     def tabs : Pango::TabArray?
-      # gtk_text_view_get_tabs: (Method)
+      # gtk_text_view_get_tabs: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_text_view_get_tabs(self)
@@ -1003,7 +1003,7 @@ module Gtk
     end
 
     def top_margin : Int32
-      # gtk_text_view_get_top_margin: (Method)
+      # gtk_text_view_get_top_margin: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_top_margin(self)
@@ -1022,7 +1022,7 @@ module Gtk
     end
 
     def wrap_mode : Gtk::WrapMode
-      # gtk_text_view_get_wrap_mode: (Method)
+      # gtk_text_view_get_wrap_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_view_get_wrap_mode(self)
@@ -1112,21 +1112,21 @@ module Gtk
     end
 
     def accepts_tab=(accepts_tab : Bool) : Nil
-      # gtk_text_view_set_accepts_tab: (Method)
+      # gtk_text_view_set_accepts_tab: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_accepts_tab(self, accepts_tab)
     end
 
     def bottom_margin=(bottom_margin : Int32) : Nil
-      # gtk_text_view_set_bottom_margin: (Method)
+      # gtk_text_view_set_bottom_margin: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_bottom_margin(self, bottom_margin)
     end
 
     def buffer=(buffer : Gtk::TextBuffer?) : Nil
-      # gtk_text_view_set_buffer: (Method)
+      # gtk_text_view_set_buffer: (Method | Setter)
       # @buffer: (nullable)
       # Returns: (transfer none)
 
@@ -1140,21 +1140,21 @@ module Gtk
     end
 
     def cursor_visible=(setting : Bool) : Nil
-      # gtk_text_view_set_cursor_visible: (Method)
+      # gtk_text_view_set_cursor_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_cursor_visible(self, setting)
     end
 
     def editable=(setting : Bool) : Nil
-      # gtk_text_view_set_editable: (Method)
+      # gtk_text_view_set_editable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_editable(self, setting)
     end
 
     def extra_menu=(model : Gio::MenuModel?) : Nil
-      # gtk_text_view_set_extra_menu: (Method)
+      # gtk_text_view_set_extra_menu: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -1182,98 +1182,98 @@ module Gtk
     end
 
     def indent=(indent : Int32) : Nil
-      # gtk_text_view_set_indent: (Method)
+      # gtk_text_view_set_indent: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_indent(self, indent)
     end
 
     def input_hints=(hints : Gtk::InputHints) : Nil
-      # gtk_text_view_set_input_hints: (Method)
+      # gtk_text_view_set_input_hints: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_input_hints(self, hints)
     end
 
     def input_purpose=(purpose : Gtk::InputPurpose) : Nil
-      # gtk_text_view_set_input_purpose: (Method)
+      # gtk_text_view_set_input_purpose: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_input_purpose(self, purpose)
     end
 
     def justification=(justification : Gtk::Justification) : Nil
-      # gtk_text_view_set_justification: (Method)
+      # gtk_text_view_set_justification: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_justification(self, justification)
     end
 
     def left_margin=(left_margin : Int32) : Nil
-      # gtk_text_view_set_left_margin: (Method)
+      # gtk_text_view_set_left_margin: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_left_margin(self, left_margin)
     end
 
     def monospace=(monospace : Bool) : Nil
-      # gtk_text_view_set_monospace: (Method)
+      # gtk_text_view_set_monospace: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_monospace(self, monospace)
     end
 
     def overwrite=(overwrite : Bool) : Nil
-      # gtk_text_view_set_overwrite: (Method)
+      # gtk_text_view_set_overwrite: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_overwrite(self, overwrite)
     end
 
     def pixels_above_lines=(pixels_above_lines : Int32) : Nil
-      # gtk_text_view_set_pixels_above_lines: (Method)
+      # gtk_text_view_set_pixels_above_lines: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_pixels_above_lines(self, pixels_above_lines)
     end
 
     def pixels_below_lines=(pixels_below_lines : Int32) : Nil
-      # gtk_text_view_set_pixels_below_lines: (Method)
+      # gtk_text_view_set_pixels_below_lines: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_pixels_below_lines(self, pixels_below_lines)
     end
 
     def pixels_inside_wrap=(pixels_inside_wrap : Int32) : Nil
-      # gtk_text_view_set_pixels_inside_wrap: (Method)
+      # gtk_text_view_set_pixels_inside_wrap: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_pixels_inside_wrap(self, pixels_inside_wrap)
     end
 
     def right_margin=(right_margin : Int32) : Nil
-      # gtk_text_view_set_right_margin: (Method)
+      # gtk_text_view_set_right_margin: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_right_margin(self, right_margin)
     end
 
     def tabs=(tabs : Pango::TabArray) : Nil
-      # gtk_text_view_set_tabs: (Method)
+      # gtk_text_view_set_tabs: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_tabs(self, tabs)
     end
 
     def top_margin=(top_margin : Int32) : Nil
-      # gtk_text_view_set_top_margin: (Method)
+      # gtk_text_view_set_top_margin: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_top_margin(self, top_margin)
     end
 
     def wrap_mode=(wrap_mode : Gtk::WrapMode) : Nil
-      # gtk_text_view_set_wrap_mode: (Method)
+      # gtk_text_view_set_wrap_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_view_set_wrap_mode(self, wrap_mode)

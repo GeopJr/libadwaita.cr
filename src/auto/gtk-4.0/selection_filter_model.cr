@@ -64,7 +64,7 @@ module Gtk
     end
 
     def model : Gtk::SelectionModel?
-      # gtk_selection_filter_model_get_model: (Method)
+      # gtk_selection_filter_model_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_selection_filter_model_get_model(self)
@@ -72,7 +72,7 @@ module Gtk
     end
 
     def model=(model : Gtk::SelectionModel?) : Nil
-      # gtk_selection_filter_model_set_model: (Method)
+      # gtk_selection_filter_model_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 

@@ -393,7 +393,7 @@ module Gtk
     end
 
     def activate_on_single_click : Bool
-      # gtk_list_box_get_activate_on_single_click: (Method)
+      # gtk_list_box_get_activate_on_single_click: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_box_get_activate_on_single_click(self)
@@ -441,7 +441,7 @@ module Gtk
     end
 
     def selection_mode : Gtk::SelectionMode
-      # gtk_list_box_get_selection_mode: (Method)
+      # gtk_list_box_get_selection_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_box_get_selection_mode(self)
@@ -449,7 +449,7 @@ module Gtk
     end
 
     def show_separators : Bool
-      # gtk_list_box_get_show_separators: (Method)
+      # gtk_list_box_get_show_separators: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_box_get_show_separators(self)
@@ -534,7 +534,7 @@ module Gtk
     end
 
     def activate_on_single_click=(single : Bool) : Nil
-      # gtk_list_box_set_activate_on_single_click: (Method)
+      # gtk_list_box_set_activate_on_single_click: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_box_set_activate_on_single_click(self, single)
@@ -609,14 +609,14 @@ module Gtk
     end
 
     def selection_mode=(mode : Gtk::SelectionMode) : Nil
-      # gtk_list_box_set_selection_mode: (Method)
+      # gtk_list_box_set_selection_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_box_set_selection_mode(self, mode)
     end
 
     def show_separators=(show_separators : Bool) : Nil
-      # gtk_list_box_set_show_separators: (Method)
+      # gtk_list_box_set_show_separators: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_box_set_show_separators(self, show_separators)

@@ -436,7 +436,7 @@ module Gtk
     end
 
     def inverted : Bool
-      # gtk_level_bar_get_inverted: (Method)
+      # gtk_level_bar_get_inverted: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_level_bar_get_inverted(self)
@@ -444,7 +444,7 @@ module Gtk
     end
 
     def max_value : Float64
-      # gtk_level_bar_get_max_value: (Method)
+      # gtk_level_bar_get_max_value: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_level_bar_get_max_value(self)
@@ -452,7 +452,7 @@ module Gtk
     end
 
     def min_value : Float64
-      # gtk_level_bar_get_min_value: (Method)
+      # gtk_level_bar_get_min_value: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_level_bar_get_min_value(self)
@@ -460,7 +460,7 @@ module Gtk
     end
 
     def mode : Gtk::LevelBarMode
-      # gtk_level_bar_get_mode: (Method)
+      # gtk_level_bar_get_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_level_bar_get_mode(self)
@@ -484,7 +484,7 @@ module Gtk
     end
 
     def value : Float64
-      # gtk_level_bar_get_value: (Method)
+      # gtk_level_bar_get_value: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_level_bar_get_value(self)
@@ -506,35 +506,35 @@ module Gtk
     end
 
     def inverted=(inverted : Bool) : Nil
-      # gtk_level_bar_set_inverted: (Method)
+      # gtk_level_bar_set_inverted: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_level_bar_set_inverted(self, inverted)
     end
 
     def max_value=(value : Float64) : Nil
-      # gtk_level_bar_set_max_value: (Method)
+      # gtk_level_bar_set_max_value: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_level_bar_set_max_value(self, value)
     end
 
     def min_value=(value : Float64) : Nil
-      # gtk_level_bar_set_min_value: (Method)
+      # gtk_level_bar_set_min_value: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_level_bar_set_min_value(self, value)
     end
 
     def mode=(mode : Gtk::LevelBarMode) : Nil
-      # gtk_level_bar_set_mode: (Method)
+      # gtk_level_bar_set_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_level_bar_set_mode(self, mode)
     end
 
     def value=(value : Float64) : Nil
-      # gtk_level_bar_set_value: (Method)
+      # gtk_level_bar_set_value: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_level_bar_set_value(self, value)

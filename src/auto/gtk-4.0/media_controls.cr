@@ -248,7 +248,7 @@ module Gtk
     end
 
     def media_stream : Gtk::MediaStream?
-      # gtk_media_controls_get_media_stream: (Method)
+      # gtk_media_controls_get_media_stream: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_controls_get_media_stream(self)
@@ -256,7 +256,7 @@ module Gtk
     end
 
     def media_stream=(stream : Gtk::MediaStream?) : Nil
-      # gtk_media_controls_set_media_stream: (Method)
+      # gtk_media_controls_set_media_stream: (Method | Setter)
       # @stream: (nullable)
       # Returns: (transfer none)
 

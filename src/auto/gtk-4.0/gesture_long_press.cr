@@ -107,7 +107,7 @@ module Gtk
     end
 
     def delay_factor : Float64
-      # gtk_gesture_long_press_get_delay_factor: (Method)
+      # gtk_gesture_long_press_get_delay_factor: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gesture_long_press_get_delay_factor(self)
@@ -115,7 +115,7 @@ module Gtk
     end
 
     def delay_factor=(delay_factor : Float64) : Nil
-      # gtk_gesture_long_press_set_delay_factor: (Method)
+      # gtk_gesture_long_press_set_delay_factor: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_gesture_long_press_set_delay_factor(self, delay_factor)

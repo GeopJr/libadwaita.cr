@@ -277,7 +277,7 @@ module Gtk
     end
 
     def stack : Gtk::Stack?
-      # gtk_stack_switcher_get_stack: (Method)
+      # gtk_stack_switcher_get_stack: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_switcher_get_stack(self)
@@ -285,7 +285,7 @@ module Gtk
     end
 
     def stack=(stack : Gtk::Stack?) : Nil
-      # gtk_stack_switcher_set_stack: (Method)
+      # gtk_stack_switcher_set_stack: (Method | Setter)
       # @stack: (nullable)
       # Returns: (transfer none)
 

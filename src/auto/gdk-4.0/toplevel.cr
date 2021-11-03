@@ -170,7 +170,7 @@ module Gdk
     end
 
     def state : Gdk::ToplevelState
-      # gdk_toplevel_get_state: (Method)
+      # gdk_toplevel_get_state: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_toplevel_get_state(self)
@@ -222,49 +222,49 @@ module Gdk
     end
 
     def decorated=(decorated : Bool) : Nil
-      # gdk_toplevel_set_decorated: (Method)
+      # gdk_toplevel_set_decorated: (Method | Setter)
       # Returns: (transfer none)
 
       LibGdk.gdk_toplevel_set_decorated(self, decorated)
     end
 
     def deletable=(deletable : Bool) : Nil
-      # gdk_toplevel_set_deletable: (Method)
+      # gdk_toplevel_set_deletable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGdk.gdk_toplevel_set_deletable(self, deletable)
     end
 
     def icon_list=(surfaces : GLib::List) : Nil
-      # gdk_toplevel_set_icon_list: (Method)
+      # gdk_toplevel_set_icon_list: (Method | Setter)
       # Returns: (transfer none)
 
       LibGdk.gdk_toplevel_set_icon_list(self, surfaces)
     end
 
     def modal=(modal : Bool) : Nil
-      # gdk_toplevel_set_modal: (Method)
+      # gdk_toplevel_set_modal: (Method | Setter)
       # Returns: (transfer none)
 
       LibGdk.gdk_toplevel_set_modal(self, modal)
     end
 
     def startup_id=(startup_id : ::String) : Nil
-      # gdk_toplevel_set_startup_id: (Method)
+      # gdk_toplevel_set_startup_id: (Method | Setter)
       # Returns: (transfer none)
 
       LibGdk.gdk_toplevel_set_startup_id(self, startup_id)
     end
 
     def title=(title : ::String) : Nil
-      # gdk_toplevel_set_title: (Method)
+      # gdk_toplevel_set_title: (Method | Setter)
       # Returns: (transfer none)
 
       LibGdk.gdk_toplevel_set_title(self, title)
     end
 
     def transient_for=(parent : Gdk::Surface) : Nil
-      # gdk_toplevel_set_transient_for: (Method)
+      # gdk_toplevel_set_transient_for: (Method | Setter)
       # Returns: (transfer none)
 
       LibGdk.gdk_toplevel_set_transient_for(self, parent)

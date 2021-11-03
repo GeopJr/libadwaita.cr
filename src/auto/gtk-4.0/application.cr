@@ -237,7 +237,7 @@ module Gtk
     end
 
     def active_window : Gtk::Window?
-      # gtk_application_get_active_window: (Method)
+      # gtk_application_get_active_window: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_application_get_active_window(self)
@@ -253,7 +253,7 @@ module Gtk
     end
 
     def menubar : Gio::MenuModel?
-      # gtk_application_get_menubar: (Method)
+      # gtk_application_get_menubar: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_application_get_menubar(self)
@@ -323,7 +323,7 @@ module Gtk
     end
 
     def menubar=(menubar : Gio::MenuModel?) : Nil
-      # gtk_application_set_menubar: (Method)
+      # gtk_application_set_menubar: (Method | Setter)
       # @menubar: (nullable)
       # Returns: (transfer none)
 

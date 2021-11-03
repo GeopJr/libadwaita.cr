@@ -134,7 +134,7 @@ module Gtk
     end
 
     def actions : Gdk::DragAction
-      # gtk_drop_target_async_get_actions: (Method)
+      # gtk_drop_target_async_get_actions: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_target_async_get_actions(self)
@@ -142,7 +142,7 @@ module Gtk
     end
 
     def formats : Gdk::ContentFormats?
-      # gtk_drop_target_async_get_formats: (Method)
+      # gtk_drop_target_async_get_formats: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_drop_target_async_get_formats(self)
@@ -157,14 +157,14 @@ module Gtk
     end
 
     def actions=(actions : Gdk::DragAction) : Nil
-      # gtk_drop_target_async_set_actions: (Method)
+      # gtk_drop_target_async_set_actions: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_drop_target_async_set_actions(self, actions)
     end
 
     def formats=(formats : Gdk::ContentFormats?) : Nil
-      # gtk_drop_target_async_set_formats: (Method)
+      # gtk_drop_target_async_set_formats: (Method | Setter)
       # @formats: (nullable)
       # Returns: (transfer none)
 

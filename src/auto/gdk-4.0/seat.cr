@@ -62,7 +62,7 @@ module Gdk
     end
 
     def display : Gdk::Display
-      # gdk_seat_get_display: (Method)
+      # gdk_seat_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_seat_get_display(self)

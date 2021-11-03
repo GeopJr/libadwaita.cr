@@ -335,7 +335,7 @@ module Gtk
     end
 
     def uri : ::String
-      # gtk_link_button_get_uri: (Method)
+      # gtk_link_button_get_uri: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_link_button_get_uri(self)
@@ -343,7 +343,7 @@ module Gtk
     end
 
     def visited : Bool
-      # gtk_link_button_get_visited: (Method)
+      # gtk_link_button_get_visited: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_link_button_get_visited(self)
@@ -351,14 +351,14 @@ module Gtk
     end
 
     def uri=(uri : ::String) : Nil
-      # gtk_link_button_set_uri: (Method)
+      # gtk_link_button_set_uri: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_link_button_set_uri(self, uri)
     end
 
     def visited=(visited : Bool) : Nil
-      # gtk_link_button_set_visited: (Method)
+      # gtk_link_button_set_visited: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_link_button_set_visited(self, visited)

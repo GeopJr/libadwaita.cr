@@ -77,7 +77,7 @@ module Gtk
     end
 
     def mode : Gtk::SelectionMode
-      # gtk_tree_selection_get_mode: (Method)
+      # gtk_tree_selection_get_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_selection_get_mode(self)
@@ -176,7 +176,7 @@ module Gtk
     end
 
     def mode=(type : Gtk::SelectionMode) : Nil
-      # gtk_tree_selection_set_mode: (Method)
+      # gtk_tree_selection_set_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_selection_set_mode(self, type)

@@ -371,7 +371,7 @@ module Gtk
     end
 
     def message_type : Gtk::MessageType
-      # gtk_info_bar_get_message_type: (Method)
+      # gtk_info_bar_get_message_type: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_info_bar_get_message_type(self)
@@ -379,7 +379,7 @@ module Gtk
     end
 
     def revealed : Bool
-      # gtk_info_bar_get_revealed: (Method)
+      # gtk_info_bar_get_revealed: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_info_bar_get_revealed(self)
@@ -387,7 +387,7 @@ module Gtk
     end
 
     def show_close_button : Bool
-      # gtk_info_bar_get_show_close_button: (Method)
+      # gtk_info_bar_get_show_close_button: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_info_bar_get_show_close_button(self)
@@ -423,7 +423,7 @@ module Gtk
     end
 
     def message_type=(message_type : Gtk::MessageType) : Nil
-      # gtk_info_bar_set_message_type: (Method)
+      # gtk_info_bar_set_message_type: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_info_bar_set_message_type(self, message_type)
@@ -437,14 +437,14 @@ module Gtk
     end
 
     def revealed=(revealed : Bool) : Nil
-      # gtk_info_bar_set_revealed: (Method)
+      # gtk_info_bar_set_revealed: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_info_bar_set_revealed(self, revealed)
     end
 
     def show_close_button=(setting : Bool) : Nil
-      # gtk_info_bar_set_show_close_button: (Method)
+      # gtk_info_bar_set_show_close_button: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_info_bar_set_show_close_button(self, setting)

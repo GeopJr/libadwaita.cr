@@ -293,7 +293,7 @@ module Gtk
     end
 
     def adjustment : Gtk::Adjustment
-      # gtk_scrollbar_get_adjustment: (Method)
+      # gtk_scrollbar_get_adjustment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrollbar_get_adjustment(self)
@@ -301,7 +301,7 @@ module Gtk
     end
 
     def adjustment=(adjustment : Gtk::Adjustment?) : Nil
-      # gtk_scrollbar_set_adjustment: (Method)
+      # gtk_scrollbar_set_adjustment: (Method | Setter)
       # @adjustment: (nullable)
       # Returns: (transfer none)
 

@@ -101,7 +101,7 @@ module Gtk
     end
 
     def hadjustment : Gtk::Adjustment
-      # gtk_scrollable_get_hadjustment: (Method)
+      # gtk_scrollable_get_hadjustment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrollable_get_hadjustment(self)
@@ -109,7 +109,7 @@ module Gtk
     end
 
     def hscroll_policy : Gtk::ScrollablePolicy
-      # gtk_scrollable_get_hscroll_policy: (Method)
+      # gtk_scrollable_get_hscroll_policy: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrollable_get_hscroll_policy(self)
@@ -117,7 +117,7 @@ module Gtk
     end
 
     def vadjustment : Gtk::Adjustment
-      # gtk_scrollable_get_vadjustment: (Method)
+      # gtk_scrollable_get_vadjustment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrollable_get_vadjustment(self)
@@ -125,7 +125,7 @@ module Gtk
     end
 
     def vscroll_policy : Gtk::ScrollablePolicy
-      # gtk_scrollable_get_vscroll_policy: (Method)
+      # gtk_scrollable_get_vscroll_policy: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrollable_get_vscroll_policy(self)
@@ -133,7 +133,7 @@ module Gtk
     end
 
     def hadjustment=(hadjustment : Gtk::Adjustment?) : Nil
-      # gtk_scrollable_set_hadjustment: (Method)
+      # gtk_scrollable_set_hadjustment: (Method | Setter)
       # @hadjustment: (nullable)
       # Returns: (transfer none)
 
@@ -147,14 +147,14 @@ module Gtk
     end
 
     def hscroll_policy=(policy : Gtk::ScrollablePolicy) : Nil
-      # gtk_scrollable_set_hscroll_policy: (Method)
+      # gtk_scrollable_set_hscroll_policy: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrollable_set_hscroll_policy(self, policy)
     end
 
     def vadjustment=(vadjustment : Gtk::Adjustment?) : Nil
-      # gtk_scrollable_set_vadjustment: (Method)
+      # gtk_scrollable_set_vadjustment: (Method | Setter)
       # @vadjustment: (nullable)
       # Returns: (transfer none)
 
@@ -168,7 +168,7 @@ module Gtk
     end
 
     def vscroll_policy=(policy : Gtk::ScrollablePolicy) : Nil
-      # gtk_scrollable_set_vscroll_policy: (Method)
+      # gtk_scrollable_set_vscroll_policy: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrollable_set_vscroll_policy(self, policy)

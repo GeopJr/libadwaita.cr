@@ -54,7 +54,7 @@ module Gtk
     end
 
     def rgba : Gdk::RGBA
-      # gtk_color_chooser_get_rgba: (Method)
+      # gtk_color_chooser_get_rgba: (Method | Getter)
       # @color: (out) (caller-allocates)
       # Returns: (transfer none)
 
@@ -65,7 +65,7 @@ module Gtk
     end
 
     def use_alpha : Bool
-      # gtk_color_chooser_get_use_alpha: (Method)
+      # gtk_color_chooser_get_use_alpha: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_color_chooser_get_use_alpha(self)
@@ -73,14 +73,14 @@ module Gtk
     end
 
     def rgba=(color : Gdk::RGBA) : Nil
-      # gtk_color_chooser_set_rgba: (Method)
+      # gtk_color_chooser_set_rgba: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_color_chooser_set_rgba(self, color)
     end
 
     def use_alpha=(use_alpha : Bool) : Nil
-      # gtk_color_chooser_set_use_alpha: (Method)
+      # gtk_color_chooser_set_use_alpha: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_color_chooser_set_use_alpha(self, use_alpha)

@@ -251,7 +251,7 @@ module Gtk
     end
 
     def stack : Gtk::Stack?
-      # gtk_stack_sidebar_get_stack: (Method)
+      # gtk_stack_sidebar_get_stack: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_sidebar_get_stack(self)
@@ -259,7 +259,7 @@ module Gtk
     end
 
     def stack=(stack : Gtk::Stack) : Nil
-      # gtk_stack_sidebar_set_stack: (Method)
+      # gtk_stack_sidebar_set_stack: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_sidebar_set_stack(self, stack)

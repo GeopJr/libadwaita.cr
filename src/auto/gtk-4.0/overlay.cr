@@ -275,7 +275,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_overlay_get_child: (Method)
+      # gtk_overlay_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_overlay_get_child(self)
@@ -306,7 +306,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_overlay_set_child: (Method)
+      # gtk_overlay_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 

@@ -347,7 +347,7 @@ module Gtk
     end
 
     def decoration_layout : ::String?
-      # gtk_header_bar_get_decoration_layout: (Method)
+      # gtk_header_bar_get_decoration_layout: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_header_bar_get_decoration_layout(self)
@@ -355,7 +355,7 @@ module Gtk
     end
 
     def show_title_buttons : Bool
-      # gtk_header_bar_get_show_title_buttons: (Method)
+      # gtk_header_bar_get_show_title_buttons: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_header_bar_get_show_title_buttons(self)
@@ -363,7 +363,7 @@ module Gtk
     end
 
     def title_widget : Gtk::Widget?
-      # gtk_header_bar_get_title_widget: (Method)
+      # gtk_header_bar_get_title_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_header_bar_get_title_widget(self)
@@ -392,7 +392,7 @@ module Gtk
     end
 
     def decoration_layout=(layout : ::String?) : Nil
-      # gtk_header_bar_set_decoration_layout: (Method)
+      # gtk_header_bar_set_decoration_layout: (Method | Setter)
       # @layout: (nullable)
       # Returns: (transfer none)
 
@@ -406,14 +406,14 @@ module Gtk
     end
 
     def show_title_buttons=(setting : Bool) : Nil
-      # gtk_header_bar_set_show_title_buttons: (Method)
+      # gtk_header_bar_set_show_title_buttons: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_header_bar_set_show_title_buttons(self, setting)
     end
 
     def title_widget=(title_widget : Gtk::Widget?) : Nil
-      # gtk_header_bar_set_title_widget: (Method)
+      # gtk_header_bar_set_title_widget: (Method | Setter)
       # @title_widget: (nullable)
       # Returns: (transfer none)
 

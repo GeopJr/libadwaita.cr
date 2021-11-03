@@ -301,7 +301,7 @@ module Gtk
     end
 
     def adjustment : Gtk::Adjustment
-      # gtk_scale_button_get_adjustment: (Method)
+      # gtk_scale_button_get_adjustment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scale_button_get_adjustment(self)
@@ -333,7 +333,7 @@ module Gtk
     end
 
     def value : Float64
-      # gtk_scale_button_get_value: (Method)
+      # gtk_scale_button_get_value: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scale_button_get_value(self)
@@ -341,14 +341,14 @@ module Gtk
     end
 
     def adjustment=(adjustment : Gtk::Adjustment) : Nil
-      # gtk_scale_button_set_adjustment: (Method)
+      # gtk_scale_button_set_adjustment: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scale_button_set_adjustment(self, adjustment)
     end
 
     def icons=(icons : Enumerable(::String)) : Nil
-      # gtk_scale_button_set_icons: (Method)
+      # gtk_scale_button_set_icons: (Method | Setter)
       # @icons: (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
@@ -358,7 +358,7 @@ module Gtk
     end
 
     def value=(value : Float64) : Nil
-      # gtk_scale_button_set_value: (Method)
+      # gtk_scale_button_set_value: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scale_button_set_value(self, value)

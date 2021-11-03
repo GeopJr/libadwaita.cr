@@ -115,7 +115,7 @@ module Gtk
     end
 
     def children : Gio::ListModel?
-      # gtk_tree_list_row_get_children: (Method)
+      # gtk_tree_list_row_get_children: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_list_row_get_children(self)
@@ -123,7 +123,7 @@ module Gtk
     end
 
     def depth : UInt32
-      # gtk_tree_list_row_get_depth: (Method)
+      # gtk_tree_list_row_get_depth: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_list_row_get_depth(self)
@@ -131,7 +131,7 @@ module Gtk
     end
 
     def expanded : Bool
-      # gtk_tree_list_row_get_expanded: (Method)
+      # gtk_tree_list_row_get_expanded: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_list_row_get_expanded(self)
@@ -139,7 +139,7 @@ module Gtk
     end
 
     def item : GObject::Object?
-      # gtk_tree_list_row_get_item: (Method)
+      # gtk_tree_list_row_get_item: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_tree_list_row_get_item(self)
@@ -171,7 +171,7 @@ module Gtk
     end
 
     def expanded=(expanded : Bool) : Nil
-      # gtk_tree_list_row_set_expanded: (Method)
+      # gtk_tree_list_row_set_expanded: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_list_row_set_expanded(self, expanded)

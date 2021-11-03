@@ -524,7 +524,7 @@ module Gtk
     end
 
     def active : Int32
-      # gtk_combo_box_get_active: (Method)
+      # gtk_combo_box_get_active: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_combo_box_get_active(self)
@@ -532,7 +532,7 @@ module Gtk
     end
 
     def active_id : ::String?
-      # gtk_combo_box_get_active_id: (Method)
+      # gtk_combo_box_get_active_id: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_combo_box_get_active_id(self)
@@ -551,7 +551,7 @@ module Gtk
     end
 
     def button_sensitivity : Gtk::SensitivityType
-      # gtk_combo_box_get_button_sensitivity: (Method)
+      # gtk_combo_box_get_button_sensitivity: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_combo_box_get_button_sensitivity(self)
@@ -559,7 +559,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_combo_box_get_child: (Method)
+      # gtk_combo_box_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_combo_box_get_child(self)
@@ -567,7 +567,7 @@ module Gtk
     end
 
     def entry_text_column : Int32
-      # gtk_combo_box_get_entry_text_column: (Method)
+      # gtk_combo_box_get_entry_text_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_combo_box_get_entry_text_column(self)
@@ -575,7 +575,7 @@ module Gtk
     end
 
     def has_entry : Bool
-      # gtk_combo_box_get_has_entry: (Method)
+      # gtk_combo_box_get_has_entry: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_combo_box_get_has_entry(self)
@@ -583,7 +583,7 @@ module Gtk
     end
 
     def id_column : Int32
-      # gtk_combo_box_get_id_column: (Method)
+      # gtk_combo_box_get_id_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_combo_box_get_id_column(self)
@@ -591,7 +591,7 @@ module Gtk
     end
 
     def model : Gtk::TreeModel?
-      # gtk_combo_box_get_model: (Method)
+      # gtk_combo_box_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_combo_box_get_model(self)
@@ -599,7 +599,7 @@ module Gtk
     end
 
     def popup_fixed_width : Bool
-      # gtk_combo_box_get_popup_fixed_width: (Method)
+      # gtk_combo_box_get_popup_fixed_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_combo_box_get_popup_fixed_width(self)
@@ -628,14 +628,14 @@ module Gtk
     end
 
     def active=(index_ : Int32) : Nil
-      # gtk_combo_box_set_active: (Method)
+      # gtk_combo_box_set_active: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_combo_box_set_active(self, index_)
     end
 
     def active_id=(active_id : ::String?) : Bool
-      # gtk_combo_box_set_active_id: (Method)
+      # gtk_combo_box_set_active_id: (Method | Setter)
       # @active_id: (nullable)
       # Returns: (transfer none)
 
@@ -664,14 +664,14 @@ module Gtk
     end
 
     def button_sensitivity=(sensitivity : Gtk::SensitivityType) : Nil
-      # gtk_combo_box_set_button_sensitivity: (Method)
+      # gtk_combo_box_set_button_sensitivity: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_combo_box_set_button_sensitivity(self, sensitivity)
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_combo_box_set_child: (Method)
+      # gtk_combo_box_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -685,21 +685,21 @@ module Gtk
     end
 
     def entry_text_column=(text_column : Int32) : Nil
-      # gtk_combo_box_set_entry_text_column: (Method)
+      # gtk_combo_box_set_entry_text_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_combo_box_set_entry_text_column(self, text_column)
     end
 
     def id_column=(id_column : Int32) : Nil
-      # gtk_combo_box_set_id_column: (Method)
+      # gtk_combo_box_set_id_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_combo_box_set_id_column(self, id_column)
     end
 
     def model=(model : Gtk::TreeModel?) : Nil
-      # gtk_combo_box_set_model: (Method)
+      # gtk_combo_box_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -713,7 +713,7 @@ module Gtk
     end
 
     def popup_fixed_width=(fixed : Bool) : Nil
-      # gtk_combo_box_set_popup_fixed_width: (Method)
+      # gtk_combo_box_set_popup_fixed_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_combo_box_set_popup_fixed_width(self, fixed)

@@ -179,7 +179,7 @@ module Gtk
     end
 
     def display : Gdk::Display?
-      # gtk_icon_theme_get_display: (Method)
+      # gtk_icon_theme_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_icon_theme_get_display(self)
@@ -187,7 +187,7 @@ module Gtk
     end
 
     def icon_names : Enumerable(::String)
-      # gtk_icon_theme_get_icon_names: (Method)
+      # gtk_icon_theme_get_icon_names: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_icon_theme_get_icon_names(self)
@@ -203,7 +203,7 @@ module Gtk
     end
 
     def resource_path : Enumerable(::String)?
-      # gtk_icon_theme_get_resource_path: (Method)
+      # gtk_icon_theme_get_resource_path: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_icon_theme_get_resource_path(self)
@@ -211,7 +211,7 @@ module Gtk
     end
 
     def search_path : Enumerable(::String)?
-      # gtk_icon_theme_get_search_path: (Method)
+      # gtk_icon_theme_get_search_path: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_icon_theme_get_search_path(self)
@@ -219,7 +219,7 @@ module Gtk
     end
 
     def theme_name : ::String
-      # gtk_icon_theme_get_theme_name: (Method)
+      # gtk_icon_theme_get_theme_name: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_icon_theme_get_theme_name(self)
@@ -266,7 +266,7 @@ module Gtk
     end
 
     def resource_path=(path : Enumerable(::String)?) : Nil
-      # gtk_icon_theme_set_resource_path: (Method)
+      # gtk_icon_theme_set_resource_path: (Method | Setter)
       # @path: (nullable) (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
@@ -280,7 +280,7 @@ module Gtk
     end
 
     def search_path=(path : Enumerable(::String)?) : Nil
-      # gtk_icon_theme_set_search_path: (Method)
+      # gtk_icon_theme_set_search_path: (Method | Setter)
       # @path: (nullable) (array zero-terminated=1 element-type Filename)
       # Returns: (transfer none)
 
@@ -294,7 +294,7 @@ module Gtk
     end
 
     def theme_name=(theme_name : ::String?) : Nil
-      # gtk_icon_theme_set_theme_name: (Method)
+      # gtk_icon_theme_set_theme_name: (Method | Setter)
       # @theme_name: (nullable)
       # Returns: (transfer none)
 

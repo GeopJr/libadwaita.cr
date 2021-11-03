@@ -43,7 +43,7 @@ module Gtk
     end
 
     def content_type : ::String
-      # gtk_app_chooser_get_content_type: (Method)
+      # gtk_app_chooser_get_content_type: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_app_chooser_get_content_type(self)

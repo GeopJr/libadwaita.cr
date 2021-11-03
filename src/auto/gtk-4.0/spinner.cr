@@ -251,7 +251,7 @@ module Gtk
     end
 
     def spinning : Bool
-      # gtk_spinner_get_spinning: (Method)
+      # gtk_spinner_get_spinning: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_spinner_get_spinning(self)
@@ -259,7 +259,7 @@ module Gtk
     end
 
     def spinning=(spinning : Bool) : Nil
-      # gtk_spinner_set_spinning: (Method)
+      # gtk_spinner_set_spinning: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_spinner_set_spinning(self, spinning)

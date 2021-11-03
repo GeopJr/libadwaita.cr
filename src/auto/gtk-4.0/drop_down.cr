@@ -406,7 +406,7 @@ module Gtk
     end
 
     def enable_search : Bool
-      # gtk_drop_down_get_enable_search: (Method)
+      # gtk_drop_down_get_enable_search: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_down_get_enable_search(self)
@@ -414,7 +414,7 @@ module Gtk
     end
 
     def expression : Gtk::Expression?
-      # gtk_drop_down_get_expression: (Method)
+      # gtk_drop_down_get_expression: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_down_get_expression(self)
@@ -422,7 +422,7 @@ module Gtk
     end
 
     def factory : Gtk::ListItemFactory?
-      # gtk_drop_down_get_factory: (Method)
+      # gtk_drop_down_get_factory: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_down_get_factory(self)
@@ -430,7 +430,7 @@ module Gtk
     end
 
     def list_factory : Gtk::ListItemFactory?
-      # gtk_drop_down_get_list_factory: (Method)
+      # gtk_drop_down_get_list_factory: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_down_get_list_factory(self)
@@ -438,7 +438,7 @@ module Gtk
     end
 
     def model : Gio::ListModel?
-      # gtk_drop_down_get_model: (Method)
+      # gtk_drop_down_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_down_get_model(self)
@@ -446,7 +446,7 @@ module Gtk
     end
 
     def selected : UInt32
-      # gtk_drop_down_get_selected: (Method)
+      # gtk_drop_down_get_selected: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_down_get_selected(self)
@@ -454,7 +454,7 @@ module Gtk
     end
 
     def selected_item : GObject::Object?
-      # gtk_drop_down_get_selected_item: (Method)
+      # gtk_drop_down_get_selected_item: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_down_get_selected_item(self)
@@ -462,14 +462,14 @@ module Gtk
     end
 
     def enable_search=(enable_search : Bool) : Nil
-      # gtk_drop_down_set_enable_search: (Method)
+      # gtk_drop_down_set_enable_search: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_drop_down_set_enable_search(self, enable_search)
     end
 
     def expression=(expression : Gtk::Expression?) : Nil
-      # gtk_drop_down_set_expression: (Method)
+      # gtk_drop_down_set_expression: (Method | Setter)
       # @expression: (nullable)
       # Returns: (transfer none)
 
@@ -483,7 +483,7 @@ module Gtk
     end
 
     def factory=(factory : Gtk::ListItemFactory?) : Nil
-      # gtk_drop_down_set_factory: (Method)
+      # gtk_drop_down_set_factory: (Method | Setter)
       # @factory: (nullable)
       # Returns: (transfer none)
 
@@ -497,7 +497,7 @@ module Gtk
     end
 
     def list_factory=(factory : Gtk::ListItemFactory?) : Nil
-      # gtk_drop_down_set_list_factory: (Method)
+      # gtk_drop_down_set_list_factory: (Method | Setter)
       # @factory: (nullable)
       # Returns: (transfer none)
 
@@ -511,7 +511,7 @@ module Gtk
     end
 
     def model=(model : Gio::ListModel?) : Nil
-      # gtk_drop_down_set_model: (Method)
+      # gtk_drop_down_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -525,7 +525,7 @@ module Gtk
     end
 
     def selected=(position : UInt32) : Nil
-      # gtk_drop_down_set_selected: (Method)
+      # gtk_drop_down_set_selected: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_drop_down_set_selected(self, position)

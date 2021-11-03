@@ -99,7 +99,7 @@ module Gtk
     end
 
     def contains_pointer : Bool
-      # gtk_drop_controller_motion_contains_pointer: (Method)
+      # gtk_drop_controller_motion_contains_pointer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_controller_motion_contains_pointer(self)
@@ -107,7 +107,7 @@ module Gtk
     end
 
     def drop : Gdk::Drop?
-      # gtk_drop_controller_motion_get_drop: (Method)
+      # gtk_drop_controller_motion_get_drop: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_controller_motion_get_drop(self)
@@ -115,7 +115,7 @@ module Gtk
     end
 
     def is_pointer : Bool
-      # gtk_drop_controller_motion_is_pointer: (Method)
+      # gtk_drop_controller_motion_is_pointer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_controller_motion_is_pointer(self)

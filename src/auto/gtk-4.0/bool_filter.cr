@@ -82,7 +82,7 @@ module Gtk
     end
 
     def expression : Gtk::Expression?
-      # gtk_bool_filter_get_expression: (Method)
+      # gtk_bool_filter_get_expression: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_bool_filter_get_expression(self)
@@ -90,7 +90,7 @@ module Gtk
     end
 
     def invert : Bool
-      # gtk_bool_filter_get_invert: (Method)
+      # gtk_bool_filter_get_invert: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_bool_filter_get_invert(self)
@@ -98,7 +98,7 @@ module Gtk
     end
 
     def expression=(expression : Gtk::Expression?) : Nil
-      # gtk_bool_filter_set_expression: (Method)
+      # gtk_bool_filter_set_expression: (Method | Setter)
       # @expression: (nullable)
       # Returns: (transfer none)
 
@@ -112,7 +112,7 @@ module Gtk
     end
 
     def invert=(invert : Bool) : Nil
-      # gtk_bool_filter_set_invert: (Method)
+      # gtk_bool_filter_set_invert: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_bool_filter_set_invert(self, invert)

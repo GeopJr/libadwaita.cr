@@ -450,7 +450,7 @@ module Gtk
     end
 
     def default_page_setup : Gtk::PageSetup
-      # gtk_print_operation_get_default_page_setup: (Method)
+      # gtk_print_operation_get_default_page_setup: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_operation_get_default_page_setup(self)
@@ -458,7 +458,7 @@ module Gtk
     end
 
     def embed_page_setup : Bool
-      # gtk_print_operation_get_embed_page_setup: (Method)
+      # gtk_print_operation_get_embed_page_setup: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_operation_get_embed_page_setup(self)
@@ -473,7 +473,7 @@ module Gtk
     end
 
     def has_selection : Bool
-      # gtk_print_operation_get_has_selection: (Method)
+      # gtk_print_operation_get_has_selection: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_operation_get_has_selection(self)
@@ -481,7 +481,7 @@ module Gtk
     end
 
     def n_pages_to_print : Int32
-      # gtk_print_operation_get_n_pages_to_print: (Method)
+      # gtk_print_operation_get_n_pages_to_print: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_operation_get_n_pages_to_print(self)
@@ -489,7 +489,7 @@ module Gtk
     end
 
     def print_settings : Gtk::PrintSettings
-      # gtk_print_operation_get_print_settings: (Method)
+      # gtk_print_operation_get_print_settings: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_operation_get_print_settings(self)
@@ -497,7 +497,7 @@ module Gtk
     end
 
     def status : Gtk::PrintStatus
-      # gtk_print_operation_get_status: (Method)
+      # gtk_print_operation_get_status: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_operation_get_status(self)
@@ -505,7 +505,7 @@ module Gtk
     end
 
     def status_string : ::String
-      # gtk_print_operation_get_status_string: (Method)
+      # gtk_print_operation_get_status_string: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_operation_get_status_string(self)
@@ -513,7 +513,7 @@ module Gtk
     end
 
     def support_selection : Bool
-      # gtk_print_operation_get_support_selection: (Method)
+      # gtk_print_operation_get_support_selection: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_operation_get_support_selection(self)
@@ -544,21 +544,21 @@ module Gtk
     end
 
     def allow_async=(allow_async : Bool) : Nil
-      # gtk_print_operation_set_allow_async: (Method)
+      # gtk_print_operation_set_allow_async: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_allow_async(self, allow_async)
     end
 
     def current_page=(current_page : Int32) : Nil
-      # gtk_print_operation_set_current_page: (Method)
+      # gtk_print_operation_set_current_page: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_current_page(self, current_page)
     end
 
     def custom_tab_label=(label : ::String?) : Nil
-      # gtk_print_operation_set_custom_tab_label: (Method)
+      # gtk_print_operation_set_custom_tab_label: (Method | Setter)
       # @label: (nullable)
       # Returns: (transfer none)
 
@@ -572,7 +572,7 @@ module Gtk
     end
 
     def default_page_setup=(default_page_setup : Gtk::PageSetup?) : Nil
-      # gtk_print_operation_set_default_page_setup: (Method)
+      # gtk_print_operation_set_default_page_setup: (Method | Setter)
       # @default_page_setup: (nullable)
       # Returns: (transfer none)
 
@@ -593,42 +593,42 @@ module Gtk
     end
 
     def embed_page_setup=(embed : Bool) : Nil
-      # gtk_print_operation_set_embed_page_setup: (Method)
+      # gtk_print_operation_set_embed_page_setup: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_embed_page_setup(self, embed)
     end
 
     def export_filename=(filename : ::String) : Nil
-      # gtk_print_operation_set_export_filename: (Method)
+      # gtk_print_operation_set_export_filename: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_export_filename(self, filename)
     end
 
     def has_selection=(has_selection : Bool) : Nil
-      # gtk_print_operation_set_has_selection: (Method)
+      # gtk_print_operation_set_has_selection: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_has_selection(self, has_selection)
     end
 
     def job_name=(job_name : ::String) : Nil
-      # gtk_print_operation_set_job_name: (Method)
+      # gtk_print_operation_set_job_name: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_job_name(self, job_name)
     end
 
     def n_pages=(n_pages : Int32) : Nil
-      # gtk_print_operation_set_n_pages: (Method)
+      # gtk_print_operation_set_n_pages: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_n_pages(self, n_pages)
     end
 
     def print_settings=(print_settings : Gtk::PrintSettings?) : Nil
-      # gtk_print_operation_set_print_settings: (Method)
+      # gtk_print_operation_set_print_settings: (Method | Setter)
       # @print_settings: (nullable)
       # Returns: (transfer none)
 
@@ -642,35 +642,35 @@ module Gtk
     end
 
     def show_progress=(show_progress : Bool) : Nil
-      # gtk_print_operation_set_show_progress: (Method)
+      # gtk_print_operation_set_show_progress: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_show_progress(self, show_progress)
     end
 
     def support_selection=(support_selection : Bool) : Nil
-      # gtk_print_operation_set_support_selection: (Method)
+      # gtk_print_operation_set_support_selection: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_support_selection(self, support_selection)
     end
 
     def track_print_status=(track_status : Bool) : Nil
-      # gtk_print_operation_set_track_print_status: (Method)
+      # gtk_print_operation_set_track_print_status: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_track_print_status(self, track_status)
     end
 
     def unit=(unit : Gtk::Unit) : Nil
-      # gtk_print_operation_set_unit: (Method)
+      # gtk_print_operation_set_unit: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_unit(self, unit)
     end
 
     def use_full_page=(full_page : Bool) : Nil
-      # gtk_print_operation_set_use_full_page: (Method)
+      # gtk_print_operation_set_use_full_page: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_operation_set_use_full_page(self, full_page)

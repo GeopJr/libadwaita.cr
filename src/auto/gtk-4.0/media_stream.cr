@@ -256,7 +256,7 @@ module Gtk
     end
 
     def duration : Int64
-      # gtk_media_stream_get_duration: (Method)
+      # gtk_media_stream_get_duration: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_get_duration(self)
@@ -264,7 +264,7 @@ module Gtk
     end
 
     def ended : Bool
-      # gtk_media_stream_get_ended: (Method)
+      # gtk_media_stream_get_ended: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_get_ended(self)
@@ -272,7 +272,7 @@ module Gtk
     end
 
     def error : GLib::Error?
-      # gtk_media_stream_get_error: (Method)
+      # gtk_media_stream_get_error: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_get_error(self)
@@ -280,7 +280,7 @@ module Gtk
     end
 
     def loop : Bool
-      # gtk_media_stream_get_loop: (Method)
+      # gtk_media_stream_get_loop: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_get_loop(self)
@@ -288,7 +288,7 @@ module Gtk
     end
 
     def muted : Bool
-      # gtk_media_stream_get_muted: (Method)
+      # gtk_media_stream_get_muted: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_get_muted(self)
@@ -296,7 +296,7 @@ module Gtk
     end
 
     def playing : Bool
-      # gtk_media_stream_get_playing: (Method)
+      # gtk_media_stream_get_playing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_get_playing(self)
@@ -304,7 +304,7 @@ module Gtk
     end
 
     def timestamp : Int64
-      # gtk_media_stream_get_timestamp: (Method)
+      # gtk_media_stream_get_timestamp: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_get_timestamp(self)
@@ -312,7 +312,7 @@ module Gtk
     end
 
     def volume : Float64
-      # gtk_media_stream_get_volume: (Method)
+      # gtk_media_stream_get_volume: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_get_volume(self)
@@ -320,7 +320,7 @@ module Gtk
     end
 
     def has_audio : Bool
-      # gtk_media_stream_has_audio: (Method)
+      # gtk_media_stream_has_audio: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_has_audio(self)
@@ -328,7 +328,7 @@ module Gtk
     end
 
     def has_video : Bool
-      # gtk_media_stream_has_video: (Method)
+      # gtk_media_stream_has_video: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_media_stream_has_video(self)
@@ -402,28 +402,28 @@ module Gtk
     end
 
     def loop=(loop : Bool) : Nil
-      # gtk_media_stream_set_loop: (Method)
+      # gtk_media_stream_set_loop: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_media_stream_set_loop(self, loop)
     end
 
     def muted=(muted : Bool) : Nil
-      # gtk_media_stream_set_muted: (Method)
+      # gtk_media_stream_set_muted: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_media_stream_set_muted(self, muted)
     end
 
     def playing=(playing : Bool) : Nil
-      # gtk_media_stream_set_playing: (Method)
+      # gtk_media_stream_set_playing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_media_stream_set_playing(self, playing)
     end
 
     def volume=(volume : Float64) : Nil
-      # gtk_media_stream_set_volume: (Method)
+      # gtk_media_stream_set_volume: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_media_stream_set_volume(self, volume)

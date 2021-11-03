@@ -374,21 +374,6 @@ module Adw
       value
     end
 
-    def use_underline=(value : Bool) : Bool
-      unsafe_value = value
-
-      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
-      value
-    end
-
-    def use_underline? : Bool
-      # Returns: None
-
-      value = uninitialized LibC::Int
-      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
-      GICrystal.to_bool(value)
-    end
-
     def initialize
       # adw_action_row_new: (Constructor)
       # Returns: (transfer none)
@@ -458,14 +443,6 @@ module Adw
       _retval
     end
 
-    def use_underline : Bool
-      # adw_action_row_get_use_underline: (Method | Getter)
-      # Returns: (transfer none)
-
-      _retval = LibAdw.adw_action_row_get_use_underline(self)
-      GICrystal.to_bool(_retval)
-    end
-
     def remove(widget : Gtk::Widget) : Nil
       # adw_action_row_remove: (Method)
       # Returns: (transfer none)
@@ -520,13 +497,6 @@ module Adw
       # Returns: (transfer none)
 
       LibAdw.adw_action_row_set_title_lines(self, title_lines)
-    end
-
-    def use_underline=(use_underline : Bool) : Nil
-      # adw_action_row_set_use_underline: (Method | Setter)
-      # Returns: (transfer none)
-
-      LibAdw.adw_action_row_set_use_underline(self, use_underline)
     end
 
     struct ActivatedSignal

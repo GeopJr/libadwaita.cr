@@ -359,7 +359,7 @@ module Gtk
     end
 
     def modal : Bool
-      # gtk_font_button_get_modal: (Method)
+      # gtk_font_button_get_modal: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_font_button_get_modal(self)
@@ -367,7 +367,7 @@ module Gtk
     end
 
     def title : ::String
-      # gtk_font_button_get_title: (Method)
+      # gtk_font_button_get_title: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_font_button_get_title(self)
@@ -375,7 +375,7 @@ module Gtk
     end
 
     def use_font : Bool
-      # gtk_font_button_get_use_font: (Method)
+      # gtk_font_button_get_use_font: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_font_button_get_use_font(self)
@@ -383,7 +383,7 @@ module Gtk
     end
 
     def use_size : Bool
-      # gtk_font_button_get_use_size: (Method)
+      # gtk_font_button_get_use_size: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_font_button_get_use_size(self)
@@ -391,28 +391,28 @@ module Gtk
     end
 
     def modal=(modal : Bool) : Nil
-      # gtk_font_button_set_modal: (Method)
+      # gtk_font_button_set_modal: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_button_set_modal(self, modal)
     end
 
     def title=(title : ::String) : Nil
-      # gtk_font_button_set_title: (Method)
+      # gtk_font_button_set_title: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_button_set_title(self, title)
     end
 
     def use_font=(use_font : Bool) : Nil
-      # gtk_font_button_set_use_font: (Method)
+      # gtk_font_button_set_use_font: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_button_set_use_font(self, use_font)
     end
 
     def use_size=(use_size : Bool) : Nil
-      # gtk_font_button_set_use_size: (Method)
+      # gtk_font_button_set_use_size: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_button_set_use_size(self, use_size)

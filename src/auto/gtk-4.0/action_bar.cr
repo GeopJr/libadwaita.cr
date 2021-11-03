@@ -275,7 +275,7 @@ module Gtk
     end
 
     def revealed : Bool
-      # gtk_action_bar_get_revealed: (Method)
+      # gtk_action_bar_get_revealed: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_action_bar_get_revealed(self)
@@ -318,7 +318,7 @@ module Gtk
     end
 
     def revealed=(revealed : Bool) : Nil
-      # gtk_action_bar_set_revealed: (Method)
+      # gtk_action_bar_set_revealed: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_action_bar_set_revealed(self, revealed)

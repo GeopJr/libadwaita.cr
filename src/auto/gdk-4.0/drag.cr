@@ -182,7 +182,7 @@ module Gdk
     end
 
     def actions : Gdk::DragAction
-      # gdk_drag_get_actions: (Method)
+      # gdk_drag_get_actions: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_drag_get_actions(self)
@@ -190,7 +190,7 @@ module Gdk
     end
 
     def content : Gdk::ContentProvider
-      # gdk_drag_get_content: (Method)
+      # gdk_drag_get_content: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_drag_get_content(self)
@@ -198,7 +198,7 @@ module Gdk
     end
 
     def device : Gdk::Device
-      # gdk_drag_get_device: (Method)
+      # gdk_drag_get_device: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_drag_get_device(self)
@@ -206,7 +206,7 @@ module Gdk
     end
 
     def display : Gdk::Display
-      # gdk_drag_get_display: (Method)
+      # gdk_drag_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_drag_get_display(self)
@@ -222,7 +222,7 @@ module Gdk
     end
 
     def formats : Gdk::ContentFormats
-      # gdk_drag_get_formats: (Method)
+      # gdk_drag_get_formats: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_drag_get_formats(self)
@@ -230,7 +230,7 @@ module Gdk
     end
 
     def selected_action : Gdk::DragAction
-      # gdk_drag_get_selected_action: (Method)
+      # gdk_drag_get_selected_action: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_drag_get_selected_action(self)
@@ -238,7 +238,7 @@ module Gdk
     end
 
     def surface : Gdk::Surface
-      # gdk_drag_get_surface: (Method)
+      # gdk_drag_get_surface: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_drag_get_surface(self)

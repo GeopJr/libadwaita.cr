@@ -202,7 +202,7 @@ module Gtk
     end
 
     def model : Gtk::TreeModel
-      # gtk_tree_model_sort_get_model: (Method)
+      # gtk_tree_model_sort_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_model_sort_get_model(self)

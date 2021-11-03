@@ -129,7 +129,7 @@ module Gtk
     end
 
     def attributes : ::String?
-      # gtk_bookmark_list_get_attributes: (Method)
+      # gtk_bookmark_list_get_attributes: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_bookmark_list_get_attributes(self)
@@ -137,7 +137,7 @@ module Gtk
     end
 
     def filename : ::Path
-      # gtk_bookmark_list_get_filename: (Method)
+      # gtk_bookmark_list_get_filename: (Method | Getter)
       # Returns: (transfer none Filename)
 
       _retval = LibGtk.gtk_bookmark_list_get_filename(self)
@@ -145,7 +145,7 @@ module Gtk
     end
 
     def io_priority : Int32
-      # gtk_bookmark_list_get_io_priority: (Method)
+      # gtk_bookmark_list_get_io_priority: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_bookmark_list_get_io_priority(self)
@@ -161,7 +161,7 @@ module Gtk
     end
 
     def attributes=(attributes : ::String?) : Nil
-      # gtk_bookmark_list_set_attributes: (Method)
+      # gtk_bookmark_list_set_attributes: (Method | Setter)
       # @attributes: (nullable)
       # Returns: (transfer none)
 
@@ -175,7 +175,7 @@ module Gtk
     end
 
     def io_priority=(io_priority : Int32) : Nil
-      # gtk_bookmark_list_set_io_priority: (Method)
+      # gtk_bookmark_list_set_io_priority: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_bookmark_list_set_io_priority(self, io_priority)

@@ -458,7 +458,7 @@ module Gtk
     end
 
     def autohide : Bool
-      # gtk_popover_get_autohide: (Method)
+      # gtk_popover_get_autohide: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_popover_get_autohide(self)
@@ -466,7 +466,7 @@ module Gtk
     end
 
     def cascade_popdown : Bool
-      # gtk_popover_get_cascade_popdown: (Method)
+      # gtk_popover_get_cascade_popdown: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_popover_get_cascade_popdown(self)
@@ -474,7 +474,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_popover_get_child: (Method)
+      # gtk_popover_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_popover_get_child(self)
@@ -482,7 +482,7 @@ module Gtk
     end
 
     def has_arrow : Bool
-      # gtk_popover_get_has_arrow: (Method)
+      # gtk_popover_get_has_arrow: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_popover_get_has_arrow(self)
@@ -490,7 +490,7 @@ module Gtk
     end
 
     def mnemonics_visible : Bool
-      # gtk_popover_get_mnemonics_visible: (Method)
+      # gtk_popover_get_mnemonics_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_popover_get_mnemonics_visible(self)
@@ -518,7 +518,7 @@ module Gtk
     end
 
     def pointing_to : Gdk::Rectangle
-      # gtk_popover_get_pointing_to: (Method)
+      # gtk_popover_get_pointing_to: (Method | Getter)
       # @rect: (out) (caller-allocates)
       # Returns: (transfer none)
 
@@ -529,7 +529,7 @@ module Gtk
     end
 
     def position : Gtk::PositionType
-      # gtk_popover_get_position: (Method)
+      # gtk_popover_get_position: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_popover_get_position(self)
@@ -558,21 +558,21 @@ module Gtk
     end
 
     def autohide=(autohide : Bool) : Nil
-      # gtk_popover_set_autohide: (Method)
+      # gtk_popover_set_autohide: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_popover_set_autohide(self, autohide)
     end
 
     def cascade_popdown=(cascade_popdown : Bool) : Nil
-      # gtk_popover_set_cascade_popdown: (Method)
+      # gtk_popover_set_cascade_popdown: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_popover_set_cascade_popdown(self, cascade_popdown)
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_popover_set_child: (Method)
+      # gtk_popover_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -586,7 +586,7 @@ module Gtk
     end
 
     def default_widget=(widget : Gtk::Widget?) : Nil
-      # gtk_popover_set_default_widget: (Method)
+      # gtk_popover_set_default_widget: (Method | Setter)
       # @widget: (nullable)
       # Returns: (transfer none)
 
@@ -600,14 +600,14 @@ module Gtk
     end
 
     def has_arrow=(has_arrow : Bool) : Nil
-      # gtk_popover_set_has_arrow: (Method)
+      # gtk_popover_set_has_arrow: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_popover_set_has_arrow(self, has_arrow)
     end
 
     def mnemonics_visible=(mnemonics_visible : Bool) : Nil
-      # gtk_popover_set_mnemonics_visible: (Method)
+      # gtk_popover_set_mnemonics_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_popover_set_mnemonics_visible(self, mnemonics_visible)
@@ -621,14 +621,14 @@ module Gtk
     end
 
     def pointing_to=(rect : Gdk::Rectangle) : Nil
-      # gtk_popover_set_pointing_to: (Method)
+      # gtk_popover_set_pointing_to: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_popover_set_pointing_to(self, rect)
     end
 
     def position=(position : Gtk::PositionType) : Nil
-      # gtk_popover_set_position: (Method)
+      # gtk_popover_set_position: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_popover_set_position(self, position)

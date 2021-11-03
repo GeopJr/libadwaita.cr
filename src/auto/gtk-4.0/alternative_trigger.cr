@@ -82,7 +82,7 @@ module Gtk
     end
 
     def first : Gtk::ShortcutTrigger
-      # gtk_alternative_trigger_get_first: (Method)
+      # gtk_alternative_trigger_get_first: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_alternative_trigger_get_first(self)
@@ -90,7 +90,7 @@ module Gtk
     end
 
     def second : Gtk::ShortcutTrigger
-      # gtk_alternative_trigger_get_second: (Method)
+      # gtk_alternative_trigger_get_second: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_alternative_trigger_get_second(self)

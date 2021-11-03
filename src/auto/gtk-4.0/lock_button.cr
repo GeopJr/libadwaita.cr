@@ -418,7 +418,7 @@ module Gtk
     end
 
     def permission : Gio::Permission
-      # gtk_lock_button_get_permission: (Method)
+      # gtk_lock_button_get_permission: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_lock_button_get_permission(self)
@@ -426,7 +426,7 @@ module Gtk
     end
 
     def permission=(permission : Gio::Permission?) : Nil
-      # gtk_lock_button_set_permission: (Method)
+      # gtk_lock_button_set_permission: (Method | Setter)
       # @permission: (nullable)
       # Returns: (transfer none)
 

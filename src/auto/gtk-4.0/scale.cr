@@ -450,7 +450,7 @@ module Gtk
     end
 
     def digits : Int32
-      # gtk_scale_get_digits: (Method)
+      # gtk_scale_get_digits: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scale_get_digits(self)
@@ -458,7 +458,7 @@ module Gtk
     end
 
     def draw_value : Bool
-      # gtk_scale_get_draw_value: (Method)
+      # gtk_scale_get_draw_value: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scale_get_draw_value(self)
@@ -466,7 +466,7 @@ module Gtk
     end
 
     def has_origin : Bool
-      # gtk_scale_get_has_origin: (Method)
+      # gtk_scale_get_has_origin: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scale_get_has_origin(self)
@@ -494,7 +494,7 @@ module Gtk
     end
 
     def value_pos : Gtk::PositionType
-      # gtk_scale_get_value_pos: (Method)
+      # gtk_scale_get_value_pos: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scale_get_value_pos(self)
@@ -502,14 +502,14 @@ module Gtk
     end
 
     def digits=(digits : Int32) : Nil
-      # gtk_scale_set_digits: (Method)
+      # gtk_scale_set_digits: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scale_set_digits(self, digits)
     end
 
     def draw_value=(draw_value : Bool) : Nil
-      # gtk_scale_set_draw_value: (Method)
+      # gtk_scale_set_draw_value: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scale_set_draw_value(self, draw_value)
@@ -542,14 +542,14 @@ module Gtk
     end
 
     def has_origin=(has_origin : Bool) : Nil
-      # gtk_scale_set_has_origin: (Method)
+      # gtk_scale_set_has_origin: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scale_set_has_origin(self, has_origin)
     end
 
     def value_pos=(pos : Gtk::PositionType) : Nil
-      # gtk_scale_set_value_pos: (Method)
+      # gtk_scale_set_value_pos: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scale_set_value_pos(self, pos)

@@ -347,7 +347,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_search_bar_get_child: (Method)
+      # gtk_search_bar_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_search_bar_get_child(self)
@@ -355,7 +355,7 @@ module Gtk
     end
 
     def key_capture_widget : Gtk::Widget
-      # gtk_search_bar_get_key_capture_widget: (Method)
+      # gtk_search_bar_get_key_capture_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_search_bar_get_key_capture_widget(self)
@@ -371,7 +371,7 @@ module Gtk
     end
 
     def show_close_button : Bool
-      # gtk_search_bar_get_show_close_button: (Method)
+      # gtk_search_bar_get_show_close_button: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_search_bar_get_show_close_button(self)
@@ -379,7 +379,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_search_bar_set_child: (Method)
+      # gtk_search_bar_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -393,7 +393,7 @@ module Gtk
     end
 
     def key_capture_widget=(widget : Gtk::Widget?) : Nil
-      # gtk_search_bar_set_key_capture_widget: (Method)
+      # gtk_search_bar_set_key_capture_widget: (Method | Setter)
       # @widget: (nullable)
       # Returns: (transfer none)
 
@@ -414,7 +414,7 @@ module Gtk
     end
 
     def show_close_button=(visible : Bool) : Nil
-      # gtk_search_bar_set_show_close_button: (Method)
+      # gtk_search_bar_set_show_close_button: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_search_bar_set_show_close_button(self, visible)

@@ -106,7 +106,7 @@ module Gtk
     end
 
     def orientation : Gtk::Orientation
-      # gtk_gesture_pan_get_orientation: (Method)
+      # gtk_gesture_pan_get_orientation: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gesture_pan_get_orientation(self)
@@ -114,7 +114,7 @@ module Gtk
     end
 
     def orientation=(orientation : Gtk::Orientation) : Nil
-      # gtk_gesture_pan_set_orientation: (Method)
+      # gtk_gesture_pan_set_orientation: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_gesture_pan_set_orientation(self, orientation)

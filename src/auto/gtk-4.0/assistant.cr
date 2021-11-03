@@ -487,7 +487,7 @@ module Gtk
     end
 
     def pages : Gio::ListModel
-      # gtk_assistant_get_pages: (Method)
+      # gtk_assistant_get_pages: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_assistant_get_pages(self)

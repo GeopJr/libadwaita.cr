@@ -330,7 +330,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_revealer_get_child: (Method)
+      # gtk_revealer_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_revealer_get_child(self)
@@ -338,7 +338,7 @@ module Gtk
     end
 
     def child_revealed : Bool
-      # gtk_revealer_get_child_revealed: (Method)
+      # gtk_revealer_get_child_revealed: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_revealer_get_child_revealed(self)
@@ -346,7 +346,7 @@ module Gtk
     end
 
     def reveal_child : Bool
-      # gtk_revealer_get_reveal_child: (Method)
+      # gtk_revealer_get_reveal_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_revealer_get_reveal_child(self)
@@ -354,7 +354,7 @@ module Gtk
     end
 
     def transition_duration : UInt32
-      # gtk_revealer_get_transition_duration: (Method)
+      # gtk_revealer_get_transition_duration: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_revealer_get_transition_duration(self)
@@ -362,7 +362,7 @@ module Gtk
     end
 
     def transition_type : Gtk::RevealerTransitionType
-      # gtk_revealer_get_transition_type: (Method)
+      # gtk_revealer_get_transition_type: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_revealer_get_transition_type(self)
@@ -370,7 +370,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_revealer_set_child: (Method)
+      # gtk_revealer_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -384,21 +384,21 @@ module Gtk
     end
 
     def reveal_child=(reveal_child : Bool) : Nil
-      # gtk_revealer_set_reveal_child: (Method)
+      # gtk_revealer_set_reveal_child: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_revealer_set_reveal_child(self, reveal_child)
     end
 
     def transition_duration=(duration : UInt32) : Nil
-      # gtk_revealer_set_transition_duration: (Method)
+      # gtk_revealer_set_transition_duration: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_revealer_set_transition_duration(self, duration)
     end
 
     def transition_type=(transition : Gtk::RevealerTransitionType) : Nil
-      # gtk_revealer_set_transition_type: (Method)
+      # gtk_revealer_set_transition_type: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_revealer_set_transition_type(self, transition)

@@ -98,7 +98,7 @@ module Gtk
     end
 
     def accessible : Gtk::Accessible
-      # gtk_at_context_get_accessible: (Method)
+      # gtk_at_context_get_accessible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_at_context_get_accessible(self)
@@ -106,7 +106,7 @@ module Gtk
     end
 
     def accessible_role : Gtk::AccessibleRole
-      # gtk_at_context_get_accessible_role: (Method)
+      # gtk_at_context_get_accessible_role: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_at_context_get_accessible_role(self)

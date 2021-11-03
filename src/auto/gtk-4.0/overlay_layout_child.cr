@@ -75,7 +75,7 @@ module Gtk
     end
 
     def clip_overlay : Bool
-      # gtk_overlay_layout_child_get_clip_overlay: (Method)
+      # gtk_overlay_layout_child_get_clip_overlay: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_overlay_layout_child_get_clip_overlay(self)
@@ -83,7 +83,7 @@ module Gtk
     end
 
     def measure : Bool
-      # gtk_overlay_layout_child_get_measure: (Method)
+      # gtk_overlay_layout_child_get_measure: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_overlay_layout_child_get_measure(self)
@@ -91,14 +91,14 @@ module Gtk
     end
 
     def clip_overlay=(clip_overlay : Bool) : Nil
-      # gtk_overlay_layout_child_set_clip_overlay: (Method)
+      # gtk_overlay_layout_child_set_clip_overlay: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_overlay_layout_child_set_clip_overlay(self, clip_overlay)
     end
 
     def measure=(measure : Bool) : Nil
-      # gtk_overlay_layout_child_set_measure: (Method)
+      # gtk_overlay_layout_child_set_measure: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_overlay_layout_child_set_measure(self, measure)

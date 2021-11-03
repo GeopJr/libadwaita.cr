@@ -417,7 +417,7 @@ module Gtk
     end
 
     def enable_rubberband : Bool
-      # gtk_grid_view_get_enable_rubberband: (Method)
+      # gtk_grid_view_get_enable_rubberband: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_view_get_enable_rubberband(self)
@@ -425,7 +425,7 @@ module Gtk
     end
 
     def factory : Gtk::ListItemFactory?
-      # gtk_grid_view_get_factory: (Method)
+      # gtk_grid_view_get_factory: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_view_get_factory(self)
@@ -433,7 +433,7 @@ module Gtk
     end
 
     def max_columns : UInt32
-      # gtk_grid_view_get_max_columns: (Method)
+      # gtk_grid_view_get_max_columns: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_view_get_max_columns(self)
@@ -441,7 +441,7 @@ module Gtk
     end
 
     def min_columns : UInt32
-      # gtk_grid_view_get_min_columns: (Method)
+      # gtk_grid_view_get_min_columns: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_view_get_min_columns(self)
@@ -449,7 +449,7 @@ module Gtk
     end
 
     def model : Gtk::SelectionModel?
-      # gtk_grid_view_get_model: (Method)
+      # gtk_grid_view_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_view_get_model(self)
@@ -457,7 +457,7 @@ module Gtk
     end
 
     def single_click_activate : Bool
-      # gtk_grid_view_get_single_click_activate: (Method)
+      # gtk_grid_view_get_single_click_activate: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_view_get_single_click_activate(self)
@@ -465,14 +465,14 @@ module Gtk
     end
 
     def enable_rubberband=(enable_rubberband : Bool) : Nil
-      # gtk_grid_view_set_enable_rubberband: (Method)
+      # gtk_grid_view_set_enable_rubberband: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_view_set_enable_rubberband(self, enable_rubberband)
     end
 
     def factory=(factory : Gtk::ListItemFactory?) : Nil
-      # gtk_grid_view_set_factory: (Method)
+      # gtk_grid_view_set_factory: (Method | Setter)
       # @factory: (nullable)
       # Returns: (transfer none)
 
@@ -486,21 +486,21 @@ module Gtk
     end
 
     def max_columns=(max_columns : UInt32) : Nil
-      # gtk_grid_view_set_max_columns: (Method)
+      # gtk_grid_view_set_max_columns: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_view_set_max_columns(self, max_columns)
     end
 
     def min_columns=(min_columns : UInt32) : Nil
-      # gtk_grid_view_set_min_columns: (Method)
+      # gtk_grid_view_set_min_columns: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_view_set_min_columns(self, min_columns)
     end
 
     def model=(model : Gtk::SelectionModel?) : Nil
-      # gtk_grid_view_set_model: (Method)
+      # gtk_grid_view_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -514,7 +514,7 @@ module Gtk
     end
 
     def single_click_activate=(single_click_activate : Bool) : Nil
-      # gtk_grid_view_set_single_click_activate: (Method)
+      # gtk_grid_view_set_single_click_activate: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_view_set_single_click_activate(self, single_click_activate)

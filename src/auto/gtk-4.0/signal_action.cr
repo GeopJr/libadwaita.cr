@@ -56,7 +56,7 @@ module Gtk
     end
 
     def signal_name : ::String
-      # gtk_signal_action_get_signal_name: (Method)
+      # gtk_signal_action_get_signal_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_signal_action_get_signal_name(self)

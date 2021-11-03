@@ -105,7 +105,7 @@ module Gtk
     end
 
     def child : Gtk::Widget
-      # gtk_assistant_page_get_child: (Method)
+      # gtk_assistant_page_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_assistant_page_get_child(self)

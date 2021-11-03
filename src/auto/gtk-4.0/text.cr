@@ -696,7 +696,7 @@ module Gtk
     end
 
     def activates_default : Bool
-      # gtk_text_get_activates_default: (Method)
+      # gtk_text_get_activates_default: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_activates_default(self)
@@ -704,7 +704,7 @@ module Gtk
     end
 
     def attributes : Pango::AttrList?
-      # gtk_text_get_attributes: (Method)
+      # gtk_text_get_attributes: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_attributes(self)
@@ -712,7 +712,7 @@ module Gtk
     end
 
     def buffer : Gtk::EntryBuffer
-      # gtk_text_get_buffer: (Method)
+      # gtk_text_get_buffer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_buffer(self)
@@ -720,7 +720,7 @@ module Gtk
     end
 
     def enable_emoji_completion : Bool
-      # gtk_text_get_enable_emoji_completion: (Method)
+      # gtk_text_get_enable_emoji_completion: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_enable_emoji_completion(self)
@@ -728,7 +728,7 @@ module Gtk
     end
 
     def extra_menu : Gio::MenuModel?
-      # gtk_text_get_extra_menu: (Method)
+      # gtk_text_get_extra_menu: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_extra_menu(self)
@@ -736,7 +736,7 @@ module Gtk
     end
 
     def input_hints : Gtk::InputHints
-      # gtk_text_get_input_hints: (Method)
+      # gtk_text_get_input_hints: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_input_hints(self)
@@ -744,7 +744,7 @@ module Gtk
     end
 
     def input_purpose : Gtk::InputPurpose
-      # gtk_text_get_input_purpose: (Method)
+      # gtk_text_get_input_purpose: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_input_purpose(self)
@@ -752,7 +752,7 @@ module Gtk
     end
 
     def invisible_char : UInt32
-      # gtk_text_get_invisible_char: (Method)
+      # gtk_text_get_invisible_char: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_invisible_char(self)
@@ -760,7 +760,7 @@ module Gtk
     end
 
     def max_length : Int32
-      # gtk_text_get_max_length: (Method)
+      # gtk_text_get_max_length: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_max_length(self)
@@ -768,7 +768,7 @@ module Gtk
     end
 
     def overwrite_mode : Bool
-      # gtk_text_get_overwrite_mode: (Method)
+      # gtk_text_get_overwrite_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_overwrite_mode(self)
@@ -776,7 +776,7 @@ module Gtk
     end
 
     def placeholder_text : ::String?
-      # gtk_text_get_placeholder_text: (Method)
+      # gtk_text_get_placeholder_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_placeholder_text(self)
@@ -784,7 +784,7 @@ module Gtk
     end
 
     def propagate_text_width : Bool
-      # gtk_text_get_propagate_text_width: (Method)
+      # gtk_text_get_propagate_text_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_propagate_text_width(self)
@@ -792,7 +792,7 @@ module Gtk
     end
 
     def tabs : Pango::TabArray?
-      # gtk_text_get_tabs: (Method)
+      # gtk_text_get_tabs: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_tabs(self)
@@ -808,7 +808,7 @@ module Gtk
     end
 
     def truncate_multiline : Bool
-      # gtk_text_get_truncate_multiline: (Method)
+      # gtk_text_get_truncate_multiline: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_truncate_multiline(self)
@@ -816,7 +816,7 @@ module Gtk
     end
 
     def visibility : Bool
-      # gtk_text_get_visibility: (Method)
+      # gtk_text_get_visibility: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_get_visibility(self)
@@ -832,14 +832,14 @@ module Gtk
     end
 
     def activates_default=(activates : Bool) : Nil
-      # gtk_text_set_activates_default: (Method)
+      # gtk_text_set_activates_default: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_activates_default(self, activates)
     end
 
     def attributes=(attrs : Pango::AttrList?) : Nil
-      # gtk_text_set_attributes: (Method)
+      # gtk_text_set_attributes: (Method | Setter)
       # @attrs: (nullable)
       # Returns: (transfer none)
 
@@ -853,21 +853,21 @@ module Gtk
     end
 
     def buffer=(buffer : Gtk::EntryBuffer) : Nil
-      # gtk_text_set_buffer: (Method)
+      # gtk_text_set_buffer: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_buffer(self, buffer)
     end
 
     def enable_emoji_completion=(enable_emoji_completion : Bool) : Nil
-      # gtk_text_set_enable_emoji_completion: (Method)
+      # gtk_text_set_enable_emoji_completion: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_enable_emoji_completion(self, enable_emoji_completion)
     end
 
     def extra_menu=(model : Gio::MenuModel?) : Nil
-      # gtk_text_set_extra_menu: (Method)
+      # gtk_text_set_extra_menu: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -881,42 +881,42 @@ module Gtk
     end
 
     def input_hints=(hints : Gtk::InputHints) : Nil
-      # gtk_text_set_input_hints: (Method)
+      # gtk_text_set_input_hints: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_input_hints(self, hints)
     end
 
     def input_purpose=(purpose : Gtk::InputPurpose) : Nil
-      # gtk_text_set_input_purpose: (Method)
+      # gtk_text_set_input_purpose: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_input_purpose(self, purpose)
     end
 
     def invisible_char=(ch : UInt32) : Nil
-      # gtk_text_set_invisible_char: (Method)
+      # gtk_text_set_invisible_char: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_invisible_char(self, ch)
     end
 
     def max_length=(length : Int32) : Nil
-      # gtk_text_set_max_length: (Method)
+      # gtk_text_set_max_length: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_max_length(self, length)
     end
 
     def overwrite_mode=(overwrite : Bool) : Nil
-      # gtk_text_set_overwrite_mode: (Method)
+      # gtk_text_set_overwrite_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_overwrite_mode(self, overwrite)
     end
 
     def placeholder_text=(text : ::String?) : Nil
-      # gtk_text_set_placeholder_text: (Method)
+      # gtk_text_set_placeholder_text: (Method | Setter)
       # @text: (nullable)
       # Returns: (transfer none)
 
@@ -930,14 +930,14 @@ module Gtk
     end
 
     def propagate_text_width=(propagate_text_width : Bool) : Nil
-      # gtk_text_set_propagate_text_width: (Method)
+      # gtk_text_set_propagate_text_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_propagate_text_width(self, propagate_text_width)
     end
 
     def tabs=(tabs : Pango::TabArray?) : Nil
-      # gtk_text_set_tabs: (Method)
+      # gtk_text_set_tabs: (Method | Setter)
       # @tabs: (nullable)
       # Returns: (transfer none)
 
@@ -951,14 +951,14 @@ module Gtk
     end
 
     def truncate_multiline=(truncate_multiline : Bool) : Nil
-      # gtk_text_set_truncate_multiline: (Method)
+      # gtk_text_set_truncate_multiline: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_truncate_multiline(self, truncate_multiline)
     end
 
     def visibility=(visible : Bool) : Nil
-      # gtk_text_set_visibility: (Method)
+      # gtk_text_set_visibility: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_set_visibility(self, visible)

@@ -247,7 +247,7 @@ module Gtk
     end
 
     def name : ::String?
-      # gtk_constraint_guide_get_name: (Method)
+      # gtk_constraint_guide_get_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_guide_get_name(self)
@@ -275,7 +275,7 @@ module Gtk
     end
 
     def strength : Gtk::ConstraintStrength
-      # gtk_constraint_guide_get_strength: (Method)
+      # gtk_constraint_guide_get_strength: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_guide_get_strength(self)
@@ -297,7 +297,7 @@ module Gtk
     end
 
     def name=(name : ::String?) : Nil
-      # gtk_constraint_guide_set_name: (Method)
+      # gtk_constraint_guide_set_name: (Method | Setter)
       # @name: (nullable)
       # Returns: (transfer none)
 
@@ -318,7 +318,7 @@ module Gtk
     end
 
     def strength=(strength : Gtk::ConstraintStrength) : Nil
-      # gtk_constraint_guide_set_strength: (Method)
+      # gtk_constraint_guide_set_strength: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_constraint_guide_set_strength(self, strength)

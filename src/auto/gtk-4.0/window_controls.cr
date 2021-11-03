@@ -319,7 +319,7 @@ module Gtk
     end
 
     def decoration_layout : ::String?
-      # gtk_window_controls_get_decoration_layout: (Method)
+      # gtk_window_controls_get_decoration_layout: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_controls_get_decoration_layout(self)
@@ -327,7 +327,7 @@ module Gtk
     end
 
     def empty : Bool
-      # gtk_window_controls_get_empty: (Method)
+      # gtk_window_controls_get_empty: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_controls_get_empty(self)
@@ -335,7 +335,7 @@ module Gtk
     end
 
     def side : Gtk::PackType
-      # gtk_window_controls_get_side: (Method)
+      # gtk_window_controls_get_side: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_controls_get_side(self)
@@ -343,7 +343,7 @@ module Gtk
     end
 
     def decoration_layout=(layout : ::String?) : Nil
-      # gtk_window_controls_set_decoration_layout: (Method)
+      # gtk_window_controls_set_decoration_layout: (Method | Setter)
       # @layout: (nullable)
       # Returns: (transfer none)
 
@@ -357,7 +357,7 @@ module Gtk
     end
 
     def side=(side : Gtk::PackType) : Nil
-      # gtk_window_controls_set_side: (Method)
+      # gtk_window_controls_set_side: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_controls_set_side(self, side)

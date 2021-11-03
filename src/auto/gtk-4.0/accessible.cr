@@ -32,7 +32,7 @@ module Gtk
     end
 
     def accessible_role : Gtk::AccessibleRole
-      # gtk_accessible_get_accessible_role: (Method)
+      # gtk_accessible_get_accessible_role: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_accessible_get_accessible_role(self)

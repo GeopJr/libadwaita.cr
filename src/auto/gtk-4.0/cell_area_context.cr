@@ -127,7 +127,7 @@ module Gtk
     end
 
     def area : Gtk::CellArea
-      # gtk_cell_area_context_get_area: (Method)
+      # gtk_cell_area_context_get_area: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_area_context_get_area(self)

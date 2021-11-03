@@ -465,7 +465,7 @@ module Gtk
     end
 
     def columns : Gio::ListModel
-      # gtk_column_view_get_columns: (Method)
+      # gtk_column_view_get_columns: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_get_columns(self)
@@ -473,7 +473,7 @@ module Gtk
     end
 
     def enable_rubberband : Bool
-      # gtk_column_view_get_enable_rubberband: (Method)
+      # gtk_column_view_get_enable_rubberband: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_get_enable_rubberband(self)
@@ -481,7 +481,7 @@ module Gtk
     end
 
     def model : Gtk::SelectionModel?
-      # gtk_column_view_get_model: (Method)
+      # gtk_column_view_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_get_model(self)
@@ -489,7 +489,7 @@ module Gtk
     end
 
     def reorderable : Bool
-      # gtk_column_view_get_reorderable: (Method)
+      # gtk_column_view_get_reorderable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_get_reorderable(self)
@@ -497,7 +497,7 @@ module Gtk
     end
 
     def show_column_separators : Bool
-      # gtk_column_view_get_show_column_separators: (Method)
+      # gtk_column_view_get_show_column_separators: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_get_show_column_separators(self)
@@ -505,7 +505,7 @@ module Gtk
     end
 
     def show_row_separators : Bool
-      # gtk_column_view_get_show_row_separators: (Method)
+      # gtk_column_view_get_show_row_separators: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_get_show_row_separators(self)
@@ -513,7 +513,7 @@ module Gtk
     end
 
     def single_click_activate : Bool
-      # gtk_column_view_get_single_click_activate: (Method)
+      # gtk_column_view_get_single_click_activate: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_get_single_click_activate(self)
@@ -521,7 +521,7 @@ module Gtk
     end
 
     def sorter : Gtk::Sorter?
-      # gtk_column_view_get_sorter: (Method)
+      # gtk_column_view_get_sorter: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_get_sorter(self)
@@ -543,14 +543,14 @@ module Gtk
     end
 
     def enable_rubberband=(enable_rubberband : Bool) : Nil
-      # gtk_column_view_set_enable_rubberband: (Method)
+      # gtk_column_view_set_enable_rubberband: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_column_view_set_enable_rubberband(self, enable_rubberband)
     end
 
     def model=(model : Gtk::SelectionModel?) : Nil
-      # gtk_column_view_set_model: (Method)
+      # gtk_column_view_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -564,28 +564,28 @@ module Gtk
     end
 
     def reorderable=(reorderable : Bool) : Nil
-      # gtk_column_view_set_reorderable: (Method)
+      # gtk_column_view_set_reorderable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_column_view_set_reorderable(self, reorderable)
     end
 
     def show_column_separators=(show_column_separators : Bool) : Nil
-      # gtk_column_view_set_show_column_separators: (Method)
+      # gtk_column_view_set_show_column_separators: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_column_view_set_show_column_separators(self, show_column_separators)
     end
 
     def show_row_separators=(show_row_separators : Bool) : Nil
-      # gtk_column_view_set_show_row_separators: (Method)
+      # gtk_column_view_set_show_row_separators: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_column_view_set_show_row_separators(self, show_row_separators)
     end
 
     def single_click_activate=(single_click_activate : Bool) : Nil
-      # gtk_column_view_set_single_click_activate: (Method)
+      # gtk_column_view_set_single_click_activate: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_column_view_set_single_click_activate(self, single_click_activate)

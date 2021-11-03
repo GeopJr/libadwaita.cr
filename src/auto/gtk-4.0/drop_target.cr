@@ -208,7 +208,7 @@ module Gtk
     end
 
     def actions : Gdk::DragAction
-      # gtk_drop_target_get_actions: (Method)
+      # gtk_drop_target_get_actions: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_target_get_actions(self)
@@ -216,7 +216,7 @@ module Gtk
     end
 
     def current_drop : Gdk::Drop?
-      # gtk_drop_target_get_current_drop: (Method)
+      # gtk_drop_target_get_current_drop: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_target_get_current_drop(self)
@@ -224,7 +224,7 @@ module Gtk
     end
 
     def drop : Gdk::Drop?
-      # gtk_drop_target_get_drop: (Method)
+      # gtk_drop_target_get_drop: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_target_get_drop(self)
@@ -232,7 +232,7 @@ module Gtk
     end
 
     def formats : Gdk::ContentFormats?
-      # gtk_drop_target_get_formats: (Method)
+      # gtk_drop_target_get_formats: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_drop_target_get_formats(self)
@@ -251,7 +251,7 @@ module Gtk
     end
 
     def preload : Bool
-      # gtk_drop_target_get_preload: (Method)
+      # gtk_drop_target_get_preload: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_target_get_preload(self)
@@ -259,7 +259,7 @@ module Gtk
     end
 
     def value : GObject::Value?
-      # gtk_drop_target_get_value: (Method)
+      # gtk_drop_target_get_value: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drop_target_get_value(self)
@@ -274,7 +274,7 @@ module Gtk
     end
 
     def actions=(actions : Gdk::DragAction) : Nil
-      # gtk_drop_target_set_actions: (Method)
+      # gtk_drop_target_set_actions: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_drop_target_set_actions(self, actions)
@@ -300,7 +300,7 @@ module Gtk
     end
 
     def preload=(preload : Bool) : Nil
-      # gtk_drop_target_set_preload: (Method)
+      # gtk_drop_target_set_preload: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_drop_target_set_preload(self, preload)

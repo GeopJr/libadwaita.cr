@@ -300,7 +300,7 @@ module Gtk
     end
 
     def editing : Bool
-      # gtk_editable_label_get_editing: (Method)
+      # gtk_editable_label_get_editing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_editable_label_get_editing(self)

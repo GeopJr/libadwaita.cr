@@ -231,7 +231,7 @@ module Gtk
     end
 
     def column_view : Gtk::ColumnView?
-      # gtk_column_view_column_get_column_view: (Method)
+      # gtk_column_view_column_get_column_view: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_column_get_column_view(self)
@@ -239,7 +239,7 @@ module Gtk
     end
 
     def expand : Bool
-      # gtk_column_view_column_get_expand: (Method)
+      # gtk_column_view_column_get_expand: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_column_get_expand(self)
@@ -247,7 +247,7 @@ module Gtk
     end
 
     def factory : Gtk::ListItemFactory?
-      # gtk_column_view_column_get_factory: (Method)
+      # gtk_column_view_column_get_factory: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_column_get_factory(self)
@@ -255,7 +255,7 @@ module Gtk
     end
 
     def fixed_width : Int32
-      # gtk_column_view_column_get_fixed_width: (Method)
+      # gtk_column_view_column_get_fixed_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_column_get_fixed_width(self)
@@ -263,7 +263,7 @@ module Gtk
     end
 
     def header_menu : Gio::MenuModel?
-      # gtk_column_view_column_get_header_menu: (Method)
+      # gtk_column_view_column_get_header_menu: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_column_get_header_menu(self)
@@ -271,7 +271,7 @@ module Gtk
     end
 
     def resizable : Bool
-      # gtk_column_view_column_get_resizable: (Method)
+      # gtk_column_view_column_get_resizable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_column_get_resizable(self)
@@ -279,7 +279,7 @@ module Gtk
     end
 
     def sorter : Gtk::Sorter?
-      # gtk_column_view_column_get_sorter: (Method)
+      # gtk_column_view_column_get_sorter: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_column_get_sorter(self)
@@ -287,7 +287,7 @@ module Gtk
     end
 
     def title : ::String?
-      # gtk_column_view_column_get_title: (Method)
+      # gtk_column_view_column_get_title: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_column_get_title(self)
@@ -295,7 +295,7 @@ module Gtk
     end
 
     def visible : Bool
-      # gtk_column_view_column_get_visible: (Method)
+      # gtk_column_view_column_get_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_column_view_column_get_visible(self)
@@ -303,14 +303,14 @@ module Gtk
     end
 
     def expand=(expand : Bool) : Nil
-      # gtk_column_view_column_set_expand: (Method)
+      # gtk_column_view_column_set_expand: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_column_view_column_set_expand(self, expand)
     end
 
     def factory=(factory : Gtk::ListItemFactory?) : Nil
-      # gtk_column_view_column_set_factory: (Method)
+      # gtk_column_view_column_set_factory: (Method | Setter)
       # @factory: (nullable)
       # Returns: (transfer none)
 
@@ -324,14 +324,14 @@ module Gtk
     end
 
     def fixed_width=(fixed_width : Int32) : Nil
-      # gtk_column_view_column_set_fixed_width: (Method)
+      # gtk_column_view_column_set_fixed_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_column_view_column_set_fixed_width(self, fixed_width)
     end
 
     def header_menu=(menu : Gio::MenuModel?) : Nil
-      # gtk_column_view_column_set_header_menu: (Method)
+      # gtk_column_view_column_set_header_menu: (Method | Setter)
       # @menu: (nullable)
       # Returns: (transfer none)
 
@@ -345,14 +345,14 @@ module Gtk
     end
 
     def resizable=(resizable : Bool) : Nil
-      # gtk_column_view_column_set_resizable: (Method)
+      # gtk_column_view_column_set_resizable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_column_view_column_set_resizable(self, resizable)
     end
 
     def sorter=(sorter : Gtk::Sorter?) : Nil
-      # gtk_column_view_column_set_sorter: (Method)
+      # gtk_column_view_column_set_sorter: (Method | Setter)
       # @sorter: (nullable)
       # Returns: (transfer none)
 
@@ -366,7 +366,7 @@ module Gtk
     end
 
     def title=(title : ::String?) : Nil
-      # gtk_column_view_column_set_title: (Method)
+      # gtk_column_view_column_set_title: (Method | Setter)
       # @title: (nullable)
       # Returns: (transfer none)
 
@@ -380,7 +380,7 @@ module Gtk
     end
 
     def visible=(visible : Bool) : Nil
-      # gtk_column_view_column_set_visible: (Method)
+      # gtk_column_view_column_set_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_column_view_column_set_visible(self, visible)

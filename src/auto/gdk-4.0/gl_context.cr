@@ -162,7 +162,7 @@ module Gdk
     end
 
     def shared_context : Gdk::GLContext?
-      # gdk_gl_context_get_shared_context: (Method)
+      # gdk_gl_context_get_shared_context: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_gl_context_get_shared_context(self)

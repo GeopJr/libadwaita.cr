@@ -293,7 +293,7 @@ module Gdk
     end
 
     def caps_lock_state : Bool
-      # gdk_device_get_caps_lock_state: (Method)
+      # gdk_device_get_caps_lock_state: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_caps_lock_state(self)
@@ -309,7 +309,7 @@ module Gdk
     end
 
     def direction : Pango::Direction
-      # gdk_device_get_direction: (Method)
+      # gdk_device_get_direction: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_direction(self)
@@ -317,7 +317,7 @@ module Gdk
     end
 
     def display : Gdk::Display
-      # gdk_device_get_display: (Method)
+      # gdk_device_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_display(self)
@@ -325,7 +325,7 @@ module Gdk
     end
 
     def has_cursor : Bool
-      # gdk_device_get_has_cursor: (Method)
+      # gdk_device_get_has_cursor: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_has_cursor(self)
@@ -333,7 +333,7 @@ module Gdk
     end
 
     def modifier_state : Gdk::ModifierType
-      # gdk_device_get_modifier_state: (Method)
+      # gdk_device_get_modifier_state: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_modifier_state(self)
@@ -341,7 +341,7 @@ module Gdk
     end
 
     def name : ::String
-      # gdk_device_get_name: (Method)
+      # gdk_device_get_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_name(self)
@@ -349,7 +349,7 @@ module Gdk
     end
 
     def num_lock_state : Bool
-      # gdk_device_get_num_lock_state: (Method)
+      # gdk_device_get_num_lock_state: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_num_lock_state(self)
@@ -357,7 +357,7 @@ module Gdk
     end
 
     def num_touches : UInt32
-      # gdk_device_get_num_touches: (Method)
+      # gdk_device_get_num_touches: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_num_touches(self)
@@ -365,7 +365,7 @@ module Gdk
     end
 
     def product_id : ::String?
-      # gdk_device_get_product_id: (Method)
+      # gdk_device_get_product_id: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_product_id(self)
@@ -373,7 +373,7 @@ module Gdk
     end
 
     def scroll_lock_state : Bool
-      # gdk_device_get_scroll_lock_state: (Method)
+      # gdk_device_get_scroll_lock_state: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_scroll_lock_state(self)
@@ -381,7 +381,7 @@ module Gdk
     end
 
     def seat : Gdk::Seat
-      # gdk_device_get_seat: (Method)
+      # gdk_device_get_seat: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_seat(self)
@@ -389,7 +389,7 @@ module Gdk
     end
 
     def source : Gdk::InputSource
-      # gdk_device_get_source: (Method)
+      # gdk_device_get_source: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_source(self)
@@ -418,7 +418,7 @@ module Gdk
     end
 
     def vendor_id : ::String?
-      # gdk_device_get_vendor_id: (Method)
+      # gdk_device_get_vendor_id: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_get_vendor_id(self)
@@ -426,7 +426,7 @@ module Gdk
     end
 
     def has_bidi_layouts : Bool
-      # gdk_device_has_bidi_layouts: (Method)
+      # gdk_device_has_bidi_layouts: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_device_has_bidi_layouts(self)

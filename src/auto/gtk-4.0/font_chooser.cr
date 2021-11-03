@@ -105,7 +105,7 @@ module Gtk
     end
 
     def font : ::String?
-      # gtk_font_chooser_get_font: (Method)
+      # gtk_font_chooser_get_font: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_font_chooser_get_font(self)
@@ -113,7 +113,7 @@ module Gtk
     end
 
     def font_desc : Pango::FontDescription?
-      # gtk_font_chooser_get_font_desc: (Method)
+      # gtk_font_chooser_get_font_desc: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_font_chooser_get_font_desc(self)
@@ -137,7 +137,7 @@ module Gtk
     end
 
     def font_features : ::String
-      # gtk_font_chooser_get_font_features: (Method)
+      # gtk_font_chooser_get_font_features: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_font_chooser_get_font_features(self)
@@ -161,7 +161,7 @@ module Gtk
     end
 
     def language : ::String
-      # gtk_font_chooser_get_language: (Method)
+      # gtk_font_chooser_get_language: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_font_chooser_get_language(self)
@@ -169,7 +169,7 @@ module Gtk
     end
 
     def level : Gtk::FontChooserLevel
-      # gtk_font_chooser_get_level: (Method)
+      # gtk_font_chooser_get_level: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_font_chooser_get_level(self)
@@ -177,7 +177,7 @@ module Gtk
     end
 
     def preview_text : ::String
-      # gtk_font_chooser_get_preview_text: (Method)
+      # gtk_font_chooser_get_preview_text: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_font_chooser_get_preview_text(self)
@@ -185,7 +185,7 @@ module Gtk
     end
 
     def show_preview_entry : Bool
-      # gtk_font_chooser_get_show_preview_entry: (Method)
+      # gtk_font_chooser_get_show_preview_entry: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_font_chooser_get_show_preview_entry(self)
@@ -213,14 +213,14 @@ module Gtk
     end
 
     def font=(fontname : ::String) : Nil
-      # gtk_font_chooser_set_font: (Method)
+      # gtk_font_chooser_set_font: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_chooser_set_font(self, fontname)
     end
 
     def font_desc=(font_desc : Pango::FontDescription) : Nil
-      # gtk_font_chooser_set_font_desc: (Method)
+      # gtk_font_chooser_set_font_desc: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_chooser_set_font_desc(self, font_desc)
@@ -241,28 +241,28 @@ module Gtk
     end
 
     def language=(language : ::String) : Nil
-      # gtk_font_chooser_set_language: (Method)
+      # gtk_font_chooser_set_language: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_chooser_set_language(self, language)
     end
 
     def level=(level : Gtk::FontChooserLevel) : Nil
-      # gtk_font_chooser_set_level: (Method)
+      # gtk_font_chooser_set_level: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_chooser_set_level(self, level)
     end
 
     def preview_text=(text : ::String) : Nil
-      # gtk_font_chooser_set_preview_text: (Method)
+      # gtk_font_chooser_set_preview_text: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_chooser_set_preview_text(self, text)
     end
 
     def show_preview_entry=(show_preview_entry : Bool) : Nil
-      # gtk_font_chooser_set_show_preview_entry: (Method)
+      # gtk_font_chooser_set_show_preview_entry: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_font_chooser_set_show_preview_entry(self, show_preview_entry)

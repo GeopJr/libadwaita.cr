@@ -295,7 +295,7 @@ module Gtk
     end
 
     def inline_completion : Bool
-      # gtk_entry_completion_get_inline_completion: (Method)
+      # gtk_entry_completion_get_inline_completion: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_completion_get_inline_completion(self)
@@ -303,7 +303,7 @@ module Gtk
     end
 
     def inline_selection : Bool
-      # gtk_entry_completion_get_inline_selection: (Method)
+      # gtk_entry_completion_get_inline_selection: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_completion_get_inline_selection(self)
@@ -311,7 +311,7 @@ module Gtk
     end
 
     def minimum_key_length : Int32
-      # gtk_entry_completion_get_minimum_key_length: (Method)
+      # gtk_entry_completion_get_minimum_key_length: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_completion_get_minimum_key_length(self)
@@ -319,7 +319,7 @@ module Gtk
     end
 
     def model : Gtk::TreeModel?
-      # gtk_entry_completion_get_model: (Method)
+      # gtk_entry_completion_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_completion_get_model(self)
@@ -327,7 +327,7 @@ module Gtk
     end
 
     def popup_completion : Bool
-      # gtk_entry_completion_get_popup_completion: (Method)
+      # gtk_entry_completion_get_popup_completion: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_completion_get_popup_completion(self)
@@ -335,7 +335,7 @@ module Gtk
     end
 
     def popup_set_width : Bool
-      # gtk_entry_completion_get_popup_set_width: (Method)
+      # gtk_entry_completion_get_popup_set_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_completion_get_popup_set_width(self)
@@ -343,7 +343,7 @@ module Gtk
     end
 
     def popup_single_match : Bool
-      # gtk_entry_completion_get_popup_single_match: (Method)
+      # gtk_entry_completion_get_popup_single_match: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_completion_get_popup_single_match(self)
@@ -351,7 +351,7 @@ module Gtk
     end
 
     def text_column : Int32
-      # gtk_entry_completion_get_text_column: (Method)
+      # gtk_entry_completion_get_text_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_completion_get_text_column(self)
@@ -366,14 +366,14 @@ module Gtk
     end
 
     def inline_completion=(inline_completion : Bool) : Nil
-      # gtk_entry_completion_set_inline_completion: (Method)
+      # gtk_entry_completion_set_inline_completion: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_completion_set_inline_completion(self, inline_completion)
     end
 
     def inline_selection=(inline_selection : Bool) : Nil
-      # gtk_entry_completion_set_inline_selection: (Method)
+      # gtk_entry_completion_set_inline_selection: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_completion_set_inline_selection(self, inline_selection)
@@ -394,14 +394,14 @@ module Gtk
     end
 
     def minimum_key_length=(length : Int32) : Nil
-      # gtk_entry_completion_set_minimum_key_length: (Method)
+      # gtk_entry_completion_set_minimum_key_length: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_completion_set_minimum_key_length(self, length)
     end
 
     def model=(model : Gtk::TreeModel?) : Nil
-      # gtk_entry_completion_set_model: (Method)
+      # gtk_entry_completion_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -415,28 +415,28 @@ module Gtk
     end
 
     def popup_completion=(popup_completion : Bool) : Nil
-      # gtk_entry_completion_set_popup_completion: (Method)
+      # gtk_entry_completion_set_popup_completion: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_completion_set_popup_completion(self, popup_completion)
     end
 
     def popup_set_width=(popup_set_width : Bool) : Nil
-      # gtk_entry_completion_set_popup_set_width: (Method)
+      # gtk_entry_completion_set_popup_set_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_completion_set_popup_set_width(self, popup_set_width)
     end
 
     def popup_single_match=(popup_single_match : Bool) : Nil
-      # gtk_entry_completion_set_popup_single_match: (Method)
+      # gtk_entry_completion_set_popup_single_match: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_completion_set_popup_single_match(self, popup_single_match)
     end
 
     def text_column=(column : Int32) : Nil
-      # gtk_entry_completion_set_text_column: (Method)
+      # gtk_entry_completion_set_text_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_completion_set_text_column(self, column)

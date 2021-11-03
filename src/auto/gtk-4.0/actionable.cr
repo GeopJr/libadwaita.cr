@@ -44,7 +44,7 @@ module Gtk
     end
 
     def action_name : ::String?
-      # gtk_actionable_get_action_name: (Method)
+      # gtk_actionable_get_action_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_actionable_get_action_name(self)
@@ -60,7 +60,7 @@ module Gtk
     end
 
     def action_name=(action_name : ::String?) : Nil
-      # gtk_actionable_set_action_name: (Method)
+      # gtk_actionable_set_action_name: (Method | Setter)
       # @action_name: (nullable)
       # Returns: (transfer none)
 

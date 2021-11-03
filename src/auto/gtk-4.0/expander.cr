@@ -469,7 +469,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_expander_get_child: (Method)
+      # gtk_expander_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_expander_get_child(self)
@@ -477,7 +477,7 @@ module Gtk
     end
 
     def expanded : Bool
-      # gtk_expander_get_expanded: (Method)
+      # gtk_expander_get_expanded: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_expander_get_expanded(self)
@@ -485,7 +485,7 @@ module Gtk
     end
 
     def label : ::String?
-      # gtk_expander_get_label: (Method)
+      # gtk_expander_get_label: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_expander_get_label(self)
@@ -493,7 +493,7 @@ module Gtk
     end
 
     def label_widget : Gtk::Widget?
-      # gtk_expander_get_label_widget: (Method)
+      # gtk_expander_get_label_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_expander_get_label_widget(self)
@@ -501,7 +501,7 @@ module Gtk
     end
 
     def resize_toplevel : Bool
-      # gtk_expander_get_resize_toplevel: (Method)
+      # gtk_expander_get_resize_toplevel: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_expander_get_resize_toplevel(self)
@@ -509,7 +509,7 @@ module Gtk
     end
 
     def use_markup : Bool
-      # gtk_expander_get_use_markup: (Method)
+      # gtk_expander_get_use_markup: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_expander_get_use_markup(self)
@@ -517,7 +517,7 @@ module Gtk
     end
 
     def use_underline : Bool
-      # gtk_expander_get_use_underline: (Method)
+      # gtk_expander_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_expander_get_use_underline(self)
@@ -525,7 +525,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_expander_set_child: (Method)
+      # gtk_expander_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -539,14 +539,14 @@ module Gtk
     end
 
     def expanded=(expanded : Bool) : Nil
-      # gtk_expander_set_expanded: (Method)
+      # gtk_expander_set_expanded: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_expander_set_expanded(self, expanded)
     end
 
     def label=(label : ::String?) : Nil
-      # gtk_expander_set_label: (Method)
+      # gtk_expander_set_label: (Method | Setter)
       # @label: (nullable)
       # Returns: (transfer none)
 
@@ -560,7 +560,7 @@ module Gtk
     end
 
     def label_widget=(label_widget : Gtk::Widget?) : Nil
-      # gtk_expander_set_label_widget: (Method)
+      # gtk_expander_set_label_widget: (Method | Setter)
       # @label_widget: (nullable)
       # Returns: (transfer none)
 
@@ -574,21 +574,21 @@ module Gtk
     end
 
     def resize_toplevel=(resize_toplevel : Bool) : Nil
-      # gtk_expander_set_resize_toplevel: (Method)
+      # gtk_expander_set_resize_toplevel: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_expander_set_resize_toplevel(self, resize_toplevel)
     end
 
     def use_markup=(use_markup : Bool) : Nil
-      # gtk_expander_set_use_markup: (Method)
+      # gtk_expander_set_use_markup: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_expander_set_use_markup(self, use_markup)
     end
 
     def use_underline=(use_underline : Bool) : Nil
-      # gtk_expander_set_use_underline: (Method)
+      # gtk_expander_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_expander_set_use_underline(self, use_underline)

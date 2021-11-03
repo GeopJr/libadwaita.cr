@@ -195,7 +195,7 @@ module Gtk
     end
 
     def actions : Gdk::DragAction
-      # gtk_drag_source_get_actions: (Method)
+      # gtk_drag_source_get_actions: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drag_source_get_actions(self)
@@ -203,7 +203,7 @@ module Gtk
     end
 
     def content : Gdk::ContentProvider?
-      # gtk_drag_source_get_content: (Method)
+      # gtk_drag_source_get_content: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_drag_source_get_content(self)
@@ -219,14 +219,14 @@ module Gtk
     end
 
     def actions=(actions : Gdk::DragAction) : Nil
-      # gtk_drag_source_set_actions: (Method)
+      # gtk_drag_source_set_actions: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_drag_source_set_actions(self, actions)
     end
 
     def content=(content : Gdk::ContentProvider?) : Nil
-      # gtk_drag_source_set_content: (Method)
+      # gtk_drag_source_set_content: (Method | Setter)
       # @content: (nullable)
       # Returns: (transfer none)
 

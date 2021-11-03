@@ -100,7 +100,7 @@ module Gtk
     end
 
     def spacing : Int32
-      # gtk_cell_area_box_get_spacing: (Method)
+      # gtk_cell_area_box_get_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_area_box_get_spacing(self)
@@ -122,7 +122,7 @@ module Gtk
     end
 
     def spacing=(spacing : Int32) : Nil
-      # gtk_cell_area_box_set_spacing: (Method)
+      # gtk_cell_area_box_set_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_area_box_set_spacing(self, spacing)

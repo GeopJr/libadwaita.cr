@@ -367,7 +367,7 @@ module Gtk
     end
 
     def default_text : ::String?
-      # gtk_app_chooser_widget_get_default_text: (Method)
+      # gtk_app_chooser_widget_get_default_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_widget_get_default_text(self)
@@ -375,7 +375,7 @@ module Gtk
     end
 
     def show_all : Bool
-      # gtk_app_chooser_widget_get_show_all: (Method)
+      # gtk_app_chooser_widget_get_show_all: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_widget_get_show_all(self)
@@ -383,7 +383,7 @@ module Gtk
     end
 
     def show_default : Bool
-      # gtk_app_chooser_widget_get_show_default: (Method)
+      # gtk_app_chooser_widget_get_show_default: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_widget_get_show_default(self)
@@ -391,7 +391,7 @@ module Gtk
     end
 
     def show_fallback : Bool
-      # gtk_app_chooser_widget_get_show_fallback: (Method)
+      # gtk_app_chooser_widget_get_show_fallback: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_widget_get_show_fallback(self)
@@ -399,7 +399,7 @@ module Gtk
     end
 
     def show_other : Bool
-      # gtk_app_chooser_widget_get_show_other: (Method)
+      # gtk_app_chooser_widget_get_show_other: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_widget_get_show_other(self)
@@ -407,7 +407,7 @@ module Gtk
     end
 
     def show_recommended : Bool
-      # gtk_app_chooser_widget_get_show_recommended: (Method)
+      # gtk_app_chooser_widget_get_show_recommended: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_widget_get_show_recommended(self)
@@ -415,42 +415,42 @@ module Gtk
     end
 
     def default_text=(text : ::String) : Nil
-      # gtk_app_chooser_widget_set_default_text: (Method)
+      # gtk_app_chooser_widget_set_default_text: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_widget_set_default_text(self, text)
     end
 
     def show_all=(setting : Bool) : Nil
-      # gtk_app_chooser_widget_set_show_all: (Method)
+      # gtk_app_chooser_widget_set_show_all: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_widget_set_show_all(self, setting)
     end
 
     def show_default=(setting : Bool) : Nil
-      # gtk_app_chooser_widget_set_show_default: (Method)
+      # gtk_app_chooser_widget_set_show_default: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_widget_set_show_default(self, setting)
     end
 
     def show_fallback=(setting : Bool) : Nil
-      # gtk_app_chooser_widget_set_show_fallback: (Method)
+      # gtk_app_chooser_widget_set_show_fallback: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_widget_set_show_fallback(self, setting)
     end
 
     def show_other=(setting : Bool) : Nil
-      # gtk_app_chooser_widget_set_show_other: (Method)
+      # gtk_app_chooser_widget_set_show_other: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_widget_set_show_other(self, setting)
     end
 
     def show_recommended=(setting : Bool) : Nil
-      # gtk_app_chooser_widget_set_show_recommended: (Method)
+      # gtk_app_chooser_widget_set_show_recommended: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_widget_set_show_recommended(self, setting)

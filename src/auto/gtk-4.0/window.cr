@@ -790,7 +790,7 @@ module Gtk
     end
 
     def application : Gtk::Application?
-      # gtk_window_get_application: (Method)
+      # gtk_window_get_application: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_application(self)
@@ -798,7 +798,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_window_get_child: (Method)
+      # gtk_window_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_child(self)
@@ -806,7 +806,7 @@ module Gtk
     end
 
     def decorated : Bool
-      # gtk_window_get_decorated: (Method)
+      # gtk_window_get_decorated: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_decorated(self)
@@ -826,7 +826,7 @@ module Gtk
     end
 
     def default_widget : Gtk::Widget?
-      # gtk_window_get_default_widget: (Method)
+      # gtk_window_get_default_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_default_widget(self)
@@ -834,7 +834,7 @@ module Gtk
     end
 
     def deletable : Bool
-      # gtk_window_get_deletable: (Method)
+      # gtk_window_get_deletable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_deletable(self)
@@ -842,7 +842,7 @@ module Gtk
     end
 
     def destroy_with_parent : Bool
-      # gtk_window_get_destroy_with_parent: (Method)
+      # gtk_window_get_destroy_with_parent: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_destroy_with_parent(self)
@@ -858,7 +858,7 @@ module Gtk
     end
 
     def focus_visible : Bool
-      # gtk_window_get_focus_visible: (Method)
+      # gtk_window_get_focus_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_focus_visible(self)
@@ -874,7 +874,7 @@ module Gtk
     end
 
     def handle_menubar_accel : Bool
-      # gtk_window_get_handle_menubar_accel: (Method)
+      # gtk_window_get_handle_menubar_accel: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_handle_menubar_accel(self)
@@ -882,7 +882,7 @@ module Gtk
     end
 
     def hide_on_close : Bool
-      # gtk_window_get_hide_on_close: (Method)
+      # gtk_window_get_hide_on_close: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_hide_on_close(self)
@@ -890,7 +890,7 @@ module Gtk
     end
 
     def icon_name : ::String?
-      # gtk_window_get_icon_name: (Method)
+      # gtk_window_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_icon_name(self)
@@ -898,7 +898,7 @@ module Gtk
     end
 
     def mnemonics_visible : Bool
-      # gtk_window_get_mnemonics_visible: (Method)
+      # gtk_window_get_mnemonics_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_mnemonics_visible(self)
@@ -906,7 +906,7 @@ module Gtk
     end
 
     def modal : Bool
-      # gtk_window_get_modal: (Method)
+      # gtk_window_get_modal: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_modal(self)
@@ -914,7 +914,7 @@ module Gtk
     end
 
     def resizable : Bool
-      # gtk_window_get_resizable: (Method)
+      # gtk_window_get_resizable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_resizable(self)
@@ -922,7 +922,7 @@ module Gtk
     end
 
     def title : ::String?
-      # gtk_window_get_title: (Method)
+      # gtk_window_get_title: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_title(self)
@@ -938,7 +938,7 @@ module Gtk
     end
 
     def transient_for : Gtk::Window?
-      # gtk_window_get_transient_for: (Method)
+      # gtk_window_get_transient_for: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_get_transient_for(self)
@@ -954,7 +954,7 @@ module Gtk
     end
 
     def is_active : Bool
-      # gtk_window_is_active: (Method)
+      # gtk_window_is_active: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_is_active(self)
@@ -1006,7 +1006,7 @@ module Gtk
     end
 
     def application=(application : Gtk::Application?) : Nil
-      # gtk_window_set_application: (Method)
+      # gtk_window_set_application: (Method | Setter)
       # @application: (nullable)
       # Returns: (transfer none)
 
@@ -1020,7 +1020,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_window_set_child: (Method)
+      # gtk_window_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -1034,7 +1034,7 @@ module Gtk
     end
 
     def decorated=(setting : Bool) : Nil
-      # gtk_window_set_decorated: (Method)
+      # gtk_window_set_decorated: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_decorated(self, setting)
@@ -1048,7 +1048,7 @@ module Gtk
     end
 
     def default_widget=(default_widget : Gtk::Widget?) : Nil
-      # gtk_window_set_default_widget: (Method)
+      # gtk_window_set_default_widget: (Method | Setter)
       # @default_widget: (nullable)
       # Returns: (transfer none)
 
@@ -1062,21 +1062,21 @@ module Gtk
     end
 
     def deletable=(setting : Bool) : Nil
-      # gtk_window_set_deletable: (Method)
+      # gtk_window_set_deletable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_deletable(self, setting)
     end
 
     def destroy_with_parent=(setting : Bool) : Nil
-      # gtk_window_set_destroy_with_parent: (Method)
+      # gtk_window_set_destroy_with_parent: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_destroy_with_parent(self, setting)
     end
 
     def display=(display : Gdk::Display) : Nil
-      # gtk_window_set_display: (Method)
+      # gtk_window_set_display: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_display(self, display)
@@ -1097,28 +1097,28 @@ module Gtk
     end
 
     def focus_visible=(setting : Bool) : Nil
-      # gtk_window_set_focus_visible: (Method)
+      # gtk_window_set_focus_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_focus_visible(self, setting)
     end
 
     def handle_menubar_accel=(handle_menubar_accel : Bool) : Nil
-      # gtk_window_set_handle_menubar_accel: (Method)
+      # gtk_window_set_handle_menubar_accel: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_handle_menubar_accel(self, handle_menubar_accel)
     end
 
     def hide_on_close=(setting : Bool) : Nil
-      # gtk_window_set_hide_on_close: (Method)
+      # gtk_window_set_hide_on_close: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_hide_on_close(self, setting)
     end
 
     def icon_name=(name : ::String?) : Nil
-      # gtk_window_set_icon_name: (Method)
+      # gtk_window_set_icon_name: (Method | Setter)
       # @name: (nullable)
       # Returns: (transfer none)
 
@@ -1132,35 +1132,35 @@ module Gtk
     end
 
     def mnemonics_visible=(setting : Bool) : Nil
-      # gtk_window_set_mnemonics_visible: (Method)
+      # gtk_window_set_mnemonics_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_mnemonics_visible(self, setting)
     end
 
     def modal=(modal : Bool) : Nil
-      # gtk_window_set_modal: (Method)
+      # gtk_window_set_modal: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_modal(self, modal)
     end
 
     def resizable=(resizable : Bool) : Nil
-      # gtk_window_set_resizable: (Method)
+      # gtk_window_set_resizable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_resizable(self, resizable)
     end
 
     def startup_id=(startup_id : ::String) : Nil
-      # gtk_window_set_startup_id: (Method)
+      # gtk_window_set_startup_id: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_window_set_startup_id(self, startup_id)
     end
 
     def title=(title : ::String?) : Nil
-      # gtk_window_set_title: (Method)
+      # gtk_window_set_title: (Method | Setter)
       # @title: (nullable)
       # Returns: (transfer none)
 
@@ -1188,7 +1188,7 @@ module Gtk
     end
 
     def transient_for=(parent : Gtk::Window?) : Nil
-      # gtk_window_set_transient_for: (Method)
+      # gtk_window_set_transient_for: (Method | Setter)
       # @parent: (nullable)
       # Returns: (transfer none)
 

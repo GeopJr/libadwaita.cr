@@ -87,7 +87,7 @@ module Gtk
     end
 
     def contains_focus : Bool
-      # gtk_event_controller_focus_contains_focus: (Method)
+      # gtk_event_controller_focus_contains_focus: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_event_controller_focus_contains_focus(self)
@@ -95,7 +95,7 @@ module Gtk
     end
 
     def is_focus : Bool
-      # gtk_event_controller_focus_is_focus: (Method)
+      # gtk_event_controller_focus_is_focus: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_event_controller_focus_is_focus(self)

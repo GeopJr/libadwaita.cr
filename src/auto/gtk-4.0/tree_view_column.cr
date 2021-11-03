@@ -501,7 +501,7 @@ module Gtk
     end
 
     def alignment : Float32
-      # gtk_tree_view_column_get_alignment: (Method)
+      # gtk_tree_view_column_get_alignment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_alignment(self)
@@ -517,7 +517,7 @@ module Gtk
     end
 
     def clickable : Bool
-      # gtk_tree_view_column_get_clickable: (Method)
+      # gtk_tree_view_column_get_clickable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_clickable(self)
@@ -525,7 +525,7 @@ module Gtk
     end
 
     def expand : Bool
-      # gtk_tree_view_column_get_expand: (Method)
+      # gtk_tree_view_column_get_expand: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_expand(self)
@@ -533,7 +533,7 @@ module Gtk
     end
 
     def fixed_width : Int32
-      # gtk_tree_view_column_get_fixed_width: (Method)
+      # gtk_tree_view_column_get_fixed_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_fixed_width(self)
@@ -541,7 +541,7 @@ module Gtk
     end
 
     def max_width : Int32
-      # gtk_tree_view_column_get_max_width: (Method)
+      # gtk_tree_view_column_get_max_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_max_width(self)
@@ -549,7 +549,7 @@ module Gtk
     end
 
     def min_width : Int32
-      # gtk_tree_view_column_get_min_width: (Method)
+      # gtk_tree_view_column_get_min_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_min_width(self)
@@ -557,7 +557,7 @@ module Gtk
     end
 
     def reorderable : Bool
-      # gtk_tree_view_column_get_reorderable: (Method)
+      # gtk_tree_view_column_get_reorderable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_reorderable(self)
@@ -565,7 +565,7 @@ module Gtk
     end
 
     def resizable : Bool
-      # gtk_tree_view_column_get_resizable: (Method)
+      # gtk_tree_view_column_get_resizable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_resizable(self)
@@ -573,7 +573,7 @@ module Gtk
     end
 
     def sizing : Gtk::TreeViewColumnSizing
-      # gtk_tree_view_column_get_sizing: (Method)
+      # gtk_tree_view_column_get_sizing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_sizing(self)
@@ -581,7 +581,7 @@ module Gtk
     end
 
     def sort_column_id : Int32
-      # gtk_tree_view_column_get_sort_column_id: (Method)
+      # gtk_tree_view_column_get_sort_column_id: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_sort_column_id(self)
@@ -589,7 +589,7 @@ module Gtk
     end
 
     def sort_indicator : Bool
-      # gtk_tree_view_column_get_sort_indicator: (Method)
+      # gtk_tree_view_column_get_sort_indicator: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_sort_indicator(self)
@@ -597,7 +597,7 @@ module Gtk
     end
 
     def sort_order : Gtk::SortType
-      # gtk_tree_view_column_get_sort_order: (Method)
+      # gtk_tree_view_column_get_sort_order: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_sort_order(self)
@@ -605,7 +605,7 @@ module Gtk
     end
 
     def spacing : Int32
-      # gtk_tree_view_column_get_spacing: (Method)
+      # gtk_tree_view_column_get_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_spacing(self)
@@ -613,7 +613,7 @@ module Gtk
     end
 
     def title : ::String
-      # gtk_tree_view_column_get_title: (Method)
+      # gtk_tree_view_column_get_title: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_title(self)
@@ -629,7 +629,7 @@ module Gtk
     end
 
     def visible : Bool
-      # gtk_tree_view_column_get_visible: (Method)
+      # gtk_tree_view_column_get_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_visible(self)
@@ -637,7 +637,7 @@ module Gtk
     end
 
     def widget : Gtk::Widget?
-      # gtk_tree_view_column_get_widget: (Method)
+      # gtk_tree_view_column_get_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_widget(self)
@@ -645,7 +645,7 @@ module Gtk
     end
 
     def width : Int32
-      # gtk_tree_view_column_get_width: (Method)
+      # gtk_tree_view_column_get_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_width(self)
@@ -653,7 +653,7 @@ module Gtk
     end
 
     def x_offset : Int32
-      # gtk_tree_view_column_get_x_offset: (Method)
+      # gtk_tree_view_column_get_x_offset: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_column_get_x_offset(self)
@@ -682,7 +682,7 @@ module Gtk
     end
 
     def alignment=(xalign : Float32) : Nil
-      # gtk_tree_view_column_set_alignment: (Method)
+      # gtk_tree_view_column_set_alignment: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_alignment(self, xalign)
@@ -709,105 +709,105 @@ module Gtk
     end
 
     def clickable=(clickable : Bool) : Nil
-      # gtk_tree_view_column_set_clickable: (Method)
+      # gtk_tree_view_column_set_clickable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_clickable(self, clickable)
     end
 
     def expand=(expand : Bool) : Nil
-      # gtk_tree_view_column_set_expand: (Method)
+      # gtk_tree_view_column_set_expand: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_expand(self, expand)
     end
 
     def fixed_width=(fixed_width : Int32) : Nil
-      # gtk_tree_view_column_set_fixed_width: (Method)
+      # gtk_tree_view_column_set_fixed_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_fixed_width(self, fixed_width)
     end
 
     def max_width=(max_width : Int32) : Nil
-      # gtk_tree_view_column_set_max_width: (Method)
+      # gtk_tree_view_column_set_max_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_max_width(self, max_width)
     end
 
     def min_width=(min_width : Int32) : Nil
-      # gtk_tree_view_column_set_min_width: (Method)
+      # gtk_tree_view_column_set_min_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_min_width(self, min_width)
     end
 
     def reorderable=(reorderable : Bool) : Nil
-      # gtk_tree_view_column_set_reorderable: (Method)
+      # gtk_tree_view_column_set_reorderable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_reorderable(self, reorderable)
     end
 
     def resizable=(resizable : Bool) : Nil
-      # gtk_tree_view_column_set_resizable: (Method)
+      # gtk_tree_view_column_set_resizable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_resizable(self, resizable)
     end
 
     def sizing=(type : Gtk::TreeViewColumnSizing) : Nil
-      # gtk_tree_view_column_set_sizing: (Method)
+      # gtk_tree_view_column_set_sizing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_sizing(self, type)
     end
 
     def sort_column_id=(sort_column_id : Int32) : Nil
-      # gtk_tree_view_column_set_sort_column_id: (Method)
+      # gtk_tree_view_column_set_sort_column_id: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_sort_column_id(self, sort_column_id)
     end
 
     def sort_indicator=(setting : Bool) : Nil
-      # gtk_tree_view_column_set_sort_indicator: (Method)
+      # gtk_tree_view_column_set_sort_indicator: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_sort_indicator(self, setting)
     end
 
     def sort_order=(order : Gtk::SortType) : Nil
-      # gtk_tree_view_column_set_sort_order: (Method)
+      # gtk_tree_view_column_set_sort_order: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_sort_order(self, order)
     end
 
     def spacing=(spacing : Int32) : Nil
-      # gtk_tree_view_column_set_spacing: (Method)
+      # gtk_tree_view_column_set_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_spacing(self, spacing)
     end
 
     def title=(title : ::String) : Nil
-      # gtk_tree_view_column_set_title: (Method)
+      # gtk_tree_view_column_set_title: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_title(self, title)
     end
 
     def visible=(visible : Bool) : Nil
-      # gtk_tree_view_column_set_visible: (Method)
+      # gtk_tree_view_column_set_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_column_set_visible(self, visible)
     end
 
     def widget=(widget : Gtk::Widget?) : Nil
-      # gtk_tree_view_column_set_widget: (Method)
+      # gtk_tree_view_column_set_widget: (Method | Setter)
       # @widget: (nullable)
       # Returns: (transfer none)
 

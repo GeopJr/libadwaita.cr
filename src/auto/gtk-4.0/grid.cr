@@ -427,7 +427,7 @@ module Gtk
     end
 
     def baseline_row : Int32
-      # gtk_grid_get_baseline_row: (Method)
+      # gtk_grid_get_baseline_row: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_get_baseline_row(self)
@@ -443,7 +443,7 @@ module Gtk
     end
 
     def column_homogeneous : Bool
-      # gtk_grid_get_column_homogeneous: (Method)
+      # gtk_grid_get_column_homogeneous: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_get_column_homogeneous(self)
@@ -451,7 +451,7 @@ module Gtk
     end
 
     def column_spacing : UInt32
-      # gtk_grid_get_column_spacing: (Method)
+      # gtk_grid_get_column_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_get_column_spacing(self)
@@ -467,7 +467,7 @@ module Gtk
     end
 
     def row_homogeneous : Bool
-      # gtk_grid_get_row_homogeneous: (Method)
+      # gtk_grid_get_row_homogeneous: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_get_row_homogeneous(self)
@@ -475,7 +475,7 @@ module Gtk
     end
 
     def row_spacing : UInt32
-      # gtk_grid_get_row_spacing: (Method)
+      # gtk_grid_get_row_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_get_row_spacing(self)
@@ -541,21 +541,21 @@ module Gtk
     end
 
     def baseline_row=(row : Int32) : Nil
-      # gtk_grid_set_baseline_row: (Method)
+      # gtk_grid_set_baseline_row: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_set_baseline_row(self, row)
     end
 
     def column_homogeneous=(homogeneous : Bool) : Nil
-      # gtk_grid_set_column_homogeneous: (Method)
+      # gtk_grid_set_column_homogeneous: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_set_column_homogeneous(self, homogeneous)
     end
 
     def column_spacing=(spacing : UInt32) : Nil
-      # gtk_grid_set_column_spacing: (Method)
+      # gtk_grid_set_column_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_set_column_spacing(self, spacing)
@@ -569,14 +569,14 @@ module Gtk
     end
 
     def row_homogeneous=(homogeneous : Bool) : Nil
-      # gtk_grid_set_row_homogeneous: (Method)
+      # gtk_grid_set_row_homogeneous: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_set_row_homogeneous(self, homogeneous)
     end
 
     def row_spacing=(spacing : UInt32) : Nil
-      # gtk_grid_set_row_spacing: (Method)
+      # gtk_grid_set_row_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_set_row_spacing(self, spacing)

@@ -574,7 +574,7 @@ module Gtk
     end
 
     def current_page : Int32
-      # gtk_print_unix_dialog_get_current_page: (Method)
+      # gtk_print_unix_dialog_get_current_page: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_unix_dialog_get_current_page(self)
@@ -582,7 +582,7 @@ module Gtk
     end
 
     def embed_page_setup : Bool
-      # gtk_print_unix_dialog_get_embed_page_setup: (Method)
+      # gtk_print_unix_dialog_get_embed_page_setup: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_unix_dialog_get_embed_page_setup(self)
@@ -590,7 +590,7 @@ module Gtk
     end
 
     def has_selection : Bool
-      # gtk_print_unix_dialog_get_has_selection: (Method)
+      # gtk_print_unix_dialog_get_has_selection: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_unix_dialog_get_has_selection(self)
@@ -598,7 +598,7 @@ module Gtk
     end
 
     def manual_capabilities : Gtk::PrintCapabilities
-      # gtk_print_unix_dialog_get_manual_capabilities: (Method)
+      # gtk_print_unix_dialog_get_manual_capabilities: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_unix_dialog_get_manual_capabilities(self)
@@ -606,7 +606,7 @@ module Gtk
     end
 
     def page_setup : Gtk::PageSetup
-      # gtk_print_unix_dialog_get_page_setup: (Method)
+      # gtk_print_unix_dialog_get_page_setup: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_unix_dialog_get_page_setup(self)
@@ -622,7 +622,7 @@ module Gtk
     end
 
     def selected_printer : Gtk::Printer
-      # gtk_print_unix_dialog_get_selected_printer: (Method)
+      # gtk_print_unix_dialog_get_selected_printer: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_unix_dialog_get_selected_printer(self)
@@ -638,7 +638,7 @@ module Gtk
     end
 
     def support_selection : Bool
-      # gtk_print_unix_dialog_get_support_selection: (Method)
+      # gtk_print_unix_dialog_get_support_selection: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_print_unix_dialog_get_support_selection(self)
@@ -646,35 +646,35 @@ module Gtk
     end
 
     def current_page=(current_page : Int32) : Nil
-      # gtk_print_unix_dialog_set_current_page: (Method)
+      # gtk_print_unix_dialog_set_current_page: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_unix_dialog_set_current_page(self, current_page)
     end
 
     def embed_page_setup=(embed : Bool) : Nil
-      # gtk_print_unix_dialog_set_embed_page_setup: (Method)
+      # gtk_print_unix_dialog_set_embed_page_setup: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_unix_dialog_set_embed_page_setup(self, embed)
     end
 
     def has_selection=(has_selection : Bool) : Nil
-      # gtk_print_unix_dialog_set_has_selection: (Method)
+      # gtk_print_unix_dialog_set_has_selection: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_unix_dialog_set_has_selection(self, has_selection)
     end
 
     def manual_capabilities=(capabilities : Gtk::PrintCapabilities) : Nil
-      # gtk_print_unix_dialog_set_manual_capabilities: (Method)
+      # gtk_print_unix_dialog_set_manual_capabilities: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_unix_dialog_set_manual_capabilities(self, capabilities)
     end
 
     def page_setup=(page_setup : Gtk::PageSetup) : Nil
-      # gtk_print_unix_dialog_set_page_setup: (Method)
+      # gtk_print_unix_dialog_set_page_setup: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_unix_dialog_set_page_setup(self, page_setup)
@@ -695,7 +695,7 @@ module Gtk
     end
 
     def support_selection=(support_selection : Bool) : Nil
-      # gtk_print_unix_dialog_set_support_selection: (Method)
+      # gtk_print_unix_dialog_set_support_selection: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_print_unix_dialog_set_support_selection(self, support_selection)

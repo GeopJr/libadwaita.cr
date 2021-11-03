@@ -345,7 +345,7 @@ module Gtk
     end
 
     def adjustment : Gtk::Adjustment
-      # gtk_range_get_adjustment: (Method)
+      # gtk_range_get_adjustment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_range_get_adjustment(self)
@@ -353,7 +353,7 @@ module Gtk
     end
 
     def fill_level : Float64
-      # gtk_range_get_fill_level: (Method)
+      # gtk_range_get_fill_level: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_range_get_fill_level(self)
@@ -369,7 +369,7 @@ module Gtk
     end
 
     def inverted : Bool
-      # gtk_range_get_inverted: (Method)
+      # gtk_range_get_inverted: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_range_get_inverted(self)
@@ -388,7 +388,7 @@ module Gtk
     end
 
     def restrict_to_fill_level : Bool
-      # gtk_range_get_restrict_to_fill_level: (Method)
+      # gtk_range_get_restrict_to_fill_level: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_range_get_restrict_to_fill_level(self)
@@ -396,7 +396,7 @@ module Gtk
     end
 
     def round_digits : Int32
-      # gtk_range_get_round_digits: (Method)
+      # gtk_range_get_round_digits: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_range_get_round_digits(self)
@@ -404,7 +404,7 @@ module Gtk
     end
 
     def show_fill_level : Bool
-      # gtk_range_get_show_fill_level: (Method)
+      # gtk_range_get_show_fill_level: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_range_get_show_fill_level(self)
@@ -440,14 +440,14 @@ module Gtk
     end
 
     def adjustment=(adjustment : Gtk::Adjustment) : Nil
-      # gtk_range_set_adjustment: (Method)
+      # gtk_range_set_adjustment: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_range_set_adjustment(self, adjustment)
     end
 
     def fill_level=(fill_level : Float64) : Nil
-      # gtk_range_set_fill_level: (Method)
+      # gtk_range_set_fill_level: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_range_set_fill_level(self, fill_level)
@@ -468,7 +468,7 @@ module Gtk
     end
 
     def inverted=(setting : Bool) : Nil
-      # gtk_range_set_inverted: (Method)
+      # gtk_range_set_inverted: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_range_set_inverted(self, setting)
@@ -482,21 +482,21 @@ module Gtk
     end
 
     def restrict_to_fill_level=(restrict_to_fill_level : Bool) : Nil
-      # gtk_range_set_restrict_to_fill_level: (Method)
+      # gtk_range_set_restrict_to_fill_level: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_range_set_restrict_to_fill_level(self, restrict_to_fill_level)
     end
 
     def round_digits=(round_digits : Int32) : Nil
-      # gtk_range_set_round_digits: (Method)
+      # gtk_range_set_round_digits: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_range_set_round_digits(self, round_digits)
     end
 
     def show_fill_level=(show_fill_level : Bool) : Nil
-      # gtk_range_set_show_fill_level: (Method)
+      # gtk_range_set_show_fill_level: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_range_set_show_fill_level(self, show_fill_level)

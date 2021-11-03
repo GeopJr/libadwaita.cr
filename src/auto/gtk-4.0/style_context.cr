@@ -131,7 +131,7 @@ module Gtk
     end
 
     def display : Gdk::Display
-      # gtk_style_context_get_display: (Method)
+      # gtk_style_context_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_style_context_get_display(self)
@@ -224,7 +224,7 @@ module Gtk
     end
 
     def display=(display : Gdk::Display) : Nil
-      # gtk_style_context_set_display: (Method)
+      # gtk_style_context_set_display: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_style_context_set_display(self, display)

@@ -235,7 +235,7 @@ module Gtk
     end
 
     def constant : Float64
-      # gtk_constraint_get_constant: (Method)
+      # gtk_constraint_get_constant: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_get_constant(self)
@@ -243,7 +243,7 @@ module Gtk
     end
 
     def multiplier : Float64
-      # gtk_constraint_get_multiplier: (Method)
+      # gtk_constraint_get_multiplier: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_get_multiplier(self)
@@ -251,7 +251,7 @@ module Gtk
     end
 
     def relation : Gtk::ConstraintRelation
-      # gtk_constraint_get_relation: (Method)
+      # gtk_constraint_get_relation: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_get_relation(self)
@@ -259,7 +259,7 @@ module Gtk
     end
 
     def source : Gtk::ConstraintTarget?
-      # gtk_constraint_get_source: (Method)
+      # gtk_constraint_get_source: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_get_source(self)
@@ -267,7 +267,7 @@ module Gtk
     end
 
     def source_attribute : Gtk::ConstraintAttribute
-      # gtk_constraint_get_source_attribute: (Method)
+      # gtk_constraint_get_source_attribute: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_get_source_attribute(self)
@@ -275,7 +275,7 @@ module Gtk
     end
 
     def strength : Int32
-      # gtk_constraint_get_strength: (Method)
+      # gtk_constraint_get_strength: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_get_strength(self)
@@ -283,7 +283,7 @@ module Gtk
     end
 
     def target : Gtk::ConstraintTarget?
-      # gtk_constraint_get_target: (Method)
+      # gtk_constraint_get_target: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_get_target(self)
@@ -291,7 +291,7 @@ module Gtk
     end
 
     def target_attribute : Gtk::ConstraintAttribute
-      # gtk_constraint_get_target_attribute: (Method)
+      # gtk_constraint_get_target_attribute: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_constraint_get_target_attribute(self)

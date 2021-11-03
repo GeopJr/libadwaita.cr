@@ -207,7 +207,7 @@ module Gdk
     end
 
     def cursor : Gdk::Cursor?
-      # gdk_surface_get_cursor: (Method)
+      # gdk_surface_get_cursor: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_surface_get_cursor(self)
@@ -238,7 +238,7 @@ module Gdk
     end
 
     def display : Gdk::Display
-      # gdk_surface_get_display: (Method)
+      # gdk_surface_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_surface_get_display(self)
@@ -246,7 +246,7 @@ module Gdk
     end
 
     def frame_clock : Gdk::FrameClock
-      # gdk_surface_get_frame_clock: (Method)
+      # gdk_surface_get_frame_clock: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_surface_get_frame_clock(self)
@@ -254,7 +254,7 @@ module Gdk
     end
 
     def height : Int32
-      # gdk_surface_get_height: (Method)
+      # gdk_surface_get_height: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_surface_get_height(self)
@@ -262,7 +262,7 @@ module Gdk
     end
 
     def mapped : Bool
-      # gdk_surface_get_mapped: (Method)
+      # gdk_surface_get_mapped: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_surface_get_mapped(self)
@@ -270,7 +270,7 @@ module Gdk
     end
 
     def scale_factor : Int32
-      # gdk_surface_get_scale_factor: (Method)
+      # gdk_surface_get_scale_factor: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_surface_get_scale_factor(self)
@@ -278,7 +278,7 @@ module Gdk
     end
 
     def width : Int32
-      # gdk_surface_get_width: (Method)
+      # gdk_surface_get_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_surface_get_width(self)
@@ -315,7 +315,7 @@ module Gdk
     end
 
     def cursor=(cursor : Gdk::Cursor?) : Nil
-      # gdk_surface_set_cursor: (Method)
+      # gdk_surface_set_cursor: (Method | Setter)
       # @cursor: (nullable)
       # Returns: (transfer none)
 

@@ -135,7 +135,7 @@ module Gtk
     end
 
     def incremental : Bool
-      # gtk_sort_list_model_get_incremental: (Method)
+      # gtk_sort_list_model_get_incremental: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_sort_list_model_get_incremental(self)
@@ -143,7 +143,7 @@ module Gtk
     end
 
     def model : Gio::ListModel?
-      # gtk_sort_list_model_get_model: (Method)
+      # gtk_sort_list_model_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_sort_list_model_get_model(self)
@@ -151,7 +151,7 @@ module Gtk
     end
 
     def pending : UInt32
-      # gtk_sort_list_model_get_pending: (Method)
+      # gtk_sort_list_model_get_pending: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_sort_list_model_get_pending(self)
@@ -159,7 +159,7 @@ module Gtk
     end
 
     def sorter : Gtk::Sorter?
-      # gtk_sort_list_model_get_sorter: (Method)
+      # gtk_sort_list_model_get_sorter: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_sort_list_model_get_sorter(self)
@@ -167,14 +167,14 @@ module Gtk
     end
 
     def incremental=(incremental : Bool) : Nil
-      # gtk_sort_list_model_set_incremental: (Method)
+      # gtk_sort_list_model_set_incremental: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_sort_list_model_set_incremental(self, incremental)
     end
 
     def model=(model : Gio::ListModel?) : Nil
-      # gtk_sort_list_model_set_model: (Method)
+      # gtk_sort_list_model_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -188,7 +188,7 @@ module Gtk
     end
 
     def sorter=(sorter : Gtk::Sorter?) : Nil
-      # gtk_sort_list_model_set_sorter: (Method)
+      # gtk_sort_list_model_set_sorter: (Method | Setter)
       # @sorter: (nullable)
       # Returns: (transfer none)
 

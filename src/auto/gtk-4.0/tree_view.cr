@@ -801,7 +801,7 @@ module Gtk
     end
 
     def activate_on_single_click : Bool
-      # gtk_tree_view_get_activate_on_single_click: (Method)
+      # gtk_tree_view_get_activate_on_single_click: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_activate_on_single_click(self)
@@ -928,7 +928,7 @@ module Gtk
     end
 
     def enable_search : Bool
-      # gtk_tree_view_get_enable_search: (Method)
+      # gtk_tree_view_get_enable_search: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_enable_search(self)
@@ -936,7 +936,7 @@ module Gtk
     end
 
     def enable_tree_lines : Bool
-      # gtk_tree_view_get_enable_tree_lines: (Method)
+      # gtk_tree_view_get_enable_tree_lines: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_enable_tree_lines(self)
@@ -944,7 +944,7 @@ module Gtk
     end
 
     def expander_column : Gtk::TreeViewColumn?
-      # gtk_tree_view_get_expander_column: (Method)
+      # gtk_tree_view_get_expander_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_expander_column(self)
@@ -952,7 +952,7 @@ module Gtk
     end
 
     def fixed_height_mode : Bool
-      # gtk_tree_view_get_fixed_height_mode: (Method)
+      # gtk_tree_view_get_fixed_height_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_fixed_height_mode(self)
@@ -968,7 +968,7 @@ module Gtk
     end
 
     def headers_clickable : Bool
-      # gtk_tree_view_get_headers_clickable: (Method)
+      # gtk_tree_view_get_headers_clickable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_headers_clickable(self)
@@ -976,7 +976,7 @@ module Gtk
     end
 
     def headers_visible : Bool
-      # gtk_tree_view_get_headers_visible: (Method)
+      # gtk_tree_view_get_headers_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_headers_visible(self)
@@ -984,7 +984,7 @@ module Gtk
     end
 
     def hover_expand : Bool
-      # gtk_tree_view_get_hover_expand: (Method)
+      # gtk_tree_view_get_hover_expand: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_hover_expand(self)
@@ -992,7 +992,7 @@ module Gtk
     end
 
     def hover_selection : Bool
-      # gtk_tree_view_get_hover_selection: (Method)
+      # gtk_tree_view_get_hover_selection: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_hover_selection(self)
@@ -1000,7 +1000,7 @@ module Gtk
     end
 
     def level_indentation : Int32
-      # gtk_tree_view_get_level_indentation: (Method)
+      # gtk_tree_view_get_level_indentation: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_level_indentation(self)
@@ -1008,7 +1008,7 @@ module Gtk
     end
 
     def model : Gtk::TreeModel?
-      # gtk_tree_view_get_model: (Method)
+      # gtk_tree_view_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_model(self)
@@ -1051,7 +1051,7 @@ module Gtk
     end
 
     def reorderable : Bool
-      # gtk_tree_view_get_reorderable: (Method)
+      # gtk_tree_view_get_reorderable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_reorderable(self)
@@ -1059,7 +1059,7 @@ module Gtk
     end
 
     def rubber_banding : Bool
-      # gtk_tree_view_get_rubber_banding: (Method)
+      # gtk_tree_view_get_rubber_banding: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_rubber_banding(self)
@@ -1067,7 +1067,7 @@ module Gtk
     end
 
     def search_column : Int32
-      # gtk_tree_view_get_search_column: (Method)
+      # gtk_tree_view_get_search_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_search_column(self)
@@ -1091,7 +1091,7 @@ module Gtk
     end
 
     def show_expanders : Bool
-      # gtk_tree_view_get_show_expanders: (Method)
+      # gtk_tree_view_get_show_expanders: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_show_expanders(self)
@@ -1099,7 +1099,7 @@ module Gtk
     end
 
     def tooltip_column : Int32
-      # gtk_tree_view_get_tooltip_column: (Method)
+      # gtk_tree_view_get_tooltip_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_view_get_tooltip_column(self)
@@ -1295,7 +1295,7 @@ module Gtk
     end
 
     def activate_on_single_click=(single : Bool) : Nil
-      # gtk_tree_view_set_activate_on_single_click: (Method)
+      # gtk_tree_view_set_activate_on_single_click: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_activate_on_single_click(self, single)
@@ -1376,21 +1376,21 @@ module Gtk
     end
 
     def enable_search=(enable_search : Bool) : Nil
-      # gtk_tree_view_set_enable_search: (Method)
+      # gtk_tree_view_set_enable_search: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_enable_search(self, enable_search)
     end
 
     def enable_tree_lines=(enabled : Bool) : Nil
-      # gtk_tree_view_set_enable_tree_lines: (Method)
+      # gtk_tree_view_set_enable_tree_lines: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_enable_tree_lines(self, enabled)
     end
 
     def expander_column=(column : Gtk::TreeViewColumn?) : Nil
-      # gtk_tree_view_set_expander_column: (Method)
+      # gtk_tree_view_set_expander_column: (Method | Setter)
       # @column: (nullable)
       # Returns: (transfer none)
 
@@ -1404,7 +1404,7 @@ module Gtk
     end
 
     def fixed_height_mode=(enable : Bool) : Nil
-      # gtk_tree_view_set_fixed_height_mode: (Method)
+      # gtk_tree_view_set_fixed_height_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_fixed_height_mode(self, enable)
@@ -1418,42 +1418,42 @@ module Gtk
     end
 
     def headers_clickable=(setting : Bool) : Nil
-      # gtk_tree_view_set_headers_clickable: (Method)
+      # gtk_tree_view_set_headers_clickable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_headers_clickable(self, setting)
     end
 
     def headers_visible=(headers_visible : Bool) : Nil
-      # gtk_tree_view_set_headers_visible: (Method)
+      # gtk_tree_view_set_headers_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_headers_visible(self, headers_visible)
     end
 
     def hover_expand=(expand : Bool) : Nil
-      # gtk_tree_view_set_hover_expand: (Method)
+      # gtk_tree_view_set_hover_expand: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_hover_expand(self, expand)
     end
 
     def hover_selection=(hover : Bool) : Nil
-      # gtk_tree_view_set_hover_selection: (Method)
+      # gtk_tree_view_set_hover_selection: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_hover_selection(self, hover)
     end
 
     def level_indentation=(indentation : Int32) : Nil
-      # gtk_tree_view_set_level_indentation: (Method)
+      # gtk_tree_view_set_level_indentation: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_level_indentation(self, indentation)
     end
 
     def model=(model : Gtk::TreeModel?) : Nil
-      # gtk_tree_view_set_model: (Method)
+      # gtk_tree_view_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -1467,7 +1467,7 @@ module Gtk
     end
 
     def reorderable=(reorderable : Bool) : Nil
-      # gtk_tree_view_set_reorderable: (Method)
+      # gtk_tree_view_set_reorderable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_reorderable(self, reorderable)
@@ -1500,14 +1500,14 @@ module Gtk
     end
 
     def rubber_banding=(enable : Bool) : Nil
-      # gtk_tree_view_set_rubber_banding: (Method)
+      # gtk_tree_view_set_rubber_banding: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_rubber_banding(self, enable)
     end
 
     def search_column=(column : Int32) : Nil
-      # gtk_tree_view_set_search_column: (Method)
+      # gtk_tree_view_set_search_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_search_column(self, column)
@@ -1548,7 +1548,7 @@ module Gtk
     end
 
     def show_expanders=(enabled : Bool) : Nil
-      # gtk_tree_view_set_show_expanders: (Method)
+      # gtk_tree_view_set_show_expanders: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_show_expanders(self, enabled)
@@ -1581,7 +1581,7 @@ module Gtk
     end
 
     def tooltip_column=(column : Int32) : Nil
-      # gtk_tree_view_set_tooltip_column: (Method)
+      # gtk_tree_view_set_tooltip_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_view_set_tooltip_column(self, column)

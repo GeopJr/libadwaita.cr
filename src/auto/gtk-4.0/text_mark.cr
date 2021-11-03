@@ -128,7 +128,7 @@ module Gtk
     end
 
     def left_gravity : Bool
-      # gtk_text_mark_get_left_gravity: (Method)
+      # gtk_text_mark_get_left_gravity: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_mark_get_left_gravity(self)
@@ -136,7 +136,7 @@ module Gtk
     end
 
     def name : ::String?
-      # gtk_text_mark_get_name: (Method)
+      # gtk_text_mark_get_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_mark_get_name(self)

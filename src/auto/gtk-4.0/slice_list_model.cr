@@ -108,7 +108,7 @@ module Gtk
     end
 
     def model : Gio::ListModel?
-      # gtk_slice_list_model_get_model: (Method)
+      # gtk_slice_list_model_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_slice_list_model_get_model(self)
@@ -116,7 +116,7 @@ module Gtk
     end
 
     def offset : UInt32
-      # gtk_slice_list_model_get_offset: (Method)
+      # gtk_slice_list_model_get_offset: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_slice_list_model_get_offset(self)
@@ -124,7 +124,7 @@ module Gtk
     end
 
     def size : UInt32
-      # gtk_slice_list_model_get_size: (Method)
+      # gtk_slice_list_model_get_size: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_slice_list_model_get_size(self)
@@ -132,7 +132,7 @@ module Gtk
     end
 
     def model=(model : Gio::ListModel?) : Nil
-      # gtk_slice_list_model_set_model: (Method)
+      # gtk_slice_list_model_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -146,14 +146,14 @@ module Gtk
     end
 
     def offset=(offset : UInt32) : Nil
-      # gtk_slice_list_model_set_offset: (Method)
+      # gtk_slice_list_model_set_offset: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_slice_list_model_set_offset(self, offset)
     end
 
     def size=(size : UInt32) : Nil
-      # gtk_slice_list_model_set_size: (Method)
+      # gtk_slice_list_model_set_size: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_slice_list_model_set_size(self, size)

@@ -71,7 +71,7 @@ module Gtk
     end
 
     def model : Gio::ListModel
-      # gtk_no_selection_get_model: (Method)
+      # gtk_no_selection_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_no_selection_get_model(self)
@@ -79,7 +79,7 @@ module Gtk
     end
 
     def model=(model : Gio::ListModel?) : Nil
-      # gtk_no_selection_set_model: (Method)
+      # gtk_no_selection_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 

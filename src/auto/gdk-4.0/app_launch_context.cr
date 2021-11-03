@@ -65,7 +65,7 @@ module Gdk
     end
 
     def display : Gdk::Display
-      # gdk_app_launch_context_get_display: (Method)
+      # gdk_app_launch_context_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_app_launch_context_get_display(self)

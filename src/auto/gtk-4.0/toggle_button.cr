@@ -368,7 +368,7 @@ module Gtk
     end
 
     def active : Bool
-      # gtk_toggle_button_get_active: (Method)
+      # gtk_toggle_button_get_active: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_toggle_button_get_active(self)
@@ -376,14 +376,14 @@ module Gtk
     end
 
     def active=(is_active : Bool) : Nil
-      # gtk_toggle_button_set_active: (Method)
+      # gtk_toggle_button_set_active: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_toggle_button_set_active(self, is_active)
     end
 
     def group=(group : Gtk::ToggleButton?) : Nil
-      # gtk_toggle_button_set_group: (Method)
+      # gtk_toggle_button_set_group: (Method | Setter)
       # @group: (nullable)
       # Returns: (transfer none)
 

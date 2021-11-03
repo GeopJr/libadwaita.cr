@@ -122,7 +122,7 @@ module Gtk
     end
 
     def action : Gtk::ShortcutAction?
-      # gtk_shortcut_get_action: (Method)
+      # gtk_shortcut_get_action: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_shortcut_get_action(self)
@@ -130,7 +130,7 @@ module Gtk
     end
 
     def arguments : GLib::Variant?
-      # gtk_shortcut_get_arguments: (Method)
+      # gtk_shortcut_get_arguments: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_shortcut_get_arguments(self)
@@ -138,7 +138,7 @@ module Gtk
     end
 
     def trigger : Gtk::ShortcutTrigger?
-      # gtk_shortcut_get_trigger: (Method)
+      # gtk_shortcut_get_trigger: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_shortcut_get_trigger(self)
@@ -146,7 +146,7 @@ module Gtk
     end
 
     def action=(action : Gtk::ShortcutAction?) : Nil
-      # gtk_shortcut_set_action: (Method)
+      # gtk_shortcut_set_action: (Method | Setter)
       # @action: (transfer full) (nullable)
       # Returns: (transfer none)
 
@@ -161,7 +161,7 @@ module Gtk
     end
 
     def arguments=(args : _?) : Nil
-      # gtk_shortcut_set_arguments: (Method)
+      # gtk_shortcut_set_arguments: (Method | Setter)
       # @args: (nullable)
       # Returns: (transfer none)
 
@@ -176,7 +176,7 @@ module Gtk
     end
 
     def trigger=(trigger : Gtk::ShortcutTrigger?) : Nil
-      # gtk_shortcut_set_trigger: (Method)
+      # gtk_shortcut_set_trigger: (Method | Setter)
       # @trigger: (transfer full) (nullable)
       # Returns: (transfer none)
 

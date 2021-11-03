@@ -450,7 +450,7 @@ module Gtk
     end
 
     def activate_on_single_click : Bool
-      # gtk_flow_box_get_activate_on_single_click: (Method)
+      # gtk_flow_box_get_activate_on_single_click: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_flow_box_get_activate_on_single_click(self)
@@ -474,7 +474,7 @@ module Gtk
     end
 
     def column_spacing : UInt32
-      # gtk_flow_box_get_column_spacing: (Method)
+      # gtk_flow_box_get_column_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_flow_box_get_column_spacing(self)
@@ -482,7 +482,7 @@ module Gtk
     end
 
     def homogeneous : Bool
-      # gtk_flow_box_get_homogeneous: (Method)
+      # gtk_flow_box_get_homogeneous: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_flow_box_get_homogeneous(self)
@@ -490,7 +490,7 @@ module Gtk
     end
 
     def max_children_per_line : UInt32
-      # gtk_flow_box_get_max_children_per_line: (Method)
+      # gtk_flow_box_get_max_children_per_line: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_flow_box_get_max_children_per_line(self)
@@ -498,7 +498,7 @@ module Gtk
     end
 
     def min_children_per_line : UInt32
-      # gtk_flow_box_get_min_children_per_line: (Method)
+      # gtk_flow_box_get_min_children_per_line: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_flow_box_get_min_children_per_line(self)
@@ -506,7 +506,7 @@ module Gtk
     end
 
     def row_spacing : UInt32
-      # gtk_flow_box_get_row_spacing: (Method)
+      # gtk_flow_box_get_row_spacing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_flow_box_get_row_spacing(self)
@@ -522,7 +522,7 @@ module Gtk
     end
 
     def selection_mode : Gtk::SelectionMode
-      # gtk_flow_box_get_selection_mode: (Method)
+      # gtk_flow_box_get_selection_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_flow_box_get_selection_mode(self)
@@ -586,14 +586,14 @@ module Gtk
     end
 
     def activate_on_single_click=(single : Bool) : Nil
-      # gtk_flow_box_set_activate_on_single_click: (Method)
+      # gtk_flow_box_set_activate_on_single_click: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_flow_box_set_activate_on_single_click(self, single)
     end
 
     def column_spacing=(spacing : UInt32) : Nil
-      # gtk_flow_box_set_column_spacing: (Method)
+      # gtk_flow_box_set_column_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_flow_box_set_column_spacing(self, spacing)
@@ -627,35 +627,35 @@ module Gtk
     end
 
     def homogeneous=(homogeneous : Bool) : Nil
-      # gtk_flow_box_set_homogeneous: (Method)
+      # gtk_flow_box_set_homogeneous: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_flow_box_set_homogeneous(self, homogeneous)
     end
 
     def max_children_per_line=(n_children : UInt32) : Nil
-      # gtk_flow_box_set_max_children_per_line: (Method)
+      # gtk_flow_box_set_max_children_per_line: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_flow_box_set_max_children_per_line(self, n_children)
     end
 
     def min_children_per_line=(n_children : UInt32) : Nil
-      # gtk_flow_box_set_min_children_per_line: (Method)
+      # gtk_flow_box_set_min_children_per_line: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_flow_box_set_min_children_per_line(self, n_children)
     end
 
     def row_spacing=(spacing : UInt32) : Nil
-      # gtk_flow_box_set_row_spacing: (Method)
+      # gtk_flow_box_set_row_spacing: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_flow_box_set_row_spacing(self, spacing)
     end
 
     def selection_mode=(mode : Gtk::SelectionMode) : Nil
-      # gtk_flow_box_set_selection_mode: (Method)
+      # gtk_flow_box_set_selection_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_flow_box_set_selection_mode(self, mode)

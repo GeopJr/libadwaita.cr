@@ -126,7 +126,7 @@ module Gtk
     end
 
     def mode : Gtk::SizeGroupMode
-      # gtk_size_group_get_mode: (Method)
+      # gtk_size_group_get_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_size_group_get_mode(self)
@@ -149,7 +149,7 @@ module Gtk
     end
 
     def mode=(mode : Gtk::SizeGroupMode) : Nil
-      # gtk_size_group_set_mode: (Method)
+      # gtk_size_group_set_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_size_group_set_mode(self, mode)

@@ -280,7 +280,7 @@ module Gtk
     end
 
     def menu_model : Gio::MenuModel
-      # gtk_popover_menu_bar_get_menu_model: (Method)
+      # gtk_popover_menu_bar_get_menu_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_popover_menu_bar_get_menu_model(self)
@@ -296,7 +296,7 @@ module Gtk
     end
 
     def menu_model=(model : Gio::MenuModel?) : Nil
-      # gtk_popover_menu_bar_set_menu_model: (Method)
+      # gtk_popover_menu_bar_set_menu_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 

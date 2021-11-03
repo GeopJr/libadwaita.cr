@@ -324,7 +324,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_aspect_frame_get_child: (Method)
+      # gtk_aspect_frame_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_aspect_frame_get_child(self)
@@ -332,7 +332,7 @@ module Gtk
     end
 
     def obey_child : Bool
-      # gtk_aspect_frame_get_obey_child: (Method)
+      # gtk_aspect_frame_get_obey_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_aspect_frame_get_obey_child(self)
@@ -340,7 +340,7 @@ module Gtk
     end
 
     def ratio : Float32
-      # gtk_aspect_frame_get_ratio: (Method)
+      # gtk_aspect_frame_get_ratio: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_aspect_frame_get_ratio(self)
@@ -348,7 +348,7 @@ module Gtk
     end
 
     def xalign : Float32
-      # gtk_aspect_frame_get_xalign: (Method)
+      # gtk_aspect_frame_get_xalign: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_aspect_frame_get_xalign(self)
@@ -356,7 +356,7 @@ module Gtk
     end
 
     def yalign : Float32
-      # gtk_aspect_frame_get_yalign: (Method)
+      # gtk_aspect_frame_get_yalign: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_aspect_frame_get_yalign(self)
@@ -364,7 +364,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_aspect_frame_set_child: (Method)
+      # gtk_aspect_frame_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -378,28 +378,28 @@ module Gtk
     end
 
     def obey_child=(obey_child : Bool) : Nil
-      # gtk_aspect_frame_set_obey_child: (Method)
+      # gtk_aspect_frame_set_obey_child: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_aspect_frame_set_obey_child(self, obey_child)
     end
 
     def ratio=(ratio : Float32) : Nil
-      # gtk_aspect_frame_set_ratio: (Method)
+      # gtk_aspect_frame_set_ratio: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_aspect_frame_set_ratio(self, ratio)
     end
 
     def xalign=(xalign : Float32) : Nil
-      # gtk_aspect_frame_set_xalign: (Method)
+      # gtk_aspect_frame_set_xalign: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_aspect_frame_set_xalign(self, xalign)
     end
 
     def yalign=(yalign : Float32) : Nil
-      # gtk_aspect_frame_set_yalign: (Method)
+      # gtk_aspect_frame_set_yalign: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_aspect_frame_set_yalign(self, yalign)

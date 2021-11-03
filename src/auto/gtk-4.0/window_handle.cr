@@ -248,7 +248,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_window_handle_get_child: (Method)
+      # gtk_window_handle_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_window_handle_get_child(self)
@@ -256,7 +256,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_window_handle_set_child: (Method)
+      # gtk_window_handle_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 

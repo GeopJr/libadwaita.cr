@@ -147,7 +147,7 @@ module Gtk
     end
 
     def name : ::String?
-      # gtk_file_filter_get_name: (Method)
+      # gtk_file_filter_get_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_file_filter_get_name(self)
@@ -155,7 +155,7 @@ module Gtk
     end
 
     def name=(name : ::String?) : Nil
-      # gtk_file_filter_set_name: (Method)
+      # gtk_file_filter_set_name: (Method | Setter)
       # @name: (nullable)
       # Returns: (transfer none)
 

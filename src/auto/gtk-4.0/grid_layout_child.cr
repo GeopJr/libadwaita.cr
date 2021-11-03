@@ -115,7 +115,7 @@ module Gtk
     end
 
     def column : Int32
-      # gtk_grid_layout_child_get_column: (Method)
+      # gtk_grid_layout_child_get_column: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_layout_child_get_column(self)
@@ -123,7 +123,7 @@ module Gtk
     end
 
     def column_span : Int32
-      # gtk_grid_layout_child_get_column_span: (Method)
+      # gtk_grid_layout_child_get_column_span: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_layout_child_get_column_span(self)
@@ -131,7 +131,7 @@ module Gtk
     end
 
     def row : Int32
-      # gtk_grid_layout_child_get_row: (Method)
+      # gtk_grid_layout_child_get_row: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_layout_child_get_row(self)
@@ -139,7 +139,7 @@ module Gtk
     end
 
     def row_span : Int32
-      # gtk_grid_layout_child_get_row_span: (Method)
+      # gtk_grid_layout_child_get_row_span: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_grid_layout_child_get_row_span(self)
@@ -147,28 +147,28 @@ module Gtk
     end
 
     def column=(column : Int32) : Nil
-      # gtk_grid_layout_child_set_column: (Method)
+      # gtk_grid_layout_child_set_column: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_layout_child_set_column(self, column)
     end
 
     def column_span=(span : Int32) : Nil
-      # gtk_grid_layout_child_set_column_span: (Method)
+      # gtk_grid_layout_child_set_column_span: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_layout_child_set_column_span(self, span)
     end
 
     def row=(row : Int32) : Nil
-      # gtk_grid_layout_child_set_row: (Method)
+      # gtk_grid_layout_child_set_row: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_layout_child_set_row(self, row)
     end
 
     def row_span=(span : Int32) : Nil
-      # gtk_grid_layout_child_set_row_span: (Method)
+      # gtk_grid_layout_child_set_row_span: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_grid_layout_child_set_row_span(self, span)

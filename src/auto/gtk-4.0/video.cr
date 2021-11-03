@@ -370,7 +370,7 @@ module Gtk
     end
 
     def autoplay : Bool
-      # gtk_video_get_autoplay: (Method)
+      # gtk_video_get_autoplay: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_video_get_autoplay(self)
@@ -378,7 +378,7 @@ module Gtk
     end
 
     def file : Gio::File?
-      # gtk_video_get_file: (Method)
+      # gtk_video_get_file: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_video_get_file(self)
@@ -386,7 +386,7 @@ module Gtk
     end
 
     def loop : Bool
-      # gtk_video_get_loop: (Method)
+      # gtk_video_get_loop: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_video_get_loop(self)
@@ -394,7 +394,7 @@ module Gtk
     end
 
     def media_stream : Gtk::MediaStream?
-      # gtk_video_get_media_stream: (Method)
+      # gtk_video_get_media_stream: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_video_get_media_stream(self)
@@ -402,14 +402,14 @@ module Gtk
     end
 
     def autoplay=(autoplay : Bool) : Nil
-      # gtk_video_set_autoplay: (Method)
+      # gtk_video_set_autoplay: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_video_set_autoplay(self, autoplay)
     end
 
     def file=(file : Gio::File?) : Nil
-      # gtk_video_set_file: (Method)
+      # gtk_video_set_file: (Method | Setter)
       # @file: (nullable)
       # Returns: (transfer none)
 
@@ -437,14 +437,14 @@ module Gtk
     end
 
     def loop=(loop : Bool) : Nil
-      # gtk_video_set_loop: (Method)
+      # gtk_video_set_loop: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_video_set_loop(self, loop)
     end
 
     def media_stream=(stream : Gtk::MediaStream?) : Nil
-      # gtk_video_set_media_stream: (Method)
+      # gtk_video_set_media_stream: (Method | Setter)
       # @stream: (nullable)
       # Returns: (transfer none)
 

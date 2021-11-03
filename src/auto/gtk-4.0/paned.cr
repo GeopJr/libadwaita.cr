@@ -497,7 +497,7 @@ module Gtk
     end
 
     def end_child : Gtk::Widget?
-      # gtk_paned_get_end_child: (Method)
+      # gtk_paned_get_end_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_paned_get_end_child(self)
@@ -505,7 +505,7 @@ module Gtk
     end
 
     def position : Int32
-      # gtk_paned_get_position: (Method)
+      # gtk_paned_get_position: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_paned_get_position(self)
@@ -513,7 +513,7 @@ module Gtk
     end
 
     def resize_end_child : Bool
-      # gtk_paned_get_resize_end_child: (Method)
+      # gtk_paned_get_resize_end_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_paned_get_resize_end_child(self)
@@ -521,7 +521,7 @@ module Gtk
     end
 
     def resize_start_child : Bool
-      # gtk_paned_get_resize_start_child: (Method)
+      # gtk_paned_get_resize_start_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_paned_get_resize_start_child(self)
@@ -529,7 +529,7 @@ module Gtk
     end
 
     def shrink_end_child : Bool
-      # gtk_paned_get_shrink_end_child: (Method)
+      # gtk_paned_get_shrink_end_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_paned_get_shrink_end_child(self)
@@ -537,7 +537,7 @@ module Gtk
     end
 
     def shrink_start_child : Bool
-      # gtk_paned_get_shrink_start_child: (Method)
+      # gtk_paned_get_shrink_start_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_paned_get_shrink_start_child(self)
@@ -545,7 +545,7 @@ module Gtk
     end
 
     def start_child : Gtk::Widget?
-      # gtk_paned_get_start_child: (Method)
+      # gtk_paned_get_start_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_paned_get_start_child(self)
@@ -553,7 +553,7 @@ module Gtk
     end
 
     def wide_handle : Bool
-      # gtk_paned_get_wide_handle: (Method)
+      # gtk_paned_get_wide_handle: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_paned_get_wide_handle(self)
@@ -561,56 +561,56 @@ module Gtk
     end
 
     def end_child=(child : Gtk::Widget) : Nil
-      # gtk_paned_set_end_child: (Method)
+      # gtk_paned_set_end_child: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_paned_set_end_child(self, child)
     end
 
     def position=(position : Int32) : Nil
-      # gtk_paned_set_position: (Method)
+      # gtk_paned_set_position: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_paned_set_position(self, position)
     end
 
     def resize_end_child=(resize : Bool) : Nil
-      # gtk_paned_set_resize_end_child: (Method)
+      # gtk_paned_set_resize_end_child: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_paned_set_resize_end_child(self, resize)
     end
 
     def resize_start_child=(resize : Bool) : Nil
-      # gtk_paned_set_resize_start_child: (Method)
+      # gtk_paned_set_resize_start_child: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_paned_set_resize_start_child(self, resize)
     end
 
     def shrink_end_child=(resize : Bool) : Nil
-      # gtk_paned_set_shrink_end_child: (Method)
+      # gtk_paned_set_shrink_end_child: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_paned_set_shrink_end_child(self, resize)
     end
 
     def shrink_start_child=(resize : Bool) : Nil
-      # gtk_paned_set_shrink_start_child: (Method)
+      # gtk_paned_set_shrink_start_child: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_paned_set_shrink_start_child(self, resize)
     end
 
     def start_child=(child : Gtk::Widget) : Nil
-      # gtk_paned_set_start_child: (Method)
+      # gtk_paned_set_start_child: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_paned_set_start_child(self, child)
     end
 
     def wide_handle=(wide : Bool) : Nil
-      # gtk_paned_set_wide_handle: (Method)
+      # gtk_paned_set_wide_handle: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_paned_set_wide_handle(self, wide)

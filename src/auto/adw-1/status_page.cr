@@ -29,9 +29,9 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, description : ::String? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, icon_name : ::String? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, title : ::String? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[39]
-      _values = StaticArray(LibGObject::Value, 39).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, description : ::String? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, icon_name : ::String? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, paintable : Gdk::Paintable? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, title : ::String? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[40]
+      _values = StaticArray(LibGObject::Value, 40).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -164,6 +164,11 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
+      if paintable
+        (_names.to_unsafe + _n).value = "paintable".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, paintable)
+        _n += 1
+      end
       if parent
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
@@ -283,6 +288,21 @@ module Adw
       ::String.new(value)
     end
 
+    def paintable=(value : Gdk::Paintable?) : Gdk::Paintable?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "paintable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def paintable : Gdk::Paintable?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "paintable", pointerof(value), Pointer(Void).null)
+      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def title=(value : ::String) : ::String
       unsafe_value = value
 
@@ -328,6 +348,14 @@ module Adw
 
       _retval = LibAdw.adw_status_page_get_icon_name(self)
       ::String.new(_retval) unless _retval.null?
+    end
+
+    def paintable : Gdk::Paintable?
+      # adw_status_page_get_paintable: (Method | Getter)
+      # Returns: (transfer none)
+
+      _retval = LibAdw.adw_status_page_get_paintable(self)
+      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def title : ::String
@@ -378,6 +406,20 @@ module Adw
                   end
 
       LibAdw.adw_status_page_set_icon_name(self, icon_name)
+    end
+
+    def paintable=(paintable : Gdk::Paintable?) : Nil
+      # adw_status_page_set_paintable: (Method | Setter)
+      # @paintable: (nullable)
+      # Returns: (transfer none)
+
+      paintable = if paintable.nil?
+                    Pointer(Void).null
+                  else
+                    paintable.to_unsafe
+                  end
+
+      LibAdw.adw_status_page_set_paintable(self, paintable)
     end
 
     def title=(title : ::String) : Nil

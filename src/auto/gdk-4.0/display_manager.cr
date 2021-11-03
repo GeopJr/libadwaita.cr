@@ -94,7 +94,7 @@ module Gdk
     end
 
     def default_display : Gdk::Display?
-      # gdk_display_manager_get_default_display: (Method)
+      # gdk_display_manager_get_default_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_display_manager_get_default_display(self)
@@ -118,7 +118,7 @@ module Gdk
     end
 
     def default_display=(display : Gdk::Display) : Nil
-      # gdk_display_manager_set_default_display: (Method)
+      # gdk_display_manager_set_default_display: (Method | Setter)
       # Returns: (transfer none)
 
       LibGdk.gdk_display_manager_set_default_display(self, display)

@@ -390,7 +390,7 @@ module Gtk
     end
 
     def ellipsize : Pango::EllipsizeMode
-      # gtk_progress_bar_get_ellipsize: (Method)
+      # gtk_progress_bar_get_ellipsize: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_progress_bar_get_ellipsize(self)
@@ -398,7 +398,7 @@ module Gtk
     end
 
     def fraction : Float64
-      # gtk_progress_bar_get_fraction: (Method)
+      # gtk_progress_bar_get_fraction: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_progress_bar_get_fraction(self)
@@ -406,7 +406,7 @@ module Gtk
     end
 
     def inverted : Bool
-      # gtk_progress_bar_get_inverted: (Method)
+      # gtk_progress_bar_get_inverted: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_progress_bar_get_inverted(self)
@@ -414,7 +414,7 @@ module Gtk
     end
 
     def pulse_step : Float64
-      # gtk_progress_bar_get_pulse_step: (Method)
+      # gtk_progress_bar_get_pulse_step: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_progress_bar_get_pulse_step(self)
@@ -422,7 +422,7 @@ module Gtk
     end
 
     def show_text : Bool
-      # gtk_progress_bar_get_show_text: (Method)
+      # gtk_progress_bar_get_show_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_progress_bar_get_show_text(self)
@@ -430,7 +430,7 @@ module Gtk
     end
 
     def text : ::String?
-      # gtk_progress_bar_get_text: (Method)
+      # gtk_progress_bar_get_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_progress_bar_get_text(self)
@@ -445,42 +445,42 @@ module Gtk
     end
 
     def ellipsize=(mode : Pango::EllipsizeMode) : Nil
-      # gtk_progress_bar_set_ellipsize: (Method)
+      # gtk_progress_bar_set_ellipsize: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_progress_bar_set_ellipsize(self, mode)
     end
 
     def fraction=(fraction : Float64) : Nil
-      # gtk_progress_bar_set_fraction: (Method)
+      # gtk_progress_bar_set_fraction: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_progress_bar_set_fraction(self, fraction)
     end
 
     def inverted=(inverted : Bool) : Nil
-      # gtk_progress_bar_set_inverted: (Method)
+      # gtk_progress_bar_set_inverted: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_progress_bar_set_inverted(self, inverted)
     end
 
     def pulse_step=(fraction : Float64) : Nil
-      # gtk_progress_bar_set_pulse_step: (Method)
+      # gtk_progress_bar_set_pulse_step: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_progress_bar_set_pulse_step(self, fraction)
     end
 
     def show_text=(show_text : Bool) : Nil
-      # gtk_progress_bar_set_show_text: (Method)
+      # gtk_progress_bar_set_show_text: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_progress_bar_set_show_text(self, show_text)
     end
 
     def text=(text : ::String?) : Nil
-      # gtk_progress_bar_set_text: (Method)
+      # gtk_progress_bar_set_text: (Method | Setter)
       # @text: (nullable)
       # Returns: (transfer none)
 

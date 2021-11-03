@@ -137,7 +137,7 @@ module Gtk
     end
 
     def bytes : GLib::Bytes
-      # gtk_builder_list_item_factory_get_bytes: (Method)
+      # gtk_builder_list_item_factory_get_bytes: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_builder_list_item_factory_get_bytes(self)
@@ -145,7 +145,7 @@ module Gtk
     end
 
     def resource : ::String?
-      # gtk_builder_list_item_factory_get_resource: (Method)
+      # gtk_builder_list_item_factory_get_resource: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_builder_list_item_factory_get_resource(self)
@@ -153,7 +153,7 @@ module Gtk
     end
 
     def scope : Gtk::BuilderScope?
-      # gtk_builder_list_item_factory_get_scope: (Method)
+      # gtk_builder_list_item_factory_get_scope: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_builder_list_item_factory_get_scope(self)

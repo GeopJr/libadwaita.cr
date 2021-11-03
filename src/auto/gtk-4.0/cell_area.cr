@@ -557,7 +557,7 @@ module Gtk
     end
 
     def edit_widget : Gtk::CellEditable
-      # gtk_cell_area_get_edit_widget: (Method)
+      # gtk_cell_area_get_edit_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_area_get_edit_widget(self)
@@ -565,7 +565,7 @@ module Gtk
     end
 
     def edited_cell : Gtk::CellRenderer
-      # gtk_cell_area_get_edited_cell: (Method)
+      # gtk_cell_area_get_edited_cell: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_area_get_edited_cell(self)
@@ -573,7 +573,7 @@ module Gtk
     end
 
     def focus_cell : Gtk::CellRenderer
-      # gtk_cell_area_get_focus_cell: (Method)
+      # gtk_cell_area_get_focus_cell: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_area_get_focus_cell(self)
@@ -714,7 +714,7 @@ module Gtk
     end
 
     def focus_cell=(renderer : Gtk::CellRenderer) : Nil
-      # gtk_cell_area_set_focus_cell: (Method)
+      # gtk_cell_area_set_focus_cell: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_area_set_focus_cell(self, renderer)

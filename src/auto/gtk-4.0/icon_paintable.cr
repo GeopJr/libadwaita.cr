@@ -98,7 +98,7 @@ module Gtk
     end
 
     def file : Gio::File?
-      # gtk_icon_paintable_get_file: (Method)
+      # gtk_icon_paintable_get_file: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_icon_paintable_get_file(self)
@@ -106,7 +106,7 @@ module Gtk
     end
 
     def icon_name : ::Path?
-      # gtk_icon_paintable_get_icon_name: (Method)
+      # gtk_icon_paintable_get_icon_name: (Method | Getter)
       # Returns: (transfer none Filename)
 
       _retval = LibGtk.gtk_icon_paintable_get_icon_name(self)

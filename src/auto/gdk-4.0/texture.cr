@@ -116,7 +116,7 @@ module Gdk
     end
 
     def height : Int32
-      # gdk_texture_get_height: (Method)
+      # gdk_texture_get_height: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_texture_get_height(self)
@@ -124,7 +124,7 @@ module Gdk
     end
 
     def width : Int32
-      # gdk_texture_get_width: (Method)
+      # gdk_texture_get_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_texture_get_width(self)

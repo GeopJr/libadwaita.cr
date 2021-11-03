@@ -100,7 +100,7 @@ module Gdk
     end
 
     def content : Gdk::ContentProvider?
-      # gdk_clipboard_get_content: (Method)
+      # gdk_clipboard_get_content: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_clipboard_get_content(self)
@@ -108,7 +108,7 @@ module Gdk
     end
 
     def display : Gdk::Display
-      # gdk_clipboard_get_display: (Method)
+      # gdk_clipboard_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_clipboard_get_display(self)
@@ -116,7 +116,7 @@ module Gdk
     end
 
     def formats : Gdk::ContentFormats
-      # gdk_clipboard_get_formats: (Method)
+      # gdk_clipboard_get_formats: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_clipboard_get_formats(self)

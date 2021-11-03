@@ -310,7 +310,7 @@ module Gtk
     end
 
     def can_redo : Bool
-      # gtk_text_buffer_get_can_redo: (Method)
+      # gtk_text_buffer_get_can_redo: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_buffer_get_can_redo(self)
@@ -318,7 +318,7 @@ module Gtk
     end
 
     def can_undo : Bool
-      # gtk_text_buffer_get_can_undo: (Method)
+      # gtk_text_buffer_get_can_undo: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_buffer_get_can_undo(self)
@@ -334,7 +334,7 @@ module Gtk
     end
 
     def enable_undo : Bool
-      # gtk_text_buffer_get_enable_undo: (Method)
+      # gtk_text_buffer_get_enable_undo: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_buffer_get_enable_undo(self)
@@ -353,7 +353,7 @@ module Gtk
     end
 
     def has_selection : Bool
-      # gtk_text_buffer_get_has_selection: (Method)
+      # gtk_text_buffer_get_has_selection: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_buffer_get_has_selection(self)
@@ -514,7 +514,7 @@ module Gtk
     end
 
     def tag_table : Gtk::TextTagTable
-      # gtk_text_buffer_get_tag_table: (Method)
+      # gtk_text_buffer_get_tag_table: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_text_buffer_get_tag_table(self)
@@ -522,7 +522,7 @@ module Gtk
     end
 
     def text(start : Gtk::TextIter, end _end : Gtk::TextIter, include_hidden_chars : Bool) : ::String
-      # gtk_text_buffer_get_text: (Method)
+      # gtk_text_buffer_get_text: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_text_buffer_get_text(self, start, _end, include_hidden_chars)
@@ -673,7 +673,7 @@ module Gtk
     end
 
     def enable_undo=(enable_undo : Bool) : Nil
-      # gtk_text_buffer_set_enable_undo: (Method)
+      # gtk_text_buffer_set_enable_undo: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_buffer_set_enable_undo(self, enable_undo)
@@ -694,7 +694,7 @@ module Gtk
     end
 
     def set_text(text : ::String, len : Int32) : Nil
-      # gtk_text_buffer_set_text: (Method)
+      # gtk_text_buffer_set_text: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_text_buffer_set_text(self, text, len)

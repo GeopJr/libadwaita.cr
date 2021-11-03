@@ -304,10 +304,10 @@ require "./window_handle.cr"
 
 module Gtk
   ACCESSIBLE_VALUE_UNDEFINED            =  -1
-  BINARY_AGE                            = 400
+  BINARY_AGE                            = 401
   IM_MODULE_EXTENSION_POINT_NAME        = "gtk-im-module"
   INPUT_ERROR                           = -1
-  INTERFACE_AGE                         =  0
+  INTERFACE_AGE                         =  1
   INVALID_LIST_POSITION                 = -1
   LEVEL_BAR_OFFSET_FULL                 = "full"
   LEVEL_BAR_OFFSET_HIGH                 = "high"
@@ -315,7 +315,7 @@ module Gtk
   MAJOR_VERSION                         = 4
   MAX_COMPOSE_LEN                       = 7
   MEDIA_FILE_EXTENSION_POINT_NAME       = "gtk-media-file"
-  MICRO_VERSION                         = 0
+  MICRO_VERSION                         = 1
   MINOR_VERSION                         = 4
   PAPER_NAME_A3                         = "iso_a3"
   PAPER_NAME_A4                         = "iso_a4"

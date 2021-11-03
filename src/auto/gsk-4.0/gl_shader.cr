@@ -286,7 +286,7 @@ module Gsk
     end
 
     def resource : ::String?
-      # gsk_gl_shader_get_resource: (Method)
+      # gsk_gl_shader_get_resource: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGsk.gsk_gl_shader_get_resource(self)
@@ -294,7 +294,7 @@ module Gsk
     end
 
     def source : GLib::Bytes
-      # gsk_gl_shader_get_source: (Method)
+      # gsk_gl_shader_get_source: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGsk.gsk_gl_shader_get_source(self)

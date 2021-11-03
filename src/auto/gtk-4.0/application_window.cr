@@ -453,7 +453,7 @@ module Gtk
     end
 
     def show_menubar : Bool
-      # gtk_application_window_get_show_menubar: (Method)
+      # gtk_application_window_get_show_menubar: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_application_window_get_show_menubar(self)
@@ -475,7 +475,7 @@ module Gtk
     end
 
     def show_menubar=(show_menubar : Bool) : Nil
-      # gtk_application_window_set_show_menubar: (Method)
+      # gtk_application_window_set_show_menubar: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_application_window_set_show_menubar(self, show_menubar)

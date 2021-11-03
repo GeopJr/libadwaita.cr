@@ -475,7 +475,7 @@ module Gtk
     end
 
     def hhomogeneous : Bool
-      # gtk_stack_get_hhomogeneous: (Method)
+      # gtk_stack_get_hhomogeneous: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_get_hhomogeneous(self)
@@ -483,7 +483,7 @@ module Gtk
     end
 
     def interpolate_size : Bool
-      # gtk_stack_get_interpolate_size: (Method)
+      # gtk_stack_get_interpolate_size: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_get_interpolate_size(self)
@@ -499,7 +499,7 @@ module Gtk
     end
 
     def pages : Gtk::SelectionModel
-      # gtk_stack_get_pages: (Method)
+      # gtk_stack_get_pages: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_stack_get_pages(self)
@@ -507,7 +507,7 @@ module Gtk
     end
 
     def transition_duration : UInt32
-      # gtk_stack_get_transition_duration: (Method)
+      # gtk_stack_get_transition_duration: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_get_transition_duration(self)
@@ -515,7 +515,7 @@ module Gtk
     end
 
     def transition_running : Bool
-      # gtk_stack_get_transition_running: (Method)
+      # gtk_stack_get_transition_running: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_get_transition_running(self)
@@ -523,7 +523,7 @@ module Gtk
     end
 
     def transition_type : Gtk::StackTransitionType
-      # gtk_stack_get_transition_type: (Method)
+      # gtk_stack_get_transition_type: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_get_transition_type(self)
@@ -531,7 +531,7 @@ module Gtk
     end
 
     def vhomogeneous : Bool
-      # gtk_stack_get_vhomogeneous: (Method)
+      # gtk_stack_get_vhomogeneous: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_get_vhomogeneous(self)
@@ -539,7 +539,7 @@ module Gtk
     end
 
     def visible_child : Gtk::Widget?
-      # gtk_stack_get_visible_child: (Method)
+      # gtk_stack_get_visible_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_get_visible_child(self)
@@ -547,7 +547,7 @@ module Gtk
     end
 
     def visible_child_name : ::String?
-      # gtk_stack_get_visible_child_name: (Method)
+      # gtk_stack_get_visible_child_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_get_visible_child_name(self)
@@ -562,42 +562,42 @@ module Gtk
     end
 
     def hhomogeneous=(hhomogeneous : Bool) : Nil
-      # gtk_stack_set_hhomogeneous: (Method)
+      # gtk_stack_set_hhomogeneous: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_set_hhomogeneous(self, hhomogeneous)
     end
 
     def interpolate_size=(interpolate_size : Bool) : Nil
-      # gtk_stack_set_interpolate_size: (Method)
+      # gtk_stack_set_interpolate_size: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_set_interpolate_size(self, interpolate_size)
     end
 
     def transition_duration=(duration : UInt32) : Nil
-      # gtk_stack_set_transition_duration: (Method)
+      # gtk_stack_set_transition_duration: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_set_transition_duration(self, duration)
     end
 
     def transition_type=(transition : Gtk::StackTransitionType) : Nil
-      # gtk_stack_set_transition_type: (Method)
+      # gtk_stack_set_transition_type: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_set_transition_type(self, transition)
     end
 
     def vhomogeneous=(vhomogeneous : Bool) : Nil
-      # gtk_stack_set_vhomogeneous: (Method)
+      # gtk_stack_set_vhomogeneous: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_set_vhomogeneous(self, vhomogeneous)
     end
 
     def visible_child=(child : Gtk::Widget) : Nil
-      # gtk_stack_set_visible_child: (Method)
+      # gtk_stack_set_visible_child: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_set_visible_child(self, child)
@@ -611,7 +611,7 @@ module Gtk
     end
 
     def visible_child_name=(name : ::String) : Nil
-      # gtk_stack_set_visible_child_name: (Method)
+      # gtk_stack_set_visible_child_name: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_set_visible_child_name(self, name)

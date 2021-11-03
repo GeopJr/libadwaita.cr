@@ -308,7 +308,7 @@ module Gtk
     end
 
     def editable : Bool
-      # gtk_editable_get_editable: (Method)
+      # gtk_editable_get_editable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_editable_get_editable(self)
@@ -316,7 +316,7 @@ module Gtk
     end
 
     def enable_undo : Bool
-      # gtk_editable_get_enable_undo: (Method)
+      # gtk_editable_get_enable_undo: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_editable_get_enable_undo(self)
@@ -324,7 +324,7 @@ module Gtk
     end
 
     def max_width_chars : Int32
-      # gtk_editable_get_max_width_chars: (Method)
+      # gtk_editable_get_max_width_chars: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_editable_get_max_width_chars(self)
@@ -353,7 +353,7 @@ module Gtk
     end
 
     def text : ::String
-      # gtk_editable_get_text: (Method)
+      # gtk_editable_get_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_editable_get_text(self)
@@ -361,7 +361,7 @@ module Gtk
     end
 
     def width_chars : Int32
-      # gtk_editable_get_width_chars: (Method)
+      # gtk_editable_get_width_chars: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_editable_get_width_chars(self)
@@ -398,21 +398,21 @@ module Gtk
     end
 
     def editable=(is_editable : Bool) : Nil
-      # gtk_editable_set_editable: (Method)
+      # gtk_editable_set_editable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_editable_set_editable(self, is_editable)
     end
 
     def enable_undo=(enable_undo : Bool) : Nil
-      # gtk_editable_set_enable_undo: (Method)
+      # gtk_editable_set_enable_undo: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_editable_set_enable_undo(self, enable_undo)
     end
 
     def max_width_chars=(n_chars : Int32) : Nil
-      # gtk_editable_set_max_width_chars: (Method)
+      # gtk_editable_set_max_width_chars: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_editable_set_max_width_chars(self, n_chars)
@@ -426,14 +426,14 @@ module Gtk
     end
 
     def text=(text : ::String) : Nil
-      # gtk_editable_set_text: (Method)
+      # gtk_editable_set_text: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_editable_set_text(self, text)
     end
 
     def width_chars=(n_chars : Int32) : Nil
-      # gtk_editable_set_width_chars: (Method)
+      # gtk_editable_set_width_chars: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_editable_set_width_chars(self, n_chars)

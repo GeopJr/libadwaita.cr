@@ -87,7 +87,7 @@ module Gdk
     end
 
     def display : Gdk::Display?
-      # gdk_draw_context_get_display: (Method)
+      # gdk_draw_context_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_draw_context_get_display(self)
@@ -103,7 +103,7 @@ module Gdk
     end
 
     def surface : Gdk::Surface?
-      # gdk_draw_context_get_surface: (Method)
+      # gdk_draw_context_get_surface: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGdk.gdk_draw_context_get_surface(self)

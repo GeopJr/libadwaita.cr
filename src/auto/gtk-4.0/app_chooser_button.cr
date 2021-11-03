@@ -345,7 +345,7 @@ module Gtk
     end
 
     def heading : ::String?
-      # gtk_app_chooser_button_get_heading: (Method)
+      # gtk_app_chooser_button_get_heading: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_button_get_heading(self)
@@ -353,7 +353,7 @@ module Gtk
     end
 
     def modal : Bool
-      # gtk_app_chooser_button_get_modal: (Method)
+      # gtk_app_chooser_button_get_modal: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_button_get_modal(self)
@@ -361,7 +361,7 @@ module Gtk
     end
 
     def show_default_item : Bool
-      # gtk_app_chooser_button_get_show_default_item: (Method)
+      # gtk_app_chooser_button_get_show_default_item: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_button_get_show_default_item(self)
@@ -369,7 +369,7 @@ module Gtk
     end
 
     def show_dialog_item : Bool
-      # gtk_app_chooser_button_get_show_dialog_item: (Method)
+      # gtk_app_chooser_button_get_show_dialog_item: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_button_get_show_dialog_item(self)
@@ -384,28 +384,28 @@ module Gtk
     end
 
     def heading=(heading : ::String) : Nil
-      # gtk_app_chooser_button_set_heading: (Method)
+      # gtk_app_chooser_button_set_heading: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_button_set_heading(self, heading)
     end
 
     def modal=(modal : Bool) : Nil
-      # gtk_app_chooser_button_set_modal: (Method)
+      # gtk_app_chooser_button_set_modal: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_button_set_modal(self, modal)
     end
 
     def show_default_item=(setting : Bool) : Nil
-      # gtk_app_chooser_button_set_show_default_item: (Method)
+      # gtk_app_chooser_button_set_show_default_item: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_button_set_show_default_item(self, setting)
     end
 
     def show_dialog_item=(setting : Bool) : Nil
-      # gtk_app_chooser_button_set_show_dialog_item: (Method)
+      # gtk_app_chooser_button_set_show_dialog_item: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_button_set_show_dialog_item(self, setting)

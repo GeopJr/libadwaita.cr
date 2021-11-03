@@ -123,7 +123,7 @@ module Gtk
     end
 
     def button : UInt32
-      # gtk_gesture_single_get_button: (Method)
+      # gtk_gesture_single_get_button: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gesture_single_get_button(self)
@@ -147,7 +147,7 @@ module Gtk
     end
 
     def exclusive : Bool
-      # gtk_gesture_single_get_exclusive: (Method)
+      # gtk_gesture_single_get_exclusive: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gesture_single_get_exclusive(self)
@@ -155,7 +155,7 @@ module Gtk
     end
 
     def touch_only : Bool
-      # gtk_gesture_single_get_touch_only: (Method)
+      # gtk_gesture_single_get_touch_only: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_gesture_single_get_touch_only(self)
@@ -163,21 +163,21 @@ module Gtk
     end
 
     def button=(button : UInt32) : Nil
-      # gtk_gesture_single_set_button: (Method)
+      # gtk_gesture_single_set_button: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_gesture_single_set_button(self, button)
     end
 
     def exclusive=(exclusive : Bool) : Nil
-      # gtk_gesture_single_set_exclusive: (Method)
+      # gtk_gesture_single_set_exclusive: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_gesture_single_set_exclusive(self, exclusive)
     end
 
     def touch_only=(touch_only : Bool) : Nil
-      # gtk_gesture_single_set_touch_only: (Method)
+      # gtk_gesture_single_set_touch_only: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_gesture_single_set_touch_only(self, touch_only)

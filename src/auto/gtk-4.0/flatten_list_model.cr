@@ -67,7 +67,7 @@ module Gtk
     end
 
     def model : Gio::ListModel?
-      # gtk_flatten_list_model_get_model: (Method)
+      # gtk_flatten_list_model_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_flatten_list_model_get_model(self)
@@ -83,7 +83,7 @@ module Gtk
     end
 
     def model=(model : Gio::ListModel?) : Nil
-      # gtk_flatten_list_model_set_model: (Method)
+      # gtk_flatten_list_model_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 

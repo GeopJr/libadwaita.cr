@@ -133,7 +133,7 @@ module Gtk
     end
 
     def expression : Gtk::Expression?
-      # gtk_string_filter_get_expression: (Method)
+      # gtk_string_filter_get_expression: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_string_filter_get_expression(self)
@@ -141,7 +141,7 @@ module Gtk
     end
 
     def ignore_case : Bool
-      # gtk_string_filter_get_ignore_case: (Method)
+      # gtk_string_filter_get_ignore_case: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_string_filter_get_ignore_case(self)
@@ -149,7 +149,7 @@ module Gtk
     end
 
     def match_mode : Gtk::StringFilterMatchMode
-      # gtk_string_filter_get_match_mode: (Method)
+      # gtk_string_filter_get_match_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_string_filter_get_match_mode(self)
@@ -157,7 +157,7 @@ module Gtk
     end
 
     def search : ::String?
-      # gtk_string_filter_get_search: (Method)
+      # gtk_string_filter_get_search: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_string_filter_get_search(self)
@@ -165,7 +165,7 @@ module Gtk
     end
 
     def expression=(expression : Gtk::Expression?) : Nil
-      # gtk_string_filter_set_expression: (Method)
+      # gtk_string_filter_set_expression: (Method | Setter)
       # @expression: (nullable)
       # Returns: (transfer none)
 
@@ -179,21 +179,21 @@ module Gtk
     end
 
     def ignore_case=(ignore_case : Bool) : Nil
-      # gtk_string_filter_set_ignore_case: (Method)
+      # gtk_string_filter_set_ignore_case: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_string_filter_set_ignore_case(self, ignore_case)
     end
 
     def match_mode=(mode : Gtk::StringFilterMatchMode) : Nil
-      # gtk_string_filter_set_match_mode: (Method)
+      # gtk_string_filter_set_match_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_string_filter_set_match_mode(self, mode)
     end
 
     def search=(search : ::String?) : Nil
-      # gtk_string_filter_set_search: (Method)
+      # gtk_string_filter_set_search: (Method | Setter)
       # @search: (nullable)
       # Returns: (transfer none)
 

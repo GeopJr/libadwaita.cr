@@ -770,7 +770,7 @@ module Gtk
     end
 
     def attributes : Pango::AttrList?
-      # gtk_label_get_attributes: (Method)
+      # gtk_label_get_attributes: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_attributes(self)
@@ -786,7 +786,7 @@ module Gtk
     end
 
     def ellipsize : Pango::EllipsizeMode
-      # gtk_label_get_ellipsize: (Method)
+      # gtk_label_get_ellipsize: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_ellipsize(self)
@@ -794,7 +794,7 @@ module Gtk
     end
 
     def extra_menu : Gio::MenuModel?
-      # gtk_label_get_extra_menu: (Method)
+      # gtk_label_get_extra_menu: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_extra_menu(self)
@@ -802,7 +802,7 @@ module Gtk
     end
 
     def justify : Gtk::Justification
-      # gtk_label_get_justify: (Method)
+      # gtk_label_get_justify: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_justify(self)
@@ -810,7 +810,7 @@ module Gtk
     end
 
     def label : ::String
-      # gtk_label_get_label: (Method)
+      # gtk_label_get_label: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_label(self)
@@ -838,7 +838,7 @@ module Gtk
     end
 
     def lines : Int32
-      # gtk_label_get_lines: (Method)
+      # gtk_label_get_lines: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_lines(self)
@@ -846,7 +846,7 @@ module Gtk
     end
 
     def max_width_chars : Int32
-      # gtk_label_get_max_width_chars: (Method)
+      # gtk_label_get_max_width_chars: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_max_width_chars(self)
@@ -854,7 +854,7 @@ module Gtk
     end
 
     def mnemonic_keyval : UInt32
-      # gtk_label_get_mnemonic_keyval: (Method)
+      # gtk_label_get_mnemonic_keyval: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_mnemonic_keyval(self)
@@ -862,7 +862,7 @@ module Gtk
     end
 
     def mnemonic_widget : Gtk::Widget?
-      # gtk_label_get_mnemonic_widget: (Method)
+      # gtk_label_get_mnemonic_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_mnemonic_widget(self)
@@ -870,7 +870,7 @@ module Gtk
     end
 
     def selectable : Bool
-      # gtk_label_get_selectable: (Method)
+      # gtk_label_get_selectable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_selectable(self)
@@ -888,7 +888,7 @@ module Gtk
     end
 
     def single_line_mode : Bool
-      # gtk_label_get_single_line_mode: (Method)
+      # gtk_label_get_single_line_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_single_line_mode(self)
@@ -904,7 +904,7 @@ module Gtk
     end
 
     def use_markup : Bool
-      # gtk_label_get_use_markup: (Method)
+      # gtk_label_get_use_markup: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_use_markup(self)
@@ -912,7 +912,7 @@ module Gtk
     end
 
     def use_underline : Bool
-      # gtk_label_get_use_underline: (Method)
+      # gtk_label_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_use_underline(self)
@@ -920,7 +920,7 @@ module Gtk
     end
 
     def width_chars : Int32
-      # gtk_label_get_width_chars: (Method)
+      # gtk_label_get_width_chars: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_width_chars(self)
@@ -928,7 +928,7 @@ module Gtk
     end
 
     def wrap : Bool
-      # gtk_label_get_wrap: (Method)
+      # gtk_label_get_wrap: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_wrap(self)
@@ -936,7 +936,7 @@ module Gtk
     end
 
     def wrap_mode : Pango::WrapMode
-      # gtk_label_get_wrap_mode: (Method)
+      # gtk_label_get_wrap_mode: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_wrap_mode(self)
@@ -944,7 +944,7 @@ module Gtk
     end
 
     def xalign : Float32
-      # gtk_label_get_xalign: (Method)
+      # gtk_label_get_xalign: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_xalign(self)
@@ -952,7 +952,7 @@ module Gtk
     end
 
     def yalign : Float32
-      # gtk_label_get_yalign: (Method)
+      # gtk_label_get_yalign: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_label_get_yalign(self)
@@ -967,7 +967,7 @@ module Gtk
     end
 
     def attributes=(attrs : Pango::AttrList?) : Nil
-      # gtk_label_set_attributes: (Method)
+      # gtk_label_set_attributes: (Method | Setter)
       # @attrs: (nullable)
       # Returns: (transfer none)
 
@@ -981,14 +981,14 @@ module Gtk
     end
 
     def ellipsize=(mode : Pango::EllipsizeMode) : Nil
-      # gtk_label_set_ellipsize: (Method)
+      # gtk_label_set_ellipsize: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_ellipsize(self, mode)
     end
 
     def extra_menu=(model : Gio::MenuModel?) : Nil
-      # gtk_label_set_extra_menu: (Method)
+      # gtk_label_set_extra_menu: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -1002,21 +1002,21 @@ module Gtk
     end
 
     def justify=(jtype : Gtk::Justification) : Nil
-      # gtk_label_set_justify: (Method)
+      # gtk_label_set_justify: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_justify(self, jtype)
     end
 
     def label=(str : ::String) : Nil
-      # gtk_label_set_label: (Method)
+      # gtk_label_set_label: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_label(self, str)
     end
 
     def lines=(lines : Int32) : Nil
-      # gtk_label_set_lines: (Method)
+      # gtk_label_set_lines: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_lines(self, lines)
@@ -1037,14 +1037,14 @@ module Gtk
     end
 
     def max_width_chars=(n_chars : Int32) : Nil
-      # gtk_label_set_max_width_chars: (Method)
+      # gtk_label_set_max_width_chars: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_max_width_chars(self, n_chars)
     end
 
     def mnemonic_widget=(widget : Gtk::Widget?) : Nil
-      # gtk_label_set_mnemonic_widget: (Method)
+      # gtk_label_set_mnemonic_widget: (Method | Setter)
       # @widget: (nullable)
       # Returns: (transfer none)
 
@@ -1058,14 +1058,14 @@ module Gtk
     end
 
     def selectable=(setting : Bool) : Nil
-      # gtk_label_set_selectable: (Method)
+      # gtk_label_set_selectable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_selectable(self, setting)
     end
 
     def single_line_mode=(single_line_mode : Bool) : Nil
-      # gtk_label_set_single_line_mode: (Method)
+      # gtk_label_set_single_line_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_single_line_mode(self, single_line_mode)
@@ -1086,49 +1086,49 @@ module Gtk
     end
 
     def use_markup=(setting : Bool) : Nil
-      # gtk_label_set_use_markup: (Method)
+      # gtk_label_set_use_markup: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_use_markup(self, setting)
     end
 
     def use_underline=(setting : Bool) : Nil
-      # gtk_label_set_use_underline: (Method)
+      # gtk_label_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_use_underline(self, setting)
     end
 
     def width_chars=(n_chars : Int32) : Nil
-      # gtk_label_set_width_chars: (Method)
+      # gtk_label_set_width_chars: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_width_chars(self, n_chars)
     end
 
     def wrap=(wrap : Bool) : Nil
-      # gtk_label_set_wrap: (Method)
+      # gtk_label_set_wrap: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_wrap(self, wrap)
     end
 
     def wrap_mode=(wrap_mode : Pango::WrapMode) : Nil
-      # gtk_label_set_wrap_mode: (Method)
+      # gtk_label_set_wrap_mode: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_wrap_mode(self, wrap_mode)
     end
 
     def xalign=(xalign : Float32) : Nil
-      # gtk_label_set_xalign: (Method)
+      # gtk_label_set_xalign: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_xalign(self, xalign)
     end
 
     def yalign=(yalign : Float32) : Nil
-      # gtk_label_set_yalign: (Method)
+      # gtk_label_set_yalign: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_label_set_yalign(self, yalign)

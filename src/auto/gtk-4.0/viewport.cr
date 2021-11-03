@@ -308,7 +308,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_viewport_get_child: (Method)
+      # gtk_viewport_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_viewport_get_child(self)
@@ -316,7 +316,7 @@ module Gtk
     end
 
     def scroll_to_focus : Bool
-      # gtk_viewport_get_scroll_to_focus: (Method)
+      # gtk_viewport_get_scroll_to_focus: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_viewport_get_scroll_to_focus(self)
@@ -324,7 +324,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_viewport_set_child: (Method)
+      # gtk_viewport_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -338,7 +338,7 @@ module Gtk
     end
 
     def scroll_to_focus=(scroll_to_focus : Bool) : Nil
-      # gtk_viewport_set_scroll_to_focus: (Method)
+      # gtk_viewport_set_scroll_to_focus: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_viewport_set_scroll_to_focus(self, scroll_to_focus)

@@ -176,7 +176,7 @@ module Gtk
     end
 
     def scope : Gtk::ShortcutScope
-      # gtk_shortcut_controller_get_scope: (Method)
+      # gtk_shortcut_controller_get_scope: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_shortcut_controller_get_scope(self)
@@ -198,7 +198,7 @@ module Gtk
     end
 
     def scope=(scope : Gtk::ShortcutScope) : Nil
-      # gtk_shortcut_controller_set_scope: (Method)
+      # gtk_shortcut_controller_set_scope: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_shortcut_controller_set_scope(self, scope)

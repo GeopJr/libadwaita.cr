@@ -259,7 +259,7 @@ module Gtk
     end
 
     def accelerator : ::String?
-      # gtk_shortcut_label_get_accelerator: (Method)
+      # gtk_shortcut_label_get_accelerator: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_shortcut_label_get_accelerator(self)
@@ -267,7 +267,7 @@ module Gtk
     end
 
     def disabled_text : ::String?
-      # gtk_shortcut_label_get_disabled_text: (Method)
+      # gtk_shortcut_label_get_disabled_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_shortcut_label_get_disabled_text(self)
@@ -275,14 +275,14 @@ module Gtk
     end
 
     def accelerator=(accelerator : ::String) : Nil
-      # gtk_shortcut_label_set_accelerator: (Method)
+      # gtk_shortcut_label_set_accelerator: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_shortcut_label_set_accelerator(self, accelerator)
     end
 
     def disabled_text=(disabled_text : ::String) : Nil
-      # gtk_shortcut_label_set_disabled_text: (Method)
+      # gtk_shortcut_label_set_disabled_text: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_shortcut_label_set_disabled_text(self, disabled_text)

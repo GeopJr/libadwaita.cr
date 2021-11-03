@@ -599,7 +599,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_scrolled_window_get_child: (Method)
+      # gtk_scrolled_window_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_child(self)
@@ -607,7 +607,7 @@ module Gtk
     end
 
     def hadjustment : Gtk::Adjustment
-      # gtk_scrolled_window_get_hadjustment: (Method)
+      # gtk_scrolled_window_get_hadjustment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_hadjustment(self)
@@ -615,7 +615,7 @@ module Gtk
     end
 
     def has_frame : Bool
-      # gtk_scrolled_window_get_has_frame: (Method)
+      # gtk_scrolled_window_get_has_frame: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_has_frame(self)
@@ -631,7 +631,7 @@ module Gtk
     end
 
     def kinetic_scrolling : Bool
-      # gtk_scrolled_window_get_kinetic_scrolling: (Method)
+      # gtk_scrolled_window_get_kinetic_scrolling: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_kinetic_scrolling(self)
@@ -639,7 +639,7 @@ module Gtk
     end
 
     def max_content_height : Int32
-      # gtk_scrolled_window_get_max_content_height: (Method)
+      # gtk_scrolled_window_get_max_content_height: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_max_content_height(self)
@@ -647,7 +647,7 @@ module Gtk
     end
 
     def max_content_width : Int32
-      # gtk_scrolled_window_get_max_content_width: (Method)
+      # gtk_scrolled_window_get_max_content_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_max_content_width(self)
@@ -655,7 +655,7 @@ module Gtk
     end
 
     def min_content_height : Int32
-      # gtk_scrolled_window_get_min_content_height: (Method)
+      # gtk_scrolled_window_get_min_content_height: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_min_content_height(self)
@@ -663,7 +663,7 @@ module Gtk
     end
 
     def min_content_width : Int32
-      # gtk_scrolled_window_get_min_content_width: (Method)
+      # gtk_scrolled_window_get_min_content_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_min_content_width(self)
@@ -671,7 +671,7 @@ module Gtk
     end
 
     def overlay_scrolling : Bool
-      # gtk_scrolled_window_get_overlay_scrolling: (Method)
+      # gtk_scrolled_window_get_overlay_scrolling: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_overlay_scrolling(self)
@@ -699,7 +699,7 @@ module Gtk
     end
 
     def propagate_natural_height : Bool
-      # gtk_scrolled_window_get_propagate_natural_height: (Method)
+      # gtk_scrolled_window_get_propagate_natural_height: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_propagate_natural_height(self)
@@ -707,7 +707,7 @@ module Gtk
     end
 
     def propagate_natural_width : Bool
-      # gtk_scrolled_window_get_propagate_natural_width: (Method)
+      # gtk_scrolled_window_get_propagate_natural_width: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_propagate_natural_width(self)
@@ -715,7 +715,7 @@ module Gtk
     end
 
     def vadjustment : Gtk::Adjustment
-      # gtk_scrolled_window_get_vadjustment: (Method)
+      # gtk_scrolled_window_get_vadjustment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_scrolled_window_get_vadjustment(self)
@@ -731,7 +731,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_scrolled_window_set_child: (Method)
+      # gtk_scrolled_window_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -745,7 +745,7 @@ module Gtk
     end
 
     def hadjustment=(hadjustment : Gtk::Adjustment?) : Nil
-      # gtk_scrolled_window_set_hadjustment: (Method)
+      # gtk_scrolled_window_set_hadjustment: (Method | Setter)
       # @hadjustment: (nullable)
       # Returns: (transfer none)
 
@@ -759,49 +759,49 @@ module Gtk
     end
 
     def has_frame=(has_frame : Bool) : Nil
-      # gtk_scrolled_window_set_has_frame: (Method)
+      # gtk_scrolled_window_set_has_frame: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrolled_window_set_has_frame(self, has_frame)
     end
 
     def kinetic_scrolling=(kinetic_scrolling : Bool) : Nil
-      # gtk_scrolled_window_set_kinetic_scrolling: (Method)
+      # gtk_scrolled_window_set_kinetic_scrolling: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrolled_window_set_kinetic_scrolling(self, kinetic_scrolling)
     end
 
     def max_content_height=(height : Int32) : Nil
-      # gtk_scrolled_window_set_max_content_height: (Method)
+      # gtk_scrolled_window_set_max_content_height: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrolled_window_set_max_content_height(self, height)
     end
 
     def max_content_width=(width : Int32) : Nil
-      # gtk_scrolled_window_set_max_content_width: (Method)
+      # gtk_scrolled_window_set_max_content_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrolled_window_set_max_content_width(self, width)
     end
 
     def min_content_height=(height : Int32) : Nil
-      # gtk_scrolled_window_set_min_content_height: (Method)
+      # gtk_scrolled_window_set_min_content_height: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrolled_window_set_min_content_height(self, height)
     end
 
     def min_content_width=(width : Int32) : Nil
-      # gtk_scrolled_window_set_min_content_width: (Method)
+      # gtk_scrolled_window_set_min_content_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrolled_window_set_min_content_width(self, width)
     end
 
     def overlay_scrolling=(overlay_scrolling : Bool) : Nil
-      # gtk_scrolled_window_set_overlay_scrolling: (Method)
+      # gtk_scrolled_window_set_overlay_scrolling: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrolled_window_set_overlay_scrolling(self, overlay_scrolling)
@@ -822,21 +822,21 @@ module Gtk
     end
 
     def propagate_natural_height=(propagate : Bool) : Nil
-      # gtk_scrolled_window_set_propagate_natural_height: (Method)
+      # gtk_scrolled_window_set_propagate_natural_height: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrolled_window_set_propagate_natural_height(self, propagate)
     end
 
     def propagate_natural_width=(propagate : Bool) : Nil
-      # gtk_scrolled_window_set_propagate_natural_width: (Method)
+      # gtk_scrolled_window_set_propagate_natural_width: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_scrolled_window_set_propagate_natural_width(self, propagate)
     end
 
     def vadjustment=(vadjustment : Gtk::Adjustment?) : Nil
-      # gtk_scrolled_window_set_vadjustment: (Method)
+      # gtk_scrolled_window_set_vadjustment: (Method | Setter)
       # @vadjustment: (nullable)
       # Returns: (transfer none)
 

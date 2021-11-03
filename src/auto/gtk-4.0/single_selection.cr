@@ -146,7 +146,7 @@ module Gtk
     end
 
     def autoselect : Bool
-      # gtk_single_selection_get_autoselect: (Method)
+      # gtk_single_selection_get_autoselect: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_single_selection_get_autoselect(self)
@@ -154,7 +154,7 @@ module Gtk
     end
 
     def can_unselect : Bool
-      # gtk_single_selection_get_can_unselect: (Method)
+      # gtk_single_selection_get_can_unselect: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_single_selection_get_can_unselect(self)
@@ -162,7 +162,7 @@ module Gtk
     end
 
     def model : Gio::ListModel
-      # gtk_single_selection_get_model: (Method)
+      # gtk_single_selection_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_single_selection_get_model(self)
@@ -170,7 +170,7 @@ module Gtk
     end
 
     def selected : UInt32
-      # gtk_single_selection_get_selected: (Method)
+      # gtk_single_selection_get_selected: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_single_selection_get_selected(self)
@@ -178,7 +178,7 @@ module Gtk
     end
 
     def selected_item : GObject::Object?
-      # gtk_single_selection_get_selected_item: (Method)
+      # gtk_single_selection_get_selected_item: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_single_selection_get_selected_item(self)
@@ -186,21 +186,21 @@ module Gtk
     end
 
     def autoselect=(autoselect : Bool) : Nil
-      # gtk_single_selection_set_autoselect: (Method)
+      # gtk_single_selection_set_autoselect: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_single_selection_set_autoselect(self, autoselect)
     end
 
     def can_unselect=(can_unselect : Bool) : Nil
-      # gtk_single_selection_set_can_unselect: (Method)
+      # gtk_single_selection_set_can_unselect: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_single_selection_set_can_unselect(self, can_unselect)
     end
 
     def model=(model : Gio::ListModel?) : Nil
-      # gtk_single_selection_set_model: (Method)
+      # gtk_single_selection_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -214,7 +214,7 @@ module Gtk
     end
 
     def selected=(position : UInt32) : Nil
-      # gtk_single_selection_set_selected: (Method)
+      # gtk_single_selection_set_selected: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_single_selection_set_selected(self, position)

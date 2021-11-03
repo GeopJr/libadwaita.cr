@@ -371,7 +371,7 @@ module Gtk
     end
 
     def extra_menu : Gio::MenuModel
-      # gtk_password_entry_get_extra_menu: (Method)
+      # gtk_password_entry_get_extra_menu: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_password_entry_get_extra_menu(self)
@@ -379,7 +379,7 @@ module Gtk
     end
 
     def show_peek_icon : Bool
-      # gtk_password_entry_get_show_peek_icon: (Method)
+      # gtk_password_entry_get_show_peek_icon: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_password_entry_get_show_peek_icon(self)
@@ -387,7 +387,7 @@ module Gtk
     end
 
     def extra_menu=(model : Gio::MenuModel?) : Nil
-      # gtk_password_entry_set_extra_menu: (Method)
+      # gtk_password_entry_set_extra_menu: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -401,7 +401,7 @@ module Gtk
     end
 
     def show_peek_icon=(show_peek_icon : Bool) : Nil
-      # gtk_password_entry_set_show_peek_icon: (Method)
+      # gtk_password_entry_set_show_peek_icon: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_password_entry_set_show_peek_icon(self, show_peek_icon)

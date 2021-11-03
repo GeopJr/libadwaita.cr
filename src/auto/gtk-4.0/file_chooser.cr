@@ -152,7 +152,7 @@ module Gtk
     end
 
     def action : Gtk::FileChooserAction
-      # gtk_file_chooser_get_action: (Method)
+      # gtk_file_chooser_get_action: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_file_chooser_get_action(self)
@@ -168,7 +168,7 @@ module Gtk
     end
 
     def create_folders : Bool
-      # gtk_file_chooser_get_create_folders: (Method)
+      # gtk_file_chooser_get_create_folders: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_file_chooser_get_create_folders(self)
@@ -208,7 +208,7 @@ module Gtk
     end
 
     def filter : Gtk::FileFilter?
-      # gtk_file_chooser_get_filter: (Method)
+      # gtk_file_chooser_get_filter: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_file_chooser_get_filter(self)
@@ -216,7 +216,7 @@ module Gtk
     end
 
     def filters : Gio::ListModel
-      # gtk_file_chooser_get_filters: (Method)
+      # gtk_file_chooser_get_filters: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_file_chooser_get_filters(self)
@@ -224,7 +224,7 @@ module Gtk
     end
 
     def select_multiple : Bool
-      # gtk_file_chooser_get_select_multiple: (Method)
+      # gtk_file_chooser_get_select_multiple: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_file_chooser_get_select_multiple(self)
@@ -232,7 +232,7 @@ module Gtk
     end
 
     def shortcut_folders : Gio::ListModel
-      # gtk_file_chooser_get_shortcut_folders: (Method)
+      # gtk_file_chooser_get_shortcut_folders: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_file_chooser_get_shortcut_folders(self)
@@ -262,7 +262,7 @@ module Gtk
     end
 
     def action=(action : Gtk::FileChooserAction) : Nil
-      # gtk_file_chooser_set_action: (Method)
+      # gtk_file_chooser_set_action: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_file_chooser_set_action(self, action)
@@ -276,7 +276,7 @@ module Gtk
     end
 
     def create_folders=(create_folders : Bool) : Nil
-      # gtk_file_chooser_set_create_folders: (Method)
+      # gtk_file_chooser_set_create_folders: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_file_chooser_set_create_folders(self, create_folders)
@@ -306,14 +306,14 @@ module Gtk
     end
 
     def filter=(filter : Gtk::FileFilter) : Nil
-      # gtk_file_chooser_set_filter: (Method)
+      # gtk_file_chooser_set_filter: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_file_chooser_set_filter(self, filter)
     end
 
     def select_multiple=(select_multiple : Bool) : Nil
-      # gtk_file_chooser_set_select_multiple: (Method)
+      # gtk_file_chooser_set_select_multiple: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_file_chooser_set_select_multiple(self, select_multiple)

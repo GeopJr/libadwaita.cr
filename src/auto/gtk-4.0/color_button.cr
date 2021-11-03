@@ -315,7 +315,7 @@ module Gtk
     end
 
     def modal : Bool
-      # gtk_color_button_get_modal: (Method)
+      # gtk_color_button_get_modal: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_color_button_get_modal(self)
@@ -323,7 +323,7 @@ module Gtk
     end
 
     def title : ::String
-      # gtk_color_button_get_title: (Method)
+      # gtk_color_button_get_title: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_color_button_get_title(self)
@@ -331,14 +331,14 @@ module Gtk
     end
 
     def modal=(modal : Bool) : Nil
-      # gtk_color_button_set_modal: (Method)
+      # gtk_color_button_set_modal: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_color_button_set_modal(self, modal)
     end
 
     def title=(title : ::String) : Nil
-      # gtk_color_button_set_title: (Method)
+      # gtk_color_button_set_title: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_color_button_set_title(self, title)

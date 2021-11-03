@@ -408,7 +408,7 @@ module Gtk
     end
 
     def show_day_names : Bool
-      # gtk_calendar_get_show_day_names: (Method)
+      # gtk_calendar_get_show_day_names: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_calendar_get_show_day_names(self)
@@ -416,7 +416,7 @@ module Gtk
     end
 
     def show_heading : Bool
-      # gtk_calendar_get_show_heading: (Method)
+      # gtk_calendar_get_show_heading: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_calendar_get_show_heading(self)
@@ -424,7 +424,7 @@ module Gtk
     end
 
     def show_week_numbers : Bool
-      # gtk_calendar_get_show_week_numbers: (Method)
+      # gtk_calendar_get_show_week_numbers: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_calendar_get_show_week_numbers(self)
@@ -446,21 +446,21 @@ module Gtk
     end
 
     def show_day_names=(value : Bool) : Nil
-      # gtk_calendar_set_show_day_names: (Method)
+      # gtk_calendar_set_show_day_names: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_calendar_set_show_day_names(self, value)
     end
 
     def show_heading=(value : Bool) : Nil
-      # gtk_calendar_set_show_heading: (Method)
+      # gtk_calendar_set_show_heading: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_calendar_set_show_heading(self, value)
     end
 
     def show_week_numbers=(value : Bool) : Nil
-      # gtk_calendar_set_show_week_numbers: (Method)
+      # gtk_calendar_set_show_week_numbers: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_calendar_set_show_week_numbers(self, value)

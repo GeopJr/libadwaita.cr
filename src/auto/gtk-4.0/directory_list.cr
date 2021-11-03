@@ -176,7 +176,7 @@ module Gtk
     end
 
     def attributes : ::String?
-      # gtk_directory_list_get_attributes: (Method)
+      # gtk_directory_list_get_attributes: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_directory_list_get_attributes(self)
@@ -184,7 +184,7 @@ module Gtk
     end
 
     def error : GLib::Error?
-      # gtk_directory_list_get_error: (Method)
+      # gtk_directory_list_get_error: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_directory_list_get_error(self)
@@ -192,7 +192,7 @@ module Gtk
     end
 
     def file : Gio::File?
-      # gtk_directory_list_get_file: (Method)
+      # gtk_directory_list_get_file: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_directory_list_get_file(self)
@@ -200,7 +200,7 @@ module Gtk
     end
 
     def io_priority : Int32
-      # gtk_directory_list_get_io_priority: (Method)
+      # gtk_directory_list_get_io_priority: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_directory_list_get_io_priority(self)
@@ -208,7 +208,7 @@ module Gtk
     end
 
     def monitored : Bool
-      # gtk_directory_list_get_monitored: (Method)
+      # gtk_directory_list_get_monitored: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_directory_list_get_monitored(self)
@@ -224,7 +224,7 @@ module Gtk
     end
 
     def attributes=(attributes : ::String?) : Nil
-      # gtk_directory_list_set_attributes: (Method)
+      # gtk_directory_list_set_attributes: (Method | Setter)
       # @attributes: (nullable)
       # Returns: (transfer none)
 
@@ -238,7 +238,7 @@ module Gtk
     end
 
     def file=(file : Gio::File?) : Nil
-      # gtk_directory_list_set_file: (Method)
+      # gtk_directory_list_set_file: (Method | Setter)
       # @file: (nullable)
       # Returns: (transfer none)
 
@@ -252,14 +252,14 @@ module Gtk
     end
 
     def io_priority=(io_priority : Int32) : Nil
-      # gtk_directory_list_set_io_priority: (Method)
+      # gtk_directory_list_set_io_priority: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_directory_list_set_io_priority(self, io_priority)
     end
 
     def monitored=(monitored : Bool) : Nil
-      # gtk_directory_list_set_monitored: (Method)
+      # gtk_directory_list_set_monitored: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_directory_list_set_monitored(self, monitored)

@@ -49,7 +49,7 @@ module Gtk
     end
 
     def string : ::String
-      # gtk_string_object_get_string: (Method)
+      # gtk_string_object_get_string: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_string_object_get_string(self)

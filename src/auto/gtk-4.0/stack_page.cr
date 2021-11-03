@@ -173,7 +173,7 @@ module Gtk
     end
 
     def child : Gtk::Widget
-      # gtk_stack_page_get_child: (Method)
+      # gtk_stack_page_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_page_get_child(self)
@@ -181,7 +181,7 @@ module Gtk
     end
 
     def icon_name : ::String?
-      # gtk_stack_page_get_icon_name: (Method)
+      # gtk_stack_page_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_page_get_icon_name(self)
@@ -189,7 +189,7 @@ module Gtk
     end
 
     def name : ::String?
-      # gtk_stack_page_get_name: (Method)
+      # gtk_stack_page_get_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_page_get_name(self)
@@ -197,7 +197,7 @@ module Gtk
     end
 
     def needs_attention : Bool
-      # gtk_stack_page_get_needs_attention: (Method)
+      # gtk_stack_page_get_needs_attention: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_page_get_needs_attention(self)
@@ -205,7 +205,7 @@ module Gtk
     end
 
     def title : ::String?
-      # gtk_stack_page_get_title: (Method)
+      # gtk_stack_page_get_title: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_page_get_title(self)
@@ -213,7 +213,7 @@ module Gtk
     end
 
     def use_underline : Bool
-      # gtk_stack_page_get_use_underline: (Method)
+      # gtk_stack_page_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_page_get_use_underline(self)
@@ -221,7 +221,7 @@ module Gtk
     end
 
     def visible : Bool
-      # gtk_stack_page_get_visible: (Method)
+      # gtk_stack_page_get_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_stack_page_get_visible(self)
@@ -229,42 +229,42 @@ module Gtk
     end
 
     def icon_name=(setting : ::String) : Nil
-      # gtk_stack_page_set_icon_name: (Method)
+      # gtk_stack_page_set_icon_name: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_page_set_icon_name(self, setting)
     end
 
     def name=(setting : ::String) : Nil
-      # gtk_stack_page_set_name: (Method)
+      # gtk_stack_page_set_name: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_page_set_name(self, setting)
     end
 
     def needs_attention=(setting : Bool) : Nil
-      # gtk_stack_page_set_needs_attention: (Method)
+      # gtk_stack_page_set_needs_attention: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_page_set_needs_attention(self, setting)
     end
 
     def title=(setting : ::String) : Nil
-      # gtk_stack_page_set_title: (Method)
+      # gtk_stack_page_set_title: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_page_set_title(self, setting)
     end
 
     def use_underline=(setting : Bool) : Nil
-      # gtk_stack_page_set_use_underline: (Method)
+      # gtk_stack_page_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_page_set_use_underline(self, setting)
     end
 
     def visible=(visible : Bool) : Nil
-      # gtk_stack_page_set_visible: (Method)
+      # gtk_stack_page_set_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_stack_page_set_visible(self, visible)

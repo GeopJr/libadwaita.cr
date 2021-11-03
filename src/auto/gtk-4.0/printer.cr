@@ -279,7 +279,7 @@ module Gtk
     end
 
     def icon_name : ::String
-      # gtk_printer_get_icon_name: (Method)
+      # gtk_printer_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_printer_get_icon_name(self)
@@ -287,7 +287,7 @@ module Gtk
     end
 
     def job_count : Int32
-      # gtk_printer_get_job_count: (Method)
+      # gtk_printer_get_job_count: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_printer_get_job_count(self)
@@ -295,7 +295,7 @@ module Gtk
     end
 
     def location : ::String
-      # gtk_printer_get_location: (Method)
+      # gtk_printer_get_location: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_printer_get_location(self)
@@ -303,7 +303,7 @@ module Gtk
     end
 
     def name : ::String
-      # gtk_printer_get_name: (Method)
+      # gtk_printer_get_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_printer_get_name(self)
@@ -311,7 +311,7 @@ module Gtk
     end
 
     def state_message : ::String
-      # gtk_printer_get_state_message: (Method)
+      # gtk_printer_get_state_message: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_printer_get_state_message(self)

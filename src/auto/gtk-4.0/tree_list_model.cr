@@ -98,7 +98,7 @@ module Gtk
     end
 
     def autoexpand : Bool
-      # gtk_tree_list_model_get_autoexpand: (Method)
+      # gtk_tree_list_model_get_autoexpand: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_list_model_get_autoexpand(self)
@@ -114,7 +114,7 @@ module Gtk
     end
 
     def model : Gio::ListModel
-      # gtk_tree_list_model_get_model: (Method)
+      # gtk_tree_list_model_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_list_model_get_model(self)
@@ -122,7 +122,7 @@ module Gtk
     end
 
     def passthrough : Bool
-      # gtk_tree_list_model_get_passthrough: (Method)
+      # gtk_tree_list_model_get_passthrough: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_tree_list_model_get_passthrough(self)
@@ -138,7 +138,7 @@ module Gtk
     end
 
     def autoexpand=(autoexpand : Bool) : Nil
-      # gtk_tree_list_model_set_autoexpand: (Method)
+      # gtk_tree_list_model_set_autoexpand: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_tree_list_model_set_autoexpand(self, autoexpand)

@@ -1286,7 +1286,7 @@ module Gtk
     end
 
     def can_focus : Bool
-      # gtk_widget_get_can_focus: (Method)
+      # gtk_widget_get_can_focus: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_can_focus(self)
@@ -1294,7 +1294,7 @@ module Gtk
     end
 
     def can_target : Bool
-      # gtk_widget_get_can_target: (Method)
+      # gtk_widget_get_can_target: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_can_target(self)
@@ -1318,7 +1318,7 @@ module Gtk
     end
 
     def css_classes : Enumerable(::String)
-      # gtk_widget_get_css_classes: (Method)
+      # gtk_widget_get_css_classes: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_widget_get_css_classes(self)
@@ -1326,7 +1326,7 @@ module Gtk
     end
 
     def css_name : ::String
-      # gtk_widget_get_css_name: (Method)
+      # gtk_widget_get_css_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_css_name(self)
@@ -1334,7 +1334,7 @@ module Gtk
     end
 
     def cursor : Gdk::Cursor?
-      # gtk_widget_get_cursor: (Method)
+      # gtk_widget_get_cursor: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_cursor(self)
@@ -1374,7 +1374,7 @@ module Gtk
     end
 
     def focus_on_click : Bool
-      # gtk_widget_get_focus_on_click: (Method)
+      # gtk_widget_get_focus_on_click: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_focus_on_click(self)
@@ -1382,7 +1382,7 @@ module Gtk
     end
 
     def focusable : Bool
-      # gtk_widget_get_focusable: (Method)
+      # gtk_widget_get_focusable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_focusable(self)
@@ -1414,7 +1414,7 @@ module Gtk
     end
 
     def halign : Gtk::Align
-      # gtk_widget_get_halign: (Method)
+      # gtk_widget_get_halign: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_halign(self)
@@ -1422,7 +1422,7 @@ module Gtk
     end
 
     def has_tooltip : Bool
-      # gtk_widget_get_has_tooltip: (Method)
+      # gtk_widget_get_has_tooltip: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_has_tooltip(self)
@@ -1438,7 +1438,7 @@ module Gtk
     end
 
     def hexpand : Bool
-      # gtk_widget_get_hexpand: (Method)
+      # gtk_widget_get_hexpand: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_hexpand(self)
@@ -1446,7 +1446,7 @@ module Gtk
     end
 
     def hexpand_set : Bool
-      # gtk_widget_get_hexpand_set: (Method)
+      # gtk_widget_get_hexpand_set: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_hexpand_set(self)
@@ -1462,7 +1462,7 @@ module Gtk
     end
 
     def layout_manager : Gtk::LayoutManager?
-      # gtk_widget_get_layout_manager: (Method)
+      # gtk_widget_get_layout_manager: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_layout_manager(self)
@@ -1478,7 +1478,7 @@ module Gtk
     end
 
     def margin_bottom : Int32
-      # gtk_widget_get_margin_bottom: (Method)
+      # gtk_widget_get_margin_bottom: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_margin_bottom(self)
@@ -1486,7 +1486,7 @@ module Gtk
     end
 
     def margin_end : Int32
-      # gtk_widget_get_margin_end: (Method)
+      # gtk_widget_get_margin_end: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_margin_end(self)
@@ -1494,7 +1494,7 @@ module Gtk
     end
 
     def margin_start : Int32
-      # gtk_widget_get_margin_start: (Method)
+      # gtk_widget_get_margin_start: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_margin_start(self)
@@ -1502,7 +1502,7 @@ module Gtk
     end
 
     def margin_top : Int32
-      # gtk_widget_get_margin_top: (Method)
+      # gtk_widget_get_margin_top: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_margin_top(self)
@@ -1510,7 +1510,7 @@ module Gtk
     end
 
     def name : ::String
-      # gtk_widget_get_name: (Method)
+      # gtk_widget_get_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_name(self)
@@ -1534,7 +1534,7 @@ module Gtk
     end
 
     def opacity : Float64
-      # gtk_widget_get_opacity: (Method)
+      # gtk_widget_get_opacity: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_opacity(self)
@@ -1542,7 +1542,7 @@ module Gtk
     end
 
     def overflow : Gtk::Overflow
-      # gtk_widget_get_overflow: (Method)
+      # gtk_widget_get_overflow: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_overflow(self)
@@ -1558,7 +1558,7 @@ module Gtk
     end
 
     def parent : Gtk::Widget?
-      # gtk_widget_get_parent: (Method)
+      # gtk_widget_get_parent: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_parent(self)
@@ -1604,7 +1604,7 @@ module Gtk
     end
 
     def receives_default : Bool
-      # gtk_widget_get_receives_default: (Method)
+      # gtk_widget_get_receives_default: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_receives_default(self)
@@ -1620,7 +1620,7 @@ module Gtk
     end
 
     def root : Gtk::Root?
-      # gtk_widget_get_root: (Method)
+      # gtk_widget_get_root: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_root(self)
@@ -1628,7 +1628,7 @@ module Gtk
     end
 
     def scale_factor : Int32
-      # gtk_widget_get_scale_factor: (Method)
+      # gtk_widget_get_scale_factor: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_scale_factor(self)
@@ -1636,7 +1636,7 @@ module Gtk
     end
 
     def sensitive : Bool
-      # gtk_widget_get_sensitive: (Method)
+      # gtk_widget_get_sensitive: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_sensitive(self)
@@ -1696,7 +1696,7 @@ module Gtk
     end
 
     def tooltip_markup : ::String?
-      # gtk_widget_get_tooltip_markup: (Method)
+      # gtk_widget_get_tooltip_markup: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_tooltip_markup(self)
@@ -1704,7 +1704,7 @@ module Gtk
     end
 
     def tooltip_text : ::String?
-      # gtk_widget_get_tooltip_text: (Method)
+      # gtk_widget_get_tooltip_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_tooltip_text(self)
@@ -1712,7 +1712,7 @@ module Gtk
     end
 
     def valign : Gtk::Align
-      # gtk_widget_get_valign: (Method)
+      # gtk_widget_get_valign: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_valign(self)
@@ -1720,7 +1720,7 @@ module Gtk
     end
 
     def vexpand : Bool
-      # gtk_widget_get_vexpand: (Method)
+      # gtk_widget_get_vexpand: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_vexpand(self)
@@ -1728,7 +1728,7 @@ module Gtk
     end
 
     def vexpand_set : Bool
-      # gtk_widget_get_vexpand_set: (Method)
+      # gtk_widget_get_vexpand_set: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_vexpand_set(self)
@@ -1736,7 +1736,7 @@ module Gtk
     end
 
     def visible : Bool
-      # gtk_widget_get_visible: (Method)
+      # gtk_widget_get_visible: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_get_visible(self)
@@ -1768,7 +1768,7 @@ module Gtk
     end
 
     def has_default : Bool
-      # gtk_widget_has_default: (Method)
+      # gtk_widget_has_default: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_has_default(self)
@@ -1776,7 +1776,7 @@ module Gtk
     end
 
     def has_focus : Bool
-      # gtk_widget_has_focus: (Method)
+      # gtk_widget_has_focus: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_widget_has_focus(self)
@@ -2023,14 +2023,14 @@ module Gtk
     end
 
     def can_focus=(can_focus : Bool) : Nil
-      # gtk_widget_set_can_focus: (Method)
+      # gtk_widget_set_can_focus: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_can_focus(self, can_focus)
     end
 
     def can_target=(can_target : Bool) : Nil
-      # gtk_widget_set_can_target: (Method)
+      # gtk_widget_set_can_target: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_can_target(self, can_target)
@@ -2044,7 +2044,7 @@ module Gtk
     end
 
     def css_classes=(classes : Enumerable(::String)) : Nil
-      # gtk_widget_set_css_classes: (Method)
+      # gtk_widget_set_css_classes: (Method | Setter)
       # @classes: (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
@@ -2054,7 +2054,7 @@ module Gtk
     end
 
     def cursor=(cursor : Gdk::Cursor?) : Nil
-      # gtk_widget_set_cursor: (Method)
+      # gtk_widget_set_cursor: (Method | Setter)
       # @cursor: (nullable)
       # Returns: (transfer none)
 
@@ -2103,14 +2103,14 @@ module Gtk
     end
 
     def focus_on_click=(focus_on_click : Bool) : Nil
-      # gtk_widget_set_focus_on_click: (Method)
+      # gtk_widget_set_focus_on_click: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_focus_on_click(self, focus_on_click)
     end
 
     def focusable=(focusable : Bool) : Nil
-      # gtk_widget_set_focusable: (Method)
+      # gtk_widget_set_focusable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_focusable(self, focusable)
@@ -2145,35 +2145,35 @@ module Gtk
     end
 
     def halign=(align : Gtk::Align) : Nil
-      # gtk_widget_set_halign: (Method)
+      # gtk_widget_set_halign: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_halign(self, align)
     end
 
     def has_tooltip=(has_tooltip : Bool) : Nil
-      # gtk_widget_set_has_tooltip: (Method)
+      # gtk_widget_set_has_tooltip: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_has_tooltip(self, has_tooltip)
     end
 
     def hexpand=(expand : Bool) : Nil
-      # gtk_widget_set_hexpand: (Method)
+      # gtk_widget_set_hexpand: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_hexpand(self, expand)
     end
 
     def hexpand_set=(set : Bool) : Nil
-      # gtk_widget_set_hexpand_set: (Method)
+      # gtk_widget_set_hexpand_set: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_hexpand_set(self, set)
     end
 
     def layout_manager=(layout_manager : Gtk::LayoutManager?) : Nil
-      # gtk_widget_set_layout_manager: (Method)
+      # gtk_widget_set_layout_manager: (Method | Setter)
       # @layout_manager: (transfer full) (nullable)
       # Returns: (transfer none)
 
@@ -2188,49 +2188,49 @@ module Gtk
     end
 
     def margin_bottom=(margin : Int32) : Nil
-      # gtk_widget_set_margin_bottom: (Method)
+      # gtk_widget_set_margin_bottom: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_margin_bottom(self, margin)
     end
 
     def margin_end=(margin : Int32) : Nil
-      # gtk_widget_set_margin_end: (Method)
+      # gtk_widget_set_margin_end: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_margin_end(self, margin)
     end
 
     def margin_start=(margin : Int32) : Nil
-      # gtk_widget_set_margin_start: (Method)
+      # gtk_widget_set_margin_start: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_margin_start(self, margin)
     end
 
     def margin_top=(margin : Int32) : Nil
-      # gtk_widget_set_margin_top: (Method)
+      # gtk_widget_set_margin_top: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_margin_top(self, margin)
     end
 
     def name=(name : ::String) : Nil
-      # gtk_widget_set_name: (Method)
+      # gtk_widget_set_name: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_name(self, name)
     end
 
     def opacity=(opacity : Float64) : Nil
-      # gtk_widget_set_opacity: (Method)
+      # gtk_widget_set_opacity: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_opacity(self, opacity)
     end
 
     def overflow=(overflow : Gtk::Overflow) : Nil
-      # gtk_widget_set_overflow: (Method)
+      # gtk_widget_set_overflow: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_overflow(self, overflow)
@@ -2244,14 +2244,14 @@ module Gtk
     end
 
     def receives_default=(receives_default : Bool) : Nil
-      # gtk_widget_set_receives_default: (Method)
+      # gtk_widget_set_receives_default: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_receives_default(self, receives_default)
     end
 
     def sensitive=(sensitive : Bool) : Nil
-      # gtk_widget_set_sensitive: (Method)
+      # gtk_widget_set_sensitive: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_sensitive(self, sensitive)
@@ -2272,7 +2272,7 @@ module Gtk
     end
 
     def tooltip_markup=(markup : ::String?) : Nil
-      # gtk_widget_set_tooltip_markup: (Method)
+      # gtk_widget_set_tooltip_markup: (Method | Setter)
       # @markup: (nullable)
       # Returns: (transfer none)
 
@@ -2286,7 +2286,7 @@ module Gtk
     end
 
     def tooltip_text=(text : ::String?) : Nil
-      # gtk_widget_set_tooltip_text: (Method)
+      # gtk_widget_set_tooltip_text: (Method | Setter)
       # @text: (nullable)
       # Returns: (transfer none)
 
@@ -2300,28 +2300,28 @@ module Gtk
     end
 
     def valign=(align : Gtk::Align) : Nil
-      # gtk_widget_set_valign: (Method)
+      # gtk_widget_set_valign: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_valign(self, align)
     end
 
     def vexpand=(expand : Bool) : Nil
-      # gtk_widget_set_vexpand: (Method)
+      # gtk_widget_set_vexpand: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_vexpand(self, expand)
     end
 
     def vexpand_set=(set : Bool) : Nil
-      # gtk_widget_set_vexpand_set: (Method)
+      # gtk_widget_set_vexpand_set: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_vexpand_set(self, set)
     end
 
     def visible=(visible : Bool) : Nil
-      # gtk_widget_set_visible: (Method)
+      # gtk_widget_set_visible: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_widget_set_visible(self, visible)

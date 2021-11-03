@@ -73,7 +73,7 @@ module Gtk
     end
 
     def child_widget : Gtk::Widget
-      # gtk_layout_child_get_child_widget: (Method)
+      # gtk_layout_child_get_child_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_layout_child_get_child_widget(self)
@@ -81,7 +81,7 @@ module Gtk
     end
 
     def layout_manager : Gtk::LayoutManager
-      # gtk_layout_child_get_layout_manager: (Method)
+      # gtk_layout_child_get_layout_manager: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_layout_child_get_layout_manager(self)

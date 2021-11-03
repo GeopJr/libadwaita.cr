@@ -177,7 +177,7 @@ module Gtk
     end
 
     def lower : Float64
-      # gtk_adjustment_get_lower: (Method)
+      # gtk_adjustment_get_lower: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_adjustment_get_lower(self)
@@ -193,7 +193,7 @@ module Gtk
     end
 
     def page_increment : Float64
-      # gtk_adjustment_get_page_increment: (Method)
+      # gtk_adjustment_get_page_increment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_adjustment_get_page_increment(self)
@@ -201,7 +201,7 @@ module Gtk
     end
 
     def page_size : Float64
-      # gtk_adjustment_get_page_size: (Method)
+      # gtk_adjustment_get_page_size: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_adjustment_get_page_size(self)
@@ -209,7 +209,7 @@ module Gtk
     end
 
     def step_increment : Float64
-      # gtk_adjustment_get_step_increment: (Method)
+      # gtk_adjustment_get_step_increment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_adjustment_get_step_increment(self)
@@ -217,7 +217,7 @@ module Gtk
     end
 
     def upper : Float64
-      # gtk_adjustment_get_upper: (Method)
+      # gtk_adjustment_get_upper: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_adjustment_get_upper(self)
@@ -225,7 +225,7 @@ module Gtk
     end
 
     def value : Float64
-      # gtk_adjustment_get_value: (Method)
+      # gtk_adjustment_get_value: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_adjustment_get_value(self)
@@ -233,42 +233,42 @@ module Gtk
     end
 
     def lower=(lower : Float64) : Nil
-      # gtk_adjustment_set_lower: (Method)
+      # gtk_adjustment_set_lower: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_adjustment_set_lower(self, lower)
     end
 
     def page_increment=(page_increment : Float64) : Nil
-      # gtk_adjustment_set_page_increment: (Method)
+      # gtk_adjustment_set_page_increment: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_adjustment_set_page_increment(self, page_increment)
     end
 
     def page_size=(page_size : Float64) : Nil
-      # gtk_adjustment_set_page_size: (Method)
+      # gtk_adjustment_set_page_size: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_adjustment_set_page_size(self, page_size)
     end
 
     def step_increment=(step_increment : Float64) : Nil
-      # gtk_adjustment_set_step_increment: (Method)
+      # gtk_adjustment_set_step_increment: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_adjustment_set_step_increment(self, step_increment)
     end
 
     def upper=(upper : Float64) : Nil
-      # gtk_adjustment_set_upper: (Method)
+      # gtk_adjustment_set_upper: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_adjustment_set_upper(self, upper)
     end
 
     def value=(value : Float64) : Nil
-      # gtk_adjustment_set_value: (Method)
+      # gtk_adjustment_set_value: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_adjustment_set_value(self, value)

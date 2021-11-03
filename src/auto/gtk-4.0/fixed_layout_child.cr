@@ -55,7 +55,7 @@ module Gtk
     end
 
     def transform : Gsk::Transform?
-      # gtk_fixed_layout_child_get_transform: (Method)
+      # gtk_fixed_layout_child_get_transform: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_fixed_layout_child_get_transform(self)
@@ -63,7 +63,7 @@ module Gtk
     end
 
     def transform=(transform : Gsk::Transform) : Nil
-      # gtk_fixed_layout_child_set_transform: (Method)
+      # gtk_fixed_layout_child_set_transform: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_fixed_layout_child_set_transform(self, transform)

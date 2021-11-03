@@ -150,7 +150,7 @@ module Gtk
     end
 
     def display : Gdk::Display
-      # gtk_mount_operation_get_display: (Method)
+      # gtk_mount_operation_get_display: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_mount_operation_get_display(self)
@@ -158,7 +158,7 @@ module Gtk
     end
 
     def parent : Gtk::Window
-      # gtk_mount_operation_get_parent: (Method)
+      # gtk_mount_operation_get_parent: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_mount_operation_get_parent(self)
@@ -166,7 +166,7 @@ module Gtk
     end
 
     def is_showing : Bool
-      # gtk_mount_operation_is_showing: (Method)
+      # gtk_mount_operation_is_showing: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_mount_operation_is_showing(self)
@@ -174,14 +174,14 @@ module Gtk
     end
 
     def display=(display : Gdk::Display) : Nil
-      # gtk_mount_operation_set_display: (Method)
+      # gtk_mount_operation_set_display: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_mount_operation_set_display(self, display)
     end
 
     def parent=(parent : Gtk::Window?) : Nil
-      # gtk_mount_operation_set_parent: (Method)
+      # gtk_mount_operation_set_parent: (Method | Setter)
       # @parent: (nullable)
       # Returns: (transfer none)
 

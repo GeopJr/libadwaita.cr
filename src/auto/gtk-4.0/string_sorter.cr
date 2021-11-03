@@ -88,7 +88,7 @@ module Gtk
     end
 
     def expression : Gtk::Expression?
-      # gtk_string_sorter_get_expression: (Method)
+      # gtk_string_sorter_get_expression: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_string_sorter_get_expression(self)
@@ -96,7 +96,7 @@ module Gtk
     end
 
     def ignore_case : Bool
-      # gtk_string_sorter_get_ignore_case: (Method)
+      # gtk_string_sorter_get_ignore_case: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_string_sorter_get_ignore_case(self)
@@ -104,7 +104,7 @@ module Gtk
     end
 
     def expression=(expression : Gtk::Expression?) : Nil
-      # gtk_string_sorter_set_expression: (Method)
+      # gtk_string_sorter_set_expression: (Method | Setter)
       # @expression: (nullable)
       # Returns: (transfer none)
 
@@ -118,7 +118,7 @@ module Gtk
     end
 
     def ignore_case=(ignore_case : Bool) : Nil
-      # gtk_string_sorter_set_ignore_case: (Method)
+      # gtk_string_sorter_set_ignore_case: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_string_sorter_set_ignore_case(self, ignore_case)

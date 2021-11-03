@@ -520,7 +520,7 @@ module Gtk
     end
 
     def group_name : ::String?
-      # gtk_notebook_get_group_name: (Method)
+      # gtk_notebook_get_group_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_notebook_get_group_name(self)
@@ -560,7 +560,7 @@ module Gtk
     end
 
     def page(child : Gtk::Widget) : Gtk::NotebookPage
-      # gtk_notebook_get_page: (Method)
+      # gtk_notebook_get_page: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_notebook_get_page(self, child)
@@ -568,7 +568,7 @@ module Gtk
     end
 
     def pages : Gio::ListModel
-      # gtk_notebook_get_pages: (Method)
+      # gtk_notebook_get_pages: (Method | Getter)
       # Returns: (transfer full)
 
       _retval = LibGtk.gtk_notebook_get_pages(self)
@@ -576,7 +576,7 @@ module Gtk
     end
 
     def scrollable : Bool
-      # gtk_notebook_get_scrollable: (Method)
+      # gtk_notebook_get_scrollable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_notebook_get_scrollable(self)
@@ -584,7 +584,7 @@ module Gtk
     end
 
     def show_border : Bool
-      # gtk_notebook_get_show_border: (Method)
+      # gtk_notebook_get_show_border: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_notebook_get_show_border(self)
@@ -592,7 +592,7 @@ module Gtk
     end
 
     def show_tabs : Bool
-      # gtk_notebook_get_show_tabs: (Method)
+      # gtk_notebook_get_show_tabs: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_notebook_get_show_tabs(self)
@@ -624,7 +624,7 @@ module Gtk
     end
 
     def tab_pos : Gtk::PositionType
-      # gtk_notebook_get_tab_pos: (Method)
+      # gtk_notebook_get_tab_pos: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_notebook_get_tab_pos(self)
@@ -776,7 +776,7 @@ module Gtk
     end
 
     def group_name=(group_name : ::String?) : Nil
-      # gtk_notebook_set_group_name: (Method)
+      # gtk_notebook_set_group_name: (Method | Setter)
       # @group_name: (nullable)
       # Returns: (transfer none)
 
@@ -811,21 +811,21 @@ module Gtk
     end
 
     def scrollable=(scrollable : Bool) : Nil
-      # gtk_notebook_set_scrollable: (Method)
+      # gtk_notebook_set_scrollable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_notebook_set_scrollable(self, scrollable)
     end
 
     def show_border=(show_border : Bool) : Nil
-      # gtk_notebook_set_show_border: (Method)
+      # gtk_notebook_set_show_border: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_notebook_set_show_border(self, show_border)
     end
 
     def show_tabs=(show_tabs : Bool) : Nil
-      # gtk_notebook_set_show_tabs: (Method)
+      # gtk_notebook_set_show_tabs: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_notebook_set_show_tabs(self, show_tabs)
@@ -860,7 +860,7 @@ module Gtk
     end
 
     def tab_pos=(pos : Gtk::PositionType) : Nil
-      # gtk_notebook_set_tab_pos: (Method)
+      # gtk_notebook_set_tab_pos: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_notebook_set_tab_pos(self, pos)

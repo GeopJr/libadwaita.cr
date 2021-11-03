@@ -69,7 +69,7 @@ module Gsk
     end
 
     def surface : Gdk::Surface?
-      # gsk_renderer_get_surface: (Method)
+      # gsk_renderer_get_surface: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGsk.gsk_renderer_get_surface(self)

@@ -402,7 +402,7 @@ module Gtk
     end
 
     def active : Bool
-      # gtk_check_button_get_active: (Method)
+      # gtk_check_button_get_active: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_check_button_get_active(self)
@@ -410,7 +410,7 @@ module Gtk
     end
 
     def inconsistent : Bool
-      # gtk_check_button_get_inconsistent: (Method)
+      # gtk_check_button_get_inconsistent: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_check_button_get_inconsistent(self)
@@ -418,7 +418,7 @@ module Gtk
     end
 
     def label : ::String?
-      # gtk_check_button_get_label: (Method)
+      # gtk_check_button_get_label: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_check_button_get_label(self)
@@ -426,7 +426,7 @@ module Gtk
     end
 
     def use_underline : Bool
-      # gtk_check_button_get_use_underline: (Method)
+      # gtk_check_button_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_check_button_get_use_underline(self)
@@ -434,14 +434,14 @@ module Gtk
     end
 
     def active=(setting : Bool) : Nil
-      # gtk_check_button_set_active: (Method)
+      # gtk_check_button_set_active: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_check_button_set_active(self, setting)
     end
 
     def group=(group : Gtk::CheckButton?) : Nil
-      # gtk_check_button_set_group: (Method)
+      # gtk_check_button_set_group: (Method | Setter)
       # @group: (nullable)
       # Returns: (transfer none)
 
@@ -455,14 +455,14 @@ module Gtk
     end
 
     def inconsistent=(inconsistent : Bool) : Nil
-      # gtk_check_button_set_inconsistent: (Method)
+      # gtk_check_button_set_inconsistent: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_check_button_set_inconsistent(self, inconsistent)
     end
 
     def label=(label : ::String?) : Nil
-      # gtk_check_button_set_label: (Method)
+      # gtk_check_button_set_label: (Method | Setter)
       # @label: (nullable)
       # Returns: (transfer none)
 
@@ -476,7 +476,7 @@ module Gtk
     end
 
     def use_underline=(setting : Bool) : Nil
-      # gtk_check_button_set_use_underline: (Method)
+      # gtk_check_button_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_check_button_set_use_underline(self, setting)

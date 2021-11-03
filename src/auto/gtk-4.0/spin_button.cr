@@ -576,7 +576,7 @@ module Gtk
     end
 
     def adjustment : Gtk::Adjustment
-      # gtk_spin_button_get_adjustment: (Method)
+      # gtk_spin_button_get_adjustment: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_spin_button_get_adjustment(self)
@@ -584,7 +584,7 @@ module Gtk
     end
 
     def climb_rate : Float64
-      # gtk_spin_button_get_climb_rate: (Method)
+      # gtk_spin_button_get_climb_rate: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_spin_button_get_climb_rate(self)
@@ -592,7 +592,7 @@ module Gtk
     end
 
     def digits : UInt32
-      # gtk_spin_button_get_digits: (Method)
+      # gtk_spin_button_get_digits: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_spin_button_get_digits(self)
@@ -612,7 +612,7 @@ module Gtk
     end
 
     def numeric : Bool
-      # gtk_spin_button_get_numeric: (Method)
+      # gtk_spin_button_get_numeric: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_spin_button_get_numeric(self)
@@ -632,7 +632,7 @@ module Gtk
     end
 
     def snap_to_ticks : Bool
-      # gtk_spin_button_get_snap_to_ticks: (Method)
+      # gtk_spin_button_get_snap_to_ticks: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_spin_button_get_snap_to_ticks(self)
@@ -640,7 +640,7 @@ module Gtk
     end
 
     def update_policy : Gtk::SpinButtonUpdatePolicy
-      # gtk_spin_button_get_update_policy: (Method)
+      # gtk_spin_button_get_update_policy: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_spin_button_get_update_policy(self)
@@ -648,7 +648,7 @@ module Gtk
     end
 
     def value : Float64
-      # gtk_spin_button_get_value: (Method)
+      # gtk_spin_button_get_value: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_spin_button_get_value(self)
@@ -664,7 +664,7 @@ module Gtk
     end
 
     def wrap : Bool
-      # gtk_spin_button_get_wrap: (Method)
+      # gtk_spin_button_get_wrap: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_spin_button_get_wrap(self)
@@ -672,21 +672,21 @@ module Gtk
     end
 
     def adjustment=(adjustment : Gtk::Adjustment) : Nil
-      # gtk_spin_button_set_adjustment: (Method)
+      # gtk_spin_button_set_adjustment: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_spin_button_set_adjustment(self, adjustment)
     end
 
     def climb_rate=(climb_rate : Float64) : Nil
-      # gtk_spin_button_set_climb_rate: (Method)
+      # gtk_spin_button_set_climb_rate: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_spin_button_set_climb_rate(self, climb_rate)
     end
 
     def digits=(digits : UInt32) : Nil
-      # gtk_spin_button_set_digits: (Method)
+      # gtk_spin_button_set_digits: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_spin_button_set_digits(self, digits)
@@ -700,7 +700,7 @@ module Gtk
     end
 
     def numeric=(numeric : Bool) : Nil
-      # gtk_spin_button_set_numeric: (Method)
+      # gtk_spin_button_set_numeric: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_spin_button_set_numeric(self, numeric)
@@ -714,28 +714,28 @@ module Gtk
     end
 
     def snap_to_ticks=(snap_to_ticks : Bool) : Nil
-      # gtk_spin_button_set_snap_to_ticks: (Method)
+      # gtk_spin_button_set_snap_to_ticks: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_spin_button_set_snap_to_ticks(self, snap_to_ticks)
     end
 
     def update_policy=(policy : Gtk::SpinButtonUpdatePolicy) : Nil
-      # gtk_spin_button_set_update_policy: (Method)
+      # gtk_spin_button_set_update_policy: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_spin_button_set_update_policy(self, policy)
     end
 
     def value=(value : Float64) : Nil
-      # gtk_spin_button_set_value: (Method)
+      # gtk_spin_button_set_value: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_spin_button_set_value(self, value)
     end
 
     def wrap=(wrap : Bool) : Nil
-      # gtk_spin_button_set_wrap: (Method)
+      # gtk_spin_button_set_wrap: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_spin_button_set_wrap(self, wrap)

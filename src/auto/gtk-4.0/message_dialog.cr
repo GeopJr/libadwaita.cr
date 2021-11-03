@@ -518,7 +518,7 @@ module Gtk
     end
 
     def message_area : Gtk::Widget
-      # gtk_message_dialog_get_message_area: (Method)
+      # gtk_message_dialog_get_message_area: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_message_dialog_get_message_area(self)

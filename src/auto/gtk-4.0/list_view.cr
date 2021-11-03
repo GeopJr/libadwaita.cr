@@ -459,7 +459,7 @@ module Gtk
     end
 
     def enable_rubberband : Bool
-      # gtk_list_view_get_enable_rubberband: (Method)
+      # gtk_list_view_get_enable_rubberband: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_view_get_enable_rubberband(self)
@@ -467,7 +467,7 @@ module Gtk
     end
 
     def factory : Gtk::ListItemFactory?
-      # gtk_list_view_get_factory: (Method)
+      # gtk_list_view_get_factory: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_view_get_factory(self)
@@ -475,7 +475,7 @@ module Gtk
     end
 
     def model : Gtk::SelectionModel?
-      # gtk_list_view_get_model: (Method)
+      # gtk_list_view_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_view_get_model(self)
@@ -483,7 +483,7 @@ module Gtk
     end
 
     def show_separators : Bool
-      # gtk_list_view_get_show_separators: (Method)
+      # gtk_list_view_get_show_separators: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_view_get_show_separators(self)
@@ -491,7 +491,7 @@ module Gtk
     end
 
     def single_click_activate : Bool
-      # gtk_list_view_get_single_click_activate: (Method)
+      # gtk_list_view_get_single_click_activate: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_view_get_single_click_activate(self)
@@ -499,14 +499,14 @@ module Gtk
     end
 
     def enable_rubberband=(enable_rubberband : Bool) : Nil
-      # gtk_list_view_set_enable_rubberband: (Method)
+      # gtk_list_view_set_enable_rubberband: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_view_set_enable_rubberband(self, enable_rubberband)
     end
 
     def factory=(factory : Gtk::ListItemFactory?) : Nil
-      # gtk_list_view_set_factory: (Method)
+      # gtk_list_view_set_factory: (Method | Setter)
       # @factory: (nullable)
       # Returns: (transfer none)
 
@@ -520,7 +520,7 @@ module Gtk
     end
 
     def model=(model : Gtk::SelectionModel?) : Nil
-      # gtk_list_view_set_model: (Method)
+      # gtk_list_view_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
@@ -534,14 +534,14 @@ module Gtk
     end
 
     def show_separators=(show_separators : Bool) : Nil
-      # gtk_list_view_set_show_separators: (Method)
+      # gtk_list_view_set_show_separators: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_view_set_show_separators(self, show_separators)
     end
 
     def single_click_activate=(single_click_activate : Bool) : Nil
-      # gtk_list_view_set_single_click_activate: (Method)
+      # gtk_list_view_set_single_click_activate: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_view_set_single_click_activate(self, single_click_activate)

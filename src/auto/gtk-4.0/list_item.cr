@@ -137,7 +137,7 @@ module Gtk
     end
 
     def activatable : Bool
-      # gtk_list_item_get_activatable: (Method)
+      # gtk_list_item_get_activatable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_item_get_activatable(self)
@@ -145,7 +145,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_list_item_get_child: (Method)
+      # gtk_list_item_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_item_get_child(self)
@@ -153,7 +153,7 @@ module Gtk
     end
 
     def item : GObject::Object?
-      # gtk_list_item_get_item: (Method)
+      # gtk_list_item_get_item: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_item_get_item(self)
@@ -161,7 +161,7 @@ module Gtk
     end
 
     def position : UInt32
-      # gtk_list_item_get_position: (Method)
+      # gtk_list_item_get_position: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_item_get_position(self)
@@ -169,7 +169,7 @@ module Gtk
     end
 
     def selectable : Bool
-      # gtk_list_item_get_selectable: (Method)
+      # gtk_list_item_get_selectable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_item_get_selectable(self)
@@ -177,7 +177,7 @@ module Gtk
     end
 
     def selected : Bool
-      # gtk_list_item_get_selected: (Method)
+      # gtk_list_item_get_selected: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_list_item_get_selected(self)
@@ -185,14 +185,14 @@ module Gtk
     end
 
     def activatable=(activatable : Bool) : Nil
-      # gtk_list_item_set_activatable: (Method)
+      # gtk_list_item_set_activatable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_item_set_activatable(self, activatable)
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_list_item_set_child: (Method)
+      # gtk_list_item_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -206,7 +206,7 @@ module Gtk
     end
 
     def selectable=(selectable : Bool) : Nil
-      # gtk_list_item_set_selectable: (Method)
+      # gtk_list_item_set_selectable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_list_item_set_selectable(self, selectable)

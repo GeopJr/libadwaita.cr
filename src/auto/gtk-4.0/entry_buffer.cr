@@ -132,7 +132,7 @@ module Gtk
     end
 
     def length : UInt32
-      # gtk_entry_buffer_get_length: (Method)
+      # gtk_entry_buffer_get_length: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_buffer_get_length(self)
@@ -140,7 +140,7 @@ module Gtk
     end
 
     def max_length : Int32
-      # gtk_entry_buffer_get_max_length: (Method)
+      # gtk_entry_buffer_get_max_length: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_buffer_get_max_length(self)
@@ -148,7 +148,7 @@ module Gtk
     end
 
     def text : ::String
-      # gtk_entry_buffer_get_text: (Method)
+      # gtk_entry_buffer_get_text: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_entry_buffer_get_text(self)
@@ -164,14 +164,14 @@ module Gtk
     end
 
     def max_length=(max_length : Int32) : Nil
-      # gtk_entry_buffer_set_max_length: (Method)
+      # gtk_entry_buffer_set_max_length: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_buffer_set_max_length(self, max_length)
     end
 
     def set_text(chars : ::String, n_chars : Int32) : Nil
-      # gtk_entry_buffer_set_text: (Method)
+      # gtk_entry_buffer_set_text: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_entry_buffer_set_text(self, chars, n_chars)

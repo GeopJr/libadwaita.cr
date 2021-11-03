@@ -21,7 +21,7 @@ module Gtk
     end
 
     def orientation : Gtk::Orientation
-      # gtk_orientable_get_orientation: (Method)
+      # gtk_orientable_get_orientation: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_orientable_get_orientation(self)
@@ -29,7 +29,7 @@ module Gtk
     end
 
     def orientation=(orientation : Gtk::Orientation) : Nil
-      # gtk_orientable_set_orientation: (Method)
+      # gtk_orientable_set_orientation: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_orientable_set_orientation(self, orientation)

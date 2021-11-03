@@ -457,7 +457,7 @@ module Gtk
     end
 
     def always_show_arrow : Bool
-      # gtk_menu_button_get_always_show_arrow: (Method)
+      # gtk_menu_button_get_always_show_arrow: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_menu_button_get_always_show_arrow(self)
@@ -465,7 +465,7 @@ module Gtk
     end
 
     def direction : Gtk::ArrowType
-      # gtk_menu_button_get_direction: (Method)
+      # gtk_menu_button_get_direction: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_menu_button_get_direction(self)
@@ -473,7 +473,7 @@ module Gtk
     end
 
     def has_frame : Bool
-      # gtk_menu_button_get_has_frame: (Method)
+      # gtk_menu_button_get_has_frame: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_menu_button_get_has_frame(self)
@@ -481,7 +481,7 @@ module Gtk
     end
 
     def icon_name : ::String
-      # gtk_menu_button_get_icon_name: (Method)
+      # gtk_menu_button_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_menu_button_get_icon_name(self)
@@ -489,7 +489,7 @@ module Gtk
     end
 
     def label : ::String
-      # gtk_menu_button_get_label: (Method)
+      # gtk_menu_button_get_label: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_menu_button_get_label(self)
@@ -497,7 +497,7 @@ module Gtk
     end
 
     def menu_model : Gio::MenuModel?
-      # gtk_menu_button_get_menu_model: (Method)
+      # gtk_menu_button_get_menu_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_menu_button_get_menu_model(self)
@@ -505,7 +505,7 @@ module Gtk
     end
 
     def popover : Gtk::Popover?
-      # gtk_menu_button_get_popover: (Method)
+      # gtk_menu_button_get_popover: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_menu_button_get_popover(self)
@@ -513,7 +513,7 @@ module Gtk
     end
 
     def primary : Bool
-      # gtk_menu_button_get_primary: (Method)
+      # gtk_menu_button_get_primary: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_menu_button_get_primary(self)
@@ -521,7 +521,7 @@ module Gtk
     end
 
     def use_underline : Bool
-      # gtk_menu_button_get_use_underline: (Method)
+      # gtk_menu_button_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_menu_button_get_use_underline(self)
@@ -543,7 +543,7 @@ module Gtk
     end
 
     def always_show_arrow=(always_show_arrow : Bool) : Nil
-      # gtk_menu_button_set_always_show_arrow: (Method)
+      # gtk_menu_button_set_always_show_arrow: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_menu_button_set_always_show_arrow(self, always_show_arrow)
@@ -576,35 +576,35 @@ module Gtk
     end
 
     def direction=(direction : Gtk::ArrowType) : Nil
-      # gtk_menu_button_set_direction: (Method)
+      # gtk_menu_button_set_direction: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_menu_button_set_direction(self, direction)
     end
 
     def has_frame=(has_frame : Bool) : Nil
-      # gtk_menu_button_set_has_frame: (Method)
+      # gtk_menu_button_set_has_frame: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_menu_button_set_has_frame(self, has_frame)
     end
 
     def icon_name=(icon_name : ::String) : Nil
-      # gtk_menu_button_set_icon_name: (Method)
+      # gtk_menu_button_set_icon_name: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_menu_button_set_icon_name(self, icon_name)
     end
 
     def label=(label : ::String) : Nil
-      # gtk_menu_button_set_label: (Method)
+      # gtk_menu_button_set_label: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_menu_button_set_label(self, label)
     end
 
     def menu_model=(menu_model : Gio::MenuModel?) : Nil
-      # gtk_menu_button_set_menu_model: (Method)
+      # gtk_menu_button_set_menu_model: (Method | Setter)
       # @menu_model: (nullable)
       # Returns: (transfer none)
 
@@ -618,7 +618,7 @@ module Gtk
     end
 
     def popover=(popover : Gtk::Widget?) : Nil
-      # gtk_menu_button_set_popover: (Method)
+      # gtk_menu_button_set_popover: (Method | Setter)
       # @popover: (nullable)
       # Returns: (transfer none)
 
@@ -632,14 +632,14 @@ module Gtk
     end
 
     def primary=(primary : Bool) : Nil
-      # gtk_menu_button_set_primary: (Method)
+      # gtk_menu_button_set_primary: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_menu_button_set_primary(self, primary)
     end
 
     def use_underline=(use_underline : Bool) : Nil
-      # gtk_menu_button_set_use_underline: (Method)
+      # gtk_menu_button_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_menu_button_set_use_underline(self, use_underline)

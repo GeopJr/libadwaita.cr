@@ -390,7 +390,7 @@ module Gtk
     end
 
     def child : Gtk::Widget?
-      # gtk_button_get_child: (Method)
+      # gtk_button_get_child: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_button_get_child(self)
@@ -398,7 +398,7 @@ module Gtk
     end
 
     def has_frame : Bool
-      # gtk_button_get_has_frame: (Method)
+      # gtk_button_get_has_frame: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_button_get_has_frame(self)
@@ -406,7 +406,7 @@ module Gtk
     end
 
     def icon_name : ::String?
-      # gtk_button_get_icon_name: (Method)
+      # gtk_button_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_button_get_icon_name(self)
@@ -414,7 +414,7 @@ module Gtk
     end
 
     def label : ::String?
-      # gtk_button_get_label: (Method)
+      # gtk_button_get_label: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_button_get_label(self)
@@ -422,7 +422,7 @@ module Gtk
     end
 
     def use_underline : Bool
-      # gtk_button_get_use_underline: (Method)
+      # gtk_button_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_button_get_use_underline(self)
@@ -430,7 +430,7 @@ module Gtk
     end
 
     def child=(child : Gtk::Widget?) : Nil
-      # gtk_button_set_child: (Method)
+      # gtk_button_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
@@ -444,28 +444,28 @@ module Gtk
     end
 
     def has_frame=(has_frame : Bool) : Nil
-      # gtk_button_set_has_frame: (Method)
+      # gtk_button_set_has_frame: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_button_set_has_frame(self, has_frame)
     end
 
     def icon_name=(icon_name : ::String) : Nil
-      # gtk_button_set_icon_name: (Method)
+      # gtk_button_set_icon_name: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_button_set_icon_name(self, icon_name)
     end
 
     def label=(label : ::String) : Nil
-      # gtk_button_set_label: (Method)
+      # gtk_button_set_label: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_button_set_label(self, label)
     end
 
     def use_underline=(use_underline : Bool) : Nil
-      # gtk_button_set_use_underline: (Method)
+      # gtk_button_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_button_set_use_underline(self, use_underline)

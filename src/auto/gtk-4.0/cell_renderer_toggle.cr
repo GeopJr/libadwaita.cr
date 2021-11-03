@@ -193,7 +193,7 @@ module Gtk
     end
 
     def activatable : Bool
-      # gtk_cell_renderer_toggle_get_activatable: (Method)
+      # gtk_cell_renderer_toggle_get_activatable: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_renderer_toggle_get_activatable(self)
@@ -201,7 +201,7 @@ module Gtk
     end
 
     def active : Bool
-      # gtk_cell_renderer_toggle_get_active: (Method)
+      # gtk_cell_renderer_toggle_get_active: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_renderer_toggle_get_active(self)
@@ -209,7 +209,7 @@ module Gtk
     end
 
     def radio : Bool
-      # gtk_cell_renderer_toggle_get_radio: (Method)
+      # gtk_cell_renderer_toggle_get_radio: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_renderer_toggle_get_radio(self)
@@ -217,21 +217,21 @@ module Gtk
     end
 
     def activatable=(setting : Bool) : Nil
-      # gtk_cell_renderer_toggle_set_activatable: (Method)
+      # gtk_cell_renderer_toggle_set_activatable: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_renderer_toggle_set_activatable(self, setting)
     end
 
     def active=(setting : Bool) : Nil
-      # gtk_cell_renderer_toggle_set_active: (Method)
+      # gtk_cell_renderer_toggle_set_active: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_renderer_toggle_set_active(self, setting)
     end
 
     def radio=(radio : Bool) : Nil
-      # gtk_cell_renderer_toggle_set_radio: (Method)
+      # gtk_cell_renderer_toggle_set_radio: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_renderer_toggle_set_radio(self, radio)

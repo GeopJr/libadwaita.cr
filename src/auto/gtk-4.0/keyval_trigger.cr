@@ -73,7 +73,7 @@ module Gtk
     end
 
     def keyval : UInt32
-      # gtk_keyval_trigger_get_keyval: (Method)
+      # gtk_keyval_trigger_get_keyval: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_keyval_trigger_get_keyval(self)
@@ -81,7 +81,7 @@ module Gtk
     end
 
     def modifiers : Gdk::ModifierType
-      # gtk_keyval_trigger_get_modifiers: (Method)
+      # gtk_keyval_trigger_get_modifiers: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_keyval_trigger_get_modifiers(self)

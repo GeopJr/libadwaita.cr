@@ -427,7 +427,7 @@ module Gtk
     end
 
     def heading : ::String?
-      # gtk_app_chooser_dialog_get_heading: (Method)
+      # gtk_app_chooser_dialog_get_heading: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_app_chooser_dialog_get_heading(self)
@@ -443,7 +443,7 @@ module Gtk
     end
 
     def heading=(heading : ::String) : Nil
-      # gtk_app_chooser_dialog_set_heading: (Method)
+      # gtk_app_chooser_dialog_set_heading: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_app_chooser_dialog_set_heading(self, heading)

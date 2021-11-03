@@ -368,34 +368,12 @@ module Adw
       ::String.new(value)
     end
 
-    def use_underline=(value : Bool) : Bool
-      unsafe_value = value
-
-      LibGObject.g_object_set(self, "use-underline", unsafe_value, Pointer(Void).null)
-      value
-    end
-
-    def use_underline? : Bool
-      # Returns: None
-
-      value = uninitialized LibC::Int
-      LibGObject.g_object_get(self, "use-underline", pointerof(value), Pointer(Void).null)
-      GICrystal.to_bool(value)
-    end
-
     def initialize
       # adw_expander_row_new: (Constructor)
       # Returns: (transfer none)
 
       _retval = LibAdw.adw_expander_row_new
       @pointer = _retval
-    end
-
-    def add(child : Gtk::Widget) : Nil
-      # adw_expander_row_add: (Method)
-      # Returns: (transfer none)
-
-      LibAdw.adw_expander_row_add(self, child)
     end
 
     def add_action(widget : Gtk::Widget) : Nil
@@ -410,6 +388,13 @@ module Adw
       # Returns: (transfer none)
 
       LibAdw.adw_expander_row_add_prefix(self, widget)
+    end
+
+    def add_row(child : Gtk::Widget) : Nil
+      # adw_expander_row_add_row: (Method)
+      # Returns: (transfer none)
+
+      LibAdw.adw_expander_row_add_row(self, child)
     end
 
     def enable_expansion : Bool
@@ -450,14 +435,6 @@ module Adw
 
       _retval = LibAdw.adw_expander_row_get_subtitle(self)
       ::String.new(_retval)
-    end
-
-    def use_underline : Bool
-      # adw_expander_row_get_use_underline: (Method | Getter)
-      # Returns: (transfer none)
-
-      _retval = LibAdw.adw_expander_row_get_use_underline(self)
-      GICrystal.to_bool(_retval)
     end
 
     def remove(child : Gtk::Widget) : Nil
@@ -507,13 +484,6 @@ module Adw
       # Returns: (transfer none)
 
       LibAdw.adw_expander_row_set_subtitle(self, subtitle)
-    end
-
-    def use_underline=(use_underline : Bool) : Nil
-      # adw_expander_row_set_use_underline: (Method | Setter)
-      # Returns: (transfer none)
-
-      LibAdw.adw_expander_row_set_use_underline(self, use_underline)
     end
   end
 end

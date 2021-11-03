@@ -52,7 +52,7 @@ module Adw
   MAJOR_VERSION = 1
   MICRO_VERSION = 0
   MINOR_VERSION = 0
-  VERSION_S     = "1.0.0.alpha.3"
+  VERSION_S     = "1.0.0.alpha.4"
 
   enum CenteringPolicy : UInt32
     Loose  = 0

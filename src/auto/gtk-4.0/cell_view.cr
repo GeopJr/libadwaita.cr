@@ -386,7 +386,7 @@ module Gtk
     end
 
     def draw_sensitive : Bool
-      # gtk_cell_view_get_draw_sensitive: (Method)
+      # gtk_cell_view_get_draw_sensitive: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_view_get_draw_sensitive(self)
@@ -394,7 +394,7 @@ module Gtk
     end
 
     def fit_model : Bool
-      # gtk_cell_view_get_fit_model: (Method)
+      # gtk_cell_view_get_fit_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_view_get_fit_model(self)
@@ -402,7 +402,7 @@ module Gtk
     end
 
     def model : Gtk::TreeModel?
-      # gtk_cell_view_get_model: (Method)
+      # gtk_cell_view_get_model: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_cell_view_get_model(self)
@@ -424,21 +424,21 @@ module Gtk
     end
 
     def draw_sensitive=(draw_sensitive : Bool) : Nil
-      # gtk_cell_view_set_draw_sensitive: (Method)
+      # gtk_cell_view_set_draw_sensitive: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_view_set_draw_sensitive(self, draw_sensitive)
     end
 
     def fit_model=(fit_model : Bool) : Nil
-      # gtk_cell_view_set_fit_model: (Method)
+      # gtk_cell_view_set_fit_model: (Method | Setter)
       # Returns: (transfer none)
 
       LibGtk.gtk_cell_view_set_fit_model(self, fit_model)
     end
 
     def model=(model : Gtk::TreeModel?) : Nil
-      # gtk_cell_view_set_model: (Method)
+      # gtk_cell_view_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
