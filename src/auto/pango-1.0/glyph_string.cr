@@ -159,6 +159,21 @@ module Pango
       LibPango.pango_glyph_string_index_to_x(self, text, length, analysis, index_, trailing, x_pos)
     end
 
+    def index_to_x_full(text : ::String, length : Int32, analysis : Pango::Analysis, attrs : Pango::LogAttr?, index_ : Int32, trailing : Bool, x_pos : Int32) : Nil
+      # pango_glyph_string_index_to_x_full: (Method)
+      # @attrs: (nullable)
+      # @x_pos: (out) (transfer full)
+      # Returns: (transfer none)
+
+      attrs = if attrs.nil?
+                Pointer(Void).null
+              else
+                attrs.to_unsafe
+              end
+
+      LibPango.pango_glyph_string_index_to_x_full(self, text, length, analysis, attrs, index_, trailing, x_pos)
+    end
+
     def size=(new_len : Int32) : Nil
       # pango_glyph_string_set_size: (Method)
       # Returns: (transfer none)

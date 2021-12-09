@@ -133,6 +133,14 @@ module Pango
       LibPango.pango_layout_line_get_height(self, height)
     end
 
+    def length : Int32
+      # pango_layout_line_get_length: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_layout_line_get_length(self)
+      _retval
+    end
+
     def pixel_extents : Pango::Rectangle
       # pango_layout_line_get_pixel_extents: (Method)
       # @ink_rect: (out) (caller-allocates) (optional)
@@ -145,6 +153,22 @@ module Pango
 
       LibPango.pango_layout_line_get_pixel_extents(self, ink_rect, logical_rect)
       ink_rect
+    end
+
+    def resolved_direction : Pango::Direction
+      # pango_layout_line_get_resolved_direction: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_layout_line_get_resolved_direction(self)
+      Pango::Direction.from_value(_retval)
+    end
+
+    def start_index : Int32
+      # pango_layout_line_get_start_index: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_layout_line_get_start_index(self)
+      _retval
     end
 
     def x_ranges(start_index : Int32, end_index : Int32, ranges : Enumerable(Int32)) : Nil
@@ -165,6 +189,14 @@ module Pango
       # Returns: (transfer none)
 
       LibPango.pango_layout_line_index_to_x(self, index_, trailing, x_pos)
+    end
+
+    def is_paragraph_start : Bool
+      # pango_layout_line_is_paragraph_start: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_layout_line_is_paragraph_start(self)
+      GICrystal.to_bool(_retval)
     end
 
     def ref : Pango::LayoutLine

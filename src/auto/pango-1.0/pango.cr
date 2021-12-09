@@ -62,9 +62,9 @@ module Pango
   GLYPH_UNKNOWN_FLAG              =  268435456_u32
   SCALE                           =           1024
   VERSION_MAJOR                   =              1
-  VERSION_MICRO                   =             10
-  VERSION_MINOR                   =             48
-  VERSION_STRING                  = "1.48.10"
+  VERSION_MICRO                   =              0
+  VERSION_MINOR                   =             50
+  VERSION_STRING                  = "1.50.0"
 
   enum Alignment : UInt32
     Left   = 0
@@ -104,6 +104,19 @@ module Pango
     InsertHyphens      = 28
     Overline           = 29
     OverlineColor      = 30
+    LineHeight         = 31
+    AbsoluteLineHeight = 32
+    TextTransform      = 33
+    Word               = 34
+    Sentence           = 35
+    BaselineShift      = 36
+    FontScale          = 37
+  end
+
+  enum BaselineShift : UInt32
+    None        = 0
+    Superscript = 1
+    Subscript   = 2
   end
 
   enum BidiType : UInt32
@@ -156,6 +169,13 @@ module Pango
     End    = 3
   end
 
+  enum FontScale : UInt32
+    None        = 0
+    Superscript = 1
+    Subscript   = 2
+    SmallCaps   = 3
+  end
+
   enum Gravity : UInt32
     South = 0
     East  = 1
@@ -168,6 +188,12 @@ module Pango
     Natural = 0
     Strong  = 1
     Line    = 2
+  end
+
+  enum LayoutDeserializeError : UInt32
+    Invalid      = 0
+    InvalidValue = 1
+    MissingValue = 2
   end
 
   enum Overline : UInt32
@@ -323,7 +349,17 @@ module Pango
   end
 
   enum TabAlign : UInt32
-    Left = 0
+    Left    = 0
+    Right   = 1
+    Center  = 2
+    Decimal = 3
+  end
+
+  enum TextTransform : UInt32
+    None       = 0
+    Lowercase  = 1
+    Uppercase  = 2
+    Capitalize = 3
   end
 
   enum Underline : UInt32
@@ -338,8 +374,13 @@ module Pango
   end
 
   enum Variant : UInt32
-    Normal    = 0
-    SmallCaps = 1
+    Normal        = 0
+    SmallCaps     = 1
+    AllSmallCaps  = 2
+    PetiteCaps    = 3
+    AllPetiteCaps = 4
+    Unicase       = 5
+    TitleCaps     = 6
   end
 
   enum Weight : UInt32
@@ -377,6 +418,29 @@ module Pango
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibPango.pango_font_mask_get_type
+    end
+  end
+
+  @[Flags]
+  enum LayoutDeserializeFlags : UInt32
+    Default = 0
+    Context = 1
+
+    # Returns the type id (GType) registered in GLib type system.
+    def self.g_type : UInt64
+      LibPango.pango_layout_deserialize_flags_get_type
+    end
+  end
+
+  @[Flags]
+  enum LayoutSerializeFlags : UInt32
+    Default = 0
+    Context = 1
+    Output  = 2
+
+    # Returns the type id (GType) registered in GLib type system.
+    def self.g_type : UInt64
+      LibPango.pango_layout_serialize_flags_get_type
     end
   end
 

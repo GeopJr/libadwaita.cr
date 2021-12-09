@@ -429,6 +429,13 @@ module Gtk
       @pointer = _retval
     end
 
+    def append(child : Gtk::Widget) : Nil
+      # gtk_flow_box_append: (Method)
+      # Returns: (transfer none)
+
+      LibGtk.gtk_flow_box_append(self, child)
+    end
+
     def bind_model(model : Gio::ListModel?, create_widget_func : Pointer(Void), user_data : Pointer(Nil)?, user_data_free_func : Pointer(Void)) : Nil
       # gtk_flow_box_bind_model: (Method)
       # @model: (nullable)
@@ -548,6 +555,13 @@ module Gtk
       # Returns: (transfer none)
 
       LibGtk.gtk_flow_box_invalidate_sort(self)
+    end
+
+    def prepend(child : Gtk::Widget) : Nil
+      # gtk_flow_box_prepend: (Method)
+      # Returns: (transfer none)
+
+      LibGtk.gtk_flow_box_prepend(self, child)
     end
 
     def remove(widget : Gtk::Widget) : Nil

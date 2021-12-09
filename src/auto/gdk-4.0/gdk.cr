@@ -33,6 +33,7 @@ require "./draw_context.cr"
 require "./drop.cr"
 require "./event.cr"
 require "./event_sequence.cr"
+require "./file_list.cr"
 require "./focus_event.cr"
 require "./frame_clock.cr"
 require "./frame_clock_private.cr"
@@ -2480,16 +2481,25 @@ module Gdk
   end
 
   enum MemoryFormat : UInt32
-    B8g8r8a8Premultiplied = 0
-    A8r8g8b8Premultiplied = 1
-    R8g8b8a8Premultiplied = 2
-    B8g8r8a8              = 3
-    A8r8g8b8              = 4
-    R8g8b8a8              = 5
-    A8b8g8r8              = 6
-    R8g8b8                = 7
-    B8g8r8                = 8
-    NFormats              = 9
+    B8g8r8a8Premultiplied          =  0
+    A8r8g8b8Premultiplied          =  1
+    R8g8b8a8Premultiplied          =  2
+    B8g8r8a8                       =  3
+    A8r8g8b8                       =  4
+    R8g8b8a8                       =  5
+    A8b8g8r8                       =  6
+    R8g8b8                         =  7
+    B8g8r8                         =  8
+    R16g16b16                      =  9
+    R16g16b16a16Premultiplied      = 10
+    R16g16b16a16                   = 11
+    R16g16b16Float                 = 12
+    R16g16b16a16FloatPremultiplied = 13
+    R16g16b16a16Float              = 14
+    R32g32b32Float                 = 15
+    R32g32b32a32FloatPremultiplied = 16
+    R32g32b32a32Float              = 17
+    NFormats                       = 18
   end
 
   enum NotifyType : UInt32
@@ -2527,6 +2537,13 @@ module Gdk
     SouthWest = 5
     South     = 6
     SouthEast = 7
+  end
+
+  enum TextureError : UInt32
+    TooLarge           = 0
+    CorruptImage       = 1
+    UnsupportedContent = 2
+    UnsupportedFormat  = 3
   end
 
   enum TitlebarGesture : UInt32
@@ -2611,6 +2628,17 @@ module Gdk
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGdk.gdk_frame_clock_phase_get_type
+    end
+  end
+
+  @[Flags]
+  enum GLAPI : UInt32
+    Gl   = 1
+    Gles = 2
+
+    # Returns the type id (GType) registered in GLib type system.
+    def self.g_type : UInt64
+      LibGdk.gdk_gl_api_get_type
     end
   end
 

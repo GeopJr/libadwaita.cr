@@ -246,9 +246,16 @@ module Pango
       LibPango.pango_font_description_set_variant(self, variant)
     end
 
-    def variations=(variations : ::String) : Nil
+    def variations=(variations : ::String?) : Nil
       # pango_font_description_set_variations: (Method)
+      # @variations: (nullable)
       # Returns: (transfer none)
+
+      variations = if variations.nil?
+                     Pointer(LibC::Char).null
+                   else
+                     variations.to_unsafe
+                   end
 
       LibPango.pango_font_description_set_variations(self, variations)
     end

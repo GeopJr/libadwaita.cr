@@ -36,9 +36,9 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, application : Gtk::Application? = nil, can_focus : Bool? = nil, can_swipe_back : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, content : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, decorated : Bool? = nil, default_height : Int32? = nil, default_widget : Gtk::Widget? = nil, default_width : Int32? = nil, deletable : Bool? = nil, destroy_with_parent : Bool? = nil, display : Gdk::Display? = nil, focus_on_click : Bool? = nil, focus_visible : Bool? = nil, focus_widget : Gtk::Widget? = nil, focusable : Bool? = nil, fullscreened : Bool? = nil, halign : Gtk::Align? = nil, handle_menubar_accel : Bool? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, hide_on_close : Bool? = nil, icon_name : ::String? = nil, is_active : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, maximized : Bool? = nil, mnemonics_visible : Bool? = nil, modal : Bool? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, resizable : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, search_enabled : Bool? = nil, sensitive : Bool? = nil, startup_id : ::String? = nil, title : ::String? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, transient_for : Gtk::Window? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, visible_page : Gtk::Widget? = nil, visible_page_name : ::String? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[63]
-      _values = StaticArray(LibGObject::Value, 63).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, application : Gtk::Application? = nil, can_focus : Bool? = nil, can_navigate_back : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, content : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, decorated : Bool? = nil, default_height : Int32? = nil, default_widget : Gtk::Widget? = nil, default_width : Int32? = nil, deletable : Bool? = nil, destroy_with_parent : Bool? = nil, display : Gdk::Display? = nil, focus_on_click : Bool? = nil, focus_visible : Bool? = nil, focus_widget : Gtk::Widget? = nil, focusable : Bool? = nil, fullscreened : Bool? = nil, halign : Gtk::Align? = nil, handle_menubar_accel : Bool? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, hide_on_close : Bool? = nil, icon_name : ::String? = nil, is_active : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, maximized : Bool? = nil, mnemonics_visible : Bool? = nil, modal : Bool? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, resizable : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, search_enabled : Bool? = nil, sensitive : Bool? = nil, startup_id : ::String? = nil, title : ::String? = nil, titlebar : Gtk::Widget? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, transient_for : Gtk::Window? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, visible_page : Gtk::Widget? = nil, visible_page_name : ::String? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[64]
+      _values = StaticArray(LibGObject::Value, 64).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -56,9 +56,9 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_swipe_back
-        (_names.to_unsafe + _n).value = "can-swipe-back".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, can_swipe_back)
+      if can_navigate_back
+        (_names.to_unsafe + _n).value = "can-navigate-back".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, can_navigate_back)
         _n += 1
       end
       if can_target
@@ -306,6 +306,11 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
+      if titlebar
+        (_names.to_unsafe + _n).value = "titlebar".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, titlebar)
+        _n += 1
+      end
       if tooltip_markup
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
@@ -365,18 +370,18 @@ module Adw
       LibAdw.adw_preferences_window_get_type
     end
 
-    def can_swipe_back=(value : Bool) : Bool
+    def can_navigate_back=(value : Bool) : Bool
       unsafe_value = value
 
-      LibGObject.g_object_set(self, "can-swipe-back", unsafe_value, Pointer(Void).null)
+      LibGObject.g_object_set(self, "can-navigate-back", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def can_swipe_back? : Bool
+    def can_navigate_back? : Bool
       # Returns: None
 
       value = uninitialized LibC::Int
-      LibGObject.g_object_get(self, "can-swipe-back", pointerof(value), Pointer(Void).null)
+      LibGObject.g_object_get(self, "can-navigate-back", pointerof(value), Pointer(Void).null)
       GICrystal.to_bool(value)
     end
 
@@ -440,6 +445,16 @@ module Adw
       LibAdw.adw_preferences_window_add(self, page)
     end
 
+    def add_toast(toast : Adw::Toast) : Nil
+      # adw_preferences_window_add_toast: (Method)
+      # @toast: (transfer full)
+      # Returns: (transfer none)
+
+      LibGObject.g_object_ref(toast)
+
+      LibAdw.adw_preferences_window_add_toast(self, toast)
+    end
+
     def close_subpage : Nil
       # adw_preferences_window_close_subpage: (Method)
       # Returns: (transfer none)
@@ -447,11 +462,11 @@ module Adw
       LibAdw.adw_preferences_window_close_subpage(self)
     end
 
-    def can_swipe_back : Bool
-      # adw_preferences_window_get_can_swipe_back: (Method | Getter)
+    def can_navigate_back : Bool
+      # adw_preferences_window_get_can_navigate_back: (Method | Getter)
       # Returns: (transfer none)
 
-      _retval = LibAdw.adw_preferences_window_get_can_swipe_back(self)
+      _retval = LibAdw.adw_preferences_window_get_can_navigate_back(self)
       GICrystal.to_bool(_retval)
     end
 
@@ -493,11 +508,11 @@ module Adw
       LibAdw.adw_preferences_window_remove(self, page)
     end
 
-    def can_swipe_back=(can_swipe_back : Bool) : Nil
-      # adw_preferences_window_set_can_swipe_back: (Method | Setter)
+    def can_navigate_back=(can_navigate_back : Bool) : Nil
+      # adw_preferences_window_set_can_navigate_back: (Method | Setter)
       # Returns: (transfer none)
 
-      LibAdw.adw_preferences_window_set_can_swipe_back(self, can_swipe_back)
+      LibAdw.adw_preferences_window_set_can_navigate_back(self, can_navigate_back)
     end
 
     def search_enabled=(search_enabled : Bool) : Nil

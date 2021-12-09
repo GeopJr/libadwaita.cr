@@ -38,9 +38,9 @@ module Gtk
       super
     end
 
-    def initialize(*, gtk_alternative_button_order : Bool? = nil, gtk_alternative_sort_arrows : Bool? = nil, gtk_application_prefer_dark_theme : Bool? = nil, gtk_cursor_aspect_ratio : Float64? = nil, gtk_cursor_blink : Bool? = nil, gtk_cursor_blink_time : Int32? = nil, gtk_cursor_blink_timeout : Int32? = nil, gtk_cursor_theme_name : ::String? = nil, gtk_cursor_theme_size : Int32? = nil, gtk_decoration_layout : ::String? = nil, gtk_dialogs_use_header : Bool? = nil, gtk_dnd_drag_threshold : Int32? = nil, gtk_double_click_distance : Int32? = nil, gtk_double_click_time : Int32? = nil, gtk_enable_accels : Bool? = nil, gtk_enable_animations : Bool? = nil, gtk_enable_event_sounds : Bool? = nil, gtk_enable_input_feedback_sounds : Bool? = nil, gtk_enable_primary_paste : Bool? = nil, gtk_entry_password_hint_timeout : UInt32? = nil, gtk_entry_select_on_focus : Bool? = nil, gtk_error_bell : Bool? = nil, gtk_font_name : ::String? = nil, gtk_fontconfig_timestamp : UInt32? = nil, gtk_icon_theme_name : ::String? = nil, gtk_im_module : ::String? = nil, gtk_keynav_use_caret : Bool? = nil, gtk_label_select_on_focus : Bool? = nil, gtk_long_press_time : UInt32? = nil, gtk_overlay_scrolling : Bool? = nil, gtk_primary_button_warps_slider : Bool? = nil, gtk_print_backends : ::String? = nil, gtk_print_preview_command : ::String? = nil, gtk_recent_files_enabled : Bool? = nil, gtk_recent_files_max_age : Int32? = nil, gtk_shell_shows_app_menu : Bool? = nil, gtk_shell_shows_desktop : Bool? = nil, gtk_shell_shows_menubar : Bool? = nil, gtk_sound_theme_name : ::String? = nil, gtk_split_cursor : Bool? = nil, gtk_theme_name : ::String? = nil, gtk_titlebar_double_click : ::String? = nil, gtk_titlebar_middle_click : ::String? = nil, gtk_titlebar_right_click : ::String? = nil, gtk_xft_antialias : Int32? = nil, gtk_xft_dpi : Int32? = nil, gtk_xft_hinting : Int32? = nil, gtk_xft_hintstyle : ::String? = nil, gtk_xft_rgba : ::String? = nil)
-      _names = uninitialized Pointer(LibC::Char)[49]
-      _values = StaticArray(LibGObject::Value, 49).new(LibGObject::Value.new)
+    def initialize(*, gtk_alternative_button_order : Bool? = nil, gtk_alternative_sort_arrows : Bool? = nil, gtk_application_prefer_dark_theme : Bool? = nil, gtk_cursor_aspect_ratio : Float64? = nil, gtk_cursor_blink : Bool? = nil, gtk_cursor_blink_time : Int32? = nil, gtk_cursor_blink_timeout : Int32? = nil, gtk_cursor_theme_name : ::String? = nil, gtk_cursor_theme_size : Int32? = nil, gtk_decoration_layout : ::String? = nil, gtk_dialogs_use_header : Bool? = nil, gtk_dnd_drag_threshold : Int32? = nil, gtk_double_click_distance : Int32? = nil, gtk_double_click_time : Int32? = nil, gtk_enable_accels : Bool? = nil, gtk_enable_animations : Bool? = nil, gtk_enable_event_sounds : Bool? = nil, gtk_enable_input_feedback_sounds : Bool? = nil, gtk_enable_primary_paste : Bool? = nil, gtk_entry_password_hint_timeout : UInt32? = nil, gtk_entry_select_on_focus : Bool? = nil, gtk_error_bell : Bool? = nil, gtk_font_name : ::String? = nil, gtk_fontconfig_timestamp : UInt32? = nil, gtk_hint_font_metrics : Bool? = nil, gtk_icon_theme_name : ::String? = nil, gtk_im_module : ::String? = nil, gtk_keynav_use_caret : Bool? = nil, gtk_label_select_on_focus : Bool? = nil, gtk_long_press_time : UInt32? = nil, gtk_overlay_scrolling : Bool? = nil, gtk_primary_button_warps_slider : Bool? = nil, gtk_print_backends : ::String? = nil, gtk_print_preview_command : ::String? = nil, gtk_recent_files_enabled : Bool? = nil, gtk_recent_files_max_age : Int32? = nil, gtk_shell_shows_app_menu : Bool? = nil, gtk_shell_shows_desktop : Bool? = nil, gtk_shell_shows_menubar : Bool? = nil, gtk_sound_theme_name : ::String? = nil, gtk_split_cursor : Bool? = nil, gtk_theme_name : ::String? = nil, gtk_titlebar_double_click : ::String? = nil, gtk_titlebar_middle_click : ::String? = nil, gtk_titlebar_right_click : ::String? = nil, gtk_xft_antialias : Int32? = nil, gtk_xft_dpi : Int32? = nil, gtk_xft_hinting : Int32? = nil, gtk_xft_hintstyle : ::String? = nil, gtk_xft_rgba : ::String? = nil)
+      _names = uninitialized Pointer(LibC::Char)[50]
+      _values = StaticArray(LibGObject::Value, 50).new(LibGObject::Value.new)
       _n = 0
 
       if gtk_alternative_button_order
@@ -161,6 +161,11 @@ module Gtk
       if gtk_fontconfig_timestamp
         (_names.to_unsafe + _n).value = "gtk-fontconfig-timestamp".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_fontconfig_timestamp)
+        _n += 1
+      end
+      if gtk_hint_font_metrics
+        (_names.to_unsafe + _n).value = "gtk-hint-font-metrics".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_hint_font_metrics)
         _n += 1
       end
       if gtk_icon_theme_name
@@ -655,6 +660,21 @@ module Gtk
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "gtk-fontconfig-timestamp", pointerof(value), Pointer(Void).null)
       value
+    end
+
+    def gtk_hint_font_metrics=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "gtk-hint-font-metrics", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def gtk_hint_font_metrics? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "gtk-hint-font-metrics", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
     end
 
     def gtk_icon_theme_name=(value : ::String) : ::String

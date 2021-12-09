@@ -35,6 +35,14 @@ module Pango
       self.descriptions_free(descs)
     end
 
+    def deserialize(context : Pango::Context, bytes : GLib::Bytes) : Pango::Font?
+      # pango_font_deserialize: (Throws)
+      # Returns: (transfer full)
+
+      _retval = LibPango.pango_font_deserialize(context, bytes)
+      Pango::Font.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+    end
+
     def describe : Pango::FontDescription
       # pango_font_describe: (Method)
       # Returns: (transfer full)
@@ -102,6 +110,14 @@ module Pango
       ink_rect
     end
 
+    def languages : Enumerable(Pango::Language)?
+      # pango_font_get_languages: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_font_get_languages(self)
+      GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
     def metrics(language : Pango::Language?) : Pango::FontMetrics
       # pango_font_get_metrics: (Method)
       # @language: (nullable)
@@ -123,6 +139,14 @@ module Pango
 
       _retval = LibPango.pango_font_has_char(self, wc)
       GICrystal.to_bool(_retval)
+    end
+
+    def serialize : GLib::Bytes
+      # pango_font_serialize: (Method)
+      # Returns: (transfer full)
+
+      _retval = LibPango.pango_font_serialize(self)
+      GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

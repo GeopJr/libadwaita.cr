@@ -7,11 +7,14 @@ require "./lib_adw.cr"
 
 # Wrappers
 require "./action_row.cr"
+require "./animation.cr"
+require "./animation_target.cr"
 require "./application.cr"
 require "./application_window.cr"
 require "./avatar.cr"
 require "./bin.cr"
 require "./button_content.cr"
+require "./callback_animation_target.cr"
 require "./carousel.cr"
 require "./carousel_indicator_dots.cr"
 require "./carousel_indicator_lines.cr"
@@ -31,6 +34,8 @@ require "./preferences_page.cr"
 require "./preferences_row.cr"
 require "./preferences_window.cr"
 require "./split_button.cr"
+require "./spring_animation.cr"
+require "./spring_params.cr"
 require "./squeezer.cr"
 require "./squeezer_page.cr"
 require "./status_page.cr"
@@ -40,6 +45,9 @@ require "./swipeable.cr"
 require "./tab_bar.cr"
 require "./tab_page.cr"
 require "./tab_view.cr"
+require "./timed_animation.cr"
+require "./toast.cr"
+require "./toast_overlay.cr"
 require "./view_stack.cr"
 require "./view_stack_page.cr"
 require "./view_switcher.cr"
@@ -52,7 +60,14 @@ module Adw
   MAJOR_VERSION = 1
   MICRO_VERSION = 0
   MINOR_VERSION = 0
-  VERSION_S     = "1.0.0.alpha.4"
+  VERSION_S     = "1.0.0.beta.1"
+
+  enum AnimationState : UInt32
+    Idle     = 0
+    Paused   = 1
+    Playing  = 2
+    Finished = 3
+  end
 
   enum CenteringPolicy : UInt32
     Loose  = 0
@@ -65,6 +80,40 @@ module Adw
     PreferLight = 2
     PreferDark  = 3
     ForceDark   = 4
+  end
+
+  enum Easing : UInt32
+    Linear           =  0
+    EaseInQuad       =  1
+    EaseOutQuad      =  2
+    EaseInOutQuad    =  3
+    EaseInCubic      =  4
+    EaseOutCubic     =  5
+    EaseInOutCubic   =  6
+    EaseInQuart      =  7
+    EaseOutQuart     =  8
+    EaseInOutQuart   =  9
+    EaseInQuint      = 10
+    EaseOutQuint     = 11
+    EaseInOutQuint   = 12
+    EaseInSine       = 13
+    EaseOutSine      = 14
+    EaseInOutSine    = 15
+    EaseInExpo       = 16
+    EaseOutExpo      = 17
+    EaseInOutExpo    = 18
+    EaseInCirc       = 19
+    EaseOutCirc      = 20
+    EaseInOutCirc    = 21
+    EaseInElastic    = 22
+    EaseOutElastic   = 23
+    EaseInOutElastic = 24
+    EaseInBack       = 25
+    EaseOutBack      = 26
+    EaseInOutBack    = 27
+    EaseInBounce     = 28
+    EaseOutBounce    = 29
+    EaseInOutBounce  = 30
   end
 
   enum FlapFoldPolicy : UInt32
@@ -98,6 +147,11 @@ module Adw
   enum SqueezerTransitionType : UInt32
     None      = 0
     Crossfade = 1
+  end
+
+  enum ToastPriority : UInt32
+    Normal = 0
+    High   = 1
   end
 
   enum ViewSwitcherPolicy : UInt32

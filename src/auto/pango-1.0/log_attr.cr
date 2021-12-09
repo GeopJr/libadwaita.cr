@@ -13,8 +13,8 @@ module Pango
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(is_line_break : UInt32? = nil, is_mandatory_break : UInt32? = nil, is_char_break : UInt32? = nil, is_white : UInt32? = nil, is_cursor_position : UInt32? = nil, is_word_start : UInt32? = nil, is_word_end : UInt32? = nil, is_sentence_boundary : UInt32? = nil, is_sentence_start : UInt32? = nil, is_sentence_end : UInt32? = nil, backspace_deletes_character : UInt32? = nil, is_expandable_space : UInt32? = nil, is_word_boundary : UInt32? = nil)
-      _ptr = Pointer(Void).malloc(52)
+    def self.new(is_line_break : UInt32? = nil, is_mandatory_break : UInt32? = nil, is_char_break : UInt32? = nil, is_white : UInt32? = nil, is_cursor_position : UInt32? = nil, is_word_start : UInt32? = nil, is_word_end : UInt32? = nil, is_sentence_boundary : UInt32? = nil, is_sentence_start : UInt32? = nil, is_sentence_end : UInt32? = nil, backspace_deletes_character : UInt32? = nil, is_expandable_space : UInt32? = nil, is_word_boundary : UInt32? = nil, break_inserts_hyphen : UInt32? = nil, break_removes_preceding : UInt32? = nil, reserved : UInt32? = nil)
+      _ptr = Pointer(Void).malloc(64)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.is_line_break = is_line_break unless is_line_break.nil?
       _instance.is_mandatory_break = is_mandatory_break unless is_mandatory_break.nil?
@@ -29,6 +29,9 @@ module Pango
       _instance.backspace_deletes_character = backspace_deletes_character unless backspace_deletes_character.nil?
       _instance.is_expandable_space = is_expandable_space unless is_expandable_space.nil?
       _instance.is_word_boundary = is_word_boundary unless is_word_boundary.nil?
+      _instance.break_inserts_hyphen = break_inserts_hyphen unless break_inserts_hyphen.nil?
+      _instance.break_removes_preceding = break_removes_preceding unless break_removes_preceding.nil?
+      _instance.reserved = reserved unless reserved.nil?
       _instance
     end
 
@@ -188,6 +191,42 @@ module Pango
     def is_word_boundary=(value : UInt32)
       # Property setter
       _var = (@pointer + 48).as(Pointer(UInt32)).value = value
+      value
+    end
+
+    def break_inserts_hyphen : UInt32
+      # Property getter
+      _var = (@pointer + 52).as(Pointer(UInt32))
+      _var.value
+    end
+
+    def break_inserts_hyphen=(value : UInt32)
+      # Property setter
+      _var = (@pointer + 52).as(Pointer(UInt32)).value = value
+      value
+    end
+
+    def break_removes_preceding : UInt32
+      # Property getter
+      _var = (@pointer + 56).as(Pointer(UInt32))
+      _var.value
+    end
+
+    def break_removes_preceding=(value : UInt32)
+      # Property setter
+      _var = (@pointer + 56).as(Pointer(UInt32)).value = value
+      value
+    end
+
+    def reserved : UInt32
+      # Property getter
+      _var = (@pointer + 60).as(Pointer(UInt32))
+      _var.value
+    end
+
+    def reserved=(value : UInt32)
+      # Property setter
+      _var = (@pointer + 60).as(Pointer(UInt32)).value = value
       value
     end
 

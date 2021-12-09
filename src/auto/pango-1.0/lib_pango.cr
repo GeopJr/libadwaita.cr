@@ -3,24 +3,30 @@
 lib LibPango
   # Flags
   type FontMask = UInt32
+  type LayoutDeserializeFlags = UInt32
+  type LayoutSerializeFlags = UInt32
   type ShapeFlags = UInt32
   type ShowFlags = UInt32
 
   # Enums
   type Alignment = UInt32
   type AttrType = UInt32
+  type BaselineShift = UInt32
   type BidiType = UInt32
   type CoverageLevel = UInt32
   type Direction = UInt32
   type EllipsizeMode = UInt32
+  type FontScale = UInt32
   type Gravity = UInt32
   type GravityHint = UInt32
+  type LayoutDeserializeError = UInt32
   type Overline = UInt32
   type RenderPart = UInt32
   type Script = Int32
   type Stretch = UInt32
   type Style = UInt32
   type TabAlign = UInt32
+  type TextTransform = UInt32
   type Underline = UInt32
   type Variant = UInt32
   type Weight = UInt32
@@ -141,15 +147,18 @@ lib LibPango
     y_offset : Int32
   end
 
-  struct GlyphInfo # 20 bytes long
+  struct GlyphInfo # 24 bytes long
     glyph : UInt32
     geometry : LibPango::GlyphGeometry
     attr : LibPango::GlyphVisAttr
   end
 
-  struct GlyphItem # 16 bytes long
+  struct GlyphItem # 32 bytes long
     item : Pointer(LibPango::Item)
     glyphs : Pointer(LibPango::GlyphString)
+    y_offset : Int32
+    start_x_offset : Int32
+    end_x_offset : Int32
   end
 
   struct GlyphItemIter # 40 bytes long
@@ -170,8 +179,9 @@ lib LibPango
     space : Int32
   end
 
-  struct GlyphVisAttr # 4 bytes long
+  struct GlyphVisAttr # 8 bytes long
     is_cluster_start : UInt32
+    is_color : UInt32
   end
 
   struct Item # 64 bytes long
@@ -194,7 +204,7 @@ lib LibPango
     resolved_dir : UInt32
   end
 
-  struct LogAttr # 52 bytes long
+  struct LogAttr # 64 bytes long
     is_line_break : UInt32
     is_mandatory_break : UInt32
     is_char_break : UInt32
@@ -208,6 +218,9 @@ lib LibPango
     backspace_deletes_character : UInt32
     is_expandable_space : UInt32
     is_word_boundary : UInt32
+    break_inserts_hyphen : UInt32
+    break_removes_preceding : UInt32
+    reserved : UInt32
   end
 
   struct Matrix # 48 bytes long
@@ -276,12 +289,15 @@ lib LibPango
   fun pango_attr_allow_breaks_new(allow_breaks : LibC::Int) : Pointer(Void)
   fun pango_attr_background_alpha_new(alpha : UInt16) : Pointer(Void)
   fun pango_attr_background_new(red : UInt16, green : UInt16, blue : UInt16) : Pointer(Void)
+  fun pango_attr_baseline_shift_new(shift : Int32) : Pointer(Void)
+  fun pango_attr_break(text : Pointer(LibC::Char), length : Int32, attr_list : Pointer(Void), offset : Int32, attrs : Pointer(Void), attrs_len : Int32) : Void
   fun pango_attr_fallback_new(enable_fallback : LibC::Int) : Pointer(Void)
   fun pango_attr_family_new(family : Pointer(LibC::Char)) : Pointer(Void)
   fun pango_attr_font_desc_new(desc : Pointer(Void)) : Pointer(Void)
   fun pango_attr_font_desc_new(desc : Pointer(Void)) : Pointer(Void)
   fun pango_attr_font_features_new(features : Pointer(LibC::Char)) : Pointer(Void)
   fun pango_attr_font_features_new(features : Pointer(LibC::Char)) : Pointer(Void)
+  fun pango_attr_font_scale_new(scale : UInt32) : Pointer(Void)
   fun pango_attr_foreground_alpha_new(alpha : UInt16) : Pointer(Void)
   fun pango_attr_foreground_new(red : UInt16, green : UInt16, blue : UInt16) : Pointer(Void)
   fun pango_attr_gravity_hint_new(hint : UInt32) : Pointer(Void)
@@ -298,10 +314,14 @@ lib LibPango
   fun pango_attr_language_new(language : Pointer(Void)) : Pointer(Void)
   fun pango_attr_language_new(language : Pointer(Void)) : Pointer(Void)
   fun pango_attr_letter_spacing_new(letter_spacing : Int32) : Pointer(Void)
+  fun pango_attr_line_height_new(factor : Float64) : Pointer(Void)
+  fun pango_attr_line_height_new_absolute(height : Int32) : Pointer(Void)
   fun pango_attr_list_change(this : Void*, attr : Pointer(Void)) : Void
   fun pango_attr_list_copy(this : Void*) : Pointer(Void)
   fun pango_attr_list_equal(this : Void*, other_list : Pointer(Void)) : LibC::Int
   fun pango_attr_list_filter(this : Void*, func : AttrFilterFunc, data : Pointer(Void)) : Pointer(Void)
+  fun pango_attr_list_from_string(text : Pointer(LibC::Char)) : Pointer(Void)
+  fun pango_attr_list_from_string(text : Pointer(LibC::Char)) : Pointer(Void)
   fun pango_attr_list_get_attributes(this : Void*) : Pointer(LibGLib::SList)
   fun pango_attr_list_get_iterator(this : Void*) : Pointer(Void)
   fun pango_attr_list_get_type : UInt64
@@ -310,12 +330,14 @@ lib LibPango
   fun pango_attr_list_new : Pointer(Void)
   fun pango_attr_list_ref(this : Void*) : Pointer(Void)
   fun pango_attr_list_splice(this : Void*, other : Pointer(Void), pos : Int32, len : Int32) : Void
+  fun pango_attr_list_to_string(this : Void*) : Pointer(LibC::Char)
   fun pango_attr_list_unref(this : Void*) : Void
   fun pango_attr_list_update(this : Void*, pos : Int32, remove : Int32, add : Int32) : Void
   fun pango_attr_overline_color_new(red : UInt16, green : UInt16, blue : UInt16) : Pointer(Void)
   fun pango_attr_overline_new(overline : UInt32) : Pointer(Void)
   fun pango_attr_rise_new(rise : Int32) : Pointer(Void)
   fun pango_attr_scale_new(scale_factor : Float64) : Pointer(Void)
+  fun pango_attr_sentence_new : Pointer(Void)
   fun pango_attr_shape_new(ink_rect : Pointer(Void), logical_rect : Pointer(Void)) : Pointer(Void)
   fun pango_attr_shape_new(ink_rect : Pointer(Void), logical_rect : Pointer(Void)) : Pointer(Void)
   fun pango_attr_shape_new_with_data(ink_rect : Pointer(Void), logical_rect : Pointer(Void), data : Pointer(Void), copy_func : AttrDataCopyFunc, destroy_func : LibGLib::DestroyNotify) : Pointer(Void)
@@ -329,12 +351,23 @@ lib LibPango
   fun pango_attr_strikethrough_color_new(red : UInt16, green : UInt16, blue : UInt16) : Pointer(Void)
   fun pango_attr_strikethrough_new(strikethrough : LibC::Int) : Pointer(Void)
   fun pango_attr_style_new(style : UInt32) : Pointer(Void)
+  fun pango_attr_text_transform_new(transform : UInt32) : Pointer(Void)
   fun pango_attr_type_get_name(type : UInt32) : Pointer(LibC::Char)
   fun pango_attr_type_register(name : Pointer(LibC::Char)) : UInt32
   fun pango_attr_underline_color_new(red : UInt16, green : UInt16, blue : UInt16) : Pointer(Void)
   fun pango_attr_underline_new(underline : UInt32) : Pointer(Void)
   fun pango_attr_variant_new(variant : UInt32) : Pointer(Void)
   fun pango_attr_weight_new(weight : UInt32) : Pointer(Void)
+  fun pango_attr_word_new : Pointer(Void)
+  fun pango_attribute_as_color(this : Void*) : Pointer(Void)
+  fun pango_attribute_as_float(this : Void*) : Pointer(Void)
+  fun pango_attribute_as_font_desc(this : Void*) : Pointer(Void)
+  fun pango_attribute_as_font_features(this : Void*) : Pointer(Void)
+  fun pango_attribute_as_int(this : Void*) : Pointer(Void)
+  fun pango_attribute_as_language(this : Void*) : Pointer(Void)
+  fun pango_attribute_as_shape(this : Void*) : Pointer(Void)
+  fun pango_attribute_as_size(this : Void*) : Pointer(Void)
+  fun pango_attribute_as_string(this : Void*) : Pointer(Void)
   fun pango_attribute_copy(this : Void*) : Pointer(Void)
   fun pango_attribute_destroy(this : Void*) : Void
   fun pango_attribute_equal(this : Void*, attr2 : Pointer(Void)) : LibC::Int
@@ -426,6 +459,7 @@ lib LibPango
   fun pango_font_description_to_string(this : Void*) : Pointer(LibC::Char)
   fun pango_font_description_unset_fields(this : Void*, to_unset : UInt32) : Void
   fun pango_font_descriptions_free(descs : Pointer(Pointer(Void)), n_descs : Int32) : Void
+  fun pango_font_deserialize(context : Pointer(Void), bytes : Pointer(Void)) : Pointer(Void)
   fun pango_font_face_describe(this : Void*) : Pointer(Void)
   fun pango_font_face_get_face_name(this : Void*) : Pointer(LibC::Char)
   fun pango_font_face_get_family(this : Void*) : Pointer(Void)
@@ -443,6 +477,7 @@ lib LibPango
   fun pango_font_get_features(this : Void*, features : Pointer(Pointer(Void)), len : Pointer(UInt32), num_features : Pointer(UInt32)) : Void
   fun pango_font_get_font_map(this : Void*) : Pointer(Void)
   fun pango_font_get_glyph_extents(this : Void*, glyph : UInt32, ink_rect : Pointer(Void), logical_rect : Pointer(Void)) : Void
+  fun pango_font_get_languages(this : Void*) : Pointer(Void)
   fun pango_font_get_metrics(this : Void*, language : Pointer(Void)) : Pointer(Void)
   fun pango_font_get_type : UInt64
   fun pango_font_has_char(this : Void*, wc : UInt32) : LibC::Int
@@ -466,6 +501,7 @@ lib LibPango
   fun pango_font_metrics_get_underline_thickness(this : Void*) : Int32
   fun pango_font_metrics_ref(this : Void*) : Pointer(Void)
   fun pango_font_metrics_unref(this : Void*) : Void
+  fun pango_font_serialize(this : Void*) : Pointer(Void)
   fun pango_fontset_foreach(this : Void*, func : FontsetForeachFunc, data : Pointer(Void)) : Void
   fun pango_fontset_get_font(this : Void*, wc : UInt32) : Pointer(Void)
   fun pango_fontset_get_metrics(this : Void*) : Pointer(Void)
@@ -474,7 +510,7 @@ lib LibPango
   fun pango_fontset_simple_get_type : UInt64
   fun pango_fontset_simple_new(language : Pointer(Void)) : Pointer(Void)
   fun pango_fontset_simple_size(this : Void*) : Int32
-  fun pango_get_log_attrs(text : Pointer(LibC::Char), length : Int32, level : Int32, language : Pointer(Void), log_attrs : Pointer(Void), attrs_len : Int32) : Void
+  fun pango_get_log_attrs(text : Pointer(LibC::Char), length : Int32, level : Int32, language : Pointer(Void), attrs : Pointer(Void), attrs_len : Int32) : Void
   fun pango_get_mirror_char(ch : UInt32, mirrored_ch : Pointer(UInt32)) : LibC::Int
   fun pango_glyph_item_apply_attrs(this : Void*, text : Pointer(LibC::Char), list : Pointer(Void)) : Pointer(LibGLib::SList)
   fun pango_glyph_item_copy(this : Void*) : Pointer(Void)
@@ -498,6 +534,7 @@ lib LibPango
   fun pango_glyph_string_get_type : UInt64
   fun pango_glyph_string_get_width(this : Void*) : Int32
   fun pango_glyph_string_index_to_x(this : Void*, text : Pointer(LibC::Char), length : Int32, analysis : Pointer(Void), index_ : Int32, trailing : LibC::Int, x_pos : Pointer(Int32)) : Void
+  fun pango_glyph_string_index_to_x_full(this : Void*, text : Pointer(LibC::Char), length : Int32, analysis : Pointer(Void), attrs : Pointer(Void), index_ : Int32, trailing : LibC::Int, x_pos : Pointer(Int32)) : Void
   fun pango_glyph_string_new : Pointer(Void)
   fun pango_glyph_string_set_size(this : Void*, new_len : Int32) : Void
   fun pango_glyph_string_x_to_index(this : Void*, text : Pointer(LibC::Char), length : Int32, analysis : Pointer(Void), x_pos : Int32, index_ : Pointer(Int32), trailing : Pointer(Int32)) : Void
@@ -528,10 +565,13 @@ lib LibPango
   fun pango_language_to_string(this : Void*) : Pointer(LibC::Char)
   fun pango_layout_context_changed(this : Void*) : Void
   fun pango_layout_copy(this : Void*) : Pointer(Void)
+  fun pango_layout_deserialize(context : Pointer(Void), bytes : Pointer(Void), flags : UInt32) : Pointer(Void)
+  fun pango_layout_deserialize_error_quark : UInt32
   fun pango_layout_get_alignment(this : Void*) : UInt32
   fun pango_layout_get_attributes(this : Void*) : Pointer(Void)
   fun pango_layout_get_auto_dir(this : Void*) : LibC::Int
   fun pango_layout_get_baseline(this : Void*) : Int32
+  fun pango_layout_get_caret_pos(this : Void*, index_ : Int32, strong_pos : Pointer(Void), weak_pos : Pointer(Void)) : Void
   fun pango_layout_get_character_count(this : Void*) : Int32
   fun pango_layout_get_context(this : Void*) : Pointer(Void)
   fun pango_layout_get_cursor_pos(this : Void*, index_ : Int32, strong_pos : Pointer(Void), weak_pos : Pointer(Void)) : Void
@@ -543,6 +583,7 @@ lib LibPango
   fun pango_layout_get_indent(this : Void*) : Int32
   fun pango_layout_get_iter(this : Void*) : Pointer(Void)
   fun pango_layout_get_justify(this : Void*) : LibC::Int
+  fun pango_layout_get_justify_last_line(this : Void*) : LibC::Int
   fun pango_layout_get_line(this : Void*, line : Int32) : Pointer(Void)
   fun pango_layout_get_line_count(this : Void*) : Int32
   fun pango_layout_get_line_readonly(this : Void*, line : Int32) : Pointer(Void)
@@ -581,6 +622,7 @@ lib LibPango
   fun pango_layout_iter_get_line_readonly(this : Void*) : Pointer(Void)
   fun pango_layout_iter_get_line_yrange(this : Void*, y0_ : Pointer(Int32), y1_ : Pointer(Int32)) : Void
   fun pango_layout_iter_get_run(this : Void*) : Pointer(Void)
+  fun pango_layout_iter_get_run_baseline(this : Void*) : Int32
   fun pango_layout_iter_get_run_extents(this : Void*, ink_rect : Pointer(Void), logical_rect : Pointer(Void)) : Void
   fun pango_layout_iter_get_run_readonly(this : Void*) : Pointer(Void)
   fun pango_layout_iter_get_type : UInt64
@@ -590,15 +632,20 @@ lib LibPango
   fun pango_layout_iter_next_run(this : Void*) : LibC::Int
   fun pango_layout_line_get_extents(this : Void*, ink_rect : Pointer(Void), logical_rect : Pointer(Void)) : Void
   fun pango_layout_line_get_height(this : Void*, height : Pointer(Int32)) : Void
+  fun pango_layout_line_get_length(this : Void*) : Int32
   fun pango_layout_line_get_pixel_extents(this : Void*, ink_rect : Pointer(Void), logical_rect : Pointer(Void)) : Void
+  fun pango_layout_line_get_resolved_direction(this : Void*) : UInt32
+  fun pango_layout_line_get_start_index(this : Void*) : Int32
   fun pango_layout_line_get_type : UInt64
   fun pango_layout_line_get_x_ranges(this : Void*, start_index : Int32, end_index : Int32, ranges : Pointer(Pointer(Int32)), n_ranges : Pointer(Int32)) : Void
   fun pango_layout_line_index_to_x(this : Void*, index_ : Int32, trailing : LibC::Int, x_pos : Pointer(Int32)) : Void
+  fun pango_layout_line_is_paragraph_start(this : Void*) : LibC::Int
   fun pango_layout_line_ref(this : Void*) : Pointer(Void)
   fun pango_layout_line_unref(this : Void*) : Void
   fun pango_layout_line_x_to_index(this : Void*, x_pos : Int32, index_ : Pointer(Int32), trailing : Pointer(Int32)) : LibC::Int
   fun pango_layout_move_cursor_visually(this : Void*, strong : LibC::Int, old_index : Int32, old_trailing : Int32, direction : Int32, new_index : Pointer(Int32), new_trailing : Pointer(Int32)) : Void
   fun pango_layout_new(context : Pointer(Void)) : Pointer(Void)
+  fun pango_layout_serialize(this : Void*, flags : UInt32) : Pointer(Void)
   fun pango_layout_set_alignment(this : Void*, alignment : UInt32) : Void
   fun pango_layout_set_attributes(this : Void*, attrs : Pointer(Void)) : Void
   fun pango_layout_set_auto_dir(this : Void*, auto_dir : LibC::Int) : Void
@@ -607,6 +654,7 @@ lib LibPango
   fun pango_layout_set_height(this : Void*, height : Int32) : Void
   fun pango_layout_set_indent(this : Void*, indent : Int32) : Void
   fun pango_layout_set_justify(this : Void*, justify : LibC::Int) : Void
+  fun pango_layout_set_justify_last_line(this : Void*, justify : LibC::Int) : Void
   fun pango_layout_set_line_spacing(this : Void*, factor : Float32) : Void
   fun pango_layout_set_markup(this : Void*, markup : Pointer(LibC::Char), length : Int32) : Void
   fun pango_layout_set_markup_with_accel(this : Void*, markup : Pointer(LibC::Char), length : Int32, accel_marker : UInt32, accel_char : Pointer(UInt32)) : Void
@@ -616,6 +664,7 @@ lib LibPango
   fun pango_layout_set_text(this : Void*, text : Pointer(LibC::Char), length : Int32) : Void
   fun pango_layout_set_width(this : Void*, width : Int32) : Void
   fun pango_layout_set_wrap(this : Void*, wrap : UInt32) : Void
+  fun pango_layout_write_to_file(this : Void*, flags : UInt32, filename : Pointer(LibC::Char)) : LibC::Int
   fun pango_layout_xy_to_index(this : Void*, x : Int32, y : Int32, index_ : Pointer(Int32), trailing : Pointer(Int32)) : LibC::Int
   fun pango_log2vis_get_embedding_levels(text : Pointer(LibC::Char), length : Int32, pbase_dir : Pointer(UInt32)) : Pointer(UInt8)
   fun pango_markup_parser_finish(context : Pointer(Void), attr_list : Pointer(Pointer(Void)), text : Pointer(Pointer(LibC::Char)), accel_char : Pointer(UInt32)) : LibC::Int
@@ -661,7 +710,7 @@ lib LibPango
   fun pango_renderer_set_alpha(this : Void*, part : UInt32, alpha : UInt16) : Void
   fun pango_renderer_set_color(this : Void*, part : UInt32, color : Pointer(Void)) : Void
   fun pango_renderer_set_matrix(this : Void*, matrix : Pointer(Void)) : Void
-  fun pango_reorder_items(logical_items : Pointer(LibGLib::List)) : Pointer(LibGLib::List)
+  fun pango_reorder_items(items : Pointer(LibGLib::List)) : Pointer(LibGLib::List)
   fun pango_scan_int(pos : Pointer(Pointer(LibC::Char)), _out : Pointer(Int32)) : LibC::Int
   fun pango_scan_string(pos : Pointer(Pointer(LibC::Char)), _out : Pointer(Void)) : LibC::Int
   fun pango_scan_word(pos : Pointer(Pointer(LibC::Char)), _out : Pointer(Void)) : LibC::Int
@@ -674,11 +723,15 @@ lib LibPango
   fun pango_script_iter_next(this : Void*) : LibC::Int
   fun pango_shape(text : Pointer(LibC::Char), length : Int32, analysis : Pointer(Void), glyphs : Pointer(Void)) : Void
   fun pango_shape_full(item_text : Pointer(LibC::Char), item_length : Int32, paragraph_text : Pointer(LibC::Char), paragraph_length : Int32, analysis : Pointer(Void), glyphs : Pointer(Void)) : Void
+  fun pango_shape_item(item : Pointer(Void), paragraph_text : Pointer(LibC::Char), paragraph_length : Int32, log_attrs : Pointer(Void), glyphs : Pointer(Void), flags : UInt32) : Void
   fun pango_shape_with_flags(item_text : Pointer(LibC::Char), item_length : Int32, paragraph_text : Pointer(LibC::Char), paragraph_length : Int32, analysis : Pointer(Void), glyphs : Pointer(Void), flags : UInt32) : Void
   fun pango_skip_space(pos : Pointer(Pointer(LibC::Char))) : LibC::Int
   fun pango_split_file_list(str : Pointer(LibC::Char)) : Pointer(Pointer(LibC::Char))
   fun pango_tab_array_copy(this : Void*) : Pointer(Void)
   fun pango_tab_array_free(this : Void*) : Void
+  fun pango_tab_array_from_string(text : Pointer(LibC::Char)) : Pointer(Void)
+  fun pango_tab_array_from_string(text : Pointer(LibC::Char)) : Pointer(Void)
+  fun pango_tab_array_get_decimal_point(this : Void*, tab_index : Int32) : UInt32
   fun pango_tab_array_get_positions_in_pixels(this : Void*) : LibC::Int
   fun pango_tab_array_get_size(this : Void*) : Int32
   fun pango_tab_array_get_tab(this : Void*, tab_index : Int32, alignment : Pointer(UInt32), location : Pointer(Int32)) : Void
@@ -686,8 +739,12 @@ lib LibPango
   fun pango_tab_array_get_type : UInt64
   fun pango_tab_array_new(initial_size : Int32, positions_in_pixels : LibC::Int) : Pointer(Void)
   fun pango_tab_array_resize(this : Void*, new_size : Int32) : Void
+  fun pango_tab_array_set_decimal_point(this : Void*, tab_index : Int32, decimal_point : UInt32) : Void
+  fun pango_tab_array_set_positions_in_pixels(this : Void*, positions_in_pixels : LibC::Int) : Void
   fun pango_tab_array_set_tab(this : Void*, tab_index : Int32, alignment : UInt32, location : Int32) : Void
-  fun pango_tailor_break(text : Pointer(LibC::Char), length : Int32, analysis : Pointer(Void), offset : Int32, log_attrs : Pointer(Void), log_attrs_len : Int32) : Void
+  fun pango_tab_array_sort(this : Void*) : Void
+  fun pango_tab_array_to_string(this : Void*) : Pointer(LibC::Char)
+  fun pango_tailor_break(text : Pointer(LibC::Char), length : Int32, analysis : Pointer(Void), offset : Int32, attrs : Pointer(Void), attrs_len : Int32) : Void
   fun pango_trim_string(str : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun pango_unichar_direction(ch : UInt32) : UInt32
   fun pango_units_from_double(d : Float64) : Int32

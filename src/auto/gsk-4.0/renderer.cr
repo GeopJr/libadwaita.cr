@@ -84,9 +84,16 @@ module Gsk
       GICrystal.to_bool(_retval)
     end
 
-    def realize(surface : Gdk::Surface) : Bool
+    def realize(surface : Gdk::Surface?) : Bool
       # gsk_renderer_realize: (Method | Throws)
+      # @surface: (nullable)
       # Returns: (transfer none)
+
+      surface = if surface.nil?
+                  Pointer(Void).null
+                else
+                  surface.to_unsafe
+                end
 
       _retval = LibGsk.gsk_renderer_realize(self, surface)
       GICrystal.to_bool(_retval)

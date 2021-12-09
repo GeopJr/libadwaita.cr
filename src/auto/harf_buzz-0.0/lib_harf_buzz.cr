@@ -1,3 +1,4 @@
+@[Link("harfbuzz", pkg_config: "harfbuzz")]
 @[Link("harfbuzz-gobject", pkg_config: "harfbuzz-gobject")]
 
 lib LibHarfBuzz
@@ -244,6 +245,7 @@ lib LibHarfBuzz
   fun hb_buffer_get_invisible_glyph(buffer : Pointer(Void)) : UInt32
   fun hb_buffer_get_language(buffer : Pointer(Void)) : Pointer(Void)
   fun hb_buffer_get_length(buffer : Pointer(Void)) : UInt32
+  fun hb_buffer_get_not_found_glyph(buffer : Pointer(Void)) : UInt32
   fun hb_buffer_get_replacement_codepoint(buffer : Pointer(Void)) : UInt32
   fun hb_buffer_get_script(buffer : Pointer(Void)) : UInt32
   fun hb_buffer_get_segment_properties(buffer : Pointer(Void), props : Pointer(Void)) : Void
@@ -270,6 +272,7 @@ lib LibHarfBuzz
   fun hb_buffer_set_language(buffer : Pointer(Void), language : Pointer(Void)) : Void
   fun hb_buffer_set_length(buffer : Pointer(Void), length : UInt32) : Int32
   fun hb_buffer_set_message_func(buffer : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_buffer_set_not_found_glyph(buffer : Pointer(Void), not_found : UInt32) : Void
   fun hb_buffer_set_replacement_codepoint(buffer : Pointer(Void), replacement : UInt32) : Void
   fun hb_buffer_set_script(buffer : Pointer(Void), script : UInt32) : Void
   fun hb_buffer_set_segment_properties(buffer : Pointer(Void), props : Pointer(Void)) : Void
@@ -573,4 +576,7 @@ lib LibHarfBuzz
   fun hb_variation_from_string(str : Pointer(UInt8), len : Int32, variation : Pointer(Void)) : Int32
   fun hb_variation_to_string(this : Void*, buf : Pointer(Pointer(Pointer(LibC::Char))), size : Pointer(UInt32)) : Void
   fun hb_variation_to_string(variation : Pointer(Void), buf : Pointer(Pointer(Pointer(LibC::Char))), size : Pointer(UInt32)) : Void
+  fun hb_version(major : Pointer(UInt32), minor : Pointer(UInt32), micro : Pointer(UInt32)) : Void
+  fun hb_version_atleast(major : UInt32, minor : UInt32, micro : UInt32) : Int32
+  fun hb_version_string : Pointer(LibC::Char)
 end

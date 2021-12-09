@@ -29,7 +29,10 @@ module Pango
 
     def append(font : Pango::Font) : Nil
       # pango_fontset_simple_append: (Method)
+      # @font: (transfer full)
       # Returns: (transfer none)
+
+      LibGObject.g_object_ref(font)
 
       LibPango.pango_fontset_simple_append(self, font)
     end

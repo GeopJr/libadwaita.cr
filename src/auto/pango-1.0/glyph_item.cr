@@ -17,11 +17,14 @@ module Pango
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(item : Pango::Item? = nil, glyphs : Pango::GlyphString? = nil)
-      _ptr = Pointer(Void).malloc(16)
+    def self.new(item : Pango::Item? = nil, glyphs : Pango::GlyphString? = nil, y_offset : Int32? = nil, start_x_offset : Int32? = nil, end_x_offset : Int32? = nil)
+      _ptr = Pointer(Void).malloc(32)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.item = item unless item.nil?
       _instance.glyphs = glyphs unless glyphs.nil?
+      _instance.y_offset = y_offset unless y_offset.nil?
+      _instance.start_x_offset = start_x_offset unless start_x_offset.nil?
+      _instance.end_x_offset = end_x_offset unless end_x_offset.nil?
       _instance
     end
 
@@ -49,6 +52,42 @@ module Pango
     def glyphs=(value : Pango::GlyphString)
       # Property setter
       _var = (@pointer + 8).as(Pointer(Pointer(LibPango::GlyphString))).value = value.to_unsafe
+      value
+    end
+
+    def y_offset : Int32
+      # Property getter
+      _var = (@pointer + 16).as(Pointer(Int32))
+      _var.value
+    end
+
+    def y_offset=(value : Int32)
+      # Property setter
+      _var = (@pointer + 16).as(Pointer(Int32)).value = value
+      value
+    end
+
+    def start_x_offset : Int32
+      # Property getter
+      _var = (@pointer + 20).as(Pointer(Int32))
+      _var.value
+    end
+
+    def start_x_offset=(value : Int32)
+      # Property setter
+      _var = (@pointer + 20).as(Pointer(Int32)).value = value
+      value
+    end
+
+    def end_x_offset : Int32
+      # Property getter
+      _var = (@pointer + 24).as(Pointer(Int32))
+      _var.value
+    end
+
+    def end_x_offset=(value : Int32)
+      # Property setter
+      _var = (@pointer + 24).as(Pointer(Int32)).value = value
       value
     end
 

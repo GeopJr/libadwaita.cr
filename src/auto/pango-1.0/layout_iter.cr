@@ -163,6 +163,14 @@ module Pango
       Pango::GlyphItem.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    def run_baseline : Int32
+      # pango_layout_iter_get_run_baseline: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_layout_iter_get_run_baseline(self)
+      _retval
+    end
+
     def run_extents : Pango::Rectangle
       # pango_layout_iter_get_run_extents: (Method)
       # @ink_rect: (out) (caller-allocates) (optional)

@@ -6,54 +6,34 @@ require "../gtk-4.0/buildable"
 require "../gtk-4.0/constraint_target"
 
 module Adw
-  # A view switcher action bar.
+  # A widget showing toasts above its content.
   #
-  # An action bar letting you switch between multiple views contained in a
-  # [class@Adw.ViewStack], via an [class@Adw.ViewSwitcher]. It is designed to be put
-  # at the bottom of a window and to be revealed only on really narrow windows,
-  # e.g. on mobile phones. It can't be revealed if there are less than two pages.
+  # Toasts can be shown with [method@Adw.ToastOverlay.add_toast].
   #
-  # You can conveniently bind the [property@Adw.ViewSwitcherBar:reveal] property
-  # to [property@Adw.ViewSwitcherTitle:title-visible] to automatically reveal the
-  # view switcher bar when the title label is displayed in place of the view
-  # switcher.
-  #
-  # An example of the UI definition for a common use case:
-  #
-  # ```xml
-  # <object class="GtkWindow">
-  #   <child type="titlebar">
-  #     <object class="AdwHeaderBar">
-  #       <property name="centering-policy">strict</property>
-  #       <child type="title">
-  #         <object class="AdwViewSwitcherTitle" id="title">
-  #           <property name="stack">stack</property>
-  #         </object>
-  #       </child>
-  #     </object>
-  #   </child>
-  #   <child>
-  #     <object class="GtkBox">
-  #       <child>
-  #         <object class="AdwViewStack" id="stack"/>
-  #       </child>
-  #       <child>
-  #         <object class="AdwViewSwitcherBar">
-  #           <property name="stack">stack</property>
-  #           <binding name="reveal">
-  #             <lookup name="title-visible">title</lookup>
-  #           </binding>
-  #         </object>
-  #       </child>
-  #     </object>
-  #   </child>
-  # </object>
-  # ```
+  # See [class@Adw.Toast] for details.
   #
   # ## CSS nodes
   #
-  # `AdwViewSwitcherBar` has a single CSS node with name` viewswitcherbar`.
-  class ViewSwitcherBar < Gtk::Widget
+  # ```
+  # toastoverlay
+  # ├── [child]
+  # ├── toast
+  # ┊ ├── label.heading
+  # ├── [button]
+  # ╰── button.circular.flat
+  # ```
+  #
+  # `AdwToastOverlay`'s CSS node is called `toastoverlay`. It contains the child,
+  # as well as zero or more `toast` subnodes.
+  #
+  # Each of the `toast` nodes contains a `label` subnode with the `.heading`
+  # style class, optionally a `button` subnode, and another `button` subnode with
+  # `.circular` and `.flat` style classes.
+  #
+  # ## Accessibility
+  #
+  # `AdwToastOverlay` uses the `GTK_ACCESSIBLE_ROLE_TAB_GROUP` role.
+  class ToastOverlay < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Buildable
     include Gtk::ConstraintTarget
@@ -65,9 +45,9 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, reveal : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, stack : Adw::ViewStack? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[37]
-      _values = StaticArray(LibGObject::Value, 37).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[36]
+      _values = StaticArray(LibGObject::Value, 36).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -83,6 +63,11 @@ module Adw
       if can_target
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
+        _n += 1
+      end
+      if child
+        (_names.to_unsafe + _n).value = "child".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
       if css_classes
@@ -195,11 +180,6 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if reveal
-        (_names.to_unsafe + _n).value = "reveal".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, reveal)
-        _n += 1
-      end
       if root
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
@@ -213,11 +193,6 @@ module Adw
       if sensitive
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
-        _n += 1
-      end
-      if stack
-        (_names.to_unsafe + _n).value = "stack".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, stack)
         _n += 1
       end
       if tooltip_markup
@@ -256,87 +231,67 @@ module Adw
         _n += 1
       end
 
-      @pointer = LibGObject.g_object_new_with_properties(ViewSwitcherBar.g_type, _n, _names, _values)
+      @pointer = LibGObject.g_object_new_with_properties(ToastOverlay.g_type, _n, _names, _values)
     end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
-      LibAdw.adw_view_switcher_bar_get_type
+      LibAdw.adw_toast_overlay_get_type
     end
 
-    def reveal=(value : Bool) : Bool
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
       unsafe_value = value
 
-      LibGObject.g_object_set(self, "reveal", unsafe_value, Pointer(Void).null)
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def reveal? : Bool
-      # Returns: None
-
-      value = uninitialized LibC::Int
-      LibGObject.g_object_get(self, "reveal", pointerof(value), Pointer(Void).null)
-      GICrystal.to_bool(value)
-    end
-
-    def stack=(value : Adw::ViewStack?) : Adw::ViewStack?
-      unsafe_value = value
-
-      LibGObject.g_object_set(self, "stack", unsafe_value, Pointer(Void).null)
-      value
-    end
-
-    def stack : Adw::ViewStack?
+    def child : Gtk::Widget?
       # Returns: None
 
       value = uninitialized Pointer(Void)
-      LibGObject.g_object_get(self, "stack", pointerof(value), Pointer(Void).null)
-      Adw::ViewStack.new(value, GICrystal::Transfer::None) unless value.null?
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize
-      # adw_view_switcher_bar_new: (Constructor)
+      # adw_toast_overlay_new: (Constructor)
       # Returns: (transfer none)
 
-      _retval = LibAdw.adw_view_switcher_bar_new
+      _retval = LibAdw.adw_toast_overlay_new
       @pointer = _retval
     end
 
-    def reveal : Bool
-      # adw_view_switcher_bar_get_reveal: (Method | Getter)
+    def add_toast(toast : Adw::Toast) : Nil
+      # adw_toast_overlay_add_toast: (Method)
+      # @toast: (transfer full)
       # Returns: (transfer none)
 
-      _retval = LibAdw.adw_view_switcher_bar_get_reveal(self)
-      GICrystal.to_bool(_retval)
+      LibGObject.g_object_ref(toast)
+
+      LibAdw.adw_toast_overlay_add_toast(self, toast)
     end
 
-    def stack : Adw::ViewStack?
-      # adw_view_switcher_bar_get_stack: (Method | Getter)
+    def child : Gtk::Widget?
+      # adw_toast_overlay_get_child: (Method | Getter)
       # Returns: (transfer none)
 
-      _retval = LibAdw.adw_view_switcher_bar_get_stack(self)
-      Adw::ViewStack.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      _retval = LibAdw.adw_toast_overlay_get_child(self)
+      Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def reveal=(reveal : Bool) : Nil
-      # adw_view_switcher_bar_set_reveal: (Method | Setter)
+    def child=(child : Gtk::Widget?) : Nil
+      # adw_toast_overlay_set_child: (Method | Setter)
+      # @child: (nullable)
       # Returns: (transfer none)
 
-      LibAdw.adw_view_switcher_bar_set_reveal(self, reveal)
-    end
-
-    def stack=(stack : Adw::ViewStack?) : Nil
-      # adw_view_switcher_bar_set_stack: (Method | Setter)
-      # @stack: (nullable)
-      # Returns: (transfer none)
-
-      stack = if stack.nil?
+      child = if child.nil?
                 Pointer(Void).null
               else
-                stack.to_unsafe
+                child.to_unsafe
               end
 
-      LibAdw.adw_view_switcher_bar_set_stack(self, stack)
+      LibAdw.adw_toast_overlay_set_child(self, child)
     end
   end
 end

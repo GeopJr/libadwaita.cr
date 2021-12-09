@@ -1,6 +1,19 @@
 module Pango
   # The `PangoGlyphGeometry` structure contains width and positioning
   # information for a single glyph.
+  #
+  # Note that @width is not guaranteed to be the same as the glyph
+  # extents. Kerning and other positioning applied during shaping will
+  # affect both the @width and the @x_offset for the glyphs in the
+  # glyph string that results from shaping.
+  #
+  # The information in this struct is intended for rendering the glyphs,
+  # as follows:
+  #
+  # 1. Render the current glyph at (x + x_offset, y + y_offset),
+  #    where (x, y) is the current point
+  # 2. Advance the current point to (x + xoffset, y)
+  # 3. Render the next glyph...
   class GlyphGeometry
     @pointer : Pointer(Void)
 

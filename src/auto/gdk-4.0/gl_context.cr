@@ -6,7 +6,7 @@ module Gdk
   #
   # `GdkGLContext`s are created for a surface using
   # [method@Gdk.Surface.create_gl_context], and the context will match
-  # the the characteristics of the surface.
+  # the characteristics of the surface.
   #
   # A `GdkGLContext` is not tied to any particular normal framebuffer.
   # For instance, it cannot draw to the surface back buffer. The GDK
@@ -58,11 +58,21 @@ module Gdk
       super
     end
 
-    def initialize(*, display : Gdk::Display? = nil, shared_context : Gdk::GLContext? = nil, surface : Gdk::Surface? = nil)
-      _names = uninitialized Pointer(LibC::Char)[3]
-      _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
+    def initialize(*, allowed_apis : Gdk::GLAPI? = nil, api : Gdk::GLAPI? = nil, display : Gdk::Display? = nil, shared_context : Gdk::GLContext? = nil, surface : Gdk::Surface? = nil)
+      _names = uninitialized Pointer(LibC::Char)[5]
+      _values = StaticArray(LibGObject::Value, 5).new(LibGObject::Value.new)
       _n = 0
 
+      if allowed_apis
+        (_names.to_unsafe + _n).value = "allowed-apis".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, allowed_apis)
+        _n += 1
+      end
+      if api
+        (_names.to_unsafe + _n).value = "api".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, api)
+        _n += 1
+      end
       if display
         (_names.to_unsafe + _n).value = "display".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, display)
@@ -85,6 +95,29 @@ module Gdk
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGdk.gdk_gl_context_get_type
+    end
+
+    def allowed_apis=(value : Gdk::GLAPI) : Gdk::GLAPI
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "allowed-apis", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def allowed_apis : Gdk::GLAPI
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "allowed-apis", pointerof(value), Pointer(Void).null)
+      Gdk::GLAPI.from_value(value)
+    end
+
+    def api : Gdk::GLAPI
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "api", pointerof(value), Pointer(Void).null)
+      Gdk::GLAPI.from_value(value)
     end
 
     def shared_context=(value : Gdk::GLContext?) : Gdk::GLContext?
@@ -115,6 +148,22 @@ module Gdk
 
       _retval = LibGdk.gdk_gl_context_get_current
       Gdk::GLContext.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
+    def allowed_apis : Gdk::GLAPI
+      # gdk_gl_context_get_allowed_apis: (Method | Getter)
+      # Returns: (transfer none)
+
+      _retval = LibGdk.gdk_gl_context_get_allowed_apis(self)
+      Gdk::GLAPI.from_value(_retval)
+    end
+
+    def api : Gdk::GLAPI
+      # gdk_gl_context_get_api: (Method | Getter)
+      # Returns: (transfer none)
+
+      _retval = LibGdk.gdk_gl_context_get_api(self)
+      Gdk::GLAPI.from_value(_retval)
     end
 
     def debug_enabled : Bool
@@ -223,6 +272,13 @@ module Gdk
 
       _retval = LibGdk.gdk_gl_context_realize(self)
       GICrystal.to_bool(_retval)
+    end
+
+    def allowed_apis=(apis : Gdk::GLAPI) : Nil
+      # gdk_gl_context_set_allowed_apis: (Method | Setter)
+      # Returns: (transfer none)
+
+      LibGdk.gdk_gl_context_set_allowed_apis(self, apis)
     end
 
     def debug_enabled=(enabled : Bool) : Nil

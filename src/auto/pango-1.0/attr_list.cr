@@ -132,6 +132,14 @@ module Pango
       LibPango.pango_attr_list_splice(self, other, pos, len)
     end
 
+    def to_string : ::String
+      # pango_attr_list_to_string: (Method)
+      # Returns: (transfer full)
+
+      _retval = LibPango.pango_attr_list_to_string(self)
+      GICrystal.transfer_full(_retval)
+    end
+
     def unref : Nil
       # pango_attr_list_unref: (Method)
       # Returns: (transfer none)
@@ -144,6 +152,14 @@ module Pango
       # Returns: (transfer none)
 
       LibPango.pango_attr_list_update(self, pos, remove, add)
+    end
+
+    def self.from_string(text : ::String) : Pango::AttrList?
+      # pango_attr_list_from_string: (None)
+      # Returns: (transfer full)
+
+      _retval = LibPango.pango_attr_list_from_string(text)
+      Pango::AttrList.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def to_unsafe

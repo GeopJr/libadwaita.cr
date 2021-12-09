@@ -48,9 +48,9 @@ module HarfBuzz
   UNICODE_MAX                          =        1114111
   UNICODE_MAX_DECOMPOSITION_LEN        =             19
   VERSION_MAJOR                        =              3
-  VERSION_MICRO                        =              0
-  VERSION_MINOR                        =              0
-  VERSION_STRING                       = "3.0.0"
+  VERSION_MICRO                        =              2
+  VERSION_MINOR                        =              1
+  VERSION_STRING                       = "3.1.2"
 
   enum AatLayoutFeatureSelectorT : UInt32
     Invalid                      = 65535

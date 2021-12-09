@@ -6,7 +6,7 @@ module Gtk
   # It functions in a similar way to a cairo context, and maintains a stack
   # of render nodes and their associated transformations.
   #
-  # The node at the top of the stack is the the one that gtk_snapshot_append_…
+  # The node at the top of the stack is the one that gtk_snapshot_append_…
   # functions operate on. Use the gtk_snapshot_push_… functions and
   # gtk_snapshot_pop() to change the current node.
   #
@@ -246,11 +246,19 @@ module Gtk
       LibGtk.gtk_snapshot_push_rounded_clip(self, bounds)
     end
 
-    def push_shadow(shadow : Gsk::Shadow, n_shadows : UInt64) : Nil
+    def push_shadow(shadow : Enumerable(Gsk::Shadow)) : Nil
       # gtk_snapshot_push_shadow: (Method)
+      # @shadow: (array length=n_shadows element-type Interface)
       # Returns: (transfer none)
 
+      n_shadows = shadow.size
+      shadow = shadow.to_a.map(&.to_unsafe).to_unsafe
+
       LibGtk.gtk_snapshot_push_shadow(self, shadow, n_shadows)
+    end
+
+    def push_shadow(*shadow : Gsk::Shadow)
+      push_shadow(shadow)
     end
 
     def render_background(context : Gtk::StyleContext, x : Float64, y : Float64, width : Float64, height : Float64) : Nil

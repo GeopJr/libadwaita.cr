@@ -2,7 +2,8 @@ module Pango
   # A `PangoTabArray` contains an array of tab stops.
   #
   # `PangoTabArray` can be used to set tab stops in a `PangoLayout`.
-  # Each tab stop has an alignment and a position.
+  # Each tab stop has an alignment, a position, and optionally
+  # a character to use as decimal point.
   class TabArray
     @pointer : Pointer(Void)
 
@@ -46,6 +47,14 @@ module Pango
       # Returns: (transfer none)
 
       LibPango.pango_tab_array_free(self)
+    end
+
+    def decimal_point(tab_index : Int32) : UInt32
+      # pango_tab_array_get_decimal_point: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_tab_array_get_decimal_point(self, tab_index)
+      _retval
     end
 
     def positions_in_pixels : Bool
@@ -96,11 +105,48 @@ module Pango
       LibPango.pango_tab_array_resize(self, new_size)
     end
 
+    def set_decimal_point(tab_index : Int32, decimal_point : UInt32) : Nil
+      # pango_tab_array_set_decimal_point: (Method)
+      # Returns: (transfer none)
+
+      LibPango.pango_tab_array_set_decimal_point(self, tab_index, decimal_point)
+    end
+
+    def positions_in_pixels=(positions_in_pixels : Bool) : Nil
+      # pango_tab_array_set_positions_in_pixels: (Method)
+      # Returns: (transfer none)
+
+      LibPango.pango_tab_array_set_positions_in_pixels(self, positions_in_pixels)
+    end
+
     def set_tab(tab_index : Int32, alignment : Pango::TabAlign, location : Int32) : Nil
       # pango_tab_array_set_tab: (Method)
       # Returns: (transfer none)
 
       LibPango.pango_tab_array_set_tab(self, tab_index, alignment, location)
+    end
+
+    def sort : Nil
+      # pango_tab_array_sort: (Method)
+      # Returns: (transfer none)
+
+      LibPango.pango_tab_array_sort(self)
+    end
+
+    def to_string : ::String
+      # pango_tab_array_to_string: (Method)
+      # Returns: (transfer full)
+
+      _retval = LibPango.pango_tab_array_to_string(self)
+      GICrystal.transfer_full(_retval)
+    end
+
+    def self.from_string(text : ::String) : Pango::TabArray?
+      # pango_tab_array_from_string: (None)
+      # Returns: (transfer full)
+
+      _retval = LibPango.pango_tab_array_from_string(text)
+      Pango::TabArray.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def to_unsafe

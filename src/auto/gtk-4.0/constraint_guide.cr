@@ -206,42 +206,26 @@ module Gtk
       @pointer = _retval
     end
 
-    def max_size(width : Pointer(Int32)?, height : Pointer(Int32)?) : Nil
+    def max_size : Nil
       # gtk_constraint_guide_get_max_size: (Method)
-      # @width: (nullable)
-      # @height: (nullable)
+      # @width: (out) (transfer full) (optional)
+      # @height: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      width = if width.nil?
-                Pointer(Int32).null
-              else
-                width.to_unsafe
-              end
-      height = if height.nil?
-                 Pointer(Int32).null
-               else
-                 height.to_unsafe
-               end
+      width = Pointer(Int32).null
+      height = Pointer(Int32).null
 
       LibGtk.gtk_constraint_guide_get_max_size(self, width, height)
     end
 
-    def min_size(width : Pointer(Int32)?, height : Pointer(Int32)?) : Nil
+    def min_size : Nil
       # gtk_constraint_guide_get_min_size: (Method)
-      # @width: (nullable)
-      # @height: (nullable)
+      # @width: (out) (transfer full) (optional)
+      # @height: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      width = if width.nil?
-                Pointer(Int32).null
-              else
-                width.to_unsafe
-              end
-      height = if height.nil?
-                 Pointer(Int32).null
-               else
-                 height.to_unsafe
-               end
+      width = Pointer(Int32).null
+      height = Pointer(Int32).null
 
       LibGtk.gtk_constraint_guide_get_min_size(self, width, height)
     end
@@ -254,22 +238,14 @@ module Gtk
       ::String.new(_retval) unless _retval.null?
     end
 
-    def nat_size(width : Pointer(Int32)?, height : Pointer(Int32)?) : Nil
+    def nat_size : Nil
       # gtk_constraint_guide_get_nat_size: (Method)
-      # @width: (nullable)
-      # @height: (nullable)
+      # @width: (out) (transfer full) (optional)
+      # @height: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      width = if width.nil?
-                Pointer(Int32).null
-              else
-                width.to_unsafe
-              end
-      height = if height.nil?
-                 Pointer(Int32).null
-               else
-                 height.to_unsafe
-               end
+      width = Pointer(Int32).null
+      height = Pointer(Int32).null
 
       LibGtk.gtk_constraint_guide_get_nat_size(self, width, height)
     end

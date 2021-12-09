@@ -19,7 +19,8 @@ module Adw
   #
   # ## CSS nodes
   #
-  # `AdwViewSwitcher` has a single CSS node with name `viewswitcher`.
+  # `AdwViewSwitcher` has a single CSS node with name `viewswitcher`. It can have
+  # the style classes `.wide` and `.narrow`, matching its policy.
   #
   # ## Accessibility
   #

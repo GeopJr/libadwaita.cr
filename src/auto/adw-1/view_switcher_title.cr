@@ -23,7 +23,7 @@ module Adw
   # An example of the UI definition for a common use case:
   #
   # ```xml
-  # <object class="GtkWindow"/>
+  # <object class="GtkWindow">
   #   <child type="titlebar">
   #     <object class="AdwHeaderBar">
   #       <property name="centering-policy">strict</property>

@@ -22,7 +22,20 @@ module Pango
   # `PangoLayout`. The following image shows adjustable parameters
   # (on the left) and font metrics (on the right):
   #
-  # ![Pango Layout Parameters](layout.png)
+  # <picture>
+  #   <source srcset="layout-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img alt="Pango Layout Parameters" src="layout-light.png">
+  # </picture>
+  #
+  # The following images demonstrate the effect of alignment and
+  # justification on the layout of text:
+  #
+  # | | |
+  # | --- | --- |
+  # | ![align=left](align-left.png) | ![align=left, justify](align-left-justify.png) |
+  # | ![align=center](align-center.png) | ![align=center, justify](align-center-justify.png) |
+  # | ![align=right](align-right.png) | ![align=right, justify](align-right-justify.png) |
+  #
   #
   # It is possible, as well, to ignore the 2-D setup,
   # and simply treat the results of a `PangoLayout` as a list of lines.
@@ -45,6 +58,14 @@ module Pango
 
       _retval = LibPango.pango_layout_new(context)
       @pointer = _retval
+    end
+
+    def deserialize(context : Pango::Context, bytes : GLib::Bytes, flags : Pango::LayoutDeserializeFlags) : Pango::Layout?
+      # pango_layout_deserialize: (Throws)
+      # Returns: (transfer full)
+
+      _retval = LibPango.pango_layout_deserialize(context, bytes, flags)
+      Pango::Layout.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def context_changed : Nil
@@ -92,6 +113,20 @@ module Pango
 
       _retval = LibPango.pango_layout_get_baseline(self)
       _retval
+    end
+
+    def caret_pos(index_ : Int32) : Pango::Rectangle
+      # pango_layout_get_caret_pos: (Method)
+      # @strong_pos: (out) (caller-allocates) (optional)
+      # @weak_pos: (out) (caller-allocates) (optional)
+      # Returns: (transfer none)
+
+      strong_pos = Pointer(Void).null
+      weak_pos = Pointer(Void).null
+      strong_pos = Pango::Rectangle.new
+
+      LibPango.pango_layout_get_caret_pos(self, index_, strong_pos, weak_pos)
+      strong_pos
     end
 
     def character_count : Int32
@@ -191,6 +226,14 @@ module Pango
       # Returns: (transfer none)
 
       _retval = LibPango.pango_layout_get_justify(self)
+      GICrystal.to_bool(_retval)
+    end
+
+    def justify_last_line : Bool
+      # pango_layout_get_justify_last_line: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_layout_get_justify_last_line(self)
       GICrystal.to_bool(_retval)
     end
 
@@ -417,6 +460,14 @@ module Pango
       LibPango.pango_layout_move_cursor_visually(self, strong, old_index, old_trailing, direction, new_index, new_trailing)
     end
 
+    def serialize(flags : Pango::LayoutSerializeFlags) : GLib::Bytes
+      # pango_layout_serialize: (Method)
+      # Returns: (transfer full)
+
+      _retval = LibPango.pango_layout_serialize(self, flags)
+      GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def alignment=(alignment : Pango::Alignment) : Nil
       # pango_layout_set_alignment: (Method)
       # Returns: (transfer none)
@@ -485,6 +536,13 @@ module Pango
       # Returns: (transfer none)
 
       LibPango.pango_layout_set_justify(self, justify)
+    end
+
+    def justify_last_line=(justify : Bool) : Nil
+      # pango_layout_set_justify_last_line: (Method)
+      # Returns: (transfer none)
+
+      LibPango.pango_layout_set_justify_last_line(self, justify)
     end
 
     def line_spacing=(factor : Float32) : Nil
@@ -560,6 +618,14 @@ module Pango
       # Returns: (transfer none)
 
       LibPango.pango_layout_set_wrap(self, wrap)
+    end
+
+    def write_to_file(flags : Pango::LayoutSerializeFlags, filename : ::String) : Bool
+      # pango_layout_write_to_file: (Method | Throws)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_layout_write_to_file(self, flags, filename)
+      GICrystal.to_bool(_retval)
     end
 
     def xy_to_index(x : Int32, y : Int32, index_ : Int32, trailing : Int32) : Bool

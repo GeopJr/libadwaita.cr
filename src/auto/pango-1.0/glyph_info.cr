@@ -14,7 +14,7 @@ module Pango
     end
 
     def self.new(glyph : UInt32? = nil, geometry : Pango::GlyphGeometry? = nil, attr : Pango::GlyphVisAttr? = nil)
-      _ptr = Pointer(Void).malloc(20)
+      _ptr = Pointer(Void).malloc(24)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.glyph = glyph unless glyph.nil?
       _instance.geometry = geometry unless geometry.nil?

@@ -35,7 +35,7 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, allow_long_swipes : Bool? = nil, allow_mouse_drag : Bool? = nil, allow_scroll_wheel : Bool? = nil, animation_duration : UInt32? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, interactive : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, n_pages : UInt32? = nil, name : ::String? = nil, opacity : Float64? = nil, orientation : Gtk::Orientation? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, position : Float64? = nil, receives_default : Bool? = nil, reveal_duration : UInt32? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, spacing : UInt32? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, allow_long_swipes : Bool? = nil, allow_mouse_drag : Bool? = nil, allow_scroll_wheel : Bool? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, interactive : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, n_pages : UInt32? = nil, name : ::String? = nil, opacity : Float64? = nil, orientation : Gtk::Orientation? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, position : Float64? = nil, receives_default : Bool? = nil, reveal_duration : UInt32? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, scroll_params : Adw::SpringParams? = nil, sensitive : Bool? = nil, spacing : UInt32? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
       _names = uninitialized Pointer(LibC::Char)[45]
       _values = StaticArray(LibGObject::Value, 45).new(LibGObject::Value.new)
       _n = 0
@@ -58,11 +58,6 @@ module Adw
       if allow_scroll_wheel
         (_names.to_unsafe + _n).value = "allow-scroll-wheel".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allow_scroll_wheel)
-        _n += 1
-      end
-      if animation_duration
-        (_names.to_unsafe + _n).value = "animation-duration".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, animation_duration)
         _n += 1
       end
       if can_focus
@@ -220,6 +215,11 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
+      if scroll_params
+        (_names.to_unsafe + _n).value = "scroll-params".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, scroll_params)
+        _n += 1
+      end
       if sensitive
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
@@ -319,21 +319,6 @@ module Adw
       GICrystal.to_bool(value)
     end
 
-    def animation_duration=(value : UInt32) : UInt32
-      unsafe_value = value
-
-      LibGObject.g_object_set(self, "animation-duration", unsafe_value, Pointer(Void).null)
-      value
-    end
-
-    def animation_duration : UInt32
-      # Returns: None
-
-      value = uninitialized UInt32
-      LibGObject.g_object_get(self, "animation-duration", pointerof(value), Pointer(Void).null)
-      value
-    end
-
     def interactive=(value : Bool) : Bool
       unsafe_value = value
 
@@ -378,6 +363,21 @@ module Adw
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "reveal-duration", pointerof(value), Pointer(Void).null)
       value
+    end
+
+    def scroll_params=(value : Adw::SpringParams?) : Adw::SpringParams?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "scroll-params", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def scroll_params : Adw::SpringParams?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "scroll-params", pointerof(value), Pointer(Void).null)
+      Adw::SpringParams.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def spacing=(value : UInt32) : UInt32
@@ -434,14 +434,6 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def animation_duration : UInt32
-      # adw_carousel_get_animation_duration: (Method | Getter)
-      # Returns: (transfer none)
-
-      _retval = LibAdw.adw_carousel_get_animation_duration(self)
-      _retval
-    end
-
     def interactive : Bool
       # adw_carousel_get_interactive: (Method | Getter)
       # Returns: (transfer none)
@@ -482,6 +474,14 @@ module Adw
       _retval
     end
 
+    def scroll_params : Adw::SpringParams
+      # adw_carousel_get_scroll_params: (Method | Getter)
+      # Returns: (transfer full)
+
+      _retval = LibAdw.adw_carousel_get_scroll_params(self)
+      Adw::SpringParams.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def spacing : UInt32
       # adw_carousel_get_spacing: (Method | Getter)
       # Returns: (transfer none)
@@ -518,18 +518,11 @@ module Adw
       LibAdw.adw_carousel_reorder(self, child, position)
     end
 
-    def scroll_to(widget : Gtk::Widget) : Nil
+    def scroll_to(widget : Gtk::Widget, animate : Bool) : Nil
       # adw_carousel_scroll_to: (Method)
       # Returns: (transfer none)
 
-      LibAdw.adw_carousel_scroll_to(self, widget)
-    end
-
-    def scroll_to_full(widget : Gtk::Widget, duration : Int64) : Nil
-      # adw_carousel_scroll_to_full: (Method)
-      # Returns: (transfer none)
-
-      LibAdw.adw_carousel_scroll_to_full(self, widget, duration)
+      LibAdw.adw_carousel_scroll_to(self, widget, animate)
     end
 
     def allow_long_swipes=(allow_long_swipes : Bool) : Nil
@@ -553,13 +546,6 @@ module Adw
       LibAdw.adw_carousel_set_allow_scroll_wheel(self, allow_scroll_wheel)
     end
 
-    def animation_duration=(duration : UInt32) : Nil
-      # adw_carousel_set_animation_duration: (Method | Setter)
-      # Returns: (transfer none)
-
-      LibAdw.adw_carousel_set_animation_duration(self, duration)
-    end
-
     def interactive=(interactive : Bool) : Nil
       # adw_carousel_set_interactive: (Method | Setter)
       # Returns: (transfer none)
@@ -572,6 +558,13 @@ module Adw
       # Returns: (transfer none)
 
       LibAdw.adw_carousel_set_reveal_duration(self, reveal_duration)
+    end
+
+    def scroll_params=(params : Adw::SpringParams) : Nil
+      # adw_carousel_set_scroll_params: (Method | Setter)
+      # Returns: (transfer none)
+
+      LibAdw.adw_carousel_set_scroll_params(self, params)
     end
 
     def spacing=(spacing : UInt32) : Nil

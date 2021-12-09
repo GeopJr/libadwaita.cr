@@ -175,12 +175,12 @@ module Gdk
       Gdk::CairoContext.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def create_gl_context : Gdk::GLContext?
+    def create_gl_context : Gdk::GLContext
       # gdk_surface_create_gl_context: (Method | Throws)
       # Returns: (transfer full)
 
       _retval = LibGdk.gdk_surface_create_gl_context(self)
-      Gdk::GLContext.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gdk::GLContext.new(_retval, GICrystal::Transfer::Full)
     end
 
     def create_similar_surface(content : Cairo::Content, width : Int32, height : Int32) : Cairo::Surface

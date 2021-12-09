@@ -132,6 +132,14 @@ module Gsk
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
     end
 
+    def skew(skew_x : Float32, skew_y : Float32) : Gsk::Transform
+      # gsk_transform_skew: (Method)
+      # Returns: (transfer full)
+
+      _retval = LibGsk.gsk_transform_skew(self, skew_x, skew_y)
+      Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def to_2d(out_xx : Float32, out_yx : Float32, out_xy : Float32, out_yy : Float32, out_dx : Float32, out_dy : Float32) : Nil
       # gsk_transform_to_2d: (Method)
       # @out_xx: (out) (transfer full)
@@ -143,6 +151,20 @@ module Gsk
       # Returns: (transfer none)
 
       LibGsk.gsk_transform_to_2d(self, out_xx, out_yx, out_xy, out_yy, out_dx, out_dy)
+    end
+
+    def to_2d_components(out_skew_x : Float32, out_skew_y : Float32, out_scale_x : Float32, out_scale_y : Float32, out_angle : Float32, out_dx : Float32, out_dy : Float32) : Nil
+      # gsk_transform_to_2d_components: (Method)
+      # @out_skew_x: (out) (transfer full)
+      # @out_skew_y: (out) (transfer full)
+      # @out_scale_x: (out) (transfer full)
+      # @out_scale_y: (out) (transfer full)
+      # @out_angle: (out) (transfer full)
+      # @out_dx: (out) (transfer full)
+      # @out_dy: (out) (transfer full)
+      # Returns: (transfer none)
+
+      LibGsk.gsk_transform_to_2d_components(self, out_skew_x, out_skew_y, out_scale_x, out_scale_y, out_angle, out_dx, out_dy)
     end
 
     def to_affine(out_scale_x : Float32, out_scale_y : Float32, out_dx : Float32, out_dy : Float32) : Nil

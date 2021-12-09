@@ -65,6 +65,7 @@ module Gtk
   # The following attributes are used when constructing menu items:
   #
   # - "label": a user-visible string to display
+  # - "use-markup": whether the text in the menu item includes [Pango markup](https://docs.gtk.org/Pango/pango_markup.html)
   # - "action": the prefixed name of the action to trigger
   # - "target": the parameter to use when activating the action
   # - "icon" and "verb-icon": names of icons that may be displayed

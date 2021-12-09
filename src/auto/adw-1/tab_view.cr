@@ -26,6 +26,21 @@ module Adw
   # As such, it does not support disabling page reordering or detaching, or
   # adding children via [class@Gtk.Builder].
   #
+  # `AdwTabView` adds the following shortcuts in the managed scope:
+  #
+  # * Ctrl+Page Up - switch to the previous page
+  # * Ctrl+Page Down - switch to the next page
+  # * Ctrl+Home - switch to the first page
+  # * Ctrl+End - switch to the last page
+  # * Ctrl+Shift+Page Up - move the current page backward
+  # * Ctrl+Shift+Page Down - move the current page forward
+  # * Ctrl+Shift+Home - move the current page at the start
+  # * Ctrl+Shift+End - move the current page at the end
+  # * Ctrl+Tab - switch to the next page, with looping
+  # * Ctrl+Shift+Tab - switch to the previous page, with looping
+  # * Alt+1-9 - switch to pages 1-9
+  # * Alt+0 - switch to page 10
+  #
   # ## CSS nodes
   #
   # `AdwTabView` has a main CSS node with the name `tabview`.
@@ -41,9 +56,9 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, default_icon : Gio::Icon? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, is_transferring_page : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, menu_model : Gio::MenuModel? = nil, n_pages : Int32? = nil, n_pinned_pages : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, pages : Gtk::SelectionModel? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selected_page : Adw::TabPage? = nil, sensitive : Bool? = nil, shortcut_widget : Gtk::Widget? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[43]
-      _values = StaticArray(LibGObject::Value, 43).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, default_icon : Gio::Icon? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, is_transferring_page : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, menu_model : Gio::MenuModel? = nil, n_pages : Int32? = nil, n_pinned_pages : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, pages : Gtk::SelectionModel? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selected_page : Adw::TabPage? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[42]
+      _values = StaticArray(LibGObject::Value, 42).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -221,11 +236,6 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if shortcut_widget
-        (_names.to_unsafe + _n).value = "shortcut-widget".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, shortcut_widget)
-        _n += 1
-      end
       if tooltip_markup
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
@@ -345,21 +355,6 @@ module Adw
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "selected-page", pointerof(value), Pointer(Void).null)
       Adw::TabPage.new(value, GICrystal::Transfer::None) unless value.null?
-    end
-
-    def shortcut_widget=(value : Gtk::Widget?) : Gtk::Widget?
-      unsafe_value = value
-
-      LibGObject.g_object_set(self, "shortcut-widget", unsafe_value, Pointer(Void).null)
-      value
-    end
-
-    def shortcut_widget : Gtk::Widget?
-      # Returns: None
-
-      value = uninitialized Pointer(Void)
-      LibGObject.g_object_get(self, "shortcut-widget", pointerof(value), Pointer(Void).null)
-      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def initialize
@@ -516,14 +511,6 @@ module Adw
       Adw::TabPage.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def shortcut_widget : Gtk::Widget?
-      # adw_tab_view_get_shortcut_widget: (Method | Getter)
-      # Returns: (transfer none)
-
-      _retval = LibAdw.adw_tab_view_get_shortcut_widget(self)
-      Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
-    end
-
     def insert(child : Gtk::Widget, position : Int32) : Adw::TabPage
       # adw_tab_view_insert: (Method)
       # Returns: (transfer none)
@@ -645,20 +632,6 @@ module Adw
       # Returns: (transfer none)
 
       LibAdw.adw_tab_view_set_selected_page(self, selected_page)
-    end
-
-    def shortcut_widget=(widget : Gtk::Widget?) : Nil
-      # adw_tab_view_set_shortcut_widget: (Method | Setter)
-      # @widget: (nullable)
-      # Returns: (transfer none)
-
-      widget = if widget.nil?
-                 Pointer(Void).null
-               else
-                 widget.to_unsafe
-               end
-
-      LibAdw.adw_tab_view_set_shortcut_widget(self, widget)
     end
 
     def transfer_page(page : Adw::TabPage, other_view : Adw::TabView, position : Int32) : Nil

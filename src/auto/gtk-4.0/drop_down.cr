@@ -45,9 +45,9 @@ module Gtk
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, enable_search : Bool? = nil, expression : Gtk::Expression? = nil, factory : Gtk::ListItemFactory? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, list_factory : Gtk::ListItemFactory? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, model : Gio::ListModel? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selected : UInt32? = nil, selected_item : GObject::Object? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[42]
-      _values = StaticArray(LibGObject::Value, 42).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, enable_search : Bool? = nil, expression : Gtk::Expression? = nil, factory : Gtk::ListItemFactory? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, list_factory : Gtk::ListItemFactory? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, model : Gio::ListModel? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selected : UInt32? = nil, selected_item : GObject::Object? = nil, sensitive : Bool? = nil, show_arrow : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[43]
+      _values = StaticArray(LibGObject::Value, 43).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -225,6 +225,11 @@ module Gtk
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
+      if show_arrow
+        (_names.to_unsafe + _n).value = "show-arrow".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, show_arrow)
+        _n += 1
+      end
       if tooltip_markup
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
@@ -367,6 +372,21 @@ module Gtk
       GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    def show_arrow=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "show-arrow", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def show_arrow? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "show-arrow", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def initialize(model : Gio::ListModel?, expression : Gtk::Expression?)
       # gtk_drop_down_new: (Constructor)
       # @model: (transfer full) (nullable)
@@ -461,6 +481,14 @@ module Gtk
       GObject::Object.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    def show_arrow : Bool
+      # gtk_drop_down_get_show_arrow: (Method | Getter)
+      # Returns: (transfer none)
+
+      _retval = LibGtk.gtk_drop_down_get_show_arrow(self)
+      GICrystal.to_bool(_retval)
+    end
+
     def enable_search=(enable_search : Bool) : Nil
       # gtk_drop_down_set_enable_search: (Method | Setter)
       # Returns: (transfer none)
@@ -529,6 +557,13 @@ module Gtk
       # Returns: (transfer none)
 
       LibGtk.gtk_drop_down_set_selected(self, position)
+    end
+
+    def show_arrow=(show_arrow : Bool) : Nil
+      # gtk_drop_down_set_show_arrow: (Method | Setter)
+      # Returns: (transfer none)
+
+      LibGtk.gtk_drop_down_set_show_arrow(self, show_arrow)
     end
   end
 end

@@ -1,10 +1,16 @@
 require "./texture"
 require "./paintable"
 
+require "../gio-2.0/icon"
+
+require "../gio-2.0/loadable_icon"
+
 module Gdk
   # A GdkTexture representing a GL texture object.
   class GLTexture < Texture
     include Paintable
+    include Gio::Icon
+    include Gio::LoadableIcon
 
     @pointer : Pointer(Void)
 

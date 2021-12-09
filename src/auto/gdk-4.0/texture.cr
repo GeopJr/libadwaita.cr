@@ -1,6 +1,10 @@
 require "../g_object-2.0/object"
 require "./paintable"
 
+require "../gio-2.0/icon"
+
+require "../gio-2.0/loadable_icon"
+
 module Gdk
   # `GdkTexture` is the basic element used to refer to pixel data.
   #
@@ -11,14 +15,16 @@ module Gdk
   # `GdkPixbuf`, or a Cairo surface, or other pixel data.
   #
   # The ownership of the pixel data is transferred to the `GdkTexture`
-  # instance; you can only make a copy of it, via
-  # [method@Gdk.Texture.download].
+  # instance; you can only make a copy of it, via [method@Gdk.Texture.download]
+  # or [method@Gdk.Texture.download_float].
   #
   # `GdkTexture` is an immutable object: That means you cannot change
   # anything about it other than increasing the reference count via
   # g_object_ref().
   class Texture < GObject::Object
     include Paintable
+    include Gio::Icon
+    include Gio::LoadableIcon
 
     @pointer : Pointer(Void)
 
@@ -89,11 +95,27 @@ module Gdk
       Gdk::Texture.new(_retval, GICrystal::Transfer::Full)
     end
 
+    def self.new_from_bytes(bytes : GLib::Bytes) : Gdk::Texture
+      # gdk_texture_new_from_bytes: (Constructor | Throws)
+      # Returns: (transfer full)
+
+      _retval = LibGdk.gdk_texture_new_from_bytes(bytes)
+      Gdk::Texture.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def self.new_from_file(file : Gio::File) : Gdk::Texture
       # gdk_texture_new_from_file: (Constructor | Throws)
       # Returns: (transfer full)
 
       _retval = LibGdk.gdk_texture_new_from_file(file)
+      Gdk::Texture.new(_retval, GICrystal::Transfer::Full)
+    end
+
+    def self.new_from_filename(path : ::String) : Gdk::Texture
+      # gdk_texture_new_from_filename: (Constructor | Throws)
+      # Returns: (transfer full)
+
+      _retval = LibGdk.gdk_texture_new_from_filename(path)
       Gdk::Texture.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -113,6 +135,16 @@ module Gdk
       data = data.to_a.to_unsafe
 
       LibGdk.gdk_texture_download(self, data, stride)
+    end
+
+    def download_float(data : Enumerable(Float32), stride : UInt64) : Nil
+      # gdk_texture_download_float: (Method)
+      # @data: (array element-type Float)
+      # Returns: (transfer none)
+
+      data = data.to_a.to_unsafe
+
+      LibGdk.gdk_texture_download_float(self, data, stride)
     end
 
     def height : Int32
@@ -137,6 +169,30 @@ module Gdk
 
       _retval = LibGdk.gdk_texture_save_to_png(self, filename)
       GICrystal.to_bool(_retval)
+    end
+
+    def save_to_png_bytes : GLib::Bytes
+      # gdk_texture_save_to_png_bytes: (Method)
+      # Returns: (transfer full)
+
+      _retval = LibGdk.gdk_texture_save_to_png_bytes(self)
+      GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
+    end
+
+    def save_to_tiff(filename : ::String) : Bool
+      # gdk_texture_save_to_tiff: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibGdk.gdk_texture_save_to_tiff(self, filename)
+      GICrystal.to_bool(_retval)
+    end
+
+    def save_to_tiff_bytes : GLib::Bytes
+      # gdk_texture_save_to_tiff_bytes: (Method)
+      # Returns: (transfer full)
+
+      _retval = LibGdk.gdk_texture_save_to_tiff_bytes(self)
+      GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

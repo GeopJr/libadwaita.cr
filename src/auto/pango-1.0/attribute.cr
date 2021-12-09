@@ -72,6 +72,78 @@ module Pango
       LibPango.pango_attribute_get_type
     end
 
+    def as_color : Pango::AttrColor?
+      # pango_attribute_as_color: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_attribute_as_color(self)
+      Pango::AttrColor.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
+    def as_float : Pango::AttrFloat?
+      # pango_attribute_as_float: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_attribute_as_float(self)
+      Pango::AttrFloat.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
+    def as_font_desc : Pango::AttrFontDesc?
+      # pango_attribute_as_font_desc: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_attribute_as_font_desc(self)
+      Pango::AttrFontDesc.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
+    def as_font_features : Pango::AttrFontFeatures?
+      # pango_attribute_as_font_features: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_attribute_as_font_features(self)
+      Pango::AttrFontFeatures.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
+    def as_int : Pango::AttrInt?
+      # pango_attribute_as_int: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_attribute_as_int(self)
+      Pango::AttrInt.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
+    def as_language : Pango::AttrLanguage?
+      # pango_attribute_as_language: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_attribute_as_language(self)
+      Pango::AttrLanguage.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
+    def as_shape : Pango::AttrShape?
+      # pango_attribute_as_shape: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_attribute_as_shape(self)
+      Pango::AttrShape.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
+    def as_size : Pango::AttrSize?
+      # pango_attribute_as_size: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_attribute_as_size(self)
+      Pango::AttrSize.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
+    def as_string : Pango::AttrString?
+      # pango_attribute_as_string: (Method)
+      # Returns: (transfer none)
+
+      _retval = LibPango.pango_attribute_as_string(self)
+      Pango::AttrString.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
     def copy : Pango::Attribute
       # pango_attribute_copy: (Method)
       # Returns: (transfer full)
