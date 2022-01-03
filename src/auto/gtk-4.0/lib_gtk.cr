@@ -64,6 +64,7 @@ lib LibGtk
   type License = UInt32
   type MessageType = UInt32
   type MovementStep = UInt32
+  type NaturalWrapMode = UInt32
   type NotebookTab = UInt32
   type NumberUpLayout = UInt32
   type Ordering = Int32
@@ -1194,6 +1195,7 @@ lib LibGtk
   fun gtk_bitset_get_type : UInt64
   fun gtk_bitset_intersect(this : Void*, other : Pointer(Void)) : Void
   fun gtk_bitset_is_empty(this : Void*) : LibC::Int
+  fun gtk_bitset_iter_get_type : UInt64
   fun gtk_bitset_iter_get_value(this : Void*) : UInt32
   fun gtk_bitset_iter_init_at(iter : Pointer(Void), set : Pointer(Void), target : UInt32, value : Pointer(UInt32)) : LibC::Int
   fun gtk_bitset_iter_init_at(iter : Pointer(Void), set : Pointer(Void), target : UInt32, value : Pointer(UInt32)) : LibC::Int
@@ -2456,6 +2458,7 @@ lib LibGtk
   fun gtk_label_get_max_width_chars(this : Void*) : Int32
   fun gtk_label_get_mnemonic_keyval(this : Void*) : UInt32
   fun gtk_label_get_mnemonic_widget(this : Void*) : Pointer(Void)
+  fun gtk_label_get_natural_wrap_mode(this : Void*) : UInt32
   fun gtk_label_get_selectable(this : Void*) : LibC::Int
   fun gtk_label_get_selection_bounds(this : Void*, start : Pointer(Int32), _end : Pointer(Int32)) : LibC::Int
   fun gtk_label_get_single_line_mode(this : Void*) : LibC::Int
@@ -2481,6 +2484,7 @@ lib LibGtk
   fun gtk_label_set_markup_with_mnemonic(this : Void*, str : Pointer(LibC::Char)) : Void
   fun gtk_label_set_max_width_chars(this : Void*, n_chars : Int32) : Void
   fun gtk_label_set_mnemonic_widget(this : Void*, widget : Pointer(Void)) : Void
+  fun gtk_label_set_natural_wrap_mode(this : Void*, wrap_mode : UInt32) : Void
   fun gtk_label_set_selectable(this : Void*, setting : LibC::Int) : Void
   fun gtk_label_set_single_line_mode(this : Void*, single_line_mode : LibC::Int) : Void
   fun gtk_label_set_text(this : Void*, str : Pointer(LibC::Char)) : Void
@@ -3763,6 +3767,7 @@ lib LibGtk
   fun gtk_text_child_anchor_get_type : UInt64
   fun gtk_text_child_anchor_get_widgets(this : Void*, out_len : Pointer(UInt32)) : Pointer(Pointer(Void))
   fun gtk_text_child_anchor_new : Pointer(Void)
+  fun gtk_text_child_anchor_new_with_replacement(character : Pointer(LibC::Char)) : Pointer(Void)
   fun gtk_text_compute_cursor_extents(this : Void*, position : UInt64, strong : Pointer(Void), weak : Pointer(Void)) : Void
   fun gtk_text_get_activates_default(this : Void*) : LibC::Int
   fun gtk_text_get_attributes(this : Void*) : Pointer(Void)

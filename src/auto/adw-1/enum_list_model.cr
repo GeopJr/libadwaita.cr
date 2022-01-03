@@ -4,7 +4,7 @@ require "../gio-2.0/list_model"
 module Adw
   # A [iface@Gio.ListModel] representing values of a given enum.
   #
-  # `AdwEnumListModel` contains objects of type [class@AdwEnumListItem].
+  # `AdwEnumListModel` contains objects of type [class@EnumListItem].
   class EnumListModel < GObject::Object
     include Gio::ListModel
 

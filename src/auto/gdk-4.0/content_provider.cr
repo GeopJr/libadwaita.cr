@@ -103,14 +103,15 @@ module Gdk
       LibGdk.gdk_content_provider_content_changed(self)
     end
 
-    def value(value : _) : Bool
+    def value : GObject::Value
       # gdk_content_provider_get_value: (Method | Throws)
+      # @value: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+      value = GObject::Value.new
 
       _retval = LibGdk.gdk_content_provider_get_value(self, value)
-      GICrystal.to_bool(_retval)
+      value
     end
 
     def ref_formats : Gdk::ContentFormats

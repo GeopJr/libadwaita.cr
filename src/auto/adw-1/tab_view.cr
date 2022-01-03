@@ -11,20 +11,19 @@ module Adw
   # `AdwTabView` is a container which shows one child at a time. While it
   # provides keyboard shortcuts for switching between pages, it does not provide
   # a visible tab bar and relies on external widgets for that, such as
-  # [class@Adw.TabBar].
+  # [class@TabBar].
   #
-  # `AdwTabView` maintains a [class@Adw.TabPage] object for each page, which
-  # holds additional per-page properties. You can obtain the `AdwTabPage` for a
-  # page with [method@Adw.TabView.get_page], and as the return value for
-  # [method@Adw.TabView.append] and other functions for adding children.
+  # `AdwTabView` maintains a [class@TabPage] object for each page, which holds
+  # additional per-page properties. You can obtain the `AdwTabPage` for a page
+  # with [method@TabView.get_page], and as the return value for
+  # [method@TabView.append] and other functions for adding children.
   #
   # `AdwTabView` only aims to be useful for dynamic tabs in multi-window
   # document-based applications, such as web browsers, file managers, text
   # editors or terminals. It does not aim to replace [class@Gtk.Notebook] for use
   # cases such as tabbed dialogs.
   #
-  # As such, it does not support disabling page reordering or detaching, or
-  # adding children via [class@Gtk.Builder].
+  # As such, it does not support disabling page reordering or detaching.
   #
   # `AdwTabView` adds the following shortcuts in the managed scope:
   #

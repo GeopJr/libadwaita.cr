@@ -18,10 +18,15 @@ require "../gtk-4.0/shortcut_manager"
 module Adw
   # A freeform application window.
   #
-  # `AdwApplicationWindow` is a [class@Gtk.ApplicationWindow] subclass providing
-  # the same features as [class@Adw.Window].
+  # <picture>
+  #   <source srcset="application-window-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="application-window.png" alt="application-window">
+  # </picture>
   #
-  # See [class@Adw.Window] for details.
+  # `AdwApplicationWindow` is a [class@Gtk.ApplicationWindow] subclass providing
+  # the same features as [class@Window].
+  #
+  # See [class@Window] for details.
   #
   # Using [property@Gtk.Application:menubar] is not supported and may result in
   # visual glitches.

@@ -6,7 +6,12 @@ require "../gtk-4.0/buildable"
 require "../gtk-4.0/constraint_target"
 
 module Adw
-  # A page from [class@Adw.PreferencesWindow].
+  # A page from [class@PreferencesWindow].
+  #
+  # <picture>
+  #   <source srcset="preferences-page-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="preferences-page.png" alt="preferences-page">
+  # </picture>
   #
   # The `AdwPreferencesPage` widget gathers preferences groups into a single page
   # of a preferences window.
@@ -14,6 +19,10 @@ module Adw
   # ## CSS nodes
   #
   # `AdwPreferencesPage` has a single CSS node with name `preferencespage`.
+  #
+  # ## Accessibility
+  #
+  # `AdwPreferencesPage` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
   class PreferencesPage < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Buildable

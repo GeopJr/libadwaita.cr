@@ -1,7 +1,7 @@
 require "../g_object-2.0/object"
 
 module Adw
-  # An auxiliary class used by [class@Adw.TabView].
+  # An auxiliary class used by [class@TabView].
   class TabPage < GObject::Object
     @pointer : Pointer(Void)
 

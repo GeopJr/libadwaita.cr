@@ -620,9 +620,16 @@ module Gtk
       LibGtk.gtk_popover_set_offset(self, x_offset, y_offset)
     end
 
-    def pointing_to=(rect : Gdk::Rectangle) : Nil
+    def pointing_to=(rect : Gdk::Rectangle?) : Nil
       # gtk_popover_set_pointing_to: (Method | Setter)
+      # @rect: (nullable)
       # Returns: (transfer none)
+
+      rect = if rect.nil?
+               Pointer(Void).null
+             else
+               rect.to_unsafe
+             end
 
       LibGtk.gtk_popover_set_pointing_to(self, rect)
     end

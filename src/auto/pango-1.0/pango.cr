@@ -62,9 +62,9 @@ module Pango
   GLYPH_UNKNOWN_FLAG              =  268435456_u32
   SCALE                           =           1024
   VERSION_MAJOR                   =              1
-  VERSION_MICRO                   =              0
+  VERSION_MICRO                   =              3
   VERSION_MINOR                   =             50
-  VERSION_STRING                  = "1.50.0"
+  VERSION_STRING                  = "1.50.3"
 
   enum Alignment : UInt32
     Left   = 0

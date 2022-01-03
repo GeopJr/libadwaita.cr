@@ -8,16 +8,31 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A group of preference rows.
   #
+  # <picture>
+  #   <source srcset="preferences-group-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="preferences-group.png" alt="preferences-group">
+  # </picture>
+  #
   # An `AdwPreferencesGroup` represents a group or tightly related preferences,
-  # which in turn are represented by [class@Adw.PreferencesRow].
+  # which in turn are represented by [class@PreferencesRow].
   #
   # To summarize the role of the preferences it gathers, a group can have both a
-  # title and a description. The title will be used by
-  # [class@Adw.PreferencesWindow] to let the user look for a preference.
+  # title and a description. The title will be used by [class@PreferencesWindow]
+  # to let the user look for a preference.
+  #
+  # ## AdwPreferencesGroup as GtkBuildable
+  #
+  # The `AdwPreferencesGroup` implementation of the [iface@Gtk.Buildable] interface
+  # will add [class@PreferencesRow]s to the group's list. If a child is not a
+  # [class@PreferencesRow] the child is added to a box below the list.
   #
   # ## CSS nodes
   #
   # `AdwPreferencesGroup` has a single CSS node with name `preferencesgroup`.
+  #
+  # ## Accessibility
+  #
+  # `AdwPreferencesGroup` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
   class PreferencesGroup < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Buildable

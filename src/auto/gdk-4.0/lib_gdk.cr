@@ -600,7 +600,6 @@ lib LibGdk
   fun gdk_surface_set_opaque_region(this : Void*, region : Pointer(Void)) : Void
   fun gdk_surface_translate_coordinates(this : Void*, to : Pointer(Void), x : Pointer(Float64), y : Pointer(Float64)) : LibC::Int
   fun gdk_texture_download(this : Void*, data : Pointer(UInt8), stride : UInt64) : Void
-  fun gdk_texture_download_float(this : Void*, data : Pointer(Float32), stride : UInt64) : Void
   fun gdk_texture_error_quark : UInt32
   fun gdk_texture_get_height(this : Void*) : Int32
   fun gdk_texture_get_type : UInt64

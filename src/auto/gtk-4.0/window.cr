@@ -59,6 +59,14 @@ module Gtk
   # # Accessibility
   #
   # `GtkWindow` uses the %GTK_ACCESSIBLE_ROLE_WINDOW role.
+  #
+  # # Actions
+  #
+  # `GtkWindow` defines a set of built-in actions:
+  # - `default.activate`: Activate the default widget.
+  # - `window.minimize`: Minimize the window.
+  # - `window.toggle-maximized`: Maximize or restore the window.
+  # - `window.close`: Close the window.
   class Window < Widget
     include Accessible
     include Buildable

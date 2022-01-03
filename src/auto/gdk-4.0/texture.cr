@@ -15,8 +15,7 @@ module Gdk
   # `GdkPixbuf`, or a Cairo surface, or other pixel data.
   #
   # The ownership of the pixel data is transferred to the `GdkTexture`
-  # instance; you can only make a copy of it, via [method@Gdk.Texture.download]
-  # or [method@Gdk.Texture.download_float].
+  # instance; you can only make a copy of it, via [method@Gdk.Texture.download].
   #
   # `GdkTexture` is an immutable object: That means you cannot change
   # anything about it other than increasing the reference count via
@@ -135,16 +134,6 @@ module Gdk
       data = data.to_a.to_unsafe
 
       LibGdk.gdk_texture_download(self, data, stride)
-    end
-
-    def download_float(data : Enumerable(Float32), stride : UInt64) : Nil
-      # gdk_texture_download_float: (Method)
-      # @data: (array element-type Float)
-      # Returns: (transfer none)
-
-      data = data.to_a.to_unsafe
-
-      LibGdk.gdk_texture_download_float(self, data, stride)
     end
 
     def height : Int32

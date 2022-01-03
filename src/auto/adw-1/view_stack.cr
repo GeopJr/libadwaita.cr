@@ -6,36 +6,34 @@ require "../gtk-4.0/buildable"
 require "../gtk-4.0/constraint_target"
 
 module Adw
-  # A view container for [class@Adw.ViewSwitcher].
+  # A view container for [class@ViewSwitcher].
   #
   # `AdwViewStack` is a container which only shows one page at a time.
   # It is typically used to hold an application's main views.
   #
   # It doesn't provide a way to transition between pages.
-  # Instead, a separate widget such as [class@Adw.ViewSwitcher] can be used with
+  # Instead, a separate widget such as [class@ViewSwitcher] can be used with
   # `AdwViewStack` to provide this functionality.
   #
   # `AdwViewStack` pages can have a title, an icon, an attention request, and a
-  # numbered badge that [class@Adw.ViewSwitcher] will use to let users identify
-  # which page is which.
-  # Set them using the [property@Adw.ViewStackPage:title],
-  # [property@Adw.ViewStackPage:icon-name],
-  # [property@Adw.ViewStackPage:needs-attention], and
-  # [property@Adw.ViewStackPage:badge-number] properties.
+  # numbered badge that [class@ViewSwitcher] will use to let users identify which
+  # page is which. Set them using the [property@ViewStackPage:title],
+  # [property@ViewStackPage:icon-name],
+  # [property@ViewStackPage:needs-attention], and
+  # [property@ViewStackPage:badge-number] properties.
   #
   # Unlike [class@Gtk.Stack], transitions between views are not animated.
   #
-  # `AdwViewStack` maintains a [class@Adw.ViewStackPage] object for each added
-  # child, which holds additional per-child properties.
-  # You obtain the [class@Adw.ViewStackPage] for a child with
-  # [method@Adw.ViewStack.get_page] and you can obtain a
-  # [iface@Gtk.SelectionModel] containing all the pages with
-  # [method@Adw.ViewStack.get_pages].
+  # `AdwViewStack` maintains a [class@ViewStackPage] object for each added child,
+  # which holds additional per-child properties. You obtain the
+  # [class@ViewStackPage] for a child with [method@ViewStack.get_page] and you
+  # can obtain a [iface@Gtk.SelectionModel] containing all the pages with
+  # [method@ViewStack.get_pages].
   #
   # ## AdwViewStack as GtkBuildable
   #
   # To set child-specific properties in a .ui file, create
-  # [class@Adw.ViewStackPage] objects explicitly, and set the child widget as a
+  # [class@ViewStackPage] objects explicitly, and set the child widget as a
   # property on it:
   #
   # ```xml

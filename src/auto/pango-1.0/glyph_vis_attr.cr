@@ -4,6 +4,11 @@ module Pango
   #
   # Currently, it contains cluster start and color information.
   # More attributes may be added in the future.
+  #
+  # Clusters are stored in visual order, within the cluster, glyphs
+  # are always ordered in logical order, since visual order is meaningless;
+  # that is, in Arabic text, accent glyphs follow the glyphs for the
+  # base character.
   class GlyphVisAttr
     @pointer : Pointer(Void)
 

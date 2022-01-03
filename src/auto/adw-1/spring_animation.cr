@@ -1,34 +1,34 @@
 require "./animation"
 
 module Adw
-  # A spring-based [class@Adw.Animation].
+  # A spring-based [class@Animation].
   #
   # `AdwSpringAnimation` implements an animation driven by a physical model of a
-  # spring described by [struct@Adw.SpringParams], with a resting position in
-  # [property@Adw.SpringAnimation:value-to], stretched to
-  # [property@Adw.SpringAnimation:value-from].
+  # spring described by [struct@SpringParams], with a resting position in
+  # [property@SpringAnimation:value-to], stretched to
+  # [property@SpringAnimation:value-from].
   #
   # Since the animation is physically simulated, spring animations don't have a
   # fixed duration. The animation will stop when the simulated spring comes to a
   # rest - when the amplitude of the oscillations becomes smaller than
-  # [property@Adw.SpringAnimation:epsilon], or immediately when it reaches
-  # [property@Adw.SpringAnimation:value-to] if
-  # [property@Adw.SpringAnimation:clamp] is set to `TRUE`. The estimated duration
-  # can be obtained with [property@Adw.SpringAnimation:estimated-duration].
+  # [property@SpringAnimation:epsilon], or immediately when it reaches
+  # [property@SpringAnimation:value-to] if
+  # [property@SpringAnimation:clamp] is set to `TRUE`. The estimated duration can
+  # be obtained with [property@SpringAnimation:estimated-duration].
   #
   # Due to the nature of spring-driven motion the animation can overshoot
-  # [property@Adw.SpringAnimation:value-to] before coming to a rest. Whether the
+  # [property@SpringAnimation:value-to] before coming to a rest. Whether the
   # animation will overshoot or not depends on the damping ratio of the spring.
-  # See [struct@Adw.SpringParams] for more information about specific damping
-  # ratio values.
+  # See [struct@SpringParams] for more information about specific damping ratio
+  # values.
   #
-  # If [property@Adw.SpringAnimation:clamp] is `TRUE`, the animation will
-  # abruptly end as soon as it reaches the final value, preventing overshooting.
+  # If [property@SpringAnimation:clamp] is `TRUE`, the animation will abruptly
+  # end as soon as it reaches the final value, preventing overshooting.
   #
   # Animations can have an initial velocity value, set via
-  # [property@Adw.SpringAnimation:initial-velocity], which adjusts the curve
-  # without changing the duration. This makes spring animations useful for
-  # deceleration at the end of gestures.
+  # [property@SpringAnimation:initial-velocity], which adjusts the curve without
+  # changing the duration. This makes spring animations useful for deceleration
+  # at the end of gestures.
   #
   # If the initial and final values are equal, and the initial velocity is not 0,
   # the animation value will bounce and return to its resting position.

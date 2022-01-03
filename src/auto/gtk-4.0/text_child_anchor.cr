@@ -26,6 +26,14 @@ module Gtk
       @pointer = _retval
     end
 
+    def self.new_with_replacement(character : ::String) : Gtk::TextChildAnchor
+      # gtk_text_child_anchor_new_with_replacement: (Constructor)
+      # Returns: (transfer full)
+
+      _retval = LibGtk.gtk_text_child_anchor_new_with_replacement(character)
+      Gtk::TextChildAnchor.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def deleted : Bool
       # gtk_text_child_anchor_get_deleted: (Method)
       # Returns: (transfer none)

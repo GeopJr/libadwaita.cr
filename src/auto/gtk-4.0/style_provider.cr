@@ -7,7 +7,7 @@ module Gtk
   # adding `GtkStyleProviders`.
   #
   # GTK uses the `GtkStyleProvider` implementation for CSS in
-  # [iface@Gtk.CssProvider].
+  # [class@Gtk.CssProvider].
   module StyleProvider
     abstract def to_unsafe
   end

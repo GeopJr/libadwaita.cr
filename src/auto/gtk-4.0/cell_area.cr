@@ -6,7 +6,7 @@ require "./cell_layout"
 module Gtk
   # An abstract class for laying out `GtkCellRenderer`s
   #
-  # The `GtkCellArea` is an abstract class for [class@Gtk.CellLayout]
+  # The `GtkCellArea` is an abstract class for [iface@Gtk.CellLayout]
   # widgets (also referred to as "layouting widgets") to interface with
   # an arbitrary number of [class@Gtk.CellRenderer]s and interact with the user
   # for a given [iface@Gtk.TreeModel] row.

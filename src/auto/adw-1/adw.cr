@@ -57,10 +57,11 @@ require "./window.cr"
 require "./window_title.cr"
 
 module Adw
-  MAJOR_VERSION = 1
-  MICRO_VERSION = 0
-  MINOR_VERSION = 0
-  VERSION_S     = "1.0.0.beta.1"
+  DURATION_INFINITE = 4294967295_u32
+  MAJOR_VERSION     =              1
+  MICRO_VERSION     =              0
+  MINOR_VERSION     =              0
+  VERSION_S         = "1.0.0"
 
   enum AnimationState : UInt32
     Idle     = 0

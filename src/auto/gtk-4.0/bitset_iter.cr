@@ -39,6 +39,11 @@ module Gtk
       value
     end
 
+    # Returns the type id (GType) registered in GLib type system.
+    def self.g_type : UInt64
+      LibGtk.gtk_bitset_iter_get_type
+    end
+
     def value : UInt32
       # gtk_bitset_iter_get_value: (Method)
       # Returns: (transfer none)

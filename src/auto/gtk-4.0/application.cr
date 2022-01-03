@@ -47,7 +47,7 @@ module Gtk
   #
   # ## A simple application
   #
-  # [A simple example](https://gitlab.gnome.org/GNOME/gtk/tree/master/examples/bp/bloatpad.c)
+  # [A simple example](https://gitlab.gnome.org/GNOME/gtk/tree/main/examples/bp/bloatpad.c)
   # is available in the GTK source code repository
   #
   # `GtkApplication` optionally registers with a session manager of the

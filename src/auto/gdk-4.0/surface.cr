@@ -6,8 +6,8 @@ module Gdk
   # It’s a low-level object, used to implement high-level objects
   # such as [class@Gtk.Window] or [class@Gtk.Dialog] in GTK.
   #
-  # The surfaces you see in practice are either [class@Gdk.Toplevel] or
-  # [class@Gdk.Popup], and those interfaces provide much of the required
+  # The surfaces you see in practice are either [iface@Gdk.Toplevel] or
+  # [iface@Gdk.Popup], and those interfaces provide much of the required
   # API to interact with these surfaces. Other, more specialized surface
   # types exist, but you will rarely interact with them directly.
   class Surface < GObject::Object

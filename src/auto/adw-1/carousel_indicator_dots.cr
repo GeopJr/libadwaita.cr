@@ -8,14 +8,19 @@ require "../gtk-4.0/constraint_target"
 require "../gtk-4.0/orientable"
 
 module Adw
-  # A dots indicator for [class@Adw.Carousel].
+  # A dots indicator for [class@Carousel].
+  #
+  # <picture>
+  #   <source srcset="carousel-indicator-dots-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="carousel-indicator-dots.png" alt="carousel-indicator-dots">
+  # </picture>
   #
   # The `AdwCarouselIndicatorDots` widget shows a set of dots for each page of a
-  # given [class@Adw.Carousel]. The dot representing the carousel's active page
-  # is larger and more opaque than the others, the transition to the active and
+  # given [class@Carousel]. The dot representing the carousel's active page is
+  # larger and more opaque than the others, the transition to the active and
   # inactive state is gradual to match the carousel's position.
   #
-  # See also [class@Adw.CarouselIndicatorLines].
+  # See also [class@CarouselIndicatorLines].
   #
   # ## CSS nodes
   #

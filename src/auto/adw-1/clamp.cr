@@ -10,6 +10,15 @@ require "../gtk-4.0/orientable"
 module Adw
   # A widget constraining its child to a given size.
   #
+  # <picture>
+  #   <source srcset="clamp-wide-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="clamp-wide.png" alt="clamp-wide">
+  # </picture>
+  # <picture>
+  #   <source srcset="clamp-narrow-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="clamp-narrow.png" alt="clamp-narrow">
+  # </picture>
+  #
   # The `AdwClamp` widget constrains the size of the widget it contains to a
   # given maximum size. It will constrain the width if it is horizontal, or the
   # height if it is vertical. The expansion of the child from its minimum to its

@@ -12,35 +12,45 @@ require "../gtk-4.0/orientable"
 module Adw
   # An adaptive container acting like a box or an overlay.
   #
+  # <picture>
+  #   <source srcset="flap-wide-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="flap-wide.png" alt="flap-wide">
+  # </picture>
+  # <picture>
+  #   <source srcset="flap-narrow-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="flap-narrow.png" alt="flap-narrow">
+  # </picture>
+  #
   # The `AdwFlap` widget can display its children like a [class@Gtk.Box] does or
   # like a [class@Gtk.Overlay] does, according to the
-  # [property@Adw.Flap:fold-policy] value.
+  # [property@Flap:fold-policy] value.
   #
-  # `AdwFlap` has at most three children: [property@Adw.Flap:content],
-  # [property@Adw.Flap:flap] and [property@Adw.Flap:separator]. Content is the
-  # primary child, flap is displayed next to it when unfolded, or overlays it
-  # when folded. Flap can be shown or hidden by changing the
-  # [property@Adw.Flap:reveal-flap] value, as well as via swipe gestures if
-  # [property@Adw.Flap:swipe-to-open] and/or [property@Adw.Flap:swipe-to-close] are
-  # set to `TRUE`.
+  # `AdwFlap` has at most three children: [property@Flap:content],
+  # [property@Flap:flap] and [property@Flap:separator]. Content is the primary
+  # child, flap is displayed next to it when unfolded, or overlays it when
+  # folded. Flap can be shown or hidden by changing the
+  # [property@Flap:reveal-flap] value, as well as via swipe gestures if
+  # [property@Flap:swipe-to-open] and/or [property@Flap:swipe-to-close] are set
+  # to `TRUE`.
   #
   # Optionally, a separator can be provided, which would be displayed between
   # the content and the flap when there's no shadow to separate them, depending
   # on the transition type.
   #
-  # [property@Adw.Flap:flap] is transparent by default; add the `.background`
-  # style class to it if this is unwanted.
+  # [property@Flap:flap] is transparent by default; add the
+  # [`.background`](style-classes.html#background) style class to it if this is
+  # unwanted.
   #
-  # If [property@Adw.Flap:modal] is set to `TRUE`, content becomes completely
+  # If [property@Flap:modal] is set to `TRUE`, content becomes completely
   # inaccessible when the flap is revealed while folded.
   #
   # The position of the flap and separator children relative to the content is
-  # determined by orientation, as well as the [property@Adw.Flap:flap-position]
+  # determined by orientation, as well as the [property@Flap:flap-position]
   # value.
   #
   # Folding the flap will automatically hide the flap widget, and unfolding it
   # will automatically reveal it. If this behavior is not desired, the
-  # [property@Adw.Flap:locked] property can be used to override it.
+  # [property@Flap:locked] property can be used to override it.
   #
   # Common use cases include sidebars, header bars that need to be able to
   # overlap the window content (for example, in fullscreen mode) and bottom

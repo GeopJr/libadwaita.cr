@@ -8,14 +8,14 @@ module Adw
   # animation hasn't been started yet, is playing, paused or finished.
   #
   # Currently there are two concrete animation types:
-  # [class@Adw.TimedAnimation] and [class@Adw.SpringAnimation].
+  # [class@TimedAnimation] and [class@SpringAnimation].
   #
   # `AdwAnimation` will automatically skip the animation if
-  # [property@Adw.Animation:widget] is unmapped, or if
+  # [property@Animation:widget] is unmapped, or if
   # [property@Gtk.Settings:gtk-enable-animations] is `FALSE`.
   #
-  # The [signal@Adw.Animation::done] signal can be used to perform an action
-  # after the animation ends, for example hiding a widget after animating its
+  # The [signal@Animation::done] signal can be used to perform an action after
+  # the animation ends, for example hiding a widget after animating its
   # [property@Gtk.Widget:opacity] to 0.
   #
   # `AdwAnimation` will be kept alive while the animation is playing. As such,

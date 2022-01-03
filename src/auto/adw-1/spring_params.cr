@@ -1,5 +1,5 @@
 module Adw
-  # Physical parameters of a spring for [class@Adw.SpringAnimation].
+  # Physical parameters of a spring for [class@SpringAnimation].
   #
   # Any spring can be described by three parameters: mass, stiffness and damping.
   #

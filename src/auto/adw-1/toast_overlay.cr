@@ -8,9 +8,14 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A widget showing toasts above its content.
   #
-  # Toasts can be shown with [method@Adw.ToastOverlay.add_toast].
+  # <picture>
+  #   <source srcset="toast-overlay-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="toast-overlay.png" alt="toast-overlay">
+  # </picture>
   #
-  # See [class@Adw.Toast] for details.
+  # Toasts can be shown with [method@ToastOverlay.add_toast].
+  #
+  # See [class@Toast] for details.
   #
   # ## CSS nodes
   #

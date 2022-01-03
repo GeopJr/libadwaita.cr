@@ -1,7 +1,7 @@
 require "../g_object-2.0/object"
 
 module Adw
-  # An auxiliary class used by [class@Adw.Squeezer].
+  # An auxiliary class used by [class@Squeezer].
   class SqueezerPage < GObject::Object
     @pointer : Pointer(Void)
 

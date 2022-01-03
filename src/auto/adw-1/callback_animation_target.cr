@@ -1,7 +1,7 @@
 require "./animation_target"
 
 module Adw
-  # An [class@Adw.AnimationTarget] that calls a given callback during the
+  # An [class@AnimationTarget] that calls a given callback during the
   # animation.
   class CallbackAnimationTarget < AnimationTarget
     @pointer : Pointer(Void)

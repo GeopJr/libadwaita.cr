@@ -30,7 +30,7 @@ module Gtk
   # The following example shows you how to create a more complex search
   # entry.
   #
-  # [A simple example](https://gitlab.gnome.org/GNOME/gtk/tree/master/examples/search-bar.c)
+  # [A simple example](https://gitlab.gnome.org/GNOME/gtk/tree/main/examples/search-bar.c)
   #
   # # CSS nodes
   #
@@ -354,12 +354,12 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def key_capture_widget : Gtk::Widget
+    def key_capture_widget : Gtk::Widget?
       # gtk_search_bar_get_key_capture_widget: (Method | Getter)
       # Returns: (transfer none)
 
       _retval = LibGtk.gtk_search_bar_get_key_capture_widget(self)
-      Gtk::Widget.new(_retval, GICrystal::Transfer::None)
+      Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def search_mode : Bool

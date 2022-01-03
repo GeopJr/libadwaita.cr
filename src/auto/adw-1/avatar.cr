@@ -8,18 +8,23 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A widget displaying an image, with a generated fallback.
   #
+  # <picture>
+  #   <source srcset="avatar-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="avatar.png" alt="avatar">
+  # </picture>
+  #
   # `AdwAvatar` is a widget that shows a round avatar.
   #
   # `AdwAvatar` generates an avatar with the initials of  the
-  # [property@Adw.Avatar:text] on top of a colored background.
+  # [property@Avatar:text] on top of a colored background.
   #
-  # The color is picked based on the hash of the [property@Adw.Avatar:text].
+  # The color is picked based on the hash of the [property@Avatar:text].
   #
-  # If [property@Adw.Avatar:show-initials] is set to `FALSE`,
-  # [property@Adw.Avatar:icon-name] or `avatar-default-symbolic` is shown instead
-  # of the initials.
+  # If [property@Avatar:show-initials] is set to `FALSE`,
+  # [property@Avatar:icon-name] or `avatar-default-symbolic` is shown instead of
+  # the initials.
   #
-  # Use [property@Adw.Avatar:custom-image] to set a custom image.
+  # Use [property@Avatar:custom-image] to set a custom image.
   #
   # ## CSS nodes
   #

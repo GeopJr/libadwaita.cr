@@ -10,10 +10,10 @@ module Pango
   # The information in this struct is intended for rendering the glyphs,
   # as follows:
   #
-  # 1. Render the current glyph at (x + x_offset, y + y_offset),
-  #    where (x, y) is the current point
-  # 2. Advance the current point to (x + xoffset, y)
-  # 3. Render the next glyph...
+  # 1. Assume the current point is (x, y)
+  # 2. Render the current glyph at (x + x_offset, y + y_offset),
+  # 3. Advance the current point to (x + width, y)
+  # 4. Render the next glyph
   class GlyphGeometry
     @pointer : Pointer(Void)
 

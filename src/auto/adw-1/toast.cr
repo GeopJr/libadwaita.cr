@@ -1,21 +1,26 @@
 require "../g_object-2.0/object"
 
 module Adw
-  # A helper object for [class@Adw.ToastOverlay].
+  # A helper object for [class@ToastOverlay].
   #
-  # Toasts are meant to be passed into [method@Adw.ToastOverlay.add_toast] as
+  # Toasts are meant to be passed into [method@ToastOverlay.add_toast] as
   # follows:
   #
   # ```c
   # adw_toast_overlay_add_toast (overlay, adw_toast_new (_("Simple Toast"));
   # ```
   #
-  # Toasts always have a close button. They emit the
-  # [signal@Adw.Toast::dismissed] signal when disappearing.
+  # <picture>
+  #   <source srcset="toast-simple-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="toast-simple.png" alt="toast-simple">
+  # </picture>
   #
-  # [property@Adw.Toast:timeout] determines how long the toast stays on screen,
-  # while  [property@Adw.Toast:priority] determines how it behaves if another
-  # toast is already being displayed.
+  # Toasts always have a close button. They emit the [signal@Toast::dismissed]
+  # signal when disappearing.
+  #
+  # [property@Toast:timeout] determines how long the toast stays on screen, while
+  # [property@Toast:priority] determines how it behaves if another toast is
+  # already being displayed.
   #
   # ## Actions
   #
@@ -30,6 +35,11 @@ module Adw
   #
   # adw_toast_overlay_add_toast (overlay, toast);
   # ```
+  #
+  # <picture>
+  #   <source srcset="toast-action-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="toast-action.png" alt="toast-action">
+  # </picture>
   #
   # ## Modifying toasts
   #
@@ -100,6 +110,11 @@ module Adw
   #   gtk_widget_class_install_action (widget_class, "toast.undo", NULL, toast_undo_cb);
   # }
   # ```
+  #
+  # <picture>
+  #   <source srcset="toast-undo-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="toast-undo.png" alt="toast-undo">
+  # </picture>
   class Toast < GObject::Object
     @pointer : Pointer(Void)
 

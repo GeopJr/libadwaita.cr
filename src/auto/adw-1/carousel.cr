@@ -12,11 +12,16 @@ require "../gtk-4.0/orientable"
 module Adw
   # A paginated scrolling widget.
   #
+  # <picture>
+  #   <source srcset="carousel-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="carousel.png" alt="carousel">
+  # </picture>
+  #
   # The `AdwCarousel` widget can be used to display a set of pages with
   # swipe-based navigation between them.
   #
-  # [class@Adw.CarouselIndicatorDots] and [class@Adw.CarouselIndicatorLines] can
-  # be used to provide page indicators for `AdwCarousel`.
+  # [class@CarouselIndicatorDots] and [class@CarouselIndicatorLines] can be used
+  # to provide page indicators for `AdwCarousel`.
   #
   # ## CSS nodes
   #

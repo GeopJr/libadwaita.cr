@@ -43,6 +43,7 @@ module Gtk
   #     GDK_TYPE_PIXBUF,
   #   }, 2);
   #
+  #   g_signal_connect (target, "drop", G_CALLBACK (on_drop), self);
   #   gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (target));
   # }
   # ```

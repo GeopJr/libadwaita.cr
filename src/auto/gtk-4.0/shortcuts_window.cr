@@ -34,7 +34,7 @@ module Gtk
   # are arranged in columns, and spread across several pages if there are too
   # many to find on a single page.
   #
-  # The .ui file for this example can be found [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-gedit.ui).
+  # The .ui file for this example can be found [here](https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-gedit.ui).
   #
   # # An example with multiple views:
   #
@@ -43,7 +43,7 @@ module Gtk
   # This example shows a `GtkShortcutsWindow` that has been configured to show only
   # the shortcuts relevant to the "stopwatch" view.
   #
-  # The .ui file for this example can be found [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-clocks.ui).
+  # The .ui file for this example can be found [here](https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-clocks.ui).
   #
   # # An example with multiple sections:
   #
@@ -52,7 +52,7 @@ module Gtk
   # This example shows a `GtkShortcutsWindow` with two sections, "Editor Shortcuts"
   # and "Terminal Shortcuts".
   #
-  # The .ui file for this example can be found [here](https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
+  # The .ui file for this example can be found [here](https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-builder.ui).
   class ShortcutsWindow < Window
     include Accessible
     include Buildable

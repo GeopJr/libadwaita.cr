@@ -1,24 +1,22 @@
 require "./animation"
 
 module Adw
-  # A time-based [class@Adw.Animation].
+  # A time-based [class@Animation].
   #
   # `AdwTimedAnimation` implements a simple animation interpolating the given
-  # value from [property@Adw.TimedAnimation:value-from] to
-  # [property@Adw.TimedAnimation:value-to] over
-  # [property@Adw.TimedAnimation:duration] milliseconds using the curve described
-  # by [property@Adw.TimedAnimation:easing].
+  # value from [property@TimedAnimation:value-from] to
+  # [property@TimedAnimation:value-to] over
+  # [property@TimedAnimation:duration] milliseconds using the curve described by
+  # [property@TimedAnimation:easing].
   #
-  # If [property@Adw.TimedAnimation:reverse] is set to `TRUE`,
-  # `AdwTimedAnimation` will instead animate from
-  # [property@Adw.TimedAnimation:value-to] to
-  # [property@Adw.TimedAnimation:value-from], and the easing curve will be
-  # inverted.
+  # If [property@TimedAnimation:reverse] is set to `TRUE`, `AdwTimedAnimation`
+  # will instead animate from [property@TimedAnimation:value-to] to
+  # [property@TimedAnimation:value-from], and the easing curve will be inverted.
   #
   # The animation can repeat a certain amount of times, or endlessly, depending
-  # on the [property@Adw.TimedAnimation:repeat-count] value. If
-  # [property@Adw.TimedAnimation:alternate] is set to `TRUE`, it will also
-  # change the direction every other iteration.
+  # on the [property@TimedAnimation:repeat-count] value. If
+  # [property@TimedAnimation:alternate] is set to `TRUE`, it will also change the
+  # direction every other iteration.
   class TimedAnimation < Animation
     @pointer : Pointer(Void)
 

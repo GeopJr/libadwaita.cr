@@ -305,11 +305,11 @@ require "./window_handle.cr"
 
 module Gtk
   ACCESSIBLE_VALUE_UNDEFINED            =  -1
-  BINARY_AGE                            = 500
+  BINARY_AGE                            = 600
   IM_MODULE_EXTENSION_POINT_NAME        = "gtk-im-module"
-  INPUT_ERROR                           = -1
-  INTERFACE_AGE                         =  0
-  INVALID_LIST_POSITION                 = -1
+  INPUT_ERROR                           =             -1
+  INTERFACE_AGE                         =              0
+  INVALID_LIST_POSITION                 = 4294967295_u32
   LEVEL_BAR_OFFSET_FULL                 = "full"
   LEVEL_BAR_OFFSET_HIGH                 = "high"
   LEVEL_BAR_OFFSET_LOW                  = "low"
@@ -317,7 +317,7 @@ module Gtk
   MAX_COMPOSE_LEN                       = 7
   MEDIA_FILE_EXTENSION_POINT_NAME       = "gtk-media-file"
   MICRO_VERSION                         = 0
-  MINOR_VERSION                         = 5
+  MINOR_VERSION                         = 6
   PAPER_NAME_A3                         = "iso_a3"
   PAPER_NAME_A4                         = "iso_a4"
   PAPER_NAME_A5                         = "iso_a5"
@@ -830,6 +830,12 @@ module Gtk
     Pages            = 7
     BufferEnds       = 8
     HorizontalPages  = 9
+  end
+
+  enum NaturalWrapMode : UInt32
+    Inherit = 0
+    None    = 1
+    Word    = 2
   end
 
   enum NotebookTab : UInt32

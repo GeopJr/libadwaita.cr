@@ -2,16 +2,16 @@ require "../g_object-2.0/object"
 require "../gtk-4.0/orientable"
 
 module Adw
-  # A swipe tracker used in [class@Adw.Carousel] and [class@Adw.Leaflet].
+  # A swipe tracker used in [class@Carousel], [class@Flap] and [class@Leaflet].
   #
   # The `AdwSwipeTracker` object can be used for implementing widgets with swipe
   # gestures. It supports touch-based swipes, pointer dragging, and touchpad
   # scrolling.
   #
-  # The widgets will probably want to expose the
-  # [property@Adw.SwipeTracker:enabled] property. If they expect to use
-  # horizontal orientation, [property@Adw.SwipeTracker:reversed] can be used for
-  # supporting RTL text direction.
+  # The widgets will probably want to expose the [property@SwipeTracker:enabled]
+  # property. If they expect to use horizontal orientation,
+  # [property@SwipeTracker:reversed] can be used for supporting RTL text
+  # direction.
   class SwipeTracker < GObject::Object
     include Gtk::Orientable
 

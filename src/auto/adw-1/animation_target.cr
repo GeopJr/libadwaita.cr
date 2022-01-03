@@ -1,9 +1,9 @@
 require "../g_object-2.0/object"
 
 module Adw
-  # Represents a value [class@Adw.Animation] can animate.
+  # Represents a value [class@Animation] can animate.
   #
-  # Currently the only implementation is [class@Adw.CallbackAnimationTarget].
+  # Currently the only implementation is [class@CallbackAnimationTarget].
   class AnimationTarget < GObject::Object
     @pointer : Pointer(Void)
 
