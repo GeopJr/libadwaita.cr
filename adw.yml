@@ -1,7 +1,0 @@
-# Here, just like gio.yml and gtk.yml, we can include or ignore what we do or don't need.
-
-# include:
-#   -
-
-# ignore:
-#  -

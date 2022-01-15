@@ -19,9 +19,8 @@
 
 ## Notes
 
-- This is a fork of [gtk4.cr](https://github.com/hugopl/gtk4.cr)
 - Bindings are being generated using [gi-crystal](https://github.com/hugopl/gi-crystal)
-- It includes everything gtk4.cr does plus libadwaita which means that it **cannot** be used with gtk4.cr at the same time
+- It includes everything [gtk4.cr](https://github.com/hugopl/gtk4.cr) does plus libadwaita.
 - The scope of this repo, apart from supporting libadwaita, is being "stable" (so the bindings are pre-bundled rather than being generated on the spot)
 - Docs can be found on the website listed on the sidebar
 
