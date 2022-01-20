@@ -8,6 +8,7 @@ on:
 jobs:
   docs:
     runs-on: ubuntu-latest
+    container: ghcr.io/geopjr/crystal-gtk:latest
     steps:
       - uses: actions/setup-node@v2
         with:
@@ -35,16 +36,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
-      - name: Install Crystal
-        uses: crystal-lang/install-crystal@v1
-        with:
-          crystal: 1.2.1
       - uses: actions/checkout@v2
         with:
           ref: main
       - name: Build docs
         run: |
-          crystal docs
+          shards install
+          ./bin/gi-crystal
+          crystal docs lib/gi-crystal/src/gi-crystal.cr lib/gi-crystal/src/auto/adw-1/adw.cr
       - name: Push to pages
         uses: peaceiris/actions-gh-pages@v3
         with:
