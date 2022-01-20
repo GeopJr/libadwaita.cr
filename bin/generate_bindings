@@ -1,9 +1,0 @@
-#!/usr/bin/sh
-
-set -e
-
-cd $(dirname $0); __DIR__=$(pwd)
-
-rm -rf ../src/auto/*
-
-./gi-crystal Adw 1 -o ../src/auto --config-paths=..:../lib/gi-crystal
