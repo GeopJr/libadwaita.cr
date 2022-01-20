@@ -19,10 +19,9 @@
 
 ## Notes
 
-- Bindings are being generated using [gi-crystal](https://github.com/hugopl/gi-crystal)
+- Bindings are being generated using [gi-crystal](https://github.com/hugopl/gi-crystal).
 - It includes everything [gtk4.cr](https://github.com/hugopl/gtk4.cr) does plus libadwaita.
-- The scope of this repo, apart from supporting libadwaita, is being "stable" (so the bindings are pre-bundled rather than being generated on the spot)
-- Docs can be found on the website listed on the sidebar
+- Docs can be found on the website listed on the sidebar.
 
 #
 
@@ -45,6 +44,7 @@ Other distros will probably require you to manually build libadwaita for now.
    ```
 
 2. Run `shards install`
+3. Run `./bin/gi-crystal` to generate the bindings
 
 #
 
