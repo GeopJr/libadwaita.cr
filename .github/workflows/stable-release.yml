@@ -1,0 +1,33 @@
+name: Stable Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  stable:
+    runs-on: ubuntu-latest
+    container: ghcr.io/geopjr/crystal-gtk:latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+      - name: Build bindings
+        run: |
+          shards install
+          ./bin/gi-crystal -o ./src/auto/
+          echo -e "require \"gi-crystal\"\nrequire \"./auto/adw-1/adw\"" > ./src/libadwaita.cr
+          sed -i 's/dependencies/development_dependencies/g' shard.yml
+          sed -i 's/3. Run `.\/bin\/gi-crystal` to generate the bindings//g' README.md
+      - name: Run specs
+        run: crystal spec
+      - name: Push to branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "chore: bump bindings"
+          git push origin HEAD:stable -f
