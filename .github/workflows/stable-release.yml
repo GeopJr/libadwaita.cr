@@ -19,7 +19,6 @@ jobs:
           shards install
           ./bin/gi-crystal -o ./src/auto/
           echo -e "require \"gi-crystal\"\nrequire \"./auto/adw-1/adw\"" > ./src/libadwaita.cr
-          sed -i 's/dependencies/development_dependencies/g' shard.yml
           sed -i 's/3. Run `.\/bin\/gi-crystal` to generate the bindings//g' README.md
       - name: Run specs
         run: crystal spec
