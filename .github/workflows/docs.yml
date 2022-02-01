@@ -38,12 +38,12 @@ jobs:
           publish_dir: ./build
       - uses: actions/checkout@v2
         with:
-          ref: main
+          ref: stable
       - name: Build docs
         run: |
           shards install
           ./bin/gi-crystal
-          crystal docs lib/gi-crystal/src/gi-crystal.cr lib/gi-crystal/src/auto/adw-1/adw.cr
+          crystal docs # lib/gi-crystal/src/gi-crystal.cr lib/gi-crystal/src/auto/adw-1/adw.cr
       - name: Push to pages
         uses: peaceiris/actions-gh-pages@v3
         with:

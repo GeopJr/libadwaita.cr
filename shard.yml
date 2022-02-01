@@ -9,7 +9,7 @@ authors:
 dependencies:
   gtk4:
     github: hugopl/gtk4.cr
-    commit: e163e0204c7384ed85081313ad0c0ca5f396ba01
+    commit: 16a3b79866e0af18e95681ca2842d8428ac6e152
 
 crystal: ">= 1.0.0"
 
