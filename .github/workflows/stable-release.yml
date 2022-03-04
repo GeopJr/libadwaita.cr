@@ -9,13 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: main
+          ref: stable
       - name: Build bindings
         run: |
+          rm -rf ./src/auto/
           shards install
           ./bin/gi-crystal -o ./src/auto/
-          echo -e "require \"gi-crystal\"\nrequire \"./auto/adw-1/adw\"" > ./src/libadwaita.cr
-          sed -i 's/3. Run `.\/bin\/gi-crystal` to generate the bindings//g' README.md
       - name: Run specs
         run: crystal spec
       - name: Push to branch
@@ -26,5 +25,5 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git add -A
             git commit -m "chore: bump bindings"
-            git push origin HEAD:stable -f
+            git push origin HEAD:stable
           fi

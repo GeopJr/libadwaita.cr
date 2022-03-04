@@ -1,10 +1,7 @@
 name: Docs
 
-on:
-  push:
-    branches:
-      - main
-      - website
+on: workflow_dispatch
+
 jobs:
   docs:
     runs-on: ubuntu-latest
@@ -50,3 +47,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
           destination_dir: docs
+          force_orphan: true
