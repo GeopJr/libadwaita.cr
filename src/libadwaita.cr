@@ -1,2 +1,2 @@
 require "gi-crystal"
-GICrystal.require("Adw", "1")
+require "./auto/adw-1/adw"

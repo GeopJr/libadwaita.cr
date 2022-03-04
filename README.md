@@ -44,7 +44,6 @@ Other distros will probably require you to manually build libadwaita for now.
    ```
 
 2. Run `shards install`
-3. Run `./bin/gi-crystal` to generate the bindings
 
 #
 
