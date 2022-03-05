@@ -1,14 +1,14 @@
 require "../gdk-4.0/snapshot"
 
 module Gtk
-  # `GtkSnapshot` assists in creating `GskRenderNodes` for widgets.
+  # `GtkSnapshot` assists in creating [class@Gsk.RenderNode]s for widgets.
   #
   # It functions in a similar way to a cairo context, and maintains a stack
   # of render nodes and their associated transformations.
   #
-  # The node at the top of the stack is the the one that gtk_snapshot_append_…
-  # functions operate on. Use the gtk_snapshot_push_… functions and
-  # gtk_snapshot_pop() to change the current node.
+  # The node at the top of the stack is the one that `gtk_snapshot_append_…()`
+  # functions operate on. Use the `gtk_snapshot_push_…()` functions and
+  # [method@Snapshot.pop] to change the current node.
   #
   # The typical way to obtain a `GtkSnapshot` object is as an argument to
   # the [vfunc@Gtk.Widget.snapshot] vfunc. If you need to create your own
@@ -368,16 +368,23 @@ module Gtk
       # Return value handling
     end
 
-    def push_shadow(shadow : Gsk::Shadow, n_shadows : UInt64) : Nil
+    def push_shadow(shadow : Enumerable(Gsk::Shadow)) : Nil
       # gtk_snapshot_push_shadow: (Method)
+      # @shadow: (array length=n_shadows element-type Interface)
       # Returns: (transfer none)
 
       # Handle parameters
+      n_shadows = shadow.size
+      shadow = shadow.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       LibGtk.gtk_snapshot_push_shadow(self, shadow, n_shadows)
 
       # Return value handling
+    end
+
+    def push_shadow(*shadow : Gsk::Shadow)
+      push_shadow(shadow)
     end
 
     def render_background(context : Gtk::StyleContext, x : Float64, y : Float64, width : Float64, height : Float64) : Nil
@@ -512,7 +519,7 @@ module Gtk
       # Return value handling
     end
 
-    def to_node : Gsk::RenderNode
+    def to_node : Gsk::RenderNode?
       # gtk_snapshot_to_node: (Method)
       # Returns: (transfer full)
 
@@ -522,10 +529,10 @@ module Gtk
       _retval = LibGtk.gtk_snapshot_to_node(self)
 
       # Return value handling
-      Gsk::RenderNode.new(_retval, GICrystal::Transfer::Full)
+      Gsk::RenderNode.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
-    def to_paintable(size : Graphene::Size?) : Gdk::Paintable
+    def to_paintable(size : Graphene::Size?) : Gdk::Paintable?
       # gtk_snapshot_to_paintable: (Method)
       # @size: (nullable)
       # Returns: (transfer full)
@@ -541,7 +548,7 @@ module Gtk
       _retval = LibGtk.gtk_snapshot_to_paintable(self, size)
 
       # Return value handling
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def transform(transform : Gsk::Transform?) : Nil

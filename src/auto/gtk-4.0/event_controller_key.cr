@@ -84,7 +84,7 @@ module Gtk
       _retval
     end
 
-    def im_context : Gtk::IMContext
+    def im_context : Gtk::IMContext?
       # gtk_event_controller_key_get_im_context: (Method)
       # Returns: (transfer none)
 
@@ -94,14 +94,20 @@ module Gtk
       _retval = LibGtk.gtk_event_controller_key_get_im_context(self)
 
       # Return value handling
-      Gtk::IMContext.new(_retval, GICrystal::Transfer::None)
+      Gtk::IMContext.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def im_context=(im_context : Gtk::IMContext) : Nil
+    def im_context=(im_context : Gtk::IMContext?) : Nil
       # gtk_event_controller_key_set_im_context: (Method)
+      # @im_context: (nullable)
       # Returns: (transfer none)
 
       # Handle parameters
+      im_context = if im_context.nil?
+                     Pointer(Void).null
+                   else
+                     im_context.to_unsafe
+                   end
 
       # C call
       LibGtk.gtk_event_controller_key_set_im_context(self, im_context)

@@ -12,35 +12,45 @@ require "../gtk-4.0/orientable"
 module Adw
   # An adaptive container acting like a box or an overlay.
   #
+  # <picture>
+  #   <source srcset="flap-wide-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="flap-wide.png" alt="flap-wide">
+  # </picture>
+  # <picture>
+  #   <source srcset="flap-narrow-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="flap-narrow.png" alt="flap-narrow">
+  # </picture>
+  #
   # The `AdwFlap` widget can display its children like a [class@Gtk.Box] does or
   # like a [class@Gtk.Overlay] does, according to the
-  # [property@Adw.Flap:fold-policy] value.
+  # [property@Flap:fold-policy] value.
   #
-  # `AdwFlap` has at most three children: [property@Adw.Flap:content],
-  # [property@Adw.Flap:flap] and [property@Adw.Flap:separator]. Content is the
-  # primary child, flap is displayed next to it when unfolded, or overlays it
-  # when folded. Flap can be shown or hidden by changing th
-  # [property@Adw.Flap:reveal-flap] value, as well as via swipe gestures if
-  # [property@Adw.Flap:swipe-to-open] and/or [property@Adw.Flap:swipe-to-close] are
-  # set to `TRUE`.
+  # `AdwFlap` has at most three children: [property@Flap:content],
+  # [property@Flap:flap] and [property@Flap:separator]. Content is the primary
+  # child, flap is displayed next to it when unfolded, or overlays it when
+  # folded. Flap can be shown or hidden by changing the
+  # [property@Flap:reveal-flap] value, as well as via swipe gestures if
+  # [property@Flap:swipe-to-open] and/or [property@Flap:swipe-to-close] are set
+  # to `TRUE`.
   #
   # Optionally, a separator can be provided, which would be displayed between
   # the content and the flap when there's no shadow to separate them, depending
   # on the transition type.
   #
-  # [property@Adw.Flap:flap] is transparent by default; add the `.background`
-  # style class to it if this is unwanted.
+  # [property@Flap:flap] is transparent by default; add the
+  # [`.background`](style-classes.html#background) style class to it if this is
+  # unwanted.
   #
-  # If [property@Adw.Flap:modal] is set to `TRUE`, content becomes completely
+  # If [property@Flap:modal] is set to `TRUE`, content becomes completely
   # inaccessible when the flap is revealed while folded.
   #
   # The position of the flap and separator children relative to the content is
-  # determined by orientation, as well as the [property@Adw.Flap:flap-position]
+  # determined by orientation, as well as the [property@Flap:flap-position]
   # value.
   #
   # Folding the flap will automatically hide the flap widget, and unfolding it
   # will automatically reveal it. If this behavior is not desired, the
-  # [property@Adw.Flap:locked] property can be used to override it.
+  # [property@Flap:locked] property can be used to override it.
   #
   # Common use cases include sidebars, header bars that need to be able to
   # overlap the window content (for example, in fullscreen mode) and bottom
@@ -71,7 +81,7 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, content : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, flap : Gtk::Widget? = nil, flap_position : Gtk::PackType? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, fold_duration : UInt32? = nil, fold_policy : Adw::FlapFoldPolicy? = nil, fold_threshold_policy : Adw::FoldThresholdPolicy? = nil, folded : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, locked : Bool? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, modal : Bool? = nil, name : ::String? = nil, opacity : Float64? = nil, orientation : Gtk::Orientation? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, reveal_duration : UInt32? = nil, reveal_flap : Bool? = nil, reveal_progress : Float64? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, separator : Gtk::Widget? = nil, swipe_to_close : Bool? = nil, swipe_to_open : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, transition_type : Adw::FlapTransitionType? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, content : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, flap : Gtk::Widget? = nil, flap_position : Gtk::PackType? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, fold_duration : UInt32? = nil, fold_policy : Adw::FlapFoldPolicy? = nil, fold_threshold_policy : Adw::FoldThresholdPolicy? = nil, folded : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, locked : Bool? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, modal : Bool? = nil, name : ::String? = nil, opacity : Float64? = nil, orientation : Gtk::Orientation? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, reveal_flap : Bool? = nil, reveal_params : Adw::SpringParams? = nil, reveal_progress : Float64? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, separator : Gtk::Widget? = nil, swipe_to_close : Bool? = nil, swipe_to_open : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, transition_type : Adw::FlapTransitionType? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
       _names = uninitialized Pointer(LibC::Char)[52]
       _values = StaticArray(LibGObject::Value, 52).new(LibGObject::Value.new)
       _n = 0
@@ -251,14 +261,14 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if reveal_duration
-        (_names.to_unsafe + _n).value = "reveal-duration".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, reveal_duration)
-        _n += 1
-      end
       if reveal_flap
         (_names.to_unsafe + _n).value = "reveal-flap".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, reveal_flap)
+        _n += 1
+      end
+      if reveal_params
+        (_names.to_unsafe + _n).value = "reveal-params".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, reveal_params)
         _n += 1
       end
       if reveal_progress
@@ -473,21 +483,6 @@ module Adw
       GICrystal.to_bool(value)
     end
 
-    def reveal_duration=(value : UInt32) : UInt32
-      unsafe_value = value
-
-      LibGObject.g_object_set(self, "reveal-duration", unsafe_value, Pointer(Void).null)
-      value
-    end
-
-    def reveal_duration : UInt32
-      # Returns: None
-
-      value = uninitialized UInt32
-      LibGObject.g_object_get(self, "reveal-duration", pointerof(value), Pointer(Void).null)
-      value
-    end
-
     def reveal_flap=(value : Bool) : Bool
       unsafe_value = value
 
@@ -501,6 +496,21 @@ module Adw
       value = uninitialized LibC::Int
       LibGObject.g_object_get(self, "reveal-flap", pointerof(value), Pointer(Void).null)
       GICrystal.to_bool(value)
+    end
+
+    def reveal_params=(value : Adw::SpringParams?) : Adw::SpringParams?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "reveal-params", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def reveal_params : Adw::SpringParams?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "reveal-params", pointerof(value), Pointer(Void).null)
+      Adw::SpringParams.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def reveal_progress : Float64
@@ -702,19 +712,6 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def reveal_duration : UInt32
-      # adw_flap_get_reveal_duration: (Method | Getter)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      _retval = LibAdw.adw_flap_get_reveal_duration(self)
-
-      # Return value handling
-      _retval
-    end
-
     def reveal_flap : Bool
       # adw_flap_get_reveal_flap: (Method | Getter)
       # Returns: (transfer none)
@@ -726,6 +723,19 @@ module Adw
 
       # Return value handling
       GICrystal.to_bool(_retval)
+    end
+
+    def reveal_params : Adw::SpringParams
+      # adw_flap_get_reveal_params: (Method | Getter)
+      # Returns: (transfer full)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibAdw.adw_flap_get_reveal_params(self)
+
+      # Return value handling
+      Adw::SpringParams.new(_retval, GICrystal::Transfer::Full)
     end
 
     def reveal_progress : Float64
@@ -901,18 +911,6 @@ module Adw
       # Return value handling
     end
 
-    def reveal_duration=(duration : UInt32) : Nil
-      # adw_flap_set_reveal_duration: (Method | Setter)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      LibAdw.adw_flap_set_reveal_duration(self, duration)
-
-      # Return value handling
-    end
-
     def reveal_flap=(reveal_flap : Bool) : Nil
       # adw_flap_set_reveal_flap: (Method | Setter)
       # Returns: (transfer none)
@@ -921,6 +919,18 @@ module Adw
 
       # C call
       LibAdw.adw_flap_set_reveal_flap(self, reveal_flap)
+
+      # Return value handling
+    end
+
+    def reveal_params=(params : Adw::SpringParams) : Nil
+      # adw_flap_set_reveal_params: (Method | Setter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      LibAdw.adw_flap_set_reveal_params(self, params)
 
       # Return value handling
     end

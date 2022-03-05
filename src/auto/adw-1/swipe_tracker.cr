@@ -2,16 +2,16 @@ require "../g_object-2.0/object"
 require "../gtk-4.0/orientable"
 
 module Adw
-  # A swipe tracker used in [class@Adw.Carousel] and [class@Adw.Leaflet].
+  # A swipe tracker used in [class@Carousel], [class@Flap] and [class@Leaflet].
   #
   # The `AdwSwipeTracker` object can be used for implementing widgets with swipe
   # gestures. It supports touch-based swipes, pointer dragging, and touchpad
   # scrolling.
   #
-  # The widgets will probably want to expose the
-  # [property@Adw.SwipeTracker:enabled] property. If they expect to use
-  # horizontal orientation, [property@Adw.SwipeTracker:reversed] can be used for
-  # supporting RTL text direction.
+  # The widgets will probably want to expose the [property@SwipeTracker:enabled]
+  # property. If they expect to use horizontal orientation,
+  # [property@SwipeTracker:reversed] can be used for supporting RTL text
+  # direction.
   class SwipeTracker < GObject::Object
     include Gtk::Orientable
 
@@ -295,6 +295,164 @@ module Adw
         @detail ? "begin-swipe::#{@detail}" : "begin-swipe"
       end
 
+      def connect(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Adw::SwipeTracker, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Adw::SwipeTracker, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Adw::SwipeTracker, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Adw::SwipeTracker, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit : Nil
+        LibGObject.g_signal_emit_by_name(@source, "begin-swipe")
+      end
+    end
+
+    def begin_swipe_signal
+      BeginSwipeSignal.new(self)
+    end
+
+    struct EndSwipeSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "end-swipe::#{@detail}" : "end-swipe"
+      end
+
+      def connect(&block : Proc(Float64, Float64, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Float64, Float64, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Float64, Float64, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Float64, Float64, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Float64, Float64, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Float64, Float64, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Adw::SwipeTracker, Float64, Float64, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
+          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Adw::SwipeTracker, Float64, Float64, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Adw::SwipeTracker, Float64, Float64, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
+          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Adw::SwipeTracker, Float64, Float64, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(velocity : Float64, to : Float64) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "end-swipe", velocity, to)
+      end
+    end
+
+    def end_swipe_signal
+      EndSwipeSignal.new(self)
+    end
+
+    struct PrepareSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "prepare::#{@detail}" : "prepare"
+      end
+
       def connect(&block : Proc(Adw::NavigationDirection, Nil))
         connect(block)
       end
@@ -350,95 +508,12 @@ module Adw
       end
 
       def emit(direction : Adw::NavigationDirection) : Nil
-        LibGObject.g_signal_emit_by_name(@source, "begin-swipe", direction)
+        LibGObject.g_signal_emit_by_name(@source, "prepare", direction)
       end
     end
 
-    def begin_swipe_signal
-      BeginSwipeSignal.new(self)
-    end
-
-    struct EndSwipeSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
-        @detail ? "end-swipe::#{@detail}" : "end-swipe"
-      end
-
-      def connect(&block : Proc(Int64, Float64, Nil))
-        connect(block)
-      end
-
-      def connect_after(&block : Proc(Int64, Float64, Nil))
-        connect(block)
-      end
-
-      def connect(block : Proc(Int64, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int64, lib_arg1 : Float64, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Int64, Float64, Nil)).unbox(box).call(arg0, arg1)
-        }
-
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(block : Proc(Int64, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int64, lib_arg1 : Float64, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Int64, Float64, Nil)).unbox(box).call(arg0, arg1)
-        }
-
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(block : Proc(Adw::SwipeTracker, Int64, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int64, lib_arg1 : Float64, box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Adw::SwipeTracker, Int64, Float64, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
-
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(block : Proc(Adw::SwipeTracker, Int64, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int64, lib_arg1 : Float64, box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Adw::SwipeTracker, Int64, Float64, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
-
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def emit(duration : Int64, to : Float64) : Nil
-        LibGObject.g_signal_emit_by_name(@source, "end-swipe", duration, to)
-      end
-    end
-
-    def end_swipe_signal
-      EndSwipeSignal.new(self)
+    def prepare_signal
+      PrepareSignal.new(self)
     end
 
     struct UpdateSwipeSignal

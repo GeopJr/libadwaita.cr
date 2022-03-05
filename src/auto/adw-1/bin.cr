@@ -8,7 +8,12 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A widget with one child.
   #
-  # The `AdwBin` widget has only one child, set with the [property@Adw.Bin:child]
+  # <picture>
+  #   <source srcset="bin-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="bin.png" alt="bin">
+  # </picture>
+  #
+  # The `AdwBin` widget has only one child, set with the [property@Bin:child]
   # property.
   #
   # It is useful for deriving subclasses, since it provides common code needed

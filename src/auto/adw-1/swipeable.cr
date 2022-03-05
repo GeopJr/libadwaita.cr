@@ -3,7 +3,7 @@ module Adw
   #
   # The `AdwSwipeable` interface is implemented by all swipeable widgets.
   #
-  # See [class@Adw.SwipeTracker] for details about implementing it.
+  # See [class@SwipeTracker] for details about implementing it.
   module Swipeable
     def cancel_progress : Float64
       # adw_swipeable_get_cancel_progress: (Method)

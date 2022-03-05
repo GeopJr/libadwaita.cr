@@ -166,7 +166,7 @@ module Gtk
       Gdk::Display.new(_retval, GICrystal::Transfer::None)
     end
 
-    def parent : Gtk::Window
+    def parent : Gtk::Window?
       # gtk_mount_operation_get_parent: (Method | Getter)
       # Returns: (transfer none)
 
@@ -176,7 +176,7 @@ module Gtk
       _retval = LibGtk.gtk_mount_operation_get_parent(self)
 
       # Return value handling
-      Gtk::Window.new(_retval, GICrystal::Transfer::None)
+      Gtk::Window.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def is_showing? : Bool

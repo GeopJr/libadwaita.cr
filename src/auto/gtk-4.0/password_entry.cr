@@ -376,7 +376,7 @@ module Gtk
       LibGObject.g_object_ref(_retval)
     end
 
-    def extra_menu : Gio::MenuModel
+    def extra_menu : Gio::MenuModel?
       # gtk_password_entry_get_extra_menu: (Method | Getter)
       # Returns: (transfer none)
 
@@ -386,7 +386,7 @@ module Gtk
       _retval = LibGtk.gtk_password_entry_get_extra_menu(self)
 
       # Return value handling
-      Gio::MenuModel.new(_retval, GICrystal::Transfer::None)
+      Gio::MenuModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def show_peek_icon : Bool

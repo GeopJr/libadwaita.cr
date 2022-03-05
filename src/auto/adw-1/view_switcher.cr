@@ -8,18 +8,26 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # An adaptive view switcher.
   #
+  # <picture>
+  #   <source srcset="view-switcher-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="view-switcher.png" alt="view-switcher">
+  # </picture>
+  #
   # An adaptive view switcher designed to switch between multiple views
-  # contained in a [class@Adw.ViewStack] in a similar fashion to
+  # contained in a [class@ViewStack] in a similar fashion to
   # [class@Gtk.StackSwitcher].
   #
-  # Depending on the available width, the view switcher can adapt from a wide
-  # mode showing the view's icon and title side by side, to a narrow mode showing
-  # the view's icon and title one on top of the other, in a more compact way.
-  # This can be controlled via the [property@Adw.ViewSwitcher:policy] property.
+  # `AdwViewSwitcher` buttons always have an icon and a label. They can be
+  # displayed side by side, or icon on top of the label. This can be controlled
+  # via the [property@ViewSwitcher:policy] property.
+  #
+  # Most applications should be using [class@ViewSwitcherBar] and
+  # [class@ViewSwitcherTitle].
   #
   # ## CSS nodes
   #
-  # `AdwViewSwitcher` has a single CSS node with name `viewswitcher`.
+  # `AdwViewSwitcher` has a single CSS node with name `viewswitcher`. It can have
+  # the style classes `.wide` and `.narrow`, matching its policy.
   #
   # ## Accessibility
   #

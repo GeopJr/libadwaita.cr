@@ -1,7 +1,7 @@
 module Gtk
   # Represents a request of a screen object in a given orientation. These
   # are primarily used in container implementations when allocating a natural
-  # size for children calling. See gtk_distribute_natural_allocation().
+  # size for children calling. See [func@distribute_natural_allocation].
   class RequestedSize
     @pointer : Pointer(Void)
 

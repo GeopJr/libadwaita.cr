@@ -83,7 +83,7 @@ module Gtk
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def model_for_item(position : UInt32) : Gio::ListModel
+    def model_for_item(position : UInt32) : Gio::ListModel?
       # gtk_flatten_list_model_get_model_for_item: (Method)
       # Returns: (transfer none)
 
@@ -93,7 +93,7 @@ module Gtk
       _retval = LibGtk.gtk_flatten_list_model_get_model_for_item(self, position)
 
       # Return value handling
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def model=(model : Gio::ListModel?) : Nil

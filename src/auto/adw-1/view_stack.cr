@@ -6,38 +6,34 @@ require "../gtk-4.0/buildable"
 require "../gtk-4.0/constraint_target"
 
 module Adw
-  # A view container for [class@Adw.ViewSwitcher].
+  # A view container for [class@ViewSwitcher].
   #
   # `AdwViewStack` is a container which only shows one page at a time.
   # It is typically used to hold an application's main views.
   #
   # It doesn't provide a way to transition between pages.
-  # Instead, a separate widget such as [class@Adw.ViewSwitcher] can be used with
+  # Instead, a separate widget such as [class@ViewSwitcher] can be used with
   # `AdwViewStack` to provide this functionality.
   #
   # `AdwViewStack` pages can have a title, an icon, an attention request, and a
-  # numbered badge that [class@Adw.ViewSwitcher] will use to let users identify
-  # which page is which.
-  # Set them using the [property@Adw.ViewStackPage:title],
-  # [property@Adw.ViewStackPage:icon-name],
-  # [property@Adw.ViewStackPage:needs-attention], and
-  # [property@Adw.ViewStackPage:badge-number] properties.
+  # numbered badge that [class@ViewSwitcher] will use to let users identify which
+  # page is which. Set them using the [property@ViewStackPage:title],
+  # [property@ViewStackPage:icon-name],
+  # [property@ViewStackPage:needs-attention], and
+  # [property@ViewStackPage:badge-number] properties.
   #
-  # Transitions between views are animated by crossfading.
-  # These animations respect the [property@Gtk.Settings:gtk-enable-animations]
-  # setting.
+  # Unlike [class@Gtk.Stack], transitions between views are not animated.
   #
-  # `AdwViewStack` maintains a [class@Adw.ViewStackPage] object for each added
-  # child, which holds additional per-child properties.
-  # You obtain the [class@Adw.ViewStackPage] for a child with
-  # [method@Adw.ViewStack.get_page] and you can obtain a
-  # [iface@Gtk.SelectionModel] containing all the pages with
-  # [method@Adw.ViewStack.get_pages].
+  # `AdwViewStack` maintains a [class@ViewStackPage] object for each added child,
+  # which holds additional per-child properties. You obtain the
+  # [class@ViewStackPage] for a child with [method@ViewStack.get_page] and you
+  # can obtain a [iface@Gtk.SelectionModel] containing all the pages with
+  # [method@ViewStack.get_pages].
   #
   # ## AdwViewStack as GtkBuildable
   #
   # To set child-specific properties in a .ui file, create
-  # [class@Adw.ViewStackPage] objects explicitly, and set the child widget as a
+  # [class@ViewStackPage] objects explicitly, and set the child widget as a
   # property on it:
   #
   # ```xml
@@ -53,6 +49,7 @@ module Adw
   #         </property>
   #       </object>
   #     </child>
+  #   </object>
   # ```
   #
   # ## CSS nodes
@@ -70,9 +67,9 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, hhomogeneous : Bool? = nil, interpolate_size : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, pages : Gtk::SelectionModel? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, transition_running : Bool? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, vhomogeneous : Bool? = nil, visible : Bool? = nil, visible_child : Gtk::Widget? = nil, visible_child_name : ::String? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[42]
-      _values = StaticArray(LibGObject::Value, 42).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, hhomogeneous : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, pages : Gtk::SelectionModel? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, vhomogeneous : Bool? = nil, visible : Bool? = nil, visible_child : Gtk::Widget? = nil, visible_child_name : ::String? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[40]
+      _values = StaticArray(LibGObject::Value, 40).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -155,11 +152,6 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, hhomogeneous)
         _n += 1
       end
-      if interpolate_size
-        (_names.to_unsafe + _n).value = "interpolate-size".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, interpolate_size)
-        _n += 1
-      end
       if layout_manager
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
@@ -240,11 +232,6 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if transition_running
-        (_names.to_unsafe + _n).value = "transition-running".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, transition_running)
-        _n += 1
-      end
       if valign
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
@@ -309,35 +296,12 @@ module Adw
       GICrystal.to_bool(value)
     end
 
-    def interpolate_size=(value : Bool) : Bool
-      unsafe_value = value
-
-      LibGObject.g_object_set(self, "interpolate-size", unsafe_value, Pointer(Void).null)
-      value
-    end
-
-    def interpolate_size? : Bool
-      # Returns: None
-
-      value = uninitialized LibC::Int
-      LibGObject.g_object_get(self, "interpolate-size", pointerof(value), Pointer(Void).null)
-      GICrystal.to_bool(value)
-    end
-
     def pages : Gtk::SelectionModel?
       # Returns: None
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
       Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
-    end
-
-    def transition_running? : Bool
-      # Returns: None
-
-      value = uninitialized LibC::Int
-      LibGObject.g_object_get(self, "transition-running", pointerof(value), Pointer(Void).null)
-      GICrystal.to_bool(value)
     end
 
     def vhomogeneous=(value : Bool) : Bool
@@ -476,19 +440,6 @@ module Adw
       GICrystal.to_bool(_retval)
     end
 
-    def interpolate_size : Bool
-      # adw_view_stack_get_interpolate_size: (Method | Getter)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      _retval = LibAdw.adw_view_stack_get_interpolate_size(self)
-
-      # Return value handling
-      GICrystal.to_bool(_retval)
-    end
-
     def page(child : Gtk::Widget) : Adw::ViewStackPage
       # adw_view_stack_get_page: (Method)
       # Returns: (transfer none)
@@ -513,19 +464,6 @@ module Adw
 
       # Return value handling
       Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::Full)
-    end
-
-    def transition_running : Bool
-      # adw_view_stack_get_transition_running: (Method | Getter)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      _retval = LibAdw.adw_view_stack_get_transition_running(self)
-
-      # Return value handling
-      GICrystal.to_bool(_retval)
     end
 
     def vhomogeneous : Bool
@@ -587,18 +525,6 @@ module Adw
 
       # C call
       LibAdw.adw_view_stack_set_hhomogeneous(self, hhomogeneous)
-
-      # Return value handling
-    end
-
-    def interpolate_size=(interpolate_size : Bool) : Nil
-      # adw_view_stack_set_interpolate_size: (Method | Setter)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      LibAdw.adw_view_stack_set_interpolate_size(self, interpolate_size)
 
       # Return value handling
     end

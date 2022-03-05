@@ -43,6 +43,7 @@ module Gtk
   #     GDK_TYPE_PIXBUF,
   #   }, 2);
   #
+  #   g_signal_connect (target, "drop", G_CALLBACK (on_drop), self);
   #   gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (target));
   # }
   # ```
@@ -253,7 +254,7 @@ module Gtk
 
     def formats : Gdk::ContentFormats?
       # gtk_drop_target_get_formats: (Method | Getter)
-      # Returns: (transfer full)
+      # Returns: (transfer none)
 
       # Handle parameters
 
@@ -261,7 +262,7 @@ module Gtk
       _retval = LibGtk.gtk_drop_target_get_formats(self)
 
       # Return value handling
-      Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gdk::ContentFormats.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def gtypes : Enumerable(UInt64)?

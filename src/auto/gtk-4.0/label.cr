@@ -197,9 +197,9 @@ module Gtk
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, attributes : Pango::AttrList? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, ellipsize : Pango::EllipsizeMode? = nil, extra_menu : Gio::MenuModel? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, justify : Gtk::Justification? = nil, label : ::String? = nil, layout_manager : Gtk::LayoutManager? = nil, lines : Int32? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, max_width_chars : Int32? = nil, mnemonic_keyval : UInt32? = nil, mnemonic_widget : Gtk::Widget? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selectable : Bool? = nil, sensitive : Bool? = nil, single_line_mode : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, use_markup : Bool? = nil, use_underline : Bool? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_chars : Int32? = nil, width_request : Int32? = nil, wrap : Bool? = nil, wrap_mode : Pango::WrapMode? = nil, xalign : Float32? = nil, yalign : Float32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[53]
-      _values = StaticArray(LibGObject::Value, 53).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, attributes : Pango::AttrList? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, ellipsize : Pango::EllipsizeMode? = nil, extra_menu : Gio::MenuModel? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, justify : Gtk::Justification? = nil, label : ::String? = nil, layout_manager : Gtk::LayoutManager? = nil, lines : Int32? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, max_width_chars : Int32? = nil, mnemonic_keyval : UInt32? = nil, mnemonic_widget : Gtk::Widget? = nil, name : ::String? = nil, natural_wrap_mode : Gtk::NaturalWrapMode? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selectable : Bool? = nil, sensitive : Bool? = nil, single_line_mode : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, use_markup : Bool? = nil, use_underline : Bool? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_chars : Int32? = nil, width_request : Int32? = nil, wrap : Bool? = nil, wrap_mode : Pango::WrapMode? = nil, xalign : Float32? = nil, yalign : Float32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[54]
+      _values = StaticArray(LibGObject::Value, 54).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -350,6 +350,11 @@ module Gtk
       if name
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
+        _n += 1
+      end
+      if natural_wrap_mode
+        (_names.to_unsafe + _n).value = "natural-wrap-mode".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, natural_wrap_mode)
         _n += 1
       end
       if opacity
@@ -602,6 +607,21 @@ module Gtk
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "mnemonic-widget", pointerof(value), Pointer(Void).null)
       Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
+    def natural_wrap_mode=(value : Gtk::NaturalWrapMode) : Gtk::NaturalWrapMode
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "natural-wrap-mode", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def natural_wrap_mode : Gtk::NaturalWrapMode
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "natural-wrap-mode", pointerof(value), Pointer(Void).null)
+      Gtk::NaturalWrapMode.from_value(value)
     end
 
     def selectable=(value : Bool) : Bool
@@ -937,6 +957,19 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    def natural_wrap_mode : Gtk::NaturalWrapMode
+      # gtk_label_get_natural_wrap_mode: (Method | Getter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGtk.gtk_label_get_natural_wrap_mode(self)
+
+      # Return value handling
+      Gtk::NaturalWrapMode.from_value(_retval)
+    end
+
     def selectable : Bool
       # gtk_label_get_selectable: (Method | Getter)
       # Returns: (transfer none)
@@ -950,13 +983,15 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def selection_bounds(start : Int32, end _end : Int32) : Bool
+    def selection_bounds : Bool
       # gtk_label_get_selection_bounds: (Method)
-      # @start: (out) (transfer full)
-      # @end: (out) (transfer full)
+      # @start: (out) (transfer full) (optional)
+      # @end: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
       # Handle parameters
+      start = Pointer(Int32).null
+      _end = Pointer(Int32).null
 
       # C call
       _retval = LibGtk.gtk_label_get_selection_bounds(self, start, _end)
@@ -1228,6 +1263,18 @@ module Gtk
 
       # C call
       LibGtk.gtk_label_set_mnemonic_widget(self, widget)
+
+      # Return value handling
+    end
+
+    def natural_wrap_mode=(wrap_mode : Gtk::NaturalWrapMode) : Nil
+      # gtk_label_set_natural_wrap_mode: (Method | Setter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      LibGtk.gtk_label_set_natural_wrap_mode(self, wrap_mode)
 
       # Return value handling
     end

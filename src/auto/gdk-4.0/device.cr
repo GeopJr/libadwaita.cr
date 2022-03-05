@@ -305,7 +305,7 @@ module Gdk
       GICrystal.to_bool(_retval)
     end
 
-    def device_tool : Gdk::DeviceTool
+    def device_tool : Gdk::DeviceTool?
       # gdk_device_get_device_tool: (Method)
       # Returns: (transfer none)
 
@@ -315,7 +315,7 @@ module Gdk
       _retval = LibGdk.gdk_device_get_device_tool(self)
 
       # Return value handling
-      Gdk::DeviceTool.new(_retval, GICrystal::Transfer::None)
+      Gdk::DeviceTool.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def direction : Pango::Direction

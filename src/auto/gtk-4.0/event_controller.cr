@@ -160,7 +160,7 @@ module Gtk
       _retval
     end
 
-    def name : ::String
+    def name : ::String?
       # gtk_event_controller_get_name: (Method | Getter)
       # Returns: (transfer none)
 
@@ -170,7 +170,7 @@ module Gtk
       _retval = LibGtk.gtk_event_controller_get_name(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     def propagation_limit : Gtk::PropagationLimit
@@ -224,11 +224,17 @@ module Gtk
       # Return value handling
     end
 
-    def name=(name : ::String) : Nil
+    def name=(name : ::String?) : Nil
       # gtk_event_controller_set_name: (Method | Setter)
+      # @name: (nullable)
       # Returns: (transfer none)
 
       # Handle parameters
+      name = if name.nil?
+               Pointer(LibC::Char).null
+             else
+               name.to_unsafe
+             end
 
       # C call
       LibGtk.gtk_event_controller_set_name(self, name)

@@ -8,6 +8,11 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A page used for empty/error states and similar use-cases.
   #
+  # <picture>
+  #   <source srcset="status-page-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="status-page.png" alt="status-page">
+  # </picture>
+  #
   # The `AdwStatusPage` widget can have an icon, a title, a description and a
   # custom widget which is displayed below them.
   #
@@ -15,8 +20,9 @@ module Adw
   #
   # `AdwStatusPage` has a main CSS node with name `statuspage`.
   #
-  # `AdwStatusPage` can use the `.compact` style class for when it needs to fit
-  # into a small space such a sidebar or a popover.
+  # `AdwStatusPage` can use the
+  # [`.compact`](style-classes.html#compact-status-page) style class for when it
+  # needs to fit into a small space such a sidebar or a popover.
   class StatusPage < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Buildable

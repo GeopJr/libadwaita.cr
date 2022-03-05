@@ -8,43 +8,58 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A title bar widget.
   #
+  # <picture>
+  #   <source srcset="header-bar-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="header-bar.png" alt="header-bar">
+  # </picture>
+  #
   # `AdwHeaderBar` is similar to [class@Gtk.HeaderBar], but provides additional
   # features compared to it. Refer to `GtkHeaderBar` for details.
   #
-  # [property@Adw.HeaderBar:centering-policy] allows to enforce strict centering
-  # of the title widget, this is useful for [class@Adw.ViewSwitcherTitle].
+  # [property@HeaderBar:centering-policy] allows to enforce strict centering of
+  # the title widget, this is useful for [class@ViewSwitcherTitle].
   #
-  # [property@Adw.HeaderBar:show-start-title-buttons] and
-  # [property@Adw.HeaderBar:show-end-title-buttons] allow to easily create split
-  # header bar layouts using [class@Adw.Leaflet], as follows:
+  # [property@HeaderBar:show-start-title-buttons] and
+  # [property@HeaderBar:show-end-title-buttons] allow to easily create split
+  # header bar layouts using [class@Leaflet], as follows:
   #
   # ```xml
   # <object class="AdwLeaflet" id="leaflet">
   #   <child>
   #     <object class="GtkBox">
   #       <property name="orientation">vertical</property>
-  #       <object class="AdwHeaderBar">
-  #         <binding name="show-end-title-buttons">
-  #           <lookup name="folded">leaflet</lookup>
-  #         </binding>
-  #       </object>
-  #       ...
+  #       <child>
+  #         <object class="AdwHeaderBar">
+  #           <binding name="show-end-title-buttons">
+  #             <lookup name="folded">leaflet</lookup>
+  #           </binding>
+  #         </object>
+  #       </child>
+  #       <!-- ... -->
   #     </object>
   #   </child>
-  #   ...
+  #   <!-- ... -->
   #   <child>
   #     <object class="GtkBox">
   #       <property name="orientation">vertical</property>
-  #       <object class="AdwHeaderBar">
-  #         <binding name="show-start-title-buttons">
-  #           <lookup name="folded">leaflet</lookup>
-  #         </binding>
-  #       </object>
-  #       ...
+  #       <property name="hexpand">True</property>
+  #       <child>
+  #         <object class="AdwHeaderBar">
+  #           <binding name="show-start-title-buttons">
+  #             <lookup name="folded">leaflet</lookup>
+  #           </binding>
+  #         </object>
+  #       </child>
+  #       <!-- ... -->
   #     </object>
   #   </child>
   # </object>
   # ```
+  #
+  # <picture>
+  #   <source srcset="header-bar-split-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="header-bar-split.png" alt="header-bar-split">
+  # </picture>
   #
   # ## CSS nodes
   #
@@ -74,7 +89,7 @@ module Adw
   #
   # ## Accessibility
   #
-  # `AdwHeaderBar` uses the %GTK_ACCESSIBLE_ROLE_GROUP role.
+  # `AdwHeaderBar` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
   class HeaderBar < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Buildable

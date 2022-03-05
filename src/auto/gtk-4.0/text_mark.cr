@@ -115,7 +115,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def buffer : Gtk::TextBuffer
+    def buffer : Gtk::TextBuffer?
       # gtk_text_mark_get_buffer: (Method)
       # Returns: (transfer none)
 
@@ -125,7 +125,7 @@ module Gtk
       _retval = LibGtk.gtk_text_mark_get_buffer(self)
 
       # Return value handling
-      Gtk::TextBuffer.new(_retval, GICrystal::Transfer::None)
+      Gtk::TextBuffer.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def deleted : Bool

@@ -15,7 +15,7 @@ module Gtk
   # a [class@Gsk.Renderer] for rendering on that surface. To get the
   # renderer, use [method@Gtk.Native.get_renderer].
   module Native
-    def self.for_surface(surface : Gdk::Surface) : Gtk::Native
+    def self.for_surface(surface : Gdk::Surface) : Gtk::Native?
       # gtk_native_get_for_surface: (None)
       # Returns: (transfer none)
 
@@ -25,7 +25,7 @@ module Gtk
       _retval = LibGtk.gtk_native_get_for_surface(surface)
 
       # Return value handling
-      Gtk::Native__Impl.new(_retval, GICrystal::Transfer::None)
+      Gtk::Native__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def renderer : Gsk::Renderer

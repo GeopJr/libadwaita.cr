@@ -256,7 +256,7 @@ module Gdk
       Gdk::Seat.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def surface : Gdk::Surface
+    def surface : Gdk::Surface?
       # gdk_event_get_surface: (Method)
       # Returns: (transfer none)
 
@@ -266,7 +266,7 @@ module Gdk
       _retval = LibGdk.gdk_event_get_surface(self)
 
       # Return value handling
-      Gdk::Surface.new(_retval, GICrystal::Transfer::None)
+      Gdk::Surface.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def time : UInt32

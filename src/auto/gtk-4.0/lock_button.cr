@@ -422,7 +422,7 @@ module Gtk
       LibGObject.g_object_ref(_retval)
     end
 
-    def permission : Gio::Permission
+    def permission : Gio::Permission?
       # gtk_lock_button_get_permission: (Method | Getter)
       # Returns: (transfer none)
 
@@ -432,7 +432,7 @@ module Gtk
       _retval = LibGtk.gtk_lock_button_get_permission(self)
 
       # Return value handling
-      Gio::Permission.new(_retval, GICrystal::Transfer::None)
+      Gio::Permission.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def permission=(permission : Gio::Permission?) : Nil

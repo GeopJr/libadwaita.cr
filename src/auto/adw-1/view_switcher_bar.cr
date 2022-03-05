@@ -8,20 +8,26 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A view switcher action bar.
   #
+  # <picture>
+  #   <source srcset="view-switcher-bar-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="view-switcher-bar.png" alt="view-switcher-bar">
+  # </picture>
+  #
   # An action bar letting you switch between multiple views contained in a
-  # [class@Adw.ViewStack], via an [class@Adw.ViewSwitcher]. It is designed to be put
-  # at the bottom of a window and to be revealed only on really narrow windows,
-  # e.g. on mobile phones. It can't be revealed if there are less than two pages.
+  # [class@ViewStack], via an [class@ViewSwitcher]. It is designed to be put at
+  # the bottom of a window and to be revealed only on really narrow windows, e.g.
+  # on mobile phones. It can't be revealed if there are less than two pages.
   #
-  # You can conveniently bind the [property@Adw.ViewSwitcherBar:reveal] property
-  # to [property@Adw.ViewSwitcherTitle:title-visible] to automatically reveal the
+  # `AdwViewSwitcherBar` is intended to be used together with
+  # [class@ViewSwitcherTitle].
+  #
+  # A common use case is to bind the [property@ViewSwitcherBar:reveal] property
+  # to [property@ViewSwitcherTitle:title-visible] to automatically reveal the
   # view switcher bar when the title label is displayed in place of the view
-  # switcher.
-  #
-  # An example of the UI definition for a common use case:
+  # switcher, as follows:
   #
   # ```xml
-  # <object class="GtkWindow"/>
+  # <object class="GtkWindow">
   #   <child type="titlebar">
   #     <object class="AdwHeaderBar">
   #       <property name="centering-policy">strict</property>
@@ -34,6 +40,7 @@ module Adw
   #   </child>
   #   <child>
   #     <object class="GtkBox">
+  #       <property name="orientation">vertical</property>
   #       <child>
   #         <object class="AdwViewStack" id="stack"/>
   #       </child>

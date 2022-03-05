@@ -57,9 +57,9 @@ module Gtk
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, item : GObject::Object? = nil, layout_manager : Gtk::LayoutManager? = nil, list_row : Gtk::TreeListRow? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[38]
-      _values = StaticArray(LibGObject::Value, 38).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, indent_for_icon : Bool? = nil, item : GObject::Object? = nil, layout_manager : Gtk::LayoutManager? = nil, list_row : Gtk::TreeListRow? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[39]
+      _values = StaticArray(LibGObject::Value, 39).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -140,6 +140,11 @@ module Gtk
       if hexpand_set
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
+        _n += 1
+      end
+      if indent_for_icon
+        (_names.to_unsafe + _n).value = "indent-for-icon".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, indent_for_icon)
         _n += 1
       end
       if item
@@ -276,6 +281,21 @@ module Gtk
       Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    def indent_for_icon=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "indent-for-icon", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def indent_for_icon? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "indent-for-icon", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def item : GObject::Object?
       # Returns: None
 
@@ -326,6 +346,19 @@ module Gtk
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    def indent_for_icon : Bool
+      # gtk_tree_expander_get_indent_for_icon: (Method | Getter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGtk.gtk_tree_expander_get_indent_for_icon(self)
+
+      # Return value handling
+      GICrystal.to_bool(_retval)
+    end
+
     def item : GObject::Object?
       # gtk_tree_expander_get_item: (Method | Getter)
       # Returns: (transfer full)
@@ -366,6 +399,18 @@ module Gtk
 
       # C call
       LibGtk.gtk_tree_expander_set_child(self, child)
+
+      # Return value handling
+    end
+
+    def indent_for_icon=(indent_for_icon : Bool) : Nil
+      # gtk_tree_expander_set_indent_for_icon: (Method | Setter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      LibGtk.gtk_tree_expander_set_indent_for_icon(self, indent_for_icon)
 
       # Return value handling
     end

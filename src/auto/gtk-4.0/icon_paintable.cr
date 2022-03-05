@@ -1,12 +1,15 @@
 require "../g_object-2.0/object"
 require "../gdk-4.0/paintable"
 
+require "./symbolic_paintable"
+
 module Gtk
   # Contains information found when looking up an icon in `GtkIconTheme`.
   #
   # `GtkIconPaintable` implements `GdkPaintable`.
   class IconPaintable < GObject::Object
     include Gdk::Paintable
+    include SymbolicPaintable
 
     @pointer : Pointer(Void)
 

@@ -13,7 +13,7 @@ module Gtk
   # An object only needs to implement this interface if it needs to extend the
   # `GtkBuilder` XML format or run any extra routines at deserialization time.
   module Buildable
-    def buildable_id : ::String
+    def buildable_id : ::String?
       # gtk_buildable_get_buildable_id: (Method)
       # Returns: (transfer none)
 
@@ -23,7 +23,7 @@ module Gtk
       _retval = LibGtk.gtk_buildable_get_buildable_id(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     abstract def to_unsafe

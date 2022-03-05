@@ -83,9 +83,9 @@ module Gtk
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, application : Gtk::Application? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, current_page : Int32? = nil, cursor : Gdk::Cursor? = nil, decorated : Bool? = nil, default_height : Int32? = nil, default_widget : Gtk::Widget? = nil, default_width : Int32? = nil, deletable : Bool? = nil, destroy_with_parent : Bool? = nil, display : Gdk::Display? = nil, embed_page_setup : Bool? = nil, focus_on_click : Bool? = nil, focus_visible : Bool? = nil, focus_widget : Gtk::Widget? = nil, focusable : Bool? = nil, fullscreened : Bool? = nil, halign : Gtk::Align? = nil, handle_menubar_accel : Bool? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_selection : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, hide_on_close : Bool? = nil, icon_name : ::String? = nil, is_active : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, manual_capabilities : Gtk::PrintCapabilities? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, maximized : Bool? = nil, mnemonics_visible : Bool? = nil, modal : Bool? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, page_setup : Gtk::PageSetup? = nil, parent : Gtk::Widget? = nil, print_settings : Gtk::PrintSettings? = nil, receives_default : Bool? = nil, resizable : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selected_printer : Gtk::Printer? = nil, sensitive : Bool? = nil, startup_id : ::String? = nil, support_selection : Bool? = nil, title : ::String? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, transient_for : Gtk::Window? = nil, use_header_bar : Int32? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[67]
-      _values = StaticArray(LibGObject::Value, 67).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, application : Gtk::Application? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, current_page : Int32? = nil, cursor : Gdk::Cursor? = nil, decorated : Bool? = nil, default_height : Int32? = nil, default_widget : Gtk::Widget? = nil, default_width : Int32? = nil, deletable : Bool? = nil, destroy_with_parent : Bool? = nil, display : Gdk::Display? = nil, embed_page_setup : Bool? = nil, focus_on_click : Bool? = nil, focus_visible : Bool? = nil, focus_widget : Gtk::Widget? = nil, focusable : Bool? = nil, fullscreened : Bool? = nil, halign : Gtk::Align? = nil, handle_menubar_accel : Bool? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_selection : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, hide_on_close : Bool? = nil, icon_name : ::String? = nil, is_active : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, manual_capabilities : Gtk::PrintCapabilities? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, maximized : Bool? = nil, mnemonics_visible : Bool? = nil, modal : Bool? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, page_setup : Gtk::PageSetup? = nil, parent : Gtk::Widget? = nil, print_settings : Gtk::PrintSettings? = nil, receives_default : Bool? = nil, resizable : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selected_printer : Gtk::Printer? = nil, sensitive : Bool? = nil, startup_id : ::String? = nil, support_selection : Bool? = nil, title : ::String? = nil, titlebar : Gtk::Widget? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, transient_for : Gtk::Window? = nil, use_header_bar : Int32? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[68]
+      _values = StaticArray(LibGObject::Value, 68).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -378,6 +378,11 @@ module Gtk
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
+      if titlebar
+        (_names.to_unsafe + _n).value = "titlebar".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, titlebar)
+        _n += 1
+      end
       if tooltip_markup
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
@@ -661,7 +666,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def selected_printer : Gtk::Printer
+    def selected_printer : Gtk::Printer?
       # gtk_print_unix_dialog_get_selected_printer: (Method | Getter)
       # Returns: (transfer none)
 
@@ -671,7 +676,7 @@ module Gtk
       _retval = LibGtk.gtk_print_unix_dialog_get_selected_printer(self)
 
       # Return value handling
-      Gtk::Printer.new(_retval, GICrystal::Transfer::None)
+      Gtk::Printer.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def settings : Gtk::PrintSettings

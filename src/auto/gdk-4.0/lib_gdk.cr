@@ -6,6 +6,7 @@ lib LibGdk
   type AxisFlags = UInt32
   type DragAction = UInt32
   type FrameClockPhase = UInt32
+  type GLAPI = UInt32
   type ModifierType = UInt32
   type PaintableFlags = UInt32
   type SeatCapabilities = UInt32
@@ -28,6 +29,7 @@ lib LibGdk
   type ScrollDirection = UInt32
   type SubpixelLayout = UInt32
   type SurfaceEdge = UInt32
+  type TextureError = UInt32
   type TitlebarGesture = UInt32
   type TouchpadGesturePhase = UInt32
   type VulkanError = UInt32
@@ -49,6 +51,8 @@ lib LibGdk
   type ContentFormatsBuilder = Void # Struct with zero bytes
 
   type EventSequence = Void # Struct with zero bytes
+
+  type FileList = Void # Struct with zero bytes
 
   type FrameClockPrivate = Void # Struct with zero bytes
 
@@ -315,6 +319,7 @@ lib LibGdk
   fun gdk_device_tool_get_type : UInt64
   fun gdk_display_beep(this : Void*) : Void
   fun gdk_display_close(this : Void*) : Void
+  fun gdk_display_create_gl_context(this : Void*, error : LibGLib::Error**) : Pointer(Void)
   fun gdk_display_device_is_grabbed(this : Void*, device : Pointer(Void)) : LibC::Int
   fun gdk_display_flush(this : Void*) : Void
   fun gdk_display_get_app_launch_context(this : Void*) : Pointer(Void)
@@ -409,6 +414,8 @@ lib LibGdk
   fun gdk_events_get_center(this : Void*, event2 : Pointer(Void), x : Pointer(Float64), y : Pointer(Float64)) : LibC::Int
   fun gdk_events_get_distance(event1 : Pointer(Void), event2 : Pointer(Void), distance : Pointer(Float64)) : LibC::Int
   fun gdk_events_get_distance(this : Void*, event2 : Pointer(Void), distance : Pointer(Float64)) : LibC::Int
+  fun gdk_file_list_get_files(this : Void*) : Pointer(LibGLib::SList)
+  fun gdk_file_list_get_type : UInt64
   fun gdk_focus_event_get_in(this : Void*) : LibC::Int
   fun gdk_focus_event_get_type : UInt64
   fun gdk_frame_clock_begin_updating(this : Void*) : Void
@@ -432,6 +439,8 @@ lib LibGdk
   fun gdk_frame_timings_ref(this : Void*) : Pointer(Void)
   fun gdk_frame_timings_unref(this : Void*) : Void
   fun gdk_gl_context_clear_current : Void
+  fun gdk_gl_context_get_allowed_apis(this : Void*) : UInt32
+  fun gdk_gl_context_get_api(this : Void*) : UInt32
   fun gdk_gl_context_get_current : Pointer(Void)
   fun gdk_gl_context_get_debug_enabled(this : Void*) : LibC::Int
   fun gdk_gl_context_get_display(this : Void*) : Pointer(Void)
@@ -446,6 +455,7 @@ lib LibGdk
   fun gdk_gl_context_is_shared(this : Void*, other : Pointer(Void)) : LibC::Int
   fun gdk_gl_context_make_current(this : Void*) : Void
   fun gdk_gl_context_realize(this : Void*, error : LibGLib::Error**) : LibC::Int
+  fun gdk_gl_context_set_allowed_apis(this : Void*, apis : UInt32) : Void
   fun gdk_gl_context_set_debug_enabled(this : Void*, enabled : LibC::Int) : Void
   fun gdk_gl_context_set_forward_compatible(this : Void*, compatible : LibC::Int) : Void
   fun gdk_gl_context_set_required_version(this : Void*, major : Int32, minor : Int32) : Void
@@ -590,13 +600,19 @@ lib LibGdk
   fun gdk_surface_set_opaque_region(this : Void*, region : Pointer(Void)) : Void
   fun gdk_surface_translate_coordinates(this : Void*, to : Pointer(Void), x : Pointer(Float64), y : Pointer(Float64)) : LibC::Int
   fun gdk_texture_download(this : Void*, data : Pointer(UInt8), stride : UInt64) : Void
+  fun gdk_texture_error_quark : UInt32
   fun gdk_texture_get_height(this : Void*) : Int32
   fun gdk_texture_get_type : UInt64
   fun gdk_texture_get_width(this : Void*) : Int32
   fun gdk_texture_new_for_pixbuf(pixbuf : Pointer(Void)) : Pointer(Void)
+  fun gdk_texture_new_from_bytes(bytes : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_texture_new_from_file(file : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
+  fun gdk_texture_new_from_filename(path : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_texture_new_from_resource(resource_path : Pointer(LibC::Char)) : Pointer(Void)
   fun gdk_texture_save_to_png(this : Void*, filename : Pointer(LibC::Char)) : LibC::Int
+  fun gdk_texture_save_to_png_bytes(this : Void*) : Pointer(Void)
+  fun gdk_texture_save_to_tiff(this : Void*, filename : Pointer(LibC::Char)) : LibC::Int
+  fun gdk_texture_save_to_tiff_bytes(this : Void*) : Pointer(Void)
   fun gdk_toplevel_begin_move(this : Void*, device : Pointer(Void), button : Int32, x : Float64, y : Float64, timestamp : UInt32) : Void
   fun gdk_toplevel_begin_resize(this : Void*, edge : UInt32, device : Pointer(Void), button : Int32, x : Float64, y : Float64, timestamp : UInt32) : Void
   fun gdk_toplevel_focus(this : Void*, timestamp : UInt32) : Void

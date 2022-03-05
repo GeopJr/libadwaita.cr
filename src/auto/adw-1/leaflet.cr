@@ -12,6 +12,15 @@ require "../gtk-4.0/orientable"
 module Adw
   # An adaptive container acting like a box or a stack.
   #
+  # <picture>
+  #   <source srcset="leaflet-wide-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="leaflet-wide.png" alt="leaflet-wide">
+  # </picture>
+  # <picture>
+  #   <source srcset="leaflet-narrow-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="leaflet-narrow.png" alt="leaflet-narrow">
+  # </picture>
+  #
   # The `AdwLeaflet` widget can display its children like a [class@Gtk.Box] does
   # or like a [class@Gtk.Stack] does, adapting to size changes by switching
   # between the two modes.
@@ -46,7 +55,7 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_swipe_back : Bool? = nil, can_swipe_forward : Bool? = nil, can_target : Bool? = nil, can_unfold : Bool? = nil, child_transition_duration : UInt32? = nil, child_transition_running : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, fold_threshold_policy : Adw::FoldThresholdPolicy? = nil, folded : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, homogeneous : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, mode_transition_duration : UInt32? = nil, name : ::String? = nil, opacity : Float64? = nil, orientation : Gtk::Orientation? = nil, overflow : Gtk::Overflow? = nil, pages : Gtk::SelectionModel? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, transition_type : Adw::LeafletTransitionType? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, visible_child : Gtk::Widget? = nil, visible_child_name : ::String? = nil, width_request : Int32? = nil)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_navigate_back : Bool? = nil, can_navigate_forward : Bool? = nil, can_target : Bool? = nil, can_unfold : Bool? = nil, child_transition_params : Adw::SpringParams? = nil, child_transition_running : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, fold_threshold_policy : Adw::FoldThresholdPolicy? = nil, folded : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, homogeneous : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, mode_transition_duration : UInt32? = nil, name : ::String? = nil, opacity : Float64? = nil, orientation : Gtk::Orientation? = nil, overflow : Gtk::Overflow? = nil, pages : Gtk::SelectionModel? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, transition_type : Adw::LeafletTransitionType? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, visible_child : Gtk::Widget? = nil, visible_child_name : ::String? = nil, width_request : Int32? = nil)
       _names = uninitialized Pointer(LibC::Char)[49]
       _values = StaticArray(LibGObject::Value, 49).new(LibGObject::Value.new)
       _n = 0
@@ -61,14 +70,14 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_swipe_back
-        (_names.to_unsafe + _n).value = "can-swipe-back".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, can_swipe_back)
+      if can_navigate_back
+        (_names.to_unsafe + _n).value = "can-navigate-back".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, can_navigate_back)
         _n += 1
       end
-      if can_swipe_forward
-        (_names.to_unsafe + _n).value = "can-swipe-forward".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, can_swipe_forward)
+      if can_navigate_forward
+        (_names.to_unsafe + _n).value = "can-navigate-forward".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, can_navigate_forward)
         _n += 1
       end
       if can_target
@@ -81,9 +90,9 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_unfold)
         _n += 1
       end
-      if child_transition_duration
-        (_names.to_unsafe + _n).value = "child-transition-duration".to_unsafe
-        GObject::Value.init_g_value(_values.to_unsafe + _n, child_transition_duration)
+      if child_transition_params
+        (_names.to_unsafe + _n).value = "child-transition-params".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, child_transition_params)
         _n += 1
       end
       if child_transition_running
@@ -305,33 +314,33 @@ module Adw
       LibAdw.adw_leaflet_get_type
     end
 
-    def can_swipe_back=(value : Bool) : Bool
+    def can_navigate_back=(value : Bool) : Bool
       unsafe_value = value
 
-      LibGObject.g_object_set(self, "can-swipe-back", unsafe_value, Pointer(Void).null)
+      LibGObject.g_object_set(self, "can-navigate-back", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def can_swipe_back? : Bool
+    def can_navigate_back? : Bool
       # Returns: None
 
       value = uninitialized LibC::Int
-      LibGObject.g_object_get(self, "can-swipe-back", pointerof(value), Pointer(Void).null)
+      LibGObject.g_object_get(self, "can-navigate-back", pointerof(value), Pointer(Void).null)
       GICrystal.to_bool(value)
     end
 
-    def can_swipe_forward=(value : Bool) : Bool
+    def can_navigate_forward=(value : Bool) : Bool
       unsafe_value = value
 
-      LibGObject.g_object_set(self, "can-swipe-forward", unsafe_value, Pointer(Void).null)
+      LibGObject.g_object_set(self, "can-navigate-forward", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def can_swipe_forward? : Bool
+    def can_navigate_forward? : Bool
       # Returns: None
 
       value = uninitialized LibC::Int
-      LibGObject.g_object_get(self, "can-swipe-forward", pointerof(value), Pointer(Void).null)
+      LibGObject.g_object_get(self, "can-navigate-forward", pointerof(value), Pointer(Void).null)
       GICrystal.to_bool(value)
     end
 
@@ -350,19 +359,19 @@ module Adw
       GICrystal.to_bool(value)
     end
 
-    def child_transition_duration=(value : UInt32) : UInt32
+    def child_transition_params=(value : Adw::SpringParams?) : Adw::SpringParams?
       unsafe_value = value
 
-      LibGObject.g_object_set(self, "child-transition-duration", unsafe_value, Pointer(Void).null)
+      LibGObject.g_object_set(self, "child-transition-params", unsafe_value, Pointer(Void).null)
       value
     end
 
-    def child_transition_duration : UInt32
+    def child_transition_params : Adw::SpringParams?
       # Returns: None
 
-      value = uninitialized UInt32
-      LibGObject.g_object_get(self, "child-transition-duration", pointerof(value), Pointer(Void).null)
-      value
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child-transition-params", pointerof(value), Pointer(Void).null)
+      Adw::SpringParams.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def child_transition_running? : Bool
@@ -519,27 +528,27 @@ module Adw
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def can_swipe_back : Bool
-      # adw_leaflet_get_can_swipe_back: (Method | Getter)
+    def can_navigate_back : Bool
+      # adw_leaflet_get_can_navigate_back: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_can_swipe_back(self)
+      _retval = LibAdw.adw_leaflet_get_can_navigate_back(self)
 
       # Return value handling
       GICrystal.to_bool(_retval)
     end
 
-    def can_swipe_forward : Bool
-      # adw_leaflet_get_can_swipe_forward: (Method | Getter)
+    def can_navigate_forward : Bool
+      # adw_leaflet_get_can_navigate_forward: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_can_swipe_forward(self)
+      _retval = LibAdw.adw_leaflet_get_can_navigate_forward(self)
 
       # Return value handling
       GICrystal.to_bool(_retval)
@@ -571,17 +580,17 @@ module Adw
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def child_transition_duration : UInt32
-      # adw_leaflet_get_child_transition_duration: (Method | Getter)
-      # Returns: (transfer none)
+    def child_transition_params : Adw::SpringParams
+      # adw_leaflet_get_child_transition_params: (Method | Getter)
+      # Returns: (transfer full)
 
       # Handle parameters
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_child_transition_duration(self)
+      _retval = LibAdw.adw_leaflet_get_child_transition_params(self)
 
       # Return value handling
-      _retval
+      Adw::SpringParams.new(_retval, GICrystal::Transfer::Full)
     end
 
     def child_transition_running : Bool
@@ -789,26 +798,26 @@ module Adw
       # Return value handling
     end
 
-    def can_swipe_back=(can_swipe_back : Bool) : Nil
-      # adw_leaflet_set_can_swipe_back: (Method | Setter)
+    def can_navigate_back=(can_navigate_back : Bool) : Nil
+      # adw_leaflet_set_can_navigate_back: (Method | Setter)
       # Returns: (transfer none)
 
       # Handle parameters
 
       # C call
-      LibAdw.adw_leaflet_set_can_swipe_back(self, can_swipe_back)
+      LibAdw.adw_leaflet_set_can_navigate_back(self, can_navigate_back)
 
       # Return value handling
     end
 
-    def can_swipe_forward=(can_swipe_forward : Bool) : Nil
-      # adw_leaflet_set_can_swipe_forward: (Method | Setter)
+    def can_navigate_forward=(can_navigate_forward : Bool) : Nil
+      # adw_leaflet_set_can_navigate_forward: (Method | Setter)
       # Returns: (transfer none)
 
       # Handle parameters
 
       # C call
-      LibAdw.adw_leaflet_set_can_swipe_forward(self, can_swipe_forward)
+      LibAdw.adw_leaflet_set_can_navigate_forward(self, can_navigate_forward)
 
       # Return value handling
     end
@@ -825,14 +834,14 @@ module Adw
       # Return value handling
     end
 
-    def child_transition_duration=(duration : UInt32) : Nil
-      # adw_leaflet_set_child_transition_duration: (Method | Setter)
+    def child_transition_params=(params : Adw::SpringParams) : Nil
+      # adw_leaflet_set_child_transition_params: (Method | Setter)
       # Returns: (transfer none)
 
       # Handle parameters
 
       # C call
-      LibAdw.adw_leaflet_set_child_transition_duration(self, duration)
+      LibAdw.adw_leaflet_set_child_transition_params(self, params)
 
       # Return value handling
     end

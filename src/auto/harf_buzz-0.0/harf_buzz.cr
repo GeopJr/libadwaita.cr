@@ -21,6 +21,7 @@ require "./map_t.cr"
 require "./ot_color_layer_t.cr"
 require "./ot_math_glyph_part_t.cr"
 require "./ot_math_glyph_variant_t.cr"
+require "./ot_math_kern_entry_t.cr"
 require "./ot_name_entry_t.cr"
 require "./ot_var_axis_info_t.cr"
 require "./ot_var_axis_t.cr"
@@ -65,14 +66,10 @@ module HarfBuzz
   UNICODE_MAX = 1114111
   # See Unicode 6.1 for details on the maximum decomposition length.
   UNICODE_MAX_DECOMPOSITION_LEN = 19
-  # The major component of the library version available at compile-time.
-  VERSION_MAJOR = 2
-  # The micro component of the library version available at compile-time.
-  VERSION_MICRO = 1
-  # The minor component of the library version available at compile-time.
-  VERSION_MINOR = 9
-  # A string literal containing the library version available at compile-time.
-  VERSION_STRING = "2.9.1"
+  VERSION_MAJOR                 =  3
+  VERSION_MICRO                 =  0
+  VERSION_MINOR                 =  4
+  VERSION_STRING                = "3.4.0"
 
   # Base class for all errors in this module.
   class HarfBuzzError < RuntimeError
@@ -1342,8 +1339,47 @@ module HarfBuzz
     KhitanSmallScript = 1265202291
     # `Yezi`, Since: 2.6.7
     Yezidi = 1499822697
+    # `Cpmn`, Since: 3.0.0
+    CyproMinoan = 1131441518
+    # `Ougr`, Since: 3.0.0
+    OldUyghur = 1333094258
+    # `Tnsa`, Since: 3.0.0
+    Tangsa = 1416524641
+    # `Toto`, Since: 3.0.0
+    Toto = 1416590447
+    # `Vith`, Since: 3.0.0
+    Vithkuqi = 1449751656
+    # `Zmth`, Since: 3.4.0
+    Math = 1517122664
     # No script set
     Invalid = 0
+  end
+
+  # Defined by [OpenType Design-Variation Axis Tag Registry](https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg).
+  enum StyleTagT : UInt32
+    # Used to vary between non-italic and italic.
+    # A value of 0 can be interpreted as "Roman" (non-italic); a value of 1 can
+    # be interpreted as (fully) italic.
+    Italic = 1769234796
+    # Used to vary design to suit different text sizes.
+    # Non-zero. Values can be interpreted as text size, in points.
+    OpticalSize = 1869640570
+    # Used to vary between upright and slanted text. Values
+    # must be greater than -90 and less than +90. Values can be interpreted as
+    # the angle, in counter-clockwise degrees, of oblique slant from whatever the
+    # designer considers to be upright for that font design.
+    SlantAngle = 1936486004
+    # same as @HB_STYLE_TAG_SLANT_ANGLE expression as ratio.
+    SlantRatio = 1399615092
+    # Used to vary width of text from narrower to wider.
+    # Non-zero. Values can be interpreted as a percentage of whatever the font
+    # designer considers “normal width” for that font design.
+    Width = 2003072104
+    # Used to vary stroke thicknesses or other design details
+    # to give variation from lighter to blacker. Values can be interpreted in direct
+    # comparison to values for usWeightClass in the OS/2 table,
+    # or the CSS font-weight property.
+    Weight = 2003265652
   end
 
   # Data type for the Canonical_Combining_Class (ccc) property
@@ -1560,6 +1596,7 @@ module HarfBuzz
     PreserveDefaultIgnorables =  4
     RemoveDefaultIgnorables   =  8
     DoNotInsertDottedCircle   = 16
+    Verify                    = 32
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
@@ -1583,8 +1620,9 @@ module HarfBuzz
   end
   @[Flags]
   enum GlyphFlagsT : UInt32
-    UnsafeToBreak = 1
-    Defined       = 1
+    UnsafeToBreak  = 1
+    UnsafeToConcat = 2
+    Defined        = 3
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

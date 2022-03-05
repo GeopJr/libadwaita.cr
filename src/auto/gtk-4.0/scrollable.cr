@@ -104,7 +104,7 @@ module Gtk
       border
     end
 
-    def hadjustment : Gtk::Adjustment
+    def hadjustment : Gtk::Adjustment?
       # gtk_scrollable_get_hadjustment: (Method | Getter)
       # Returns: (transfer none)
 
@@ -114,7 +114,7 @@ module Gtk
       _retval = LibGtk.gtk_scrollable_get_hadjustment(self)
 
       # Return value handling
-      Gtk::Adjustment.new(_retval, GICrystal::Transfer::None)
+      Gtk::Adjustment.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def hscroll_policy : Gtk::ScrollablePolicy
@@ -130,7 +130,7 @@ module Gtk
       Gtk::ScrollablePolicy.from_value(_retval)
     end
 
-    def vadjustment : Gtk::Adjustment
+    def vadjustment : Gtk::Adjustment?
       # gtk_scrollable_get_vadjustment: (Method | Getter)
       # Returns: (transfer none)
 
@@ -140,7 +140,7 @@ module Gtk
       _retval = LibGtk.gtk_scrollable_get_vadjustment(self)
 
       # Return value handling
-      Gtk::Adjustment.new(_retval, GICrystal::Transfer::None)
+      Gtk::Adjustment.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def vscroll_policy : Gtk::ScrollablePolicy

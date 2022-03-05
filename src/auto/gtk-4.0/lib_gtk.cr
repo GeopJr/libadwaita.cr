@@ -64,6 +64,7 @@ lib LibGtk
   type License = UInt32
   type MessageType = UInt32
   type MovementStep = UInt32
+  type NaturalWrapMode = UInt32
   type NotebookTab = UInt32
   type NumberUpLayout = UInt32
   type Ordering = Int32
@@ -104,6 +105,7 @@ lib LibGtk
   type SpinType = UInt32
   type StackTransitionType = UInt32
   type StringFilterMatchMode = UInt32
+  type SymbolicColor = UInt32
   type SystemSetting = UInt32
   type TextDirection = UInt32
   type TextExtendSelection = UInt32
@@ -184,6 +186,7 @@ lib LibGtk
   type SelectionModel = Void
   type ShortcutManager = Void
   type StyleProvider = Void
+  type SymbolicPaintable = Void
   type TreeDragDest = Void
   type TreeDragSource = Void
   type TreeModel = Void
@@ -1192,6 +1195,7 @@ lib LibGtk
   fun gtk_bitset_get_type : UInt64
   fun gtk_bitset_intersect(this : Void*, other : Pointer(Void)) : Void
   fun gtk_bitset_is_empty(this : Void*) : LibC::Int
+  fun gtk_bitset_iter_get_type : UInt64
   fun gtk_bitset_iter_get_value(this : Void*) : UInt32
   fun gtk_bitset_iter_init_at(iter : Pointer(Void), set : Pointer(Void), target : UInt32, value : Pointer(UInt32)) : LibC::Int
   fun gtk_bitset_iter_init_at(iter : Pointer(Void), set : Pointer(Void), target : UInt32, value : Pointer(UInt32)) : LibC::Int
@@ -1734,6 +1738,7 @@ lib LibGtk
   fun gtk_drop_down_get_model(this : Void*) : Pointer(Void)
   fun gtk_drop_down_get_selected(this : Void*) : UInt32
   fun gtk_drop_down_get_selected_item(this : Void*) : Pointer(Void)
+  fun gtk_drop_down_get_show_arrow(this : Void*) : LibC::Int
   fun gtk_drop_down_get_type : UInt64
   fun gtk_drop_down_new(model : Pointer(Void), expression : Pointer(Void)) : Pointer(Void)
   fun gtk_drop_down_new_from_strings(strings : Pointer(Pointer(LibC::Char))) : Pointer(Void)
@@ -1743,6 +1748,7 @@ lib LibGtk
   fun gtk_drop_down_set_list_factory(this : Void*, factory : Pointer(Void)) : Void
   fun gtk_drop_down_set_model(this : Void*, model : Pointer(Void)) : Void
   fun gtk_drop_down_set_selected(this : Void*, position : UInt32) : Void
+  fun gtk_drop_down_set_show_arrow(this : Void*, show_arrow : LibC::Int) : Void
   fun gtk_drop_target_async_get_actions(this : Void*) : UInt32
   fun gtk_drop_target_async_get_formats(this : Void*) : Pointer(Void)
   fun gtk_drop_target_async_get_type : UInt64
@@ -2042,6 +2048,7 @@ lib LibGtk
   fun gtk_flatten_list_model_get_type : UInt64
   fun gtk_flatten_list_model_new(model : Pointer(Void)) : Pointer(Void)
   fun gtk_flatten_list_model_set_model(this : Void*, model : Pointer(Void)) : Void
+  fun gtk_flow_box_append(this : Void*, child : Pointer(Void)) : Void
   fun gtk_flow_box_bind_model(this : Void*, model : Pointer(Void), create_widget_func : FlowBoxCreateWidgetFunc, user_data : Pointer(Void), user_data_free_func : LibGLib::DestroyNotify) : Void
   fun gtk_flow_box_child_changed(this : Void*) : Void
   fun gtk_flow_box_child_get_child(this : Void*) : Pointer(Void)
@@ -2065,6 +2072,7 @@ lib LibGtk
   fun gtk_flow_box_invalidate_filter(this : Void*) : Void
   fun gtk_flow_box_invalidate_sort(this : Void*) : Void
   fun gtk_flow_box_new : Pointer(Void)
+  fun gtk_flow_box_prepend(this : Void*, child : Pointer(Void)) : Void
   fun gtk_flow_box_remove(this : Void*, widget : Pointer(Void)) : Void
   fun gtk_flow_box_select_all(this : Void*) : Void
   fun gtk_flow_box_select_child(this : Void*, child : Pointer(Void)) : Void
@@ -2450,6 +2458,7 @@ lib LibGtk
   fun gtk_label_get_max_width_chars(this : Void*) : Int32
   fun gtk_label_get_mnemonic_keyval(this : Void*) : UInt32
   fun gtk_label_get_mnemonic_widget(this : Void*) : Pointer(Void)
+  fun gtk_label_get_natural_wrap_mode(this : Void*) : UInt32
   fun gtk_label_get_selectable(this : Void*) : LibC::Int
   fun gtk_label_get_selection_bounds(this : Void*, start : Pointer(Int32), _end : Pointer(Int32)) : LibC::Int
   fun gtk_label_get_single_line_mode(this : Void*) : LibC::Int
@@ -2475,6 +2484,7 @@ lib LibGtk
   fun gtk_label_set_markup_with_mnemonic(this : Void*, str : Pointer(LibC::Char)) : Void
   fun gtk_label_set_max_width_chars(this : Void*, n_chars : Int32) : Void
   fun gtk_label_set_mnemonic_widget(this : Void*, widget : Pointer(Void)) : Void
+  fun gtk_label_set_natural_wrap_mode(this : Void*, wrap_mode : UInt32) : Void
   fun gtk_label_set_selectable(this : Void*, setting : LibC::Int) : Void
   fun gtk_label_set_single_line_mode(this : Void*, single_line_mode : LibC::Int) : Void
   fun gtk_label_set_text(this : Void*, str : Pointer(LibC::Char)) : Void
@@ -2665,6 +2675,7 @@ lib LibGtk
   fun gtk_media_stream_unrealize(this : Void*, surface : Pointer(Void)) : Void
   fun gtk_media_stream_update(this : Void*, timestamp : Int64) : Void
   fun gtk_menu_button_get_always_show_arrow(this : Void*) : LibC::Int
+  fun gtk_menu_button_get_child(this : Void*) : Pointer(Void)
   fun gtk_menu_button_get_direction(this : Void*) : UInt32
   fun gtk_menu_button_get_has_frame(this : Void*) : LibC::Int
   fun gtk_menu_button_get_icon_name(this : Void*) : Pointer(LibC::Char)
@@ -2678,6 +2689,7 @@ lib LibGtk
   fun gtk_menu_button_popdown(this : Void*) : Void
   fun gtk_menu_button_popup(this : Void*) : Void
   fun gtk_menu_button_set_always_show_arrow(this : Void*, always_show_arrow : LibC::Int) : Void
+  fun gtk_menu_button_set_child(this : Void*, child : Pointer(Void)) : Void
   fun gtk_menu_button_set_create_popup_func(this : Void*, func : MenuButtonCreatePopupFunc, user_data : Pointer(Void), destroy_notify : LibGLib::DestroyNotify) : Void
   fun gtk_menu_button_set_direction(this : Void*, direction : UInt32) : Void
   fun gtk_menu_button_set_has_frame(this : Void*, has_frame : LibC::Int) : Void
@@ -3672,6 +3684,8 @@ lib LibGtk
   fun gtk_switch_new : Pointer(Void)
   fun gtk_switch_set_active(this : Void*, is_active : LibC::Int) : Void
   fun gtk_switch_set_state(this : Void*, state : LibC::Int) : Void
+  fun gtk_symbolic_paintable_get_type : UInt64
+  fun gtk_symbolic_paintable_snapshot_symbolic(this : Void*, snapshot : Pointer(Void), width : Float64, height : Float64, colors : Pointer(Void), n_colors : UInt64) : Void
   fun gtk_test_accessible_assertion_message_role(domain : Pointer(LibC::Char), file : Pointer(LibC::Char), line : Int32, func : Pointer(LibC::Char), expr : Pointer(LibC::Char), accessible : Pointer(Void), expected_role : UInt32, actual_role : UInt32) : Void
   fun gtk_test_accessible_has_property(accessible : Pointer(Void), property : UInt32) : LibC::Int
   fun gtk_test_accessible_has_relation(accessible : Pointer(Void), relation : UInt32) : LibC::Int
@@ -3753,6 +3767,7 @@ lib LibGtk
   fun gtk_text_child_anchor_get_type : UInt64
   fun gtk_text_child_anchor_get_widgets(this : Void*, out_len : Pointer(UInt32)) : Pointer(Pointer(Void))
   fun gtk_text_child_anchor_new : Pointer(Void)
+  fun gtk_text_child_anchor_new_with_replacement(character : Pointer(LibC::Char)) : Pointer(Void)
   fun gtk_text_compute_cursor_extents(this : Void*, position : UInt64, strong : Pointer(Void), weak : Pointer(Void)) : Void
   fun gtk_text_get_activates_default(this : Void*) : LibC::Int
   fun gtk_text_get_attributes(this : Void*) : Pointer(Void)
@@ -4000,11 +4015,13 @@ lib LibGtk
   fun gtk_tree_drag_source_get_type : UInt64
   fun gtk_tree_drag_source_row_draggable(this : Void*, path : Pointer(Void)) : LibC::Int
   fun gtk_tree_expander_get_child(this : Void*) : Pointer(Void)
+  fun gtk_tree_expander_get_indent_for_icon(this : Void*) : LibC::Int
   fun gtk_tree_expander_get_item(this : Void*) : Pointer(Void)
   fun gtk_tree_expander_get_list_row(this : Void*) : Pointer(Void)
   fun gtk_tree_expander_get_type : UInt64
   fun gtk_tree_expander_new : Pointer(Void)
   fun gtk_tree_expander_set_child(this : Void*, child : Pointer(Void)) : Void
+  fun gtk_tree_expander_set_indent_for_icon(this : Void*, indent_for_icon : LibC::Int) : Void
   fun gtk_tree_expander_set_list_row(this : Void*, list_row : Pointer(Void)) : Void
   fun gtk_tree_get_row_drag_data(value : Pointer(Void), tree_model : Pointer(Pointer(Void)), path : Pointer(Pointer(Void))) : LibC::Int
   fun gtk_tree_iter_copy(this : Void*) : Pointer(Void)

@@ -1,4 +1,3 @@
-@[Link("harfbuzz", pkg_config: "harfbuzz")]
 @[Link("harfbuzz-gobject", pkg_config: "harfbuzz-gobject")]
 
 lib LibHarfBuzz
@@ -26,6 +25,7 @@ lib LibHarfBuzz
   type OtMetaTagT = UInt32
   type OtMetricsTagT = UInt32
   type ScriptT = UInt32
+  type StyleTagT = UInt32
   type UnicodeCombiningClassT = UInt32
   type UnicodeGeneralCategoryT = UInt32
 
@@ -143,6 +143,11 @@ lib LibHarfBuzz
     advance : Int32
   end
 
+  struct OtMathKernEntryT # 8 bytes long
+    max_correction_height : Int32
+    kern_value : Int32
+  end
+
   struct OtNameEntryT # 16 bytes long
     name_id : UInt32
     var : LibHarfBuzz::VarIntT
@@ -231,6 +236,7 @@ lib LibHarfBuzz
   fun hb_buffer_append(buffer : Pointer(Void), source : Pointer(Void), start : UInt32, _end : UInt32) : Void
   fun hb_buffer_clear_contents(buffer : Pointer(Void)) : Void
   fun hb_buffer_create : Pointer(Void)
+  fun hb_buffer_create_similar(src : Pointer(Void)) : Pointer(Void)
   fun hb_buffer_deserialize_glyphs(buffer : Pointer(Void), buf : Pointer(Pointer(LibC::Char)), buf_len : Int32, end_ptr : Pointer(Pointer(LibC::Char)), font : Pointer(Void), format : UInt32) : Int32
   fun hb_buffer_deserialize_unicode(buffer : Pointer(Void), buf : Pointer(Pointer(LibC::Char)), buf_len : Int32, end_ptr : Pointer(Pointer(LibC::Char)), format : UInt32) : Int32
   fun hb_buffer_diff(buffer : Pointer(Void), reference : Pointer(Void), dottedcircle_glyph : UInt32, position_fuzz : UInt32) : UInt32
@@ -244,6 +250,7 @@ lib LibHarfBuzz
   fun hb_buffer_get_invisible_glyph(buffer : Pointer(Void)) : UInt32
   fun hb_buffer_get_language(buffer : Pointer(Void)) : Pointer(Void)
   fun hb_buffer_get_length(buffer : Pointer(Void)) : UInt32
+  fun hb_buffer_get_not_found_glyph(buffer : Pointer(Void)) : UInt32
   fun hb_buffer_get_replacement_codepoint(buffer : Pointer(Void)) : UInt32
   fun hb_buffer_get_script(buffer : Pointer(Void)) : UInt32
   fun hb_buffer_get_segment_properties(buffer : Pointer(Void), props : Pointer(Void)) : Void
@@ -270,6 +277,7 @@ lib LibHarfBuzz
   fun hb_buffer_set_language(buffer : Pointer(Void), language : Pointer(Void)) : Void
   fun hb_buffer_set_length(buffer : Pointer(Void), length : UInt32) : Int32
   fun hb_buffer_set_message_func(buffer : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_buffer_set_not_found_glyph(buffer : Pointer(Void), not_found : UInt32) : Void
   fun hb_buffer_set_replacement_codepoint(buffer : Pointer(Void), replacement : UInt32) : Void
   fun hb_buffer_set_script(buffer : Pointer(Void), script : UInt32) : Void
   fun hb_buffer_set_segment_properties(buffer : Pointer(Void), props : Pointer(Void)) : Void
@@ -357,7 +365,9 @@ lib LibHarfBuzz
   fun hb_font_get_ppem(font : Pointer(Void), x_ppem : Pointer(UInt32), y_ppem : Pointer(UInt32)) : Void
   fun hb_font_get_ptem(font : Pointer(Void)) : Float32
   fun hb_font_get_scale(font : Pointer(Void), x_scale : Pointer(Int32), y_scale : Pointer(Int32)) : Void
+  fun hb_font_get_synthetic_slant(font : Pointer(Void)) : Float32
   fun hb_font_get_v_extents(font : Pointer(Void), extents : Pointer(Void)) : Int32
+  fun hb_font_get_var_coords_design(font : Pointer(Void), length : Pointer(UInt32)) : Pointer(Float32)
   fun hb_font_get_var_coords_normalized(font : Pointer(Void), length : Pointer(UInt32)) : Pointer(Int32)
   fun hb_font_get_variation_glyph(font : Pointer(Void), unicode : UInt32, variation_selector : UInt32, glyph : Pointer(UInt32)) : Int32
   fun hb_font_glyph_from_string(font : Pointer(Void), s : Pointer(UInt8), len : Int32, glyph : Pointer(UInt32)) : Int32
@@ -371,6 +381,7 @@ lib LibHarfBuzz
   fun hb_font_set_ppem(font : Pointer(Void), x_ppem : UInt32, y_ppem : UInt32) : Void
   fun hb_font_set_ptem(font : Pointer(Void), ptem : Float32) : Void
   fun hb_font_set_scale(font : Pointer(Void), x_scale : Int32, y_scale : Int32) : Void
+  fun hb_font_set_synthetic_slant(font : Pointer(Void), slant : Float32) : Void
   fun hb_font_set_var_coords_design(font : Pointer(Void), coords : Pointer(Float32), coords_length : UInt32) : Void
   fun hb_font_set_var_coords_normalized(font : Pointer(Void), coords : Pointer(Int32), coords_length : UInt32) : Void
   fun hb_font_set_var_named_instance(font : Pointer(Void), instance_index : UInt32) : Void
@@ -468,6 +479,7 @@ lib LibHarfBuzz
   fun hb_ot_math_get_glyph_assembly(font : Pointer(Void), glyph : UInt32, direction : UInt32, start_offset : UInt32, parts_count : Pointer(UInt32), parts : Pointer(Pointer(Void)), italics_correction : Pointer(Int32)) : UInt32
   fun hb_ot_math_get_glyph_italics_correction(font : Pointer(Void), glyph : UInt32) : Int32
   fun hb_ot_math_get_glyph_kerning(font : Pointer(Void), glyph : UInt32, kern : UInt32, correction_height : Int32) : Int32
+  fun hb_ot_math_get_glyph_kernings(font : Pointer(Void), glyph : UInt32, kern : UInt32, start_offset : UInt32, entries_count : Pointer(UInt32), kern_entries : Pointer(Pointer(Void))) : UInt32
   fun hb_ot_math_get_glyph_top_accent_attachment(font : Pointer(Void), glyph : UInt32) : Int32
   fun hb_ot_math_get_glyph_variants(font : Pointer(Void), glyph : UInt32, direction : UInt32, start_offset : UInt32, variants_count : Pointer(UInt32), variants : Pointer(Pointer(Void))) : UInt32
   fun hb_ot_math_get_min_connector_overlap(font : Pointer(Void), direction : UInt32) : Int32
@@ -509,6 +521,7 @@ lib LibHarfBuzz
   fun hb_script_to_iso15924_tag(script : UInt32) : UInt32
   fun hb_segment_properties_equal(a : Pointer(Void), b : Pointer(Void)) : Int32
   fun hb_segment_properties_hash(p : Pointer(Void)) : UInt32
+  fun hb_segment_properties_overlay(p : Pointer(Void), src : Pointer(Void)) : Void
   fun hb_set_add(set : Pointer(Void), codepoint : UInt32) : Void
   fun hb_set_add_range(set : Pointer(Void), first : UInt32, last : UInt32) : Void
   fun hb_set_allocation_successful(set : Pointer(Void)) : Int32
@@ -545,6 +558,7 @@ lib LibHarfBuzz
   fun hb_shape_plan_execute(shape_plan : Pointer(Void), font : Pointer(Void), buffer : Pointer(Void), features : Pointer(Void), num_features : UInt32) : Int32
   fun hb_shape_plan_get_empty : Pointer(Void)
   fun hb_shape_plan_get_shaper(shape_plan : Pointer(Void)) : Pointer(LibC::Char)
+  fun hb_style_get_value(font : Pointer(Void), style_tag : UInt32) : Float32
   fun hb_tag_from_string(str : Pointer(UInt8), len : Int32) : UInt32
   fun hb_tag_to_string(tag : UInt32, buf : Pointer(Pointer(UInt8[4]))) : Void
   fun hb_unicode_combining_class(ufuncs : Pointer(Void), unicode : UInt32) : UInt32
@@ -572,7 +586,4 @@ lib LibHarfBuzz
   fun hb_variation_from_string(str : Pointer(UInt8), len : Int32, variation : Pointer(Void)) : Int32
   fun hb_variation_to_string(this : Void*, buf : Pointer(Pointer(Pointer(LibC::Char))), size : Pointer(UInt32)) : Void
   fun hb_variation_to_string(variation : Pointer(Void), buf : Pointer(Pointer(Pointer(LibC::Char))), size : Pointer(UInt32)) : Void
-  fun hb_version(major : Pointer(UInt32), minor : Pointer(UInt32), micro : Pointer(UInt32)) : Void
-  fun hb_version_atleast(major : UInt32, minor : UInt32, micro : UInt32) : Int32
-  fun hb_version_string : Pointer(LibC::Char)
 end

@@ -441,7 +441,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def context : Gdk::GLContext
+    def context : Gdk::GLContext?
       # gtk_gl_area_get_context: (Method | Getter)
       # Returns: (transfer none)
 
@@ -451,7 +451,7 @@ module Gtk
       _retval = LibGtk.gtk_gl_area_get_context(self)
 
       # Return value handling
-      Gdk::GLContext.new(_retval, GICrystal::Transfer::None)
+      Gdk::GLContext.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def error : GLib::Error?

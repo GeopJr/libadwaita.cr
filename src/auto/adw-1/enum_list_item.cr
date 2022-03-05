@@ -1,7 +1,7 @@
 require "../g_object-2.0/object"
 
 module Adw
-  # `AdwEnumListItem` is the type of items in a [class@Adw.EnumListModel].
+  # `AdwEnumListItem` is the type of items in a [class@EnumListModel].
   class EnumListItem < GObject::Object
     @pointer : Pointer(Void)
 

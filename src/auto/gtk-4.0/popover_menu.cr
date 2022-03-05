@@ -65,6 +65,7 @@ module Gtk
   # The following attributes are used when constructing menu items:
   #
   # - "label": a user-visible string to display
+  # - "use-markup": whether the text in the menu item includes [Pango markup](https://docs.gtk.org/Pango/pango_markup.html)
   # - "action": the prefixed name of the action to trigger
   # - "target": the parameter to use when activating the action
   # - "icon" and "verb-icon": names of icons that may be displayed
@@ -439,7 +440,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def menu_model : Gio::MenuModel
+    def menu_model : Gio::MenuModel?
       # gtk_popover_menu_get_menu_model: (Method | Getter)
       # Returns: (transfer none)
 
@@ -449,7 +450,7 @@ module Gtk
       _retval = LibGtk.gtk_popover_menu_get_menu_model(self)
 
       # Return value handling
-      Gio::MenuModel.new(_retval, GICrystal::Transfer::None)
+      Gio::MenuModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def remove_child(child : Gtk::Widget) : Bool

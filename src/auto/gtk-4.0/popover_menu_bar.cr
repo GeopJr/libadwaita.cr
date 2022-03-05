@@ -288,7 +288,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def menu_model : Gio::MenuModel
+    def menu_model : Gio::MenuModel?
       # gtk_popover_menu_bar_get_menu_model: (Method | Getter)
       # Returns: (transfer none)
 
@@ -298,7 +298,7 @@ module Gtk
       _retval = LibGtk.gtk_popover_menu_bar_get_menu_model(self)
 
       # Return value handling
-      Gio::MenuModel.new(_retval, GICrystal::Transfer::None)
+      Gio::MenuModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def remove_child(child : Gtk::Widget) : Bool

@@ -51,8 +51,9 @@ module Gtk
   # `GtkMenuButton` has a single CSS node with name `menubutton`
   # which contains a `button` node with a `.toggle` style class.
   #
-  # If the button contains only an icon or an arrow, it will have the
-  # `.image-button` style class, if it contains both, it will have the
+  # If the button contains an icon, it will have the `.image-button` style class,
+  # if it contains text, it will have `.text-button` style class. If an arrow is
+  # visible in addition to an icon, text or a custom child, it will also have
   # `.arrow-button` style class.
   #
   # Inside the toggle button content, there is an `arrow` node for
@@ -79,9 +80,9 @@ module Gtk
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, always_show_arrow : Bool? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, direction : Gtk::ArrowType? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_frame : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, icon_name : ::String? = nil, label : ::String? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, menu_model : Gio::MenuModel? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, popover : Gtk::Popover? = nil, primary : Bool? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, use_underline : Bool? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[44]
-      _values = StaticArray(LibGObject::Value, 44).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, always_show_arrow : Bool? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, direction : Gtk::ArrowType? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_frame : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, icon_name : ::String? = nil, label : ::String? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, menu_model : Gio::MenuModel? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, popover : Gtk::Popover? = nil, primary : Bool? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, use_underline : Bool? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[45]
+      _values = StaticArray(LibGObject::Value, 45).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -102,6 +103,11 @@ module Gtk
       if can_target
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
+        _n += 1
+      end
+      if child
+        (_names.to_unsafe + _n).value = "child".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
       if css_classes
@@ -328,6 +334,21 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    def child=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "child", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def child : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "child", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def direction=(value : Gtk::ArrowType) : Gtk::ArrowType
       unsafe_value = value
 
@@ -475,6 +496,19 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
+    def child : Gtk::Widget?
+      # gtk_menu_button_get_child: (Method | Getter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGtk.gtk_menu_button_get_child(self)
+
+      # Return value handling
+      Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
     def direction : Gtk::ArrowType
       # gtk_menu_button_get_direction: (Method | Getter)
       # Returns: (transfer none)
@@ -501,7 +535,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def icon_name : ::String
+    def icon_name : ::String?
       # gtk_menu_button_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
 
@@ -511,10 +545,10 @@ module Gtk
       _retval = LibGtk.gtk_menu_button_get_icon_name(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
-    def label : ::String
+    def label : ::String?
       # gtk_menu_button_get_label: (Method | Getter)
       # Returns: (transfer none)
 
@@ -524,7 +558,7 @@ module Gtk
       _retval = LibGtk.gtk_menu_button_get_label(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     def menu_model : Gio::MenuModel?
@@ -611,6 +645,24 @@ module Gtk
 
       # C call
       LibGtk.gtk_menu_button_set_always_show_arrow(self, always_show_arrow)
+
+      # Return value handling
+    end
+
+    def child=(child : Gtk::Widget?) : Nil
+      # gtk_menu_button_set_child: (Method | Setter)
+      # @child: (nullable)
+      # Returns: (transfer none)
+
+      # Handle parameters
+      child = if child.nil?
+                Pointer(Void).null
+              else
+                child.to_unsafe
+              end
+
+      # C call
+      LibGtk.gtk_menu_button_set_child(self, child)
 
       # Return value handling
     end

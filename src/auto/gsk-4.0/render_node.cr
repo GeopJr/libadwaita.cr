@@ -1,6 +1,6 @@
 module Gsk
   # `GskRenderNode` is the basic block in a scene graph to be
-  # rendered using `GskRenderer`.
+  # rendered using [class@Gsk.Renderer].
   #
   # Each node has a parent, except the top-level node; each node may have
   # children nodes.

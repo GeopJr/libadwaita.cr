@@ -636,7 +636,7 @@ module Gtk
       Gtk::IconView.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def create_drag_icon(path : Gtk::TreePath) : Gdk::Paintable
+    def create_drag_icon(path : Gtk::TreePath) : Gdk::Paintable?
       # gtk_icon_view_create_drag_icon: (Method)
       # Returns: (transfer full)
 
@@ -646,7 +646,7 @@ module Gtk
       _retval = LibGtk.gtk_icon_view_create_drag_icon(self, path)
 
       # Return value handling
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def enable_model_drag_dest(formats : Gdk::ContentFormats, actions : Gdk::DragAction) : Nil
@@ -769,13 +769,18 @@ module Gtk
 
     def drag_dest_item : Nil
       # gtk_icon_view_get_drag_dest_item: (Method)
-      # @path: (out) (transfer full) (optional)
+      # @path: (out) (transfer full) (nullable) (optional)
       # @pos: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
       # Handle parameters
       path = Pointer(Pointer(Void)).null
       pos = Pointer(UInt32).null
+      path = if path.nil?
+               Pointer(Void).null
+             else
+               path.to_unsafe
+             end
 
       # C call
       LibGtk.gtk_icon_view_get_drag_dest_item(self, path, pos)

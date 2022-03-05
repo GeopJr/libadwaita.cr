@@ -60,7 +60,7 @@ module Gtk
   # ```c
   # static void
   # on_drag_begin (GtkDragSource *source,
-  #                GtkDrag       *drag,
+  #                GdkDrag       *drag,
   #                MyWidget      *self)
   # {
   #   // Set the widget as the drag icon

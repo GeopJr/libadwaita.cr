@@ -175,7 +175,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def model : Gio::ListModel
+    def model : Gio::ListModel?
       # gtk_single_selection_get_model: (Method | Getter)
       # Returns: (transfer none)
 
@@ -185,7 +185,7 @@ module Gtk
       _retval = LibGtk.gtk_single_selection_get_model(self)
 
       # Return value handling
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def selected : UInt32

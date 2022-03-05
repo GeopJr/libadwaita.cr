@@ -322,7 +322,9 @@ lib LibGsk
   fun gsk_transform_rotate_3d(this : Void*, angle : Float32, axis : Pointer(Void)) : Pointer(Void)
   fun gsk_transform_scale(this : Void*, factor_x : Float32, factor_y : Float32) : Pointer(Void)
   fun gsk_transform_scale_3d(this : Void*, factor_x : Float32, factor_y : Float32, factor_z : Float32) : Pointer(Void)
+  fun gsk_transform_skew(this : Void*, skew_x : Float32, skew_y : Float32) : Pointer(Void)
   fun gsk_transform_to_2d(this : Void*, out_xx : Pointer(Float32), out_yx : Pointer(Float32), out_xy : Pointer(Float32), out_yy : Pointer(Float32), out_dx : Pointer(Float32), out_dy : Pointer(Float32)) : Void
+  fun gsk_transform_to_2d_components(this : Void*, out_skew_x : Pointer(Float32), out_skew_y : Pointer(Float32), out_scale_x : Pointer(Float32), out_scale_y : Pointer(Float32), out_angle : Pointer(Float32), out_dx : Pointer(Float32), out_dy : Pointer(Float32)) : Void
   fun gsk_transform_to_affine(this : Void*, out_scale_x : Pointer(Float32), out_scale_y : Pointer(Float32), out_dx : Pointer(Float32), out_dy : Pointer(Float32)) : Void
   fun gsk_transform_to_matrix(this : Void*, out_matrix : Pointer(Void)) : Void
   fun gsk_transform_to_string(this : Void*) : Pointer(LibC::Char)
@@ -333,4 +335,8 @@ lib LibGsk
   fun gsk_transform_translate(this : Void*, point : Pointer(Void)) : Pointer(Void)
   fun gsk_transform_translate_3d(this : Void*, point : Pointer(Void)) : Pointer(Void)
   fun gsk_transform_unref(this : Void*) : Void
+  fun gsk_value_dup_render_node(value : Pointer(Void)) : Pointer(Void)
+  fun gsk_value_get_render_node(value : Pointer(Void)) : Pointer(Void)
+  fun gsk_value_set_render_node(value : Pointer(Void), node : Pointer(Void)) : Void
+  fun gsk_value_take_render_node(value : Pointer(Void), node : Pointer(Void)) : Void
 end

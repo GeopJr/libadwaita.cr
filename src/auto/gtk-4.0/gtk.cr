@@ -265,6 +265,7 @@ require "./string_sorter.cr"
 require "./style_context.cr"
 require "./style_provider.cr"
 require "./switch.cr"
+require "./symbolic_paintable.cr"
 require "./text.cr"
 require "./text_buffer.cr"
 require "./text_child_anchor.cr"
@@ -306,20 +307,20 @@ module Gtk
   # An undefined value. The accessible attribute is either unset, or its
   # value is undefined.
   ACCESSIBLE_VALUE_UNDEFINED = -1
-  # Like gtk_get_binary_age(), but from the headers used at
+  # Like [func@get_binary_age], but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
-  BINARY_AGE                     = 402
+  BINARY_AGE                     = 601
   IM_MODULE_EXTENSION_POINT_NAME = "gtk-im-module"
   # Constant to return from a signal handler for the ::input
   # signal in case of conversion failure.
   #
   # See [signal@Gtk.SpinButton::input].
   INPUT_ERROR = -1
-  # Like gtk_get_interface_age(), but from the headers used at
+  # Like [func@get_interface_age], but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
-  INTERFACE_AGE = 2
+  INTERFACE_AGE = 1
   # The value used to refer to a guaranteed invalid position
   # in a `GListModel`.
   #
@@ -329,27 +330,27 @@ module Gtk
   #
   # Refer to each function's documentation for if this value is
   # allowed and what it does.
-  INVALID_LIST_POSITION = -1
+  INVALID_LIST_POSITION = 4294967295_u32
   # The name used for the stock full offset included by `GtkLevelBar`.
   LEVEL_BAR_OFFSET_FULL = "full"
   # The name used for the stock high offset included by `GtkLevelBar`.
   LEVEL_BAR_OFFSET_HIGH = "high"
   # The name used for the stock low offset included by `GtkLevelBar`.
   LEVEL_BAR_OFFSET_LOW = "low"
-  # Like gtk_get_major_version(), but from the headers used at
+  # Like [func@get_major_version], but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
   MAJOR_VERSION                   = 4
   MAX_COMPOSE_LEN                 = 7
   MEDIA_FILE_EXTENSION_POINT_NAME = "gtk-media-file"
-  # Like gtk_get_micro_version(), but from the headers used at
+  # Like [func@get_micro_version], but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
-  MICRO_VERSION = 2
-  # Like gtk_get_minor_version(), but from the headers used at
+  MICRO_VERSION = 1
+  # Like [func@get_minor_version], but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
-  MINOR_VERSION = 4
+  MINOR_VERSION = 6
   # Name for the A3 paper size.
   PAPER_NAME_A3 = "iso_a3"
   # Name for the A4 paper size.
@@ -500,12 +501,12 @@ module Gtk
     Spelling = 3
   end
 
-  # The possible accessible properties of a `GtkAccessible`.
+  # The possible accessible properties of a [iface@Accessible].
   enum AccessibleProperty : UInt32
     # Indicates whether inputting text
     #    could trigger display of one or more predictions of the user's intended
     #    value for a combobox, searchbox, or textbox and specifies how predictions
-    #    would be presented if they were made. Value type: `GtkAccessibleAutocomplete`
+    #    would be presented if they were made. Value type: [enum@AccessibleAutocomplete]
     Autocomplete = 0
     # Defines a string value that describes
     #    or annotates the current element. Value type: string
@@ -536,7 +537,7 @@ module Gtk
     MultiSelectable = 8
     # Indicates whether the element's
     #    orientation is horizontal, vertical, or unknown/ambiguous. Value type:
-    #    `GtkOrientation`
+    #    [enum@Orientation]
     Orientation = 9
     # Defines a short hint (a word or short
     #    phrase) intended to aid the user with data entry when the control has no
@@ -553,8 +554,7 @@ module Gtk
     #    author-localized description for the role of an element. Value type: string
     RoleDescription = 13
     # Indicates if items in a table or grid are
-    #    sorted in ascending or descending order. Possible property values are in
-    #    the `GtkAccessibleSort` enumeration. Value type: `GtkAccessibleSort`
+    #    sorted in ascending or descending order. Value type: [enum@AccessibleSort]
     Sort = 14
     # Defines the maximum allowed value for a
     #    range widget. Value type: double
@@ -570,7 +570,7 @@ module Gtk
     ValueText = 18
   end
 
-  # The possible accessible relations of a `GtkAccessible`.
+  # The possible accessible relations of a [iface@Accessible].
   #
   # Accessible relations can be references to other widgets,
   # integers or strings.
@@ -638,7 +638,7 @@ module Gtk
     SetSize = 17
   end
 
-  # The accessible role for a `GtkAccessible` implementation.
+  # The accessible role for a [iface@Accessible] implementation.
   #
   # Abstract roles are only used as part of the ontology; application
   # developers must not use abstract roles in their code.
@@ -688,7 +688,7 @@ module Gtk
     # An item in a grid or tree grid.
     GridCell = 17
     # An element that groups multiple widgets. GTK uses
-    #   this role for various containers, like `GtkBox`, `GtkViewport`, and `GtkHeaderBar`.
+    #   this role for various containers, like [class@Box], [class@Viewport], and [class@HeaderBar].
     Group = 18
     # Unused
     Heading = 19
@@ -835,32 +835,32 @@ module Gtk
     Other = 3
   end
 
-  # The possible accessible states of a `GtkAccessible`.
+  # The possible accessible states of a [iface@Accessible].
   enum AccessibleState : UInt32
     # A “busy” state. This state has boolean values
     Busy = 0
     # A “checked” state; indicates the current
-    #   state of a `GtkCheckButton`. Value type: `GtkAccessibleTristate`
+    #   state of a [class@CheckButton]. Value type: [enum@AccessibleTristate]
     Checked = 1
     # A “disabled” state; corresponds to the
-    #   `GtkWidget:sensitive` property on `GtkWidget`. It indicates a UI element
+    #   [property@Widget:sensitive] property. It indicates a UI element
     #   that is perceivable, but not editable or operable. Value type: boolean
     Disabled = 2
     # An “expanded” state; corresponds to the
-    #   `GtkExpander:expanded` property on `GtkExpander`. Value type: boolean
+    #   [property@Expander:expanded] property. Value type: boolean
     #   or undefined
     Expanded = 3
     # A “hidden” state; corresponds to the
-    #   `GtkWidget:visible` property on `GtkWidget`. You can use this state
+    #   [property@Widget:visible] property. You can use this state
     #   explicitly on UI elements that should not be exposed to an assistive
     #   technology. Value type: boolean
     #   See also: %GTK_ACCESSIBLE_STATE_DISABLED
     Hidden = 4
     # An “invalid” state; set when a widget
-    #   is showing an error. Value type: `GtkAccessibleInvalidState`
+    #   is showing an error. Value type: [enum@AccessibleInvalidState]
     Invalid = 5
     # A “pressed” state; indicates the current
-    #   state of a `GtkToggleButton`. Value type: `GtkAccessibleTristate`
+    #   state of a [class@ToggleButton]. Value type: [enum@AccessibleTristate]
     #   enumeration
     Pressed = 6
     # A “selected” state; set when a widget
@@ -887,7 +887,7 @@ module Gtk
   #
   # Alignment only matters if the widget receives a “too large” allocation,
   # for example if you packed the widget with the [property@Gtk.Widget:hexpand]
-  # property inside a `GtkBox`, then the widget might get extra space.
+  # property inside a [class@Box], then the widget might get extra space.
   # If you have for example a 16x16 icon inside a 32x32 space, the icon
   # could be scaled and stretched, it could be centered, or it could be
   # positioned to one side of the space.
@@ -1025,10 +1025,7 @@ module Gtk
     OkCancel = 5
   end
 
-  # Determines if the edited accelerators are GTK accelerators. If
-  # they are, consumed modifiers are suppressed, only accelerators
-  # accepted by GTK are allowed, and the accelerators are rendered
-  # in the same way as they are in menus.
+  # The available modes for [property@Gtk.CellRendererAccel:accel-mode].
   enum CellRendererAccelMode : UInt32
     # GTK accelerators mode
     Gtk = 0
@@ -1049,7 +1046,7 @@ module Gtk
     Editable = 2
   end
 
-  # The widget attributes that can be used when creating a `GtkConstraint`.
+  # The widget attributes that can be used when creating a [class@Constraint].
   enum ConstraintAttribute : UInt32
     # No attribute, used for constant
     #   relations
@@ -1098,7 +1095,7 @@ module Gtk
 
   # The strength of a constraint, expressed as a symbolic constant.
   #
-  # The strength of a `GtkConstraint` can be expressed with any positive
+  # The strength of a [class@Constraint] can be expressed with any positive
   # integer; the values of this enumeration can be used for readability.
   enum ConstraintStrength : UInt32
     # The constraint is required towards solving the layout
@@ -1187,16 +1184,29 @@ module Gtk
     Right = 5
   end
 
+  # The identifiers for [iface@Gtk.Editable] properties.
+  #
+  # See [func@Gtk.Editable.install_properties] for details on how to
+  # implement the `GtkEditable` interface.
   enum EditableProperties : UInt32
-    PropText           = 0
+    # the property id for [property@Gtk.Editable:text]
+    PropText = 0
+    # the property id for [property@Gtk.Editable:cursor-position]
     PropCursorPosition = 1
+    # the property id for [property@Gtk.Editable:selection-bound]
     PropSelectionBound = 2
-    PropEditable       = 3
-    PropWidthChars     = 4
-    PropMaxWidthChars  = 5
-    PropXalign         = 6
-    PropEnableUndo     = 7
-    NumProperties      = 8
+    # the property id for [property@Gtk.Editable:editable]
+    PropEditable = 3
+    # the property id for [property@Gtk.Editable:width-chars]
+    PropWidthChars = 4
+    # the property id for [property@Gtk.Editable:max-width-chars]
+    PropMaxWidthChars = 5
+    # the property id for [property@Gtk.Editable:xalign]
+    PropXalign = 6
+    # the property id for [property@Gtk.Editable:enable-undo]
+    PropEnableUndo = 7
+    # the number of properties
+    NumProperties = 8
   end
 
   # Specifies the side of the entry at which an icon is placed.
@@ -1207,7 +1217,7 @@ module Gtk
     Secondary = 1
   end
 
-  # Describes the state of a `GdkEventSequence` in a `GtkGesture`.
+  # Describes the state of a [struct@Gdk.EventSequence] in a [class@Gesture].
   enum EventSequenceState : UInt32
     # The sequence is handled, but not grabbed.
     None = 0
@@ -1367,7 +1377,7 @@ module Gtk
     Terminal = 10
   end
 
-  # Used for justifying the text inside a `GtkLabel` widget.
+  # Used for justifying the text inside a [class@Label] widget.
   enum Justification : UInt32
     # The text is placed at the left edge of the label.
     Left = 0
@@ -1379,7 +1389,7 @@ module Gtk
     Fill = 3
   end
 
-  # Describes how `GtkLevelBar` contents should be rendered.
+  # Describes how [class@LevelBar] contents should be rendered.
   #
   # Note that this enumeration could be extended with additional modes
   # in the future.
@@ -1433,7 +1443,7 @@ module Gtk
     Mpl20 = 17
   end
 
-  # The type of message being displayed in a `GtkMessageDialog`.
+  # The type of message being displayed in a [class@MessageDialog].
   enum MessageType : UInt32
     # Informational message
     Info = 0
@@ -1472,6 +1482,24 @@ module Gtk
     HorizontalPages = 9
   end
 
+  # Options for selecting a different wrap mode for natural size
+  # requests.
+  #
+  # See for example the [property@Gtk.Label:natural-wrap-mode] property.
+  enum NaturalWrapMode : UInt32
+    # Inherit the minimum size request.
+    #   In particular, this should be used with %PANGO_WRAP_CHAR.
+    Inherit = 0
+    # Try not to wrap the text. This mode is the
+    #   closest to GTK3's behavior but can lead to a wide label leaving
+    #   lots of empty space below the text.
+    None = 1
+    # Attempt to wrap at word boundaries. This
+    #   is useful in particular when using %PANGO_WRAP_WORD_CHAR as the
+    #   wrap mode.
+    Word = 2
+  end
+
   # The parameter used in the action signals of `GtkNotebook`.
   enum NotebookTab : UInt32
     # the first tab in the notebook
@@ -1503,7 +1531,7 @@ module Gtk
 
   # Describes the way two values can be compared.
   #
-  # These values can be used with a `GCompareFunc`. However,
+  # These values can be used with a [callback@GLib.CompareFunc]. However,
   # a `GCompareFunc` is allowed to return any integer values.
   # For converting such a value to a `GtkOrdering` value, use
   # [func@Gtk.Ordering.from_cmpfunc].
@@ -1518,7 +1546,7 @@ module Gtk
 
   # Represents the orientation of widgets and other objects.
   #
-  # Typical examples are `GtkBox or `GtkGesturePan`.
+  # Typical examples are [class@Box] or [class@GesturePan].
   enum Orientation : UInt32
     # The element is in horizontal orientation.
     Horizontal = 0
@@ -1542,7 +1570,7 @@ module Gtk
 
   # Represents the packing location of a children in its parent.
   #
-  # See `GtkWindowControls` for example.
+  # See [class@WindowControls] for example.
   enum PackType : UInt32
     # The child is packed into the start of the widget
     Start = 0
@@ -1582,7 +1610,7 @@ module Gtk
     Odd = 2
   end
 
-  # Describes the panning direction of a `GtkGesturePan`
+  # Describes the panning direction of a [class@GesturePan].
   enum PanDirection : UInt32
     # panned towards the left
     Left = 0
@@ -1614,8 +1642,8 @@ module Gtk
 
   # Describes which edge of a widget a certain feature is positioned at.
   #
-  # For examples, see the tabs of a `GtkNotebook`, or the label
-  # of a `GtkScale`.
+  # For examples, see the tabs of a [class@Notebook], or the label
+  # of a [class@Scale].
   enum PositionType : UInt32
     # The feature is at the left edge.
     Left = 0
@@ -1722,19 +1750,19 @@ module Gtk
     FinishedAborted = 8
   end
 
-  # Describes limits of a `GtkEventController` for handling events
+  # Describes limits of a [class@EventController] for handling events
   # targeting other widgets.
   enum PropagationLimit : UInt32
     # Events are handled regardless of what their
     #   target is.
     None = 0
     # Events are only handled if their target
-    #   is in the same `GtkNative` as the event controllers widget. Note
+    #   is in the same [iface@Native] as the event controllers widget. Note
     #   that some event types have two targets (origin and destination).
     SameNative = 1
   end
 
-  # Describes the stage at which events are fed into a `GtkEventController`.
+  # Describes the stage at which events are fed into a [class@EventController].
   enum PropagationPhase : UInt32
     # Events are not delivered.
     None = 0
@@ -1901,14 +1929,14 @@ module Gtk
     Off = 2
   end
 
-  # Describes where `GtkShortcut`s added to a
-  # `GtkShortcutController` get handled.
+  # Describes where [class@Shortcut]s added to a
+  # [class@ShortcutController] get handled.
   enum ShortcutScope : UInt32
     # Shortcuts are handled inside
     #   the widget the controller belongs to.
     Local = 0
     # Shortcuts are handled by
-    #   the first ancestor that is a `GtkShortcutManager`
+    #   the first ancestor that is a [iface@ShortcutManager]
     Managed = 1
     # Shortcuts are handled by
     #   the root widget.
@@ -2104,13 +2132,28 @@ module Gtk
     Prefix = 2
   end
 
+  # The indexes of colors passed to symbolic color rendering, such as
+  # [vfunc@Gtk.SymbolicPaintable.snapshot_symbolic].
+  #
+  # More values may be added over time.
+  enum SymbolicColor : UInt32
+    # The default foreground color
+    Foreground = 0
+    # Indication color for errors
+    Error = 1
+    # Indication color for warnings
+    Warning = 2
+    # Indication color for success
+    Success = 3
+  end
+
   # Values that can be passed to the [vfunc@Gtk.Widget.system_setting_changed]
   # vfunc.
   #
   # The values indicate which system setting has changed.
   # Widgets may need to drop caches, or react otherwise.
   #
-  # Most of the values correspond to `GtkSettings` properties.
+  # Most of the values correspond to [class@Settings] properties.
   #
   # More values may be added over time.
   enum SystemSetting : UInt32

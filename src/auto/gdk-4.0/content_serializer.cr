@@ -29,7 +29,7 @@ module Gdk
       LibGdk.gdk_content_serializer_get_type
     end
 
-    def cancellable : Gio::Cancellable
+    def cancellable : Gio::Cancellable?
       # gdk_content_serializer_get_cancellable: (Method)
       # Returns: (transfer none)
 
@@ -39,7 +39,7 @@ module Gdk
       _retval = LibGdk.gdk_content_serializer_get_cancellable(self)
 
       # Return value handling
-      Gio::Cancellable.new(_retval, GICrystal::Transfer::None)
+      Gio::Cancellable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def gtype : UInt64

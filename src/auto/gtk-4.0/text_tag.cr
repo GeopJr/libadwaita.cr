@@ -27,9 +27,9 @@ module Gtk
       super
     end
 
-    def initialize(*, accumulative_margin : Bool? = nil, allow_breaks : Bool? = nil, allow_breaks_set : Bool? = nil, background : ::String? = nil, background_full_height : Bool? = nil, background_full_height_set : Bool? = nil, background_rgba : Gdk::RGBA? = nil, background_set : Bool? = nil, direction : Gtk::TextDirection? = nil, editable : Bool? = nil, editable_set : Bool? = nil, fallback : Bool? = nil, fallback_set : Bool? = nil, family : ::String? = nil, family_set : Bool? = nil, font : ::String? = nil, font_desc : Pango::FontDescription? = nil, font_features : ::String? = nil, font_features_set : Bool? = nil, foreground : ::String? = nil, foreground_rgba : Gdk::RGBA? = nil, foreground_set : Bool? = nil, indent : Int32? = nil, indent_set : Bool? = nil, insert_hyphens : Bool? = nil, insert_hyphens_set : Bool? = nil, invisible : Bool? = nil, invisible_set : Bool? = nil, justification : Gtk::Justification? = nil, justification_set : Bool? = nil, language : ::String? = nil, language_set : Bool? = nil, left_margin : Int32? = nil, left_margin_set : Bool? = nil, letter_spacing : Int32? = nil, letter_spacing_set : Bool? = nil, name : ::String? = nil, overline : Pango::Overline? = nil, overline_rgba : Gdk::RGBA? = nil, overline_rgba_set : Bool? = nil, overline_set : Bool? = nil, paragraph_background : ::String? = nil, paragraph_background_rgba : Gdk::RGBA? = nil, paragraph_background_set : Bool? = nil, pixels_above_lines : Int32? = nil, pixels_above_lines_set : Bool? = nil, pixels_below_lines : Int32? = nil, pixels_below_lines_set : Bool? = nil, pixels_inside_wrap : Int32? = nil, pixels_inside_wrap_set : Bool? = nil, right_margin : Int32? = nil, right_margin_set : Bool? = nil, rise : Int32? = nil, rise_set : Bool? = nil, scale : Float64? = nil, scale_set : Bool? = nil, show_spaces : Pango::ShowFlags? = nil, show_spaces_set : Bool? = nil, size : Int32? = nil, size_points : Float64? = nil, size_set : Bool? = nil, stretch : Pango::Stretch? = nil, stretch_set : Bool? = nil, strikethrough : Bool? = nil, strikethrough_rgba : Gdk::RGBA? = nil, strikethrough_rgba_set : Bool? = nil, strikethrough_set : Bool? = nil, style : Pango::Style? = nil, style_set : Bool? = nil, tabs : Pango::TabArray? = nil, tabs_set : Bool? = nil, underline : Pango::Underline? = nil, underline_rgba : Gdk::RGBA? = nil, underline_rgba_set : Bool? = nil, underline_set : Bool? = nil, variant : Pango::Variant? = nil, variant_set : Bool? = nil, weight : Int32? = nil, weight_set : Bool? = nil, wrap_mode : Gtk::WrapMode? = nil, wrap_mode_set : Bool? = nil)
-      _names = uninitialized Pointer(LibC::Char)[81]
-      _values = StaticArray(LibGObject::Value, 81).new(LibGObject::Value.new)
+    def initialize(*, accumulative_margin : Bool? = nil, allow_breaks : Bool? = nil, allow_breaks_set : Bool? = nil, background : ::String? = nil, background_full_height : Bool? = nil, background_full_height_set : Bool? = nil, background_rgba : Gdk::RGBA? = nil, background_set : Bool? = nil, direction : Gtk::TextDirection? = nil, editable : Bool? = nil, editable_set : Bool? = nil, fallback : Bool? = nil, fallback_set : Bool? = nil, family : ::String? = nil, family_set : Bool? = nil, font : ::String? = nil, font_desc : Pango::FontDescription? = nil, font_features : ::String? = nil, font_features_set : Bool? = nil, foreground : ::String? = nil, foreground_rgba : Gdk::RGBA? = nil, foreground_set : Bool? = nil, indent : Int32? = nil, indent_set : Bool? = nil, insert_hyphens : Bool? = nil, insert_hyphens_set : Bool? = nil, invisible : Bool? = nil, invisible_set : Bool? = nil, justification : Gtk::Justification? = nil, justification_set : Bool? = nil, language : ::String? = nil, language_set : Bool? = nil, left_margin : Int32? = nil, left_margin_set : Bool? = nil, letter_spacing : Int32? = nil, letter_spacing_set : Bool? = nil, line_height : Float32? = nil, line_height_set : Bool? = nil, name : ::String? = nil, overline : Pango::Overline? = nil, overline_rgba : Gdk::RGBA? = nil, overline_rgba_set : Bool? = nil, overline_set : Bool? = nil, paragraph_background : ::String? = nil, paragraph_background_rgba : Gdk::RGBA? = nil, paragraph_background_set : Bool? = nil, pixels_above_lines : Int32? = nil, pixels_above_lines_set : Bool? = nil, pixels_below_lines : Int32? = nil, pixels_below_lines_set : Bool? = nil, pixels_inside_wrap : Int32? = nil, pixels_inside_wrap_set : Bool? = nil, right_margin : Int32? = nil, right_margin_set : Bool? = nil, rise : Int32? = nil, rise_set : Bool? = nil, scale : Float64? = nil, scale_set : Bool? = nil, sentence : Bool? = nil, sentence_set : Bool? = nil, show_spaces : Pango::ShowFlags? = nil, show_spaces_set : Bool? = nil, size : Int32? = nil, size_points : Float64? = nil, size_set : Bool? = nil, stretch : Pango::Stretch? = nil, stretch_set : Bool? = nil, strikethrough : Bool? = nil, strikethrough_rgba : Gdk::RGBA? = nil, strikethrough_rgba_set : Bool? = nil, strikethrough_set : Bool? = nil, style : Pango::Style? = nil, style_set : Bool? = nil, tabs : Pango::TabArray? = nil, tabs_set : Bool? = nil, text_transform : Pango::TextTransform? = nil, text_transform_set : Bool? = nil, underline : Pango::Underline? = nil, underline_rgba : Gdk::RGBA? = nil, underline_rgba_set : Bool? = nil, underline_set : Bool? = nil, variant : Pango::Variant? = nil, variant_set : Bool? = nil, weight : Int32? = nil, weight_set : Bool? = nil, word : Bool? = nil, word_set : Bool? = nil, wrap_mode : Gtk::WrapMode? = nil, wrap_mode_set : Bool? = nil)
+      _names = uninitialized Pointer(LibC::Char)[89]
+      _values = StaticArray(LibGObject::Value, 89).new(LibGObject::Value.new)
       _n = 0
 
       if accumulative_margin
@@ -212,6 +212,16 @@ module Gtk
         GObject::Value.init_g_value(_values.to_unsafe + _n, letter_spacing_set)
         _n += 1
       end
+      if line_height
+        (_names.to_unsafe + _n).value = "line-height".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, line_height)
+        _n += 1
+      end
+      if line_height_set
+        (_names.to_unsafe + _n).value = "line-height-set".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, line_height_set)
+        _n += 1
+      end
       if name
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
@@ -312,6 +322,16 @@ module Gtk
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_set)
         _n += 1
       end
+      if sentence
+        (_names.to_unsafe + _n).value = "sentence".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, sentence)
+        _n += 1
+      end
+      if sentence_set
+        (_names.to_unsafe + _n).value = "sentence-set".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, sentence_set)
+        _n += 1
+      end
       if show_spaces
         (_names.to_unsafe + _n).value = "show-spaces".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_spaces)
@@ -387,6 +407,16 @@ module Gtk
         GObject::Value.init_g_value(_values.to_unsafe + _n, tabs_set)
         _n += 1
       end
+      if text_transform
+        (_names.to_unsafe + _n).value = "text-transform".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, text_transform)
+        _n += 1
+      end
+      if text_transform_set
+        (_names.to_unsafe + _n).value = "text-transform-set".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, text_transform_set)
+        _n += 1
+      end
       if underline
         (_names.to_unsafe + _n).value = "underline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, underline)
@@ -425,6 +455,16 @@ module Gtk
       if weight_set
         (_names.to_unsafe + _n).value = "weight-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, weight_set)
+        _n += 1
+      end
+      if word
+        (_names.to_unsafe + _n).value = "word".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, word)
+        _n += 1
+      end
+      if word_set
+        (_names.to_unsafe + _n).value = "word-set".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, word_set)
         _n += 1
       end
       if wrap_mode
@@ -970,6 +1010,36 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    def line_height=(value : Float32) : Float32
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "line-height", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def line_height : Float32
+      # Returns: None
+
+      value = uninitialized Float32
+      LibGObject.g_object_get(self, "line-height", pointerof(value), Pointer(Void).null)
+      value
+    end
+
+    def line_height_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "line-height-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def line_height_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "line-height-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def name=(value : ::String) : ::String
       unsafe_value = value
 
@@ -1262,6 +1332,36 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    def sentence=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sentence", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sentence? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "sentence", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def sentence_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "sentence-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def sentence_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "sentence-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def show_spaces=(value : Pango::ShowFlags) : Pango::ShowFlags
       unsafe_value = value
 
@@ -1487,6 +1587,36 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    def text_transform=(value : Pango::TextTransform) : Pango::TextTransform
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text-transform", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text_transform : Pango::TextTransform
+      # Returns: None
+
+      value = uninitialized UInt32
+      LibGObject.g_object_get(self, "text-transform", pointerof(value), Pointer(Void).null)
+      Pango::TextTransform.from_value(value)
+    end
+
+    def text_transform_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "text-transform-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def text_transform_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "text-transform-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def underline=(value : Pango::Underline) : Pango::Underline
       unsafe_value = value
 
@@ -1604,6 +1734,36 @@ module Gtk
 
       value = uninitialized LibC::Int
       LibGObject.g_object_get(self, "weight-set", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def word=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "word", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def word? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "word", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
+    def word_set=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "word-set", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def word_set? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "word-set", pointerof(value), Pointer(Void).null)
       GICrystal.to_bool(value)
     end
 

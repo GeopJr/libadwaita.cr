@@ -532,7 +532,7 @@ module Gtk
       _retval
     end
 
-    def print_settings : Gtk::PrintSettings
+    def print_settings : Gtk::PrintSettings?
       # gtk_print_operation_get_print_settings: (Method | Getter)
       # Returns: (transfer none)
 
@@ -542,7 +542,7 @@ module Gtk
       _retval = LibGtk.gtk_print_operation_get_print_settings(self)
 
       # Return value handling
-      Gtk::PrintSettings.new(_retval, GICrystal::Transfer::None)
+      Gtk::PrintSettings.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def status : Gtk::PrintStatus

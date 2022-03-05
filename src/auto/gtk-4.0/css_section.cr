@@ -2,7 +2,7 @@ module Gtk
   # Defines a part of a CSS document.
   #
   # Because sections are nested into one another, you can use
-  # gtk_css_section_get_parent() to get the containing region.
+  # [method@CssSection.get_parent] to get the containing region.
   class CssSection
     @pointer : Pointer(Void)
 
@@ -57,7 +57,7 @@ module Gtk
       Gtk::CssLocation.new(_retval, GICrystal::Transfer::None)
     end
 
-    def file : Gio::File
+    def file : Gio::File?
       # gtk_css_section_get_file: (Method)
       # Returns: (transfer none)
 
@@ -67,7 +67,7 @@ module Gtk
       _retval = LibGtk.gtk_css_section_get_file(self)
 
       # Return value handling
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::File__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def parent : Gtk::CssSection?

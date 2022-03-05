@@ -4,22 +4,28 @@ lib LibAdw
   # Flags
 
   # Enums
+  type AnimationState = UInt32
   type CenteringPolicy = UInt32
   type ColorScheme = UInt32
+  type Easing = UInt32
   type FlapFoldPolicy = UInt32
   type FlapTransitionType = UInt32
   type FoldThresholdPolicy = UInt32
   type LeafletTransitionType = UInt32
   type NavigationDirection = UInt32
   type SqueezerTransitionType = UInt32
+  type ToastPriority = UInt32
   type ViewSwitcherPolicy = UInt32
 
   # Callbacks
+  alias AnimationTargetFunc = Float64, Pointer(Void) -> Void
 
   # Interface types
   type Swipeable = Void
 
   # Structs
+
+  type SpringParams = Void # Struct with zero bytes
 
   # Unions
 
@@ -28,6 +34,12 @@ lib LibAdw
   struct ActionRow
     parent_instance : LibAdw::PreferencesRow
   end
+
+  struct Animation
+    parent_instance : LibGObject::Object
+  end
+
+  type AnimationTarget = Void # Object struct with no fields
 
   struct Application
     parent_instance : LibGtk::Application
@@ -44,6 +56,8 @@ lib LibAdw
   end
 
   type ButtonContent = Void # Object struct with no fields
+
+  type CallbackAnimationTarget = Void # Object struct with no fields
 
   type Carousel = Void # Object struct with no fields
 
@@ -95,6 +109,8 @@ lib LibAdw
 
   type SplitButton = Void # Object struct with no fields
 
+  type SpringAnimation = Void # Object struct with no fields
+
   type Squeezer = Void # Object struct with no fields
 
   type SqueezerPage = Void # Object struct with no fields
@@ -110,6 +126,12 @@ lib LibAdw
   type TabPage = Void # Object struct with no fields
 
   type TabView = Void # Object struct with no fields
+
+  type TimedAnimation = Void # Object struct with no fields
+
+  type Toast = Void # Object struct with no fields
+
+  type ToastOverlay = Void # Object struct with no fields
 
   type ViewStack = Void # Object struct with no fields
 
@@ -144,6 +166,17 @@ lib LibAdw
   fun adw_action_row_set_subtitle(this : Void*, subtitle : Pointer(LibC::Char)) : Void
   fun adw_action_row_set_subtitle_lines(this : Void*, subtitle_lines : Int32) : Void
   fun adw_action_row_set_title_lines(this : Void*, title_lines : Int32) : Void
+  fun adw_animation_get_state(this : Void*) : UInt32
+  fun adw_animation_get_target(this : Void*) : Pointer(Void)
+  fun adw_animation_get_type : UInt64
+  fun adw_animation_get_value(this : Void*) : Float64
+  fun adw_animation_get_widget(this : Void*) : Pointer(Void)
+  fun adw_animation_pause(this : Void*) : Void
+  fun adw_animation_play(this : Void*) : Void
+  fun adw_animation_reset(this : Void*) : Void
+  fun adw_animation_resume(this : Void*) : Void
+  fun adw_animation_skip(this : Void*) : Void
+  fun adw_animation_target_get_type : UInt64
   fun adw_application_get_style_manager(this : Void*) : Pointer(Void)
   fun adw_application_get_type : UInt64
   fun adw_application_new(application_id : Pointer(LibC::Char), flags : UInt32) : Pointer(Void)
@@ -176,16 +209,18 @@ lib LibAdw
   fun adw_button_content_set_icon_name(this : Void*, icon_name : Pointer(LibC::Char)) : Void
   fun adw_button_content_set_label(this : Void*, label : Pointer(LibC::Char)) : Void
   fun adw_button_content_set_use_underline(this : Void*, use_underline : LibC::Int) : Void
+  fun adw_callback_animation_target_get_type : UInt64
+  fun adw_callback_animation_target_new(callback : AnimationTargetFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Pointer(Void)
   fun adw_carousel_append(this : Void*, child : Pointer(Void)) : Void
   fun adw_carousel_get_allow_long_swipes(this : Void*) : LibC::Int
   fun adw_carousel_get_allow_mouse_drag(this : Void*) : LibC::Int
   fun adw_carousel_get_allow_scroll_wheel(this : Void*) : LibC::Int
-  fun adw_carousel_get_animation_duration(this : Void*) : UInt32
   fun adw_carousel_get_interactive(this : Void*) : LibC::Int
   fun adw_carousel_get_n_pages(this : Void*) : UInt32
   fun adw_carousel_get_nth_page(this : Void*, n : UInt32) : Pointer(Void)
   fun adw_carousel_get_position(this : Void*) : Float64
   fun adw_carousel_get_reveal_duration(this : Void*) : UInt32
+  fun adw_carousel_get_scroll_params(this : Void*) : Pointer(Void)
   fun adw_carousel_get_spacing(this : Void*) : UInt32
   fun adw_carousel_get_type : UInt64
   fun adw_carousel_indicator_dots_get_carousel(this : Void*) : Pointer(Void)
@@ -201,14 +236,13 @@ lib LibAdw
   fun adw_carousel_prepend(this : Void*, child : Pointer(Void)) : Void
   fun adw_carousel_remove(this : Void*, child : Pointer(Void)) : Void
   fun adw_carousel_reorder(this : Void*, child : Pointer(Void), position : Int32) : Void
-  fun adw_carousel_scroll_to(this : Void*, widget : Pointer(Void)) : Void
-  fun adw_carousel_scroll_to_full(this : Void*, widget : Pointer(Void), duration : Int64) : Void
+  fun adw_carousel_scroll_to(this : Void*, widget : Pointer(Void), animate : LibC::Int) : Void
   fun adw_carousel_set_allow_long_swipes(this : Void*, allow_long_swipes : LibC::Int) : Void
   fun adw_carousel_set_allow_mouse_drag(this : Void*, allow_mouse_drag : LibC::Int) : Void
   fun adw_carousel_set_allow_scroll_wheel(this : Void*, allow_scroll_wheel : LibC::Int) : Void
-  fun adw_carousel_set_animation_duration(this : Void*, duration : UInt32) : Void
   fun adw_carousel_set_interactive(this : Void*, interactive : LibC::Int) : Void
   fun adw_carousel_set_reveal_duration(this : Void*, reveal_duration : UInt32) : Void
+  fun adw_carousel_set_scroll_params(this : Void*, params : Pointer(Void)) : Void
   fun adw_carousel_set_spacing(this : Void*, spacing : UInt32) : Void
   fun adw_clamp_get_child(this : Void*) : Pointer(Void)
   fun adw_clamp_get_maximum_size(this : Void*) : Int32
@@ -247,7 +281,7 @@ lib LibAdw
   fun adw_combo_row_set_model(this : Void*, model : Pointer(Void)) : Void
   fun adw_combo_row_set_selected(this : Void*, position : UInt32) : Void
   fun adw_combo_row_set_use_subtitle(this : Void*, use_subtitle : LibC::Int) : Void
-  fun adw_ease_out_cubic(t : Float64) : Float64
+  fun adw_easing_ease(_self : UInt32, value : Float64) : Float64
   fun adw_enum_list_item_get_name(this : Void*) : Pointer(LibC::Char)
   fun adw_enum_list_item_get_nick(this : Void*) : Pointer(LibC::Char)
   fun adw_enum_list_item_get_type : UInt64
@@ -281,8 +315,8 @@ lib LibAdw
   fun adw_flap_get_folded(this : Void*) : LibC::Int
   fun adw_flap_get_locked(this : Void*) : LibC::Int
   fun adw_flap_get_modal(this : Void*) : LibC::Int
-  fun adw_flap_get_reveal_duration(this : Void*) : UInt32
   fun adw_flap_get_reveal_flap(this : Void*) : LibC::Int
+  fun adw_flap_get_reveal_params(this : Void*) : Pointer(Void)
   fun adw_flap_get_reveal_progress(this : Void*) : Float64
   fun adw_flap_get_separator(this : Void*) : Pointer(Void)
   fun adw_flap_get_swipe_to_close(this : Void*) : LibC::Int
@@ -298,8 +332,8 @@ lib LibAdw
   fun adw_flap_set_fold_threshold_policy(this : Void*, policy : UInt32) : Void
   fun adw_flap_set_locked(this : Void*, locked : LibC::Int) : Void
   fun adw_flap_set_modal(this : Void*, modal : LibC::Int) : Void
-  fun adw_flap_set_reveal_duration(this : Void*, duration : UInt32) : Void
   fun adw_flap_set_reveal_flap(this : Void*, reveal_flap : LibC::Int) : Void
+  fun adw_flap_set_reveal_params(this : Void*, params : Pointer(Void)) : Void
   fun adw_flap_set_separator(this : Void*, separator : Pointer(Void)) : Void
   fun adw_flap_set_swipe_to_close(this : Void*, swipe_to_close : LibC::Int) : Void
   fun adw_flap_set_swipe_to_open(this : Void*, swipe_to_open : LibC::Int) : Void
@@ -327,11 +361,11 @@ lib LibAdw
   fun adw_is_initialized : LibC::Int
   fun adw_leaflet_append(this : Void*, child : Pointer(Void)) : Pointer(Void)
   fun adw_leaflet_get_adjacent_child(this : Void*, direction : UInt32) : Pointer(Void)
-  fun adw_leaflet_get_can_swipe_back(this : Void*) : LibC::Int
-  fun adw_leaflet_get_can_swipe_forward(this : Void*) : LibC::Int
+  fun adw_leaflet_get_can_navigate_back(this : Void*) : LibC::Int
+  fun adw_leaflet_get_can_navigate_forward(this : Void*) : LibC::Int
   fun adw_leaflet_get_can_unfold(this : Void*) : LibC::Int
   fun adw_leaflet_get_child_by_name(this : Void*, name : Pointer(LibC::Char)) : Pointer(Void)
-  fun adw_leaflet_get_child_transition_duration(this : Void*) : UInt32
+  fun adw_leaflet_get_child_transition_params(this : Void*) : Pointer(Void)
   fun adw_leaflet_get_child_transition_running(this : Void*) : LibC::Int
   fun adw_leaflet_get_fold_threshold_policy(this : Void*) : UInt32
   fun adw_leaflet_get_folded(this : Void*) : LibC::Int
@@ -355,16 +389,17 @@ lib LibAdw
   fun adw_leaflet_prepend(this : Void*, child : Pointer(Void)) : Pointer(Void)
   fun adw_leaflet_remove(this : Void*, child : Pointer(Void)) : Void
   fun adw_leaflet_reorder_child_after(this : Void*, child : Pointer(Void), sibling : Pointer(Void)) : Void
-  fun adw_leaflet_set_can_swipe_back(this : Void*, can_swipe_back : LibC::Int) : Void
-  fun adw_leaflet_set_can_swipe_forward(this : Void*, can_swipe_forward : LibC::Int) : Void
+  fun adw_leaflet_set_can_navigate_back(this : Void*, can_navigate_back : LibC::Int) : Void
+  fun adw_leaflet_set_can_navigate_forward(this : Void*, can_navigate_forward : LibC::Int) : Void
   fun adw_leaflet_set_can_unfold(this : Void*, can_unfold : LibC::Int) : Void
-  fun adw_leaflet_set_child_transition_duration(this : Void*, duration : UInt32) : Void
+  fun adw_leaflet_set_child_transition_params(this : Void*, params : Pointer(Void)) : Void
   fun adw_leaflet_set_fold_threshold_policy(this : Void*, policy : UInt32) : Void
   fun adw_leaflet_set_homogeneous(this : Void*, homogeneous : LibC::Int) : Void
   fun adw_leaflet_set_mode_transition_duration(this : Void*, duration : UInt32) : Void
   fun adw_leaflet_set_transition_type(this : Void*, transition : UInt32) : Void
   fun adw_leaflet_set_visible_child(this : Void*, visible_child : Pointer(Void)) : Void
   fun adw_leaflet_set_visible_child_name(this : Void*, name : Pointer(LibC::Char)) : Void
+  fun adw_lerp(a : Float64, b : Float64, t : Float64) : Float64
   fun adw_preferences_group_add(this : Void*, child : Pointer(Void)) : Void
   fun adw_preferences_group_get_description(this : Void*) : Pointer(LibC::Char)
   fun adw_preferences_group_get_title(this : Void*) : Pointer(LibC::Char)
@@ -392,8 +427,9 @@ lib LibAdw
   fun adw_preferences_row_set_title(this : Void*, title : Pointer(LibC::Char)) : Void
   fun adw_preferences_row_set_use_underline(this : Void*, use_underline : LibC::Int) : Void
   fun adw_preferences_window_add(this : Void*, page : Pointer(Void)) : Void
+  fun adw_preferences_window_add_toast(this : Void*, toast : Pointer(Void)) : Void
   fun adw_preferences_window_close_subpage(this : Void*) : Void
-  fun adw_preferences_window_get_can_swipe_back(this : Void*) : LibC::Int
+  fun adw_preferences_window_get_can_navigate_back(this : Void*) : LibC::Int
   fun adw_preferences_window_get_search_enabled(this : Void*) : LibC::Int
   fun adw_preferences_window_get_type : UInt64
   fun adw_preferences_window_get_visible_page(this : Void*) : Pointer(Void)
@@ -401,7 +437,7 @@ lib LibAdw
   fun adw_preferences_window_new : Pointer(Void)
   fun adw_preferences_window_present_subpage(this : Void*, subpage : Pointer(Void)) : Void
   fun adw_preferences_window_remove(this : Void*, page : Pointer(Void)) : Void
-  fun adw_preferences_window_set_can_swipe_back(this : Void*, can_swipe_back : LibC::Int) : Void
+  fun adw_preferences_window_set_can_navigate_back(this : Void*, can_navigate_back : LibC::Int) : Void
   fun adw_preferences_window_set_search_enabled(this : Void*, search_enabled : LibC::Int) : Void
   fun adw_preferences_window_set_visible_page(this : Void*, page : Pointer(Void)) : Void
   fun adw_preferences_window_set_visible_page_name(this : Void*, name : Pointer(LibC::Char)) : Void
@@ -423,6 +459,31 @@ lib LibAdw
   fun adw_split_button_set_menu_model(this : Void*, menu_model : Pointer(Void)) : Void
   fun adw_split_button_set_popover(this : Void*, popover : Pointer(Void)) : Void
   fun adw_split_button_set_use_underline(this : Void*, use_underline : LibC::Int) : Void
+  fun adw_spring_animation_get_clamp(this : Void*) : LibC::Int
+  fun adw_spring_animation_get_epsilon(this : Void*) : Float64
+  fun adw_spring_animation_get_estimated_duration(this : Void*) : UInt32
+  fun adw_spring_animation_get_initial_velocity(this : Void*) : Float64
+  fun adw_spring_animation_get_spring_params(this : Void*) : Pointer(Void)
+  fun adw_spring_animation_get_type : UInt64
+  fun adw_spring_animation_get_value_from(this : Void*) : Float64
+  fun adw_spring_animation_get_value_to(this : Void*) : Float64
+  fun adw_spring_animation_get_velocity(this : Void*) : Float64
+  fun adw_spring_animation_new(widget : Pointer(Void), from : Float64, to : Float64, spring_params : Pointer(Void), target : Pointer(Void)) : Pointer(Void)
+  fun adw_spring_animation_set_clamp(this : Void*, clamp : LibC::Int) : Void
+  fun adw_spring_animation_set_epsilon(this : Void*, epsilon : Float64) : Void
+  fun adw_spring_animation_set_initial_velocity(this : Void*, velocity : Float64) : Void
+  fun adw_spring_animation_set_spring_params(this : Void*, spring_params : Pointer(Void)) : Void
+  fun adw_spring_animation_set_value_from(this : Void*, value : Float64) : Void
+  fun adw_spring_animation_set_value_to(this : Void*, value : Float64) : Void
+  fun adw_spring_params_get_damping(this : Void*) : Float64
+  fun adw_spring_params_get_damping_ratio(this : Void*) : Float64
+  fun adw_spring_params_get_mass(this : Void*) : Float64
+  fun adw_spring_params_get_stiffness(this : Void*) : Float64
+  fun adw_spring_params_get_type : UInt64
+  fun adw_spring_params_new(damping_ratio : Float64, mass : Float64, stiffness : Float64) : Pointer(Void)
+  fun adw_spring_params_new_full(damping : Float64, mass : Float64, stiffness : Float64) : Pointer(Void)
+  fun adw_spring_params_ref(this : Void*) : Pointer(Void)
+  fun adw_spring_params_unref(this : Void*) : Void
   fun adw_squeezer_add(this : Void*, child : Pointer(Void)) : Pointer(Void)
   fun adw_squeezer_get_allow_none(this : Void*) : LibC::Int
   fun adw_squeezer_get_homogeneous(this : Void*) : LibC::Int
@@ -544,7 +605,6 @@ lib LibAdw
   fun adw_tab_view_get_page_position(this : Void*, page : Pointer(Void)) : Int32
   fun adw_tab_view_get_pages(this : Void*) : Pointer(Void)
   fun adw_tab_view_get_selected_page(this : Void*) : Pointer(Void)
-  fun adw_tab_view_get_shortcut_widget(this : Void*) : Pointer(Void)
   fun adw_tab_view_get_type : UInt64
   fun adw_tab_view_insert(this : Void*, child : Pointer(Void), position : Int32) : Pointer(Void)
   fun adw_tab_view_insert_pinned(this : Void*, child : Pointer(Void), position : Int32) : Pointer(Void)
@@ -562,17 +622,51 @@ lib LibAdw
   fun adw_tab_view_set_menu_model(this : Void*, menu_model : Pointer(Void)) : Void
   fun adw_tab_view_set_page_pinned(this : Void*, page : Pointer(Void), pinned : LibC::Int) : Void
   fun adw_tab_view_set_selected_page(this : Void*, selected_page : Pointer(Void)) : Void
-  fun adw_tab_view_set_shortcut_widget(this : Void*, widget : Pointer(Void)) : Void
   fun adw_tab_view_transfer_page(this : Void*, page : Pointer(Void), other_view : Pointer(Void), position : Int32) : Void
+  fun adw_timed_animation_get_alternate(this : Void*) : LibC::Int
+  fun adw_timed_animation_get_duration(this : Void*) : UInt32
+  fun adw_timed_animation_get_easing(this : Void*) : UInt32
+  fun adw_timed_animation_get_repeat_count(this : Void*) : UInt32
+  fun adw_timed_animation_get_reverse(this : Void*) : LibC::Int
+  fun adw_timed_animation_get_type : UInt64
+  fun adw_timed_animation_get_value_from(this : Void*) : Float64
+  fun adw_timed_animation_get_value_to(this : Void*) : Float64
+  fun adw_timed_animation_new(widget : Pointer(Void), from : Float64, to : Float64, duration : UInt32, target : Pointer(Void)) : Pointer(Void)
+  fun adw_timed_animation_set_alternate(this : Void*, alternate : LibC::Int) : Void
+  fun adw_timed_animation_set_duration(this : Void*, duration : UInt32) : Void
+  fun adw_timed_animation_set_easing(this : Void*, easing : UInt32) : Void
+  fun adw_timed_animation_set_repeat_count(this : Void*, repeat_count : UInt32) : Void
+  fun adw_timed_animation_set_reverse(this : Void*, reverse : LibC::Int) : Void
+  fun adw_timed_animation_set_value_from(this : Void*, value : Float64) : Void
+  fun adw_timed_animation_set_value_to(this : Void*, value : Float64) : Void
+  fun adw_toast_dismiss(this : Void*) : Void
+  fun adw_toast_get_action_name(this : Void*) : Pointer(LibC::Char)
+  fun adw_toast_get_action_target_value(this : Void*) : Pointer(Void)
+  fun adw_toast_get_button_label(this : Void*) : Pointer(LibC::Char)
+  fun adw_toast_get_priority(this : Void*) : UInt32
+  fun adw_toast_get_timeout(this : Void*) : UInt32
+  fun adw_toast_get_title(this : Void*) : Pointer(LibC::Char)
+  fun adw_toast_get_type : UInt64
+  fun adw_toast_new(title : Pointer(LibC::Char)) : Pointer(Void)
+  fun adw_toast_overlay_add_toast(this : Void*, toast : Pointer(Void)) : Void
+  fun adw_toast_overlay_get_child(this : Void*) : Pointer(Void)
+  fun adw_toast_overlay_get_type : UInt64
+  fun adw_toast_overlay_new : Pointer(Void)
+  fun adw_toast_overlay_set_child(this : Void*, child : Pointer(Void)) : Void
+  fun adw_toast_set_action_name(this : Void*, action_name : Pointer(LibC::Char)) : Void
+  fun adw_toast_set_action_target_value(this : Void*, action_target : Pointer(Void)) : Void
+  fun adw_toast_set_button_label(this : Void*, button_label : Pointer(LibC::Char)) : Void
+  fun adw_toast_set_detailed_action_name(this : Void*, detailed_action_name : Pointer(LibC::Char)) : Void
+  fun adw_toast_set_priority(this : Void*, priority : UInt32) : Void
+  fun adw_toast_set_timeout(this : Void*, timeout : UInt32) : Void
+  fun adw_toast_set_title(this : Void*, title : Pointer(LibC::Char)) : Void
   fun adw_view_stack_add(this : Void*, child : Pointer(Void)) : Pointer(Void)
   fun adw_view_stack_add_named(this : Void*, child : Pointer(Void), name : Pointer(LibC::Char)) : Pointer(Void)
   fun adw_view_stack_add_titled(this : Void*, child : Pointer(Void), name : Pointer(LibC::Char), title : Pointer(LibC::Char)) : Pointer(Void)
   fun adw_view_stack_get_child_by_name(this : Void*, name : Pointer(LibC::Char)) : Pointer(Void)
   fun adw_view_stack_get_hhomogeneous(this : Void*) : LibC::Int
-  fun adw_view_stack_get_interpolate_size(this : Void*) : LibC::Int
   fun adw_view_stack_get_page(this : Void*, child : Pointer(Void)) : Pointer(Void)
   fun adw_view_stack_get_pages(this : Void*) : Pointer(Void)
-  fun adw_view_stack_get_transition_running(this : Void*) : LibC::Int
   fun adw_view_stack_get_type : UInt64
   fun adw_view_stack_get_vhomogeneous(this : Void*) : LibC::Int
   fun adw_view_stack_get_visible_child(this : Void*) : Pointer(Void)
@@ -596,7 +690,6 @@ lib LibAdw
   fun adw_view_stack_page_set_visible(this : Void*, visible : LibC::Int) : Void
   fun adw_view_stack_remove(this : Void*, child : Pointer(Void)) : Void
   fun adw_view_stack_set_hhomogeneous(this : Void*, hhomogeneous : LibC::Int) : Void
-  fun adw_view_stack_set_interpolate_size(this : Void*, interpolate_size : LibC::Int) : Void
   fun adw_view_stack_set_vhomogeneous(this : Void*, vhomogeneous : LibC::Int) : Void
   fun adw_view_stack_set_visible_child(this : Void*, child : Pointer(Void)) : Void
   fun adw_view_stack_set_visible_child_name(this : Void*, name : Pointer(LibC::Char)) : Void

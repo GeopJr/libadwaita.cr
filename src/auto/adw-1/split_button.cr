@@ -10,6 +10,11 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A combined button and dropdown widget.
   #
+  # <picture>
+  #   <source srcset="split-button-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="split-button.png" alt="split-button">
+  # </picture>
+  #
   # `AdwSplitButton` is typically used to present a set of actions in a menu,
   # but allow access to one of them with a single click.
   #
@@ -38,7 +43,7 @@ module Adw
   #
   # ## Accessibility
   #
-  # `AdwSplitButton` uses the `GTK_ACCESSIBLE_ROLE_BUTTON` role.
+  # `AdwSplitButton` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
   class SplitButton < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Actionable

@@ -1,7 +1,7 @@
 require "../g_object-2.0/object"
 
 module Adw
-  # An auxiliary class used by [class@Adw.Leaflet].
+  # An auxiliary class used by [class@Leaflet].
   class LeafletPage < GObject::Object
     @pointer : Pointer(Void)
 

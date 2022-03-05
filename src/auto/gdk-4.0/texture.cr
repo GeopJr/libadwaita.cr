@@ -1,6 +1,10 @@
 require "../g_object-2.0/object"
 require "./paintable"
 
+require "../gio-2.0/icon"
+
+require "../gio-2.0/loadable_icon"
+
 module Gdk
   # `GdkTexture` is the basic element used to refer to pixel data.
   #
@@ -8,17 +12,18 @@ module Gdk
   # multiple frames, and will be used for a long time.
   #
   # There are various ways to create `GdkTexture` objects from a
-  # `GdkPixbuf`, or a Cairo surface, or other pixel data.
+  # [class@GdkPixbuf.Pixbuf], or a Cairo surface, or other pixel data.
   #
   # The ownership of the pixel data is transferred to the `GdkTexture`
-  # instance; you can only make a copy of it, via
-  # [method@Gdk.Texture.download].
+  # instance; you can only make a copy of it, via [method@Gdk.Texture.download].
   #
   # `GdkTexture` is an immutable object: That means you cannot change
   # anything about it other than increasing the reference count via
-  # g_object_ref().
+  # [method@GObject.Object.ref], and consequently, it is a thread-safe object.
   class Texture < GObject::Object
     include Paintable
+    include Gio::Icon
+    include Gio::LoadableIcon
 
     @pointer : Pointer(Void)
 
@@ -94,6 +99,23 @@ module Gdk
       Gdk::Texture.new(_retval, GICrystal::Transfer::Full)
     end
 
+    def self.new_from_bytes(bytes : GLib::Bytes) : self
+      # gdk_texture_new_from_bytes: (Constructor | Throws)
+      # Returns: (transfer full)
+
+      _error = Pointer(LibGLib::Error).null
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGdk.gdk_texture_new_from_bytes(bytes, pointerof(_error))
+
+      # Error check
+      Gdk.raise_exception(_error) unless _error.null?
+      # Return value handling
+      Gdk::Texture.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def self.new_from_file(file : Gio::File) : self
       # gdk_texture_new_from_file: (Constructor | Throws)
       # Returns: (transfer full)
@@ -104,6 +126,23 @@ module Gdk
 
       # C call
       _retval = LibGdk.gdk_texture_new_from_file(file, pointerof(_error))
+
+      # Error check
+      Gdk.raise_exception(_error) unless _error.null?
+      # Return value handling
+      Gdk::Texture.new(_retval, GICrystal::Transfer::Full)
+    end
+
+    def self.new_from_filename(path : ::String) : self
+      # gdk_texture_new_from_filename: (Constructor | Throws)
+      # Returns: (transfer full)
+
+      _error = Pointer(LibGLib::Error).null
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGdk.gdk_texture_new_from_filename(path, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -175,6 +214,45 @@ module Gdk
 
       # Return value handling
       GICrystal.to_bool(_retval)
+    end
+
+    def save_to_png_bytes : GLib::Bytes
+      # gdk_texture_save_to_png_bytes: (Method)
+      # Returns: (transfer full)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGdk.gdk_texture_save_to_png_bytes(self)
+
+      # Return value handling
+      GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
+    end
+
+    def save_to_tiff(filename : ::String) : Bool
+      # gdk_texture_save_to_tiff: (Method)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGdk.gdk_texture_save_to_tiff(self, filename)
+
+      # Return value handling
+      GICrystal.to_bool(_retval)
+    end
+
+    def save_to_tiff_bytes : GLib::Bytes
+      # gdk_texture_save_to_tiff_bytes: (Method)
+      # Returns: (transfer full)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGdk.gdk_texture_save_to_tiff_bytes(self)
+
+      # Return value handling
+      GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

@@ -712,11 +712,17 @@ module Gtk
       # Return value handling
     end
 
-    def pointing_to=(rect : Gdk::Rectangle) : Nil
+    def pointing_to=(rect : Gdk::Rectangle?) : Nil
       # gtk_popover_set_pointing_to: (Method | Setter)
+      # @rect: (nullable)
       # Returns: (transfer none)
 
       # Handle parameters
+      rect = if rect.nil?
+               Pointer(Void).null
+             else
+               rect.to_unsafe
+             end
 
       # C call
       LibGtk.gtk_popover_set_pointing_to(self, rect)

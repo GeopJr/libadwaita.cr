@@ -1,6 +1,6 @@
 module Gtk
   # A `GtkRequisition` represents the desired size of a widget. See
-  # [GtkWidget’s geometry management section][geometry-management] for
+  # [GtkWidget’s geometry management section](class.Widget.html#height-for-width-geometry-management) for
   # more information.
   class Requisition
     @pointer : Pointer(Void)

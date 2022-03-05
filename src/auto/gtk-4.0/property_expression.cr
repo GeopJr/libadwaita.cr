@@ -55,7 +55,7 @@ module Gtk
       Gtk::PropertyExpression.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def expression : Gtk::Expression
+    def expression : Gtk::Expression?
       # gtk_property_expression_get_expression: (Method)
       # Returns: (transfer none)
 
@@ -65,7 +65,7 @@ module Gtk
       _retval = LibGtk.gtk_property_expression_get_expression(self)
 
       # Return value handling
-      Gtk::Expression.new(_retval, GICrystal::Transfer::None)
+      Gtk::Expression.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def pspec : GObject::ParamSpec

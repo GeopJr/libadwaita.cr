@@ -8,22 +8,32 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A view switcher title.
   #
-  # A widget letting you switch between multiple views contained by a
-  # [class@Adw.ViewStack] via an [class@Adw.ViewSwitcher].
+  # <picture>
+  #   <source srcset="view-switcher-title-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="view-switcher-title.png" alt="view-switcher-title">
+  # </picture>
   #
-  # It is designed to be used as the title widget of a [class@Adw.HeaderBar], and
+  # A widget letting you switch between multiple views contained by a
+  # [class@ViewStack] via an [class@ViewSwitcher].
+  #
+  # It is designed to be used as the title widget of a [class@HeaderBar], and
   # will display the window's title when the window is too narrow to fit the view
   # switcher e.g. on mobile phones, or if there are less than two views.
   #
-  # You can conveniently bind the [property@Adw.ViewSwitcherBar:reveal] property
-  # to [property@Adw.ViewSwitcherTitle:title-visible] to automatically reveal the
-  # view switcher bar when the title label is displayed in place of the view
-  # switcher.
+  # In order to center the title in narrow windows, the header bar should have
+  # [property@HeaderBar:centering-policy] set to
+  # `ADW_CENTERING_POLICY_STRICT`.
   #
-  # An example of the UI definition for a common use case:
+  # `AdwViewSwitcherTitle` is intended to be used together with
+  # [class@ViewSwitcherBar].
+  #
+  # A common use case is to bind the [property@ViewSwitcherBar:reveal] property
+  # to [property@ViewSwitcherTitle:title-visible] to automatically reveal the
+  # view switcher bar when the title label is displayed in place of the view
+  # switcher, as follows:
   #
   # ```xml
-  # <object class="GtkWindow"/>
+  # <object class="GtkWindow">
   #   <child type="titlebar">
   #     <object class="AdwHeaderBar">
   #       <property name="centering-policy">strict</property>
@@ -36,6 +46,7 @@ module Adw
   #   </child>
   #   <child>
   #     <object class="GtkBox">
+  #       <property name="orientation">vertical</property>
   #       <child>
   #         <object class="AdwViewStack" id="stack"/>
   #       </child>

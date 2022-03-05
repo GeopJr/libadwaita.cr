@@ -989,7 +989,7 @@ module Gtk
       _retval
     end
 
-    def child_anchor : Gtk::TextChildAnchor
+    def child_anchor : Gtk::TextChildAnchor?
       # gtk_text_iter_get_child_anchor: (Method)
       # Returns: (transfer none)
 
@@ -999,7 +999,7 @@ module Gtk
       _retval = LibGtk.gtk_text_iter_get_child_anchor(self)
 
       # Return value handling
-      Gtk::TextChildAnchor.new(_retval, GICrystal::Transfer::None)
+      Gtk::TextChildAnchor.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def language : Pango::Language
@@ -1080,7 +1080,7 @@ module Gtk
       _retval
     end
 
-    def paintable : Gdk::Paintable
+    def paintable : Gdk::Paintable?
       # gtk_text_iter_get_paintable: (Method)
       # Returns: (transfer none)
 
@@ -1090,7 +1090,7 @@ module Gtk
       _retval = LibGtk.gtk_text_iter_get_paintable(self)
 
       # Return value handling
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None)
+      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def slice(end _end : Gtk::TextIter) : ::String

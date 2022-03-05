@@ -182,7 +182,7 @@ module Gtk
       Gtk::FileChooserAction.from_value(_retval)
     end
 
-    def choice(id : ::String) : ::String
+    def choice(id : ::String) : ::String?
       # gtk_file_chooser_get_choice: (Method)
       # Returns: (transfer none)
 
@@ -192,7 +192,7 @@ module Gtk
       _retval = LibGtk.gtk_file_chooser_get_choice(self, id)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     def create_folders : Bool
@@ -208,7 +208,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def current_folder : Gio::File
+    def current_folder : Gio::File?
       # gtk_file_chooser_get_current_folder: (Method)
       # Returns: (transfer full)
 
@@ -218,10 +218,10 @@ module Gtk
       _retval = LibGtk.gtk_file_chooser_get_current_folder(self)
 
       # Return value handling
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
-    def current_name : ::String
+    def current_name : ::String?
       # gtk_file_chooser_get_current_name: (Method)
       # Returns: (transfer full)
 
@@ -231,10 +231,10 @@ module Gtk
       _retval = LibGtk.gtk_file_chooser_get_current_name(self)
 
       # Return value handling
-      GICrystal.transfer_full(_retval)
+      GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
-    def file : Gio::File
+    def file : Gio::File?
       # gtk_file_chooser_get_file: (Method)
       # Returns: (transfer full)
 
@@ -244,7 +244,7 @@ module Gtk
       _retval = LibGtk.gtk_file_chooser_get_file(self)
 
       # Return value handling
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def files : Gio::ListModel
@@ -389,13 +389,19 @@ module Gtk
       # Return value handling
     end
 
-    def current_folder=(file : Gio::File) : Bool
+    def current_folder=(file : Gio::File?) : Bool
       # gtk_file_chooser_set_current_folder: (Method | Throws)
+      # @file: (nullable)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
       # Handle parameters
+      file = if file.nil?
+               Pointer(Void).null
+             else
+               file.to_unsafe
+             end
 
       # C call
       _retval = LibGtk.gtk_file_chooser_set_current_folder(self, file, pointerof(_error))

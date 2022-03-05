@@ -33,6 +33,7 @@ require "./draw_context.cr"
 require "./drop.cr"
 require "./event.cr"
 require "./event_sequence.cr"
+require "./file_list.cr"
 require "./focus_event.cr"
 require "./frame_clock.cr"
 require "./frame_clock_private.cr"
@@ -2550,8 +2551,11 @@ module Gdk
     PadStrip = 26
     # A tablet pad group mode change.
     PadGroupMode = 27
+    # A touchpad hold gesture event, the current state
+    #   is determined by its phase field. Since: 4.6
+    TouchpadHold = 28
     # marks the end of the GdkEventType enumeration.
-    EventLast = 28
+    EventLast = 29
   end
 
   # Indicates which monitor a surface should span over when in fullscreen mode.
@@ -2622,7 +2626,7 @@ module Gdk
     Exact = 2
   end
 
-  # `GdkMemoryFormat` describes a format that bytes can have in memory.
+  # `GdkMemoryFormat` describes formats that image data can have in memory.
   #
   # It describes formats by listing the contents of the memory passed to it.
   # So GDK_MEMORY_A8R8G8B8 will be 1 byte (8 bits) of alpha, followed by a
@@ -2655,9 +2659,36 @@ module Gdk
     R8g8b8 = 7
     # 3 bytes; for blue, green, red. The data is opaque.
     B8g8r8 = 8
+    # 3 guint16 values; for red, green, blue. Since: 4.6
+    R16g16b16 = 9
+    # 4 guint16 values; for red, green,
+    #   blue, alpha. The color values are premultiplied with the alpha value.
+    #  Since: 4.6
+    R16g16b16a16Premultiplied = 10
+    # 4 guint16 values; for red, green, blue, alpha.
+    #  Since: 4.6
+    R16g16b16a16 = 11
+    # 3 half-float values; for red, green, blue.
+    #   The data is opaque. Since: 4.6
+    R16g16b16Float = 12
+    # 4 half-float values; for
+    #   red, green, blue and alpha. The color values are premultiplied with
+    #   the alpha value. Since: 4.6
+    R16g16b16a16FloatPremultiplied = 13
+    # 4 half-float values; for red, green,
+    #   blue and alpha. Since: 4.6
+    R16g16b16a16Float = 14
+    R32g32b32Float    = 15
+    # 4 float values; for
+    #   red, green, blue and alpha. The color values are premultiplied with
+    #   the alpha value. Since: 4.6
+    R32g32b32a32FloatPremultiplied = 16
+    # 4 float values; for red, green, blue and
+    #   alpha. Since: 4.6
+    R32g32b32a32Float = 17
     # The number of formats. This value will change as
     #   more formats get added, so do not rely on its concrete integer.
-    NFormats = 9
+    NFormats = 18
   end
 
   # Specifies the kind of crossing for enter and leave events.
@@ -2840,6 +2871,16 @@ module Gdk
     end
   end
   @[Flags]
+  enum GLAPI : UInt32
+    Gl   = 1
+    Gles = 2
+
+    # Returns the type id (GType) registered in GLib type system.
+    def self.g_type : UInt64
+      LibGdk.gdk_gl_api_get_type
+    end
+  end
+  @[Flags]
   enum ModifierType : UInt32
     ShiftMask   =         1
     LockMask    =         2
@@ -2943,6 +2984,33 @@ module Gdk
     end
   end
 
+  # Possible errors that can be returned by `GdkTexture` constructors.
+  class TextureError < GdkError
+    class TooLarge < TextureError
+      def code : Int32
+        0
+      end
+    end
+
+    class CorruptImage < TextureError
+      def code : Int32
+        1
+      end
+    end
+
+    class UnsupportedContent < TextureError
+      def code : Int32
+        2
+      end
+    end
+
+    class UnsupportedFormat < TextureError
+      def code : Int32
+        3
+      end
+    end
+  end
+
   # Error enumeration for `GdkVulkanContext`.
   class VulkanError < GdkError
     class Unsupported < VulkanError
@@ -2969,6 +3037,13 @@ module Gdk
       raise GLError::UnsupportedProfile.new(error) if error_code == 2
       raise GLError::CompilationFailed.new(error) if error_code == 3
       raise GLError::LinkFailed.new(error) if error_code == 4
+    end
+
+    if error_domain == LibGLib.g_quark_try_string("gdk-texture-error-quark")
+      raise TextureError::TooLarge.new(error) if error_code == 0
+      raise TextureError::CorruptImage.new(error) if error_code == 1
+      raise TextureError::UnsupportedContent.new(error) if error_code == 2
+      raise TextureError::UnsupportedFormat.new(error) if error_code == 3
     end
 
     if error_domain == LibGLib.g_quark_try_string("gdk-vulkan-error-quark")

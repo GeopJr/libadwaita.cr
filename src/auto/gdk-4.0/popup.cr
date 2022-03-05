@@ -50,7 +50,7 @@ module Gdk
       GICrystal.to_bool(_retval)
     end
 
-    def parent : Gdk::Surface
+    def parent : Gdk::Surface?
       # gdk_popup_get_parent: (Method | Getter)
       # Returns: (transfer none)
 
@@ -60,7 +60,7 @@ module Gdk
       _retval = LibGdk.gdk_popup_get_parent(self)
 
       # Return value handling
-      Gdk::Surface.new(_retval, GICrystal::Transfer::None)
+      Gdk::Surface.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def position_x : Int32

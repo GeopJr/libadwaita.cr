@@ -435,6 +435,18 @@ module Gtk
       LibGObject.g_object_ref(_retval)
     end
 
+    def append(child : Gtk::Widget) : Nil
+      # gtk_flow_box_append: (Method)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      LibGtk.gtk_flow_box_append(self, child)
+
+      # Return value handling
+    end
+
     def bind_model(model : Gio::ListModel?, create_widget_func : Pointer(Void), user_data : Pointer(Void)?, user_data_free_func : Pointer(Void)) : Nil
       # gtk_flow_box_bind_model: (Method)
       # @model: (nullable)
@@ -621,6 +633,18 @@ module Gtk
 
       # C call
       LibGtk.gtk_flow_box_invalidate_sort(self)
+
+      # Return value handling
+    end
+
+    def prepend(child : Gtk::Widget) : Nil
+      # gtk_flow_box_prepend: (Method)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      LibGtk.gtk_flow_box_prepend(self, child)
 
       # Return value handling
     end

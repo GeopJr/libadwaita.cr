@@ -339,7 +339,7 @@ module GLib
   # Like #gtk_micro_version, but from the headers used at
   # application compile time, rather than from the library
   # linked against at application run time.
-  MICRO_VERSION = 0
+  MICRO_VERSION = 2
   # The minimum value which can be held in a #gint16.
   MININT16 = -32768_i16
   # The minimum value which can be held in a #gint32.

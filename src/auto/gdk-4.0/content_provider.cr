@@ -121,14 +121,15 @@ module Gdk
       # Return value handling
     end
 
-    def value(value : _) : Bool
+    def value : GObject::Value
       # gdk_content_provider_get_value: (Method | Throws)
+      # @value: (out) (caller-allocates)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
       # Handle parameters
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+      value = GObject::Value.new
 
       # C call
       _retval = LibGdk.gdk_content_provider_get_value(self, value, pointerof(_error))
@@ -136,7 +137,7 @@ module Gdk
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
       # Return value handling
-      GICrystal.to_bool(_retval)
+      value
     end
 
     def ref_formats : Gdk::ContentFormats

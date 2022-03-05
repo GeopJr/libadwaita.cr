@@ -6,7 +6,12 @@ require "../gtk-4.0/buildable"
 require "../gtk-4.0/constraint_target"
 
 module Adw
-  # A tab bar for [class@Adw.TabView].
+  # A tab bar for [class@TabView].
+  #
+  # <picture>
+  #   <source srcset="tab-bar-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="tab-bar.png" alt="tab-bar">
+  # </picture>
   #
   # The `AdwTabBar` widget is a tab bar that can be used with conjunction with
   # `AdwTabView`.

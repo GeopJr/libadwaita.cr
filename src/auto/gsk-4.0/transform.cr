@@ -126,7 +126,7 @@ module Gsk
       # Return value handling
     end
 
-    def ref : Gsk::Transform
+    def ref : Gsk::Transform?
       # gsk_transform_ref: (Method)
       # Returns: (transfer none)
 
@@ -136,10 +136,10 @@ module Gsk
       _retval = LibGsk.gsk_transform_ref(self)
 
       # Return value handling
-      Gsk::Transform.new(_retval, GICrystal::Transfer::None)
+      Gsk::Transform.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
-    def rotate(angle : Float32) : Gsk::Transform
+    def rotate(angle : Float32) : Gsk::Transform?
       # gsk_transform_rotate: (Method)
       # Returns: (transfer full)
 
@@ -149,10 +149,10 @@ module Gsk
       _retval = LibGsk.gsk_transform_rotate(self, angle)
 
       # Return value handling
-      Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
+      Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
-    def rotate_3d(angle : Float32, axis : Graphene::Vec3) : Gsk::Transform
+    def rotate_3d(angle : Float32, axis : Graphene::Vec3) : Gsk::Transform?
       # gsk_transform_rotate_3d: (Method)
       # Returns: (transfer full)
 
@@ -162,10 +162,10 @@ module Gsk
       _retval = LibGsk.gsk_transform_rotate_3d(self, angle, axis)
 
       # Return value handling
-      Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
+      Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
-    def scale(factor_x : Float32, factor_y : Float32) : Gsk::Transform
+    def scale(factor_x : Float32, factor_y : Float32) : Gsk::Transform?
       # gsk_transform_scale: (Method)
       # Returns: (transfer full)
 
@@ -175,10 +175,10 @@ module Gsk
       _retval = LibGsk.gsk_transform_scale(self, factor_x, factor_y)
 
       # Return value handling
-      Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
+      Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
-    def scale_3d(factor_x : Float32, factor_y : Float32, factor_z : Float32) : Gsk::Transform
+    def scale_3d(factor_x : Float32, factor_y : Float32, factor_z : Float32) : Gsk::Transform?
       # gsk_transform_scale_3d: (Method)
       # Returns: (transfer full)
 
@@ -188,7 +188,20 @@ module Gsk
       _retval = LibGsk.gsk_transform_scale_3d(self, factor_x, factor_y, factor_z)
 
       # Return value handling
-      Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
+      Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+    end
+
+    def skew(skew_x : Float32, skew_y : Float32) : Gsk::Transform?
+      # gsk_transform_skew: (Method)
+      # Returns: (transfer full)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGsk.gsk_transform_skew(self, skew_x, skew_y)
+
+      # Return value handling
+      Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def to_2d(out_xx : Float32, out_yx : Float32, out_xy : Float32, out_yy : Float32, out_dx : Float32, out_dy : Float32) : Nil
@@ -205,6 +218,25 @@ module Gsk
 
       # C call
       LibGsk.gsk_transform_to_2d(self, out_xx, out_yx, out_xy, out_yy, out_dx, out_dy)
+
+      # Return value handling
+    end
+
+    def to_2d_components(out_skew_x : Float32, out_skew_y : Float32, out_scale_x : Float32, out_scale_y : Float32, out_angle : Float32, out_dx : Float32, out_dy : Float32) : Nil
+      # gsk_transform_to_2d_components: (Method)
+      # @out_skew_x: (out) (transfer full)
+      # @out_skew_y: (out) (transfer full)
+      # @out_scale_x: (out) (transfer full)
+      # @out_scale_y: (out) (transfer full)
+      # @out_angle: (out) (transfer full)
+      # @out_dx: (out) (transfer full)
+      # @out_dy: (out) (transfer full)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      LibGsk.gsk_transform_to_2d_components(self, out_skew_x, out_skew_y, out_scale_x, out_scale_y, out_angle, out_dx, out_dy)
 
       # Return value handling
     end
@@ -267,7 +299,7 @@ module Gsk
       # Return value handling
     end
 
-    def transform(other : Gsk::Transform?) : Gsk::Transform
+    def transform(other : Gsk::Transform?) : Gsk::Transform?
       # gsk_transform_transform: (Method)
       # @other: (nullable)
       # Returns: (transfer full)
@@ -283,7 +315,7 @@ module Gsk
       _retval = LibGsk.gsk_transform_transform(self, other)
 
       # Return value handling
-      Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
+      Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def transform_bounds(rect : Graphene::Rect) : Graphene::Rect
@@ -316,7 +348,7 @@ module Gsk
       out_point
     end
 
-    def translate(point : Graphene::Point) : Gsk::Transform
+    def translate(point : Graphene::Point) : Gsk::Transform?
       # gsk_transform_translate: (Method)
       # Returns: (transfer full)
 
@@ -326,10 +358,10 @@ module Gsk
       _retval = LibGsk.gsk_transform_translate(self, point)
 
       # Return value handling
-      Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
+      Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
-    def translate_3d(point : Graphene::Point3D) : Gsk::Transform
+    def translate_3d(point : Graphene::Point3D) : Gsk::Transform?
       # gsk_transform_translate_3d: (Method)
       # Returns: (transfer full)
 
@@ -339,7 +371,7 @@ module Gsk
       _retval = LibGsk.gsk_transform_translate_3d(self, point)
 
       # Return value handling
-      Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
+      Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def unref : Nil

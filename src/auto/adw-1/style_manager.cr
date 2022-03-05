@@ -7,7 +7,7 @@ module Adw
   # styles, such as whether to use dark or high contrast appearance.
   #
   # It allows to set the color scheme via the
-  # [property@Adw.StyleManager:color-scheme] property, and to query the current
+  # [property@StyleManager:color-scheme] property, and to query the current
   # appearance, as well as whether a system-wide color scheme preference exists.
   class StyleManager < GObject::Object
     @pointer : Pointer(Void)

@@ -8,8 +8,13 @@ require "../gtk-4.0/constraint_target"
 module Adw
   # A helper widget for setting a window's title and subtitle.
   #
+  # <picture>
+  #   <source srcset="window-title-dark.png" media="(prefers-color-scheme: dark)">
+  #   <img src="window-title.png" alt="window-title">
+  # </picture>
+  #
   # `AdwWindowTitle` shows a title and subtitle. It's intended to be used as the
-  # title child of [class@Gtk.HeaderBar] or [class@Adw.HeaderBar].
+  # title child of [class@Gtk.HeaderBar] or [class@HeaderBar].
   #
   # ## CSS nodes
   #

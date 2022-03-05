@@ -1,7 +1,6 @@
 require "./renderer"
 
 module Gsk
-  # A GSK renderer that is using OpenGL.
   class GLRenderer < Renderer
     @pointer : Pointer(Void)
 

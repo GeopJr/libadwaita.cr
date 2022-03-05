@@ -430,7 +430,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def adjustment : Gtk::Adjustment
+    def adjustment : Gtk::Adjustment?
       # gtk_list_box_get_adjustment: (Method)
       # Returns: (transfer none)
 
@@ -440,7 +440,7 @@ module Gtk
       _retval = LibGtk.gtk_list_box_get_adjustment(self)
 
       # Return value handling
-      Gtk::Adjustment.new(_retval, GICrystal::Transfer::None)
+      Gtk::Adjustment.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def row_at_index(index_ : Int32) : Gtk::ListBoxRow?

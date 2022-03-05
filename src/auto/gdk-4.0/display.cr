@@ -126,6 +126,23 @@ module Gdk
       # Return value handling
     end
 
+    def create_gl_context : Gdk::GLContext
+      # gdk_display_create_gl_context: (Method | Throws)
+      # Returns: (transfer full)
+
+      _error = Pointer(LibGLib::Error).null
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGdk.gdk_display_create_gl_context(self, pointerof(_error))
+
+      # Error check
+      Gdk.raise_exception(_error) unless _error.null?
+      # Return value handling
+      Gdk::GLContext.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def device_is_grabbed(device : Gdk::Device) : Bool
       # gdk_display_device_is_grabbed: (Method)
       # Returns: (transfer none)

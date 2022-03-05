@@ -124,7 +124,7 @@ module Gtk
       # Return value handling
     end
 
-    def get(key : ::String) : ::String
+    def get(key : ::String) : ::String?
       # gtk_print_settings_get: (Method)
       # Returns: (transfer none)
 
@@ -134,7 +134,7 @@ module Gtk
       _retval = LibGtk.gtk_print_settings_get(self, key)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     def bool(key : ::String) : Bool
@@ -163,7 +163,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def default_source : ::String
+    def default_source : ::String?
       # gtk_print_settings_get_default_source: (Method)
       # Returns: (transfer none)
 
@@ -173,10 +173,10 @@ module Gtk
       _retval = LibGtk.gtk_print_settings_get_default_source(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
-    def dither : ::String
+    def dither : ::String?
       # gtk_print_settings_get_dither: (Method)
       # Returns: (transfer none)
 
@@ -186,7 +186,7 @@ module Gtk
       _retval = LibGtk.gtk_print_settings_get_dither(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     def double(key : ::String) : Float64
@@ -228,7 +228,7 @@ module Gtk
       Gtk::PrintDuplex.from_value(_retval)
     end
 
-    def finishings : ::String
+    def finishings : ::String?
       # gtk_print_settings_get_finishings: (Method)
       # Returns: (transfer none)
 
@@ -238,7 +238,7 @@ module Gtk
       _retval = LibGtk.gtk_print_settings_get_finishings(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     def int(key : ::String) : Int32
@@ -280,7 +280,7 @@ module Gtk
       _retval
     end
 
-    def media_type : ::String
+    def media_type : ::String?
       # gtk_print_settings_get_media_type: (Method)
       # Returns: (transfer none)
 
@@ -290,7 +290,7 @@ module Gtk
       _retval = LibGtk.gtk_print_settings_get_media_type(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     def n_copies : Int32
@@ -345,7 +345,7 @@ module Gtk
       Gtk::PageOrientation.from_value(_retval)
     end
 
-    def output_bin : ::String
+    def output_bin : ::String?
       # gtk_print_settings_get_output_bin: (Method)
       # Returns: (transfer none)
 
@@ -355,7 +355,7 @@ module Gtk
       _retval = LibGtk.gtk_print_settings_get_output_bin(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     def page_ranges : Enumerable(Gtk::PageRange)
@@ -399,7 +399,7 @@ module Gtk
       _retval
     end
 
-    def paper_size : Gtk::PaperSize
+    def paper_size : Gtk::PaperSize?
       # gtk_print_settings_get_paper_size: (Method)
       # Returns: (transfer full)
 
@@ -409,7 +409,7 @@ module Gtk
       _retval = LibGtk.gtk_print_settings_get_paper_size(self)
 
       # Return value handling
-      Gtk::PaperSize.new(_retval, GICrystal::Transfer::Full)
+      Gtk::PaperSize.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def paper_width(unit : Gtk::Unit) : Float64
@@ -438,7 +438,7 @@ module Gtk
       Gtk::PrintPages.from_value(_retval)
     end
 
-    def printer : ::String
+    def printer : ::String?
       # gtk_print_settings_get_printer: (Method)
       # Returns: (transfer none)
 
@@ -448,7 +448,7 @@ module Gtk
       _retval = LibGtk.gtk_print_settings_get_printer(self)
 
       # Return value handling
-      ::String.new(_retval)
+      ::String.new(_retval) unless _retval.null?
     end
 
     def printer_lpi : Float64

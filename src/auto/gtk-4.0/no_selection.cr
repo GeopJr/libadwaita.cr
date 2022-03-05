@@ -74,7 +74,7 @@ module Gtk
       @pointer = _retval
     end
 
-    def model : Gio::ListModel
+    def model : Gio::ListModel?
       # gtk_no_selection_get_model: (Method | Getter)
       # Returns: (transfer none)
 
@@ -84,7 +84,7 @@ module Gtk
       _retval = LibGtk.gtk_no_selection_get_model(self)
 
       # Return value handling
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def model=(model : Gio::ListModel?) : Nil

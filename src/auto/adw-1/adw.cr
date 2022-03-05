@@ -7,11 +7,14 @@ require "./lib_adw.cr"
 
 # Wrappers
 require "./action_row.cr"
+require "./animation.cr"
+require "./animation_target.cr"
 require "./application.cr"
 require "./application_window.cr"
 require "./avatar.cr"
 require "./bin.cr"
 require "./button_content.cr"
+require "./callback_animation_target.cr"
 require "./carousel.cr"
 require "./carousel_indicator_dots.cr"
 require "./carousel_indicator_lines.cr"
@@ -31,6 +34,8 @@ require "./preferences_page.cr"
 require "./preferences_row.cr"
 require "./preferences_window.cr"
 require "./split_button.cr"
+require "./spring_animation.cr"
+require "./spring_params.cr"
 require "./squeezer.cr"
 require "./squeezer_page.cr"
 require "./status_page.cr"
@@ -40,6 +45,9 @@ require "./swipeable.cr"
 require "./tab_bar.cr"
 require "./tab_page.cr"
 require "./tab_view.cr"
+require "./timed_animation.cr"
+require "./toast.cr"
+require "./toast_overlay.cr"
 require "./view_stack.cr"
 require "./view_stack_page.cr"
 require "./view_switcher.cr"
@@ -49,15 +57,19 @@ require "./window.cr"
 require "./window_title.cr"
 
 module Adw
-  # Adw major version component (e.g. 1 if %ADW_VERSION is 1.2.3)
+  # Indicates an [class@Animation] with an infinite duration.
+  #
+  # This value is mostly used internally.
+  DURATION_INFINITE = 4294967295_u32
+  # Adwaita major version component (e.g. 1 if the version is 1.2.3).
   MAJOR_VERSION = 1
-  # Adw micro version component (e.g. 3 if %ADW_VERSION is 1.2.3)
-  MICRO_VERSION = 0
-  # Adw minor version component (e.g. 2 if %ADW_VERSION is 1.2.3)
+  # Adwaita micro version component (e.g. 3 if the version is 1.2.3).
+  MICRO_VERSION = 2
+  # Adwaita minor version component (e.g. 2 if the version is 1.2.3).
   MINOR_VERSION = 0
   # Adwaita version, encoded as a string, useful for printing and
   # concatenation.
-  VERSION_S = "1.0.0.alpha.4"
+  VERSION_S = "1.0.2"
 
   # Base class for all errors in this module.
   class AdwError < RuntimeError
@@ -71,7 +83,23 @@ module Adw
 
   # Enums
 
-  # Describes title centering behavior of a [class@Adw.HeaderBar] widget.
+  # Describes the possible states of an [class@Animation].
+  #
+  # The state can be controlled with [method@Animation.play],
+  # [method@Animation.pause], [method@Animation.resume],
+  # [method@Animation.reset] and [method@Animation.skip].
+  enum AnimationState : UInt32
+    # The animation hasn't started yet.
+    Idle = 0
+    # The animation has been paused.
+    Paused = 1
+    # The animation is currently playing.
+    Playing = 2
+    # The animation has finished.
+    Finished = 3
+  end
+
+  # Describes title centering behavior of a [class@HeaderBar] widget.
   enum CenteringPolicy : UInt32
     # Keep the title centered when possible
     Loose = 0
@@ -79,10 +107,10 @@ module Adw
     Strict = 1
   end
 
-  # Application color schemes for [property@Adw.StyleManager:color-scheme].
+  # Application color schemes for [property@StyleManager:color-scheme].
   enum ColorScheme : UInt32
     # Inherit the parent color-scheme. When set on the
-    #   `AdwStyleManager` returned by [func@Adw.StyleManager.get_default], it's
+    #   `AdwStyleManager` returned by [func@StyleManager.get_default], it's
     #   equivalent to `ADW_COLOR_SCHEME_PREFER_LIGHT`.
     Default = 0
     # Always use light appearance.
@@ -97,7 +125,91 @@ module Adw
     ForceDark = 4
   end
 
-  # Describes the possible folding behavior of a [class@Adw.Flap] widget.
+  # Describes the available easing functions for use with
+  # [class@TimedAnimation].
+  #
+  # New values may be added to this enumeration over time.
+  enum Easing : UInt32
+    # Linear tweening.
+    Linear = 0
+    # Quadratic tweening.
+    EaseInQuad = 1
+    # Quadratic tweening, inverse of `ADW_EASE_IN_QUAD`.
+    EaseOutQuad = 2
+    # Quadratic tweening, combining `ADW_EASE_IN_QUAD` and
+    #   `ADW_EASE_OUT_QUAD`.
+    EaseInOutQuad = 3
+    # Cubic tweening.
+    EaseInCubic = 4
+    # Cubic tweening, inverse of `ADW_EASE_IN_CUBIC`.
+    EaseOutCubic = 5
+    # Cubic tweening, combining `ADW_EASE_IN_CUBIC` and
+    #   `ADW_EASE_OUT_CUBIC`.
+    EaseInOutCubic = 6
+    # Quartic tweening.
+    EaseInQuart = 7
+    # Quartic tweening, inverse of `ADW_EASE_IN_QUART`.
+    EaseOutQuart = 8
+    # Quartic tweening, combining `ADW_EASE_IN_QUART` and
+    #   `ADW_EASE_OUT_QUART`.
+    EaseInOutQuart = 9
+    # Quintic tweening.
+    EaseInQuint = 10
+    # Quintic tweening, inverse of `ADW_EASE_IN_QUINT`.
+    EaseOutQuint = 11
+    # Quintic tweening, combining `ADW_EASE_IN_QUINT` and
+    #   `ADW_EASE_OUT_QUINT`.
+    EaseInOutQuint = 12
+    # Sine wave tweening.
+    EaseInSine = 13
+    # Sine wave tweening, inverse of `ADW_EASE_IN_SINE`.
+    EaseOutSine = 14
+    # Sine wave tweening, combining `ADW_EASE_IN_SINE` and
+    #   `ADW_EASE_OUT_SINE`.
+    EaseInOutSine = 15
+    # Exponential tweening.
+    EaseInExpo = 16
+    # Exponential tweening, inverse of `ADW_EASE_IN_EXPO`.
+    EaseOutExpo = 17
+    # Exponential tweening, combining `ADW_EASE_IN_EXPO` and
+    #   `ADW_EASE_OUT_EXPO`.
+    EaseInOutExpo = 18
+    # Circular tweening.
+    EaseInCirc = 19
+    # Circular tweening, inverse of `ADW_EASE_IN_CIRC`.
+    EaseOutCirc = 20
+    # Circular tweening, combining `ADW_EASE_IN_CIRC` and
+    #   `ADW_EASE_OUT_CIRC`.
+    EaseInOutCirc = 21
+    # Elastic tweening, with offshoot on start.
+    EaseInElastic = 22
+    # Elastic tweening, with offshoot on end, inverse of
+    #   `ADW_EASE_IN_ELASTIC`.
+    EaseOutElastic = 23
+    # Elastic tweening, with offshoot on both ends,
+    #   combining `ADW_EASE_IN_ELASTIC` and `ADW_EASE_OUT_ELASTIC`.
+    EaseInOutElastic = 24
+    # Overshooting cubic tweening, with backtracking on start.
+    EaseInBack = 25
+    # Overshooting cubic tweening, with backtracking on end,
+    #   inverse of `ADW_EASE_IN_BACK`.
+    EaseOutBack = 26
+    # Overshooting cubic tweening, with backtracking on both
+    #   ends, combining `ADW_EASE_IN_BACK` and `ADW_EASE_OUT_BACK`.
+    EaseInOutBack = 27
+    # Exponentially decaying parabolic (bounce) tweening,
+    #   on start.
+    EaseInBounce = 28
+    # Exponentially decaying parabolic (bounce) tweening,
+    #   with bounce on end, inverse of `ADW_EASE_IN_BOUNCE`.
+    EaseOutBounce = 29
+    # Exponentially decaying parabolic (bounce) tweening,
+    #   with bounce on both ends, combining `ADW_EASE_IN_BOUNCE` and
+    #   `ADW_EASE_OUT_BOUNCE`.
+    EaseInOutBounce = 30
+  end
+
+  # Describes the possible folding behavior of a [class@Flap] widget.
   enum FlapFoldPolicy : UInt32
     # Disable folding, the flap cannot reach narrow
     #   sizes.
@@ -109,11 +221,11 @@ module Adw
     Auto = 2
   end
 
-  # Describes transitions types of a [class@Adw.Flap] widget.
+  # Describes transitions types of a [class@Flap] widget.
   #
   # It determines the type of animation when transitioning between children in a
-  # [class@Adw.Flap] widget, as well as which areas can be swiped via
-  # [property@Adw.Flap:swipe-to-open] and [property@Adw.Flap:swipe-to-close].
+  # [class@Flap] widget, as well as which areas can be swiped via
+  # [property@Flap:swipe-to-open] and [property@Flap:swipe-to-close].
   #
   # New values may be added to this enum over time.
   enum FlapTransitionType : UInt32
@@ -129,7 +241,7 @@ module Adw
     Slide = 2
   end
 
-  # Determines when [class@Adw.Flap] and [class@Adw.Leaflet] will fold.
+  # Determines when [class@Flap] and [class@Leaflet] will fold.
   enum FoldThresholdPolicy : UInt32
     # Folding is based on the minimum size
     Minimum = 0
@@ -137,7 +249,7 @@ module Adw
     Natural = 1
   end
 
-  # Describes the possible transitions in a [class@Adw.Leaflet] widget.
+  # Describes the possible transitions in a [class@Leaflet] widget.
   #
   # New values may be added to this enumeration over time.
   enum LeafletTransitionType : UInt32
@@ -157,7 +269,7 @@ module Adw
     Forward = 1
   end
 
-  # Describes the possible transitions in a [class@Adw.Squeezer] widget.
+  # Describes the possible transitions in a [class@Squeezer] widget.
   enum SqueezerTransitionType : UInt32
     # No transition
     None = 0
@@ -165,7 +277,17 @@ module Adw
     Crossfade = 1
   end
 
-  # Describes the adaptive modes of [class@Adw.ViewSwitcher].
+  # [class@Toast] behavior when another toast is already displayed.
+  enum ToastPriority : UInt32
+    # the toast will be queued if another toast is
+    #   already displayed.
+    Normal = 0
+    # the toast will be displayed immediately, pushing
+    #   the previous toast into the queue instead.
+    High = 1
+  end
+
+  # Describes the adaptive modes of [class@ViewSwitcher].
   enum ViewSwitcherPolicy : UInt32
     # Force the narrow mode
     Narrow = 0

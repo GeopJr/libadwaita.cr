@@ -348,7 +348,7 @@ module Gtk
       LibGObject.g_object_ref(_retval)
     end
 
-    def key_capture_widget : Gtk::Widget
+    def key_capture_widget : Gtk::Widget?
       # gtk_search_entry_get_key_capture_widget: (Method)
       # Returns: (transfer none)
 
@@ -358,7 +358,7 @@ module Gtk
       _retval = LibGtk.gtk_search_entry_get_key_capture_widget(self)
 
       # Return value handling
-      Gtk::Widget.new(_retval, GICrystal::Transfer::None)
+      Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def key_capture_widget=(widget : Gtk::Widget?) : Nil
