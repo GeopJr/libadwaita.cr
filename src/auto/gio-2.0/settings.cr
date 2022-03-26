@@ -210,7 +210,7 @@ module Gio
   # looks for a boolean property with the name "sensitivity" and
   # automatically binds it to the writability of the bound setting.
   # If this 'magic' gets in the way, it can be suppressed with the
-  # #G_SETTINGS_BIND_NO_SENSITIVITY flag.
+  # %G_SETTINGS_BIND_NO_SENSITIVITY flag.
   #
   # ## Relocatable schemas # {#gsettings-relocatable}
   #

@@ -402,11 +402,13 @@ lib LibAdw
   fun adw_lerp(a : Float64, b : Float64, t : Float64) : Float64
   fun adw_preferences_group_add(this : Void*, child : Pointer(Void)) : Void
   fun adw_preferences_group_get_description(this : Void*) : Pointer(LibC::Char)
+  fun adw_preferences_group_get_header_suffix(this : Void*) : Pointer(Void)
   fun adw_preferences_group_get_title(this : Void*) : Pointer(LibC::Char)
   fun adw_preferences_group_get_type : UInt64
   fun adw_preferences_group_new : Pointer(Void)
   fun adw_preferences_group_remove(this : Void*, child : Pointer(Void)) : Void
   fun adw_preferences_group_set_description(this : Void*, description : Pointer(LibC::Char)) : Void
+  fun adw_preferences_group_set_header_suffix(this : Void*, child : Pointer(Void)) : Void
   fun adw_preferences_group_set_title(this : Void*, title : Pointer(LibC::Char)) : Void
   fun adw_preferences_page_add(this : Void*, group : Pointer(Void)) : Void
   fun adw_preferences_page_get_icon_name(this : Void*) : Pointer(LibC::Char)
@@ -421,10 +423,12 @@ lib LibAdw
   fun adw_preferences_page_set_title(this : Void*, title : Pointer(LibC::Char)) : Void
   fun adw_preferences_page_set_use_underline(this : Void*, use_underline : LibC::Int) : Void
   fun adw_preferences_row_get_title(this : Void*) : Pointer(LibC::Char)
+  fun adw_preferences_row_get_title_selectable(this : Void*) : LibC::Int
   fun adw_preferences_row_get_type : UInt64
   fun adw_preferences_row_get_use_underline(this : Void*) : LibC::Int
   fun adw_preferences_row_new : Pointer(Void)
   fun adw_preferences_row_set_title(this : Void*, title : Pointer(LibC::Char)) : Void
+  fun adw_preferences_row_set_title_selectable(this : Void*, title_selectable : LibC::Int) : Void
   fun adw_preferences_row_set_use_underline(this : Void*, use_underline : LibC::Int) : Void
   fun adw_preferences_window_add(this : Void*, page : Pointer(Void)) : Void
   fun adw_preferences_window_add_toast(this : Void*, toast : Pointer(Void)) : Void

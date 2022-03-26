@@ -23,8 +23,12 @@ module Adw
   # ## AdwPreferencesGroup as GtkBuildable
   #
   # The `AdwPreferencesGroup` implementation of the [iface@Gtk.Buildable] interface
-  # will add [class@PreferencesRow]s to the group's list. If a child is not a
-  # [class@PreferencesRow] the child is added to a box below the list.
+  # supports adding [class@PreferencesRow]s to the list by omitting "type". If "type"
+  # is omitted and the widget isn't a [class@PreferencesRow] the child is added to
+  # a box below the list.
+  #
+  # When the "type" attribute of a child is `header-suffix`, the child
+  # is set as the suffix on the end of the title and description.
   #
   # ## CSS nodes
   #
@@ -45,9 +49,9 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, description : ::String? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, title : ::String? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[37]
-      _values = StaticArray(LibGObject::Value, 37).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, description : ::String? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, header_suffix : Gtk::Widget? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, sensitive : Bool? = nil, title : ::String? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[38]
+      _values = StaticArray(LibGObject::Value, 38).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -113,6 +117,11 @@ module Adw
       if has_tooltip
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
+        _n += 1
+      end
+      if header_suffix
+        (_names.to_unsafe + _n).value = "header-suffix".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, header_suffix)
         _n += 1
       end
       if height_request
@@ -259,6 +268,21 @@ module Adw
       ::String.new(value)
     end
 
+    def header_suffix=(value : Gtk::Widget?) : Gtk::Widget?
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "header-suffix", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def header_suffix : Gtk::Widget?
+      # Returns: None
+
+      value = uninitialized Pointer(Void)
+      LibGObject.g_object_get(self, "header-suffix", pointerof(value), Pointer(Void).null)
+      Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
+    end
+
     def title=(value : ::String) : ::String
       unsafe_value = value
 
@@ -313,6 +337,19 @@ module Adw
       ::String.new(_retval) unless _retval.null?
     end
 
+    def header_suffix : Gtk::Widget?
+      # adw_preferences_group_get_header_suffix: (Method | Getter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibAdw.adw_preferences_group_get_header_suffix(self)
+
+      # Return value handling
+      Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    end
+
     def title : ::String
       # adw_preferences_group_get_title: (Method | Getter)
       # Returns: (transfer none)
@@ -352,6 +389,18 @@ module Adw
 
       # C call
       LibAdw.adw_preferences_group_set_description(self, description)
+
+      # Return value handling
+    end
+
+    def header_suffix=(child : Gtk::Widget) : Nil
+      # adw_preferences_group_set_header_suffix: (Method | Setter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      LibAdw.adw_preferences_group_set_header_suffix(self, child)
 
       # Return value handling
     end

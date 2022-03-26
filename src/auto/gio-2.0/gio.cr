@@ -54,6 +54,8 @@ require "./d_bus_subtree_v_table.cr"
 require "./data_input_stream.cr"
 require "./data_output_stream.cr"
 require "./datagram_based.cr"
+require "./debug_controller.cr"
+require "./debug_controller_d_bus.cr"
 require "./desktop_app_info.cr"
 require "./desktop_app_info_lookup.cr"
 require "./drive.cr"
@@ -204,6 +206,9 @@ module Gio
   # In code that needs to be backwards-compatible with older GLib,
   # use %FALSE instead.
   DBUS_METHOD_INVOCATION_UNHANDLED = true
+  # Extension point for debug control functionality.
+  # See [Extending GIO][extending-gio].
+  DEBUG_CONTROLLER_EXTENSION_POINT_NAME = "gio-debug-controller"
   # Extension point for default handler to URI association. See
   # [Extending GIO][extending-gio].
   DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME = "gio-desktop-app-info-lookup"
@@ -895,6 +900,8 @@ module Gio
     NetbsdUnpcbid = 5
     # The native credentials type is a `struct xucred`. Added in 2.66.
     AppleXucred = 6
+    # The native credentials type is a PID `DWORD`. Added in 2.72.
+    Win32Pid = 7
   end
 
   # Enumeration used to describe the byte order of a D-Bus message.
@@ -1099,7 +1106,7 @@ module Gio
 
   # Indicates a hint from the file system whether files should be
   # previewed in a file manager. Returned as the value of the key
-  # #G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
+  # %G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
   enum FilesystemPreviewType : UInt32
     # Only preview files if user has explicitly requested it.
     IfAlways = 0
@@ -1652,6 +1659,7 @@ module Gio
     DoNotAutoStart               =  4
     GetInvalidatedProperties     =  8
     DoNotAutoStartAtConstruction = 16
+    NoMatchRule                  = 32
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
@@ -1865,14 +1873,15 @@ module Gio
   end
   @[Flags]
   enum SubprocessFlags : UInt32
-    StdinPipe     =   1
-    StdinInherit  =   2
-    StdoutPipe    =   4
-    StdoutSilence =   8
-    StderrPipe    =  16
-    StderrSilence =  32
-    StderrMerge   =  64
-    InheritFds    = 128
+    StdinPipe          =   1
+    StdinInherit       =   2
+    StdoutPipe         =   4
+    StdoutSilence      =   8
+    StderrPipe         =  16
+    StderrSilence      =  32
+    StderrMerge        =  64
+    InheritFds         = 128
+    SearchPathFromEnvp = 256
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
@@ -2215,7 +2224,7 @@ module Gio
   #   }
   # ]|
   # but should instead treat all unrecognized error codes the same as
-  # #G_IO_ERROR_FAILED.
+  # %G_IO_ERROR_FAILED.
   #
   # See also #GPollableReturn for a cheaper way of returning
   # %G_IO_ERROR_WOULD_BLOCK to callers without allocating a #GError.
@@ -2631,6 +2640,12 @@ module Gio
         7
       end
     end
+
+    class BadCertificatePassword < TlsError
+      def code : Int32
+        8
+      end
+    end
   end
 
   # :nodoc:
@@ -2765,6 +2780,7 @@ module Gio
       raise TlsError::CertificateRequired.new(error) if error_code == 5
       raise TlsError::Eof.new(error) if error_code == 6
       raise TlsError::InappropriateFallback.new(error) if error_code == 7
+      raise TlsError::BadCertificatePassword.new(error) if error_code == 8
     end
 
     GObject.raise_exception(error)

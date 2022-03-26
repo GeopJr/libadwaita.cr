@@ -23,7 +23,7 @@ module GdkPixbuf
   PIXBUF_MAJOR = 2
   # Micro version of gdk-pixbuf library, that is the "2" in
   # "0.8.2" for example.
-  PIXBUF_MICRO = 6
+  PIXBUF_MICRO = 8
   # Minor version of gdk-pixbuf library, that is the "8" in
   # "0.8.2" for example.
   PIXBUF_MINOR = 42
@@ -31,7 +31,7 @@ module GdkPixbuf
   #
   # This is the version being compiled against; contrast with
   # `gdk_pixbuf_version`.
-  PIXBUF_VERSION = "2.42.6"
+  PIXBUF_VERSION = "2.42.8"
 
   # Base class for all errors in this module.
   class GdkPixbufError < RuntimeError

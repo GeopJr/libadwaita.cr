@@ -74,10 +74,10 @@ module Gio
       GICrystal.transfer_null_ended_array(value, GICrystal::Transfer::None)
     end
 
-    def self.new(default_proxy : ::String?, ignore_hosts : ::String?) : Gio::ProxyResolver
+    def self.new(default_proxy : ::String?, ignore_hosts : Enumerable(::String)?) : Gio::ProxyResolver
       # g_simple_proxy_resolver_new: (None)
       # @default_proxy: (nullable)
-      # @ignore_hosts: (nullable)
+      # @ignore_hosts: (nullable) (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer full)
 
       # Handle parameters
@@ -87,9 +87,9 @@ module Gio
                         default_proxy.to_unsafe
                       end
       ignore_hosts = if ignore_hosts.nil?
-                       Pointer(LibC::Char).null
+                       Pointer(Pointer(LibC::Char)).null
                      else
-                       ignore_hosts.to_unsafe
+                       ignore_hosts.to_a.map(&.to_unsafe).to_unsafe
                      end
 
       # C call
@@ -111,11 +111,13 @@ module Gio
       # Return value handling
     end
 
-    def ignore_hosts=(ignore_hosts : ::String) : Nil
+    def ignore_hosts=(ignore_hosts : Enumerable(::String)) : Nil
       # g_simple_proxy_resolver_set_ignore_hosts: (Method | Setter)
+      # @ignore_hosts: (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
       # Handle parameters
+      ignore_hosts = ignore_hosts.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       LibGio.g_simple_proxy_resolver_set_ignore_hosts(self, ignore_hosts)

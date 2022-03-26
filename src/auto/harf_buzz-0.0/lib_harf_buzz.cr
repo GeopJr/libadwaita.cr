@@ -1,3 +1,4 @@
+@[Link("harfbuzz", pkg_config: "harfbuzz")]
 @[Link("harfbuzz-gobject", pkg_config: "harfbuzz-gobject")]
 
 lib LibHarfBuzz
@@ -32,6 +33,11 @@ lib LibHarfBuzz
   # Callbacks
   alias BufferMessageFuncT = Pointer(LibHarfBuzz::BufferT), Pointer(LibHarfBuzz::FontT), Pointer(LibC::Char), Pointer(Void) -> Int32
   alias DestroyFuncT = Pointer(Void) -> Void
+  alias DrawClosePathFuncT = Pointer(LibHarfBuzz::DrawFuncsT), Pointer(Void), Pointer(LibHarfBuzz::DrawStateT), Pointer(Void) -> Void
+  alias DrawCubicToFuncT = Pointer(LibHarfBuzz::DrawFuncsT), Pointer(Void), Pointer(LibHarfBuzz::DrawStateT), Float32, Float32, Float32, Float32, Float32, Float32, Pointer(Void) -> Void
+  alias DrawLineToFuncT = Pointer(LibHarfBuzz::DrawFuncsT), Pointer(Void), Pointer(LibHarfBuzz::DrawStateT), Float32, Float32, Pointer(Void) -> Void
+  alias DrawMoveToFuncT = Pointer(LibHarfBuzz::DrawFuncsT), Pointer(Void), Pointer(LibHarfBuzz::DrawStateT), Float32, Float32, Pointer(Void) -> Void
+  alias DrawQuadraticToFuncT = Pointer(LibHarfBuzz::DrawFuncsT), Pointer(Void), Pointer(LibHarfBuzz::DrawStateT), Float32, Float32, Float32, Float32, Pointer(Void) -> Void
   alias FontGetFontExtentsFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), LibHarfBuzz::FontExtentsT, Pointer(Void) -> Int32
   alias FontGetGlyphAdvanceFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), UInt32, Pointer(Void) -> Int32
   alias FontGetGlyphAdvancesFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), UInt32, Pointer(UInt32), UInt32, Int32, UInt32, Pointer(Void) -> Void
@@ -42,6 +48,7 @@ lib LibHarfBuzz
   alias FontGetGlyphKerningFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), UInt32, UInt32, Pointer(Void) -> Int32
   alias FontGetGlyphNameFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), UInt32, Pointer(Pointer(LibC::Char)), UInt32, Pointer(Void) -> Int32
   alias FontGetGlyphOriginFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), UInt32, Int32, Int32, Pointer(Void) -> Int32
+  alias FontGetGlyphShapeFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), UInt32, Pointer(LibHarfBuzz::DrawFuncsT), Pointer(Void), Pointer(Void) -> Void
   alias FontGetNominalGlyphFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), UInt32, UInt32, Pointer(Void) -> Int32
   alias FontGetNominalGlyphsFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), UInt32, Pointer(UInt32), UInt32, UInt32, UInt32, Pointer(Void) -> UInt32
   alias FontGetVariationGlyphFuncT = Pointer(LibHarfBuzz::FontT), Pointer(Void), UInt32, UInt32, UInt32, Pointer(Void) -> Int32
@@ -69,6 +76,23 @@ lib LibHarfBuzz
   type BlobT = Void # Struct with zero bytes
 
   type BufferT = Void # Struct with zero bytes
+
+  type DrawFuncsT = Void # Struct with zero bytes
+
+  struct DrawStateT # 48 bytes long
+    path_open : Int32
+    path_start_x : Float32
+    path_start_y : Float32
+    current_x : Float32
+    current_y : Float32
+    reserved1 : LibHarfBuzz::VarNumT
+    reserved2 : LibHarfBuzz::VarNumT
+    reserved3 : LibHarfBuzz::VarNumT
+    reserved4 : LibHarfBuzz::VarNumT
+    reserved5 : LibHarfBuzz::VarNumT
+    reserved6 : LibHarfBuzz::VarNumT
+    reserved7 : LibHarfBuzz::VarNumT
+  end
 
   type FaceT = Void # Struct with zero bytes
 
@@ -207,6 +231,16 @@ lib LibHarfBuzz
     i8 : Int8[4]
   end
 
+  union VarNumT # 4 bytes
+    f : Float32
+    u32 : UInt32
+    i32 : Int32
+    u16 : UInt16[2]
+    i16 : Int16[2]
+    u8 : UInt8[4]
+    i8 : Int8[4]
+  end
+
   # Objects
 
   # All C Functions
@@ -288,6 +322,19 @@ lib LibHarfBuzz
   fun hb_color_get_red(color : UInt32) : UInt8
   fun hb_direction_from_string(str : Pointer(UInt8), len : Int32) : UInt32
   fun hb_direction_to_string(direction : UInt32) : Pointer(LibC::Char)
+  fun hb_draw_close_path(dfuncs : Pointer(Void), draw_data : Pointer(Void), st : Pointer(Void)) : Void
+  fun hb_draw_cubic_to(dfuncs : Pointer(Void), draw_data : Pointer(Void), st : Pointer(Void), control1_x : Float32, control1_y : Float32, control2_x : Float32, control2_y : Float32, to_x : Float32, to_y : Float32) : Void
+  fun hb_draw_funcs_create : Pointer(Void)
+  fun hb_draw_funcs_is_immutable(dfuncs : Pointer(Void)) : Int32
+  fun hb_draw_funcs_make_immutable(dfuncs : Pointer(Void)) : Void
+  fun hb_draw_funcs_set_close_path_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_draw_funcs_set_cubic_to_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_draw_funcs_set_line_to_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_draw_funcs_set_move_to_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_draw_funcs_set_quadratic_to_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_draw_line_to(dfuncs : Pointer(Void), draw_data : Pointer(Void), st : Pointer(Void), to_x : Float32, to_y : Float32) : Void
+  fun hb_draw_move_to(dfuncs : Pointer(Void), draw_data : Pointer(Void), st : Pointer(Void), to_x : Float32, to_y : Float32) : Void
+  fun hb_draw_quadratic_to(dfuncs : Pointer(Void), draw_data : Pointer(Void), st : Pointer(Void), control_x : Float32, control_y : Float32, to_x : Float32, to_y : Float32) : Void
   fun hb_face_builder_add_table(face : Pointer(Void), tag : UInt32, blob : Pointer(Void)) : Int32
   fun hb_face_builder_create : Pointer(Void)
   fun hb_face_collect_unicodes(face : Pointer(Void), _out : Pointer(Void)) : Void
@@ -329,6 +376,7 @@ lib LibHarfBuzz
   fun hb_font_funcs_set_glyph_h_kerning_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
   fun hb_font_funcs_set_glyph_h_origin_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
   fun hb_font_funcs_set_glyph_name_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_font_funcs_set_glyph_shape_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
   fun hb_font_funcs_set_glyph_v_advance_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
   fun hb_font_funcs_set_glyph_v_advances_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
   fun hb_font_funcs_set_glyph_v_kerning_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
@@ -354,6 +402,7 @@ lib LibHarfBuzz
   fun hb_font_get_glyph_kerning_for_direction(font : Pointer(Void), first_glyph : UInt32, second_glyph : UInt32, direction : UInt32, x : Pointer(Int32), y : Pointer(Int32)) : Void
   fun hb_font_get_glyph_name(font : Pointer(Void), glyph : UInt32, name : Pointer(Pointer(Pointer(LibC::Char))), size : Pointer(UInt32)) : Int32
   fun hb_font_get_glyph_origin_for_direction(font : Pointer(Void), glyph : UInt32, direction : UInt32, x : Pointer(Int32), y : Pointer(Int32)) : Void
+  fun hb_font_get_glyph_shape(font : Pointer(Void), glyph : UInt32, dfuncs : Pointer(Void), draw_data : Pointer(Void)) : Void
   fun hb_font_get_glyph_v_advance(font : Pointer(Void), glyph : UInt32) : Int32
   fun hb_font_get_glyph_v_advances(font : Pointer(Void), count : UInt32, first_glyph : Pointer(UInt32), glyph_stride : UInt32, first_advance : Pointer(Int32), advance_stride : Pointer(UInt32)) : Void
   fun hb_font_get_glyph_v_kerning(font : Pointer(Void), top_glyph : UInt32, bottom_glyph : UInt32) : Int32
@@ -399,6 +448,7 @@ lib LibHarfBuzz
   fun hb_glyph_info_get_glyph_flags(info : Pointer(Void)) : UInt32
   fun hb_gobject_blob_get_type : UInt64
   fun hb_gobject_buffer_get_type : UInt64
+  fun hb_gobject_draw_funcs_get_type : UInt64
   fun hb_gobject_face_get_type : UInt64
   fun hb_gobject_feature_get_type : UInt64
   fun hb_gobject_font_funcs_get_type : UInt64
@@ -448,8 +498,10 @@ lib LibHarfBuzz
   fun hb_ot_layout_feature_with_variations_get_lookups(face : Pointer(Void), table_tag : UInt32, feature_index : UInt32, variations_index : UInt32, start_offset : UInt32, lookup_count : Pointer(UInt32), lookup_indexes : Pointer(Pointer(UInt32))) : UInt32
   fun hb_ot_layout_get_attach_points(face : Pointer(Void), glyph : UInt32, start_offset : UInt32, point_count : Pointer(UInt32), point_array : Pointer(Pointer(UInt32))) : UInt32
   fun hb_ot_layout_get_baseline(font : Pointer(Void), baseline_tag : UInt32, direction : UInt32, script_tag : UInt32, language_tag : UInt32, coord : Pointer(Int32)) : Int32
+  fun hb_ot_layout_get_baseline_with_fallback(font : Pointer(Void), baseline_tag : UInt32, direction : UInt32, script_tag : UInt32, language_tag : UInt32, coord : Pointer(Int32)) : Void
   fun hb_ot_layout_get_glyph_class(face : Pointer(Void), glyph : UInt32) : UInt32
   fun hb_ot_layout_get_glyphs_in_class(face : Pointer(Void), klass : UInt32, glyphs : Pointer(Void)) : Void
+  fun hb_ot_layout_get_horizontal_baseline_tag_for_script(script : UInt32) : UInt32
   fun hb_ot_layout_get_ligature_carets(font : Pointer(Void), direction : UInt32, glyph : UInt32, start_offset : UInt32, caret_count : Pointer(UInt32), caret_array : Pointer(Pointer(Int32))) : UInt32
   fun hb_ot_layout_get_size_params(face : Pointer(Void), design_size : Pointer(UInt32), subfamily_id : Pointer(UInt32), subfamily_name_id : Pointer(UInt32), range_start : Pointer(UInt32), range_end : Pointer(UInt32)) : Int32
   fun hb_ot_layout_has_glyph_classes(face : Pointer(Void)) : Int32
@@ -488,6 +540,7 @@ lib LibHarfBuzz
   fun hb_ot_meta_get_entry_tags(face : Pointer(Void), start_offset : UInt32, entries_count : Pointer(UInt32), entries : Pointer(Pointer(UInt32))) : UInt32
   fun hb_ot_meta_reference_entry(face : Pointer(Void), meta_tag : UInt32) : Pointer(Void)
   fun hb_ot_metrics_get_position(font : Pointer(Void), metrics_tag : UInt32, position : Pointer(Int32)) : Int32
+  fun hb_ot_metrics_get_position_with_fallback(font : Pointer(Void), metrics_tag : UInt32, position : Pointer(Int32)) : Void
   fun hb_ot_metrics_get_variation(font : Pointer(Void), metrics_tag : UInt32) : Float32
   fun hb_ot_metrics_get_x_variation(font : Pointer(Void), metrics_tag : UInt32) : Int32
   fun hb_ot_metrics_get_y_variation(font : Pointer(Void), metrics_tag : UInt32) : Int32
@@ -586,4 +639,7 @@ lib LibHarfBuzz
   fun hb_variation_from_string(str : Pointer(UInt8), len : Int32, variation : Pointer(Void)) : Int32
   fun hb_variation_to_string(this : Void*, buf : Pointer(Pointer(Pointer(LibC::Char))), size : Pointer(UInt32)) : Void
   fun hb_variation_to_string(variation : Pointer(Void), buf : Pointer(Pointer(Pointer(LibC::Char))), size : Pointer(UInt32)) : Void
+  fun hb_version(major : Pointer(UInt32), minor : Pointer(UInt32), micro : Pointer(UInt32)) : Void
+  fun hb_version_atleast(major : UInt32, minor : UInt32, micro : UInt32) : Int32
+  fun hb_version_string : Pointer(LibC::Char)
 end

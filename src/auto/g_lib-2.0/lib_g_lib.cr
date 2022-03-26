@@ -32,6 +32,7 @@ lib LibGLib
   type IOFlags = UInt32
   type KeyFileFlags = UInt32
   type LogLevelFlags = Int32
+  type MainContextFlags = UInt32
   type MarkupCollectType = UInt32
   type MarkupParseFlags = UInt32
   type OptionFlags = UInt32
@@ -576,6 +577,9 @@ lib LibGLib
 
   # All C Functions
   fun g_access(filename : Pointer(LibC::Char), mode : Int32) : Int32
+  fun g_aligned_alloc(n_blocks : UInt64, n_block_bytes : UInt64, alignment : UInt64) : Pointer(Void)
+  fun g_aligned_alloc0(n_blocks : UInt64, n_block_bytes : UInt64, alignment : UInt64) : Pointer(Void)
+  fun g_aligned_free(mem : Pointer(Void)) : Void
   fun g_array_get_type : UInt64
   fun g_ascii_digit_value(c : Int8) : Int32
   fun g_ascii_dtostr(buffer : Pointer(LibC::Char), buf_len : Int32, d : Float64) : Pointer(LibC::Char)
@@ -956,6 +960,7 @@ lib LibGLib
   fun g_get_user_name : Pointer(LibC::Char)
   fun g_get_user_runtime_dir : Pointer(LibC::Char)
   fun g_get_user_special_dir(directory : UInt32) : Pointer(LibC::Char)
+  fun g_get_user_state_dir : Pointer(LibC::Char)
   fun g_getenv(variable : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun g_gstring_get_type : UInt64
   fun g_hash_table_add(hash_table : Pointer(Void), key : Pointer(Void)) : LibC::Int
@@ -976,6 +981,8 @@ lib LibGLib
   fun g_hash_table_lookup(hash_table : Pointer(Void), key : Pointer(Void)) : Pointer(Void)
   fun g_hash_table_lookup_extended(hash_table : Pointer(Void), lookup_key : Pointer(Void), orig_key : Pointer(Pointer(Void)), value : Pointer(Pointer(Void))) : LibC::Int
   fun g_hash_table_lookup_extended(hash_table : Pointer(Void), lookup_key : Pointer(Void), orig_key : Pointer(Pointer(Void)), value : Pointer(Pointer(Void))) : LibC::Int
+  fun g_hash_table_new_similar(other_hash_table : Pointer(Void)) : Pointer(Void)
+  fun g_hash_table_new_similar(other_hash_table : Pointer(Void)) : Pointer(Void)
   fun g_hash_table_remove(hash_table : Pointer(Void), key : Pointer(Void)) : LibC::Int
   fun g_hash_table_remove(hash_table : Pointer(Void), key : Pointer(Void)) : LibC::Int
   fun g_hash_table_remove_all(hash_table : Pointer(Void)) : Void
@@ -1120,8 +1127,10 @@ lib LibGLib
   fun g_locale_from_utf8(utf8string : Pointer(LibC::Char), len : Int64, bytes_read : Pointer(UInt64), bytes_written : Pointer(UInt64), error : LibGLib::Error**) : Pointer(UInt8)
   fun g_locale_to_utf8(opsysstring : Pointer(UInt8), len : Int64, bytes_read : Pointer(UInt64), bytes_written : Pointer(UInt64), error : LibGLib::Error**) : Pointer(LibC::Char)
   fun g_log_default_handler(log_domain : Pointer(LibC::Char), log_level : Int32, message : Pointer(LibC::Char), unused_data : Pointer(Void)) : Void
+  fun g_log_get_debug_enabled : LibC::Int
   fun g_log_remove_handler(log_domain : Pointer(LibC::Char), handler_id : UInt32) : Void
   fun g_log_set_always_fatal(fatal_mask : Int32) : Int32
+  fun g_log_set_debug_enabled(enabled : LibC::Int) : Void
   fun g_log_set_fatal_mask(log_domain : Pointer(LibC::Char), fatal_mask : Int32) : Int32
   fun g_log_set_handler_full(log_domain : Pointer(LibC::Char), log_levels : Int32, log_func : LogFunc, user_data : Pointer(Void), destroy : DestroyNotify) : UInt32
   fun g_log_set_writer_func(func : LogWriterFunc, user_data : Pointer(Void), user_data_free : DestroyNotify) : Void
@@ -1151,6 +1160,7 @@ lib LibGLib
   fun g_main_context_is_owner(this : Void*) : LibC::Int
   fun g_main_context_iteration(this : Void*, may_block : LibC::Int) : LibC::Int
   fun g_main_context_new : Pointer(Void)
+  fun g_main_context_new_with_flags(flags : UInt32) : Pointer(Void)
   fun g_main_context_pending(this : Void*) : LibC::Int
   fun g_main_context_pop_thread_default(this : Void*) : Void
   fun g_main_context_prepare(this : Void*, priority : Pointer(Int32)) : LibC::Int

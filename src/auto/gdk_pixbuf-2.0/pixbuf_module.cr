@@ -132,25 +132,25 @@ module GdkPixbuf
 
     def load : Pointer(Void)
       # Property getter
-      _var = (@pointer + 32).as(Pointer(Pointer(Void)))
-      _var.value
+      _var = (@pointer + 32).as(Pointer(LibGdkPixbuf::PixbufModuleLoadFunc))
+      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
     end
 
     def load=(value : Pointer(Void))
       # Property setter
-      _var = (@pointer + 32).as(Pointer(Pointer(Void))).value = value
+      _var = (@pointer + 32).as(Pointer(LibGdkPixbuf::PixbufModuleLoadFunc)).value = value.to_unsafe
       value
     end
 
     def load_xpm_data : Pointer(Void)
       # Property getter
-      _var = (@pointer + 40).as(Pointer(Pointer(Void)))
-      _var.value
+      _var = (@pointer + 40).as(Pointer(LibGdkPixbuf::PixbufModuleLoadXpmDataFunc))
+      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
     end
 
     def load_xpm_data=(value : Pointer(Void))
       # Property setter
-      _var = (@pointer + 40).as(Pointer(Pointer(Void))).value = value
+      _var = (@pointer + 40).as(Pointer(LibGdkPixbuf::PixbufModuleLoadXpmDataFunc)).value = value.to_unsafe
       value
     end
 
@@ -168,49 +168,49 @@ module GdkPixbuf
 
     def stop_load : Pointer(Void)
       # Property getter
-      _var = (@pointer + 56).as(Pointer(-> Void))
+      _var = (@pointer + 56).as(Pointer(LibGdkPixbuf::PixbufModuleStopLoadFunc))
       Pointer(Void).new(_var.value, GICrystal::Transfer::None)
     end
 
     def stop_load=(value : Pointer(Void))
       # Property setter
-      _var = (@pointer + 56).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 56).as(Pointer(LibGdkPixbuf::PixbufModuleStopLoadFunc)).value = value.to_unsafe
       value
     end
 
     def load_increment : Pointer(Void)
       # Property getter
-      _var = (@pointer + 64).as(Pointer(-> Void))
+      _var = (@pointer + 64).as(Pointer(LibGdkPixbuf::PixbufModuleIncrementLoadFunc))
       Pointer(Void).new(_var.value, GICrystal::Transfer::None)
     end
 
     def load_increment=(value : Pointer(Void))
       # Property setter
-      _var = (@pointer + 64).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 64).as(Pointer(LibGdkPixbuf::PixbufModuleIncrementLoadFunc)).value = value.to_unsafe
       value
     end
 
     def load_animation : Pointer(Void)
       # Property getter
-      _var = (@pointer + 72).as(Pointer(Pointer(Void)))
-      _var.value
+      _var = (@pointer + 72).as(Pointer(LibGdkPixbuf::PixbufModuleLoadAnimationFunc))
+      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
     end
 
     def load_animation=(value : Pointer(Void))
       # Property setter
-      _var = (@pointer + 72).as(Pointer(Pointer(Void))).value = value
+      _var = (@pointer + 72).as(Pointer(LibGdkPixbuf::PixbufModuleLoadAnimationFunc)).value = value.to_unsafe
       value
     end
 
     def save : Pointer(Void)
       # Property getter
-      _var = (@pointer + 80).as(Pointer(-> Void))
+      _var = (@pointer + 80).as(Pointer(LibGdkPixbuf::PixbufModuleSaveFunc))
       Pointer(Void).new(_var.value, GICrystal::Transfer::None)
     end
 
     def save=(value : Pointer(Void))
       # Property setter
-      _var = (@pointer + 80).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 80).as(Pointer(LibGdkPixbuf::PixbufModuleSaveFunc)).value = value.to_unsafe
       value
     end
 
@@ -228,13 +228,13 @@ module GdkPixbuf
 
     def is_save_option_supported : Pointer(Void)
       # Property getter
-      _var = (@pointer + 96).as(Pointer(-> Void))
+      _var = (@pointer + 96).as(Pointer(LibGdkPixbuf::PixbufModuleSaveOptionSupportedFunc))
       Pointer(Void).new(_var.value, GICrystal::Transfer::None)
     end
 
     def is_save_option_supported=(value : Pointer(Void))
       # Property setter
-      _var = (@pointer + 96).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 96).as(Pointer(LibGdkPixbuf::PixbufModuleSaveOptionSupportedFunc)).value = value.to_unsafe
       value
     end
 

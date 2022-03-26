@@ -32,7 +32,7 @@ module GLib
   # ]|
   ASCII_DTOSTR_BUF_SIZE = 39
   # Specifies one of the possible types of byte order.
-  # See #G_BYTE_ORDER.
+  # See %G_BYTE_ORDER.
   BIG_ENDIAN = 4321
   # The set of uppercase ASCII alphabet characters.
   # Used for specifying valid identifier characters
@@ -90,14 +90,14 @@ module GLib
   # ]|
   GINT16_MODIFIER = "h"
   # This is the platform dependent conversion specifier for scanning
-  # and printing values of type #gint32. See also #G_GINT16_FORMAT.
+  # and printing values of type #gint32. See also %G_GINT16_FORMAT.
   GINT32_FORMAT = "i"
   # The platform dependent length modifier for conversion specifiers
   # for scanning and printing values of type #gint32 or #guint32. It
-  # is a string literal. See also #G_GINT16_MODIFIER.
+  # is a string literal. See also %G_GINT16_MODIFIER.
   GINT32_MODIFIER = ""
   # This is the platform dependent conversion specifier for scanning
-  # and printing values of type #gint64. See also #G_GINT16_FORMAT.
+  # and printing values of type #gint64. See also %G_GINT16_FORMAT.
   #
   # Some platforms do not support scanning and printing 64-bit integers,
   # even though the types are supported. On such platforms %G_GINT64_FORMAT
@@ -128,27 +128,27 @@ module GLib
   # on gcc version 2.x. Don't use it.
   GNUC_PRETTY_FUNCTION = ""
   # This is the platform dependent conversion specifier for scanning
-  # and printing values of type #gsize. See also #G_GINT16_FORMAT.
+  # and printing values of type #gsize. See also %G_GINT16_FORMAT.
   GSIZE_FORMAT = "lu"
   # The platform dependent length modifier for conversion specifiers
   # for scanning and printing values of type #gsize. It
   # is a string literal.
   GSIZE_MODIFIER = "l"
   # This is the platform dependent conversion specifier for scanning
-  # and printing values of type #gssize. See also #G_GINT16_FORMAT.
+  # and printing values of type #gssize. See also %G_GINT16_FORMAT.
   GSSIZE_FORMAT = "li"
   # The platform dependent length modifier for conversion specifiers
   # for scanning and printing values of type #gssize. It
   # is a string literal.
   GSSIZE_MODIFIER = "l"
   # This is the platform dependent conversion specifier for scanning
-  # and printing values of type #guint16. See also #G_GINT16_FORMAT
+  # and printing values of type #guint16. See also %G_GINT16_FORMAT
   GUINT16_FORMAT = "hu"
   # This is the platform dependent conversion specifier for scanning
-  # and printing values of type #guint32. See also #G_GINT16_FORMAT.
+  # and printing values of type #guint32. See also %G_GINT16_FORMAT.
   GUINT32_FORMAT = "u"
   # This is the platform dependent conversion specifier for scanning
-  # and printing values of type #guint64. See also #G_GINT16_FORMAT.
+  # and printing values of type #guint64. See also %G_GINT16_FORMAT.
   #
   # Some platforms do not support scanning and printing 64-bit integers,
   # even though the types are supported. On such platforms %G_GUINT64_FORMAT
@@ -272,7 +272,7 @@ module GLib
   # entries representing links to documents.
   KEY_FILE_DESKTOP_TYPE_LINK = "Link"
   # Specifies one of the possible types of byte order.
-  # See #G_BYTE_ORDER.
+  # See %G_BYTE_ORDER.
   LITTLE_ENDIAN = 1234
   # The natural logarithm of 10.
   LN10 = 2.302585
@@ -339,7 +339,7 @@ module GLib
   # Like #gtk_micro_version, but from the headers used at
   # application compile time, rather than from the library
   # linked against at application run time.
-  MICRO_VERSION = 2
+  MICRO_VERSION = 0
   # The minimum value which can be held in a #gint16.
   MININT16 = -32768_i16
   # The minimum value which can be held in a #gint32.
@@ -353,7 +353,7 @@ module GLib
   # Like #gtk_minor_version, but from the headers used at
   # application compile time, rather than from the library
   # linked against at application run time.
-  MINOR_VERSION = 70
+  MINOR_VERSION = 72
   MODULE_SUFFIX = "so"
   # If a long option in the main group has this name, it is not treated as a
   # regular option. Instead it collects all non-option arguments which would
@@ -362,12 +362,12 @@ module GLib
   # or %G_OPTION_ARG_FILENAME_ARRAY.
   #
   #
-  # Using #G_OPTION_REMAINING instead of simply scanning `argv`
+  # Using %G_OPTION_REMAINING instead of simply scanning `argv`
   # for leftover arguments has the advantage that GOption takes care of
   # necessary encoding conversions for strings or filenames.
   OPTION_REMAINING = ""
   # Specifies one of the possible types of byte order
-  # (currently unused). See #G_BYTE_ORDER.
+  # (currently unused). See %G_BYTE_ORDER.
   PDP_ENDIAN = 3412
   # The value of pi (ratio of circle's circumference to its diameter).
   PI = 3.141593
@@ -398,8 +398,8 @@ module GLib
   PRIORITY_HIGH = -100
   # Use this for high priority idle functions.
   #
-  # GTK+ uses #G_PRIORITY_HIGH_IDLE + 10 for resizing operations,
-  # and #G_PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is
+  # GTK+ uses %G_PRIORITY_HIGH_IDLE + 10 for resizing operations,
+  # and %G_PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is
   # done to ensure that any pending resizes are processed before any
   # pending redraws, so that widgets are not redrawn twice unnecessarily.)
   PRIORITY_HIGH_IDLE = 100
@@ -450,6 +450,7 @@ module GLib
   #  - g_get_user_config_dir()
   #  - g_get_system_data_dirs()
   #  - g_get_user_data_dir()
+  #  - g_get_user_state_dir()
   #  - g_get_user_runtime_dir()
   #
   # The subdirectories may not be created by the test harness; as with normal
@@ -569,8 +570,8 @@ module GLib
     December = 12
   end
 
-  # Enumeration representing a day of the week; #G_DATE_MONDAY,
-  # #G_DATE_TUESDAY, etc. #G_DATE_BAD_WEEKDAY is an invalid weekday.
+  # Enumeration representing a day of the week; %G_DATE_MONDAY,
+  # %G_DATE_TUESDAY, etc. %G_DATE_BAD_WEEKDAY is an invalid weekday.
   enum DateWeekday : UInt32
     # invalid value
     BadWeekday = 0
@@ -1311,6 +1312,18 @@ module GLib
     KhitanSmallScript = 155
     # Yezidi. Since: 2.66
     Yezidi = 156
+    # Cypro-Minoan. Since: 2.72
+    CyproMinoan = 157
+    # Old Uyghur. Since: 2.72
+    OldUyghur = 158
+    # Tangsa. Since: 2.72
+    Tangsa = 159
+    # Toto. Since: 2.72
+    Toto = 160
+    # Vithkuqi. Since: 2.72
+    Vithkuqi = 161
+    # Mathematical notation. Since: 2.72
+    Math = 162
   end
 
   # These are the possible character classifications from the
@@ -1533,6 +1546,10 @@ module GLib
     LevelInfo     =  64
     LevelDebug    = 128
     LevelMask     =  -4
+  end
+  @[Flags]
+  enum MainContextFlags : UInt32
+    OwnerlessPolling = 1
   end
   @[Flags]
   enum MarkupCollectType : UInt32

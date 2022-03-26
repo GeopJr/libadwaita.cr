@@ -35,6 +35,9 @@ module Gio
   # On Solaris (including OpenSolaris and its derivatives), the native
   # credential type is a `ucred_t`. This corresponds to
   # %G_CREDENTIALS_TYPE_SOLARIS_UCRED.
+  #
+  # Since GLib 2.72, on Windows, the native credentials may contain the PID of a
+  # process. This corresponds to %G_CREDENTIALS_TYPE_WIN32_PID.
   class Credentials < GObject::Object
     @pointer : Pointer(Void)
 

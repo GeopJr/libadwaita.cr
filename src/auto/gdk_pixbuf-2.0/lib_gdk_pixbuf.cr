@@ -15,8 +15,15 @@ lib LibGdkPixbuf
   alias PixbufDestroyNotify = Pointer(UInt8), Pointer(Void) -> Void
   alias PixbufModuleFillInfoFunc = Pointer(LibGdkPixbuf::PixbufFormat) -> Void
   alias PixbufModuleFillVtableFunc = Pointer(LibGdkPixbuf::PixbufModule) -> Void
+  alias PixbufModuleIncrementLoadFunc = Pointer(Void), Pointer(UInt8), UInt32 -> LibC::Int
+  alias PixbufModuleLoadAnimationFunc = Pointer(Void) -> Pointer(LibGdkPixbuf::PixbufAnimation)
+  alias PixbufModuleLoadFunc = Pointer(Void) -> Pointer(LibGdkPixbuf::Pixbuf)
+  alias PixbufModuleLoadXpmDataFunc = Pointer(Pointer(LibC::Char)) -> Pointer(LibGdkPixbuf::Pixbuf)
   alias PixbufModulePreparedFunc = Pointer(LibGdkPixbuf::Pixbuf), Pointer(LibGdkPixbuf::PixbufAnimation), Pointer(Void) -> Void
+  alias PixbufModuleSaveFunc = Pointer(Void), Pointer(LibGdkPixbuf::Pixbuf), Pointer(Pointer(LibC::Char)), Pointer(Pointer(LibC::Char)) -> LibC::Int
+  alias PixbufModuleSaveOptionSupportedFunc = Pointer(LibC::Char) -> LibC::Int
   alias PixbufModuleSizeFunc = Pointer(Int32), Pointer(Int32), Pointer(Void) -> Void
+  alias PixbufModuleStopLoadFunc = Pointer(Void) -> LibC::Int
   alias PixbufModuleUpdatedFunc = Pointer(LibGdkPixbuf::Pixbuf), Int32, Int32, Int32, Int32, Pointer(Void) -> Void
   alias PixbufSaveFunc = Pointer(UInt8), UInt64, Pointer(Void), Pointer(Void) -> LibC::Int
 
@@ -41,15 +48,15 @@ lib LibGdkPixbuf
     module_path : Pointer(LibC::Char)
     _module : Pointer(LibGModule::Module)
     info : Pointer(LibGdkPixbuf::PixbufFormat)
-    load : Pointer(Void)
-    load_xpm_data : Pointer(Void)
+    load : LibGdkPixbuf::PixbufModuleLoadFunc
+    load_xpm_data : LibGdkPixbuf::PixbufModuleLoadXpmDataFunc
     begin_load : Pointer(Void)
-    stop_load : -> Void
-    load_increment : -> Void
-    load_animation : Pointer(Void)
-    save : -> Void
+    stop_load : LibGdkPixbuf::PixbufModuleStopLoadFunc
+    load_increment : LibGdkPixbuf::PixbufModuleIncrementLoadFunc
+    load_animation : LibGdkPixbuf::PixbufModuleLoadAnimationFunc
+    save : LibGdkPixbuf::PixbufModuleSaveFunc
     save_to_callback : Pointer(Void)
-    is_save_option_supported : -> Void
+    is_save_option_supported : LibGdkPixbuf::PixbufModuleSaveOptionSupportedFunc
     _reserved1 : Pointer(Void)
     _reserved2 : Pointer(Void)
     _reserved3 : Pointer(Void)

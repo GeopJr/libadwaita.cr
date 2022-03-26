@@ -897,7 +897,7 @@ module GdkPixbuf
     end
 
     def bits_per_sample : Int32
-      # gdk_pixbuf_get_bits_per_sample: (Method)
+      # gdk_pixbuf_get_bits_per_sample: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters
@@ -923,7 +923,7 @@ module GdkPixbuf
     end
 
     def colorspace : GdkPixbuf::Colorspace
-      # gdk_pixbuf_get_colorspace: (Method)
+      # gdk_pixbuf_get_colorspace: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters
@@ -936,7 +936,7 @@ module GdkPixbuf
     end
 
     def has_alpha : Bool
-      # gdk_pixbuf_get_has_alpha: (Method)
+      # gdk_pixbuf_get_has_alpha: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters
@@ -949,7 +949,7 @@ module GdkPixbuf
     end
 
     def height : Int32
-      # gdk_pixbuf_get_height: (Method)
+      # gdk_pixbuf_get_height: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters
@@ -962,7 +962,7 @@ module GdkPixbuf
     end
 
     def n_channels : Int32
-      # gdk_pixbuf_get_n_channels: (Method)
+      # gdk_pixbuf_get_n_channels: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters
@@ -1016,7 +1016,7 @@ module GdkPixbuf
     end
 
     def rowstride : Int32
-      # gdk_pixbuf_get_rowstride: (Method)
+      # gdk_pixbuf_get_rowstride: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters
@@ -1029,7 +1029,7 @@ module GdkPixbuf
     end
 
     def width : Int32
-      # gdk_pixbuf_get_width: (Method)
+      # gdk_pixbuf_get_width: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters

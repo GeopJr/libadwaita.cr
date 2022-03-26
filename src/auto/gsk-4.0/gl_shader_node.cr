@@ -15,14 +15,18 @@ module Gsk
       LibGsk.gsk_gl_shader_node_get_type
     end
 
-    def initialize(shader : Gsk::GLShader, bounds : Graphene::Rect, args : GLib::Bytes, children : Enumerable(Gsk::RenderNode))
+    def initialize(shader : Gsk::GLShader, bounds : Graphene::Rect, args : GLib::Bytes, children : Enumerable(Gsk::RenderNode)?)
       # gsk_gl_shader_node_new: (Constructor)
-      # @children: (array length=n_children element-type Interface)
+      # @children: (nullable) (array length=n_children element-type Interface)
       # Returns: (transfer full)
 
       # Handle parameters
-      n_children = children.size
-      children = children.to_a.map(&.to_unsafe).to_unsafe
+      n_children = children.try(&.size) || 0
+      children = if children.nil?
+                   Pointer(Pointer(Void)).null
+                 else
+                   children.to_a.map(&.to_unsafe).to_unsafe
+                 end
 
       # C call
       _retval = LibGsk.gsk_gl_shader_node_new(shader, bounds, args, children, n_children)

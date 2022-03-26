@@ -70,7 +70,7 @@ module GdkPixbuf
     end
 
     def loop : Bool
-      # gdk_pixbuf_simple_anim_get_loop: (Method)
+      # gdk_pixbuf_simple_anim_get_loop: (Method | Getter)
       # Returns: (transfer none)
 
       # Handle parameters
@@ -83,7 +83,7 @@ module GdkPixbuf
     end
 
     def loop=(loop : Bool) : Nil
-      # gdk_pixbuf_simple_anim_set_loop: (Method)
+      # gdk_pixbuf_simple_anim_set_loop: (Method | Setter)
       # Returns: (transfer none)
 
       # Handle parameters

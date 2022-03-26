@@ -1605,6 +1605,65 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
+    def move_async(destination : Gio::File, flags : Gio::FileCopyFlags, io_priority : Int32, cancellable : Gio::Cancellable?, progress_callback : Pointer(Void)?, progress_callback_data : Pointer(Void)?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+      # g_file_move_async: (Method)
+      # @cancellable: (nullable)
+      # @progress_callback: (nullable)
+      # @progress_callback_data: (nullable)
+      # @callback: (nullable)
+      # @user_data: (nullable)
+      # Returns: (transfer none)
+
+      # Handle parameters
+      cancellable = if cancellable.nil?
+                      Pointer(Void).null
+                    else
+                      cancellable.to_unsafe
+                    end
+      progress_callback = if progress_callback.nil?
+                            LibGio::FileProgressCallback.null
+                          else
+                            progress_callback.to_unsafe
+                          end
+      progress_callback_data = if progress_callback_data.nil?
+                                 Pointer(Void).null
+                               else
+                                 progress_callback_data.to_unsafe
+                               end
+      callback = if callback.nil?
+                   LibGio::AsyncReadyCallback.null
+                 else
+                   callback.to_unsafe
+                 end
+      user_data = if user_data.nil?
+                    Pointer(Void).null
+                  else
+                    user_data.to_unsafe
+                  end
+
+      # C call
+      LibGio.g_file_move_async(self, destination, flags, io_priority, cancellable, progress_callback, progress_callback_data, callback, user_data)
+
+      # Return value handling
+    end
+
+    def move_finish(result : Gio::AsyncResult) : Bool
+      # g_file_move_finish: (Method | Throws)
+      # Returns: (transfer none)
+
+      _error = Pointer(LibGLib::Error).null
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGio.g_file_move_finish(self, result, pointerof(_error))
+
+      # Error check
+      Gio.raise_exception(_error) unless _error.null?
+      # Return value handling
+      GICrystal.to_bool(_retval)
+    end
+
     def open_readwrite(cancellable : Gio::Cancellable?) : Gio::FileIOStream
       # g_file_open_readwrite: (Method | Throws)
       # @cancellable: (nullable)

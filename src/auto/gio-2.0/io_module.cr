@@ -45,29 +45,5 @@ module Gio
       # Return value handling
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
-
-    def load : Nil
-      # g_io_module_load: (Method)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      LibGio.g_io_module_load(self)
-
-      # Return value handling
-    end
-
-    def unload : Nil
-      # g_io_module_unload: (Method)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      LibGio.g_io_module_unload(self)
-
-      # Return value handling
-    end
   end
 end

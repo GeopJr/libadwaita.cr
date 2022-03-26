@@ -30,9 +30,9 @@ module Adw
       super
     end
 
-    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, action_name : ::String? = nil, action_target : GLib::Variant? = nil, activatable : Bool? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selectable : Bool? = nil, sensitive : Bool? = nil, title : ::String? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, use_underline : Bool? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
-      _names = uninitialized Pointer(LibC::Char)[42]
-      _values = StaticArray(LibGObject::Value, 42).new(LibGObject::Value.new)
+    def initialize(*, accessible_role : Gtk::AccessibleRole? = nil, action_name : ::String? = nil, action_target : GLib::Variant? = nil, activatable : Bool? = nil, can_focus : Bool? = nil, can_target : Bool? = nil, child : Gtk::Widget? = nil, css_classes : Enumerable(::String)? = nil, css_name : ::String? = nil, cursor : Gdk::Cursor? = nil, focus_on_click : Bool? = nil, focusable : Bool? = nil, halign : Gtk::Align? = nil, has_default : Bool? = nil, has_focus : Bool? = nil, has_tooltip : Bool? = nil, height_request : Int32? = nil, hexpand : Bool? = nil, hexpand_set : Bool? = nil, layout_manager : Gtk::LayoutManager? = nil, margin_bottom : Int32? = nil, margin_end : Int32? = nil, margin_start : Int32? = nil, margin_top : Int32? = nil, name : ::String? = nil, opacity : Float64? = nil, overflow : Gtk::Overflow? = nil, parent : Gtk::Widget? = nil, receives_default : Bool? = nil, root : Gtk::Root? = nil, scale_factor : Int32? = nil, selectable : Bool? = nil, sensitive : Bool? = nil, title : ::String? = nil, title_selectable : Bool? = nil, tooltip_markup : ::String? = nil, tooltip_text : ::String? = nil, use_underline : Bool? = nil, valign : Gtk::Align? = nil, vexpand : Bool? = nil, vexpand_set : Bool? = nil, visible : Bool? = nil, width_request : Int32? = nil)
+      _names = uninitialized Pointer(LibC::Char)[43]
+      _values = StaticArray(LibGObject::Value, 43).new(LibGObject::Value.new)
       _n = 0
 
       if accessible_role
@@ -205,6 +205,11 @@ module Adw
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
+      if title_selectable
+        (_names.to_unsafe + _n).value = "title-selectable".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, title_selectable)
+        _n += 1
+      end
       if tooltip_markup
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
@@ -269,6 +274,21 @@ module Adw
       ::String.new(value)
     end
 
+    def title_selectable=(value : Bool) : Bool
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "title-selectable", unsafe_value, Pointer(Void).null)
+      value
+    end
+
+    def title_selectable? : Bool
+      # Returns: None
+
+      value = uninitialized LibC::Int
+      LibGObject.g_object_get(self, "title-selectable", pointerof(value), Pointer(Void).null)
+      GICrystal.to_bool(value)
+    end
+
     def use_underline=(value : Bool) : Bool
       unsafe_value = value
 
@@ -311,6 +331,19 @@ module Adw
       ::String.new(_retval)
     end
 
+    def title_selectable : Bool
+      # adw_preferences_row_get_title_selectable: (Method | Getter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibAdw.adw_preferences_row_get_title_selectable(self)
+
+      # Return value handling
+      GICrystal.to_bool(_retval)
+    end
+
     def use_underline : Bool
       # adw_preferences_row_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
@@ -332,6 +365,18 @@ module Adw
 
       # C call
       LibAdw.adw_preferences_row_set_title(self, title)
+
+      # Return value handling
+    end
+
+    def title_selectable=(title_selectable : Bool) : Nil
+      # adw_preferences_row_set_title_selectable: (Method | Setter)
+      # Returns: (transfer none)
+
+      # Handle parameters
+
+      # C call
+      LibAdw.adw_preferences_row_set_title_selectable(self, title_selectable)
 
       # Return value handling
     end

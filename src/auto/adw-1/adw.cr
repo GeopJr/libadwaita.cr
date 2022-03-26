@@ -64,12 +64,12 @@ module Adw
   # Adwaita major version component (e.g. 1 if the version is 1.2.3).
   MAJOR_VERSION = 1
   # Adwaita micro version component (e.g. 3 if the version is 1.2.3).
-  MICRO_VERSION = 2
+  MICRO_VERSION = 0
   # Adwaita minor version component (e.g. 2 if the version is 1.2.3).
-  MINOR_VERSION = 0
+  MINOR_VERSION = 1
   # Adwaita version, encoded as a string, useful for printing and
   # concatenation.
-  VERSION_S = "1.0.2"
+  VERSION_S = "1.1.0"
 
   # Base class for all errors in this module.
   class AdwError < RuntimeError

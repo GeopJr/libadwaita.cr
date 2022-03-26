@@ -36,6 +36,19 @@ module GLib
       @pointer = _retval
     end
 
+    def self.new_with_flags(flags : GLib::MainContextFlags) : self
+      # g_main_context_new_with_flags: (Constructor)
+      # Returns: (transfer full)
+
+      # Handle parameters
+
+      # C call
+      _retval = LibGLib.g_main_context_new_with_flags(flags)
+
+      # Return value handling
+      GLib::MainContext.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def acquire : Bool
       # g_main_context_acquire: (Method)
       # Returns: (transfer none)

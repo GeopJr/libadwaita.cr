@@ -184,6 +184,90 @@ module Gio
       LaunchFailedSignal.new(self)
     end
 
+    struct LaunchStartedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "launch-started::#{@detail}" : "launch-started"
+      end
+
+      def connect(&block : Proc(Gio::AppInfo, GLib::Variant?, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gio::AppInfo, GLib::Variant?, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gio::AppInfo, GLib::Variant?, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = (lib_arg1.null? ? nil : GLib::Variant.new(lib_arg1, GICrystal::Transfer::None))
+          ::Box(Proc(Gio::AppInfo, GLib::Variant?, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::AppInfo, GLib::Variant?, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = (lib_arg1.null? ? nil : GLib::Variant.new(lib_arg1, GICrystal::Transfer::None))
+          ::Box(Proc(Gio::AppInfo, GLib::Variant?, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant?, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::AppLaunchContext.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = (lib_arg1.null? ? nil : GLib::Variant.new(lib_arg1, GICrystal::Transfer::None))
+          ::Box(Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant?, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant?, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::AppLaunchContext.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = (lib_arg1.null? ? nil : GLib::Variant.new(lib_arg1, GICrystal::Transfer::None))
+          ::Box(Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant?, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(info : Gio::AppInfo, platform_data : _?) : Nil
+        platform_data = GLib::Variant.new(platform_data) unless platform_data.is_a?(GLib::Variant)
+        LibGObject.g_signal_emit_by_name(@source, "launch-started", info, platform_data)
+      end
+    end
+
+    def launch_started_signal
+      LaunchStartedSignal.new(self)
+    end
+
     struct LaunchedSignal
       @source : GObject::Object
       @detail : String?
