@@ -4,9 +4,12 @@ require "../gio-2.0/list_model"
 module Gtk
   # A `GtkMapListModel` maps the items in a list model to different items.
   #
-  # `GtkMapListModel` uses a [callback@Gtk.MapListModelMapFunc].
+  # `GtkMapListModel` uses a `Gtk#MapListModelMapFunc`.
   #
   # Example: Create a list of `GtkEventControllers`
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static gpointer
   # map_to_controllers (gpointer widget,
@@ -29,10 +32,18 @@ module Gtk
   #
   # `GtkMapListModel` will attempt to discard the mapped objects as soon as
   # they are no longer needed and recreate them if necessary.
+  @[GObject::GeneratedWrapper]
   class MapListModel < GObject::Object
     include Gio::ListModel
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::MapListModelClass), class_init,
+        sizeof(LibGtk::MapListModel), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -44,18 +55,22 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if has_map
+      if !has_map.nil?
         (_names.to_unsafe + _n).value = "has-map".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_map)
         _n += 1
       end
-      if model
+      if !model.nil?
         (_names.to_unsafe + _n).value = "model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, model)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(MapListModel.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -86,6 +101,7 @@ module Gtk
       Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkMapListModel` for the given arguments.
     def initialize(model : Gio::ListModel?, map_func : Pointer(Void)?, user_data : Pointer(Void)?, user_destroy : Pointer(Void))
       # gtk_map_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)
@@ -93,69 +109,86 @@ module Gtk
       # @user_data: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
                 model.to_unsafe
               end
+
+      # Generator::NullableArrayPlan
       map_func = if map_func.nil?
                    LibGtk::MapListModelMapFunc.null
                  else
                    map_func.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
-      LibGObject.g_object_ref(model)
 
       # C call
       _retval = LibGtk.gtk_map_list_model_new(model, map_func, user_data, user_destroy)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the model that is currently being mapped or %NULL if none.
     def model : Gio::ListModel?
       # gtk_map_list_model_get_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_map_list_model_get_model(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Checks if a map function is currently set on @self.
     def has_map : Bool
       # gtk_map_list_model_has_map: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_map_list_model_has_map(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets the function used to map items.
+    #
+    # The function will be called whenever an item needs to be mapped
+    # and must return the item to use for the given input item.
+    #
+    # Note that `GtkMapListModel` may call this function multiple times
+    # on the same item, because it may delete items it doesn't need anymore.
+    #
+    # GTK makes no effort to ensure that @map_func conforms to the item type
+    # of @self. It assumes that the caller knows what they are doing and the map
+    # function returns items of the appropriate type.
     def set_map_func(map_func : Pointer(Void)?, user_data : Pointer(Void)?, user_destroy : Pointer(Void)) : Nil
       # gtk_map_list_model_set_map_func: (Method)
       # @map_func: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       map_func = if map_func.nil?
                    LibGtk::MapListModelMapFunc.null
                  else
                    map_func.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -168,12 +201,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the model to be mapped.
+    #
+    # GTK makes no effort to ensure that @model conforms to the item type
+    # expected by the map function. It assumes that the caller knows what
+    # they are doing and have set up an appropriate map function.
     def model=(model : Gio::ListModel?) : Nil
       # gtk_map_list_model_set_model: (Method)
       # @model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else

@@ -17,11 +17,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       inbuf_size = inbuf.size
-      outbuf_size = outbuf.size
+      # Generator::ArrayArgPlan
       inbuf = inbuf.to_a.to_unsafe
 
+      # Generator::ArrayLengthArgPlan
+      outbuf_size = outbuf.size
+      # Generator::ArrayArgPlan
       outbuf = outbuf.to_a.to_unsafe
 
       # C call
@@ -29,15 +32,15 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
-      Gio::ConverterResult.from_value(_retval)
+
+      Gio::ConverterResult.new(_retval)
     end
 
     def reset : Nil
       # g_converter_reset: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_converter_reset(self)
@@ -49,6 +52,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Converter__Impl < GObject::Object
     include Converter
 

@@ -32,21 +32,26 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_parameters = parameters.size
+      # Generator::ArrayArgPlan
+      parameters = parameters.to_a.map(&.to_unsafe).to_unsafe
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-      parameters = parameters.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGio.g_initable_newv(object_type, n_parameters, parameters, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GObject::Object.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -57,7 +62,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -69,7 +74,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -77,6 +84,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Initable__Impl < GObject::Object
     include Initable
 

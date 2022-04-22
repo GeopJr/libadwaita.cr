@@ -2,8 +2,8 @@ module Gtk
   # `GtkScrollable` is an interface for widgets with native scrolling ability.
   #
   # To implement this interface you should override the
-  # [property@Gtk.Scrollable:hadjustment] and
-  # [property@Gtk.Scrollable:vadjustment] properties.
+  # `Gtk::Scrollable#hadjustment` and
+  # `Gtk::Scrollable#vadjustment` properties.
   #
   # ## Creating a scrollable widget
   #
@@ -11,8 +11,8 @@ module Gtk
   #
   # - When a parent widget sets the scrollable child widget’s adjustments,
   #   the widget should populate the adjustments’
-  #   [property@Gtk.Adjustment:lower],
-  #   [property@Gtk.Adjustment:upper],
+  #   `Gtk::Adjustment#lower`,
+  #   `Gtk::Adjustment#upper`,
   #   [property@Gtk.Adjustment:step-increment],
   #   [property@Gtk.Adjustment:page-increment] and
   #   [property@Gtk.Adjustment:page-size] properties and connect to the
@@ -21,7 +21,7 @@ module Gtk
   # - Because its preferred size is the size for a fully expanded widget,
   #   the scrollable widget must be able to cope with underallocations.
   #   This means that it must accept any value passed to its
-  #   [vfunc@Gtk.Widget.size_allocate] implementation.
+  #   `Gtk::Widget#size_allocate` implementation.
   #
   # - When the parent allocates space to the scrollable child widget,
   #   the widget should update the adjustments’ properties with new values.
@@ -56,7 +56,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "hscroll-policy", pointerof(value), Pointer(Void).null)
-      Gtk::ScrollablePolicy.from_value(value)
+      Gtk::ScrollablePolicy.new(value)
     end
 
     def vadjustment=(value : Gtk::Adjustment?) : Gtk::Adjustment?
@@ -86,7 +86,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "vscroll-policy", pointerof(value), Pointer(Void).null)
-      Gtk::ScrollablePolicy.from_value(value)
+      Gtk::ScrollablePolicy.new(value)
     end
 
     def border : Gtk::Border
@@ -94,13 +94,14 @@ module Gtk
       # @border: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       border = Gtk::Border.new
 
       # C call
       _retval = LibGtk.gtk_scrollable_get_border(self, border)
 
       # Return value handling
+
       border
     end
 
@@ -108,12 +109,11 @@ module Gtk
       # gtk_scrollable_get_hadjustment: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_scrollable_get_hadjustment(self)
 
       # Return value handling
+
       Gtk::Adjustment.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -121,25 +121,23 @@ module Gtk
       # gtk_scrollable_get_hscroll_policy: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_scrollable_get_hscroll_policy(self)
 
       # Return value handling
-      Gtk::ScrollablePolicy.from_value(_retval)
+
+      Gtk::ScrollablePolicy.new(_retval)
     end
 
     def vadjustment : Gtk::Adjustment?
       # gtk_scrollable_get_vadjustment: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_scrollable_get_vadjustment(self)
 
       # Return value handling
+
       Gtk::Adjustment.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -147,13 +145,12 @@ module Gtk
       # gtk_scrollable_get_vscroll_policy: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_scrollable_get_vscroll_policy(self)
 
       # Return value handling
-      Gtk::ScrollablePolicy.from_value(_retval)
+
+      Gtk::ScrollablePolicy.new(_retval)
     end
 
     def hadjustment=(hadjustment : Gtk::Adjustment?) : Nil
@@ -161,7 +158,7 @@ module Gtk
       # @hadjustment: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       hadjustment = if hadjustment.nil?
                       Pointer(Void).null
                     else
@@ -178,8 +175,6 @@ module Gtk
       # gtk_scrollable_set_hscroll_policy: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_scrollable_set_hscroll_policy(self, policy)
 
@@ -191,7 +186,7 @@ module Gtk
       # @vadjustment: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       vadjustment = if vadjustment.nil?
                       Pointer(Void).null
                     else
@@ -208,8 +203,6 @@ module Gtk
       # gtk_scrollable_set_vscroll_policy: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_scrollable_set_vscroll_policy(self, policy)
 
@@ -220,6 +213,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Scrollable__Impl < GObject::Object
     include Scrollable
 

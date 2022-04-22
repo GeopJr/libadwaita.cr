@@ -4,8 +4,16 @@ module Gio
   # #GDBusMenuModel is an implementation of #GMenuModel that can be used
   # as a proxy for a menu model that is exported over D-Bus with
   # g_dbus_connection_export_menu_model().
+  @[GObject::GeneratedWrapper]
   class DBusMenuModel < MenuModel
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGio::DBusMenuModel), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -17,12 +25,20 @@ module Gio
       LibGio.g_dbus_menu_model_get_type
     end
 
+    # Obtains a #GDBusMenuModel for the menu model which is exported
+    # at the given @bus_name and @object_path.
+    #
+    # The thread default main context is taken at the time of this call.
+    # All signals on the menu model (and any linked models) are reported
+    # with respect to this context.  All calls on the returned menu model
+    # (and linked models) must also originate from this same context, with
+    # the thread default main context unchanged.
     def self.get(connection : Gio::DBusConnection, bus_name : ::String?, object_path : ::String) : Gio::DBusMenuModel
       # g_dbus_menu_model_get: (None)
       # @bus_name: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       bus_name = if bus_name.nil?
                    Pointer(LibC::Char).null
                  else
@@ -33,6 +49,7 @@ module Gio
       _retval = LibGio.g_dbus_menu_model_get(connection, bus_name, object_path)
 
       # Return value handling
+
       Gio::DBusMenuModel.new(_retval, GICrystal::Transfer::Full)
     end
   end

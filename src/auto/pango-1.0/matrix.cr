@@ -12,7 +12,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::Matrix))
@@ -35,74 +35,66 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::Matrix)).zero?
+    end
+
     def xx : Float64
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Float64))
       _var.value
     end
 
     def xx=(value : Float64)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Float64)).value = value
       value
     end
 
     def xy : Float64
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Float64))
       _var.value
     end
 
     def xy=(value : Float64)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Float64)).value = value
       value
     end
 
     def yx : Float64
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Float64))
       _var.value
     end
 
     def yx=(value : Float64)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Float64)).value = value
       value
     end
 
     def yy : Float64
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Float64))
       _var.value
     end
 
     def yy=(value : Float64)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Float64)).value = value
       value
     end
 
     def x0 : Float64
-      # Property getter
       _var = (@pointer + 32).as(Pointer(Float64))
       _var.value
     end
 
     def x0=(value : Float64)
-      # Property setter
       _var = (@pointer + 32).as(Pointer(Float64)).value = value
       value
     end
 
     def y0 : Float64
-      # Property getter
       _var = (@pointer + 40).as(Pointer(Float64))
       _var.value
     end
 
     def y0=(value : Float64)
-      # Property setter
       _var = (@pointer + 40).as(Pointer(Float64)).value = value
       value
     end
@@ -116,8 +108,6 @@ module Pango
       # pango_matrix_concat: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibPango.pango_matrix_concat(self, new_matrix)
 
@@ -128,20 +118,17 @@ module Pango
       # pango_matrix_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_matrix_copy(self)
 
       # Return value handling
+
       Pango::Matrix.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def free : Nil
       # pango_matrix_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_matrix_free(self)
@@ -153,12 +140,11 @@ module Pango
       # pango_matrix_get_font_scale_factor: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_matrix_get_font_scale_factor(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -168,8 +154,9 @@ module Pango
       # @yscale: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       xscale = Pointer(Float64).null
+      # Generator::OutArgUsedInReturnPlan
       yscale = Pointer(Float64).null
 
       # C call
@@ -182,20 +169,17 @@ module Pango
       # pango_matrix_get_slant_ratio: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_matrix_get_slant_ratio(self)
 
       # Return value handling
+
       _retval
     end
 
     def rotate(degrees : Float64) : Nil
       # pango_matrix_rotate: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_matrix_rotate(self, degrees)
@@ -206,8 +190,6 @@ module Pango
     def scale(scale_x : Float64, scale_y : Float64) : Nil
       # pango_matrix_scale: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_matrix_scale(self, scale_x, scale_y)
@@ -221,8 +203,6 @@ module Pango
       # @dy: (inout) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibPango.pango_matrix_transform_distance(self, dx, dy)
 
@@ -234,7 +214,7 @@ module Pango
       # @rect: (inout) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       rect = Pointer(Void).null
 
       # C call
@@ -249,8 +229,6 @@ module Pango
       # @y: (inout) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibPango.pango_matrix_transform_point(self, x, y)
 
@@ -262,7 +240,7 @@ module Pango
       # @rect: (inout) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       rect = Pointer(Void).null
 
       # C call
@@ -274,8 +252,6 @@ module Pango
     def translate(tx : Float64, ty : Float64) : Nil
       # pango_matrix_translate: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_matrix_translate(self, tx, ty)

@@ -6,15 +6,23 @@ module Gdk
   # Vulkan draw context.
   #
   # `GdkVulkanContext`s are created for a surface using
-  # [method@Gdk.Surface.create_vulkan_context], and the context will match
+  # `Gdk::Surface#create_vulkan_context`, and the context will match
   # the characteristics of the surface.
   #
   # Support for `GdkVulkanContext` is platform-specific and context creation
   # can fail, returning %NULL context.
+  @[GObject::GeneratedWrapper]
   class VulkanContext < DrawContext
     include Gio::Initable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGdk::VulkanContext), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -26,18 +34,22 @@ module Gdk
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if display
+      if !display.nil?
         (_names.to_unsafe + _n).value = "display".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, display)
         _n += 1
       end
-      if surface
+      if !surface.nil?
         (_names.to_unsafe + _n).value = "surface".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, surface)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(VulkanContext.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -45,6 +57,10 @@ module Gdk
       LibGdk.gdk_vulkan_context_get_type
     end
 
+    # Emitted when the images managed by this context have changed.
+    #
+    # Usually this means that the swapchain had to be recreated,
+    # for example in response to a change of the surface size.
     struct ImagesUpdatedSignal
       @source : GObject::Object
       @detail : String?

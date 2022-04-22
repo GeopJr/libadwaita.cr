@@ -7,7 +7,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Quaternion))
@@ -28,50 +28,46 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Quaternion)).zero?
+    end
+
     def x : Float32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Float32))
       _var.value
     end
 
     def x=(value : Float32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Float32)).value = value
       value
     end
 
     def y : Float32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Float32))
       _var.value
     end
 
     def y=(value : Float32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Float32)).value = value
       value
     end
 
     def z : Float32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Float32))
       _var.value
     end
 
     def z=(value : Float32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Float32)).value = value
       value
     end
 
     def w : Float32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Float32))
       _var.value
     end
 
     def w=(value : Float32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Float32)).value = value
       value
     end
@@ -85,12 +81,11 @@ module Graphene
       # graphene_quaternion_alloc: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_alloc
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -99,13 +94,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
 
       # C call
       LibGraphene.graphene_quaternion_add(self, b, res)
 
       # Return value handling
+
       res
     end
 
@@ -113,12 +109,11 @@ module Graphene
       # graphene_quaternion_dot: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_dot(self, b)
 
       # Return value handling
+
       _retval
     end
 
@@ -126,20 +121,17 @@ module Graphene
       # graphene_quaternion_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_equal(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # graphene_quaternion_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_quaternion_free(self)
@@ -151,12 +143,11 @@ module Graphene
       # graphene_quaternion_init: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_init(self, x, y, z, w)
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -164,12 +155,11 @@ module Graphene
       # graphene_quaternion_init_from_angle_vec3: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_init_from_angle_vec3(self, angle, axis)
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -177,12 +167,11 @@ module Graphene
       # graphene_quaternion_init_from_angles: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_init_from_angles(self, deg_x, deg_y, deg_z)
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -190,12 +179,11 @@ module Graphene
       # graphene_quaternion_init_from_euler: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_init_from_euler(self, e)
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -203,12 +191,11 @@ module Graphene
       # graphene_quaternion_init_from_matrix: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_init_from_matrix(self, m)
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -216,12 +203,11 @@ module Graphene
       # graphene_quaternion_init_from_quaternion: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_init_from_quaternion(self, src)
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -229,12 +215,11 @@ module Graphene
       # graphene_quaternion_init_from_radians: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_init_from_radians(self, rad_x, rad_y, rad_z)
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -242,12 +227,11 @@ module Graphene
       # graphene_quaternion_init_from_vec4: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_init_from_vec4(self, src)
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -255,12 +239,11 @@ module Graphene
       # graphene_quaternion_init_identity: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quaternion_init_identity(self)
 
       # Return value handling
+
       Graphene::Quaternion.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -269,13 +252,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
 
       # C call
       LibGraphene.graphene_quaternion_invert(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -284,13 +268,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
 
       # C call
       LibGraphene.graphene_quaternion_multiply(self, b, res)
 
       # Return value handling
+
       res
     end
 
@@ -299,13 +284,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
 
       # C call
       LibGraphene.graphene_quaternion_normalize(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -314,13 +300,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
 
       # C call
       LibGraphene.graphene_quaternion_scale(self, factor, res)
 
       # Return value handling
+
       res
     end
 
@@ -329,13 +316,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
 
       # C call
       LibGraphene.graphene_quaternion_slerp(self, b, factor, res)
 
       # Return value handling
+
       res
     end
 
@@ -345,13 +333,14 @@ module Graphene
       # @axis: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       axis = Graphene::Vec3.new
 
       # C call
       LibGraphene.graphene_quaternion_to_angle_vec3(self, angle, axis)
 
       # Return value handling
+
       axis
     end
 
@@ -362,9 +351,11 @@ module Graphene
       # @deg_z: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       deg_x = Pointer(Float32).null
+      # Generator::OutArgUsedInReturnPlan
       deg_y = Pointer(Float32).null
+      # Generator::OutArgUsedInReturnPlan
       deg_z = Pointer(Float32).null
 
       # C call
@@ -378,13 +369,14 @@ module Graphene
       # @m: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       m = Graphene::Matrix.new
 
       # C call
       LibGraphene.graphene_quaternion_to_matrix(self, m)
 
       # Return value handling
+
       m
     end
 
@@ -395,9 +387,11 @@ module Graphene
       # @rad_z: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       rad_x = Pointer(Float32).null
+      # Generator::OutArgUsedInReturnPlan
       rad_y = Pointer(Float32).null
+      # Generator::OutArgUsedInReturnPlan
       rad_z = Pointer(Float32).null
 
       # C call
@@ -411,13 +405,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
 
       # C call
       LibGraphene.graphene_quaternion_to_vec4(self, res)
 
       # Return value handling
+
       res
     end
 

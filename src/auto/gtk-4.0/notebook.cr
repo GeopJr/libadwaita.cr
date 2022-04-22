@@ -13,11 +13,11 @@ module Gtk
   #
   # There are many configuration options for `GtkNotebook`. Among
   # other things, you can choose on which edge the tabs appear
-  # (see [method@Gtk.Notebook.set_tab_pos]), whether, if there are
+  # (see `Gtk::Notebook#tab_pos=`), whether, if there are
   # too many tabs to fit the notebook should be made bigger or scrolling
-  # arrows added (see [method@Gtk.Notebook.set_scrollable]), and whether
+  # arrows added (see `Gtk::Notebook#scrollable=`), and whether
   # there will be a popup menu allowing the users to switch pages.
-  # (see [method@Gtk.Notebook.popup_enable]).
+  # (see `Gtk::Notebook#popup_enable`).
   #
   # # GtkNotebook as GtkBuildable
   #
@@ -34,6 +34,9 @@ module Gtk
   #
   # An example of a UI definition fragment with `GtkNotebook`:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   # <object class="GtkNotebook">
   #   <child>
@@ -80,7 +83,7 @@ module Gtk
   # name `arrow` are placed as first and last child of the `tabs` node.
   #
   # The main node gets the `.frame` style class when the notebook
-  # has a border (see [method@Gtk.Notebook.set_show_border]).
+  # has a border (see `Gtk::Notebook#show_border=`).
   #
   # The header node gets one of the style class `.top`, `.bottom`,
   # `.left` or `.right`, depending on where the tabs are placed. For
@@ -98,12 +101,20 @@ module Gtk
   #  - %GTK_ACCESSIBLE_ROLE_TAB_LIST for the list of tabs
   #  - %GTK_ACCESSIBLE_ROLE_TAB role for each tab
   #  - %GTK_ACCESSIBLE_ROLE_TAB_PANEL for each page
+  @[GObject::GeneratedWrapper]
   class Notebook < Widget
     include Accessible
     include Buildable
     include ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::Notebook), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -115,223 +126,228 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 43).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if enable_popup
+      if !enable_popup.nil?
         (_names.to_unsafe + _n).value = "enable-popup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, enable_popup)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if group_name
+      if !group_name.nil?
         (_names.to_unsafe + _n).value = "group-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, group_name)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if page
+      if !page.nil?
         (_names.to_unsafe + _n).value = "page".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, page)
         _n += 1
       end
-      if pages
+      if !pages.nil?
         (_names.to_unsafe + _n).value = "pages".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pages)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if scrollable
+      if !scrollable.nil?
         (_names.to_unsafe + _n).value = "scrollable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scrollable)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if show_border
+      if !show_border.nil?
         (_names.to_unsafe + _n).value = "show-border".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_border)
         _n += 1
       end
-      if show_tabs
+      if !show_tabs.nil?
         (_names.to_unsafe + _n).value = "show-tabs".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_tabs)
         _n += 1
       end
-      if tab_pos
+      if !tab_pos.nil?
         (_names.to_unsafe + _n).value = "tab-pos".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tab_pos)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Notebook.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -449,29 +465,30 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "tab-pos", pointerof(value), Pointer(Void).null)
-      Gtk::PositionType.from_value(value)
+      Gtk::PositionType.new(value)
     end
 
+    # Creates a new `GtkNotebook` widget with no pages.
     def initialize
       # gtk_notebook_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Appends a page to @notebook.
     def append_page(child : Gtk::Widget, tab_label : Gtk::Widget?) : Int32
       # gtk_notebook_append_page: (Method)
       # @tab_label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       tab_label = if tab_label.nil?
                     Pointer(Void).null
                   else
@@ -482,21 +499,26 @@ module Gtk
       _retval = LibGtk.gtk_notebook_append_page(self, child, tab_label)
 
       # Return value handling
+
       _retval
     end
 
+    # Appends a page to @notebook, specifying the widget to use as the
+    # label in the popup menu.
     def append_page_menu(child : Gtk::Widget, tab_label : Gtk::Widget?, menu_label : Gtk::Widget?) : Int32
       # gtk_notebook_append_page_menu: (Method)
       # @tab_label: (nullable)
       # @menu_label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       tab_label = if tab_label.nil?
                     Pointer(Void).null
                   else
                     tab_label.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       menu_label = if menu_label.nil?
                      Pointer(Void).null
                    else
@@ -507,14 +529,19 @@ module Gtk
       _retval = LibGtk.gtk_notebook_append_page_menu(self, child, tab_label, menu_label)
 
       # Return value handling
+
       _retval
     end
 
+    # Removes the child from the notebook.
+    #
+    # This function is very similar to `Gtk::Notebook#remove_page`,
+    # but additionally informs the notebook that the removal
+    # is happening as part of a tab DND operation, which should
+    # not be cancelled.
     def detach_tab(child : Gtk::Widget) : Nil
       # gtk_notebook_detach_tab: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_detach_tab(self, child)
@@ -522,233 +549,245 @@ module Gtk
       # Return value handling
     end
 
+    # Gets one of the action widgets.
+    #
+    # See `Gtk::Notebook#action_widget=`.
     def action_widget(pack_type : Gtk::PackType) : Gtk::Widget?
       # gtk_notebook_get_action_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_action_widget(self, pack_type)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the page number of the current page.
     def current_page : Int32
       # gtk_notebook_get_current_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_current_page(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the current group name for @notebook.
     def group_name : ::String?
       # gtk_notebook_get_group_name: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_group_name(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Retrieves the menu label widget of the page containing @child.
     def menu_label(child : Gtk::Widget) : Gtk::Widget?
       # gtk_notebook_get_menu_label: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_menu_label(self, child)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Retrieves the text of the menu label for the page containing
+    # @child.
     def menu_label_text(child : Gtk::Widget) : ::String?
       # gtk_notebook_get_menu_label_text: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_menu_label_text(self, child)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the number of pages in a notebook.
     def n_pages : Int32
       # gtk_notebook_get_n_pages: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_n_pages(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the child widget contained in page number @page_num.
     def nth_page(page_num : Int32) : Gtk::Widget?
       # gtk_notebook_get_nth_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_nth_page(self, page_num)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the `GtkNotebookPage` for @child.
     def page(child : Gtk::Widget) : Gtk::NotebookPage
       # gtk_notebook_get_page: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_page(self, child)
 
       # Return value handling
+
       Gtk::NotebookPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns a `GListModel` that contains the pages of the notebook.
+    #
+    # This can be used to keep an up-to-date view. The model also
+    # implements `Gtk#SelectionModel` and can be used to track
+    # and modify the visible page.
     def pages : Gio::ListModel
       # gtk_notebook_get_pages: (Method | Getter)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_pages(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Returns whether the tab label area has arrows for scrolling.
     def scrollable : Bool
       # gtk_notebook_get_scrollable: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_scrollable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether a bevel will be drawn around the notebook pages.
     def show_border : Bool
       # gtk_notebook_get_show_border: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_show_border(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the tabs of the notebook are shown.
     def show_tabs : Bool
       # gtk_notebook_get_show_tabs: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_show_tabs(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the tab contents can be detached from @notebook.
     def tab_detachable(child : Gtk::Widget) : Bool
       # gtk_notebook_get_tab_detachable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_tab_detachable(self, child)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the tab label widget for the page @child.
+    #
+    # %NULL is returned if @child is not in @notebook or
+    # if no tab label has specifically been set for @child.
     def tab_label(child : Gtk::Widget) : Gtk::Widget?
       # gtk_notebook_get_tab_label: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_tab_label(self, child)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Retrieves the text of the tab label for the page containing
+    # @child.
     def tab_label_text(child : Gtk::Widget) : ::String?
       # gtk_notebook_get_tab_label_text: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_tab_label_text(self, child)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the edge at which the tabs are drawn.
     def tab_pos : Gtk::PositionType
       # gtk_notebook_get_tab_pos: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_tab_pos(self)
 
       # Return value handling
-      Gtk::PositionType.from_value(_retval)
+
+      Gtk::PositionType.new(_retval)
     end
 
+    # Gets whether the tab can be reordered via drag and drop or not.
     def tab_reorderable(child : Gtk::Widget) : Bool
       # gtk_notebook_get_tab_reorderable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_get_tab_reorderable(self, child)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Insert a page into @notebook at the given position.
     def insert_page(child : Gtk::Widget, tab_label : Gtk::Widget?, position : Int32) : Int32
       # gtk_notebook_insert_page: (Method)
       # @tab_label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       tab_label = if tab_label.nil?
                     Pointer(Void).null
                   else
@@ -759,21 +798,26 @@ module Gtk
       _retval = LibGtk.gtk_notebook_insert_page(self, child, tab_label, position)
 
       # Return value handling
+
       _retval
     end
 
+    # Insert a page into @notebook at the given position, specifying
+    # the widget to use as the label in the popup menu.
     def insert_page_menu(child : Gtk::Widget, tab_label : Gtk::Widget?, menu_label : Gtk::Widget?, position : Int32) : Int32
       # gtk_notebook_insert_page_menu: (Method)
       # @tab_label: (nullable)
       # @menu_label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       tab_label = if tab_label.nil?
                     Pointer(Void).null
                   else
                     tab_label.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       menu_label = if menu_label.nil?
                      Pointer(Void).null
                    else
@@ -784,14 +828,16 @@ module Gtk
       _retval = LibGtk.gtk_notebook_insert_page_menu(self, child, tab_label, menu_label, position)
 
       # Return value handling
+
       _retval
     end
 
+    # Switches to the next page.
+    #
+    # Nothing happens if the current page is the last page.
     def next_page : Nil
       # gtk_notebook_next_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_next_page(self)
@@ -799,24 +845,24 @@ module Gtk
       # Return value handling
     end
 
+    # Finds the index of the page which contains the given child
+    # widget.
     def page_num(child : Gtk::Widget) : Int32
       # gtk_notebook_page_num: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_page_num(self, child)
 
       # Return value handling
+
       _retval
     end
 
+    # Disables the popup menu.
     def popup_disable : Nil
       # gtk_notebook_popup_disable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_popup_disable(self)
@@ -824,11 +870,13 @@ module Gtk
       # Return value handling
     end
 
+    # Enables the popup menu.
+    #
+    # If the user clicks with the right mouse button on the tab labels,
+    # a menu with all the pages will be popped up.
     def popup_enable : Nil
       # gtk_notebook_popup_enable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_popup_enable(self)
@@ -836,12 +884,13 @@ module Gtk
       # Return value handling
     end
 
+    # Prepends a page to @notebook.
     def prepend_page(child : Gtk::Widget, tab_label : Gtk::Widget?) : Int32
       # gtk_notebook_prepend_page: (Method)
       # @tab_label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       tab_label = if tab_label.nil?
                     Pointer(Void).null
                   else
@@ -852,21 +901,26 @@ module Gtk
       _retval = LibGtk.gtk_notebook_prepend_page(self, child, tab_label)
 
       # Return value handling
+
       _retval
     end
 
+    # Prepends a page to @notebook, specifying the widget to use as the
+    # label in the popup menu.
     def prepend_page_menu(child : Gtk::Widget, tab_label : Gtk::Widget?, menu_label : Gtk::Widget?) : Int32
       # gtk_notebook_prepend_page_menu: (Method)
       # @tab_label: (nullable)
       # @menu_label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       tab_label = if tab_label.nil?
                     Pointer(Void).null
                   else
                     tab_label.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       menu_label = if menu_label.nil?
                      Pointer(Void).null
                    else
@@ -877,14 +931,16 @@ module Gtk
       _retval = LibGtk.gtk_notebook_prepend_page_menu(self, child, tab_label, menu_label)
 
       # Return value handling
+
       _retval
     end
 
+    # Switches to the previous page.
+    #
+    # Nothing happens if the current page is the first page.
     def prev_page : Nil
       # gtk_notebook_prev_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_prev_page(self)
@@ -892,11 +948,11 @@ module Gtk
       # Return value handling
     end
 
+    # Removes a page from the notebook given its index
+    # in the notebook.
     def remove_page(page_num : Int32) : Nil
       # gtk_notebook_remove_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_remove_page(self, page_num)
@@ -904,11 +960,14 @@ module Gtk
       # Return value handling
     end
 
+    # Reorders the page containing @child, so that it appears in position
+    # @position.
+    #
+    # If @position is greater than or equal to the number of children in
+    # the list or negative, @child will be moved to the end of the list.
     def reorder_child(child : Gtk::Widget, position : Int32) : Nil
       # gtk_notebook_reorder_child: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_reorder_child(self, child, position)
@@ -916,11 +975,14 @@ module Gtk
       # Return value handling
     end
 
+    # Sets @widget as one of the action widgets.
+    #
+    # Depending on the pack type the widget will be placed before
+    # or after the tabs. You can use a `GtkBox` if you need to pack
+    # more than one widget on the same side.
     def set_action_widget(widget : Gtk::Widget, pack_type : Gtk::PackType) : Nil
       # gtk_notebook_set_action_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_action_widget(self, widget, pack_type)
@@ -928,11 +990,15 @@ module Gtk
       # Return value handling
     end
 
+    # Switches to the page number @page_num.
+    #
+    # Note that due to historical reasons, GtkNotebook refuses
+    # to switch to a page unless the child widget is visible.
+    # Therefore, it is recommended to show child widgets before
+    # adding them to a notebook.
     def current_page=(page_num : Int32) : Nil
       # gtk_notebook_set_current_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_current_page(self, page_num)
@@ -940,12 +1006,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets a group name for @notebook.
+    #
+    # Notebooks with the same name will be able to exchange tabs
+    # via drag and drop. A notebook with a %NULL group name will
+    # not be able to exchange tabs with any other notebook.
     def group_name=(group_name : ::String?) : Nil
       # gtk_notebook_set_group_name: (Method | Setter)
       # @group_name: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       group_name = if group_name.nil?
                      Pointer(LibC::Char).null
                    else
@@ -958,12 +1029,13 @@ module Gtk
       # Return value handling
     end
 
+    # Changes the menu label for the page containing @child.
     def set_menu_label(child : Gtk::Widget, menu_label : Gtk::Widget?) : Nil
       # gtk_notebook_set_menu_label: (Method)
       # @menu_label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       menu_label = if menu_label.nil?
                      Pointer(Void).null
                    else
@@ -976,11 +1048,10 @@ module Gtk
       # Return value handling
     end
 
+    # Creates a new label and sets it as the menu label of @child.
     def set_menu_label_text(child : Gtk::Widget, menu_text : ::String) : Nil
       # gtk_notebook_set_menu_label_text: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_menu_label_text(self, child, menu_text)
@@ -988,11 +1059,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the tab label area will have arrows for
+    # scrolling if there are too many tabs to fit in the area.
     def scrollable=(scrollable : Bool) : Nil
       # gtk_notebook_set_scrollable: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_scrollable(self, scrollable)
@@ -1000,11 +1071,12 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether a bevel will be drawn around the notebook pages.
+    #
+    # This only has a visual effect when the tabs are not shown.
     def show_border=(show_border : Bool) : Nil
       # gtk_notebook_set_show_border: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_show_border(self, show_border)
@@ -1012,11 +1084,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether to show the tabs for the notebook or not.
     def show_tabs=(show_tabs : Bool) : Nil
       # gtk_notebook_set_show_tabs: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_show_tabs(self, show_tabs)
@@ -1024,11 +1095,56 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the tab can be detached from @notebook to another
+    # notebook or widget.
+    #
+    # Note that two notebooks must share a common group identificator
+    # (see `Gtk::Notebook#group_name=`) to allow automatic tabs
+    # interchange between them.
+    #
+    # If you want a widget to interact with a notebook through DnD
+    # (i.e.: accept dragged tabs from it) it must be set as a drop
+    # destination and accept the target “GTK_NOTEBOOK_TAB”. The notebook
+    # will fill the selection with a GtkWidget** pointing to the child
+    # widget that corresponds to the dropped tab.
+    #
+    # Note that you should use `Gtk::Notebook#detach_tab` instead
+    # of `Gtk::Notebook#remove_page` if you want to remove the tab
+    # from the source notebook as part of accepting a drop. Otherwise,
+    # the source notebook will think that the dragged tab was removed
+    # from underneath the ongoing drag operation, and will initiate a
+    # drag cancel animation.
+    #
+    #
+    #
+    # WARNING: **⚠️ The following code is in c ⚠️**
+    # ```c
+    # static void
+    # on_drag_data_received (GtkWidget        *widget,
+    #                        GdkDrop          *drop,
+    #                        GtkSelectionData *data,
+    #                        guint             time,
+    #                        gpointer          user_data)
+    # {
+    #   GtkDrag *drag;
+    #   GtkWidget *notebook;
+    #   GtkWidget **child;
+    #
+    #   drag = gtk_drop_get_drag (drop);
+    #   notebook = g_object_get_data (drag, "gtk-notebook-drag-origin");
+    #   child = (void*) gtk_selection_data_get_data (data);
+    #
+    #   // process_widget (*child);
+    #
+    #   gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
+    # }
+    # ```
+    #
+    # If you want a notebook to accept drags from other widgets,
+    # you will have to set your own DnD code to do it.
     def set_tab_detachable(child : Gtk::Widget, detachable : Bool) : Nil
       # gtk_notebook_set_tab_detachable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_tab_detachable(self, child, detachable)
@@ -1036,12 +1152,16 @@ module Gtk
       # Return value handling
     end
 
+    # Changes the tab label for @child.
+    #
+    # If %NULL is specified for @tab_label, then the page will
+    # have the label “page N”.
     def set_tab_label(child : Gtk::Widget, tab_label : Gtk::Widget?) : Nil
       # gtk_notebook_set_tab_label: (Method)
       # @tab_label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       tab_label = if tab_label.nil?
                     Pointer(Void).null
                   else
@@ -1054,11 +1174,11 @@ module Gtk
       # Return value handling
     end
 
+    # Creates a new label and sets it as the tab label for the page
+    # containing @child.
     def set_tab_label_text(child : Gtk::Widget, tab_text : ::String) : Nil
       # gtk_notebook_set_tab_label_text: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_tab_label_text(self, child, tab_text)
@@ -1066,11 +1186,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the edge at which the tabs are drawn.
     def tab_pos=(pos : Gtk::PositionType) : Nil
       # gtk_notebook_set_tab_pos: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_tab_pos(self, pos)
@@ -1078,11 +1197,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the notebook tab can be reordered
+    # via drag and drop or not.
     def set_tab_reorderable(child : Gtk::Widget, reorderable : Bool) : Nil
       # gtk_notebook_set_tab_reorderable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_notebook_set_tab_reorderable(self, child, reorderable)
@@ -1118,7 +1237,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, box : Pointer(Void)) {
           arg0 = lib_arg0
-          ::Box(Proc(Int32, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Int32, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1129,7 +1249,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, box : Pointer(Void)) {
           arg0 = lib_arg0
-          ::Box(Proc(Int32, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Int32, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1169,6 +1290,14 @@ module Gtk
       ChangeCurrentPageSignal.new(self)
     end
 
+    # The ::create-window signal is emitted when a detachable
+    # tab is dropped on the root window.
+    #
+    # A handler for this signal can create a window containing
+    # a notebook where the tab will be attached. It is also
+    # responsible for moving/resizing the window and adding the
+    # necessary properties to the notebook (e.g. the
+    # `GtkNotebook`:group-name ).
     struct CreateWindowSignal
       @source : GObject::Object
       @detail : String?
@@ -1197,7 +1326,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gtk::Widget.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::Widget, Gtk::Notebook)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Gtk::Widget, Gtk::Notebook)).unbox(box).call(arg0)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1208,7 +1338,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gtk::Widget.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::Widget, Gtk::Notebook)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Gtk::Widget, Gtk::Notebook)).unbox(box).call(arg0)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1275,8 +1406,9 @@ module Gtk
       def connect(block : Proc(Gtk::NotebookTab, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::NotebookTab.from_value(lib_arg0)
-          ::Box(Proc(Gtk::NotebookTab, Bool)).unbox(box).call(arg0).to_unsafe
+          arg0 = Gtk::NotebookTab.new(lib_arg0)
+          _retval = ::Box(Proc(Gtk::NotebookTab, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1286,8 +1418,9 @@ module Gtk
       def connect_after(block : Proc(Gtk::NotebookTab, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::NotebookTab.from_value(lib_arg0)
-          ::Box(Proc(Gtk::NotebookTab, Bool)).unbox(box).call(arg0).to_unsafe
+          arg0 = Gtk::NotebookTab.new(lib_arg0)
+          _retval = ::Box(Proc(Gtk::NotebookTab, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1298,7 +1431,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::Notebook.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::NotebookTab.from_value(lib_arg0)
+          arg0 = Gtk::NotebookTab.new(lib_arg0)
           ::Box(Proc(Gtk::Notebook, Gtk::NotebookTab, Bool)).unbox(box).call(sender, arg0).to_unsafe
         }
 
@@ -1310,7 +1443,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::Notebook.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::NotebookTab.from_value(lib_arg0)
+          arg0 = Gtk::NotebookTab.new(lib_arg0)
           ::Box(Proc(Gtk::Notebook, Gtk::NotebookTab, Bool)).unbox(box).call(sender, arg0).to_unsafe
         }
 
@@ -1354,7 +1487,7 @@ module Gtk
       def connect(block : Proc(Gtk::DirectionType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(box).call(arg0)
         }
 
@@ -1365,7 +1498,7 @@ module Gtk
       def connect_after(block : Proc(Gtk::DirectionType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(box).call(arg0)
         }
 
@@ -1377,7 +1510,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::Notebook.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           ::Box(Proc(Gtk::Notebook, Gtk::DirectionType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -1389,7 +1522,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::Notebook.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           ::Box(Proc(Gtk::Notebook, Gtk::DirectionType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -1406,6 +1539,8 @@ module Gtk
       MoveFocusOutSignal.new(self)
     end
 
+    # the ::page-added signal is emitted in the notebook
+    # right after a page is added to the notebook.
     struct PageAddedSignal
       @source : GObject::Object
       @detail : String?
@@ -1489,6 +1624,8 @@ module Gtk
       PageAddedSignal.new(self)
     end
 
+    # the ::page-removed signal is emitted in the notebook
+    # right after a page is removed from the notebook.
     struct PageRemovedSignal
       @source : GObject::Object
       @detail : String?
@@ -1572,6 +1709,8 @@ module Gtk
       PageRemovedSignal.new(self)
     end
 
+    # the ::page-reordered signal is emitted in the notebook
+    # right after a page has been reordered.
     struct PageReorderedSignal
       @source : GObject::Object
       @detail : String?
@@ -1682,9 +1821,10 @@ module Gtk
       def connect(block : Proc(Gtk::DirectionType, Bool, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           arg1 = GICrystal.to_bool(lib_arg1)
-          ::Box(Proc(Gtk::DirectionType, Bool, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gtk::DirectionType, Bool, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1694,9 +1834,10 @@ module Gtk
       def connect_after(block : Proc(Gtk::DirectionType, Bool, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           arg1 = GICrystal.to_bool(lib_arg1)
-          ::Box(Proc(Gtk::DirectionType, Bool, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gtk::DirectionType, Bool, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1707,7 +1848,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : LibC::Int, box : Pointer(Void)) {
           sender = Gtk::Notebook.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           arg1 = GICrystal.to_bool(lib_arg1)
           ::Box(Proc(Gtk::Notebook, Gtk::DirectionType, Bool, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
         }
@@ -1720,7 +1861,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : LibC::Int, box : Pointer(Void)) {
           sender = Gtk::Notebook.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           arg1 = GICrystal.to_bool(lib_arg1)
           ::Box(Proc(Gtk::Notebook, Gtk::DirectionType, Bool, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
         }
@@ -1766,7 +1907,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
           arg0 = GICrystal.to_bool(lib_arg0)
-          ::Box(Proc(Bool, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Bool, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1777,7 +1919,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
           arg0 = GICrystal.to_bool(lib_arg0)
-          ::Box(Proc(Bool, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Bool, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1817,6 +1960,7 @@ module Gtk
       SelectPageSignal.new(self)
     end
 
+    # Emitted when the user or a function changes the current page.
     struct SwitchPageSignal
       @source : GObject::Object
       @detail : String?

@@ -7,7 +7,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibHarfBuzz::FontExtentsT))
@@ -36,146 +36,126 @@ module HarfBuzz
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::FontExtentsT)).zero?
+    end
+
     def ascender : Int32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Int32))
       _var.value
     end
 
     def ascender=(value : Int32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Int32)).value = value
       value
     end
 
     def descender : Int32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Int32))
       _var.value
     end
 
     def descender=(value : Int32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Int32)).value = value
       value
     end
 
     def line_gap : Int32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Int32))
       _var.value
     end
 
     def line_gap=(value : Int32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Int32)).value = value
       value
     end
 
     def reserved9 : Int32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Int32))
       _var.value
     end
 
     def reserved9=(value : Int32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Int32)).value = value
       value
     end
 
     def reserved8 : Int32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Int32))
       _var.value
     end
 
     def reserved8=(value : Int32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Int32)).value = value
       value
     end
 
     def reserved7 : Int32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(Int32))
       _var.value
     end
 
     def reserved7=(value : Int32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(Int32)).value = value
       value
     end
 
     def reserved6 : Int32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Int32))
       _var.value
     end
 
     def reserved6=(value : Int32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Int32)).value = value
       value
     end
 
     def reserved5 : Int32
-      # Property getter
       _var = (@pointer + 28).as(Pointer(Int32))
       _var.value
     end
 
     def reserved5=(value : Int32)
-      # Property setter
       _var = (@pointer + 28).as(Pointer(Int32)).value = value
       value
     end
 
     def reserved4 : Int32
-      # Property getter
       _var = (@pointer + 32).as(Pointer(Int32))
       _var.value
     end
 
     def reserved4=(value : Int32)
-      # Property setter
       _var = (@pointer + 32).as(Pointer(Int32)).value = value
       value
     end
 
     def reserved3 : Int32
-      # Property getter
       _var = (@pointer + 36).as(Pointer(Int32))
       _var.value
     end
 
     def reserved3=(value : Int32)
-      # Property setter
       _var = (@pointer + 36).as(Pointer(Int32)).value = value
       value
     end
 
     def reserved2 : Int32
-      # Property getter
       _var = (@pointer + 40).as(Pointer(Int32))
       _var.value
     end
 
     def reserved2=(value : Int32)
-      # Property setter
       _var = (@pointer + 40).as(Pointer(Int32)).value = value
       value
     end
 
     def reserved1 : Int32
-      # Property getter
       _var = (@pointer + 44).as(Pointer(Int32))
       _var.value
     end
 
     def reserved1=(value : Int32)
-      # Property setter
       _var = (@pointer + 44).as(Pointer(Int32)).value = value
       value
     end

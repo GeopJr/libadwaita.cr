@@ -2,8 +2,16 @@ require "../g_object-2.0/object"
 
 module Gtk
   # `GtkAssistantPage` is an auxiliary object used by `GtkAssistant.
+  @[GObject::GeneratedWrapper]
   class AssistantPage < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::AssistantPage), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,28 +23,32 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 4).new(LibGObject::Value.new)
       _n = 0
 
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if complete
+      if !complete.nil?
         (_names.to_unsafe + _n).value = "complete".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, complete)
         _n += 1
       end
-      if page_type
+      if !page_type.nil?
         (_names.to_unsafe + _n).value = "page-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, page_type)
         _n += 1
       end
-      if title
+      if !title.nil?
         (_names.to_unsafe + _n).value = "title".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(AssistantPage.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -86,7 +98,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "page-type", pointerof(value), Pointer(Void).null)
-      Gtk::AssistantPageType.from_value(value)
+      Gtk::AssistantPageType.new(value)
     end
 
     def title=(value : ::String) : ::String
@@ -104,16 +116,16 @@ module Gtk
       ::String.new(value)
     end
 
+    # Returns the child to which @page belongs.
     def child : Gtk::Widget
       # gtk_assistant_page_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_page_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
   end

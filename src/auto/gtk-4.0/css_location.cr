@@ -15,7 +15,7 @@ module Gtk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGtk::CssLocation))
@@ -37,62 +37,56 @@ module Gtk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::CssLocation)).zero?
+    end
+
     def bytes : UInt64
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt64))
       _var.value
     end
 
     def bytes=(value : UInt64)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt64)).value = value
       value
     end
 
     def chars : UInt64
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt64))
       _var.value
     end
 
     def chars=(value : UInt64)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(UInt64)).value = value
       value
     end
 
     def lines : UInt64
-      # Property getter
       _var = (@pointer + 16).as(Pointer(UInt64))
       _var.value
     end
 
     def lines=(value : UInt64)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(UInt64)).value = value
       value
     end
 
     def line_bytes : UInt64
-      # Property getter
       _var = (@pointer + 24).as(Pointer(UInt64))
       _var.value
     end
 
     def line_bytes=(value : UInt64)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(UInt64)).value = value
       value
     end
 
     def line_chars : UInt64
-      # Property getter
       _var = (@pointer + 32).as(Pointer(UInt64))
       _var.value
     end
 
     def line_chars=(value : UInt64)
-      # Property setter
       _var = (@pointer + 32).as(Pointer(UInt64)).value = value
       value
     end

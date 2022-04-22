@@ -3,7 +3,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Simd4X4F))
@@ -24,51 +24,51 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Simd4X4F)).zero?
+    end
+
     def x : Graphene::Simd4F
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Graphene::Simd4F.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Simd4F.new(_var, GICrystal::Transfer::None)
     end
 
     def x=(value : Graphene::Simd4F)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Simd4X4F))
       value
     end
 
     def y : Graphene::Simd4F
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Void))
-      Graphene::Simd4F.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Simd4F.new(_var, GICrystal::Transfer::None)
     end
 
     def y=(value : Graphene::Simd4F)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Simd4X4F))
       value
     end
 
     def z : Graphene::Simd4F
-      # Property getter
       _var = (@pointer + 32).as(Pointer(Void))
-      Graphene::Simd4F.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Simd4F.new(_var, GICrystal::Transfer::None)
     end
 
     def z=(value : Graphene::Simd4F)
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 32).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Simd4X4F))
       value
     end
 
     def w : Graphene::Simd4F
-      # Property getter
       _var = (@pointer + 48).as(Pointer(Void))
-      Graphene::Simd4F.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Simd4F.new(_var, GICrystal::Transfer::None)
     end
 
     def w=(value : Graphene::Simd4F)
-      # Property setter
-      _var = (@pointer + 48).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 48).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Simd4X4F))
       value
     end
 

@@ -2,20 +2,28 @@ require "../g_object-2.0/object"
 require "../gtk-4.0/orientable"
 
 module Adw
-  # A swipe tracker used in [class@Carousel], [class@Flap] and [class@Leaflet].
+  # A swipe tracker used in `#Carousel`, `#Flap` and `#Leaflet`.
   #
   # The `AdwSwipeTracker` object can be used for implementing widgets with swipe
   # gestures. It supports touch-based swipes, pointer dragging, and touchpad
   # scrolling.
   #
-  # The widgets will probably want to expose the [property@SwipeTracker:enabled]
+  # The widgets will probably want to expose the `SwipeTracker#enabled`
   # property. If they expect to use horizontal orientation,
-  # [property@SwipeTracker:reversed] can be used for supporting RTL text
+  # `SwipeTracker#reversed` can be used for supporting RTL text
   # direction.
+  @[GObject::GeneratedWrapper]
   class SwipeTracker < GObject::Object
     include Gtk::Orientable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::SwipeTrackerClass), class_init,
+        sizeof(LibAdw::SwipeTracker), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -27,38 +35,42 @@ module Adw
       _values = StaticArray(LibGObject::Value, 6).new(LibGObject::Value.new)
       _n = 0
 
-      if allow_long_swipes
+      if !allow_long_swipes.nil?
         (_names.to_unsafe + _n).value = "allow-long-swipes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allow_long_swipes)
         _n += 1
       end
-      if allow_mouse_drag
+      if !allow_mouse_drag.nil?
         (_names.to_unsafe + _n).value = "allow-mouse-drag".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allow_mouse_drag)
         _n += 1
       end
-      if enabled
+      if !enabled.nil?
         (_names.to_unsafe + _n).value = "enabled".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, enabled)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if reversed
+      if !reversed.nil?
         (_names.to_unsafe + _n).value = "reversed".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, reversed)
         _n += 1
       end
-      if swipeable
+      if !swipeable.nil?
         (_names.to_unsafe + _n).value = "swipeable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, swipeable)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(SwipeTracker.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -141,89 +153,88 @@ module Adw
       Adw::Swipeable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `AdwSwipeTracker` for @widget.
     def initialize(swipeable : Adw::Swipeable)
       # adw_swipe_tracker_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_swipe_tracker_new(swipeable)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets whether to allow swiping for more than one snap point at a time.
     def allow_long_swipes : Bool
       # adw_swipe_tracker_get_allow_long_swipes: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_swipe_tracker_get_allow_long_swipes(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self can be dragged with mouse pointer.
     def allow_mouse_drag : Bool
       # adw_swipe_tracker_get_allow_mouse_drag: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_swipe_tracker_get_allow_mouse_drag(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self is enabled.
     def enabled : Bool
       # adw_swipe_tracker_get_enabled: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_swipe_tracker_get_enabled(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self is reversing the swipe direction.
     def reversed : Bool
       # adw_swipe_tracker_get_reversed: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_swipe_tracker_get_reversed(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Get the widget @self is attached to.
     def swipeable : Adw::Swipeable
       # adw_swipe_tracker_get_swipeable: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_swipe_tracker_get_swipeable(self)
 
       # Return value handling
+
       Adw::Swipeable__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Sets whether to allow swiping for more than one snap point at a time.
     def allow_long_swipes=(allow_long_swipes : Bool) : Nil
       # adw_swipe_tracker_set_allow_long_swipes: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_swipe_tracker_set_allow_long_swipes(self, allow_long_swipes)
@@ -231,11 +242,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self can be dragged with mouse pointer.
     def allow_mouse_drag=(allow_mouse_drag : Bool) : Nil
       # adw_swipe_tracker_set_allow_mouse_drag: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_swipe_tracker_set_allow_mouse_drag(self, allow_mouse_drag)
@@ -243,11 +253,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self is enabled.
     def enabled=(enabled : Bool) : Nil
       # adw_swipe_tracker_set_enabled: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_swipe_tracker_set_enabled(self, enabled)
@@ -255,11 +264,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether to reverse the swipe direction.
     def reversed=(reversed : Bool) : Nil
       # adw_swipe_tracker_set_reversed: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_swipe_tracker_set_reversed(self, reversed)
@@ -267,11 +275,13 @@ module Adw
       # Return value handling
     end
 
+    # Moves the current progress value by @delta.
+    #
+    # This can be used to adjust the current position if snap points move during
+    # the gesture.
     def shift_position(delta : Float64) : Nil
       # adw_swipe_tracker_shift_position: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_swipe_tracker_shift_position(self, delta)
@@ -279,6 +289,8 @@ module Adw
       # Return value handling
     end
 
+    # This signal is emitted right before a swipe will be started, after the
+    # drag threshold has been passed.
     struct BeginSwipeSignal
       @source : GObject::Object
       @detail : String?
@@ -354,6 +366,12 @@ module Adw
       BeginSwipeSignal.new(self)
     end
 
+    # This signal is emitted as soon as the gesture has stopped.
+    #
+    # The user is expected to animate the deceleration from the current progress
+    # value to @to with an animation using @velocity as the initial velocity,
+    # provided in pixels per second. `#SpringAnimation` is usually a good
+    # fit for this.
     struct EndSwipeSignal
       @source : GObject::Object
       @detail : String?
@@ -437,6 +455,10 @@ module Adw
       EndSwipeSignal.new(self)
     end
 
+    # This signal is emitted when a possible swipe is detected.
+    #
+    # The @direction value can be used to restrict the swipe to a certain
+    # direction.
     struct PrepareSignal
       @source : GObject::Object
       @detail : String?
@@ -464,7 +486,7 @@ module Adw
       def connect(block : Proc(Adw::NavigationDirection, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Adw::NavigationDirection.from_value(lib_arg0)
+          arg0 = Adw::NavigationDirection.new(lib_arg0)
           ::Box(Proc(Adw::NavigationDirection, Nil)).unbox(box).call(arg0)
         }
 
@@ -475,7 +497,7 @@ module Adw
       def connect_after(block : Proc(Adw::NavigationDirection, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Adw::NavigationDirection.from_value(lib_arg0)
+          arg0 = Adw::NavigationDirection.new(lib_arg0)
           ::Box(Proc(Adw::NavigationDirection, Nil)).unbox(box).call(arg0)
         }
 
@@ -487,7 +509,7 @@ module Adw
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Adw::NavigationDirection.from_value(lib_arg0)
+          arg0 = Adw::NavigationDirection.new(lib_arg0)
           ::Box(Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -499,7 +521,7 @@ module Adw
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Adw::NavigationDirection.from_value(lib_arg0)
+          arg0 = Adw::NavigationDirection.new(lib_arg0)
           ::Box(Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -516,6 +538,7 @@ module Adw
       PrepareSignal.new(self)
     end
 
+    # This signal is emitted every time the progress value changes.
     struct UpdateSwipeSignal
       @source : GObject::Object
       @detail : String?

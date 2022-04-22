@@ -10,7 +10,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGio::OutputMessage))
@@ -33,74 +33,81 @@ module Gio
     def finalize
     end
 
-    def address : Gio::SocketAddress
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::OutputMessage)).zero?
+    end
+
+    def address!
+      self.address.not_nil!
+    end
+
+    def address : Gio::SocketAddress?
       _var = (@pointer + 0).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Gio::SocketAddress.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def address=(value : Gio::SocketAddress)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def address=(value : Gio::SocketAddress?)
+      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def vectors : Gio::OutputVector
-      # Property getter
+    def vectors!
+      self.vectors.not_nil!
+    end
+
+    def vectors : Gio::OutputVector?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Gio::OutputVector.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def vectors=(value : Gio::OutputVector)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def vectors=(value : Gio::OutputVector?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
     def num_vectors : UInt32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(UInt32))
       _var.value
     end
 
     def num_vectors=(value : UInt32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(UInt32)).value = value
       value
     end
 
     def bytes_sent : UInt32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(UInt32))
       _var.value
     end
 
     def bytes_sent=(value : UInt32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(UInt32)).value = value
       value
     end
 
-    def control_messages : Enumerable(Gio::SocketControlMessage)
-      # Property getter
+    def control_messages!
+      self.control_messages.not_nil!
+    end
+
+    def control_messages : Enumerable(Gio::SocketControlMessage)?
       _var = (@pointer + 24).as(Pointer(Pointer(Pointer(Void))))
+      return if _var.value.null?
       GICrystal.transfer_array(_var.value, num_control_messages, GICrystal::Transfer::None)
     end
 
-    def control_messages=(value : Enumerable(Gio::SocketControlMessage))
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(Pointer(Pointer(Void)))).value = value
+    def control_messages=(value : Enumerable(Gio::SocketControlMessage)?)
+      _var = (@pointer + 24).as(Pointer(Pointer(Pointer(Void)))).value = value.nil? ? Pointer(Pointer(Void)).null : value
       value
     end
 
     def num_control_messages : UInt32
-      # Property getter
       _var = (@pointer + 32).as(Pointer(UInt32))
       _var.value
     end
 
     def num_control_messages=(value : UInt32)
-      # Property setter
       _var = (@pointer + 32).as(Pointer(UInt32)).value = value
       value
     end

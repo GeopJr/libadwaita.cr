@@ -9,8 +9,16 @@ module Gio
   # by other means, for instance creating them with platform specific methods as
   # g_unix_input_stream_new() or g_win32_input_stream_new(), and you want
   # to take advantage of the methods provided by #GIOStream.
+  @[GObject::GeneratedWrapper]
   class SimpleIOStream < IOStream
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGio::SimpleIOStream), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -22,23 +30,27 @@ module Gio
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if closed
+      if !closed.nil?
         (_names.to_unsafe + _n).value = "closed".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, closed)
         _n += 1
       end
-      if input_stream
+      if !input_stream.nil?
         (_names.to_unsafe + _n).value = "input-stream".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, input_stream)
         _n += 1
       end
-      if output_stream
+      if !output_stream.nil?
         (_names.to_unsafe + _n).value = "output-stream".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, output_stream)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(SimpleIOStream.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -76,16 +88,17 @@ module Gio
       Gio::OutputStream.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new #GSimpleIOStream wrapping @input_stream and @output_stream.
+    # See also #GIOStream.
     def initialize(input_stream : Gio::InputStream, output_stream : Gio::OutputStream)
       # g_simple_io_stream_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_simple_io_stream_new(input_stream, output_stream)
 
       # Return value handling
+
       @pointer = _retval
     end
   end

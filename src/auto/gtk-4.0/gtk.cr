@@ -307,7 +307,7 @@ module Gtk
   # An undefined value. The accessible attribute is either unset, or its
   # value is undefined.
   ACCESSIBLE_VALUE_UNDEFINED = -1
-  # Like [func@get_binary_age], but from the headers used at
+  # Like `#binary_age`, but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
   BINARY_AGE                     = 602
@@ -315,9 +315,9 @@ module Gtk
   # Constant to return from a signal handler for the ::input
   # signal in case of conversion failure.
   #
-  # See [signal@Gtk.SpinButton::input].
+  # See `Gtk::SpinButton::#input`.
   INPUT_ERROR = -1
-  # Like [func@get_interface_age], but from the headers used at
+  # Like `#interface_age`, but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
   INTERFACE_AGE = 2
@@ -337,17 +337,17 @@ module Gtk
   LEVEL_BAR_OFFSET_HIGH = "high"
   # The name used for the stock low offset included by `GtkLevelBar`.
   LEVEL_BAR_OFFSET_LOW = "low"
-  # Like [func@get_major_version], but from the headers used at
+  # Like `#major_version`, but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
   MAJOR_VERSION                   = 4
   MAX_COMPOSE_LEN                 = 7
   MEDIA_FILE_EXTENSION_POINT_NAME = "gtk-media-file"
-  # Like [func@get_micro_version], but from the headers used at
+  # Like `#micro_version`, but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
   MICRO_VERSION = 2
-  # Like [func@get_minor_version], but from the headers used at
+  # Like `#minor_version`, but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
   MINOR_VERSION = 6
@@ -442,13 +442,13 @@ module Gtk
   # The priority at which the text view validates onscreen lines
   # in an idle job in the background.
   TEXT_VIEW_PRIORITY_VALIDATE = 125
-  # Uses the default sort function in a [iface@Gtk.TreeSortable].
+  # Uses the default sort function in a `Gtk#TreeSortable`.
   #
-  # See also: [method@Gtk.TreeSortable.set_sort_column_id]
+  # See also: `Gtk::TreeSortable#sort_column_id=`
   TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID = -1
-  # Disables sorting in a [iface@Gtk.TreeSortable].
+  # Disables sorting in a `Gtk#TreeSortable`.
   #
-  # See also: [method@Gtk.TreeSortable.set_sort_column_id]
+  # See also: `Gtk::TreeSortable#sort_column_id=`
   TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID = -2
 
   # Base class for all errors in this module.
@@ -501,12 +501,12 @@ module Gtk
     Spelling = 3
   end
 
-  # The possible accessible properties of a [iface@Accessible].
+  # The possible accessible properties of a `#Accessible`.
   enum AccessibleProperty : UInt32
     # Indicates whether inputting text
     #    could trigger display of one or more predictions of the user's intended
     #    value for a combobox, searchbox, or textbox and specifies how predictions
-    #    would be presented if they were made. Value type: [enum@AccessibleAutocomplete]
+    #    would be presented if they were made. Value type: `#AccessibleAutocomplete`
     Autocomplete = 0
     # Defines a string value that describes
     #    or annotates the current element. Value type: string
@@ -537,7 +537,7 @@ module Gtk
     MultiSelectable = 8
     # Indicates whether the element's
     #    orientation is horizontal, vertical, or unknown/ambiguous. Value type:
-    #    [enum@Orientation]
+    #    `#Orientation`
     Orientation = 9
     # Defines a short hint (a word or short
     #    phrase) intended to aid the user with data entry when the control has no
@@ -554,7 +554,7 @@ module Gtk
     #    author-localized description for the role of an element. Value type: string
     RoleDescription = 13
     # Indicates if items in a table or grid are
-    #    sorted in ascending or descending order. Value type: [enum@AccessibleSort]
+    #    sorted in ascending or descending order. Value type: `#AccessibleSort`
     Sort = 14
     # Defines the maximum allowed value for a
     #    range widget. Value type: double
@@ -570,7 +570,7 @@ module Gtk
     ValueText = 18
   end
 
-  # The possible accessible relations of a [iface@Accessible].
+  # The possible accessible relations of a `#Accessible`.
   #
   # Accessible relations can be references to other widgets,
   # integers or strings.
@@ -638,7 +638,7 @@ module Gtk
     SetSize = 17
   end
 
-  # The accessible role for a [iface@Accessible] implementation.
+  # The accessible role for a `#Accessible` implementation.
   #
   # Abstract roles are only used as part of the ontology; application
   # developers must not use abstract roles in their code.
@@ -688,7 +688,7 @@ module Gtk
     # An item in a grid or tree grid.
     GridCell = 17
     # An element that groups multiple widgets. GTK uses
-    #   this role for various containers, like [class@Box], [class@Viewport], and [class@HeaderBar].
+    #   this role for various containers, like `#Box`, `#Viewport`, and `#HeaderBar`.
     Group = 18
     # Unused
     Heading = 19
@@ -835,32 +835,32 @@ module Gtk
     Other = 3
   end
 
-  # The possible accessible states of a [iface@Accessible].
+  # The possible accessible states of a `#Accessible`.
   enum AccessibleState : UInt32
     # A “busy” state. This state has boolean values
     Busy = 0
     # A “checked” state; indicates the current
-    #   state of a [class@CheckButton]. Value type: [enum@AccessibleTristate]
+    #   state of a `#CheckButton`. Value type: `#AccessibleTristate`
     Checked = 1
     # A “disabled” state; corresponds to the
-    #   [property@Widget:sensitive] property. It indicates a UI element
+    #   `Widget#sensitive` property. It indicates a UI element
     #   that is perceivable, but not editable or operable. Value type: boolean
     Disabled = 2
     # An “expanded” state; corresponds to the
-    #   [property@Expander:expanded] property. Value type: boolean
+    #   `Expander#expanded` property. Value type: boolean
     #   or undefined
     Expanded = 3
     # A “hidden” state; corresponds to the
-    #   [property@Widget:visible] property. You can use this state
+    #   `Widget#visible` property. You can use this state
     #   explicitly on UI elements that should not be exposed to an assistive
     #   technology. Value type: boolean
     #   See also: %GTK_ACCESSIBLE_STATE_DISABLED
     Hidden = 4
     # An “invalid” state; set when a widget
-    #   is showing an error. Value type: [enum@AccessibleInvalidState]
+    #   is showing an error. Value type: `#AccessibleInvalidState`
     Invalid = 5
     # A “pressed” state; indicates the current
-    #   state of a [class@ToggleButton]. Value type: [enum@AccessibleTristate]
+    #   state of a `#ToggleButton`. Value type: `#AccessibleTristate`
     #   enumeration
     Pressed = 6
     # A “selected” state; set when a widget
@@ -886,8 +886,8 @@ module Gtk
   # Controls how a widget deals with extra space in a single dimension.
   #
   # Alignment only matters if the widget receives a “too large” allocation,
-  # for example if you packed the widget with the [property@Gtk.Widget:hexpand]
-  # property inside a [class@Box], then the widget might get extra space.
+  # for example if you packed the widget with the `Gtk::Widget#hexpand`
+  # property inside a `#Box`, then the widget might get extra space.
   # If you have for example a 16x16 icon inside a 32x32 space, the icon
   # could be scaled and stretched, it could be centered, or it could be
   # positioned to one side of the space.
@@ -909,7 +909,7 @@ module Gtk
     # center natural width of widget inside the allocation
     Center = 3
     # align the widget according to the baseline.
-    #   See [class@Gtk.Widget].
+    #   See `Gtk#Widget`.
     Baseline = 4
   end
 
@@ -1005,7 +1005,7 @@ module Gtk
   # Prebuilt sets of buttons for `GtkDialog`.
   #
   # If none of these choices are appropriate, simply use
-  # %GTK_BUTTONS_NONE and call [method@Gtk.Dialog.add_buttons].
+  # %GTK_BUTTONS_NONE and call `Gtk::Dialog#add_buttons`.
   #
   # > Please note that %GTK_BUTTONS_OK, %GTK_BUTTONS_YES_NO
   # > and %GTK_BUTTONS_OK_CANCEL are discouraged by the
@@ -1046,7 +1046,7 @@ module Gtk
     Editable = 2
   end
 
-  # The widget attributes that can be used when creating a [class@Constraint].
+  # The widget attributes that can be used when creating a `#Constraint`.
   enum ConstraintAttribute : UInt32
     # No attribute, used for constant
     #   relations
@@ -1095,7 +1095,7 @@ module Gtk
 
   # The strength of a constraint, expressed as a symbolic constant.
   #
-  # The strength of a [class@Constraint] can be expressed with any positive
+  # The strength of a `#Constraint` can be expressed with any positive
   # integer; the values of this enumeration can be used for readability.
   enum ConstraintStrength : UInt32
     # The constraint is required towards solving the layout
@@ -1184,24 +1184,24 @@ module Gtk
     Right = 5
   end
 
-  # The identifiers for [iface@Gtk.Editable] properties.
+  # The identifiers for `Gtk#Editable` properties.
   #
-  # See [func@Gtk.Editable.install_properties] for details on how to
+  # See `Gtk::Editable#install_properties` for details on how to
   # implement the `GtkEditable` interface.
   enum EditableProperties : UInt32
-    # the property id for [property@Gtk.Editable:text]
+    # the property id for `Gtk::Editable#text`
     PropText = 0
     # the property id for [property@Gtk.Editable:cursor-position]
     PropCursorPosition = 1
     # the property id for [property@Gtk.Editable:selection-bound]
     PropSelectionBound = 2
-    # the property id for [property@Gtk.Editable:editable]
+    # the property id for `Gtk::Editable#editable`
     PropEditable = 3
     # the property id for [property@Gtk.Editable:width-chars]
     PropWidthChars = 4
     # the property id for [property@Gtk.Editable:max-width-chars]
     PropMaxWidthChars = 5
-    # the property id for [property@Gtk.Editable:xalign]
+    # the property id for `Gtk::Editable#xalign`
     PropXalign = 6
     # the property id for [property@Gtk.Editable:enable-undo]
     PropEnableUndo = 7
@@ -1217,7 +1217,7 @@ module Gtk
     Secondary = 1
   end
 
-  # Describes the state of a [struct@Gdk.EventSequence] in a [class@Gesture].
+  # Describes the state of a `Gdk#EventSequence` in a `#Gesture`.
   enum EventSequenceState : UInt32
     # The sequence is handled, but not grabbed.
     None = 0
@@ -1314,7 +1314,7 @@ module Gtk
     DropBelow = 5
   end
 
-  # Describes the image data representation used by a [class@Gtk.Image].
+  # Describes the image data representation used by a `Gtk#Image`.
   #
   # If you want to get the image from the widget, you can only get the
   # currently-stored representation; for instance, if the gtk_image_get_storage_type()
@@ -1377,7 +1377,7 @@ module Gtk
     Terminal = 10
   end
 
-  # Used for justifying the text inside a [class@Label] widget.
+  # Used for justifying the text inside a `#Label` widget.
   enum Justification : UInt32
     # The text is placed at the left edge of the label.
     Left = 0
@@ -1389,7 +1389,7 @@ module Gtk
     Fill = 3
   end
 
-  # Describes how [class@LevelBar] contents should be rendered.
+  # Describes how `#LevelBar` contents should be rendered.
   #
   # Note that this enumeration could be extended with additional modes
   # in the future.
@@ -1443,7 +1443,7 @@ module Gtk
     Mpl20 = 17
   end
 
-  # The type of message being displayed in a [class@MessageDialog].
+  # The type of message being displayed in a `#MessageDialog`.
   enum MessageType : UInt32
     # Informational message
     Info = 0
@@ -1531,10 +1531,10 @@ module Gtk
 
   # Describes the way two values can be compared.
   #
-  # These values can be used with a [callback@GLib.CompareFunc]. However,
+  # These values can be used with a `GLib#CompareFunc`. However,
   # a `GCompareFunc` is allowed to return any integer values.
   # For converting such a value to a `GtkOrdering` value, use
-  # [func@Gtk.Ordering.from_cmpfunc].
+  # `Gtk::Ordering#from_cmpfunc`.
   enum Ordering : Int32
     # the first value is smaller than the second
     Smaller = -1
@@ -1546,7 +1546,7 @@ module Gtk
 
   # Represents the orientation of widgets and other objects.
   #
-  # Typical examples are [class@Box] or [class@GesturePan].
+  # Typical examples are `#Box` or `#GesturePan`.
   enum Orientation : UInt32
     # The element is in horizontal orientation.
     Horizontal = 0
@@ -1556,8 +1556,8 @@ module Gtk
 
   # Defines how content overflowing a given area should be handled.
   #
-  # This is used in [method@Gtk.Widget.set_overflow]. The
-  # [property@Gtk.Widget:overflow] property is modeled after the
+  # This is used in `Gtk::Widget#overflow=`. The
+  # `Gtk::Widget#overflow` property is modeled after the
   # CSS overflow property, but implements it only partially.
   enum Overflow : UInt32
     # No change is applied. Content is drawn at the specified
@@ -1570,7 +1570,7 @@ module Gtk
 
   # Represents the packing location of a children in its parent.
   #
-  # See [class@WindowControls] for example.
+  # See `#WindowControls` for example.
   enum PackType : UInt32
     # The child is packed into the start of the widget
     Start = 0
@@ -1610,7 +1610,7 @@ module Gtk
     Odd = 2
   end
 
-  # Describes the panning direction of a [class@GesturePan].
+  # Describes the panning direction of a `#GesturePan`.
   enum PanDirection : UInt32
     # panned towards the left
     Left = 0
@@ -1642,8 +1642,8 @@ module Gtk
 
   # Describes which edge of a widget a certain feature is positioned at.
   #
-  # For examples, see the tabs of a [class@Notebook], or the label
-  # of a [class@Scale].
+  # For examples, see the tabs of a `#Notebook`, or the label
+  # of a `#Scale`.
   enum PositionType : UInt32
     # The feature is at the left edge.
     Left = 0
@@ -1667,7 +1667,7 @@ module Gtk
 
   # Determines what action the print operation should perform.
   #
-  # A parameter of this typs is passed to [method@Gtk.PrintOperation.run].
+  # A parameter of this typs is passed to `Gtk::PrintOperation#run`.
   enum PrintOperationAction : UInt32
     # Show the print dialog.
     PrintDialog = 0
@@ -1683,7 +1683,7 @@ module Gtk
 
   # The result of a print operation.
   #
-  # A value of this type is returned by [method@Gtk.PrintOperation.run].
+  # A value of this type is returned by `Gtk::PrintOperation#run`.
   enum PrintOperationResult : UInt32
     # An error has occurred.
     Error = 0
@@ -1750,19 +1750,19 @@ module Gtk
     FinishedAborted = 8
   end
 
-  # Describes limits of a [class@EventController] for handling events
+  # Describes limits of a `#EventController` for handling events
   # targeting other widgets.
   enum PropagationLimit : UInt32
     # Events are handled regardless of what their
     #   target is.
     None = 0
     # Events are only handled if their target
-    #   is in the same [iface@Native] as the event controllers widget. Note
+    #   is in the same `#Native` as the event controllers widget. Note
     #   that some event types have two targets (origin and destination).
     SameNative = 1
   end
 
-  # Describes the stage at which events are fed into a [class@EventController].
+  # Describes the stage at which events are fed into a `#EventController`.
   enum PropagationPhase : UInt32
     # Events are not delivered.
     None = 0
@@ -1929,14 +1929,14 @@ module Gtk
     Off = 2
   end
 
-  # Describes where [class@Shortcut]s added to a
-  # [class@ShortcutController] get handled.
+  # Describes where `#Shortcut`s added to a
+  # `#ShortcutController` get handled.
   enum ShortcutScope : UInt32
     # Shortcuts are handled inside
     #   the widget the controller belongs to.
     Local = 0
     # Shortcuts are handled by
-    #   the first ancestor that is a [iface@ShortcutManager]
+    #   the first ancestor that is a `#ShortcutManager`
     Managed = 1
     # Shortcuts are handled by
     #   the root widget.
@@ -2037,7 +2037,7 @@ module Gtk
   # Determines whether the spin button displays values outside the adjustment
   # bounds.
   #
-  # See [method@Gtk.SpinButton.set_update_policy].
+  # See `Gtk::SpinButton#update_policy=`.
   enum SpinButtonUpdatePolicy : UInt32
     # When refreshing your `GtkSpinButton`, the value is
     #   always displayed
@@ -2133,7 +2133,7 @@ module Gtk
   end
 
   # The indexes of colors passed to symbolic color rendering, such as
-  # [vfunc@Gtk.SymbolicPaintable.snapshot_symbolic].
+  # `Gtk::SymbolicPaintable#snapshot_symbolic`.
   #
   # More values may be added over time.
   enum SymbolicColor : UInt32
@@ -2147,13 +2147,13 @@ module Gtk
     Success = 3
   end
 
-  # Values that can be passed to the [vfunc@Gtk.Widget.system_setting_changed]
+  # Values that can be passed to the `Gtk::Widget#system_setting_changed`
   # vfunc.
   #
   # The values indicate which system setting has changed.
   # Widgets may need to drop caches, or react otherwise.
   #
-  # Most of the values correspond to [class@Settings] properties.
+  # Most of the values correspond to `#Settings` properties.
   #
   # More values may be added over time.
   enum SystemSetting : UInt32
@@ -2519,6 +2519,1178 @@ module Gtk
     def self.g_type : UInt64
       LibGtk.gtk_tree_model_flags_get_type
     end
+  end
+
+  def self.accelerator_get_default_mod_mask : Gdk::ModifierType
+    # gtk_accelerator_get_default_mod_mask: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_accelerator_get_default_mod_mask
+
+    # Return value handling
+
+    Gdk::ModifierType.new(_retval)
+  end
+
+  def self.accelerator_get_label(accelerator_key : UInt32, accelerator_mods : Gdk::ModifierType) : ::String
+    # gtk_accelerator_get_label: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGtk.gtk_accelerator_get_label(accelerator_key, accelerator_mods)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.accelerator_get_label_with_keycode(display : Gdk::Display?, accelerator_key : UInt32, keycode : UInt32, accelerator_mods : Gdk::ModifierType) : ::String
+    # gtk_accelerator_get_label_with_keycode: (None)
+    # @display: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    display = if display.nil?
+                Pointer(Void).null
+              else
+                display.to_unsafe
+              end
+
+    # C call
+    _retval = LibGtk.gtk_accelerator_get_label_with_keycode(display, accelerator_key, keycode, accelerator_mods)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.accelerator_name(accelerator_key : UInt32, accelerator_mods : Gdk::ModifierType) : ::String
+    # gtk_accelerator_name: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGtk.gtk_accelerator_name(accelerator_key, accelerator_mods)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.accelerator_name_with_keycode(display : Gdk::Display?, accelerator_key : UInt32, keycode : UInt32, accelerator_mods : Gdk::ModifierType) : ::String
+    # gtk_accelerator_name_with_keycode: (None)
+    # @display: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    display = if display.nil?
+                Pointer(Void).null
+              else
+                display.to_unsafe
+              end
+
+    # C call
+    _retval = LibGtk.gtk_accelerator_name_with_keycode(display, accelerator_key, keycode, accelerator_mods)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.accelerator_parse(accelerator : ::String) : Bool
+    # gtk_accelerator_parse: (None)
+    # @accelerator_key: (out) (transfer full) (optional)
+    # @accelerator_mods: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    accelerator_key = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    accelerator_mods = Pointer(UInt32).null
+
+    # C call
+    _retval = LibGtk.gtk_accelerator_parse(accelerator, accelerator_key, accelerator_mods)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.accelerator_parse_with_keycode(accelerator : ::String, display : Gdk::Display?) : Bool
+    # gtk_accelerator_parse_with_keycode: (None)
+    # @display: (nullable)
+    # @accelerator_key: (out) (transfer full) (optional)
+    # @accelerator_codes: (out) (transfer full) (optional) (array zero-terminated=1 element-type UInt32)
+    # @accelerator_mods: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    display = if display.nil?
+                Pointer(Void).null
+              else
+                display.to_unsafe
+              end
+
+    # Generator::OutArgUsedInReturnPlan
+    accelerator_key = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    accelerator_codes = Pointer(Pointer(UInt32)).null
+    # Generator::ArrayArgPlan
+    accelerator_codes = accelerator_codes.to_a.to_unsafe
+
+    # Generator::OutArgUsedInReturnPlan
+    accelerator_mods = Pointer(UInt32).null
+
+    # C call
+    _retval = LibGtk.gtk_accelerator_parse_with_keycode(accelerator, display, accelerator_key, accelerator_codes, accelerator_mods)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.accelerator_valid(keyval : UInt32, modifiers : Gdk::ModifierType) : Bool
+    # gtk_accelerator_valid: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_accelerator_valid(keyval, modifiers)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.accessible_property_init_value(property : Gtk::AccessibleProperty, value : _) : Nil
+    # gtk_accessible_property_init_value: (None)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    LibGtk.gtk_accessible_property_init_value(property, value)
+
+    # Return value handling
+  end
+
+  def self.accessible_relation_init_value(relation : Gtk::AccessibleRelation, value : _) : Nil
+    # gtk_accessible_relation_init_value: (None)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    LibGtk.gtk_accessible_relation_init_value(relation, value)
+
+    # Return value handling
+  end
+
+  def self.accessible_state_init_value(state : Gtk::AccessibleState, value : _) : Nil
+    # gtk_accessible_state_init_value: (None)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    LibGtk.gtk_accessible_state_init_value(state, value)
+
+    # Return value handling
+  end
+
+  def self.bitset_iter_init_at(set : Gtk::Bitset, target : UInt32) : Gtk::BitsetIter
+    # gtk_bitset_iter_init_at: (None)
+    # @iter: (out) (caller-allocates)
+    # @value: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    iter = Gtk::BitsetIter.new
+    # Generator::OutArgUsedInReturnPlan
+    value = Pointer(UInt32).null
+
+    # C call
+    _retval = LibGtk.gtk_bitset_iter_init_at(iter, set, target, value)
+
+    # Return value handling
+
+    iter
+  end
+
+  def self.bitset_iter_init_first(set : Gtk::Bitset) : Gtk::BitsetIter
+    # gtk_bitset_iter_init_first: (None)
+    # @iter: (out) (caller-allocates)
+    # @value: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    iter = Gtk::BitsetIter.new
+    # Generator::OutArgUsedInReturnPlan
+    value = Pointer(UInt32).null
+
+    # C call
+    _retval = LibGtk.gtk_bitset_iter_init_first(iter, set, value)
+
+    # Return value handling
+
+    iter
+  end
+
+  def self.bitset_iter_init_last(set : Gtk::Bitset) : Gtk::BitsetIter
+    # gtk_bitset_iter_init_last: (None)
+    # @iter: (out) (caller-allocates)
+    # @value: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    iter = Gtk::BitsetIter.new
+    # Generator::OutArgUsedInReturnPlan
+    value = Pointer(UInt32).null
+
+    # C call
+    _retval = LibGtk.gtk_bitset_iter_init_last(iter, set, value)
+
+    # Return value handling
+
+    iter
+  end
+
+  def self.builder_error_quark : UInt32
+    # gtk_builder_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_builder_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.check_version(required_major : UInt32, required_minor : UInt32, required_micro : UInt32) : ::String?
+    # gtk_check_version: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_check_version(required_major, required_minor, required_micro)
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.constraint_vfl_parser_error_quark : UInt32
+    # gtk_constraint_vfl_parser_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_constraint_vfl_parser_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.css_parser_error_quark : UInt32
+    # gtk_css_parser_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_css_parser_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.css_parser_warning_quark : UInt32
+    # gtk_css_parser_warning_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_css_parser_warning_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.disable_setlocale : Nil
+    # gtk_disable_setlocale: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_disable_setlocale
+
+    # Return value handling
+  end
+
+  def self.distribute_natural_allocation(extra_space : Int32, sizes : Enumerable(Gtk::RequestedSize)) : Int32
+    # gtk_distribute_natural_allocation: (None)
+    # @sizes: (array length=n_requested_sizes element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    n_requested_sizes = sizes.size
+    # Generator::ArrayArgPlan
+    sizes = sizes.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibGtk.gtk_distribute_natural_allocation(extra_space, n_requested_sizes, sizes)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.editable_delegate_get_property(object : GObject::Object, prop_id : UInt32, value : _, pspec : GObject::ParamSpec) : Bool
+    # gtk_editable_delegate_get_property: (None)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    _retval = LibGtk.gtk_editable_delegate_get_property(object, prop_id, value, pspec)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.editable_delegate_set_property(object : GObject::Object, prop_id : UInt32, value : _, pspec : GObject::ParamSpec) : Bool
+    # gtk_editable_delegate_set_property: (None)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    _retval = LibGtk.gtk_editable_delegate_set_property(object, prop_id, value, pspec)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.editable_install_properties(object_class : GObject::ObjectClass, first_prop : UInt32) : UInt32
+    # gtk_editable_install_properties: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_editable_install_properties(object_class, first_prop)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.enumerate_printers(func : Pointer(Void), data : Pointer(Void)?, destroy : Pointer(Void), wait : Bool) : Nil
+    # gtk_enumerate_printers: (None)
+    # @data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    data = if data.nil?
+             Pointer(Void).null
+           else
+             data.to_unsafe
+           end
+
+    # C call
+    LibGtk.gtk_enumerate_printers(func, data, destroy, wait)
+
+    # Return value handling
+  end
+
+  def self.file_chooser_error_quark : UInt32
+    # gtk_file_chooser_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_file_chooser_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.binary_age : UInt32
+    # gtk_get_binary_age: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_get_binary_age
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.debug_flags : Gtk::DebugFlags
+    # gtk_get_debug_flags: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_get_debug_flags
+
+    # Return value handling
+
+    Gtk::DebugFlags.new(_retval)
+  end
+
+  def self.default_language : Pango::Language
+    # gtk_get_default_language: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_get_default_language
+
+    # Return value handling
+
+    Pango::Language.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.interface_age : UInt32
+    # gtk_get_interface_age: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_get_interface_age
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.locale_direction : Gtk::TextDirection
+    # gtk_get_locale_direction: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_get_locale_direction
+
+    # Return value handling
+
+    Gtk::TextDirection.new(_retval)
+  end
+
+  def self.major_version : UInt32
+    # gtk_get_major_version: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_get_major_version
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.micro_version : UInt32
+    # gtk_get_micro_version: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_get_micro_version
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.minor_version : UInt32
+    # gtk_get_minor_version: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_get_minor_version
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.hsv_to_rgb(h : Float32, s : Float32, v : Float32, r : Float32, g : Float32, b : Float32) : Nil
+    # gtk_hsv_to_rgb: (None)
+    # @r: (out) (transfer full)
+    # @g: (out) (transfer full)
+    # @b: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_hsv_to_rgb(h, s, v, r, g, b)
+
+    # Return value handling
+  end
+
+  def self.icon_theme_error_quark : UInt32
+    # gtk_icon_theme_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_icon_theme_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.init : Nil
+    # gtk_init: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_init
+
+    # Return value handling
+  end
+
+  def self.init_check : Bool
+    # gtk_init_check: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_init_check
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.is_initialized : Bool
+    # gtk_is_initialized: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_is_initialized
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.native_get_for_surface(surface : Gdk::Surface) : Gtk::Native?
+    # gtk_native_get_for_surface: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_native_get_for_surface(surface)
+
+    # Return value handling
+
+    Gtk::Native__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def self.ordering_from_cmpfunc(cmpfunc_result : Int32) : Gtk::Ordering
+    # gtk_ordering_from_cmpfunc: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_ordering_from_cmpfunc(cmpfunc_result)
+
+    # Return value handling
+
+    Gtk::Ordering.new(_retval)
+  end
+
+  def self.paper_size_get_default : ::String
+    # gtk_paper_size_get_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_paper_size_get_default
+
+    # Return value handling
+
+    ::String.new(_retval)
+  end
+
+  def self.paper_size_get_paper_sizes(include_custom : Bool) : GLib::List
+    # gtk_paper_size_get_paper_sizes: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGtk.gtk_paper_size_get_paper_sizes(include_custom)
+
+    # Return value handling
+
+    GLib::List(Gtk::PaperSize).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.param_spec_expression(name : ::String, nick : ::String, blurb : ::String, flags : GObject::ParamFlags) : GObject::ParamSpec
+    # gtk_param_spec_expression: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGtk.gtk_param_spec_expression(name, nick, blurb, flags)
+
+    # Return value handling
+
+    GObject::ParamSpec.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.print_error_quark : UInt32
+    # gtk_print_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_print_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.print_run_page_setup_dialog(parent : Gtk::Window?, page_setup : Gtk::PageSetup?, settings : Gtk::PrintSettings) : Gtk::PageSetup
+    # gtk_print_run_page_setup_dialog: (None)
+    # @parent: (nullable)
+    # @page_setup: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    parent = if parent.nil?
+               Pointer(Void).null
+             else
+               parent.to_unsafe
+             end
+
+    # Generator::NullableArrayPlan
+    page_setup = if page_setup.nil?
+                   Pointer(Void).null
+                 else
+                   page_setup.to_unsafe
+                 end
+
+    # C call
+    _retval = LibGtk.gtk_print_run_page_setup_dialog(parent, page_setup, settings)
+
+    # Return value handling
+
+    Gtk::PageSetup.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.print_run_page_setup_dialog_async(parent : Gtk::Window?, page_setup : Gtk::PageSetup?, settings : Gtk::PrintSettings, done_cb : Pointer(Void), data : Pointer(Void)?) : Nil
+    # gtk_print_run_page_setup_dialog_async: (None)
+    # @parent: (nullable)
+    # @page_setup: (nullable)
+    # @data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    parent = if parent.nil?
+               Pointer(Void).null
+             else
+               parent.to_unsafe
+             end
+
+    # Generator::NullableArrayPlan
+    page_setup = if page_setup.nil?
+                   Pointer(Void).null
+                 else
+                   page_setup.to_unsafe
+                 end
+
+    # Generator::NullableArrayPlan
+    data = if data.nil?
+             Pointer(Void).null
+           else
+             data.to_unsafe
+           end
+
+    # C call
+    LibGtk.gtk_print_run_page_setup_dialog_async(parent, page_setup, settings, done_cb, data)
+
+    # Return value handling
+  end
+
+  def self.recent_manager_error_quark : UInt32
+    # gtk_recent_manager_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_recent_manager_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.render_activity(context : Gtk::StyleContext, cr : Cairo::Context, x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+    # gtk_render_activity: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_activity(context, cr, x, y, width, height)
+
+    # Return value handling
+  end
+
+  def self.render_arrow(context : Gtk::StyleContext, cr : Cairo::Context, angle : Float64, x : Float64, y : Float64, size : Float64) : Nil
+    # gtk_render_arrow: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_arrow(context, cr, angle, x, y, size)
+
+    # Return value handling
+  end
+
+  def self.render_background(context : Gtk::StyleContext, cr : Cairo::Context, x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+    # gtk_render_background: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_background(context, cr, x, y, width, height)
+
+    # Return value handling
+  end
+
+  def self.render_check(context : Gtk::StyleContext, cr : Cairo::Context, x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+    # gtk_render_check: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_check(context, cr, x, y, width, height)
+
+    # Return value handling
+  end
+
+  def self.render_expander(context : Gtk::StyleContext, cr : Cairo::Context, x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+    # gtk_render_expander: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_expander(context, cr, x, y, width, height)
+
+    # Return value handling
+  end
+
+  def self.render_focus(context : Gtk::StyleContext, cr : Cairo::Context, x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+    # gtk_render_focus: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_focus(context, cr, x, y, width, height)
+
+    # Return value handling
+  end
+
+  def self.render_frame(context : Gtk::StyleContext, cr : Cairo::Context, x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+    # gtk_render_frame: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_frame(context, cr, x, y, width, height)
+
+    # Return value handling
+  end
+
+  def self.render_handle(context : Gtk::StyleContext, cr : Cairo::Context, x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+    # gtk_render_handle: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_handle(context, cr, x, y, width, height)
+
+    # Return value handling
+  end
+
+  def self.render_icon(context : Gtk::StyleContext, cr : Cairo::Context, texture : Gdk::Texture, x : Float64, y : Float64) : Nil
+    # gtk_render_icon: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_icon(context, cr, texture, x, y)
+
+    # Return value handling
+  end
+
+  def self.render_layout(context : Gtk::StyleContext, cr : Cairo::Context, x : Float64, y : Float64, layout : Pango::Layout) : Nil
+    # gtk_render_layout: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_layout(context, cr, x, y, layout)
+
+    # Return value handling
+  end
+
+  def self.render_line(context : Gtk::StyleContext, cr : Cairo::Context, x0 : Float64, y0 : Float64, x1 : Float64, y1 : Float64) : Nil
+    # gtk_render_line: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_line(context, cr, x0, y0, x1, y1)
+
+    # Return value handling
+  end
+
+  def self.render_option(context : Gtk::StyleContext, cr : Cairo::Context, x : Float64, y : Float64, width : Float64, height : Float64) : Nil
+    # gtk_render_option: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_render_option(context, cr, x, y, width, height)
+
+    # Return value handling
+  end
+
+  def self.rgb_to_hsv(r : Float32, g : Float32, b : Float32, h : Float32, s : Float32, v : Float32) : Nil
+    # gtk_rgb_to_hsv: (None)
+    # @h: (out) (transfer full)
+    # @s: (out) (transfer full)
+    # @v: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_rgb_to_hsv(r, g, b, h, s, v)
+
+    # Return value handling
+  end
+
+  def self.debug_flags=(flags : Gtk::DebugFlags) : Nil
+    # gtk_set_debug_flags: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_set_debug_flags(flags)
+
+    # Return value handling
+  end
+
+  def self.show_uri(parent : Gtk::Window?, uri : ::String, timestamp : UInt32) : Nil
+    # gtk_show_uri: (None)
+    # @parent: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    parent = if parent.nil?
+               Pointer(Void).null
+             else
+               parent.to_unsafe
+             end
+
+    # C call
+    LibGtk.gtk_show_uri(parent, uri, timestamp)
+
+    # Return value handling
+  end
+
+  def self.show_uri_full(parent : Gtk::Window?, uri : ::String, timestamp : UInt32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    # gtk_show_uri_full: (None)
+    # @parent: (nullable)
+    # @cancellable: (nullable)
+    # @callback: (nullable)
+    # @user_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    parent = if parent.nil?
+               Pointer(Void).null
+             else
+               parent.to_unsafe
+             end
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # Generator::NullableArrayPlan
+    callback = if callback.nil?
+                 LibGio::AsyncReadyCallback.null
+               else
+                 callback.to_unsafe
+               end
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # C call
+    LibGtk.gtk_show_uri_full(parent, uri, timestamp, cancellable, callback, user_data)
+
+    # Return value handling
+  end
+
+  def show_uri_full_finish(parent : Gtk::Window, result : Gio::AsyncResult) : Bool
+    # gtk_show_uri_full_finish: (Throws)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGtk.gtk_show_uri_full_finish(parent, result, pointerof(_error))
+
+    # Error check
+    Gtk.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.test_accessible_assertion_message_role(domain : ::String, file : ::String, line : Int32, func : ::String, expr : ::String, accessible : Gtk::Accessible, expected_role : Gtk::AccessibleRole, actual_role : Gtk::AccessibleRole) : Nil
+    # gtk_test_accessible_assertion_message_role: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_test_accessible_assertion_message_role(domain, file, line, func, expr, accessible, expected_role, actual_role)
+
+    # Return value handling
+  end
+
+  def self.test_accessible_has_property(accessible : Gtk::Accessible, property : Gtk::AccessibleProperty) : Bool
+    # gtk_test_accessible_has_property: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_test_accessible_has_property(accessible, property)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.test_accessible_has_relation(accessible : Gtk::Accessible, relation : Gtk::AccessibleRelation) : Bool
+    # gtk_test_accessible_has_relation: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_test_accessible_has_relation(accessible, relation)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.test_accessible_has_role(accessible : Gtk::Accessible, role : Gtk::AccessibleRole) : Bool
+    # gtk_test_accessible_has_role: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_test_accessible_has_role(accessible, role)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.test_accessible_has_state(accessible : Gtk::Accessible, state : Gtk::AccessibleState) : Bool
+    # gtk_test_accessible_has_state: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGtk.gtk_test_accessible_has_state(accessible, state)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.test_list_all_types : Enumerable(UInt64)
+    # gtk_test_list_all_types: (None)
+    # @n_types: (out) (transfer full)
+    # Returns: (transfer none) (array length=n_types zero-terminated=1 element-type Gtype)
+
+    # Generator::OutArgUsedInReturnPlan
+    n_types = 0_u32
+
+    # C call
+    _retval = LibGtk.gtk_test_list_all_types(pointerof(n_types))
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.test_register_all_types : Nil
+    # gtk_test_register_all_types: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_test_register_all_types
+
+    # Return value handling
+  end
+
+  def self.test_widget_wait_for_draw(widget : Gtk::Widget) : Nil
+    # gtk_test_widget_wait_for_draw: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_test_widget_wait_for_draw(widget)
+
+    # Return value handling
+  end
+
+  def self.tree_create_row_drag_content(tree_model : Gtk::TreeModel, path : Gtk::TreePath) : Gdk::ContentProvider
+    # gtk_tree_create_row_drag_content: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGtk.gtk_tree_create_row_drag_content(tree_model, path)
+
+    # Return value handling
+
+    Gdk::ContentProvider.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.tree_get_row_drag_data(value : _) : Bool
+    # gtk_tree_get_row_drag_data: (None)
+    # @tree_model: (out) (nullable) (optional)
+    # @path: (out) (transfer full) (nullable) (optional)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # Generator::OutArgUsedInReturnPlan
+    tree_model = Pointer(Pointer(Void)).null
+    # Generator::OutArgUsedInReturnPlan
+    path = Pointer(Pointer(Void)).null
+
+    # C call
+    _retval = LibGtk.gtk_tree_get_row_drag_data(value, tree_model, path)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.tree_row_reference_deleted(proxy : GObject::Object, path : Gtk::TreePath) : Nil
+    # gtk_tree_row_reference_deleted: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_tree_row_reference_deleted(proxy, path)
+
+    # Return value handling
+  end
+
+  def self.tree_row_reference_inserted(proxy : GObject::Object, path : Gtk::TreePath) : Nil
+    # gtk_tree_row_reference_inserted: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGtk.gtk_tree_row_reference_inserted(proxy, path)
+
+    # Return value handling
+  end
+
+  def self.value_dup_expression(value : _) : Gtk::Expression?
+    # gtk_value_dup_expression: (None)
+    # Returns: (transfer full)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    _retval = LibGtk.gtk_value_dup_expression(value)
+
+    # Return value handling
+
+    Gtk::Expression.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.value_get_expression(value : _) : Gtk::Expression?
+    # gtk_value_get_expression: (None)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    _retval = LibGtk.gtk_value_get_expression(value)
+
+    # Return value handling
+
+    Gtk::Expression.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def self.value_set_expression(value : _, expression : Gtk::Expression) : Nil
+    # gtk_value_set_expression: (None)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    LibGtk.gtk_value_set_expression(value, expression)
+
+    # Return value handling
+  end
+
+  def self.value_take_expression(value : _, expression : Gtk::Expression?) : Nil
+    # gtk_value_take_expression: (None)
+    # @expression: (transfer full) (nullable)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # Generator::NullableArrayPlan
+    expression = if expression.nil?
+                   Pointer(Void).null
+                 else
+                   expression.to_unsafe
+                 end
+
+    # Generator::TransferFullArgPlan
+    LibGObject.gtk_expression_ref(expression)
+
+    # C call
+    LibGtk.gtk_value_take_expression(value, expression)
+
+    # Return value handling
   end
 
   # Errors
@@ -2892,3 +4064,4 @@ require "../../../lib/gtk4/src/bindings/gtk/message_dialog.cr"
 require "../../../lib/gtk4/src/bindings/gtk/stack.cr"
 require "../../../lib/gtk4/src/bindings/gtk/tree_store.cr"
 require "../../../lib/gtk4/src/bindings/gtk/tree_view.cr"
+require "../../../lib/gtk4/src/bindings/gtk/widget_template.cr"

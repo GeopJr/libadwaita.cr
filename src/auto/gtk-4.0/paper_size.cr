@@ -14,7 +14,7 @@ module Gtk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(PaperSize.g_type, pointer)
@@ -27,6 +27,10 @@ module Gtk
       LibGObject.g_boxed_free(PaperSize.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::PaperSize)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGtk.gtk_paper_size_get_type
@@ -37,7 +41,7 @@ module Gtk
       # @name: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       name = if name.nil?
                Pointer(LibC::Char).null
              else
@@ -48,6 +52,7 @@ module Gtk
       _retval = LibGtk.gtk_paper_size_new(name)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -55,12 +60,11 @@ module Gtk
       # gtk_paper_size_new_custom: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_new_custom(name, display_name, width, height, unit)
 
       # Return value handling
+
       Gtk::PaperSize.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -68,13 +72,18 @@ module Gtk
       # gtk_paper_size_new_from_gvariant: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-      variant = GLib::Variant.new(variant) unless variant.is_a?(GLib::Variant)
+      # Generator::HandmadeArgPlan
+      variant = if !variant.is_a?(GLib::Variant)
+                  GLib::Variant.new(variant).to_unsafe
+                else
+                  variant.to_unsafe
+                end
 
       # C call
       _retval = LibGtk.gtk_paper_size_new_from_gvariant(variant)
 
       # Return value handling
+
       Gtk::PaperSize.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -82,12 +91,11 @@ module Gtk
       # gtk_paper_size_new_from_ipp: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_new_from_ipp(ipp_name, width, height)
 
       # Return value handling
+
       Gtk::PaperSize.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -98,7 +106,7 @@ module Gtk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       group_name = if group_name.nil?
                      Pointer(LibC::Char).null
                    else
@@ -110,7 +118,9 @@ module Gtk
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gtk::PaperSize.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -118,12 +128,11 @@ module Gtk
       # gtk_paper_size_new_from_ppd: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_new_from_ppd(ppd_name, ppd_display_name, width, height)
 
       # Return value handling
+
       Gtk::PaperSize.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -131,20 +140,17 @@ module Gtk
       # gtk_paper_size_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_copy(self)
 
       # Return value handling
+
       Gtk::PaperSize.new(_retval, GICrystal::Transfer::Full)
     end
 
     def free : Nil
       # gtk_paper_size_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_paper_size_free(self)
@@ -156,12 +162,11 @@ module Gtk
       # gtk_paper_size_get_default_bottom_margin: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_default_bottom_margin(self, unit)
 
       # Return value handling
+
       _retval
     end
 
@@ -169,12 +174,11 @@ module Gtk
       # gtk_paper_size_get_default_left_margin: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_default_left_margin(self, unit)
 
       # Return value handling
+
       _retval
     end
 
@@ -182,12 +186,11 @@ module Gtk
       # gtk_paper_size_get_default_right_margin: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_default_right_margin(self, unit)
 
       # Return value handling
+
       _retval
     end
 
@@ -195,12 +198,11 @@ module Gtk
       # gtk_paper_size_get_default_top_margin: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_default_top_margin(self, unit)
 
       # Return value handling
+
       _retval
     end
 
@@ -208,12 +210,11 @@ module Gtk
       # gtk_paper_size_get_display_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_display_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -221,12 +222,11 @@ module Gtk
       # gtk_paper_size_get_height: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_height(self, unit)
 
       # Return value handling
+
       _retval
     end
 
@@ -234,12 +234,11 @@ module Gtk
       # gtk_paper_size_get_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -247,12 +246,11 @@ module Gtk
       # gtk_paper_size_get_ppd_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_ppd_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -260,12 +258,11 @@ module Gtk
       # gtk_paper_size_get_width: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_width(self, unit)
 
       # Return value handling
+
       _retval
     end
 
@@ -273,12 +270,11 @@ module Gtk
       # gtk_paper_size_is_custom: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_is_custom(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -286,12 +282,11 @@ module Gtk
       # gtk_paper_size_is_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_is_equal(self, size2)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -299,20 +294,17 @@ module Gtk
       # gtk_paper_size_is_ipp: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_is_ipp(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def set_size(width : Float64, height : Float64, unit : Gtk::Unit) : Nil
       # gtk_paper_size_set_size: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_paper_size_set_size(self, width, height, unit)
@@ -324,20 +316,17 @@ module Gtk
       # gtk_paper_size_to_gvariant: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_to_gvariant(self)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::None)
     end
 
     def to_key_file(key_file : GLib::KeyFile, group_name : ::String) : Nil
       # gtk_paper_size_to_key_file: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_paper_size_to_key_file(self, key_file, group_name)
@@ -349,12 +338,11 @@ module Gtk
       # gtk_paper_size_get_default: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_default
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -362,12 +350,11 @@ module Gtk
       # gtk_paper_size_get_paper_sizes: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_paper_size_get_paper_sizes(include_custom)
 
       # Return value handling
+
       GLib::List(Gtk::PaperSize).new(_retval, GICrystal::Transfer::Full)
     end
 

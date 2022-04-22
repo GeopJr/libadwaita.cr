@@ -69,7 +69,7 @@ require "./vulkan_context.cr"
 module Gdk
   # Defines all possible DND actions.
   #
-  # This can be used in [method@Gdk.Drop.status] messages when any drop
+  # This can be used in `Gdk::Drop#status` messages when any drop
   # can be accepted or a more specific drop method is not yet known.
   ACTION_ALL = 7
   # The middle button.
@@ -2615,7 +2615,7 @@ module Gdk
 
   # Describes how well an event matches a given keyval and modifiers.
   #
-  # `GdkKeyMatch` values are returned by [method@Gdk.KeyEvent.matches].
+  # `GdkKeyMatch` values are returned by `Gdk::KeyEvent#matches`.
   enum KeyMatch : UInt32
     # The key event does not match
     None = 0
@@ -2949,6 +2949,495 @@ module Gdk
     end
   end
 
+  def self.cairo_draw_from_gl(cr : Cairo::Context, surface : Gdk::Surface, source : Int32, source_type : Int32, buffer_scale : Int32, x : Int32, y : Int32, width : Int32, height : Int32) : Nil
+    # gdk_cairo_draw_from_gl: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGdk.gdk_cairo_draw_from_gl(cr, surface, source, source_type, buffer_scale, x, y, width, height)
+
+    # Return value handling
+  end
+
+  def self.cairo_rectangle(cr : Cairo::Context, rectangle : Gdk::Rectangle) : Nil
+    # gdk_cairo_rectangle: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGdk.gdk_cairo_rectangle(cr, rectangle)
+
+    # Return value handling
+  end
+
+  def self.cairo_region(cr : Cairo::Context, region : Cairo::Region) : Nil
+    # gdk_cairo_region: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGdk.gdk_cairo_region(cr, region)
+
+    # Return value handling
+  end
+
+  def self.cairo_region_create_from_surface(surface : Cairo::Surface) : Cairo::Region
+    # gdk_cairo_region_create_from_surface: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGdk.gdk_cairo_region_create_from_surface(surface)
+
+    # Return value handling
+
+    Cairo::Region.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.cairo_set_source_pixbuf(cr : Cairo::Context, pixbuf : GdkPixbuf::Pixbuf, pixbuf_x : Float64, pixbuf_y : Float64) : Nil
+    # gdk_cairo_set_source_pixbuf: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGdk.gdk_cairo_set_source_pixbuf(cr, pixbuf, pixbuf_x, pixbuf_y)
+
+    # Return value handling
+  end
+
+  def self.cairo_set_source_rgba(cr : Cairo::Context, rgba : Gdk::RGBA) : Nil
+    # gdk_cairo_set_source_rgba: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGdk.gdk_cairo_set_source_rgba(cr, rgba)
+
+    # Return value handling
+  end
+
+  def self.content_deserialize_async(stream : Gio::InputStream, mime_type : ::String, type : UInt64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    # gdk_content_deserialize_async: (None)
+    # @cancellable: (nullable)
+    # @callback: (nullable)
+    # @user_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # Generator::NullableArrayPlan
+    callback = if callback.nil?
+                 LibGio::AsyncReadyCallback.null
+               else
+                 callback.to_unsafe
+               end
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # C call
+    LibGdk.gdk_content_deserialize_async(stream, mime_type, type, io_priority, cancellable, callback, user_data)
+
+    # Return value handling
+  end
+
+  def content_deserialize_finish(result : Gio::AsyncResult) : GObject::Value
+    # gdk_content_deserialize_finish: (Throws)
+    # @value: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::CallerAllocatesPlan
+    value = GObject::Value.new
+
+    # C call
+    _retval = LibGdk.gdk_content_deserialize_finish(result, value, pointerof(_error))
+
+    # Error check
+    Gdk.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    value
+  end
+
+  def self.content_formats_parse(string : ::String) : Gdk::ContentFormats?
+    # gdk_content_formats_parse: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGdk.gdk_content_formats_parse(string)
+
+    # Return value handling
+
+    Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.content_register_deserializer(mime_type : ::String, type : UInt64, deserialize : Pointer(Void), data : Pointer(Void)?, notify : Pointer(Void)) : Nil
+    # gdk_content_register_deserializer: (None)
+    # @data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    data = if data.nil?
+             Pointer(Void).null
+           else
+             data.to_unsafe
+           end
+
+    # C call
+    LibGdk.gdk_content_register_deserializer(mime_type, type, deserialize, data, notify)
+
+    # Return value handling
+  end
+
+  def self.content_register_serializer(type : UInt64, mime_type : ::String, serialize : Pointer(Void), data : Pointer(Void)?, notify : Pointer(Void)) : Nil
+    # gdk_content_register_serializer: (None)
+    # @data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    data = if data.nil?
+             Pointer(Void).null
+           else
+             data.to_unsafe
+           end
+
+    # C call
+    LibGdk.gdk_content_register_serializer(type, mime_type, serialize, data, notify)
+
+    # Return value handling
+  end
+
+  def self.content_serialize_async(stream : Gio::OutputStream, mime_type : ::String, value : _, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    # gdk_content_serialize_async: (None)
+    # @cancellable: (nullable)
+    # @callback: (nullable)
+    # @user_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # Generator::NullableArrayPlan
+    callback = if callback.nil?
+                 LibGio::AsyncReadyCallback.null
+               else
+                 callback.to_unsafe
+               end
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # C call
+    LibGdk.gdk_content_serialize_async(stream, mime_type, value, io_priority, cancellable, callback, user_data)
+
+    # Return value handling
+  end
+
+  def content_serialize_finish(result : Gio::AsyncResult) : Bool
+    # gdk_content_serialize_finish: (Throws)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGdk.gdk_content_serialize_finish(result, pointerof(_error))
+
+    # Error check
+    Gdk.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.drag_action_is_unique(action : Gdk::DragAction) : Bool
+    # gdk_drag_action_is_unique: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_drag_action_is_unique(action)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.events_get_angle(event1 : Gdk::Event, event2 : Gdk::Event, angle : Float64) : Bool
+    # gdk_events_get_angle: (None)
+    # @angle: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_events_get_angle(event1, event2, angle)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.events_get_center(event1 : Gdk::Event, event2 : Gdk::Event, x : Float64, y : Float64) : Bool
+    # gdk_events_get_center: (None)
+    # @x: (out) (transfer full)
+    # @y: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_events_get_center(event1, event2, x, y)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.events_get_distance(event1 : Gdk::Event, event2 : Gdk::Event, distance : Float64) : Bool
+    # gdk_events_get_distance: (None)
+    # @distance: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_events_get_distance(event1, event2, distance)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.gl_error_quark : UInt32
+    # gdk_gl_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_gl_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.intern_mime_type(string : ::String) : ::String?
+    # gdk_intern_mime_type: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_intern_mime_type(string)
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.keyval_convert_case(symbol : UInt32, lower : UInt32, upper : UInt32) : Nil
+    # gdk_keyval_convert_case: (None)
+    # @lower: (out) (transfer full)
+    # @upper: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibGdk.gdk_keyval_convert_case(symbol, lower, upper)
+
+    # Return value handling
+  end
+
+  def self.keyval_from_name(keyval_name : ::String) : UInt32
+    # gdk_keyval_from_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_keyval_from_name(keyval_name)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.keyval_is_lower(keyval : UInt32) : Bool
+    # gdk_keyval_is_lower: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_keyval_is_lower(keyval)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.keyval_is_upper(keyval : UInt32) : Bool
+    # gdk_keyval_is_upper: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_keyval_is_upper(keyval)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.keyval_name(keyval : UInt32) : ::String?
+    # gdk_keyval_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_keyval_name(keyval)
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.keyval_to_lower(keyval : UInt32) : UInt32
+    # gdk_keyval_to_lower: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_keyval_to_lower(keyval)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.keyval_to_unicode(keyval : UInt32) : UInt32
+    # gdk_keyval_to_unicode: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_keyval_to_unicode(keyval)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.keyval_to_upper(keyval : UInt32) : UInt32
+    # gdk_keyval_to_upper: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_keyval_to_upper(keyval)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.paintable_new_empty(intrinsic_width : Int32, intrinsic_height : Int32) : Gdk::Paintable
+    # gdk_paintable_new_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGdk.gdk_paintable_new_empty(intrinsic_width, intrinsic_height)
+
+    # Return value handling
+
+    Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.pixbuf_get_from_surface(surface : Cairo::Surface, src_x : Int32, src_y : Int32, width : Int32, height : Int32) : GdkPixbuf::Pixbuf?
+    # gdk_pixbuf_get_from_surface: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGdk.gdk_pixbuf_get_from_surface(surface, src_x, src_y, width, height)
+
+    # Return value handling
+
+    GdkPixbuf::Pixbuf.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.pixbuf_get_from_texture(texture : Gdk::Texture) : GdkPixbuf::Pixbuf?
+    # gdk_pixbuf_get_from_texture: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGdk.gdk_pixbuf_get_from_texture(texture)
+
+    # Return value handling
+
+    GdkPixbuf::Pixbuf.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.allowed_backends=(backends : ::String) : Nil
+    # gdk_set_allowed_backends: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGdk.gdk_set_allowed_backends(backends)
+
+    # Return value handling
+  end
+
+  def self.texture_error_quark : UInt32
+    # gdk_texture_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_texture_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.toplevel_size_get_type : UInt64
+    # gdk_toplevel_size_get_type: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_toplevel_size_get_type
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.unicode_to_keyval(wc : UInt32) : UInt32
+    # gdk_unicode_to_keyval: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_unicode_to_keyval(wc)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.vulkan_error_quark : UInt32
+    # gdk_vulkan_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdk.gdk_vulkan_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
   # Errors
 
   # Error enumeration for `GdkGLContext`.
@@ -3062,3 +3551,4 @@ module Gdk
 end
 
 # Extra includes
+require "../../../lib/gtk4/src/bindings/gdk/modifier_type.cr"

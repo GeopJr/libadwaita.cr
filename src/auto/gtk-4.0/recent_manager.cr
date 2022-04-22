@@ -18,6 +18,9 @@ module Gtk
   #
   # Adding a new recently used file is as simple as:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GtkRecentManager *manager;
   #
@@ -29,8 +32,11 @@ module Gtk
   # from the file itself through GIO.
   #
   # Looking up the meta-data associated with a recently used file
-  # given its URI requires calling [method@Gtk.RecentManager.lookup_item]:
+  # given its URI requires calling `Gtk::RecentManager#lookup_item`:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GtkRecentManager *manager;
   # GtkRecentInfo *info;
@@ -51,14 +57,22 @@ module Gtk
   # ```
   #
   # In order to retrieve the list of recently used files, you can use
-  # [method@Gtk.RecentManager.get_items], which returns a list of
-  # [struct@Gtk.RecentInfo].
+  # `Gtk::RecentManager#items`, which returns a list of
+  # `Gtk#RecentInfo`.
   #
   # Note that the maximum age of the recently used files list is
   # controllable through the [property@Gtk.Settings:gtk-recent-files-max-age]
   # property.
+  @[GObject::GeneratedWrapper]
   class RecentManager < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::RecentManagerClass), class_init,
+        sizeof(LibGtk::RecentManager), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -70,18 +84,22 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if filename
+      if !filename.nil?
         (_names.to_unsafe + _n).value = "filename".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, filename)
         _n += 1
       end
-      if size
+      if !size.nil?
         (_names.to_unsafe + _n).value = "size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, size)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(RecentManager.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -112,101 +130,145 @@ module Gtk
       value
     end
 
+    # Creates a new recent manager object.
+    #
+    # Recent manager objects are used to handle the list of recently used
+    # resources. A `GtkRecentManager` object monitors the recently used
+    # resources list, and emits the `Gtk::RecentManager::#changed`
+    # signal each time something inside the list changes.
+    #
+    # `GtkRecentManager` objects are expensive: be sure to create them
+    # only when needed. You should use `Gtk::RecentManager#default`
+    # instead.
     def initialize
       # gtk_recent_manager_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_recent_manager_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets a unique instance of `GtkRecentManager` that you can share
+    # in your application without caring about memory management.
     def self.default : Gtk::RecentManager
       # gtk_recent_manager_get_default: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_recent_manager_get_default
 
       # Return value handling
+
       Gtk::RecentManager.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Adds a new resource, pointed by @uri, into the recently used
+    # resources list, using the metadata specified inside the
+    # `GtkRecentData` passed in @recent_data.
+    #
+    # The passed URI will be used to identify this resource inside the
+    # list.
+    #
+    # In order to register the new recently used resource, metadata about
+    # the resource must be passed as well as the URI; the metadata is
+    # stored in a `GtkRecentData`, which must contain the MIME
+    # type of the resource pointed by the URI; the name of the application
+    # that is registering the item, and a command line to be used when
+    # launching the item.
+    #
+    # Optionally, a `GtkRecentData` might contain a UTF-8 string
+    # to be used when viewing the item instead of the last component of
+    # the URI; a short description of the item; whether the item should
+    # be considered private - that is, should be displayed only by the
+    # applications that have registered it.
     def add_full(uri : ::String, recent_data : Gtk::RecentData) : Bool
       # gtk_recent_manager_add_full: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_recent_manager_add_full(self, uri, recent_data)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Adds a new resource, pointed by @uri, into the recently used
+    # resources list.
+    #
+    # This function automatically retrieves some of the needed
+    # metadata and setting other metadata to common default values;
+    # it then feeds the data to `Gtk::RecentManager#add_full`.
+    #
+    # See `Gtk::RecentManager#add_full` if you want to explicitly
+    # define the metadata for the resource pointed by @uri.
     def add_item(uri : ::String) : Bool
       # gtk_recent_manager_add_item: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_recent_manager_add_item(self, uri)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the list of recently used resources.
     def items : GLib::List
       # gtk_recent_manager_get_items: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_recent_manager_get_items(self)
 
       # Return value handling
+
       GLib::List(Gtk::RecentInfo).new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Checks whether there is a recently used resource registered
+    # with @uri inside the recent manager.
     def has_item(uri : ::String) : Bool
       # gtk_recent_manager_has_item: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_recent_manager_has_item(self, uri)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Searches for a URI inside the recently used resources list, and
+    # returns a `GtkRecentInfo` containing information about the resource
+    # like its MIME type, or its display name.
     def lookup_item(uri : ::String) : Gtk::RecentInfo?
       # gtk_recent_manager_lookup_item: (Method | Throws)
       # Returns: (transfer full)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_manager_lookup_item(self, uri, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gtk::RecentInfo.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Changes the location of a recently used resource from @uri to @new_uri.
+    #
+    # Please note that this function will not affect the resource pointed
+    # by the URIs, but only the URI used in the recently used resources list.
     def move_item(uri : ::String, new_uri : ::String?) : Bool
       # gtk_recent_manager_move_item: (Method | Throws)
       # @new_uri: (nullable)
@@ -214,7 +276,7 @@ module Gtk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       new_uri = if new_uri.nil?
                   Pointer(LibC::Char).null
                 else
@@ -226,44 +288,54 @@ module Gtk
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Purges every item from the recently used resources list.
     def purge_items : Int32
       # gtk_recent_manager_purge_items: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_manager_purge_items(self, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       _retval
     end
 
+    # Removes a resource pointed by @uri from the recently used resources
+    # list handled by a recent manager.
     def remove_item(uri : ::String) : Bool
       # gtk_recent_manager_remove_item: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_manager_remove_item(self, uri, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Emitted when the current recently used resources manager changes
+    # its contents.
+    #
+    # This can happen either by calling `Gtk::RecentManager#add_item`
+    # or by another application.
     struct ChangedSignal
       @source : GObject::Object
       @detail : String?

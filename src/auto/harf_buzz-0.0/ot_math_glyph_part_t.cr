@@ -6,7 +6,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibHarfBuzz::OtMathGlyphPartT))
@@ -28,63 +28,58 @@ module HarfBuzz
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::OtMathGlyphPartT)).zero?
+    end
+
     def glyph : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def glyph=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def start_connector_length : Int32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Int32))
       _var.value
     end
 
     def start_connector_length=(value : Int32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Int32)).value = value
       value
     end
 
     def end_connector_length : Int32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Int32))
       _var.value
     end
 
     def end_connector_length=(value : Int32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Int32)).value = value
       value
     end
 
     def full_advance : Int32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Int32))
       _var.value
     end
 
     def full_advance=(value : Int32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Int32)).value = value
       value
     end
 
     def flags : HarfBuzz::OtMathGlyphPartFlagsT
-      # Property getter
       _var = (@pointer + 16).as(Pointer(UInt32))
-      HarfBuzz::OtMathGlyphPartFlagsT.from_value(_var.value)
+      HarfBuzz::OtMathGlyphPartFlagsT.new(_var)
     end
 
     def flags=(value : HarfBuzz::OtMathGlyphPartFlagsT)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(UInt32)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(UInt32))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::OtMathGlyphPartT))
       value
     end
 

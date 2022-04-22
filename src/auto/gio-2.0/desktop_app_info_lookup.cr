@@ -6,12 +6,11 @@ module Gio
       # g_desktop_app_info_lookup_get_default_for_uri_scheme: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_desktop_app_info_lookup_get_default_for_uri_scheme(self, uri_scheme)
 
       # Return value handling
+
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -19,6 +18,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class DesktopAppInfoLookup__Impl < GObject::Object
     include DesktopAppInfoLookup
 

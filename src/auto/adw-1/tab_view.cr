@@ -11,16 +11,16 @@ module Adw
   # `AdwTabView` is a container which shows one child at a time. While it
   # provides keyboard shortcuts for switching between pages, it does not provide
   # a visible tab bar and relies on external widgets for that, such as
-  # [class@TabBar].
+  # `#TabBar`.
   #
-  # `AdwTabView` maintains a [class@TabPage] object for each page, which holds
+  # `AdwTabView` maintains a `#TabPage` object for each page, which holds
   # additional per-page properties. You can obtain the `AdwTabPage` for a page
-  # with [method@TabView.get_page], and as the return value for
-  # [method@TabView.append] and other functions for adding children.
+  # with `TabView#page`, and as the return value for
+  # `TabView#append` and other functions for adding children.
   #
   # `AdwTabView` only aims to be useful for dynamic tabs in multi-window
   # document-based applications, such as web browsers, file managers, text
-  # editors or terminals. It does not aim to replace [class@Gtk.Notebook] for use
+  # editors or terminals. It does not aim to replace `Gtk#Notebook` for use
   # cases such as tabbed dialogs.
   #
   # As such, it does not support disabling page reordering or detaching.
@@ -48,12 +48,20 @@ module Adw
   # ## CSS nodes
   #
   # `AdwTabView` has a main CSS node with the name `tabview`.
+  @[GObject::GeneratedWrapper]
   class TabView < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Buildable
     include Gtk::ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::TabViewClass), class_init,
+        sizeof(LibAdw::TabView), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -65,218 +73,223 @@ module Adw
       _values = StaticArray(LibGObject::Value, 42).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if default_icon
+      if !default_icon.nil?
         (_names.to_unsafe + _n).value = "default-icon".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_icon)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if is_transferring_page
+      if !is_transferring_page.nil?
         (_names.to_unsafe + _n).value = "is-transferring-page".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_transferring_page)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if menu_model
+      if !menu_model.nil?
         (_names.to_unsafe + _n).value = "menu-model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, menu_model)
         _n += 1
       end
-      if n_pages
+      if !n_pages.nil?
         (_names.to_unsafe + _n).value = "n-pages".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, n_pages)
         _n += 1
       end
-      if n_pinned_pages
+      if !n_pinned_pages.nil?
         (_names.to_unsafe + _n).value = "n-pinned-pages".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, n_pinned_pages)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if pages
+      if !pages.nil?
         (_names.to_unsafe + _n).value = "pages".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pages)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if selected_page
+      if !selected_page.nil?
         (_names.to_unsafe + _n).value = "selected-page".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, selected_page)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(TabView.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -361,26 +374,33 @@ module Adw
       Adw::TabPage.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `AdwTabView`.
     def initialize
       # adw_tab_view_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Adds @child to @self with @parent as the parent.
+    #
+    # This function can be used to automatically position new pages, and to select
+    # the correct page when this page is closed while being selected (see
+    # `TabView#close_page`).
+    #
+    # If @parent is `NULL`, this function is equivalent to `TabView#append`.
     def add_page(child : Gtk::Widget, parent : Adw::TabPage?) : Adw::TabPage
       # adw_tab_view_add_page: (Method)
       # @parent: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       parent = if parent.nil?
                  Pointer(Void).null
                else
@@ -391,40 +411,40 @@ module Adw
       _retval = LibAdw.adw_tab_view_add_page(self, child, parent)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Inserts @child as the last non-pinned page.
     def append(child : Gtk::Widget) : Adw::TabPage
       # adw_tab_view_append: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_append(self, child)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Inserts @child as the last pinned page.
     def append_pinned(child : Gtk::Widget) : Adw::TabPage
       # adw_tab_view_append_pinned: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_append_pinned(self, child)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Requests to close all pages other than @page.
     def close_other_pages(page : Adw::TabPage) : Nil
       # adw_tab_view_close_other_pages: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_view_close_other_pages(self, page)
@@ -432,11 +452,31 @@ module Adw
       # Return value handling
     end
 
+    # Requests to close @page.
+    #
+    # Calling this function will result in the [signal@TabView::close-page] signal
+    # being emitted for @page. Closing the page can then be confirmed or
+    # denied via `TabView#close_page_finish`.
+    #
+    # If the page is waiting for a `TabView#close_page_finish` call, this
+    # function will do nothing.
+    #
+    # The default handler for [signal@TabView::close-page] will immediately confirm
+    # closing the page if it's non-pinned, or reject it if it's pinned. This
+    # behavior can be changed by registering your own handler for that signal.
+    #
+    # If @page was selected, another page will be selected instead:
+    #
+    # If the `TabPage#parent` value is `NULL`, the next page will be
+    # selected when possible, or if the page was already last, the previous page
+    # will be selected instead.
+    #
+    # If it's not `NULL`, the previous page will be selected if it's a descendant
+    # (possibly indirect) of the parent. If both the previous page and the parent
+    # are pinned, the parent will be selected instead.
     def close_page(page : Adw::TabPage) : Nil
       # adw_tab_view_close_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_view_close_page(self, page)
@@ -444,11 +484,17 @@ module Adw
       # Return value handling
     end
 
+    # Completes a `TabView#close_page` call for @page.
+    #
+    # If @confirm is `TRUE`, @page will be closed. If it's `FALSE`, it will be
+    # reverted to its previous state and `TabView#close_page` can be called
+    # for it again.
+    #
+    # This function should not be called unless a custom handler for
+    # [signal@TabView::close-page] is used.
     def close_page_finish(page : Adw::TabPage, confirm : Bool) : Nil
       # adw_tab_view_close_page_finish: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_view_close_page_finish(self, page, confirm)
@@ -456,11 +502,10 @@ module Adw
       # Return value handling
     end
 
+    # Requests to close all pages after @page.
     def close_pages_after(page : Adw::TabPage) : Nil
       # adw_tab_view_close_pages_after: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_view_close_pages_after(self, page)
@@ -468,11 +513,10 @@ module Adw
       # Return value handling
     end
 
+    # Requests to close all pages before @page.
     def close_pages_before(page : Adw::TabPage) : Nil
       # adw_tab_view_close_pages_before: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_view_close_pages_before(self, page)
@@ -480,284 +524,300 @@ module Adw
       # Return value handling
     end
 
+    # Gets the default icon of @self.
     def default_icon : Gio::Icon
       # adw_tab_view_get_default_icon: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_default_icon(self)
 
       # Return value handling
+
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Whether a page is being transferred.
     def is_transferring_page : Bool
       # adw_tab_view_get_is_transferring_page: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_is_transferring_page(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the tab context menu model for @self.
     def menu_model : Gio::MenuModel?
       # adw_tab_view_get_menu_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_menu_model(self)
 
       # Return value handling
+
       Gio::MenuModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the number of pages in @self.
     def n_pages : Int32
       # adw_tab_view_get_n_pages: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_n_pages(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the number of pinned pages in @self.
     def n_pinned_pages : Int32
       # adw_tab_view_get_n_pinned_pages: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_n_pinned_pages(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the `#TabPage` representing the child at @position.
     def nth_page(position : Int32) : Adw::TabPage
       # adw_tab_view_get_nth_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_nth_page(self, position)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the `#TabPage` object representing @child.
     def page(child : Gtk::Widget) : Adw::TabPage
       # adw_tab_view_get_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_page(self, child)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Finds the position of @page in @self, starting from 0.
     def page_position(page : Adw::TabPage) : Int32
       # adw_tab_view_get_page_position: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_page_position(self, page)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns a `Gio#ListModel` that contains the pages of @self.
+    #
+    # This can be used to keep an up-to-date view. The model also implements
+    # `Gtk#SelectionModel` and can be used to track and change the selected
+    # page.
     def pages : Gtk::SelectionModel
       # adw_tab_view_get_pages: (Method | Getter)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_pages(self)
 
       # Return value handling
+
       Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the currently selected page in @self.
     def selected_page : Adw::TabPage?
       # adw_tab_view_get_selected_page: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_get_selected_page(self)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Inserts a non-pinned page at @position.
+    #
+    # It's an error to try to insert a page before a pinned page, in that case
+    # `TabView#insert_pinned` should be used instead.
     def insert(child : Gtk::Widget, position : Int32) : Adw::TabPage
       # adw_tab_view_insert: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_insert(self, child, position)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Inserts a pinned page at @position.
+    #
+    # It's an error to try to insert a pinned page after a non-pinned page, in
+    # that case `TabView#insert` should be used instead.
     def insert_pinned(child : Gtk::Widget, position : Int32) : Adw::TabPage
       # adw_tab_view_insert_pinned: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_insert_pinned(self, child, position)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Inserts @child as the first non-pinned page.
     def prepend(child : Gtk::Widget) : Adw::TabPage
       # adw_tab_view_prepend: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_prepend(self, child)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Inserts @child as the first pinned page.
     def prepend_pinned(child : Gtk::Widget) : Adw::TabPage
       # adw_tab_view_prepend_pinned: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_prepend_pinned(self, child)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Reorders @page to before its previous page if possible.
     def reorder_backward(page : Adw::TabPage) : Bool
       # adw_tab_view_reorder_backward: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_reorder_backward(self, page)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Reorders @page to the first possible position.
     def reorder_first(page : Adw::TabPage) : Bool
       # adw_tab_view_reorder_first: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_reorder_first(self, page)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Reorders @page to after its next page if possible.
     def reorder_forward(page : Adw::TabPage) : Bool
       # adw_tab_view_reorder_forward: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_reorder_forward(self, page)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Reorders @page to the last possible position.
     def reorder_last(page : Adw::TabPage) : Bool
       # adw_tab_view_reorder_last: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_reorder_last(self, page)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Reorders @page to @position.
+    #
+    # It's a programmer error to try to reorder a pinned page after a non-pinned
+    # one, or a non-pinned page before a pinned one.
     def reorder_page(page : Adw::TabPage, position : Int32) : Bool
       # adw_tab_view_reorder_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_reorder_page(self, page, position)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Selects the page after the currently selected page.
+    #
+    # If the last page was already selected, this function does nothing.
     def select_next_page : Bool
       # adw_tab_view_select_next_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_select_next_page(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Selects the page before the currently selected page.
+    #
+    # If the first page was already selected, this function does nothing.
     def select_previous_page : Bool
       # adw_tab_view_select_previous_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_view_select_previous_page(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets the default page icon for @self.
     def default_icon=(default_icon : Gio::Icon) : Nil
       # adw_tab_view_set_default_icon: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_view_set_default_icon(self, default_icon)
@@ -765,12 +825,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the tab context menu model for @self.
     def menu_model=(menu_model : Gio::MenuModel?) : Nil
       # adw_tab_view_set_menu_model: (Method | Setter)
       # @menu_model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       menu_model = if menu_model.nil?
                      Pointer(Void).null
                    else
@@ -783,11 +844,34 @@ module Adw
       # Return value handling
     end
 
+    # Pins or unpins @page.
+    #
+    # Pinned pages are guaranteed to be placed before all non-pinned pages; at any
+    # given moment the first [property@TabView:n-pinned-pages] pages in @self are
+    # guaranteed to be pinned.
+    #
+    # When a page is pinned or unpinned, it's automatically reordered: pinning a
+    # page moves it after other pinned pages; unpinning a page moves it before
+    # other non-pinned pages.
+    #
+    # Pinned pages can still be reordered between each other.
+    #
+    # `#TabBar` will display pinned pages in a compact form, never showing the
+    # title or close button, and only showing a single icon, selected in the
+    # following order:
+    #
+    # 1. [property@TabPage:indicator-icon]
+    # 2. A spinner if `TabPage#loading` is `TRUE`
+    # 3. `TabPage#icon`
+    # 4. [property@TabView:default-icon]
+    #
+    # Pinned pages cannot be closed by default, see [signal@TabView::close-page]
+    # for how to override that behavior.
+    #
+    # Changes the value of the `TabPage#pinned` property.
     def set_page_pinned(page : Adw::TabPage, pinned : Bool) : Nil
       # adw_tab_view_set_page_pinned: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_view_set_page_pinned(self, page, pinned)
@@ -795,11 +879,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the currently selected page in @self.
     def selected_page=(selected_page : Adw::TabPage) : Nil
       # adw_tab_view_set_selected_page: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_view_set_selected_page(self, selected_page)
@@ -807,11 +890,15 @@ module Adw
       # Return value handling
     end
 
+    # Transfers @page from @self to @other_view.
+    #
+    # The @page object will be reused.
+    #
+    # It's a programmer error to try to insert a pinned page after a non-pinned
+    # one, or a non-pinned page before a pinned one.
     def transfer_page(page : Adw::TabPage, other_view : Adw::TabView, position : Int32) : Nil
       # adw_tab_view_transfer_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_view_transfer_page(self, page, other_view, position)
@@ -819,6 +906,35 @@ module Adw
       # Return value handling
     end
 
+    # Emitted after `TabView#close_page` has been called for @page.
+    #
+    # The handler is expected to call `TabView#close_page_finish` to
+    # confirm or reject the closing.
+    #
+    # The default handler will immediately confirm closing for non-pinned pages,
+    # or reject it for pinned pages, equivalent to the following example:
+    #
+    #
+    #
+    # WARNING: **⚠️ The following code is in c ⚠️**
+    # ```c
+    # static gboolean
+    # close_page_cb (AdwTabView *view,
+    #                AdwTabPage *page,
+    #                gpointer    user_data)
+    # {
+    #   adw_tab_view_close_page_finish (view, page, !adw_tab_page_get_pinned (page));
+    #
+    #   return GDK_EVENT_STOP;
+    # }
+    # ```
+    #
+    # The `TabView#close_page_finish` call doesn't have to happen inside
+    # the handler, so can be used to do asynchronous checks before confirming the
+    # closing.
+    #
+    # A typical reason to connect to this signal is to show a confirmation dialog
+    # for closing a tab.
     struct ClosePageSignal
       @source : GObject::Object
       @detail : String?
@@ -847,7 +963,8 @@ module Adw
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Adw::TabPage.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Adw::TabPage, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Adw::TabPage, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -858,7 +975,8 @@ module Adw
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Adw::TabPage.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Adw::TabPage, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Adw::TabPage, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -898,6 +1016,12 @@ module Adw
       ClosePageSignal.new(self)
     end
 
+    # Emitted when a tab should be transferred into a new window.
+    #
+    # This can happen after a tab has been dropped on desktop.
+    #
+    # The signal handler is expected to create a new window, position it as
+    # needed and return its `AdwTabView` that the page will be transferred into.
     struct CreateWindowSignal
       @source : GObject::Object
       @detail : String?
@@ -925,7 +1049,8 @@ module Adw
       def connect(block : Proc(Adw::TabView))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Adw::TabView)).unbox(box).call.to_unsafe
+          _retval = ::Box(Proc(Adw::TabView)).unbox(box).call
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -935,7 +1060,8 @@ module Adw
       def connect_after(block : Proc(Adw::TabView))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Adw::TabView)).unbox(box).call.to_unsafe
+          _retval = ::Box(Proc(Adw::TabView)).unbox(box).call
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -973,6 +1099,10 @@ module Adw
       CreateWindowSignal.new(self)
     end
 
+    # Emitted after the indicator icon on @page has been activated.
+    #
+    # See [property@TabPage:indicator-icon] and
+    # [property@TabPage:indicator-activatable].
     struct IndicatorActivatedSignal
       @source : GObject::Object
       @detail : String?
@@ -1052,6 +1182,10 @@ module Adw
       IndicatorActivatedSignal.new(self)
     end
 
+    # Emitted when a page has been created or transferred to @self.
+    #
+    # A typical reason to connect to this signal would be to connect to page
+    # signals for things such as updating window title.
     struct PageAttachedSignal
       @source : GObject::Object
       @detail : String?
@@ -1135,6 +1269,15 @@ module Adw
       PageAttachedSignal.new(self)
     end
 
+    # Emitted when a page has been removed or transferred to another view.
+    #
+    # A typical reason to connect to this signal would be to disconnect signal
+    # handlers connected in the [signal@TabView::page-attached] handler.
+    #
+    # It is important not to try and destroy the page child in the handler of
+    # this function as the child might merely be moved to another window; use
+    # child dispose handler for that or do it in sync with your
+    # `TabView#close_page_finish` calls.
     struct PageDetachedSignal
       @source : GObject::Object
       @detail : String?
@@ -1218,6 +1361,7 @@ module Adw
       PageDetachedSignal.new(self)
     end
 
+    # Emitted after @page has been reordered to @position.
     struct PageReorderedSignal
       @source : GObject::Object
       @detail : String?
@@ -1301,6 +1445,12 @@ module Adw
       PageReorderedSignal.new(self)
     end
 
+    # Emitted when a context menu is opened or closed for @page.
+    #
+    # If the menu has been closed, @page will be set to `NULL`.
+    #
+    # It can be used to set up menu actions before showing the menu, for example
+    # disable actions not applicable to @page.
     struct SetupMenuSignal
       @source : GObject::Object
       @detail : String?

@@ -2,8 +2,16 @@ require "./event"
 
 module Gdk
   # An event related to a button on a pointer device.
+  @[GObject::GeneratedWrapper]
   class ButtonEvent < Event
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGdk::ButtonEvent), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,16 +23,16 @@ module Gdk
       LibGdk.gdk_button_event_get_type
     end
 
+    # Extract the button number from a button event.
     def button : UInt32
       # gdk_button_event_get_button: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_button_event_get_button(self)
 
       # Return value handling
+
       _retval
     end
   end

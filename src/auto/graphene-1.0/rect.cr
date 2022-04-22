@@ -15,7 +15,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Rect))
@@ -34,27 +34,29 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Rect)).zero?
+    end
+
     def origin : Graphene::Point
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Graphene::Point.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Point.new(_var, GICrystal::Transfer::None)
     end
 
     def origin=(value : Graphene::Point)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Rect))
       value
     end
 
     def size : Graphene::Size
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Void))
-      Graphene::Size.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Size.new(_var, GICrystal::Transfer::None)
     end
 
     def size=(value : Graphene::Size)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Rect))
       value
     end
 
@@ -67,12 +69,11 @@ module Graphene
       # graphene_rect_contains_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_contains_point(self, p)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -80,12 +81,11 @@ module Graphene
       # graphene_rect_contains_rect: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_contains_rect(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -93,12 +93,11 @@ module Graphene
       # graphene_rect_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_equal(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -107,21 +106,20 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_rect_expand(self, p, res)
 
       # Return value handling
+
       res
     end
 
     def free : Nil
       # graphene_rect_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_rect_free(self)
@@ -133,12 +131,11 @@ module Graphene
       # graphene_rect_get_area: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_get_area(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -147,13 +144,14 @@ module Graphene
       # @p: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
 
       # C call
       LibGraphene.graphene_rect_get_bottom_left(self, p)
 
       # Return value handling
+
       p
     end
 
@@ -162,13 +160,14 @@ module Graphene
       # @p: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
 
       # C call
       LibGraphene.graphene_rect_get_bottom_right(self, p)
 
       # Return value handling
+
       p
     end
 
@@ -177,13 +176,14 @@ module Graphene
       # @p: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
 
       # C call
       LibGraphene.graphene_rect_get_center(self, p)
 
       # Return value handling
+
       p
     end
 
@@ -191,12 +191,11 @@ module Graphene
       # graphene_rect_get_height: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_get_height(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -205,13 +204,14 @@ module Graphene
       # @p: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
 
       # C call
       LibGraphene.graphene_rect_get_top_left(self, p)
 
       # Return value handling
+
       p
     end
 
@@ -220,13 +220,14 @@ module Graphene
       # @p: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
 
       # C call
       LibGraphene.graphene_rect_get_top_right(self, p)
 
       # Return value handling
+
       p
     end
 
@@ -235,7 +236,7 @@ module Graphene
       # @vertices: (out) (caller-allocates) (array fixed-size=4 element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayArgPlan
       vertices = vertices.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -252,12 +253,11 @@ module Graphene
       # graphene_rect_get_width: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_get_width(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -265,12 +265,11 @@ module Graphene
       # graphene_rect_get_x: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_get_x(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -278,12 +277,11 @@ module Graphene
       # graphene_rect_get_y: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_get_y(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -291,12 +289,11 @@ module Graphene
       # graphene_rect_init: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_init(self, x, y, width, height)
 
       # Return value handling
+
       Graphene::Rect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -304,12 +301,11 @@ module Graphene
       # graphene_rect_init_from_rect: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_init_from_rect(self, src)
 
       # Return value handling
+
       Graphene::Rect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -317,12 +313,11 @@ module Graphene
       # graphene_rect_inset: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_inset(self, d_x, d_y)
 
       # Return value handling
+
       Graphene::Rect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -331,13 +326,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_rect_inset_r(self, d_x, d_y, res)
 
       # Return value handling
+
       res
     end
 
@@ -346,13 +342,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_rect_interpolate(self, b, factor, res)
 
       # Return value handling
+
       res
     end
 
@@ -361,14 +358,16 @@ module Graphene
       # @res: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       res = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       _retval = LibGraphene.graphene_rect_intersection(self, b, res)
 
       # Return value handling
+
       res
     end
 
@@ -376,12 +375,11 @@ module Graphene
       # graphene_rect_normalize: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_normalize(self)
 
       # Return value handling
+
       Graphene::Rect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -390,13 +388,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_rect_normalize_r(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -404,12 +403,11 @@ module Graphene
       # graphene_rect_offset: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_offset(self, d_x, d_y)
 
       # Return value handling
+
       Graphene::Rect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -418,13 +416,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_rect_offset_r(self, d_x, d_y, res)
 
       # Return value handling
+
       res
     end
 
@@ -433,13 +432,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_rect_round(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -448,13 +448,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_rect_round_extents(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -462,12 +463,11 @@ module Graphene
       # graphene_rect_round_to_pixel: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_round_to_pixel(self)
 
       # Return value handling
+
       Graphene::Rect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -476,13 +476,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_rect_scale(self, s_h, s_v, res)
 
       # Return value handling
+
       res
     end
 
@@ -491,13 +492,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_rect_union(self, b, res)
 
       # Return value handling
+
       res
     end
 
@@ -505,12 +507,11 @@ module Graphene
       # graphene_rect_alloc: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_alloc
 
       # Return value handling
+
       Graphene::Rect.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -518,12 +519,11 @@ module Graphene
       # graphene_rect_zero: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_rect_zero
 
       # Return value handling
+
       Graphene::Rect.new(_retval, GICrystal::Transfer::None)
     end
 

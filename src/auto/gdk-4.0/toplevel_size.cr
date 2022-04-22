@@ -5,7 +5,7 @@ module Gdk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = pointer
     end
@@ -13,13 +13,15 @@ module Gdk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGdk::ToplevelSize)).zero?
+    end
+
     def bounds(bounds_width : Int32, bounds_height : Int32) : Nil
       # gdk_toplevel_size_get_bounds: (Method)
       # @bounds_width: (out) (transfer full)
       # @bounds_height: (out) (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_toplevel_size_get_bounds(self, bounds_width, bounds_height)
@@ -31,8 +33,6 @@ module Gdk
       # gdk_toplevel_size_set_min_size: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_size_set_min_size(self, min_width, min_height)
 
@@ -43,8 +43,6 @@ module Gdk
       # gdk_toplevel_size_set_shadow_width: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_size_set_shadow_width(self, left, right, top, bottom)
 
@@ -54,8 +52,6 @@ module Gdk
     def set_size(width : Int32, height : Int32) : Nil
       # gdk_toplevel_size_set_size: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_toplevel_size_set_size(self, width, height)

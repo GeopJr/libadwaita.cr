@@ -5,7 +5,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(SettingsSchemaKey.g_type, pointer)
@@ -18,6 +18,10 @@ module Gio
       LibGObject.g_boxed_free(SettingsSchemaKey.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::SettingsSchemaKey)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGio.g_settings_schema_key_get_type
@@ -27,12 +31,11 @@ module Gio
       # g_settings_schema_key_get_default_value: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_settings_schema_key_get_default_value(self)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -40,12 +43,11 @@ module Gio
       # g_settings_schema_key_get_description: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_settings_schema_key_get_description(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -53,12 +55,11 @@ module Gio
       # g_settings_schema_key_get_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_settings_schema_key_get_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -66,12 +67,11 @@ module Gio
       # g_settings_schema_key_get_range: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_settings_schema_key_get_range(self)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -79,12 +79,11 @@ module Gio
       # g_settings_schema_key_get_summary: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_settings_schema_key_get_summary(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -92,12 +91,11 @@ module Gio
       # g_settings_schema_key_get_value_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_settings_schema_key_get_value_type(self)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -105,13 +103,18 @@ module Gio
       # g_settings_schema_key_range_check: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GLib::Variant)
+                GLib::Variant.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGio.g_settings_schema_key_range_check(self, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -119,20 +122,17 @@ module Gio
       # g_settings_schema_key_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_settings_schema_key_ref(self)
 
       # Return value handling
+
       Gio::SettingsSchemaKey.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # g_settings_schema_key_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_settings_schema_key_unref(self)

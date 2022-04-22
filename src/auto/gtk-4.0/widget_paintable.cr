@@ -22,10 +22,18 @@ module Gtk
   # of recursion when this happens. If you do this however, ensure that the
   # [property@Gtk.Picture:can-shrink] property is set to %TRUE or you might
   # end up with an infinitely growing widget.
+  @[GObject::GeneratedWrapper]
   class WidgetPaintable < GObject::Object
     include Gdk::Paintable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::WidgetPaintableClass), class_init,
+        sizeof(LibGtk::WidgetPaintable), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -37,13 +45,17 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(WidgetPaintable.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -66,12 +78,13 @@ module Gtk
       Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new widget paintable observing the given widget.
     def initialize(widget : Gtk::Widget?)
       # gtk_widget_paintable_new: (Constructor)
       # @widget: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       widget = if widget.nil?
                  Pointer(Void).null
                else
@@ -82,28 +95,30 @@ module Gtk
       _retval = LibGtk.gtk_widget_paintable_new(widget)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns the widget that is observed or %NULL if none.
     def widget : Gtk::Widget?
       # gtk_widget_paintable_get_widget: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_widget_paintable_get_widget(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets the widget that should be observed.
     def widget=(widget : Gtk::Widget?) : Nil
       # gtk_widget_paintable_set_widget: (Method | Setter)
       # @widget: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       widget = if widget.nil?
                  Pointer(Void).null
                else

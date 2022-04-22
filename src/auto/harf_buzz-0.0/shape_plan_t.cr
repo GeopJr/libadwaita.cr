@@ -12,7 +12,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(ShapePlanT.g_type, pointer)
@@ -23,6 +23,10 @@ module HarfBuzz
 
     def finalize
       LibGObject.g_boxed_free(ShapePlanT.g_type, self)
+    end
+
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::ShapePlanT)).zero?
     end
 
     # Returns the type id (GType) registered in GLib type system.

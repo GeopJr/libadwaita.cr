@@ -4,7 +4,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Point))
@@ -23,26 +23,26 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Point)).zero?
+    end
+
     def x : Float32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Float32))
       _var.value
     end
 
     def x=(value : Float32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Float32)).value = value
       value
     end
 
     def y : Float32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Float32))
       _var.value
     end
 
     def y=(value : Float32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Float32)).value = value
       value
     end
@@ -56,12 +56,11 @@ module Graphene
       # graphene_point_alloc: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_point_alloc
 
       # Return value handling
+
       Graphene::Point.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -71,14 +70,16 @@ module Graphene
       # @d_y: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       d_x = Pointer(Float32).null
+      # Generator::OutArgUsedInReturnPlan
       d_y = Pointer(Float32).null
 
       # C call
       _retval = LibGraphene.graphene_point_distance(self, b, d_x, d_y)
 
       # Return value handling
+
       _retval
     end
 
@@ -86,20 +87,17 @@ module Graphene
       # graphene_point_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_point_equal(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # graphene_point_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_point_free(self)
@@ -111,12 +109,11 @@ module Graphene
       # graphene_point_init: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_point_init(self, x, y)
 
       # Return value handling
+
       Graphene::Point.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -124,12 +121,11 @@ module Graphene
       # graphene_point_init_from_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_point_init_from_point(self, src)
 
       # Return value handling
+
       Graphene::Point.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -137,12 +133,11 @@ module Graphene
       # graphene_point_init_from_vec2: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_point_init_from_vec2(self, src)
 
       # Return value handling
+
       Graphene::Point.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -151,13 +146,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Point.new
 
       # C call
       LibGraphene.graphene_point_interpolate(self, b, factor, res)
 
       # Return value handling
+
       res
     end
 
@@ -165,12 +161,11 @@ module Graphene
       # graphene_point_near: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_point_near(self, b, epsilon)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -179,13 +174,14 @@ module Graphene
       # @v: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       v = Graphene::Vec2.new
 
       # C call
       LibGraphene.graphene_point_to_vec2(self, v)
 
       # Return value handling
+
       v
     end
 
@@ -193,12 +189,11 @@ module Graphene
       # graphene_point_zero: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_point_zero
 
       # Return value handling
+
       Graphene::Point.new(_retval, GICrystal::Transfer::None)
     end
 

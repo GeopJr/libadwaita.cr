@@ -52,8 +52,6 @@ module GObject
       # g_type_plugin_complete_interface_info: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGObject.g_type_plugin_complete_interface_info(self, instance_type, interface_type, info)
 
@@ -63,8 +61,6 @@ module GObject
     def complete_type_info(g_type : UInt64, info : GObject::TypeInfo, value_table : GObject::TypeValueTable) : Nil
       # g_type_plugin_complete_type_info: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGObject.g_type_plugin_complete_type_info(self, g_type, info, value_table)
@@ -76,8 +72,6 @@ module GObject
       # g_type_plugin_unuse: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGObject.g_type_plugin_unuse(self)
 
@@ -87,8 +81,6 @@ module GObject
     def use : Nil
       # g_type_plugin_use: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGObject.g_type_plugin_use(self)
@@ -100,6 +92,7 @@ module GObject
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class TypePlugin__Impl < GObject::Object
     include TypePlugin
 

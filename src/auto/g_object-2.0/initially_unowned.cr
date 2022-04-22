@@ -5,8 +5,16 @@ module GObject
   #
   # All the fields in the `GInitiallyUnowned` structure are private to the
   # implementation and should never be accessed directly.
+  @[GObject::GeneratedWrapper]
   class InitiallyUnowned < Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::InitiallyUnownedClass), class_init,
+        sizeof(LibGObject::InitiallyUnowned), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)

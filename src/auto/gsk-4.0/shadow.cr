@@ -4,7 +4,7 @@ module Gsk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGsk::Shadow))
@@ -25,50 +25,47 @@ module Gsk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGsk::Shadow)).zero?
+    end
+
     def color : Gdk::RGBA
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Gdk::RGBA.new(_var.value, GICrystal::Transfer::None)
+      Gdk::RGBA.new(_var, GICrystal::Transfer::None)
     end
 
     def color=(value : Gdk::RGBA)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGsk::Shadow))
       value
     end
 
     def dx : Float32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Float32))
       _var.value
     end
 
     def dx=(value : Float32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Float32)).value = value
       value
     end
 
     def dy : Float32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(Float32))
       _var.value
     end
 
     def dy=(value : Float32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(Float32)).value = value
       value
     end
 
     def radius : Float32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Float32))
       _var.value
     end
 
     def radius=(value : Float32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Float32)).value = value
       value
     end

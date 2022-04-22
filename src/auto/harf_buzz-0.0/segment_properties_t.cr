@@ -6,7 +6,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibHarfBuzz::SegmentPropertiesT))
@@ -28,63 +28,74 @@ module HarfBuzz
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::SegmentPropertiesT)).zero?
+    end
+
     def direction : HarfBuzz::DirectionT
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
-      HarfBuzz::DirectionT.from_value(_var.value)
+      HarfBuzz::DirectionT.new(_var)
     end
 
     def direction=(value : HarfBuzz::DirectionT)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(UInt32)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(UInt32))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::SegmentPropertiesT))
       value
     end
 
     def script : HarfBuzz::ScriptT
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt32))
-      HarfBuzz::ScriptT.from_value(_var.value)
+      HarfBuzz::ScriptT.new(_var)
     end
 
     def script=(value : HarfBuzz::ScriptT)
-      # Property setter
-      _var = (@pointer + 4).as(Pointer(UInt32)).value = value.to_unsafe
+      _var = (@pointer + 4).as(Pointer(UInt32))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::SegmentPropertiesT))
       value
     end
 
-    def language : HarfBuzz::LanguageT
-      # Property getter
+    def language!
+      self.language.not_nil!
+    end
+
+    def language : HarfBuzz::LanguageT?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       HarfBuzz::LanguageT.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def language=(value : HarfBuzz::LanguageT)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def language=(value : HarfBuzz::LanguageT?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def reserved1 : Pointer(Void)
-      # Property getter
+    def reserved1!
+      self.reserved1.not_nil!
+    end
+
+    def reserved1 : Pointer(Void)?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def reserved1=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value
+    def reserved1=(value : Pointer(Void)?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
-    def reserved2 : Pointer(Void)
-      # Property getter
+    def reserved2!
+      self.reserved2.not_nil!
+    end
+
+    def reserved2 : Pointer(Void)?
       _var = (@pointer + 24).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def reserved2=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(Pointer(Void))).value = value
+    def reserved2=(value : Pointer(Void)?)
+      _var = (@pointer + 24).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 

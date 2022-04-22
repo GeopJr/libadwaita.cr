@@ -7,8 +7,16 @@ module Gtk
   # Each platform supported by GTK implements a `GtkATContext` subclass, and
   # is responsible for updating the accessible state in response to state
   # changes in `GtkAccessible`.
+  @[GObject::GeneratedWrapper]
   class ATContext < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::ATContextClass), class_init,
+        sizeof(LibGtk::ATContext), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -20,23 +28,27 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible
+      if !accessible.nil?
         (_names.to_unsafe + _n).value = "accessible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible)
         _n += 1
       end
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if display
+      if !display.nil?
         (_names.to_unsafe + _n).value = "display".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, display)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ATContext.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -71,7 +83,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "accessible-role", pointerof(value), Pointer(Void).null)
-      Gtk::AccessibleRole.from_value(value)
+      Gtk::AccessibleRole.new(value)
     end
 
     def display=(value : Gdk::Display?) : Gdk::Display?
@@ -89,45 +101,51 @@ module Gtk
       Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkATContext` instance for the given accessible role,
+    # accessible instance, and display connection.
+    #
+    # The `GtkATContext` implementation being instantiated will depend on the
+    # platform.
     def self.create(accessible_role : Gtk::AccessibleRole, accessible : Gtk::Accessible, display : Gdk::Display) : self?
       # gtk_at_context_create: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_at_context_create(accessible_role, accessible, display)
 
       # Return value handling
+
       Gtk::ATContext.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Retrieves the `GtkAccessible` using this context.
     def accessible : Gtk::Accessible
       # gtk_at_context_get_accessible: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_at_context_get_accessible(self)
 
       # Return value handling
+
       Gtk::Accessible__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Retrieves the accessible role of this context.
     def accessible_role : Gtk::AccessibleRole
       # gtk_at_context_get_accessible_role: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_at_context_get_accessible_role(self)
 
       # Return value handling
-      Gtk::AccessibleRole.from_value(_retval)
+
+      Gtk::AccessibleRole.new(_retval)
     end
 
+    # Emitted when the attributes of the accessible for the
+    # `GtkATContext` instance change.
     struct StateChangeSignal
       @source : GObject::Object
       @detail : String?

@@ -15,15 +15,15 @@ module Gtk
   #
   # The `GtkMenuButton` widget can show either an icon (set with the
   # [property@Gtk.MenuButton:icon-name] property) or a label (set with the
-  # [property@Gtk.MenuButton:label] property). If neither is explicitly set,
-  # a [class@Gtk.Image] is automatically created, using an arrow image oriented
-  # according to [property@Gtk.MenuButton:direction] or the generic
+  # `Gtk::MenuButton#label` property). If neither is explicitly set,
+  # a `Gtk#Image` is automatically created, using an arrow image oriented
+  # according to `Gtk::MenuButton#direction` or the generic
   # “open-menu-symbolic” icon if the direction is not set.
   #
   # The positioning of the popup is determined by the
-  # [property@Gtk.MenuButton:direction] property of the menu button.
+  # `Gtk::MenuButton#direction` property of the menu button.
   #
-  # For menus, the [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign]
+  # For menus, the `Gtk::Widget#halign` and `Gtk::Widget#valign`
   # properties of the menu are also taken into account. For example, when the
   # direction is %GTK_ARROW_DOWN and the horizontal alignment is %GTK_ALIGN_START,
   # the menu will be positioned below the button, with the starting edge
@@ -68,12 +68,20 @@ module Gtk
   # # Accessibility
   #
   # `GtkMenuButton` uses the %GTK_ACCESSIBLE_ROLE_BUTTON role.
+  @[GObject::GeneratedWrapper]
   class MenuButton < Widget
     include Accessible
     include Buildable
     include ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::MenuButton), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -85,233 +93,238 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 45).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if always_show_arrow
+      if !always_show_arrow.nil?
         (_names.to_unsafe + _n).value = "always-show-arrow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, always_show_arrow)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if direction
+      if !direction.nil?
         (_names.to_unsafe + _n).value = "direction".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, direction)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_frame
+      if !has_frame.nil?
         (_names.to_unsafe + _n).value = "has-frame".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_frame)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if icon_name
+      if !icon_name.nil?
         (_names.to_unsafe + _n).value = "icon-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon_name)
         _n += 1
       end
-      if label
+      if !label.nil?
         (_names.to_unsafe + _n).value = "label".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, label)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if menu_model
+      if !menu_model.nil?
         (_names.to_unsafe + _n).value = "menu-model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, menu_model)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if popover
+      if !popover.nil?
         (_names.to_unsafe + _n).value = "popover".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, popover)
         _n += 1
       end
-      if primary
+      if !primary.nil?
         (_names.to_unsafe + _n).value = "primary".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, primary)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if use_underline
+      if !use_underline.nil?
         (_names.to_unsafe + _n).value = "use-underline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_underline)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(MenuButton.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -361,7 +374,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "direction", pointerof(value), Pointer(Void).null)
-      Gtk::ArrowType.from_value(value)
+      Gtk::ArrowType.new(value)
     end
 
     def has_frame=(value : Bool) : Bool
@@ -469,155 +482,162 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `GtkMenuButton` widget with downwards-pointing
+    # arrow as the only child.
+    #
+    # You can replace the child widget with another `GtkWidget`
+    # should you wish to.
     def initialize
       # gtk_menu_button_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Gets whether to show a dropdown arrow even when using an icon.
     def always_show_arrow : Bool
       # gtk_menu_button_get_always_show_arrow: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_always_show_arrow(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the child widget of @menu_button.
     def child : Gtk::Widget?
       # gtk_menu_button_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the direction the popup will be pointing at when popped up.
     def direction : Gtk::ArrowType
       # gtk_menu_button_get_direction: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_direction(self)
 
       # Return value handling
-      Gtk::ArrowType.from_value(_retval)
+
+      Gtk::ArrowType.new(_retval)
     end
 
+    # Returns whether the button has a frame.
     def has_frame : Bool
       # gtk_menu_button_get_has_frame: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_has_frame(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the name of the icon shown in the button.
     def icon_name : ::String?
       # gtk_menu_button_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_icon_name(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the label shown in the button
     def label : ::String?
       # gtk_menu_button_get_label: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_label(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Returns the `GMenuModel` used to generate the popup.
     def menu_model : Gio::MenuModel?
       # gtk_menu_button_get_menu_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_menu_model(self)
 
       # Return value handling
+
       Gio::MenuModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the `GtkPopover` that pops out of the button.
+    #
+    # If the button is not using a `GtkPopover`, this function
+    # returns %NULL.
     def popover : Gtk::Popover?
       # gtk_menu_button_get_popover: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_popover(self)
 
       # Return value handling
+
       Gtk::Popover.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns whether the menu button acts as a primary menu.
     def primary : Bool
       # gtk_menu_button_get_primary: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_primary(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether an embedded underline in the text indicates a
+    # mnemonic.
     def use_underline : Bool
       # gtk_menu_button_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_menu_button_get_use_underline(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Dismiss the menu.
     def popdown : Nil
       # gtk_menu_button_popdown: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_menu_button_popdown(self)
@@ -625,11 +645,10 @@ module Gtk
       # Return value handling
     end
 
+    # Pop up the menu.
     def popup : Nil
       # gtk_menu_button_popup: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_menu_button_popup(self)
@@ -637,11 +656,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether to show a dropdown arrow even when using an icon or a custom
+    # child.
     def always_show_arrow=(always_show_arrow : Bool) : Nil
       # gtk_menu_button_set_always_show_arrow: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_menu_button_set_always_show_arrow(self, always_show_arrow)
@@ -649,12 +668,20 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the child widget of @menu_button.
+    #
+    # Setting a child resets `Gtk::MenuButton#label` and
+    # [property@Gtk.MenuButton:icon-name].
+    #
+    # If [property@Gtk.MenuButton:always-show-arrow] is set to `TRUE` and
+    # `Gtk::MenuButton#direction` is not `GTK_ARROW_NONE`, a dropdown arrow
+    # will be shown next to the child.
     def child=(child : Gtk::Widget?) : Nil
       # gtk_menu_button_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       child = if child.nil?
                 Pointer(Void).null
               else
@@ -667,6 +694,18 @@ module Gtk
       # Return value handling
     end
 
+    # Sets @func to be called when a popup is about to be shown.
+    #
+    # @func should use one of
+    #
+    #  - `Gtk::MenuButton#popover=`
+    #  - `Gtk::MenuButton#menu_model=`
+    #
+    # to set a popup for @menu_button.
+    # If @func is non-%NULL, @menu_button will always be sensitive.
+    #
+    # Using this function will not reset the menu widget attached to
+    # @menu_button. Instead, this can be done manually in @func.
     def set_create_popup_func(func : Pointer(Void)?, user_data : Pointer(Void)?, destroy_notify : Pointer(Void)?) : Nil
       # gtk_menu_button_set_create_popup_func: (Method)
       # @func: (nullable)
@@ -674,17 +713,21 @@ module Gtk
       # @destroy_notify: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       func = if func.nil?
                LibGtk::MenuButtonCreatePopupFunc.null
              else
                func.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       destroy_notify = if destroy_notify.nil?
                          LibGLib::DestroyNotify.null
                        else
@@ -697,11 +740,19 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the direction in which the popup will be popped up.
+    #
+    # If the button is automatically populated with an arrow icon,
+    # its direction will be changed to match.
+    #
+    # If the does not fit in the available space in the given direction,
+    # GTK will its best to keep it inside the screen and fully visible.
+    #
+    # If you pass %GTK_ARROW_NONE for a @direction, the popup will behave
+    # as if you passed %GTK_ARROW_DOWN (although you won’t see any arrows).
     def direction=(direction : Gtk::ArrowType) : Nil
       # gtk_menu_button_set_direction: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_menu_button_set_direction(self, direction)
@@ -709,11 +760,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the style of the button.
     def has_frame=(has_frame : Bool) : Nil
       # gtk_menu_button_set_has_frame: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_menu_button_set_has_frame(self, has_frame)
@@ -721,11 +771,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the name of an icon to show inside the menu button.
+    #
+    # Setting icon name resets `Gtk::MenuButton#label` and
+    # `Gtk::MenuButton#child`.
+    #
+    # If [property@Gtk.MenuButton:always-show-arrow] is set to `TRUE` and
+    # `Gtk::MenuButton#direction` is not `GTK_ARROW_NONE`, a dropdown arrow
+    # will be shown next to the icon.
     def icon_name=(icon_name : ::String) : Nil
       # gtk_menu_button_set_icon_name: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_menu_button_set_icon_name(self, icon_name)
@@ -733,11 +789,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the label to show inside the menu button.
+    #
+    # Setting a label resets [property@Gtk.MenuButton:icon-name] and
+    # `Gtk::MenuButton#child`.
+    #
+    # If `Gtk::MenuButton#direction` is not `GTK_ARROW_NONE`, a dropdown
+    # arrow will be shown next to the label.
     def label=(label : ::String) : Nil
       # gtk_menu_button_set_label: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_menu_button_set_label(self, label)
@@ -745,12 +806,22 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `GMenuModel` from which the popup will be constructed.
+    #
+    # If @menu_model is %NULL, the button is disabled.
+    #
+    # A `Gtk#Popover` will be created from the menu model with
+    # `Gtk::PopoverMenu#new_from_model`. Actions will be connected
+    # as documented for this function.
+    #
+    # If `Gtk::MenuButton#popover` is already set, it will be
+    # dissociated from the @menu_button, and the property is set to %NULL.
     def menu_model=(menu_model : Gio::MenuModel?) : Nil
       # gtk_menu_button_set_menu_model: (Method | Setter)
       # @menu_model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       menu_model = if menu_model.nil?
                      Pointer(Void).null
                    else
@@ -763,12 +834,18 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `GtkPopover` that will be popped up when the @menu_button is clicked.
+    #
+    # If @popover is %NULL, the button is disabled.
+    #
+    # If [property@Gtk.MenuButton:menu-model] is set, the menu model is dissociated
+    # from the @menu_button, and the property is set to %NULL.
     def popover=(popover : Gtk::Widget?) : Nil
       # gtk_menu_button_set_popover: (Method | Setter)
       # @popover: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       popover = if popover.nil?
                   Pointer(Void).null
                 else
@@ -781,11 +858,12 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether menu button acts as a primary menu.
+    #
+    # Primary menus can be opened with the <kbd>F10</kbd> key.
     def primary=(primary : Bool) : Nil
       # gtk_menu_button_set_primary: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_menu_button_set_primary(self, primary)
@@ -793,11 +871,10 @@ module Gtk
       # Return value handling
     end
 
+    # If true, an underline in the text indicates a mnemonic.
     def use_underline=(use_underline : Bool) : Nil
       # gtk_menu_button_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_menu_button_set_use_underline(self, use_underline)
@@ -805,6 +882,10 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted to when the menu button is activated.
+    #
+    # The `::activate` signal on `GtkMenuButton` is an action signal and
+    # emitting it causes the button to pop up its menu.
     struct ActivateSignal
       @source : GObject::Object
       @detail : String?

@@ -4,10 +4,18 @@ require "../gio-2.0/list_model"
 module Gtk
   # `GtkSelectionFilterModel` is a list model that presents the selection from
   # a `GtkSelectionModel`.
+  @[GObject::GeneratedWrapper]
   class SelectionFilterModel < GObject::Object
     include Gio::ListModel
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::SelectionFilterModelClass), class_init,
+        sizeof(LibGtk::SelectionFilterModel), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -19,13 +27,17 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if model
+      if !model.nil?
         (_names.to_unsafe + _n).value = "model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, model)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(SelectionFilterModel.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -48,12 +60,14 @@ module Gtk
       Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkSelectionFilterModel` that will include the
+    # selected items from the underlying selection model.
     def initialize(model : Gtk::SelectionModel?)
       # gtk_selection_filter_model_new: (Constructor)
       # @model: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
@@ -64,28 +78,35 @@ module Gtk
       _retval = LibGtk.gtk_selection_filter_model_new(model)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the model currently filtered or %NULL if none.
     def model : Gtk::SelectionModel?
       # gtk_selection_filter_model_get_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_selection_filter_model_get_model(self)
 
       # Return value handling
+
       Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets the model to be filtered.
+    #
+    # Note that GTK makes no effort to ensure that @model conforms to
+    # the item type of @self. It assumes that the caller knows what they
+    # are doing and have set up an appropriate filter to ensure that item
+    # types match.
     def model=(model : Gtk::SelectionModel?) : Nil
       # gtk_selection_filter_model_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else

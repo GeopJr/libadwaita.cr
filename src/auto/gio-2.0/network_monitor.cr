@@ -11,7 +11,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "connectivity", pointerof(value), Pointer(Void).null)
-      Gio::NetworkConnectivity.from_value(value)
+      Gio::NetworkConnectivity.new(value)
     end
 
     def network_available? : Bool
@@ -34,12 +34,11 @@ module Gio
       # g_network_monitor_get_default: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_network_monitor_get_default
 
       # Return value handling
+
       Gio::NetworkMonitor__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -50,7 +49,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -62,7 +61,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -73,17 +74,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -102,14 +107,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_network_monitor_can_reach_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -117,25 +122,23 @@ module Gio
       # g_network_monitor_get_connectivity: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_network_monitor_get_connectivity(self)
 
       # Return value handling
-      Gio::NetworkConnectivity.from_value(_retval)
+
+      Gio::NetworkConnectivity.new(_retval)
     end
 
     def network_available : Bool
       # g_network_monitor_get_network_available: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_network_monitor_get_network_available(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -143,19 +146,98 @@ module Gio
       # g_network_monitor_get_network_metered: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_network_monitor_get_network_metered(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
+    end
+
+    struct NetworkChangedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "network-changed::#{@detail}" : "network-changed"
+      end
+
+      def connect(&block : Proc(Bool, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Bool, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Bool, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
+          arg0 = GICrystal.to_bool(lib_arg0)
+          ::Box(Proc(Bool, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Bool, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
+          arg0 = GICrystal.to_bool(lib_arg0)
+          ::Box(Proc(Bool, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gio::NetworkMonitor, Bool, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
+          sender = Gio::NetworkMonitor__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = GICrystal.to_bool(lib_arg0)
+          ::Box(Proc(Gio::NetworkMonitor, Bool, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::NetworkMonitor, Bool, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
+          sender = Gio::NetworkMonitor__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = GICrystal.to_bool(lib_arg0)
+          ::Box(Proc(Gio::NetworkMonitor, Bool, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(network_available : Bool) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "network-changed", network_available)
+      end
+    end
+
+    def network_changed_signal
+      NetworkChangedSignal.new(self)
     end
 
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class NetworkMonitor__Impl < GObject::Object
     include NetworkMonitor
 

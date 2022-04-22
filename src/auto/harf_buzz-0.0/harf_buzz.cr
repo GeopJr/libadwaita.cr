@@ -68,14 +68,10 @@ module HarfBuzz
   UNICODE_MAX = 1114111
   # See Unicode 6.1 for details on the maximum decomposition length.
   UNICODE_MAX_DECOMPOSITION_LEN = 19
-  # The major component of the library version available at compile-time.
-  VERSION_MAJOR = 4
-  # The micro component of the library version available at compile-time.
-  VERSION_MICRO = 1
-  # The minor component of the library version available at compile-time.
-  VERSION_MINOR = 0
-  # A string literal containing the library version available at compile-time.
-  VERSION_STRING = "4.0.1"
+  VERSION_MAJOR                 =  4
+  VERSION_MICRO                 =  0
+  VERSION_MINOR                 =  2
+  VERSION_STRING                = "4.2.0"
 
   # Base class for all errors in this module.
   class HarfBuzzError < RuntimeError
@@ -1670,6 +1666,5715 @@ module HarfBuzz
     def self.g_type : UInt64
       LibHarfBuzz.hb_gobject_ot_var_axis_flags_get_type
     end
+  end
+
+  def self.aat_layout_feature_type_get_name_id(face : HarfBuzz::FaceT, feature_type : HarfBuzz::AatLayoutFeatureTypeT) : UInt32
+    # hb_aat_layout_feature_type_get_name_id: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_aat_layout_feature_type_get_name_id(face, feature_type)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.aat_layout_feature_type_get_selector_infos(face : HarfBuzz::FaceT, feature_type : HarfBuzz::AatLayoutFeatureTypeT, start_offset : UInt32) : UInt32
+    # hb_aat_layout_feature_type_get_selector_infos: (None)
+    # @selector_count: (out) (transfer full) (optional)
+    # @selectors: (out) (caller-allocates) (optional) (array length=selector_count element-type Interface)
+    # @default_index: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    selector_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    selector_count = selectors.size
+    # Generator::OutArgUsedInReturnPlan
+    selectors = Pointer(Pointer(Void)).null
+    # Generator::ArrayArgPlan
+    selectors = selectors.to_a.map(&.to_unsafe).to_unsafe
+
+    # Generator::OutArgUsedInReturnPlan
+    default_index = Pointer(UInt32).null
+
+    # C call
+    _retval = LibHarfBuzz.hb_aat_layout_feature_type_get_selector_infos(face, feature_type, start_offset, selector_count, selectors, default_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.aat_layout_get_feature_types(face : HarfBuzz::FaceT, start_offset : UInt32, features : Enumerable(HarfBuzz::AatLayoutFeatureTypeT)) : UInt32
+    # hb_aat_layout_get_feature_types: (None)
+    # @feature_count: (out) (transfer full) (optional)
+    # @features: (out) (caller-allocates) (array length=feature_count element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    feature_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    feature_count = features.size
+    # Generator::ArrayArgPlan
+    features = features.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_aat_layout_get_feature_types(face, start_offset, feature_count, features)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.aat_layout_has_positioning(face : HarfBuzz::FaceT) : Int32
+    # hb_aat_layout_has_positioning: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_aat_layout_has_positioning(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.aat_layout_has_substitution(face : HarfBuzz::FaceT) : Int32
+    # hb_aat_layout_has_substitution: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_aat_layout_has_substitution(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.aat_layout_has_tracking(face : HarfBuzz::FaceT) : Int32
+    # hb_aat_layout_has_tracking: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_aat_layout_has_tracking(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.blob_copy_writable_or_fail(blob : HarfBuzz::BlobT) : HarfBuzz::BlobT
+    # hb_blob_copy_writable_or_fail: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_blob_copy_writable_or_fail(blob)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.blob_create_from_file(file_name : ::String) : HarfBuzz::BlobT
+    # hb_blob_create_from_file: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_blob_create_from_file(file_name)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.blob_create_from_file_or_fail(file_name : ::String) : HarfBuzz::BlobT
+    # hb_blob_create_from_file_or_fail: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_blob_create_from_file_or_fail(file_name)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.blob_create_sub_blob(parent : HarfBuzz::BlobT, offset : UInt32, length : UInt32) : HarfBuzz::BlobT
+    # hb_blob_create_sub_blob: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_blob_create_sub_blob(parent, offset, length)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.blob_get_data(blob : HarfBuzz::BlobT) : Enumerable(::String)
+    # hb_blob_get_data: (None)
+    # @length: (out) (transfer full)
+    # Returns: (transfer none) (array length=length element-type Utf8)
+
+    # Generator::OutArgUsedInReturnPlan
+    length = 0_u32
+
+    # C call
+    _retval = LibHarfBuzz.hb_blob_get_data(blob, pointerof(length))
+
+    # Return value handling
+
+    GICrystal.transfer_array(_retval, length, GICrystal::Transfer::None)
+  end
+
+  def self.blob_get_data_writable(blob : HarfBuzz::BlobT) : Enumerable(::String)
+    # hb_blob_get_data_writable: (None)
+    # @length: (out) (transfer full)
+    # Returns: (transfer none) (array length=length element-type Utf8)
+
+    # Generator::OutArgUsedInReturnPlan
+    length = 0_u32
+
+    # C call
+    _retval = LibHarfBuzz.hb_blob_get_data_writable(blob, pointerof(length))
+
+    # Return value handling
+
+    GICrystal.transfer_array(_retval, length, GICrystal::Transfer::None)
+  end
+
+  def self.blob_get_empty : HarfBuzz::BlobT
+    # hb_blob_get_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_blob_get_empty
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.blob_get_length(blob : HarfBuzz::BlobT) : UInt32
+    # hb_blob_get_length: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_blob_get_length(blob)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.blob_is_immutable(blob : HarfBuzz::BlobT) : Int32
+    # hb_blob_is_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_blob_is_immutable(blob)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.blob_make_immutable(blob : HarfBuzz::BlobT) : Nil
+    # hb_blob_make_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_blob_make_immutable(blob)
+
+    # Return value handling
+  end
+
+  def self.buffer_add(buffer : HarfBuzz::BufferT, codepoint : UInt32, cluster : UInt32) : Nil
+    # hb_buffer_add: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_add(buffer, codepoint, cluster)
+
+    # Return value handling
+  end
+
+  def self.buffer_add_codepoints(buffer : HarfBuzz::BufferT, text : Enumerable(UInt32), item_offset : UInt32, item_length : Int32) : Nil
+    # hb_buffer_add_codepoints: (None)
+    # @text: (array length=text_length element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    text_length = text.size
+    # Generator::ArrayArgPlan
+    text = text.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_buffer_add_codepoints(buffer, text, text_length, item_offset, item_length)
+
+    # Return value handling
+  end
+
+  def self.buffer_add_latin1(buffer : HarfBuzz::BufferT, text : Enumerable(UInt8), item_offset : UInt32, item_length : Int32) : Nil
+    # hb_buffer_add_latin1: (None)
+    # @text: (array length=text_length element-type UInt8)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    text_length = text.size
+    # Generator::ArrayArgPlan
+    text = text.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_buffer_add_latin1(buffer, text, text_length, item_offset, item_length)
+
+    # Return value handling
+  end
+
+  def self.buffer_add_utf16(buffer : HarfBuzz::BufferT, text : Enumerable(UInt16), item_offset : UInt32, item_length : Int32) : Nil
+    # hb_buffer_add_utf16: (None)
+    # @text: (array length=text_length element-type UInt16)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    text_length = text.size
+    # Generator::ArrayArgPlan
+    text = text.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_buffer_add_utf16(buffer, text, text_length, item_offset, item_length)
+
+    # Return value handling
+  end
+
+  def self.buffer_add_utf32(buffer : HarfBuzz::BufferT, text : Enumerable(UInt32), item_offset : UInt32, item_length : Int32) : Nil
+    # hb_buffer_add_utf32: (None)
+    # @text: (array length=text_length element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    text_length = text.size
+    # Generator::ArrayArgPlan
+    text = text.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_buffer_add_utf32(buffer, text, text_length, item_offset, item_length)
+
+    # Return value handling
+  end
+
+  def self.buffer_add_utf8(buffer : HarfBuzz::BufferT, text : Enumerable(UInt8), item_offset : UInt32, item_length : Int32) : Nil
+    # hb_buffer_add_utf8: (None)
+    # @text: (array length=text_length element-type UInt8)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    text_length = text.size
+    # Generator::ArrayArgPlan
+    text = text.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_buffer_add_utf8(buffer, text, text_length, item_offset, item_length)
+
+    # Return value handling
+  end
+
+  def self.buffer_allocation_successful(buffer : HarfBuzz::BufferT) : Int32
+    # hb_buffer_allocation_successful: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_allocation_successful(buffer)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_append(buffer : HarfBuzz::BufferT, source : HarfBuzz::BufferT, start : UInt32, end _end : UInt32) : Nil
+    # hb_buffer_append: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_append(buffer, source, start, _end)
+
+    # Return value handling
+  end
+
+  def self.buffer_clear_contents(buffer : HarfBuzz::BufferT) : Nil
+    # hb_buffer_clear_contents: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_clear_contents(buffer)
+
+    # Return value handling
+  end
+
+  def self.buffer_create : HarfBuzz::BufferT
+    # hb_buffer_create: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_create
+
+    # Return value handling
+
+    HarfBuzz::BufferT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.buffer_create_similar(src : HarfBuzz::BufferT) : HarfBuzz::BufferT
+    # hb_buffer_create_similar: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_create_similar(src)
+
+    # Return value handling
+
+    HarfBuzz::BufferT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.buffer_deserialize_glyphs(buffer : HarfBuzz::BufferT, buf : Enumerable(::String), font : HarfBuzz::FontT?, format : HarfBuzz::BufferSerializeFormatT) : Int32
+    # hb_buffer_deserialize_glyphs: (None)
+    # @buf: (array length=buf_len element-type Utf8)
+    # @end_ptr: (out) (transfer full) (optional)
+    # @font: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    buf_len = buf.size
+    # Generator::ArrayArgPlan
+    buf = buf.to_a.map(&.to_unsafe).to_unsafe
+
+    # Generator::OutArgUsedInReturnPlan
+    end_ptr = Pointer(Pointer(LibC::Char)).null
+    # Generator::NullableArrayPlan
+    font = if font.nil?
+             Pointer(Void).null
+           else
+             font.to_unsafe
+           end
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_deserialize_glyphs(buffer, buf, buf_len, end_ptr, font, format)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_deserialize_unicode(buffer : HarfBuzz::BufferT, buf : Enumerable(::String), format : HarfBuzz::BufferSerializeFormatT) : Int32
+    # hb_buffer_deserialize_unicode: (None)
+    # @buf: (array length=buf_len element-type Utf8)
+    # @end_ptr: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    buf_len = buf.size
+    # Generator::ArrayArgPlan
+    buf = buf.to_a.map(&.to_unsafe).to_unsafe
+
+    # Generator::OutArgUsedInReturnPlan
+    end_ptr = Pointer(Pointer(LibC::Char)).null
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_deserialize_unicode(buffer, buf, buf_len, end_ptr, format)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_diff(buffer : HarfBuzz::BufferT, reference : HarfBuzz::BufferT, dottedcircle_glyph : UInt32, position_fuzz : UInt32) : HarfBuzz::BufferDiffFlagsT
+    # hb_buffer_diff: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_diff(buffer, reference, dottedcircle_glyph, position_fuzz)
+
+    # Return value handling
+
+    HarfBuzz::BufferDiffFlagsT.new(_retval)
+  end
+
+  def self.buffer_get_cluster_level(buffer : HarfBuzz::BufferT) : HarfBuzz::BufferClusterLevelT
+    # hb_buffer_get_cluster_level: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_cluster_level(buffer)
+
+    # Return value handling
+
+    HarfBuzz::BufferClusterLevelT.new(_retval)
+  end
+
+  def self.buffer_get_content_type(buffer : HarfBuzz::BufferT) : HarfBuzz::BufferContentTypeT
+    # hb_buffer_get_content_type: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_content_type(buffer)
+
+    # Return value handling
+
+    HarfBuzz::BufferContentTypeT.new(_retval)
+  end
+
+  def self.buffer_get_direction(buffer : HarfBuzz::BufferT) : HarfBuzz::DirectionT
+    # hb_buffer_get_direction: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_direction(buffer)
+
+    # Return value handling
+
+    HarfBuzz::DirectionT.new(_retval)
+  end
+
+  def self.buffer_get_empty : HarfBuzz::BufferT
+    # hb_buffer_get_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_empty
+
+    # Return value handling
+
+    HarfBuzz::BufferT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.buffer_get_flags(buffer : HarfBuzz::BufferT) : HarfBuzz::BufferFlagsT
+    # hb_buffer_get_flags: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_flags(buffer)
+
+    # Return value handling
+
+    HarfBuzz::BufferFlagsT.new(_retval)
+  end
+
+  def self.buffer_get_glyph_infos(buffer : HarfBuzz::BufferT) : Enumerable(HarfBuzz::GlyphInfoT)
+    # hb_buffer_get_glyph_infos: (None)
+    # @length: (out) (transfer full)
+    # Returns: (transfer none) (array length=length element-type Interface)
+
+    # Generator::OutArgUsedInReturnPlan
+    length = 0_u32
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_glyph_infos(buffer, pointerof(length))
+
+    # Return value handling
+
+    GICrystal.transfer_array(_retval, length, GICrystal::Transfer::None)
+  end
+
+  def self.buffer_get_glyph_positions(buffer : HarfBuzz::BufferT) : Enumerable(HarfBuzz::GlyphPositionT)
+    # hb_buffer_get_glyph_positions: (None)
+    # @length: (out) (transfer full)
+    # Returns: (transfer none) (array length=length element-type Interface)
+
+    # Generator::OutArgUsedInReturnPlan
+    length = 0_u32
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_glyph_positions(buffer, pointerof(length))
+
+    # Return value handling
+
+    GICrystal.transfer_array(_retval, length, GICrystal::Transfer::None)
+  end
+
+  def self.buffer_get_invisible_glyph(buffer : HarfBuzz::BufferT) : UInt32
+    # hb_buffer_get_invisible_glyph: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_invisible_glyph(buffer)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_get_language(buffer : HarfBuzz::BufferT) : HarfBuzz::LanguageT
+    # hb_buffer_get_language: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_language(buffer)
+
+    # Return value handling
+
+    HarfBuzz::LanguageT.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.buffer_get_length(buffer : HarfBuzz::BufferT) : UInt32
+    # hb_buffer_get_length: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_length(buffer)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_get_not_found_glyph(buffer : HarfBuzz::BufferT) : UInt32
+    # hb_buffer_get_not_found_glyph: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_not_found_glyph(buffer)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_get_replacement_codepoint(buffer : HarfBuzz::BufferT) : UInt32
+    # hb_buffer_get_replacement_codepoint: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_replacement_codepoint(buffer)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_get_script(buffer : HarfBuzz::BufferT) : HarfBuzz::ScriptT
+    # hb_buffer_get_script: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_script(buffer)
+
+    # Return value handling
+
+    HarfBuzz::ScriptT.new(_retval)
+  end
+
+  def self.buffer_get_segment_properties(buffer : HarfBuzz::BufferT) : HarfBuzz::SegmentPropertiesT
+    # hb_buffer_get_segment_properties: (None)
+    # @props: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    props = HarfBuzz::SegmentPropertiesT.new
+
+    # C call
+    LibHarfBuzz.hb_buffer_get_segment_properties(buffer, props)
+
+    # Return value handling
+
+    props
+  end
+
+  def self.buffer_get_unicode_funcs(buffer : HarfBuzz::BufferT) : HarfBuzz::UnicodeFuncsT
+    # hb_buffer_get_unicode_funcs: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_get_unicode_funcs(buffer)
+
+    # Return value handling
+
+    HarfBuzz::UnicodeFuncsT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.buffer_guess_segment_properties(buffer : HarfBuzz::BufferT) : Nil
+    # hb_buffer_guess_segment_properties: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_guess_segment_properties(buffer)
+
+    # Return value handling
+  end
+
+  def self.buffer_has_positions(buffer : HarfBuzz::BufferT) : Int32
+    # hb_buffer_has_positions: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_has_positions(buffer)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_normalize_glyphs(buffer : HarfBuzz::BufferT) : Nil
+    # hb_buffer_normalize_glyphs: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_normalize_glyphs(buffer)
+
+    # Return value handling
+  end
+
+  def self.buffer_pre_allocate(buffer : HarfBuzz::BufferT, size : UInt32) : Int32
+    # hb_buffer_pre_allocate: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_pre_allocate(buffer, size)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_reset(buffer : HarfBuzz::BufferT) : Nil
+    # hb_buffer_reset: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_reset(buffer)
+
+    # Return value handling
+  end
+
+  def self.buffer_reverse(buffer : HarfBuzz::BufferT) : Nil
+    # hb_buffer_reverse: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_reverse(buffer)
+
+    # Return value handling
+  end
+
+  def self.buffer_reverse_clusters(buffer : HarfBuzz::BufferT) : Nil
+    # hb_buffer_reverse_clusters: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_reverse_clusters(buffer)
+
+    # Return value handling
+  end
+
+  def self.buffer_reverse_range(buffer : HarfBuzz::BufferT, start : UInt32, end _end : UInt32) : Nil
+    # hb_buffer_reverse_range: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_reverse_range(buffer, start, _end)
+
+    # Return value handling
+  end
+
+  def self.buffer_serialize(buffer : HarfBuzz::BufferT, start : UInt32, end _end : UInt32, buf : Enumerable(UInt8), font : HarfBuzz::FontT?, format : HarfBuzz::BufferSerializeFormatT, flags : HarfBuzz::BufferSerializeFlagsT) : UInt32
+    # hb_buffer_serialize: (None)
+    # @buf: (out) (transfer full) (array length=buf_size element-type UInt8)
+    # @buf_size: (out) (transfer full)
+    # @buf_consumed: (out) (transfer full) (optional)
+    # @font: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    buf_size = buf.size
+    # Generator::ArrayArgPlan
+    buf = buf.to_a.to_unsafe
+
+    # Generator::OutArgUsedInReturnPlan
+    buf_consumed = Pointer(UInt32).null
+    # Generator::NullableArrayPlan
+    font = if font.nil?
+             Pointer(Void).null
+           else
+             font.to_unsafe
+           end
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_serialize(buffer, start, _end, buf, buf_size, buf_consumed, font, format, flags)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_serialize_format_from_string(str : Enumerable(UInt8)) : HarfBuzz::BufferSerializeFormatT
+    # hb_buffer_serialize_format_from_string: (None)
+    # @str: (array length=len element-type UInt8)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    len = str.size
+    # Generator::ArrayArgPlan
+    str = str.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_serialize_format_from_string(str, len)
+
+    # Return value handling
+
+    HarfBuzz::BufferSerializeFormatT.new(_retval)
+  end
+
+  def self.buffer_serialize_format_from_string(*str : UInt8)
+    self.buffer_serialize_format_from_string(str)
+  end
+
+  def self.buffer_serialize_format_to_string(format : HarfBuzz::BufferSerializeFormatT) : ::String
+    # hb_buffer_serialize_format_to_string: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_serialize_format_to_string(format)
+
+    # Return value handling
+
+    ::String.new(_retval)
+  end
+
+  def self.buffer_serialize_glyphs(buffer : HarfBuzz::BufferT, start : UInt32, end _end : UInt32, buf : Enumerable(UInt8), font : HarfBuzz::FontT?, format : HarfBuzz::BufferSerializeFormatT, flags : HarfBuzz::BufferSerializeFlagsT) : UInt32
+    # hb_buffer_serialize_glyphs: (None)
+    # @buf: (out) (transfer full) (array length=buf_size element-type UInt8)
+    # @buf_size: (out) (transfer full)
+    # @buf_consumed: (out) (transfer full) (optional)
+    # @font: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    buf_size = buf.size
+    # Generator::ArrayArgPlan
+    buf = buf.to_a.to_unsafe
+
+    # Generator::OutArgUsedInReturnPlan
+    buf_consumed = Pointer(UInt32).null
+    # Generator::NullableArrayPlan
+    font = if font.nil?
+             Pointer(Void).null
+           else
+             font.to_unsafe
+           end
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_serialize_glyphs(buffer, start, _end, buf, buf_size, buf_consumed, font, format, flags)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_serialize_list_formats : Enumerable(::String)
+    # hb_buffer_serialize_list_formats: (None)
+    # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_serialize_list_formats
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.buffer_serialize_unicode(buffer : HarfBuzz::BufferT, start : UInt32, end _end : UInt32, buf : Enumerable(UInt8), format : HarfBuzz::BufferSerializeFormatT, flags : HarfBuzz::BufferSerializeFlagsT) : UInt32
+    # hb_buffer_serialize_unicode: (None)
+    # @buf: (out) (transfer full) (array length=buf_size element-type UInt8)
+    # @buf_size: (out) (transfer full)
+    # @buf_consumed: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    buf_size = buf.size
+    # Generator::ArrayArgPlan
+    buf = buf.to_a.to_unsafe
+
+    # Generator::OutArgUsedInReturnPlan
+    buf_consumed = Pointer(UInt32).null
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_serialize_unicode(buffer, start, _end, buf, buf_size, buf_consumed, format, flags)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_set_cluster_level(buffer : HarfBuzz::BufferT, cluster_level : HarfBuzz::BufferClusterLevelT) : Nil
+    # hb_buffer_set_cluster_level: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_cluster_level(buffer, cluster_level)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_content_type(buffer : HarfBuzz::BufferT, content_type : HarfBuzz::BufferContentTypeT) : Nil
+    # hb_buffer_set_content_type: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_content_type(buffer, content_type)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_direction(buffer : HarfBuzz::BufferT, direction : HarfBuzz::DirectionT) : Nil
+    # hb_buffer_set_direction: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_direction(buffer, direction)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_flags(buffer : HarfBuzz::BufferT, flags : HarfBuzz::BufferFlagsT) : Nil
+    # hb_buffer_set_flags: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_flags(buffer, flags)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_invisible_glyph(buffer : HarfBuzz::BufferT, invisible : UInt32) : Nil
+    # hb_buffer_set_invisible_glyph: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_invisible_glyph(buffer, invisible)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_language(buffer : HarfBuzz::BufferT, language : HarfBuzz::LanguageT) : Nil
+    # hb_buffer_set_language: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_language(buffer, language)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_length(buffer : HarfBuzz::BufferT, length : UInt32) : Int32
+    # hb_buffer_set_length: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_buffer_set_length(buffer, length)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.buffer_set_message_func(buffer : HarfBuzz::BufferT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_buffer_set_message_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_message_func(buffer, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_not_found_glyph(buffer : HarfBuzz::BufferT, not_found : UInt32) : Nil
+    # hb_buffer_set_not_found_glyph: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_not_found_glyph(buffer, not_found)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_replacement_codepoint(buffer : HarfBuzz::BufferT, replacement : UInt32) : Nil
+    # hb_buffer_set_replacement_codepoint: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_replacement_codepoint(buffer, replacement)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_script(buffer : HarfBuzz::BufferT, script : HarfBuzz::ScriptT) : Nil
+    # hb_buffer_set_script: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_script(buffer, script)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_segment_properties(buffer : HarfBuzz::BufferT, props : HarfBuzz::SegmentPropertiesT) : Nil
+    # hb_buffer_set_segment_properties: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_segment_properties(buffer, props)
+
+    # Return value handling
+  end
+
+  def self.buffer_set_unicode_funcs(buffer : HarfBuzz::BufferT, unicode_funcs : HarfBuzz::UnicodeFuncsT) : Nil
+    # hb_buffer_set_unicode_funcs: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_buffer_set_unicode_funcs(buffer, unicode_funcs)
+
+    # Return value handling
+  end
+
+  def self.color_get_alpha(color : UInt32) : UInt8
+    # hb_color_get_alpha: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_color_get_alpha(color)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.color_get_blue(color : UInt32) : UInt8
+    # hb_color_get_blue: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_color_get_blue(color)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.color_get_green(color : UInt32) : UInt8
+    # hb_color_get_green: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_color_get_green(color)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.color_get_red(color : UInt32) : UInt8
+    # hb_color_get_red: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_color_get_red(color)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.direction_from_string(str : Enumerable(UInt8)) : HarfBuzz::DirectionT
+    # hb_direction_from_string: (None)
+    # @str: (array length=len element-type UInt8)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    len = str.size
+    # Generator::ArrayArgPlan
+    str = str.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_direction_from_string(str, len)
+
+    # Return value handling
+
+    HarfBuzz::DirectionT.new(_retval)
+  end
+
+  def self.direction_from_string(*str : UInt8)
+    self.direction_from_string(str)
+  end
+
+  def self.direction_to_string(direction : HarfBuzz::DirectionT) : ::String
+    # hb_direction_to_string: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_direction_to_string(direction)
+
+    # Return value handling
+
+    ::String.new(_retval)
+  end
+
+  def self.draw_close_path(dfuncs : HarfBuzz::DrawFuncsT, draw_data : Pointer(Void)?, st : HarfBuzz::DrawStateT) : Nil
+    # hb_draw_close_path: (None)
+    # @draw_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    draw_data = if draw_data.nil?
+                  Pointer(Void).null
+                else
+                  draw_data.to_unsafe
+                end
+
+    # C call
+    LibHarfBuzz.hb_draw_close_path(dfuncs, draw_data, st)
+
+    # Return value handling
+  end
+
+  def self.draw_cubic_to(dfuncs : HarfBuzz::DrawFuncsT, draw_data : Pointer(Void)?, st : HarfBuzz::DrawStateT, control1_x : Float32, control1_y : Float32, control2_x : Float32, control2_y : Float32, to_x : Float32, to_y : Float32) : Nil
+    # hb_draw_cubic_to: (None)
+    # @draw_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    draw_data = if draw_data.nil?
+                  Pointer(Void).null
+                else
+                  draw_data.to_unsafe
+                end
+
+    # C call
+    LibHarfBuzz.hb_draw_cubic_to(dfuncs, draw_data, st, control1_x, control1_y, control2_x, control2_y, to_x, to_y)
+
+    # Return value handling
+  end
+
+  def self.draw_funcs_create : HarfBuzz::DrawFuncsT
+    # hb_draw_funcs_create: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_draw_funcs_create
+
+    # Return value handling
+
+    HarfBuzz::DrawFuncsT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.draw_funcs_is_immutable(dfuncs : HarfBuzz::DrawFuncsT) : Int32
+    # hb_draw_funcs_is_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_draw_funcs_is_immutable(dfuncs)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.draw_funcs_make_immutable(dfuncs : HarfBuzz::DrawFuncsT) : Nil
+    # hb_draw_funcs_make_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_draw_funcs_make_immutable(dfuncs)
+
+    # Return value handling
+  end
+
+  def self.draw_funcs_set_close_path_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_draw_funcs_set_close_path_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_draw_funcs_set_close_path_func(dfuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.draw_funcs_set_cubic_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_draw_funcs_set_cubic_to_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_draw_funcs_set_cubic_to_func(dfuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.draw_funcs_set_line_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_draw_funcs_set_line_to_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_draw_funcs_set_line_to_func(dfuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.draw_funcs_set_move_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_draw_funcs_set_move_to_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_draw_funcs_set_move_to_func(dfuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.draw_funcs_set_quadratic_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_draw_funcs_set_quadratic_to_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_draw_funcs_set_quadratic_to_func(dfuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.draw_line_to(dfuncs : HarfBuzz::DrawFuncsT, draw_data : Pointer(Void)?, st : HarfBuzz::DrawStateT, to_x : Float32, to_y : Float32) : Nil
+    # hb_draw_line_to: (None)
+    # @draw_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    draw_data = if draw_data.nil?
+                  Pointer(Void).null
+                else
+                  draw_data.to_unsafe
+                end
+
+    # C call
+    LibHarfBuzz.hb_draw_line_to(dfuncs, draw_data, st, to_x, to_y)
+
+    # Return value handling
+  end
+
+  def self.draw_move_to(dfuncs : HarfBuzz::DrawFuncsT, draw_data : Pointer(Void)?, st : HarfBuzz::DrawStateT, to_x : Float32, to_y : Float32) : Nil
+    # hb_draw_move_to: (None)
+    # @draw_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    draw_data = if draw_data.nil?
+                  Pointer(Void).null
+                else
+                  draw_data.to_unsafe
+                end
+
+    # C call
+    LibHarfBuzz.hb_draw_move_to(dfuncs, draw_data, st, to_x, to_y)
+
+    # Return value handling
+  end
+
+  def self.draw_quadratic_to(dfuncs : HarfBuzz::DrawFuncsT, draw_data : Pointer(Void)?, st : HarfBuzz::DrawStateT, control_x : Float32, control_y : Float32, to_x : Float32, to_y : Float32) : Nil
+    # hb_draw_quadratic_to: (None)
+    # @draw_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    draw_data = if draw_data.nil?
+                  Pointer(Void).null
+                else
+                  draw_data.to_unsafe
+                end
+
+    # C call
+    LibHarfBuzz.hb_draw_quadratic_to(dfuncs, draw_data, st, control_x, control_y, to_x, to_y)
+
+    # Return value handling
+  end
+
+  def self.face_builder_add_table(face : HarfBuzz::FaceT, tag : UInt32, blob : HarfBuzz::BlobT) : Int32
+    # hb_face_builder_add_table: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_builder_add_table(face, tag, blob)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.face_builder_create : HarfBuzz::FaceT
+    # hb_face_builder_create: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_builder_create
+
+    # Return value handling
+
+    HarfBuzz::FaceT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.face_collect_unicodes(face : HarfBuzz::FaceT, out _out : HarfBuzz::SetT) : Nil
+    # hb_face_collect_unicodes: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_face_collect_unicodes(face, _out)
+
+    # Return value handling
+  end
+
+  def self.face_collect_variation_selectors(face : HarfBuzz::FaceT, out _out : HarfBuzz::SetT) : Nil
+    # hb_face_collect_variation_selectors: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_face_collect_variation_selectors(face, _out)
+
+    # Return value handling
+  end
+
+  def self.face_collect_variation_unicodes(face : HarfBuzz::FaceT, variation_selector : UInt32, out _out : HarfBuzz::SetT) : Nil
+    # hb_face_collect_variation_unicodes: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_face_collect_variation_unicodes(face, variation_selector, _out)
+
+    # Return value handling
+  end
+
+  def self.face_count(blob : HarfBuzz::BlobT) : UInt32
+    # hb_face_count: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_count(blob)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.face_create(blob : HarfBuzz::BlobT, index : UInt32) : HarfBuzz::FaceT
+    # hb_face_create: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_create(blob, index)
+
+    # Return value handling
+
+    HarfBuzz::FaceT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.face_create_for_tables(reference_table_func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : HarfBuzz::FaceT
+    # hb_face_create_for_tables: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_create_for_tables(reference_table_func, user_data, destroy)
+
+    # Return value handling
+
+    HarfBuzz::FaceT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.face_get_empty : HarfBuzz::FaceT
+    # hb_face_get_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_get_empty
+
+    # Return value handling
+
+    HarfBuzz::FaceT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.face_get_glyph_count(face : HarfBuzz::FaceT) : UInt32
+    # hb_face_get_glyph_count: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_get_glyph_count(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.face_get_index(face : HarfBuzz::FaceT) : UInt32
+    # hb_face_get_index: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_get_index(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.face_get_table_tags(face : HarfBuzz::FaceT, start_offset : UInt32, table_tags : Enumerable(UInt32)) : UInt32
+    # hb_face_get_table_tags: (None)
+    # @table_count: (out) (transfer full)
+    # @table_tags: (out) (transfer full) (array length=table_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    table_count = table_tags.size
+    # Generator::ArrayArgPlan
+    table_tags = table_tags.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_get_table_tags(face, start_offset, table_count, table_tags)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.face_get_upem(face : HarfBuzz::FaceT) : UInt32
+    # hb_face_get_upem: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_get_upem(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.face_is_immutable(face : HarfBuzz::FaceT) : Int32
+    # hb_face_is_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_is_immutable(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.face_make_immutable(face : HarfBuzz::FaceT) : Nil
+    # hb_face_make_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_face_make_immutable(face)
+
+    # Return value handling
+  end
+
+  def self.face_reference_blob(face : HarfBuzz::FaceT) : HarfBuzz::BlobT
+    # hb_face_reference_blob: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_reference_blob(face)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.face_reference_table(face : HarfBuzz::FaceT, tag : UInt32) : HarfBuzz::BlobT
+    # hb_face_reference_table: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_face_reference_table(face, tag)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.face_set_glyph_count(face : HarfBuzz::FaceT, glyph_count : UInt32) : Nil
+    # hb_face_set_glyph_count: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_face_set_glyph_count(face, glyph_count)
+
+    # Return value handling
+  end
+
+  def self.face_set_index(face : HarfBuzz::FaceT, index : UInt32) : Nil
+    # hb_face_set_index: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_face_set_index(face, index)
+
+    # Return value handling
+  end
+
+  def self.face_set_upem(face : HarfBuzz::FaceT, upem : UInt32) : Nil
+    # hb_face_set_upem: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_face_set_upem(face, upem)
+
+    # Return value handling
+  end
+
+  def self.feature_from_string(str : Enumerable(UInt8)) : HarfBuzz::FeatureT
+    # hb_feature_from_string: (None)
+    # @str: (array length=len element-type UInt8)
+    # @feature: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    len = str.size
+    # Generator::ArrayArgPlan
+    str = str.to_a.to_unsafe
+
+    # Generator::CallerAllocatesPlan
+    feature = HarfBuzz::FeatureT.new
+
+    # C call
+    _retval = LibHarfBuzz.hb_feature_from_string(str, len, feature)
+
+    # Return value handling
+
+    feature
+  end
+
+  def self.feature_from_string(*str : UInt8)
+    self.feature_from_string(str)
+  end
+
+  def self.feature_to_string(feature : HarfBuzz::FeatureT, buf : Enumerable(::String)) : Nil
+    # hb_feature_to_string: (None)
+    # @buf: (out) (transfer full) (array length=size element-type Utf8)
+    # @size: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    size = buf.size
+    # Generator::ArrayArgPlan
+    buf = buf.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_feature_to_string(feature, buf, size)
+
+    # Return value handling
+  end
+
+  def self.font_add_glyph_origin_for_direction(font : HarfBuzz::FontT, glyph : UInt32, direction : HarfBuzz::DirectionT, x : Int32, y : Int32) : Nil
+    # hb_font_add_glyph_origin_for_direction: (None)
+    # @x: (inout) (transfer full)
+    # @y: (inout) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_add_glyph_origin_for_direction(font, glyph, direction, x, y)
+
+    # Return value handling
+  end
+
+  def self.font_create(face : HarfBuzz::FaceT) : HarfBuzz::FontT
+    # hb_font_create: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_create(face)
+
+    # Return value handling
+
+    HarfBuzz::FontT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.font_create_sub_font(parent : HarfBuzz::FontT) : HarfBuzz::FontT
+    # hb_font_create_sub_font: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_create_sub_font(parent)
+
+    # Return value handling
+
+    HarfBuzz::FontT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.font_funcs_create : HarfBuzz::FontFuncsT
+    # hb_font_funcs_create: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_funcs_create
+
+    # Return value handling
+
+    HarfBuzz::FontFuncsT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.font_funcs_get_empty : HarfBuzz::FontFuncsT
+    # hb_font_funcs_get_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_funcs_get_empty
+
+    # Return value handling
+
+    HarfBuzz::FontFuncsT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.font_funcs_is_immutable(ffuncs : HarfBuzz::FontFuncsT) : Int32
+    # hb_font_funcs_is_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_funcs_is_immutable(ffuncs)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_funcs_make_immutable(ffuncs : HarfBuzz::FontFuncsT) : Nil
+    # hb_font_funcs_make_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_make_immutable(ffuncs)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_font_h_extents_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_font_h_extents_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_font_h_extents_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_font_v_extents_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_font_v_extents_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_font_v_extents_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_contour_point_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_contour_point_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_contour_point_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_extents_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_extents_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_extents_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_from_name_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_from_name_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_from_name_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_h_advance_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_h_advance_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_h_advance_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_h_advances_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_h_advances_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_h_advances_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_h_kerning_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_h_kerning_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_h_kerning_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_h_origin_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_h_origin_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_h_origin_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_name_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_name_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_name_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_shape_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_shape_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_shape_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_v_advance_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_v_advance_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_v_advance_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_v_advances_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_v_advances_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_v_advances_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_v_kerning_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_v_kerning_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_v_kerning_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_glyph_v_origin_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_glyph_v_origin_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_glyph_v_origin_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_nominal_glyph_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_nominal_glyph_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_nominal_glyph_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_nominal_glyphs_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_nominal_glyphs_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_nominal_glyphs_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_funcs_set_variation_glyph_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_funcs_set_variation_glyph_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_funcs_set_variation_glyph_func(ffuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_get_empty : HarfBuzz::FontT
+    # hb_font_get_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_empty
+
+    # Return value handling
+
+    HarfBuzz::FontT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.font_get_extents_for_direction(font : HarfBuzz::FontT, direction : HarfBuzz::DirectionT) : HarfBuzz::FontExtentsT
+    # hb_font_get_extents_for_direction: (None)
+    # @extents: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    extents = HarfBuzz::FontExtentsT.new
+
+    # C call
+    LibHarfBuzz.hb_font_get_extents_for_direction(font, direction, extents)
+
+    # Return value handling
+
+    extents
+  end
+
+  def self.font_get_face(font : HarfBuzz::FontT) : HarfBuzz::FaceT
+    # hb_font_get_face: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_face(font)
+
+    # Return value handling
+
+    HarfBuzz::FaceT.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.font_get_glyph(font : HarfBuzz::FontT, unicode : UInt32, variation_selector : UInt32, glyph : UInt32) : Int32
+    # hb_font_get_glyph: (None)
+    # @glyph: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph(font, unicode, variation_selector, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_advance_for_direction(font : HarfBuzz::FontT, glyph : UInt32, direction : HarfBuzz::DirectionT, x : Int32, y : Int32) : Nil
+    # hb_font_get_glyph_advance_for_direction: (None)
+    # @x: (out) (transfer full)
+    # @y: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_get_glyph_advance_for_direction(font, glyph, direction, x, y)
+
+    # Return value handling
+  end
+
+  def self.font_get_glyph_advances_for_direction(font : HarfBuzz::FontT, direction : HarfBuzz::DirectionT, count : UInt32, first_glyph : Pointer(UInt32), glyph_stride : UInt32, first_advance : Int32, advance_stride : UInt32) : Nil
+    # hb_font_get_glyph_advances_for_direction: (None)
+    # @first_advance: (out) (transfer full)
+    # @advance_stride: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_get_glyph_advances_for_direction(font, direction, count, first_glyph, glyph_stride, first_advance, advance_stride)
+
+    # Return value handling
+  end
+
+  def self.font_get_glyph_contour_point(font : HarfBuzz::FontT, glyph : UInt32, point_index : UInt32, x : Int32, y : Int32) : Int32
+    # hb_font_get_glyph_contour_point: (None)
+    # @x: (out) (transfer full)
+    # @y: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_contour_point(font, glyph, point_index, x, y)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_contour_point_for_origin(font : HarfBuzz::FontT, glyph : UInt32, point_index : UInt32, direction : HarfBuzz::DirectionT, x : Int32, y : Int32) : Int32
+    # hb_font_get_glyph_contour_point_for_origin: (None)
+    # @x: (out) (transfer full)
+    # @y: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_contour_point_for_origin(font, glyph, point_index, direction, x, y)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_extents(font : HarfBuzz::FontT, glyph : UInt32) : HarfBuzz::GlyphExtentsT
+    # hb_font_get_glyph_extents: (None)
+    # @extents: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    extents = HarfBuzz::GlyphExtentsT.new
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_extents(font, glyph, extents)
+
+    # Return value handling
+
+    extents
+  end
+
+  def self.font_get_glyph_extents_for_origin(font : HarfBuzz::FontT, glyph : UInt32, direction : HarfBuzz::DirectionT) : HarfBuzz::GlyphExtentsT
+    # hb_font_get_glyph_extents_for_origin: (None)
+    # @extents: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    extents = HarfBuzz::GlyphExtentsT.new
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_extents_for_origin(font, glyph, direction, extents)
+
+    # Return value handling
+
+    extents
+  end
+
+  def self.font_get_glyph_from_name(font : HarfBuzz::FontT, name : Enumerable(::String), glyph : UInt32) : Int32
+    # hb_font_get_glyph_from_name: (None)
+    # @name: (array length=len element-type Utf8)
+    # @glyph: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    len = name.size
+    # Generator::ArrayArgPlan
+    name = name.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_from_name(font, name, len, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_h_advance(font : HarfBuzz::FontT, glyph : UInt32) : Int32
+    # hb_font_get_glyph_h_advance: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_h_advance(font, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_h_advances(font : HarfBuzz::FontT, count : UInt32, first_glyph : Pointer(UInt32), glyph_stride : UInt32, first_advance : Int32, advance_stride : UInt32) : Nil
+    # hb_font_get_glyph_h_advances: (None)
+    # @first_advance: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_get_glyph_h_advances(font, count, first_glyph, glyph_stride, first_advance, advance_stride)
+
+    # Return value handling
+  end
+
+  def self.font_get_glyph_h_kerning(font : HarfBuzz::FontT, left_glyph : UInt32, right_glyph : UInt32) : Int32
+    # hb_font_get_glyph_h_kerning: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_h_kerning(font, left_glyph, right_glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_h_origin(font : HarfBuzz::FontT, glyph : UInt32, x : Int32, y : Int32) : Int32
+    # hb_font_get_glyph_h_origin: (None)
+    # @x: (out) (transfer full)
+    # @y: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_h_origin(font, glyph, x, y)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_kerning_for_direction(font : HarfBuzz::FontT, first_glyph : UInt32, second_glyph : UInt32, direction : HarfBuzz::DirectionT, x : Int32, y : Int32) : Nil
+    # hb_font_get_glyph_kerning_for_direction: (None)
+    # @x: (out) (transfer full)
+    # @y: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_get_glyph_kerning_for_direction(font, first_glyph, second_glyph, direction, x, y)
+
+    # Return value handling
+  end
+
+  def self.font_get_glyph_name(font : HarfBuzz::FontT, glyph : UInt32, name : Enumerable(::String)) : Int32
+    # hb_font_get_glyph_name: (None)
+    # @name: (out) (transfer full) (array length=size element-type Utf8)
+    # @size: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    size = name.size
+    # Generator::ArrayArgPlan
+    name = name.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_name(font, glyph, name, size)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_origin_for_direction(font : HarfBuzz::FontT, glyph : UInt32, direction : HarfBuzz::DirectionT, x : Int32, y : Int32) : Nil
+    # hb_font_get_glyph_origin_for_direction: (None)
+    # @x: (out) (transfer full)
+    # @y: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_get_glyph_origin_for_direction(font, glyph, direction, x, y)
+
+    # Return value handling
+  end
+
+  def self.font_get_glyph_shape(font : HarfBuzz::FontT, glyph : UInt32, dfuncs : HarfBuzz::DrawFuncsT, draw_data : Pointer(Void)?) : Nil
+    # hb_font_get_glyph_shape: (None)
+    # @draw_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    draw_data = if draw_data.nil?
+                  Pointer(Void).null
+                else
+                  draw_data.to_unsafe
+                end
+
+    # C call
+    LibHarfBuzz.hb_font_get_glyph_shape(font, glyph, dfuncs, draw_data)
+
+    # Return value handling
+  end
+
+  def self.font_get_glyph_v_advance(font : HarfBuzz::FontT, glyph : UInt32) : Int32
+    # hb_font_get_glyph_v_advance: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_v_advance(font, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_v_advances(font : HarfBuzz::FontT, count : UInt32, first_glyph : Pointer(UInt32), glyph_stride : UInt32, first_advance : Int32, advance_stride : UInt32) : Nil
+    # hb_font_get_glyph_v_advances: (None)
+    # @first_advance: (out) (transfer full)
+    # @advance_stride: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_get_glyph_v_advances(font, count, first_glyph, glyph_stride, first_advance, advance_stride)
+
+    # Return value handling
+  end
+
+  def self.font_get_glyph_v_kerning(font : HarfBuzz::FontT, top_glyph : UInt32, bottom_glyph : UInt32) : Int32
+    # hb_font_get_glyph_v_kerning: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_v_kerning(font, top_glyph, bottom_glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_glyph_v_origin(font : HarfBuzz::FontT, glyph : UInt32, x : Int32, y : Int32) : Int32
+    # hb_font_get_glyph_v_origin: (None)
+    # @x: (out) (transfer full)
+    # @y: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_glyph_v_origin(font, glyph, x, y)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_h_extents(font : HarfBuzz::FontT) : HarfBuzz::FontExtentsT
+    # hb_font_get_h_extents: (None)
+    # @extents: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    extents = HarfBuzz::FontExtentsT.new
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_h_extents(font, extents)
+
+    # Return value handling
+
+    extents
+  end
+
+  def self.font_get_nominal_glyph(font : HarfBuzz::FontT, unicode : UInt32, glyph : UInt32) : Int32
+    # hb_font_get_nominal_glyph: (None)
+    # @glyph: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_nominal_glyph(font, unicode, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_nominal_glyphs(font : HarfBuzz::FontT, count : UInt32, first_unicode : Pointer(UInt32), unicode_stride : UInt32, first_glyph : UInt32, glyph_stride : UInt32) : UInt32
+    # hb_font_get_nominal_glyphs: (None)
+    # @first_glyph: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_nominal_glyphs(font, count, first_unicode, unicode_stride, first_glyph, glyph_stride)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_parent(font : HarfBuzz::FontT) : HarfBuzz::FontT
+    # hb_font_get_parent: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_parent(font)
+
+    # Return value handling
+
+    HarfBuzz::FontT.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.font_get_ppem(font : HarfBuzz::FontT, x_ppem : UInt32, y_ppem : UInt32) : Nil
+    # hb_font_get_ppem: (None)
+    # @x_ppem: (out) (transfer full)
+    # @y_ppem: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_get_ppem(font, x_ppem, y_ppem)
+
+    # Return value handling
+  end
+
+  def self.font_get_ptem(font : HarfBuzz::FontT) : Float32
+    # hb_font_get_ptem: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_ptem(font)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_scale(font : HarfBuzz::FontT, x_scale : Int32, y_scale : Int32) : Nil
+    # hb_font_get_scale: (None)
+    # @x_scale: (out) (transfer full)
+    # @y_scale: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_get_scale(font, x_scale, y_scale)
+
+    # Return value handling
+  end
+
+  def self.font_get_synthetic_slant(font : HarfBuzz::FontT) : Float32
+    # hb_font_get_synthetic_slant: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_synthetic_slant(font)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_v_extents(font : HarfBuzz::FontT) : HarfBuzz::FontExtentsT
+    # hb_font_get_v_extents: (None)
+    # @extents: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    extents = HarfBuzz::FontExtentsT.new
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_v_extents(font, extents)
+
+    # Return value handling
+
+    extents
+  end
+
+  def self.font_get_var_coords_design(font : HarfBuzz::FontT, length : UInt32) : Pointer(Float32)
+    # hb_font_get_var_coords_design: (None)
+    # @length: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_var_coords_design(font, length)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_var_coords_normalized(font : HarfBuzz::FontT, length : UInt32) : Pointer(Int32)
+    # hb_font_get_var_coords_normalized: (None)
+    # @length: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_var_coords_normalized(font, length)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_get_variation_glyph(font : HarfBuzz::FontT, unicode : UInt32, variation_selector : UInt32, glyph : UInt32) : Int32
+    # hb_font_get_variation_glyph: (None)
+    # @glyph: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_get_variation_glyph(font, unicode, variation_selector, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_glyph_from_string(font : HarfBuzz::FontT, s : Enumerable(UInt8), glyph : UInt32) : Int32
+    # hb_font_glyph_from_string: (None)
+    # @s: (array length=len element-type UInt8)
+    # @glyph: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    len = s.size
+    # Generator::ArrayArgPlan
+    s = s.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_glyph_from_string(font, s, len, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_glyph_to_string(font : HarfBuzz::FontT, glyph : UInt32, s : Enumerable(::String)) : Nil
+    # hb_font_glyph_to_string: (None)
+    # @s: (out) (transfer full) (array length=size element-type Utf8)
+    # @size: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    size = s.size
+    # Generator::ArrayArgPlan
+    s = s.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_font_glyph_to_string(font, glyph, s, size)
+
+    # Return value handling
+  end
+
+  def self.font_is_immutable(font : HarfBuzz::FontT) : Int32
+    # hb_font_is_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_font_is_immutable(font)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.font_make_immutable(font : HarfBuzz::FontT) : Nil
+    # hb_font_make_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_make_immutable(font)
+
+    # Return value handling
+  end
+
+  def self.font_set_face(font : HarfBuzz::FontT, face : HarfBuzz::FaceT) : Nil
+    # hb_font_set_face: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_set_face(font, face)
+
+    # Return value handling
+  end
+
+  def self.font_set_funcs(font : HarfBuzz::FontT, klass : HarfBuzz::FontFuncsT, font_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_set_funcs: (None)
+    # @font_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    font_data = if font_data.nil?
+                  Pointer(Void).null
+                else
+                  font_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_set_funcs(font, klass, font_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_set_funcs_data(font : HarfBuzz::FontT, font_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_font_set_funcs_data: (None)
+    # @font_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    font_data = if font_data.nil?
+                  Pointer(Void).null
+                else
+                  font_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_font_set_funcs_data(font, font_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.font_set_parent(font : HarfBuzz::FontT, parent : HarfBuzz::FontT) : Nil
+    # hb_font_set_parent: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_set_parent(font, parent)
+
+    # Return value handling
+  end
+
+  def self.font_set_ppem(font : HarfBuzz::FontT, x_ppem : UInt32, y_ppem : UInt32) : Nil
+    # hb_font_set_ppem: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_set_ppem(font, x_ppem, y_ppem)
+
+    # Return value handling
+  end
+
+  def self.font_set_ptem(font : HarfBuzz::FontT, ptem : Float32) : Nil
+    # hb_font_set_ptem: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_set_ptem(font, ptem)
+
+    # Return value handling
+  end
+
+  def self.font_set_scale(font : HarfBuzz::FontT, x_scale : Int32, y_scale : Int32) : Nil
+    # hb_font_set_scale: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_set_scale(font, x_scale, y_scale)
+
+    # Return value handling
+  end
+
+  def self.font_set_synthetic_slant(font : HarfBuzz::FontT, slant : Float32) : Nil
+    # hb_font_set_synthetic_slant: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_set_synthetic_slant(font, slant)
+
+    # Return value handling
+  end
+
+  def self.font_set_var_coords_design(font : HarfBuzz::FontT, coords : Enumerable(Float32)) : Nil
+    # hb_font_set_var_coords_design: (None)
+    # @coords: (array length=coords_length element-type Float)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    coords_length = coords.size
+    # Generator::ArrayArgPlan
+    coords = coords.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_font_set_var_coords_design(font, coords, coords_length)
+
+    # Return value handling
+  end
+
+  def self.font_set_var_coords_normalized(font : HarfBuzz::FontT, coords : Enumerable(Int32)) : Nil
+    # hb_font_set_var_coords_normalized: (None)
+    # @coords: (array length=coords_length element-type Int32)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    coords_length = coords.size
+    # Generator::ArrayArgPlan
+    coords = coords.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_font_set_var_coords_normalized(font, coords, coords_length)
+
+    # Return value handling
+  end
+
+  def self.font_set_var_named_instance(font : HarfBuzz::FontT, instance_index : UInt32) : Nil
+    # hb_font_set_var_named_instance: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_set_var_named_instance(font, instance_index)
+
+    # Return value handling
+  end
+
+  def self.font_set_variations(font : HarfBuzz::FontT, variations : Enumerable(HarfBuzz::VariationT)) : Nil
+    # hb_font_set_variations: (None)
+    # @variations: (array length=variations_length element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    variations_length = variations.size
+    # Generator::ArrayArgPlan
+    variations = variations.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_font_set_variations(font, variations, variations_length)
+
+    # Return value handling
+  end
+
+  def self.font_subtract_glyph_origin_for_direction(font : HarfBuzz::FontT, glyph : UInt32, direction : HarfBuzz::DirectionT, x : Int32, y : Int32) : Nil
+    # hb_font_subtract_glyph_origin_for_direction: (None)
+    # @x: (inout) (transfer full)
+    # @y: (inout) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_font_subtract_glyph_origin_for_direction(font, glyph, direction, x, y)
+
+    # Return value handling
+  end
+
+  def self.ft_font_changed(font : HarfBuzz::FontT) : Nil
+    # hb_ft_font_changed: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_ft_font_changed(font)
+
+    # Return value handling
+  end
+
+  def self.ft_font_get_load_flags(font : HarfBuzz::FontT) : Int32
+    # hb_ft_font_get_load_flags: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ft_font_get_load_flags(font)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ft_font_set_funcs(font : HarfBuzz::FontT) : Nil
+    # hb_ft_font_set_funcs: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_ft_font_set_funcs(font)
+
+    # Return value handling
+  end
+
+  def self.ft_font_set_load_flags(font : HarfBuzz::FontT, load_flags : Int32) : Nil
+    # hb_ft_font_set_load_flags: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_ft_font_set_load_flags(font, load_flags)
+
+    # Return value handling
+  end
+
+  def self.ft_font_unlock_face(font : HarfBuzz::FontT) : Nil
+    # hb_ft_font_unlock_face: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_ft_font_unlock_face(font)
+
+    # Return value handling
+  end
+
+  def self.glib_blob_create(gbytes : GLib::Bytes) : HarfBuzz::BlobT
+    # hb_glib_blob_create: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_glib_blob_create(gbytes)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.glib_get_unicode_funcs : HarfBuzz::UnicodeFuncsT
+    # hb_glib_get_unicode_funcs: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_glib_get_unicode_funcs
+
+    # Return value handling
+
+    HarfBuzz::UnicodeFuncsT.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.glib_script_from_script(script : HarfBuzz::ScriptT) : GLib::UnicodeScript
+    # hb_glib_script_from_script: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_glib_script_from_script(script)
+
+    # Return value handling
+
+    GLib::UnicodeScript.new(_retval)
+  end
+
+  def self.glib_script_to_script(script : GLib::UnicodeScript) : HarfBuzz::ScriptT
+    # hb_glib_script_to_script: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_glib_script_to_script(script)
+
+    # Return value handling
+
+    HarfBuzz::ScriptT.new(_retval)
+  end
+
+  def self.glyph_info_get_glyph_flags(info : HarfBuzz::GlyphInfoT) : HarfBuzz::GlyphFlagsT
+    # hb_glyph_info_get_glyph_flags: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_glyph_info_get_glyph_flags(info)
+
+    # Return value handling
+
+    HarfBuzz::GlyphFlagsT.new(_retval)
+  end
+
+  def self.language_from_string(str : Enumerable(UInt8)) : HarfBuzz::LanguageT
+    # hb_language_from_string: (None)
+    # @str: (array length=len element-type UInt8)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    len = str.size
+    # Generator::ArrayArgPlan
+    str = str.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_language_from_string(str, len)
+
+    # Return value handling
+
+    HarfBuzz::LanguageT.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.language_from_string(*str : UInt8)
+    self.language_from_string(str)
+  end
+
+  def self.language_get_default : HarfBuzz::LanguageT
+    # hb_language_get_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_language_get_default
+
+    # Return value handling
+
+    HarfBuzz::LanguageT.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.language_to_string(language : HarfBuzz::LanguageT) : ::String
+    # hb_language_to_string: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_language_to_string(language)
+
+    # Return value handling
+
+    ::String.new(_retval)
+  end
+
+  def self.map_allocation_successful(map : HarfBuzz::MapT) : Int32
+    # hb_map_allocation_successful: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_map_allocation_successful(map)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.map_clear(map : HarfBuzz::MapT) : Nil
+    # hb_map_clear: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_map_clear(map)
+
+    # Return value handling
+  end
+
+  def self.map_create : HarfBuzz::MapT
+    # hb_map_create: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_map_create
+
+    # Return value handling
+
+    HarfBuzz::MapT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.map_del(map : HarfBuzz::MapT, key : UInt32) : Nil
+    # hb_map_del: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_map_del(map, key)
+
+    # Return value handling
+  end
+
+  def self.map_get(map : HarfBuzz::MapT, key : UInt32) : UInt32
+    # hb_map_get: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_map_get(map, key)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.map_get_empty : HarfBuzz::MapT
+    # hb_map_get_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_map_get_empty
+
+    # Return value handling
+
+    HarfBuzz::MapT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.map_get_population(map : HarfBuzz::MapT) : UInt32
+    # hb_map_get_population: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_map_get_population(map)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.map_has(map : HarfBuzz::MapT, key : UInt32) : Int32
+    # hb_map_has: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_map_has(map, key)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.map_is_empty(map : HarfBuzz::MapT) : Int32
+    # hb_map_is_empty: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_map_is_empty(map)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.map_set(map : HarfBuzz::MapT, key : UInt32, value : UInt32) : Nil
+    # hb_map_set: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_map_set(map, key, value)
+
+    # Return value handling
+  end
+
+  def self.ot_color_glyph_get_layers(face : HarfBuzz::FaceT, glyph : UInt32, start_offset : UInt32, layers : Enumerable(HarfBuzz::OtColorLayerT)?) : UInt32
+    # hb_ot_color_glyph_get_layers: (None)
+    # @layer_count: (out) (transfer full) (optional)
+    # @layers: (out) (nullable) (caller-allocates) (array length=layer_count element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    layer_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    layer_count = layers.try(&.size) || 0
+    # Generator::NullableArrayPlan
+    layers = if layers.nil?
+               Pointer(Void).null
+             else
+               layers.to_a.map(&.to_unsafe).to_unsafe
+             end
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_glyph_get_layers(face, glyph, start_offset, layer_count, layers)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_color_glyph_reference_png(font : HarfBuzz::FontT, glyph : UInt32) : HarfBuzz::BlobT
+    # hb_ot_color_glyph_reference_png: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_glyph_reference_png(font, glyph)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.ot_color_glyph_reference_svg(face : HarfBuzz::FaceT, glyph : UInt32) : HarfBuzz::BlobT
+    # hb_ot_color_glyph_reference_svg: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_glyph_reference_svg(face, glyph)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.ot_color_has_layers(face : HarfBuzz::FaceT) : Int32
+    # hb_ot_color_has_layers: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_has_layers(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_color_has_palettes(face : HarfBuzz::FaceT) : Int32
+    # hb_ot_color_has_palettes: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_has_palettes(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_color_has_png(face : HarfBuzz::FaceT) : Int32
+    # hb_ot_color_has_png: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_has_png(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_color_has_svg(face : HarfBuzz::FaceT) : Int32
+    # hb_ot_color_has_svg: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_has_svg(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_color_palette_color_get_name_id(face : HarfBuzz::FaceT, color_index : UInt32) : UInt32
+    # hb_ot_color_palette_color_get_name_id: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_palette_color_get_name_id(face, color_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_color_palette_get_colors(face : HarfBuzz::FaceT, palette_index : UInt32, start_offset : UInt32, colors : Enumerable(UInt32)?) : UInt32
+    # hb_ot_color_palette_get_colors: (None)
+    # @color_count: (out) (transfer full) (optional)
+    # @colors: (out) (transfer full) (nullable) (array length=color_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    color_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    color_count = colors.try(&.size) || 0
+    # Generator::NullableArrayPlan
+    colors = if colors.nil?
+               Pointer(UInt32).null
+             else
+               colors.to_a.to_unsafe
+             end
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_palette_get_colors(face, palette_index, start_offset, color_count, colors)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_color_palette_get_count(face : HarfBuzz::FaceT) : UInt32
+    # hb_ot_color_palette_get_count: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_palette_get_count(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_color_palette_get_flags(face : HarfBuzz::FaceT, palette_index : UInt32) : HarfBuzz::OtColorPaletteFlagsT
+    # hb_ot_color_palette_get_flags: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_palette_get_flags(face, palette_index)
+
+    # Return value handling
+
+    HarfBuzz::OtColorPaletteFlagsT.new(_retval)
+  end
+
+  def self.ot_color_palette_get_name_id(face : HarfBuzz::FaceT, palette_index : UInt32) : UInt32
+    # hb_ot_color_palette_get_name_id: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_color_palette_get_name_id(face, palette_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_font_set_funcs(font : HarfBuzz::FontT) : Nil
+    # hb_ot_font_set_funcs: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_ot_font_set_funcs(font)
+
+    # Return value handling
+  end
+
+  def self.ot_layout_collect_features(face : HarfBuzz::FaceT, table_tag : UInt32, scripts : Pointer(UInt32), languages : Pointer(UInt32), features : Pointer(UInt32)) : HarfBuzz::SetT
+    # hb_ot_layout_collect_features: (None)
+    # @feature_indexes: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    feature_indexes = HarfBuzz::SetT.new
+
+    # C call
+    LibHarfBuzz.hb_ot_layout_collect_features(face, table_tag, scripts, languages, features, feature_indexes)
+
+    # Return value handling
+
+    feature_indexes
+  end
+
+  def self.ot_layout_collect_lookups(face : HarfBuzz::FaceT, table_tag : UInt32, scripts : Pointer(UInt32), languages : Pointer(UInt32), features : Pointer(UInt32)) : HarfBuzz::SetT
+    # hb_ot_layout_collect_lookups: (None)
+    # @lookup_indexes: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    lookup_indexes = HarfBuzz::SetT.new
+
+    # C call
+    LibHarfBuzz.hb_ot_layout_collect_lookups(face, table_tag, scripts, languages, features, lookup_indexes)
+
+    # Return value handling
+
+    lookup_indexes
+  end
+
+  def self.ot_layout_feature_get_characters(face : HarfBuzz::FaceT, table_tag : UInt32, feature_index : UInt32, start_offset : UInt32, characters : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_feature_get_characters: (None)
+    # @char_count: (out) (transfer full) (optional)
+    # @characters: (out) (caller-allocates) (array length=char_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    char_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    char_count = characters.size
+    # Generator::ArrayArgPlan
+    characters = characters.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_feature_get_characters(face, table_tag, feature_index, start_offset, char_count, characters)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_feature_get_lookups(face : HarfBuzz::FaceT, table_tag : UInt32, feature_index : UInt32, start_offset : UInt32, lookup_indexes : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_feature_get_lookups: (None)
+    # @lookup_count: (out) (transfer full) (optional)
+    # @lookup_indexes: (out) (transfer full) (array length=lookup_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    lookup_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    lookup_count = lookup_indexes.size
+    # Generator::ArrayArgPlan
+    lookup_indexes = lookup_indexes.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_feature_get_lookups(face, table_tag, feature_index, start_offset, lookup_count, lookup_indexes)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_feature_get_name_ids(face : HarfBuzz::FaceT, table_tag : UInt32, feature_index : UInt32) : Int32
+    # hb_ot_layout_feature_get_name_ids: (None)
+    # @label_id: (out) (transfer full) (optional)
+    # @tooltip_id: (out) (transfer full) (optional)
+    # @sample_id: (out) (transfer full) (optional)
+    # @num_named_parameters: (out) (transfer full) (optional)
+    # @first_param_id: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    label_id = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    tooltip_id = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    sample_id = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    num_named_parameters = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    first_param_id = Pointer(UInt32).null
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_feature_get_name_ids(face, table_tag, feature_index, label_id, tooltip_id, sample_id, num_named_parameters, first_param_id)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_feature_with_variations_get_lookups(face : HarfBuzz::FaceT, table_tag : UInt32, feature_index : UInt32, variations_index : UInt32, start_offset : UInt32, lookup_indexes : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_feature_with_variations_get_lookups: (None)
+    # @lookup_count: (out) (transfer full) (optional)
+    # @lookup_indexes: (out) (transfer full) (array length=lookup_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    lookup_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    lookup_count = lookup_indexes.size
+    # Generator::ArrayArgPlan
+    lookup_indexes = lookup_indexes.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_feature_with_variations_get_lookups(face, table_tag, feature_index, variations_index, start_offset, lookup_count, lookup_indexes)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_get_attach_points(face : HarfBuzz::FaceT, glyph : UInt32, start_offset : UInt32, point_array : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_get_attach_points: (None)
+    # @point_count: (out) (transfer full) (optional)
+    # @point_array: (out) (transfer full) (array length=point_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    point_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    point_count = point_array.size
+    # Generator::ArrayArgPlan
+    point_array = point_array.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_get_attach_points(face, glyph, start_offset, point_count, point_array)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_get_baseline(font : HarfBuzz::FontT, baseline_tag : HarfBuzz::OtLayoutBaselineTagT, direction : HarfBuzz::DirectionT, script_tag : UInt32, language_tag : UInt32, coord : Int32?) : Int32
+    # hb_ot_layout_get_baseline: (None)
+    # @coord: (out) (transfer full) (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    coord = if coord.nil?
+              Int32.null
+            else
+              coord.to_unsafe
+            end
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_get_baseline(font, baseline_tag, direction, script_tag, language_tag, coord)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_get_baseline_with_fallback(font : HarfBuzz::FontT, baseline_tag : HarfBuzz::OtLayoutBaselineTagT, direction : HarfBuzz::DirectionT, script_tag : UInt32, language_tag : UInt32, coord : Int32) : Nil
+    # hb_ot_layout_get_baseline_with_fallback: (None)
+    # @coord: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_ot_layout_get_baseline_with_fallback(font, baseline_tag, direction, script_tag, language_tag, coord)
+
+    # Return value handling
+  end
+
+  def self.ot_layout_get_glyph_class(face : HarfBuzz::FaceT, glyph : UInt32) : HarfBuzz::OtLayoutGlyphClassT
+    # hb_ot_layout_get_glyph_class: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_get_glyph_class(face, glyph)
+
+    # Return value handling
+
+    HarfBuzz::OtLayoutGlyphClassT.new(_retval)
+  end
+
+  def self.ot_layout_get_glyphs_in_class(face : HarfBuzz::FaceT, klass : HarfBuzz::OtLayoutGlyphClassT) : HarfBuzz::SetT
+    # hb_ot_layout_get_glyphs_in_class: (None)
+    # @glyphs: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    glyphs = HarfBuzz::SetT.new
+
+    # C call
+    LibHarfBuzz.hb_ot_layout_get_glyphs_in_class(face, klass, glyphs)
+
+    # Return value handling
+
+    glyphs
+  end
+
+  def self.ot_layout_get_horizontal_baseline_tag_for_script(script : HarfBuzz::ScriptT) : HarfBuzz::OtLayoutBaselineTagT
+    # hb_ot_layout_get_horizontal_baseline_tag_for_script: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_get_horizontal_baseline_tag_for_script(script)
+
+    # Return value handling
+
+    HarfBuzz::OtLayoutBaselineTagT.new(_retval)
+  end
+
+  def self.ot_layout_get_ligature_carets(font : HarfBuzz::FontT, direction : HarfBuzz::DirectionT, glyph : UInt32, start_offset : UInt32, caret_array : Enumerable(Int32)) : UInt32
+    # hb_ot_layout_get_ligature_carets: (None)
+    # @caret_count: (out) (transfer full) (optional)
+    # @caret_array: (out) (transfer full) (array length=caret_count element-type Int32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    caret_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    caret_count = caret_array.size
+    # Generator::ArrayArgPlan
+    caret_array = caret_array.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_get_ligature_carets(font, direction, glyph, start_offset, caret_count, caret_array)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_get_size_params(face : HarfBuzz::FaceT, design_size : UInt32, subfamily_id : UInt32, subfamily_name_id : UInt32, range_start : UInt32, range_end : UInt32) : Int32
+    # hb_ot_layout_get_size_params: (None)
+    # @design_size: (out) (transfer full)
+    # @subfamily_id: (out) (transfer full)
+    # @subfamily_name_id: (out) (transfer full)
+    # @range_start: (out) (transfer full)
+    # @range_end: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_get_size_params(face, design_size, subfamily_id, subfamily_name_id, range_start, range_end)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_has_glyph_classes(face : HarfBuzz::FaceT) : Int32
+    # hb_ot_layout_has_glyph_classes: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_has_glyph_classes(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_has_positioning(face : HarfBuzz::FaceT) : Int32
+    # hb_ot_layout_has_positioning: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_has_positioning(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_has_substitution(face : HarfBuzz::FaceT) : Int32
+    # hb_ot_layout_has_substitution: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_has_substitution(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_language_find_feature(face : HarfBuzz::FaceT, table_tag : UInt32, script_index : UInt32, language_index : UInt32, feature_tag : UInt32, feature_index : UInt32) : Int32
+    # hb_ot_layout_language_find_feature: (None)
+    # @feature_index: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_language_find_feature(face, table_tag, script_index, language_index, feature_tag, feature_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_language_get_feature_indexes(face : HarfBuzz::FaceT, table_tag : UInt32, script_index : UInt32, language_index : UInt32, start_offset : UInt32, feature_indexes : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_language_get_feature_indexes: (None)
+    # @feature_count: (out) (transfer full) (optional)
+    # @feature_indexes: (out) (transfer full) (array length=feature_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    feature_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    feature_count = feature_indexes.size
+    # Generator::ArrayArgPlan
+    feature_indexes = feature_indexes.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_language_get_feature_indexes(face, table_tag, script_index, language_index, start_offset, feature_count, feature_indexes)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_language_get_feature_tags(face : HarfBuzz::FaceT, table_tag : UInt32, script_index : UInt32, language_index : UInt32, start_offset : UInt32, feature_tags : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_language_get_feature_tags: (None)
+    # @feature_count: (out) (transfer full) (optional)
+    # @feature_tags: (out) (transfer full) (array length=feature_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    feature_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    feature_count = feature_tags.size
+    # Generator::ArrayArgPlan
+    feature_tags = feature_tags.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_language_get_feature_tags(face, table_tag, script_index, language_index, start_offset, feature_count, feature_tags)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_language_get_required_feature(face : HarfBuzz::FaceT, table_tag : UInt32, script_index : UInt32, language_index : UInt32, feature_index : UInt32, feature_tag : UInt32) : Int32
+    # hb_ot_layout_language_get_required_feature: (None)
+    # @feature_index: (out) (transfer full)
+    # @feature_tag: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_language_get_required_feature(face, table_tag, script_index, language_index, feature_index, feature_tag)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_language_get_required_feature_index(face : HarfBuzz::FaceT, table_tag : UInt32, script_index : UInt32, language_index : UInt32, feature_index : UInt32) : Int32
+    # hb_ot_layout_language_get_required_feature_index: (None)
+    # @feature_index: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_language_get_required_feature_index(face, table_tag, script_index, language_index, feature_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_lookup_collect_glyphs(face : HarfBuzz::FaceT, table_tag : UInt32, lookup_index : UInt32) : HarfBuzz::SetT
+    # hb_ot_layout_lookup_collect_glyphs: (None)
+    # @glyphs_before: (out) (caller-allocates)
+    # @glyphs_input: (out) (caller-allocates)
+    # @glyphs_after: (out) (caller-allocates)
+    # @glyphs_output: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    glyphs_before = HarfBuzz::SetT.new
+    # Generator::CallerAllocatesPlan
+    glyphs_input = HarfBuzz::SetT.new
+    # Generator::CallerAllocatesPlan
+    glyphs_after = HarfBuzz::SetT.new
+    # Generator::CallerAllocatesPlan
+    glyphs_output = HarfBuzz::SetT.new
+
+    # C call
+    LibHarfBuzz.hb_ot_layout_lookup_collect_glyphs(face, table_tag, lookup_index, glyphs_before, glyphs_input, glyphs_after, glyphs_output)
+
+    # Return value handling
+
+    glyphs_before
+  end
+
+  def self.ot_layout_lookup_get_glyph_alternates(face : HarfBuzz::FaceT, lookup_index : UInt32, glyph : UInt32, start_offset : UInt32, alternate_glyphs : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_lookup_get_glyph_alternates: (None)
+    # @alternate_count: (out) (transfer full) (optional)
+    # @alternate_glyphs: (out) (caller-allocates) (array length=alternate_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    alternate_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    alternate_count = alternate_glyphs.size
+    # Generator::ArrayArgPlan
+    alternate_glyphs = alternate_glyphs.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_lookup_get_glyph_alternates(face, lookup_index, glyph, start_offset, alternate_count, alternate_glyphs)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_lookup_substitute_closure(face : HarfBuzz::FaceT, lookup_index : UInt32) : HarfBuzz::SetT
+    # hb_ot_layout_lookup_substitute_closure: (None)
+    # @glyphs: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    glyphs = HarfBuzz::SetT.new
+
+    # C call
+    LibHarfBuzz.hb_ot_layout_lookup_substitute_closure(face, lookup_index, glyphs)
+
+    # Return value handling
+
+    glyphs
+  end
+
+  def self.ot_layout_lookup_would_substitute(face : HarfBuzz::FaceT, lookup_index : UInt32, glyphs : Pointer(UInt32), glyphs_length : UInt32, zero_context : Int32) : Int32
+    # hb_ot_layout_lookup_would_substitute: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_lookup_would_substitute(face, lookup_index, glyphs, glyphs_length, zero_context)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_lookups_substitute_closure(face : HarfBuzz::FaceT, lookups : HarfBuzz::SetT) : HarfBuzz::SetT
+    # hb_ot_layout_lookups_substitute_closure: (None)
+    # @glyphs: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    glyphs = HarfBuzz::SetT.new
+
+    # C call
+    LibHarfBuzz.hb_ot_layout_lookups_substitute_closure(face, lookups, glyphs)
+
+    # Return value handling
+
+    glyphs
+  end
+
+  def self.ot_layout_script_find_language(face : HarfBuzz::FaceT, table_tag : UInt32, script_index : UInt32, language_tag : UInt32, language_index : Pointer(UInt32)) : Int32
+    # hb_ot_layout_script_find_language: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_script_find_language(face, table_tag, script_index, language_tag, language_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_script_get_language_tags(face : HarfBuzz::FaceT, table_tag : UInt32, script_index : UInt32, start_offset : UInt32, language_tags : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_script_get_language_tags: (None)
+    # @language_count: (out) (transfer full) (optional)
+    # @language_tags: (out) (transfer full) (array length=language_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    language_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    language_count = language_tags.size
+    # Generator::ArrayArgPlan
+    language_tags = language_tags.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_script_get_language_tags(face, table_tag, script_index, start_offset, language_count, language_tags)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_script_select_language(face : HarfBuzz::FaceT, table_tag : UInt32, script_index : UInt32, language_count : UInt32, language_tags : Pointer(UInt32), language_index : UInt32) : Int32
+    # hb_ot_layout_script_select_language: (None)
+    # @language_index: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_script_select_language(face, table_tag, script_index, language_count, language_tags, language_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_table_choose_script(face : HarfBuzz::FaceT, table_tag : UInt32, script_tags : Pointer(UInt32), script_index : UInt32, chosen_script : UInt32) : Int32
+    # hb_ot_layout_table_choose_script: (None)
+    # @script_index: (out) (transfer full)
+    # @chosen_script: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_table_choose_script(face, table_tag, script_tags, script_index, chosen_script)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_table_find_feature_variations(face : HarfBuzz::FaceT, table_tag : UInt32, coords : Pointer(Int32), num_coords : UInt32, variations_index : UInt32) : Int32
+    # hb_ot_layout_table_find_feature_variations: (None)
+    # @variations_index: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_table_find_feature_variations(face, table_tag, coords, num_coords, variations_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_table_find_script(face : HarfBuzz::FaceT, table_tag : UInt32, script_tag : UInt32, script_index : UInt32) : Int32
+    # hb_ot_layout_table_find_script: (None)
+    # @script_index: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_table_find_script(face, table_tag, script_tag, script_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_table_get_feature_tags(face : HarfBuzz::FaceT, table_tag : UInt32, start_offset : UInt32, feature_tags : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_table_get_feature_tags: (None)
+    # @feature_count: (out) (transfer full) (optional)
+    # @feature_tags: (out) (transfer full) (array length=feature_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    feature_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    feature_count = feature_tags.size
+    # Generator::ArrayArgPlan
+    feature_tags = feature_tags.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_table_get_feature_tags(face, table_tag, start_offset, feature_count, feature_tags)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_table_get_lookup_count(face : HarfBuzz::FaceT, table_tag : UInt32) : UInt32
+    # hb_ot_layout_table_get_lookup_count: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_table_get_lookup_count(face, table_tag)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_table_get_script_tags(face : HarfBuzz::FaceT, table_tag : UInt32, start_offset : UInt32, script_tags : Enumerable(UInt32)) : UInt32
+    # hb_ot_layout_table_get_script_tags: (None)
+    # @script_count: (out) (transfer full) (optional)
+    # @script_tags: (out) (transfer full) (array length=script_count element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    script_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    script_count = script_tags.size
+    # Generator::ArrayArgPlan
+    script_tags = script_tags.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_table_get_script_tags(face, table_tag, start_offset, script_count, script_tags)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_layout_table_select_script(face : HarfBuzz::FaceT, table_tag : UInt32, script_count : UInt32, script_tags : Pointer(UInt32)) : Int32
+    # hb_ot_layout_table_select_script: (None)
+    # @script_index: (out) (transfer full) (optional)
+    # @chosen_script: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    script_index = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    chosen_script = Pointer(UInt32).null
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_layout_table_select_script(face, table_tag, script_count, script_tags, script_index, chosen_script)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_get_constant(font : HarfBuzz::FontT, constant : HarfBuzz::OtMathConstantT) : Int32
+    # hb_ot_math_get_constant: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_get_constant(font, constant)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_get_glyph_assembly(font : HarfBuzz::FontT, glyph : UInt32, direction : HarfBuzz::DirectionT, start_offset : UInt32, parts : Enumerable(HarfBuzz::OtMathGlyphPartT), italics_correction : Int32) : UInt32
+    # hb_ot_math_get_glyph_assembly: (None)
+    # @parts_count: (out) (transfer full)
+    # @parts: (out) (caller-allocates) (array length=parts_count element-type Interface)
+    # @italics_correction: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    parts_count = parts.size
+    # Generator::ArrayArgPlan
+    parts = parts.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_get_glyph_assembly(font, glyph, direction, start_offset, parts_count, parts, italics_correction)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_get_glyph_italics_correction(font : HarfBuzz::FontT, glyph : UInt32) : Int32
+    # hb_ot_math_get_glyph_italics_correction: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_get_glyph_italics_correction(font, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_get_glyph_kerning(font : HarfBuzz::FontT, glyph : UInt32, kern : HarfBuzz::OtMathKernT, correction_height : Int32) : Int32
+    # hb_ot_math_get_glyph_kerning: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_get_glyph_kerning(font, glyph, kern, correction_height)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_get_glyph_kernings(font : HarfBuzz::FontT, glyph : UInt32, kern : HarfBuzz::OtMathKernT, start_offset : UInt32, kern_entries : Enumerable(HarfBuzz::OtMathKernEntryT)) : UInt32
+    # hb_ot_math_get_glyph_kernings: (None)
+    # @entries_count: (out) (transfer full) (optional)
+    # @kern_entries: (out) (caller-allocates) (array length=entries_count element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    entries_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    entries_count = kern_entries.size
+    # Generator::ArrayArgPlan
+    kern_entries = kern_entries.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_get_glyph_kernings(font, glyph, kern, start_offset, entries_count, kern_entries)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_get_glyph_top_accent_attachment(font : HarfBuzz::FontT, glyph : UInt32) : Int32
+    # hb_ot_math_get_glyph_top_accent_attachment: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_get_glyph_top_accent_attachment(font, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_get_glyph_variants(font : HarfBuzz::FontT, glyph : UInt32, direction : HarfBuzz::DirectionT, start_offset : UInt32, variants : Enumerable(HarfBuzz::OtMathGlyphVariantT)) : UInt32
+    # hb_ot_math_get_glyph_variants: (None)
+    # @variants_count: (out) (transfer full)
+    # @variants: (out) (caller-allocates) (array length=variants_count element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    variants_count = variants.size
+    # Generator::ArrayArgPlan
+    variants = variants.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_get_glyph_variants(font, glyph, direction, start_offset, variants_count, variants)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_get_min_connector_overlap(font : HarfBuzz::FontT, direction : HarfBuzz::DirectionT) : Int32
+    # hb_ot_math_get_min_connector_overlap: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_get_min_connector_overlap(font, direction)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_has_data(face : HarfBuzz::FaceT) : Int32
+    # hb_ot_math_has_data: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_has_data(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_math_is_glyph_extended_shape(face : HarfBuzz::FaceT, glyph : UInt32) : Int32
+    # hb_ot_math_is_glyph_extended_shape: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_math_is_glyph_extended_shape(face, glyph)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_meta_get_entry_tags(face : HarfBuzz::FaceT, start_offset : UInt32, entries : Enumerable(HarfBuzz::OtMetaTagT)) : UInt32
+    # hb_ot_meta_get_entry_tags: (None)
+    # @entries_count: (out) (transfer full) (optional)
+    # @entries: (out) (caller-allocates) (array length=entries_count element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    entries_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    entries_count = entries.size
+    # Generator::ArrayArgPlan
+    entries = entries.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_meta_get_entry_tags(face, start_offset, entries_count, entries)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_meta_reference_entry(face : HarfBuzz::FaceT, meta_tag : HarfBuzz::OtMetaTagT) : HarfBuzz::BlobT
+    # hb_ot_meta_reference_entry: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_meta_reference_entry(face, meta_tag)
+
+    # Return value handling
+
+    HarfBuzz::BlobT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.ot_metrics_get_position(font : HarfBuzz::FontT, metrics_tag : HarfBuzz::OtMetricsTagT) : Int32
+    # hb_ot_metrics_get_position: (None)
+    # @position: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    position = Pointer(Int32).null
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_metrics_get_position(font, metrics_tag, position)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_metrics_get_position_with_fallback(font : HarfBuzz::FontT, metrics_tag : HarfBuzz::OtMetricsTagT) : Nil
+    # hb_ot_metrics_get_position_with_fallback: (None)
+    # @position: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    position = Pointer(Int32).null
+
+    # C call
+    LibHarfBuzz.hb_ot_metrics_get_position_with_fallback(font, metrics_tag, position)
+
+    # Return value handling
+  end
+
+  def self.ot_metrics_get_variation(font : HarfBuzz::FontT, metrics_tag : HarfBuzz::OtMetricsTagT) : Float32
+    # hb_ot_metrics_get_variation: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_metrics_get_variation(font, metrics_tag)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_metrics_get_x_variation(font : HarfBuzz::FontT, metrics_tag : HarfBuzz::OtMetricsTagT) : Int32
+    # hb_ot_metrics_get_x_variation: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_metrics_get_x_variation(font, metrics_tag)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_metrics_get_y_variation(font : HarfBuzz::FontT, metrics_tag : HarfBuzz::OtMetricsTagT) : Int32
+    # hb_ot_metrics_get_y_variation: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_metrics_get_y_variation(font, metrics_tag)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_name_get_utf16(face : HarfBuzz::FaceT, name_id : UInt32, language : HarfBuzz::LanguageT, text : Enumerable(UInt16)) : UInt32
+    # hb_ot_name_get_utf16: (None)
+    # @text_size: (out) (transfer full) (optional)
+    # @text: (out) (caller-allocates) (array length=text_size element-type UInt16)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    text_size = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    text_size = text.size
+    # Generator::ArrayArgPlan
+    text = text.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_name_get_utf16(face, name_id, language, text_size, text)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_name_get_utf32(face : HarfBuzz::FaceT, name_id : UInt32, language : HarfBuzz::LanguageT, text : Enumerable(UInt32)) : UInt32
+    # hb_ot_name_get_utf32: (None)
+    # @text_size: (out) (transfer full) (optional)
+    # @text: (out) (caller-allocates) (array length=text_size element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    text_size = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    text_size = text.size
+    # Generator::ArrayArgPlan
+    text = text.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_name_get_utf32(face, name_id, language, text_size, text)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_name_get_utf8(face : HarfBuzz::FaceT, name_id : UInt32, language : HarfBuzz::LanguageT, text : Enumerable(::String)) : UInt32
+    # hb_ot_name_get_utf8: (None)
+    # @text_size: (out) (transfer full) (optional)
+    # @text: (out) (caller-allocates) (array length=text_size element-type Utf8)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    text_size = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    text_size = text.size
+    # Generator::ArrayArgPlan
+    text = text.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_name_get_utf8(face, name_id, language, text_size, text)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_name_list_names(face : HarfBuzz::FaceT) : Enumerable(HarfBuzz::OtNameEntryT)
+    # hb_ot_name_list_names: (None)
+    # @num_entries: (out) (transfer full) (optional)
+    # Returns: (transfer none) (array length=num_entries element-type Interface)
+
+    # Generator::OutArgUsedInReturnPlan
+    num_entries = 0_u32
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_name_list_names(face, pointerof(num_entries))
+
+    # Return value handling
+
+    GICrystal.transfer_array(_retval, num_entries, GICrystal::Transfer::None)
+  end
+
+  def self.ot_shape_glyphs_closure(font : HarfBuzz::FontT, buffer : HarfBuzz::BufferT, features : Enumerable(HarfBuzz::FeatureT)) : HarfBuzz::SetT
+    # hb_ot_shape_glyphs_closure: (None)
+    # @features: (array length=num_features element-type Interface)
+    # @glyphs: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    num_features = features.size
+    # Generator::ArrayArgPlan
+    features = features.to_a.map(&.to_unsafe).to_unsafe
+
+    # Generator::CallerAllocatesPlan
+    glyphs = HarfBuzz::SetT.new
+
+    # C call
+    LibHarfBuzz.hb_ot_shape_glyphs_closure(font, buffer, features, num_features, glyphs)
+
+    # Return value handling
+
+    glyphs
+  end
+
+  def self.ot_shape_plan_collect_lookups(shape_plan : HarfBuzz::ShapePlanT, table_tag : UInt32) : HarfBuzz::SetT
+    # hb_ot_shape_plan_collect_lookups: (None)
+    # @lookup_indexes: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    lookup_indexes = HarfBuzz::SetT.new
+
+    # C call
+    LibHarfBuzz.hb_ot_shape_plan_collect_lookups(shape_plan, table_tag, lookup_indexes)
+
+    # Return value handling
+
+    lookup_indexes
+  end
+
+  def self.ot_tag_from_language(language : HarfBuzz::LanguageT) : UInt32
+    # hb_ot_tag_from_language: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_tag_from_language(language)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_tag_to_language(tag : UInt32) : HarfBuzz::LanguageT?
+    # hb_ot_tag_to_language: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_tag_to_language(tag)
+
+    # Return value handling
+
+    HarfBuzz::LanguageT.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def self.ot_tag_to_script(tag : UInt32) : HarfBuzz::ScriptT
+    # hb_ot_tag_to_script: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_tag_to_script(tag)
+
+    # Return value handling
+
+    HarfBuzz::ScriptT.new(_retval)
+  end
+
+  def self.ot_tags_from_script(script : HarfBuzz::ScriptT, script_tag_1 : Pointer(UInt32), script_tag_2 : Pointer(UInt32)) : Nil
+    # hb_ot_tags_from_script: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_ot_tags_from_script(script, script_tag_1, script_tag_2)
+
+    # Return value handling
+  end
+
+  def self.ot_tags_from_script_and_language(script : HarfBuzz::ScriptT, language : HarfBuzz::LanguageT) : Nil
+    # hb_ot_tags_from_script_and_language: (None)
+    # @script_count: (inout) (transfer full) (optional)
+    # @script_tags: (out) (transfer full) (optional)
+    # @language_count: (inout) (transfer full) (optional)
+    # @language_tags: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    script_count = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    script_tags = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    language_count = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    language_tags = Pointer(UInt32).null
+
+    # C call
+    LibHarfBuzz.hb_ot_tags_from_script_and_language(script, language, script_count, script_tags, language_count, language_tags)
+
+    # Return value handling
+  end
+
+  def self.ot_tags_to_script_and_language(script_tag : UInt32, language_tag : UInt32) : HarfBuzz::LanguageT
+    # hb_ot_tags_to_script_and_language: (None)
+    # @script: (out) (transfer full) (optional)
+    # @language: (out) (caller-allocates) (optional)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    script = Pointer(UInt32).null
+    # Generator::OutArgUsedInReturnPlan
+    language = Pointer(Pointer(Void)).null
+    # Generator::CallerAllocatesPlan
+    language = HarfBuzz::LanguageT.new
+
+    # C call
+    LibHarfBuzz.hb_ot_tags_to_script_and_language(script_tag, language_tag, script, language)
+
+    # Return value handling
+
+    language
+  end
+
+  def self.ot_var_find_axis(face : HarfBuzz::FaceT, axis_tag : UInt32, axis_index : Pointer(UInt32)) : HarfBuzz::OtVarAxisT
+    # hb_ot_var_find_axis: (None)
+    # @axis_info: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    axis_info = HarfBuzz::OtVarAxisT.new
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_find_axis(face, axis_tag, axis_index, axis_info)
+
+    # Return value handling
+
+    axis_info
+  end
+
+  def self.ot_var_find_axis_info(face : HarfBuzz::FaceT, axis_tag : UInt32) : HarfBuzz::OtVarAxisInfoT
+    # hb_ot_var_find_axis_info: (None)
+    # @axis_info: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::CallerAllocatesPlan
+    axis_info = HarfBuzz::OtVarAxisInfoT.new
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_find_axis_info(face, axis_tag, axis_info)
+
+    # Return value handling
+
+    axis_info
+  end
+
+  def self.ot_var_get_axes(face : HarfBuzz::FaceT, start_offset : UInt32, axes_array : Enumerable(HarfBuzz::OtVarAxisT)) : UInt32
+    # hb_ot_var_get_axes: (None)
+    # @axes_count: (out) (transfer full) (optional)
+    # @axes_array: (out) (caller-allocates) (array length=axes_count element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    axes_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    axes_count = axes_array.size
+    # Generator::ArrayArgPlan
+    axes_array = axes_array.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_get_axes(face, start_offset, axes_count, axes_array)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_var_get_axis_count(face : HarfBuzz::FaceT) : UInt32
+    # hb_ot_var_get_axis_count: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_get_axis_count(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_var_get_axis_infos(face : HarfBuzz::FaceT, start_offset : UInt32, axes_array : Enumerable(HarfBuzz::OtVarAxisInfoT)) : UInt32
+    # hb_ot_var_get_axis_infos: (None)
+    # @axes_count: (out) (transfer full) (optional)
+    # @axes_array: (out) (caller-allocates) (array length=axes_count element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    axes_count = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    axes_count = axes_array.size
+    # Generator::ArrayArgPlan
+    axes_array = axes_array.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_get_axis_infos(face, start_offset, axes_count, axes_array)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_var_get_named_instance_count(face : HarfBuzz::FaceT) : UInt32
+    # hb_ot_var_get_named_instance_count: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_get_named_instance_count(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_var_has_data(face : HarfBuzz::FaceT) : Int32
+    # hb_ot_var_has_data: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_has_data(face)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_var_named_instance_get_design_coords(face : HarfBuzz::FaceT, instance_index : UInt32, coords : Enumerable(Float32)) : UInt32
+    # hb_ot_var_named_instance_get_design_coords: (None)
+    # @coords_length: (out) (transfer full) (optional)
+    # @coords: (out) (transfer full) (array length=coords_length element-type Float)
+    # Returns: (transfer none)
+
+    # Generator::OutArgUsedInReturnPlan
+    coords_length = Pointer(UInt32).null
+    # Generator::ArrayLengthArgPlan
+    coords_length = coords.size
+    # Generator::ArrayArgPlan
+    coords = coords.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_named_instance_get_design_coords(face, instance_index, coords_length, coords)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_var_named_instance_get_postscript_name_id(face : HarfBuzz::FaceT, instance_index : UInt32) : UInt32
+    # hb_ot_var_named_instance_get_postscript_name_id: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_named_instance_get_postscript_name_id(face, instance_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_var_named_instance_get_subfamily_name_id(face : HarfBuzz::FaceT, instance_index : UInt32) : UInt32
+    # hb_ot_var_named_instance_get_subfamily_name_id: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_ot_var_named_instance_get_subfamily_name_id(face, instance_index)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.ot_var_normalize_coords(face : HarfBuzz::FaceT, coords_length : UInt32, design_coords : Pointer(Float32), normalized_coords : Int32) : Nil
+    # hb_ot_var_normalize_coords: (None)
+    # @normalized_coords: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_ot_var_normalize_coords(face, coords_length, design_coords, normalized_coords)
+
+    # Return value handling
+  end
+
+  def self.ot_var_normalize_variations(face : HarfBuzz::FaceT, variations : HarfBuzz::VariationT, variations_length : UInt32, coords : Enumerable(Int32)) : Nil
+    # hb_ot_var_normalize_variations: (None)
+    # @coords: (out) (transfer full) (array length=coords_length element-type Int32)
+    # @coords_length: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    coords_length = coords.size
+    # Generator::ArrayArgPlan
+    coords = coords.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_ot_var_normalize_variations(face, variations, variations_length, coords, coords_length)
+
+    # Return value handling
+  end
+
+  def self.script_from_iso15924_tag(tag : UInt32) : HarfBuzz::ScriptT
+    # hb_script_from_iso15924_tag: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_script_from_iso15924_tag(tag)
+
+    # Return value handling
+
+    HarfBuzz::ScriptT.new(_retval)
+  end
+
+  def self.script_from_string(str : Enumerable(UInt8)) : HarfBuzz::ScriptT
+    # hb_script_from_string: (None)
+    # @str: (array length=len element-type UInt8)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    len = str.size
+    # Generator::ArrayArgPlan
+    str = str.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_script_from_string(str, len)
+
+    # Return value handling
+
+    HarfBuzz::ScriptT.new(_retval)
+  end
+
+  def self.script_from_string(*str : UInt8)
+    self.script_from_string(str)
+  end
+
+  def self.script_get_horizontal_direction(script : HarfBuzz::ScriptT) : HarfBuzz::DirectionT
+    # hb_script_get_horizontal_direction: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_script_get_horizontal_direction(script)
+
+    # Return value handling
+
+    HarfBuzz::DirectionT.new(_retval)
+  end
+
+  def self.script_to_iso15924_tag(script : HarfBuzz::ScriptT) : UInt32
+    # hb_script_to_iso15924_tag: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_script_to_iso15924_tag(script)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.segment_properties_equal(a : HarfBuzz::SegmentPropertiesT, b : HarfBuzz::SegmentPropertiesT) : Int32
+    # hb_segment_properties_equal: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_segment_properties_equal(a, b)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.segment_properties_hash(p : HarfBuzz::SegmentPropertiesT) : UInt32
+    # hb_segment_properties_hash: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_segment_properties_hash(p)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.segment_properties_overlay(p : HarfBuzz::SegmentPropertiesT, src : HarfBuzz::SegmentPropertiesT) : Nil
+    # hb_segment_properties_overlay: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_segment_properties_overlay(p, src)
+
+    # Return value handling
+  end
+
+  def self.set_add(set : HarfBuzz::SetT, codepoint : UInt32) : Nil
+    # hb_set_add: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_add(set, codepoint)
+
+    # Return value handling
+  end
+
+  def self.set_add_range(set : HarfBuzz::SetT, first : UInt32, last : UInt32) : Nil
+    # hb_set_add_range: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_add_range(set, first, last)
+
+    # Return value handling
+  end
+
+  def self.set_add_sorted_array(set : HarfBuzz::SetT, sorted_codepoints : Enumerable(UInt32)) : Nil
+    # hb_set_add_sorted_array: (None)
+    # @sorted_codepoints: (array length=num_codepoints element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    num_codepoints = sorted_codepoints.size
+    # Generator::ArrayArgPlan
+    sorted_codepoints = sorted_codepoints.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_set_add_sorted_array(set, sorted_codepoints, num_codepoints)
+
+    # Return value handling
+  end
+
+  def self.allocation_successful=(set : HarfBuzz::SetT) : Int32
+    # hb_set_allocation_successful: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_allocation_successful(set)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.clear=(set : HarfBuzz::SetT) : Nil
+    # hb_set_clear: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_clear(set)
+
+    # Return value handling
+  end
+
+  def self.copy=(set : HarfBuzz::SetT) : HarfBuzz::SetT
+    # hb_set_copy: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_copy(set)
+
+    # Return value handling
+
+    HarfBuzz::SetT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.set_create : HarfBuzz::SetT
+    # hb_set_create: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_create
+
+    # Return value handling
+
+    HarfBuzz::SetT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.set_del(set : HarfBuzz::SetT, codepoint : UInt32) : Nil
+    # hb_set_del: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_del(set, codepoint)
+
+    # Return value handling
+  end
+
+  def self.set_del_range(set : HarfBuzz::SetT, first : UInt32, last : UInt32) : Nil
+    # hb_set_del_range: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_del_range(set, first, last)
+
+    # Return value handling
+  end
+
+  def self.set_get_empty : HarfBuzz::SetT
+    # hb_set_get_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_get_empty
+
+    # Return value handling
+
+    HarfBuzz::SetT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.get_max=(set : HarfBuzz::SetT) : UInt32
+    # hb_set_get_max: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_get_max(set)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.get_min=(set : HarfBuzz::SetT) : UInt32
+    # hb_set_get_min: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_get_min(set)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.get_population=(set : HarfBuzz::SetT) : UInt32
+    # hb_set_get_population: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_get_population(set)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_has(set : HarfBuzz::SetT, codepoint : UInt32) : Int32
+    # hb_set_has: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_has(set, codepoint)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_intersect(set : HarfBuzz::SetT, other : HarfBuzz::SetT) : Nil
+    # hb_set_intersect: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_intersect(set, other)
+
+    # Return value handling
+  end
+
+  def self.invert=(set : HarfBuzz::SetT) : Nil
+    # hb_set_invert: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_invert(set)
+
+    # Return value handling
+  end
+
+  def self.is_empty=(set : HarfBuzz::SetT) : Int32
+    # hb_set_is_empty: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_is_empty(set)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_is_equal(set : HarfBuzz::SetT, other : HarfBuzz::SetT) : Int32
+    # hb_set_is_equal: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_is_equal(set, other)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_is_subset(set : HarfBuzz::SetT, larger_set : HarfBuzz::SetT) : Int32
+    # hb_set_is_subset: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_is_subset(set, larger_set)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_next(set : HarfBuzz::SetT, codepoint : UInt32) : Int32
+    # hb_set_next: (None)
+    # @codepoint: (inout) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_next(set, codepoint)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_next_many(set : HarfBuzz::SetT, codepoint : UInt32, out _out : Enumerable(UInt32)) : UInt32
+    # hb_set_next_many: (None)
+    # @out: (array length=size element-type UInt32)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    size = _out.size
+    # Generator::ArrayArgPlan
+    _out = _out.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_next_many(set, codepoint, _out, size)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_next_range(set : HarfBuzz::SetT, first : UInt32, last : UInt32) : Int32
+    # hb_set_next_range: (None)
+    # @first: (out) (transfer full)
+    # @last: (inout) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_next_range(set, first, last)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_previous(set : HarfBuzz::SetT, codepoint : UInt32) : Int32
+    # hb_set_previous: (None)
+    # @codepoint: (inout) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_previous(set, codepoint)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_previous_range(set : HarfBuzz::SetT, first : UInt32, last : UInt32) : Int32
+    # hb_set_previous_range: (None)
+    # @first: (inout) (transfer full)
+    # @last: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_set_previous_range(set, first, last)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.set_set(set : HarfBuzz::SetT, other : HarfBuzz::SetT) : Nil
+    # hb_set_set: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_set(set, other)
+
+    # Return value handling
+  end
+
+  def self.set_subtract(set : HarfBuzz::SetT, other : HarfBuzz::SetT) : Nil
+    # hb_set_subtract: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_subtract(set, other)
+
+    # Return value handling
+  end
+
+  def self.set_symmetric_difference(set : HarfBuzz::SetT, other : HarfBuzz::SetT) : Nil
+    # hb_set_symmetric_difference: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_symmetric_difference(set, other)
+
+    # Return value handling
+  end
+
+  def self.set_union(set : HarfBuzz::SetT, other : HarfBuzz::SetT) : Nil
+    # hb_set_union: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_set_union(set, other)
+
+    # Return value handling
+  end
+
+  def self.shape(font : HarfBuzz::FontT, buffer : HarfBuzz::BufferT, features : Enumerable(HarfBuzz::FeatureT)?) : Nil
+    # hb_shape: (None)
+    # @features: (nullable) (array length=num_features element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    num_features = features.try(&.size) || 0
+    # Generator::NullableArrayPlan
+    features = if features.nil?
+                 Pointer(Void).null
+               else
+                 features.to_a.map(&.to_unsafe).to_unsafe
+               end
+
+    # C call
+    LibHarfBuzz.hb_shape(font, buffer, features, num_features)
+
+    # Return value handling
+  end
+
+  def self.shape_full(font : HarfBuzz::FontT, buffer : HarfBuzz::BufferT, features : Enumerable(HarfBuzz::FeatureT)?, shaper_list : Enumerable(::String)?) : Int32
+    # hb_shape_full: (None)
+    # @features: (nullable) (array length=num_features element-type Interface)
+    # @shaper_list: (nullable) (array zero-terminated=1 element-type Utf8)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    num_features = features.try(&.size) || 0
+    # Generator::NullableArrayPlan
+    features = if features.nil?
+                 Pointer(Void).null
+               else
+                 features.to_a.map(&.to_unsafe).to_unsafe
+               end
+
+    # Generator::NullableArrayPlan
+    shaper_list = if shaper_list.nil?
+                    Pointer(Pointer(LibC::Char)).null
+                  else
+                    shaper_list.to_a.map(&.to_unsafe).to_unsafe
+                  end
+
+    # C call
+    _retval = LibHarfBuzz.hb_shape_full(font, buffer, features, num_features, shaper_list)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.shape_list_shapers : Enumerable(::String)
+    # hb_shape_list_shapers: (None)
+    # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
+
+    # C call
+    _retval = LibHarfBuzz.hb_shape_list_shapers
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.shape_plan_create(face : HarfBuzz::FaceT, props : HarfBuzz::SegmentPropertiesT, user_features : Enumerable(HarfBuzz::FeatureT), shaper_list : Enumerable(::String)) : HarfBuzz::ShapePlanT
+    # hb_shape_plan_create: (None)
+    # @user_features: (array length=num_user_features element-type Interface)
+    # @shaper_list: (array zero-terminated=1 element-type Utf8)
+    # Returns: (transfer full)
+
+    # Generator::ArrayLengthArgPlan
+    num_user_features = user_features.size
+    # Generator::ArrayArgPlan
+    user_features = user_features.to_a.map(&.to_unsafe).to_unsafe
+
+    # Generator::ArrayArgPlan
+    shaper_list = shaper_list.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_shape_plan_create(face, props, user_features, num_user_features, shaper_list)
+
+    # Return value handling
+
+    HarfBuzz::ShapePlanT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.shape_plan_create2(face : HarfBuzz::FaceT, props : HarfBuzz::SegmentPropertiesT, user_features : Enumerable(HarfBuzz::FeatureT), coords : Enumerable(Int32), shaper_list : Enumerable(::String)) : HarfBuzz::ShapePlanT
+    # hb_shape_plan_create2: (None)
+    # @user_features: (array length=num_user_features element-type Interface)
+    # @coords: (array length=num_coords element-type Int32)
+    # @shaper_list: (array zero-terminated=1 element-type Utf8)
+    # Returns: (transfer full)
+
+    # Generator::ArrayLengthArgPlan
+    num_user_features = user_features.size
+    # Generator::ArrayArgPlan
+    user_features = user_features.to_a.map(&.to_unsafe).to_unsafe
+
+    # Generator::ArrayLengthArgPlan
+    num_coords = coords.size
+    # Generator::ArrayArgPlan
+    coords = coords.to_a.to_unsafe
+
+    # Generator::ArrayArgPlan
+    shaper_list = shaper_list.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_shape_plan_create2(face, props, user_features, num_user_features, coords, num_coords, shaper_list)
+
+    # Return value handling
+
+    HarfBuzz::ShapePlanT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.shape_plan_create_cached(face : HarfBuzz::FaceT, props : HarfBuzz::SegmentPropertiesT, user_features : Enumerable(HarfBuzz::FeatureT), shaper_list : Enumerable(::String)) : HarfBuzz::ShapePlanT
+    # hb_shape_plan_create_cached: (None)
+    # @user_features: (array length=num_user_features element-type Interface)
+    # @shaper_list: (array zero-terminated=1 element-type Utf8)
+    # Returns: (transfer full)
+
+    # Generator::ArrayLengthArgPlan
+    num_user_features = user_features.size
+    # Generator::ArrayArgPlan
+    user_features = user_features.to_a.map(&.to_unsafe).to_unsafe
+
+    # Generator::ArrayArgPlan
+    shaper_list = shaper_list.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_shape_plan_create_cached(face, props, user_features, num_user_features, shaper_list)
+
+    # Return value handling
+
+    HarfBuzz::ShapePlanT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.shape_plan_create_cached2(face : HarfBuzz::FaceT, props : HarfBuzz::SegmentPropertiesT, user_features : Enumerable(HarfBuzz::FeatureT), coords : Enumerable(Int32), shaper_list : Enumerable(::String)) : HarfBuzz::ShapePlanT
+    # hb_shape_plan_create_cached2: (None)
+    # @user_features: (array length=num_user_features element-type Interface)
+    # @coords: (array length=num_coords element-type Int32)
+    # @shaper_list: (array zero-terminated=1 element-type Utf8)
+    # Returns: (transfer full)
+
+    # Generator::ArrayLengthArgPlan
+    num_user_features = user_features.size
+    # Generator::ArrayArgPlan
+    user_features = user_features.to_a.map(&.to_unsafe).to_unsafe
+
+    # Generator::ArrayLengthArgPlan
+    num_coords = coords.size
+    # Generator::ArrayArgPlan
+    coords = coords.to_a.to_unsafe
+
+    # Generator::ArrayArgPlan
+    shaper_list = shaper_list.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_shape_plan_create_cached2(face, props, user_features, num_user_features, coords, num_coords, shaper_list)
+
+    # Return value handling
+
+    HarfBuzz::ShapePlanT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.shape_plan_execute(shape_plan : HarfBuzz::ShapePlanT, font : HarfBuzz::FontT, buffer : HarfBuzz::BufferT, features : Enumerable(HarfBuzz::FeatureT)) : Int32
+    # hb_shape_plan_execute: (None)
+    # @features: (array length=num_features element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    num_features = features.size
+    # Generator::ArrayArgPlan
+    features = features.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_shape_plan_execute(shape_plan, font, buffer, features, num_features)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.shape_plan_get_empty : HarfBuzz::ShapePlanT
+    # hb_shape_plan_get_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_shape_plan_get_empty
+
+    # Return value handling
+
+    HarfBuzz::ShapePlanT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.shape_plan_get_shaper(shape_plan : HarfBuzz::ShapePlanT) : ::String
+    # hb_shape_plan_get_shaper: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_shape_plan_get_shaper(shape_plan)
+
+    # Return value handling
+
+    ::String.new(_retval)
+  end
+
+  def self.style_get_value(font : HarfBuzz::FontT, style_tag : HarfBuzz::StyleTagT) : Float32
+    # hb_style_get_value: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_style_get_value(font, style_tag)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.tag_from_string(str : Enumerable(UInt8)) : UInt32
+    # hb_tag_from_string: (None)
+    # @str: (array length=len element-type UInt8)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    len = str.size
+    # Generator::ArrayArgPlan
+    str = str.to_a.to_unsafe
+
+    # C call
+    _retval = LibHarfBuzz.hb_tag_from_string(str, len)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.tag_from_string(*str : UInt8)
+    self.tag_from_string(str)
+  end
+
+  def self.tag_to_string(tag : UInt32, buf : Enumerable(UInt8)) : Nil
+    # hb_tag_to_string: (None)
+    # @buf: (out) (caller-allocates) (array fixed-size=4 element-type UInt8)
+    # Returns: (transfer none)
+
+    # Generator::ArrayArgPlan
+    buf = buf.to_a.to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_tag_to_string(tag, buf)
+
+    # Return value handling
+  end
+
+  def self.unicode_combining_class(ufuncs : HarfBuzz::UnicodeFuncsT, unicode : UInt32) : HarfBuzz::UnicodeCombiningClassT
+    # hb_unicode_combining_class: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_combining_class(ufuncs, unicode)
+
+    # Return value handling
+
+    HarfBuzz::UnicodeCombiningClassT.new(_retval)
+  end
+
+  def self.unicode_compose(ufuncs : HarfBuzz::UnicodeFuncsT, a : UInt32, b : UInt32, ab : UInt32) : Int32
+    # hb_unicode_compose: (None)
+    # @ab: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_compose(ufuncs, a, b, ab)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.unicode_decompose(ufuncs : HarfBuzz::UnicodeFuncsT, ab : UInt32, a : UInt32, b : UInt32) : Int32
+    # hb_unicode_decompose: (None)
+    # @a: (out) (transfer full)
+    # @b: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_decompose(ufuncs, ab, a, b)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.unicode_decompose_compatibility(ufuncs : HarfBuzz::UnicodeFuncsT, u : UInt32, decomposed : UInt32) : UInt32
+    # hb_unicode_decompose_compatibility: (None)
+    # @decomposed: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_decompose_compatibility(ufuncs, u, decomposed)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.unicode_eastasian_width(ufuncs : HarfBuzz::UnicodeFuncsT, unicode : UInt32) : UInt32
+    # hb_unicode_eastasian_width: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_eastasian_width(ufuncs, unicode)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.unicode_funcs_create(parent : HarfBuzz::UnicodeFuncsT?) : HarfBuzz::UnicodeFuncsT
+    # hb_unicode_funcs_create: (None)
+    # @parent: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    parent = if parent.nil?
+               Pointer(Void).null
+             else
+               parent.to_unsafe
+             end
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_funcs_create(parent)
+
+    # Return value handling
+
+    HarfBuzz::UnicodeFuncsT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.unicode_funcs_get_default : HarfBuzz::UnicodeFuncsT
+    # hb_unicode_funcs_get_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_funcs_get_default
+
+    # Return value handling
+
+    HarfBuzz::UnicodeFuncsT.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.unicode_funcs_get_empty : HarfBuzz::UnicodeFuncsT
+    # hb_unicode_funcs_get_empty: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_funcs_get_empty
+
+    # Return value handling
+
+    HarfBuzz::UnicodeFuncsT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.unicode_funcs_get_parent(ufuncs : HarfBuzz::UnicodeFuncsT) : HarfBuzz::UnicodeFuncsT
+    # hb_unicode_funcs_get_parent: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_funcs_get_parent(ufuncs)
+
+    # Return value handling
+
+    HarfBuzz::UnicodeFuncsT.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.unicode_funcs_is_immutable(ufuncs : HarfBuzz::UnicodeFuncsT) : Int32
+    # hb_unicode_funcs_is_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_funcs_is_immutable(ufuncs)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.unicode_funcs_make_immutable(ufuncs : HarfBuzz::UnicodeFuncsT) : Nil
+    # hb_unicode_funcs_make_immutable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibHarfBuzz.hb_unicode_funcs_make_immutable(ufuncs)
+
+    # Return value handling
+  end
+
+  def self.unicode_funcs_set_combining_class_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_unicode_funcs_set_combining_class_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_unicode_funcs_set_combining_class_func(ufuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.unicode_funcs_set_compose_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_unicode_funcs_set_compose_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_unicode_funcs_set_compose_func(ufuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.unicode_funcs_set_decompose_compatibility_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_unicode_funcs_set_decompose_compatibility_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_unicode_funcs_set_decompose_compatibility_func(ufuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.unicode_funcs_set_decompose_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_unicode_funcs_set_decompose_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_unicode_funcs_set_decompose_func(ufuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.unicode_funcs_set_eastasian_width_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_unicode_funcs_set_eastasian_width_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_unicode_funcs_set_eastasian_width_func(ufuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.unicode_funcs_set_general_category_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_unicode_funcs_set_general_category_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_unicode_funcs_set_general_category_func(ufuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.unicode_funcs_set_mirroring_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_unicode_funcs_set_mirroring_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_unicode_funcs_set_mirroring_func(ufuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.unicode_funcs_set_script_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    # hb_unicode_funcs_set_script_func: (None)
+    # @user_data: (nullable)
+    # @destroy: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy = if destroy.nil?
+                ->Void.null
+              else
+                destroy.to_unsafe
+              end
+
+    # C call
+    LibHarfBuzz.hb_unicode_funcs_set_script_func(ufuncs, func, user_data, destroy)
+
+    # Return value handling
+  end
+
+  def self.unicode_general_category(ufuncs : HarfBuzz::UnicodeFuncsT, unicode : UInt32) : HarfBuzz::UnicodeGeneralCategoryT
+    # hb_unicode_general_category: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_general_category(ufuncs, unicode)
+
+    # Return value handling
+
+    HarfBuzz::UnicodeGeneralCategoryT.new(_retval)
+  end
+
+  def self.unicode_mirroring(ufuncs : HarfBuzz::UnicodeFuncsT, unicode : UInt32) : UInt32
+    # hb_unicode_mirroring: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_mirroring(ufuncs, unicode)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.unicode_script(ufuncs : HarfBuzz::UnicodeFuncsT, unicode : UInt32) : HarfBuzz::ScriptT
+    # hb_unicode_script: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_unicode_script(ufuncs, unicode)
+
+    # Return value handling
+
+    HarfBuzz::ScriptT.new(_retval)
+  end
+
+  def self.variation_from_string(str : Enumerable(UInt8)) : HarfBuzz::VariationT
+    # hb_variation_from_string: (None)
+    # @str: (array length=len element-type UInt8)
+    # @variation: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    len = str.size
+    # Generator::ArrayArgPlan
+    str = str.to_a.to_unsafe
+
+    # Generator::CallerAllocatesPlan
+    variation = HarfBuzz::VariationT.new
+
+    # C call
+    _retval = LibHarfBuzz.hb_variation_from_string(str, len, variation)
+
+    # Return value handling
+
+    variation
+  end
+
+  def self.variation_from_string(*str : UInt8)
+    self.variation_from_string(str)
+  end
+
+  def self.variation_to_string(variation : HarfBuzz::VariationT, buf : Enumerable(::String)) : Nil
+    # hb_variation_to_string: (None)
+    # @buf: (out) (transfer full) (array length=size element-type Utf8)
+    # @size: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    size = buf.size
+    # Generator::ArrayArgPlan
+    buf = buf.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    LibHarfBuzz.hb_variation_to_string(variation, buf, size)
+
+    # Return value handling
   end
 
   # Errors

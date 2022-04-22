@@ -5,7 +5,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::GlyphInfo))
@@ -25,39 +25,39 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::GlyphInfo)).zero?
+    end
+
     def glyph : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def glyph=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def geometry : Pango::GlyphGeometry
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Void))
-      Pango::GlyphGeometry.new(_var.value, GICrystal::Transfer::None)
+      Pango::GlyphGeometry.new(_var, GICrystal::Transfer::None)
     end
 
     def geometry=(value : Pango::GlyphGeometry)
-      # Property setter
-      _var = (@pointer + 4).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 4).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibPango::GlyphInfo))
       value
     end
 
     def attr : Pango::GlyphVisAttr
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Void))
-      Pango::GlyphVisAttr.new(_var.value, GICrystal::Transfer::None)
+      Pango::GlyphVisAttr.new(_var, GICrystal::Transfer::None)
     end
 
     def attr=(value : Pango::GlyphVisAttr)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibPango::GlyphInfo))
       value
     end
 

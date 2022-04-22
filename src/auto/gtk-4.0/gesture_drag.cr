@@ -8,10 +8,18 @@ module Gtk
   # [signal@Gtk.GestureDrag::drag-update] and
   # [signal@Gtk.GestureDrag::drag-end] signals, and the relevant
   # coordinates can be extracted through
-  # [method@Gtk.GestureDrag.get_offset] and
-  # [method@Gtk.GestureDrag.get_start_point].
+  # `Gtk::GestureDrag#offset` and
+  # `Gtk::GestureDrag#start_point`.
+  @[GObject::GeneratedWrapper]
   class GestureDrag < GestureSingle
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::GestureDragClass), class_init,
+        sizeof(LibGtk::GestureDrag), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -23,48 +31,52 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 8).new(LibGObject::Value.new)
       _n = 0
 
-      if button
+      if !button.nil?
         (_names.to_unsafe + _n).value = "button".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, button)
         _n += 1
       end
-      if exclusive
+      if !exclusive.nil?
         (_names.to_unsafe + _n).value = "exclusive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, exclusive)
         _n += 1
       end
-      if n_points
+      if !n_points.nil?
         (_names.to_unsafe + _n).value = "n-points".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, n_points)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if touch_only
+      if !touch_only.nil?
         (_names.to_unsafe + _n).value = "touch-only".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, touch_only)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(GestureDrag.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -72,31 +84,38 @@ module Gtk
       LibGtk.gtk_gesture_drag_get_type
     end
 
+    # Returns a newly created `GtkGesture` that recognizes drags.
     def initialize
       # gtk_gesture_drag_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_gesture_drag_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the offset from the start point.
+    #
+    # If the @gesture is active, this function returns %TRUE and
+    # fills in @x and @y with the coordinates of the current point,
+    # as an offset to the starting drag point.
     def offset(x : Float64?, y : Float64?) : Bool
       # gtk_gesture_drag_get_offset: (Method)
       # @x: (out) (transfer full) (nullable)
       # @y: (out) (transfer full) (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       x = if x.nil?
             Float64.null
           else
             x.to_unsafe
           end
+
+      # Generator::NullableArrayPlan
       y = if y.nil?
             Float64.null
           else
@@ -107,21 +126,29 @@ module Gtk
       _retval = LibGtk.gtk_gesture_drag_get_offset(self, x, y)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the point where the drag started.
+    #
+    # If the @gesture is active, this function returns %TRUE
+    # and fills in @x and @y with the drag start coordinates,
+    # in surface-relative coordinates.
     def start_point(x : Float64?, y : Float64?) : Bool
       # gtk_gesture_drag_get_start_point: (Method)
       # @x: (out) (transfer full) (nullable)
       # @y: (out) (transfer full) (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       x = if x.nil?
             Float64.null
           else
             x.to_unsafe
           end
+
+      # Generator::NullableArrayPlan
       y = if y.nil?
             Float64.null
           else
@@ -132,9 +159,11 @@ module Gtk
       _retval = LibGtk.gtk_gesture_drag_get_start_point(self, x, y)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Emitted whenever dragging starts.
     struct DragBeginSignal
       @source : GObject::Object
       @detail : String?
@@ -218,6 +247,7 @@ module Gtk
       DragBeginSignal.new(self)
     end
 
+    # Emitted whenever the dragging is finished.
     struct DragEndSignal
       @source : GObject::Object
       @detail : String?
@@ -301,6 +331,7 @@ module Gtk
       DragEndSignal.new(self)
     end
 
+    # Emitted whenever the dragging point moves.
     struct DragUpdateSignal
       @source : GObject::Object
       @detail : String?

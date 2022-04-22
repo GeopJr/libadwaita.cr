@@ -3,7 +3,7 @@ module Gtk
   # selection widgets.
   #
   # In GTK, the main objects that implement this interface are
-  # [class@Gtk.FileChooserWidget] and [class@Gtk.FileChooserDialog].
+  # `Gtk#FileChooserWidget` and `Gtk#FileChooserDialog`.
   #
   # You do not need to write an object that implements the `GtkFileChooser`
   # interface unless you are trying to adapt an existing file selector to
@@ -34,7 +34,7 @@ module Gtk
   #
   # You can add extra widgets to a file chooser to provide options
   # that are not present in the default design, by using
-  # [method@Gtk.FileChooser.add_choice]. Each choice has an identifier and
+  # `Gtk::FileChooser#add_choice`. Each choice has an identifier and
   # a user visible label; additionally, each choice can have multiple
   # options. If a choice has no option, it will be rendered as a
   # check button with the given label; if a choice has options, it will
@@ -52,7 +52,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "action", pointerof(value), Pointer(Void).null)
-      Gtk::FileChooserAction.from_value(value)
+      Gtk::FileChooserAction.new(value)
     end
 
     def create_folders=(value : Bool) : Bool
@@ -122,12 +122,14 @@ module Gtk
       # @option_labels: (nullable) (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       options = if options.nil?
                   Pointer(Pointer(LibC::Char)).null
                 else
                   options.to_a.map(&.to_unsafe).to_unsafe
                 end
+
+      # Generator::NullableArrayPlan
       option_labels = if option_labels.nil?
                         Pointer(Pointer(LibC::Char)).null
                       else
@@ -144,8 +146,6 @@ module Gtk
       # gtk_file_chooser_add_filter: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_file_chooser_add_filter(self, filter)
 
@@ -158,14 +158,14 @@ module Gtk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_add_shortcut_folder(self, folder, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -173,25 +173,23 @@ module Gtk
       # gtk_file_chooser_get_action: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_action(self)
 
       # Return value handling
-      Gtk::FileChooserAction.from_value(_retval)
+
+      Gtk::FileChooserAction.new(_retval)
     end
 
     def choice(id : ::String) : ::String?
       # gtk_file_chooser_get_choice: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_choice(self, id)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -199,12 +197,11 @@ module Gtk
       # gtk_file_chooser_get_create_folders: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_create_folders(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -212,12 +209,11 @@ module Gtk
       # gtk_file_chooser_get_current_folder: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_current_folder(self)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -225,12 +221,11 @@ module Gtk
       # gtk_file_chooser_get_current_name: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_current_name(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
@@ -238,12 +233,11 @@ module Gtk
       # gtk_file_chooser_get_file: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_file(self)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -251,12 +245,11 @@ module Gtk
       # gtk_file_chooser_get_files: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_files(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -264,12 +257,11 @@ module Gtk
       # gtk_file_chooser_get_filter: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_filter(self)
 
       # Return value handling
+
       Gtk::FileFilter.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -277,12 +269,11 @@ module Gtk
       # gtk_file_chooser_get_filters: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_filters(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -290,12 +281,11 @@ module Gtk
       # gtk_file_chooser_get_select_multiple: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_select_multiple(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -303,20 +293,17 @@ module Gtk
       # gtk_file_chooser_get_shortcut_folders: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_get_shortcut_folders(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
     def remove_choice(id : ::String) : Nil
       # gtk_file_chooser_remove_choice: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_file_chooser_remove_choice(self, id)
@@ -327,8 +314,6 @@ module Gtk
     def remove_filter(filter : Gtk::FileFilter) : Nil
       # gtk_file_chooser_remove_filter: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_file_chooser_remove_filter(self, filter)
@@ -342,22 +327,20 @@ module Gtk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_remove_shortcut_folder(self, folder, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def action=(action : Gtk::FileChooserAction) : Nil
       # gtk_file_chooser_set_action: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_file_chooser_set_action(self, action)
@@ -369,8 +352,6 @@ module Gtk
       # gtk_file_chooser_set_choice: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_file_chooser_set_choice(self, id, option)
 
@@ -380,8 +361,6 @@ module Gtk
     def create_folders=(create_folders : Bool) : Nil
       # gtk_file_chooser_set_create_folders: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_file_chooser_set_create_folders(self, create_folders)
@@ -396,7 +375,7 @@ module Gtk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       file = if file.nil?
                Pointer(Void).null
              else
@@ -408,15 +387,15 @@ module Gtk
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def current_name=(name : ::String) : Nil
       # gtk_file_chooser_set_current_name: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_file_chooser_set_current_name(self, name)
@@ -430,22 +409,20 @@ module Gtk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_file_chooser_set_file(self, file, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def filter=(filter : Gtk::FileFilter) : Nil
       # gtk_file_chooser_set_filter: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_file_chooser_set_filter(self, filter)
@@ -457,8 +434,6 @@ module Gtk
       # gtk_file_chooser_set_select_multiple: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_file_chooser_set_select_multiple(self, select_multiple)
 
@@ -469,6 +444,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class FileChooser__Impl < GObject::Object
     include FileChooser
 

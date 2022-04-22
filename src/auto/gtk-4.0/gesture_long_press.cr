@@ -6,18 +6,26 @@ module Gtk
   # This gesture is also known as “Press and Hold”.
   #
   # When the timeout is exceeded, the gesture is triggering the
-  # [signal@Gtk.GestureLongPress::pressed] signal.
+  # `Gtk::GestureLongPress::#pressed` signal.
   #
   # If the touchpoint is lifted before the timeout passes, or if
   # it drifts too far of the initial press point, the
-  # [signal@Gtk.GestureLongPress::cancelled] signal will be emitted.
+  # `Gtk::GestureLongPress::#cancelled` signal will be emitted.
   #
   # How long the timeout is before the ::pressed signal gets emitted is
   # determined by the [property@Gtk.Settings:gtk-long-press-time] setting.
   # It can be modified by the [property@Gtk.GestureLongPress:delay-factor]
   # property.
+  @[GObject::GeneratedWrapper]
   class GestureLongPress < GestureSingle
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::GestureLongPressClass), class_init,
+        sizeof(LibGtk::GestureLongPress), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -29,53 +37,57 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 9).new(LibGObject::Value.new)
       _n = 0
 
-      if button
+      if !button.nil?
         (_names.to_unsafe + _n).value = "button".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, button)
         _n += 1
       end
-      if delay_factor
+      if !delay_factor.nil?
         (_names.to_unsafe + _n).value = "delay-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, delay_factor)
         _n += 1
       end
-      if exclusive
+      if !exclusive.nil?
         (_names.to_unsafe + _n).value = "exclusive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, exclusive)
         _n += 1
       end
-      if n_points
+      if !n_points.nil?
         (_names.to_unsafe + _n).value = "n-points".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, n_points)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if touch_only
+      if !touch_only.nil?
         (_names.to_unsafe + _n).value = "touch-only".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, touch_only)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(GestureLongPress.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -98,37 +110,39 @@ module Gtk
       value
     end
 
+    # Returns a newly created `GtkGesture` that recognizes long presses.
     def initialize
       # gtk_gesture_long_press_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_gesture_long_press_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns the delay factor.
     def delay_factor : Float64
       # gtk_gesture_long_press_get_delay_factor: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_gesture_long_press_get_delay_factor(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Applies the given delay factor.
+    #
+    # The default long press time will be multiplied by this value.
+    # Valid values are in the range [0.5..2.0].
     def delay_factor=(delay_factor : Float64) : Nil
       # gtk_gesture_long_press_set_delay_factor: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_gesture_long_press_set_delay_factor(self, delay_factor)
@@ -136,6 +150,8 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted whenever a press moved too far, or was released
+    # before `Gtk::GestureLongPress::#pressed` happened.
     struct CancelledSignal
       @source : GObject::Object
       @detail : String?
@@ -211,6 +227,8 @@ module Gtk
       CancelledSignal.new(self)
     end
 
+    # Emitted whenever a press goes unmoved/unreleased longer than
+    # what the GTK defaults tell.
     struct PressedSignal
       @source : GObject::Object
       @detail : String?

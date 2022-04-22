@@ -114,8 +114,16 @@ module Gio
   # of the action with the target value as the parameter. The menu item should
   # be rendered as "selected" when the state of the action is equal to the
   # target value of the menu item.
+  @[GObject::GeneratedWrapper]
   class MenuModel < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::MenuModelClass), class_init,
+        sizeof(LibGio::MenuModel), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -127,12 +135,23 @@ module Gio
       LibGio.g_menu_model_get_type
     end
 
+    # Queries the item at position @item_index in @model for the attribute
+    # specified by @attribute.
+    #
+    # If @expected_type is non-%NULL then it specifies the expected type of
+    # the attribute.  If it is %NULL then any type will be accepted.
+    #
+    # If the attribute exists and matches @expected_type (or if the
+    # expected type is unspecified) then the value is returned.
+    #
+    # If the attribute does not exist, or does not match the expected type
+    # then %NULL is returned.
     def item_attribute_value(item_index : Int32, attribute : ::String, expected_type : GLib::VariantType?) : GLib::Variant?
       # g_menu_model_get_item_attribute_value: (Method)
       # @expected_type: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       expected_type = if expected_type.nil?
                         Pointer(Void).null
                       else
@@ -143,53 +162,74 @@ module Gio
       _retval = LibGio.g_menu_model_get_item_attribute_value(self, item_index, attribute, expected_type)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Queries the item at position @item_index in @model for the link
+    # specified by @link.
+    #
+    # If the link exists, the linked #GMenuModel is returned.  If the link
+    # does not exist, %NULL is returned.
     def item_link(item_index : Int32, link : ::String) : Gio::MenuModel?
       # g_menu_model_get_item_link: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_menu_model_get_item_link(self, item_index, link)
 
       # Return value handling
+
       Gio::MenuModel.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Query the number of items in @model.
     def n_items : Int32
       # g_menu_model_get_n_items: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_menu_model_get_n_items(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Queries if @model is mutable.
+    #
+    # An immutable #GMenuModel will never emit the #GMenuModel::items-changed
+    # signal. Consumers of the model may make optimisations accordingly.
     def is_mutable : Bool
       # g_menu_model_is_mutable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_menu_model_is_mutable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Requests emission of the #GMenuModel::items-changed signal on @model.
+    #
+    # This function should never be called except by #GMenuModel
+    # subclasses.  Any other calls to this function will very likely lead
+    # to a violation of the interface of the model.
+    #
+    # The implementation should update its internal representation of the
+    # menu before emitting the signal.  The implementation should further
+    # expect to receive queries about the new state of the menu (and
+    # particularly added menu items) while signal handlers are running.
+    #
+    # The implementation must dispatch this call directly from a mainloop
+    # entry and not in response to calls -- particularly those from the
+    # #GMenuModel API.  Said another way: the menu must not change while
+    # user code is running without returning to the mainloop.
     def items_changed(position : Int32, removed : Int32, added : Int32) : Nil
       # g_menu_model_items_changed: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_menu_model_items_changed(self, position, removed, added)
@@ -197,32 +237,58 @@ module Gio
       # Return value handling
     end
 
+    # Creates a #GMenuAttributeIter to iterate over the attributes of
+    # the item at position @item_index in @model.
+    #
+    # You must free the iterator with g_object_unref() when you are done.
     def iterate_item_attributes(item_index : Int32) : Gio::MenuAttributeIter
       # g_menu_model_iterate_item_attributes: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_menu_model_iterate_item_attributes(self, item_index)
 
       # Return value handling
+
       Gio::MenuAttributeIter.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a #GMenuLinkIter to iterate over the links of the item at
+    # position @item_index in @model.
+    #
+    # You must free the iterator with g_object_unref() when you are done.
     def iterate_item_links(item_index : Int32) : Gio::MenuLinkIter
       # g_menu_model_iterate_item_links: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_menu_model_iterate_item_links(self, item_index)
 
       # Return value handling
+
       Gio::MenuLinkIter.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Emitted when a change has occurred to the menu.
+    #
+    # The only changes that can occur to a menu is that items are removed
+    # or added.  Items may not change (except by being removed and added
+    # back in the same location).  This signal is capable of describing
+    # both of those changes (at the same time).
+    #
+    # The signal means that starting at the index @position, @removed
+    # items were removed and @added items were added in their place.  If
+    # @removed is zero then only items were added.  If @added is zero
+    # then only items were removed.
+    #
+    # As an example, if the menu contains items a, b, c, d (in that
+    # order) and the signal (2, 1, 3) occurs then the new composition of
+    # the menu will be a, b, _, _, _, d (with each _ representing some
+    # new item).
+    #
+    # Signal handlers may query the model (particularly the added items)
+    # and expect to see the results of the modification that is being
+    # reported.  The signal is emitted after the modification.
     struct ItemsChangedSignal
       @source : GObject::Object
       @detail : String?

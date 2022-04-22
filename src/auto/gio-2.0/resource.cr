@@ -139,7 +139,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(Resource.g_type, pointer)
@@ -150,6 +150,10 @@ module Gio
 
     def finalize
       LibGObject.g_boxed_free(Resource.g_type, self)
+    end
+
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::Resource)).zero?
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -163,22 +167,20 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_resource_new_from_data(data, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::Resource.new(_retval, GICrystal::Transfer::Full)
     end
 
     def _register : Nil
       # g_resources_register: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_resources_register(self)
@@ -189,8 +191,6 @@ module Gio
     def _unregister : Nil
       # g_resources_unregister: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_resources_unregister(self)
@@ -204,14 +204,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_resource_enumerate_children(self, path, lookup_flags, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
@@ -223,8 +223,9 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       size = Pointer(UInt64).null
+      # Generator::OutArgUsedInReturnPlan
       flags = Pointer(UInt32).null
 
       # C call
@@ -232,7 +233,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -242,14 +245,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_resource_lookup_data(self, path, lookup_flags, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -259,14 +262,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_resource_open_stream(self, path, lookup_flags, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::InputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -274,20 +277,17 @@ module Gio
       # g_resource_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_resource_ref(self)
 
       # Return value handling
+
       Gio::Resource.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # g_resource_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_resource_unref(self)
@@ -301,14 +301,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_resource_load(filename, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::Resource.new(_retval, GICrystal::Transfer::Full)
     end
 

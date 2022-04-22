@@ -272,6 +272,16 @@ module Cairo
 
   # Flags
 
+  def self.image_surface_create : Nil
+    # cairo_image_surface_create: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibCairo.cairo_image_surface_create
+
+    # Return value handling
+  end
+
   # Errors
 
   # :nodoc:

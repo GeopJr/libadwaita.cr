@@ -7,6 +7,9 @@ module Gtk
   # Here is an example for setting up a column view with a tree model and
   # a `GtkTreeListSorter`:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # column_sorter = gtk_column_view_get_sorter (view);
   # sorter = gtk_tree_list_row_sorter_new (g_object_ref (column_sorter));
@@ -14,8 +17,16 @@ module Gtk
   # selection = gtk_single_selection_new (sort_model);
   # gtk_column_view_set_model (view, G_LIST_MODEL (selection));
   # ```
+  @[GObject::GeneratedWrapper]
   class TreeListRowSorter < Sorter
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::TreeListRowSorterClass), class_init,
+        sizeof(LibGtk::TreeListRowSorter), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -27,13 +38,17 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if sorter
+      if !sorter.nil?
         (_names.to_unsafe + _n).value = "sorter".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sorter)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(TreeListRowSorter.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -56,45 +71,57 @@ module Gtk
       Gtk::Sorter.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Create a special-purpose sorter that applies the sorting
+    # of @sorter to the levels of a `GtkTreeListModel`.
+    #
+    # Note that this sorter relies on `Gtk::TreeListModel#passthrough`
+    # being %FALSE as it can only sort `Gtk#TreeListRow`s.
     def initialize(sorter : Gtk::Sorter?)
       # gtk_tree_list_row_sorter_new: (Constructor)
       # @sorter: (transfer full) (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       sorter = if sorter.nil?
                  Pointer(Void).null
                else
                  sorter.to_unsafe
                end
-      LibGObject.g_object_ref(sorter)
+
+      # Generator::TransferFullArgPlan
+      LibGObject.g_object_ref_sink(sorter)
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_sorter_new(sorter)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns the sorter used by @self.
     def sorter : Gtk::Sorter?
       # gtk_tree_list_row_sorter_get_sorter: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_sorter_get_sorter(self)
 
       # Return value handling
+
       Gtk::Sorter.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets the sorter to use for items with the same parent.
+    #
+    # This sorter will be passed the `Gtk::TreeListRow#item` of
+    # the tree list rows passed to @self.
     def sorter=(sorter : Gtk::Sorter?) : Nil
       # gtk_tree_list_row_sorter_set_sorter: (Method | Setter)
       # @sorter: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       sorter = if sorter.nil?
                  Pointer(Void).null
                else

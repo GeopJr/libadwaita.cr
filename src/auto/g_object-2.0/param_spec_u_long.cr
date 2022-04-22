@@ -2,8 +2,16 @@ require "./param_spec"
 
 module GObject
   # A #GParamSpec derived structure that contains the meta data for unsigned long integer properties.
+  @[GObject::GeneratedWrapper]
   class ParamSpecULong < ParamSpec
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGObject::ParamSpecULong), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)

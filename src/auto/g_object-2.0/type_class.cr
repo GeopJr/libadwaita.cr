@@ -4,7 +4,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::TypeClass))
@@ -22,14 +22,16 @@ module GObject
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::TypeClass)).zero?
+    end
+
     def g_type : UInt64
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt64))
       _var.value
     end
 
     def g_type=(value : UInt64)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt64)).value = value
       value
     end
@@ -37,8 +39,6 @@ module GObject
     def add_private(private_size : UInt64) : Nil
       # g_type_class_add_private: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGObject.g_type_class_add_private(self, private_size)
@@ -50,12 +50,11 @@ module GObject
       # g_type_class_get_private: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGObject.g_type_class_get_private(self, private_type)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
@@ -63,12 +62,11 @@ module GObject
       # g_type_class_peek_parent: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGObject.g_type_class_peek_parent(self)
 
       # Return value handling
+
       GObject::TypeClass.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -76,69 +74,10 @@ module GObject
       # g_type_class_unref: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGObject.g_type_class_unref(self)
 
       # Return value handling
-    end
-
-    def self.adjust_private_offset(g_class : Pointer(Void)?, private_size_or_offset : Pointer(Int32)) : Nil
-      # g_type_class_adjust_private_offset: (None)
-      # @g_class: (nullable)
-      # Returns: (transfer none)
-
-      # Handle parameters
-      g_class = if g_class.nil?
-                  Pointer(Void).null
-                else
-                  g_class.to_unsafe
-                end
-
-      # C call
-      LibGObject.g_type_class_adjust_private_offset(g_class, private_size_or_offset)
-
-      # Return value handling
-    end
-
-    def self.peek(type : UInt64) : GObject::TypeClass
-      # g_type_class_peek: (None)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      _retval = LibGObject.g_type_class_peek(type)
-
-      # Return value handling
-      GObject::TypeClass.new(_retval, GICrystal::Transfer::None)
-    end
-
-    def self.peek_static(type : UInt64) : GObject::TypeClass
-      # g_type_class_peek_static: (None)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      _retval = LibGObject.g_type_class_peek_static(type)
-
-      # Return value handling
-      GObject::TypeClass.new(_retval, GICrystal::Transfer::None)
-    end
-
-    def self.ref(type : UInt64) : GObject::TypeClass
-      # g_type_class_ref: (None)
-      # Returns: (transfer none)
-
-      # Handle parameters
-
-      # C call
-      _retval = LibGObject.g_type_class_ref(type)
-
-      # Return value handling
-      GObject::TypeClass.new(_retval, GICrystal::Transfer::None)
     end
 
     def to_unsafe

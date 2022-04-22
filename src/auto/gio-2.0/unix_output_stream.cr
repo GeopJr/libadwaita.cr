@@ -13,11 +13,19 @@ module Gio
   # Note that `<gio/gunixoutputstream.h>` belongs to the UNIX-specific GIO
   # interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config file
   # when using it.
+  @[GObject::GeneratedWrapper]
   class UnixOutputStream < OutputStream
     include FileDescriptorBased
     include PollableOutputStream
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::UnixOutputStreamClass), class_init,
+        sizeof(LibGio::UnixOutputStream), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -29,18 +37,22 @@ module Gio
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if close_fd
+      if !close_fd.nil?
         (_names.to_unsafe + _n).value = "close-fd".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, close_fd)
         _n += 1
       end
-      if fd
+      if !fd.nil?
         (_names.to_unsafe + _n).value = "fd".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, fd)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(UnixOutputStream.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -78,50 +90,54 @@ module Gio
       value
     end
 
+    # Creates a new #GUnixOutputStream for the given @fd.
+    #
+    # If @close_fd, is %TRUE, the file descriptor will be closed when
+    # the output stream is destroyed.
     def initialize(fd : Int32, close_fd : Bool)
       # g_unix_output_stream_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_unix_output_stream_new(fd, close_fd)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns whether the file descriptor of @stream will be
+    # closed when the stream is closed.
     def close_fd : Bool
       # g_unix_output_stream_get_close_fd: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_unix_output_stream_get_close_fd(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Return the UNIX file descriptor that the stream writes to.
     def fd : Int32
       # g_unix_output_stream_get_fd: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_unix_output_stream_get_fd(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Sets whether the file descriptor of @stream shall be closed
+    # when the stream is closed.
     def close_fd=(close_fd : Bool) : Nil
       # g_unix_output_stream_set_close_fd: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_unix_output_stream_set_close_fd(self, close_fd)

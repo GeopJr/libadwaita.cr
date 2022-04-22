@@ -9,7 +9,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::GlyphItem))
@@ -31,62 +31,66 @@ module Pango
     def finalize
     end
 
-    def item : Pango::Item
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::GlyphItem)).zero?
+    end
+
+    def item!
+      self.item.not_nil!
+    end
+
+    def item : Pango::Item?
       _var = (@pointer + 0).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Pango::Item.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def item=(value : Pango::Item)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def item=(value : Pango::Item?)
+      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def glyphs : Pango::GlyphString
-      # Property getter
+    def glyphs!
+      self.glyphs.not_nil!
+    end
+
+    def glyphs : Pango::GlyphString?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Pango::GlyphString.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def glyphs=(value : Pango::GlyphString)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def glyphs=(value : Pango::GlyphString?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
     def y_offset : Int32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Int32))
       _var.value
     end
 
     def y_offset=(value : Int32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Int32)).value = value
       value
     end
 
     def start_x_offset : Int32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(Int32))
       _var.value
     end
 
     def start_x_offset=(value : Int32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(Int32)).value = value
       value
     end
 
     def end_x_offset : Int32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Int32))
       _var.value
     end
 
     def end_x_offset=(value : Int32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Int32)).value = value
       value
     end
@@ -100,12 +104,11 @@ module Pango
       # pango_glyph_item_apply_attrs: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_glyph_item_apply_attrs(self, text, list)
 
       # Return value handling
+
       GLib::SList(Pango::GlyphItem).new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -113,20 +116,17 @@ module Pango
       # pango_glyph_item_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_glyph_item_copy(self)
 
       # Return value handling
+
       Pango::GlyphItem.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def free : Nil
       # pango_glyph_item_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_glyph_item_free(self)
@@ -139,7 +139,7 @@ module Pango
       # @logical_widths: (array element-type Int32)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayArgPlan
       logical_widths = logical_widths.to_a.to_unsafe
 
       # C call
@@ -153,7 +153,7 @@ module Pango
       # @log_attrs: (array element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayArgPlan
       log_attrs = log_attrs.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -166,12 +166,11 @@ module Pango
       # pango_glyph_item_split: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_glyph_item_split(self, text, split_index)
 
       # Return value handling
+
       Pango::GlyphItem.new(_retval, GICrystal::Transfer::Full)
     end
 

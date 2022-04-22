@@ -17,27 +17,24 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "orientation", pointerof(value), Pointer(Void).null)
-      Gtk::Orientation.from_value(value)
+      Gtk::Orientation.new(value)
     end
 
     def orientation : Gtk::Orientation
       # gtk_orientable_get_orientation: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_orientable_get_orientation(self)
 
       # Return value handling
-      Gtk::Orientation.from_value(_retval)
+
+      Gtk::Orientation.new(_retval)
     end
 
     def orientation=(orientation : Gtk::Orientation) : Nil
       # gtk_orientable_set_orientation: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_orientable_set_orientation(self, orientation)
@@ -49,6 +46,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Orientable__Impl < GObject::Object
     include Orientable
 

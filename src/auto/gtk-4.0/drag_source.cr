@@ -6,11 +6,14 @@ module Gtk
   # `GtkDragSource` can be set up with the necessary
   # ingredients for a DND operation ahead of time. This includes
   # the source for the data that is being transferred, in the form
-  # of a [class@Gdk.ContentProvider], the desired action, and the icon to
+  # of a `Gdk#ContentProvider`, the desired action, and the icon to
   # use during the drag operation. After setting it up, the drag
   # source must be added to a widget as an event controller, using
-  # [method@Gtk.Widget.add_controller].
+  # `Gtk::Widget#add_controller`.
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static void
   # my_widget_init (MyWidget *self)
@@ -27,13 +30,16 @@ module Gtk
   # Setting up the content provider and icon ahead of time only makes
   # sense when the data does not change. More commonly, you will want
   # to set them up just in time. To do so, `GtkDragSource` has
-  # [signal@Gtk.DragSource::prepare] and [signal@Gtk.DragSource::drag-begin]
+  # `Gtk::DragSource::#prepare` and [signal@Gtk.DragSource::drag-begin]
   # signals.
   #
   # The ::prepare signal is emitted before a drag is started, and
   # can be used to set the content provider and actions that the
   # drag should be started with.
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static GdkContentProvider *
   # on_drag_prepare (GtkDragSource *source,
@@ -57,6 +63,9 @@ module Gtk
   # The ::drag-begin signal is emitted after the `GdkDrag` object has
   # been created, and can be used to set up the drag icon.
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static void
   # on_drag_begin (GtkDragSource *source,
@@ -77,8 +86,16 @@ module Gtk
   # %GDK_ACTION_MOVE, you need to listen for the
   # [signal@Gtk.DragSource::drag-end] signal and delete the
   # data after it has been transferred.
+  @[GObject::GeneratedWrapper]
   class DragSource < GestureSingle
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::DragSourceClass), class_init,
+        sizeof(LibGtk::DragSource), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -90,58 +107,62 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 10).new(LibGObject::Value.new)
       _n = 0
 
-      if actions
+      if !actions.nil?
         (_names.to_unsafe + _n).value = "actions".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, actions)
         _n += 1
       end
-      if button
+      if !button.nil?
         (_names.to_unsafe + _n).value = "button".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, button)
         _n += 1
       end
-      if content
+      if !content.nil?
         (_names.to_unsafe + _n).value = "content".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, content)
         _n += 1
       end
-      if exclusive
+      if !exclusive.nil?
         (_names.to_unsafe + _n).value = "exclusive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, exclusive)
         _n += 1
       end
-      if n_points
+      if !n_points.nil?
         (_names.to_unsafe + _n).value = "n-points".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, n_points)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if touch_only
+      if !touch_only.nil?
         (_names.to_unsafe + _n).value = "touch-only".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, touch_only)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DragSource.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -161,7 +182,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "actions", pointerof(value), Pointer(Void).null)
-      Gdk::DragAction.from_value(value)
+      Gdk::DragAction.new(value)
     end
 
     def content=(value : Gdk::ContentProvider?) : Gdk::ContentProvider?
@@ -179,24 +200,23 @@ module Gtk
       Gdk::ContentProvider.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkDragSource` object.
     def initialize
       # gtk_drag_source_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drag_source_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Cancels a currently ongoing drag operation.
     def drag_cancel : Nil
       # gtk_drag_source_drag_cancel: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_drag_source_drag_cancel(self)
@@ -204,50 +224,57 @@ module Gtk
       # Return value handling
     end
 
+    # Gets the actions that are currently set on the `GtkDragSource`.
     def actions : Gdk::DragAction
       # gtk_drag_source_get_actions: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drag_source_get_actions(self)
 
       # Return value handling
-      Gdk::DragAction.from_value(_retval)
+
+      Gdk::DragAction.new(_retval)
     end
 
+    # Gets the current content provider of a `GtkDragSource`.
     def content : Gdk::ContentProvider?
       # gtk_drag_source_get_content: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drag_source_get_content(self)
 
       # Return value handling
+
       Gdk::ContentProvider.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the underlying `GdkDrag` object for an ongoing drag.
     def drag : Gdk::Drag?
       # gtk_drag_source_get_drag: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drag_source_get_drag(self)
 
       # Return value handling
+
       Gdk::Drag.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets the actions on the `GtkDragSource`.
+    #
+    # During a DND operation, the actions are offered to potential
+    # drop targets. If @actions include %GDK_ACTION_MOVE, you need
+    # to listen to the [signal@Gtk.DragSource::drag-end] signal and
+    # handle @delete_data being %TRUE.
+    #
+    # This function can be called before a drag is started,
+    # or in a handler for the `Gtk::DragSource::#prepare` signal.
     def actions=(actions : Gdk::DragAction) : Nil
       # gtk_drag_source_set_actions: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_drag_source_set_actions(self, actions)
@@ -255,12 +282,22 @@ module Gtk
       # Return value handling
     end
 
+    # Sets a content provider on a `GtkDragSource`.
+    #
+    # When the data is requested in the cause of a DND operation,
+    # it will be obtained from the content provider.
+    #
+    # This function can be called before a drag is started,
+    # or in a handler for the `Gtk::DragSource::#prepare` signal.
+    #
+    # You may consider setting the content provider back to
+    # %NULL in a [signal@Gtk.DragSource::drag-end] signal handler.
     def content=(content : Gdk::ContentProvider?) : Nil
       # gtk_drag_source_set_content: (Method | Setter)
       # @content: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       content = if content.nil?
                   Pointer(Void).null
                 else
@@ -273,12 +310,22 @@ module Gtk
       # Return value handling
     end
 
+    # Sets a paintable to use as icon during DND operations.
+    #
+    # The hotspot coordinates determine the point on the icon
+    # that gets aligned with the hotspot of the cursor.
+    #
+    # If @paintable is %NULL, a default icon is used.
+    #
+    # This function can be called before a drag is started, or in
+    # a `Gtk::DragSource::#prepare` or
+    # [signal@Gtk.DragSource::drag-begin] signal handler.
     def set_icon(paintable : Gdk::Paintable?, hot_x : Int32, hot_y : Int32) : Nil
       # gtk_drag_source_set_icon: (Method)
       # @paintable: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       paintable = if paintable.nil?
                     Pointer(Void).null
                   else
@@ -291,6 +338,10 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted on the drag source when a drag is started.
+    #
+    # It can be used to e.g. set a custom drag icon with
+    # `Gtk::DragSource#icon=`.
     struct DragBeginSignal
       @source : GObject::Object
       @detail : String?
@@ -370,6 +421,11 @@ module Gtk
       DragBeginSignal.new(self)
     end
 
+    # Emitted on the drag source when a drag has failed.
+    #
+    # The signal handler may handle a failed drag operation based on
+    # the type of error. It should return %TRUE if the failure has been handled
+    # and the default "drag operation failed" animation should not be shown.
     struct DragCancelSignal
       @source : GObject::Object
       @detail : String?
@@ -398,8 +454,9 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
           arg0 = Gdk::Drag.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gdk::DragCancelReason.from_value(lib_arg1)
-          ::Box(Proc(Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          arg1 = Gdk::DragCancelReason.new(lib_arg1)
+          _retval = ::Box(Proc(Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -410,8 +467,9 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
           arg0 = Gdk::Drag.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gdk::DragCancelReason.from_value(lib_arg1)
-          ::Box(Proc(Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          arg1 = Gdk::DragCancelReason.new(lib_arg1)
+          _retval = ::Box(Proc(Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -423,7 +481,7 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
           sender = Gtk::DragSource.new(lib_sender, GICrystal::Transfer::None)
           arg0 = Gdk::Drag.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gdk::DragCancelReason.from_value(lib_arg1)
+          arg1 = Gdk::DragCancelReason.new(lib_arg1)
           ::Box(Proc(Gtk::DragSource, Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
         }
 
@@ -436,7 +494,7 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
           sender = Gtk::DragSource.new(lib_sender, GICrystal::Transfer::None)
           arg0 = Gdk::Drag.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gdk::DragCancelReason.from_value(lib_arg1)
+          arg1 = Gdk::DragCancelReason.new(lib_arg1)
           ::Box(Proc(Gtk::DragSource, Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
         }
 
@@ -453,6 +511,11 @@ module Gtk
       DragCancelSignal.new(self)
     end
 
+    # Emitted on the drag source when a drag is finished.
+    #
+    # A typical reason to connect to this signal is to undo
+    # things done in `Gtk::DragSource::#prepare` or
+    # [signal@Gtk.DragSource::drag-begin] handlers.
     struct DragEndSignal
       @source : GObject::Object
       @detail : String?
@@ -536,6 +599,12 @@ module Gtk
       DragEndSignal.new(self)
     end
 
+    # Emitted when a drag is about to be initiated.
+    #
+    # It returns the `GdkContentProvider` to use for the drag that is about
+    # to start. The default handler for this signal returns the value of
+    # the `Gtk::DragSource#content` property, so if you set up that
+    # property ahead of time, you don't need to connect to this signal.
     struct PrepareSignal
       @source : GObject::Object
       @detail : String?
@@ -565,7 +634,8 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          ::Box(Proc(Float64, Float64, Gdk::ContentProvider)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Float64, Float64, Gdk::ContentProvider)).unbox(box).call(arg0, arg1)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -577,7 +647,8 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          ::Box(Proc(Float64, Float64, Gdk::ContentProvider)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Float64, Float64, Gdk::ContentProvider)).unbox(box).call(arg0, arg1)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,

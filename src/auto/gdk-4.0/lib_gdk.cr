@@ -50,19 +50,56 @@ lib LibGdk
 
   type ContentFormatsBuilder = Void # Struct with zero bytes
 
+  struct ContentProviderClass # 264 bytes long
+    parent_class : LibGObject::ObjectClass
+    content_changed : -> Void
+    attach_clipboard : -> Void
+    detach_clipboard : -> Void
+    ref_formats : -> Void
+    ref_storable_formats : -> Void
+    write_mime_type_async : -> Void
+    write_mime_type_finish : -> Void
+    get_value : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  type DevicePadInterface = Void # Struct with zero bytes
+
+  type DragSurfaceInterface = Void # Struct with zero bytes
+
   type EventSequence = Void # Struct with zero bytes
 
   type FileList = Void # Struct with zero bytes
 
+  type FrameClockClass = Void # Struct with zero bytes
+
   type FrameClockPrivate = Void # Struct with zero bytes
 
   type FrameTimings = Void # Struct with zero bytes
+
+  type GLTextureClass = Void # Struct with zero bytes
 
   struct KeymapKey # 12 bytes long
     keycode : UInt32
     group : Int32
     level : Int32
   end
+
+  type MemoryTextureClass = Void # Struct with zero bytes
+
+  type MonitorClass = Void # Struct with zero bytes
+
+  struct PaintableInterface # 64 bytes long
+    g_iface : LibGObject::TypeInterface
+    snapshot : -> Void
+    get_current_image : -> Void
+    get_flags : -> Void
+    get_intrinsic_width : -> Void
+    get_intrinsic_height : -> Void
+    get_intrinsic_aspect_ratio : -> Void
+  end
+
+  type PopupInterface = Void # Struct with zero bytes
 
   type PopupLayout = Void # Struct with zero bytes
 
@@ -80,11 +117,19 @@ lib LibGdk
     height : Int32
   end
 
+  type SnapshotClass = Void # Struct with zero bytes
+
+  type SurfaceClass = Void # Struct with zero bytes
+
+  type TextureClass = Void # Struct with zero bytes
+
   struct TimeCoord # 104 bytes long
     time : UInt32
     flags : UInt32
     axes : Float64[12]
   end
+
+  type ToplevelInterface = Void # Struct with zero bytes
 
   type ToplevelLayout = Void # Struct with zero bytes
 

@@ -47,7 +47,7 @@ module Gdk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "fullscreen-mode", pointerof(value), Pointer(Void).null)
-      Gdk::FullscreenMode.from_value(value)
+      Gdk::FullscreenMode.new(value)
     end
 
     def icon_list=(value : Pointer(Void)) : Pointer(Void)
@@ -108,7 +108,7 @@ module Gdk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "state", pointerof(value), Pointer(Void).null)
-      Gdk::ToplevelState.from_value(value)
+      Gdk::ToplevelState.new(value)
     end
 
     def title=(value : ::String) : ::String
@@ -145,8 +145,6 @@ module Gdk
       # gdk_toplevel_begin_move: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_begin_move(self, device, button, x, y, timestamp)
 
@@ -158,7 +156,7 @@ module Gdk
       # @device: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       device = if device.nil?
                  Pointer(Void).null
                else
@@ -175,8 +173,6 @@ module Gdk
       # gdk_toplevel_focus: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_focus(self, timestamp)
 
@@ -187,13 +183,12 @@ module Gdk
       # gdk_toplevel_get_state: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_get_state(self)
 
       # Return value handling
-      Gdk::ToplevelState.from_value(_retval)
+
+      Gdk::ToplevelState.new(_retval)
     end
 
     def inhibit_system_shortcuts(event : Gdk::Event?) : Nil
@@ -201,7 +196,7 @@ module Gdk
       # @event: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       event = if event.nil?
                 Pointer(Void).null
               else
@@ -218,12 +213,11 @@ module Gdk
       # gdk_toplevel_lower: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_lower(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -231,20 +225,17 @@ module Gdk
       # gdk_toplevel_minimize: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_minimize(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def present(layout : Gdk::ToplevelLayout) : Nil
       # gdk_toplevel_present: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_toplevel_present(self, layout)
@@ -256,8 +247,6 @@ module Gdk
       # gdk_toplevel_restore_system_shortcuts: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_restore_system_shortcuts(self)
 
@@ -267,8 +256,6 @@ module Gdk
     def decorated=(decorated : Bool) : Nil
       # gdk_toplevel_set_decorated: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_toplevel_set_decorated(self, decorated)
@@ -280,8 +267,6 @@ module Gdk
       # gdk_toplevel_set_deletable: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_set_deletable(self, deletable)
 
@@ -291,8 +276,6 @@ module Gdk
     def icon_list=(surfaces : GLib::List) : Nil
       # gdk_toplevel_set_icon_list: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_toplevel_set_icon_list(self, surfaces)
@@ -304,8 +287,6 @@ module Gdk
       # gdk_toplevel_set_modal: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_set_modal(self, modal)
 
@@ -315,8 +296,6 @@ module Gdk
     def startup_id=(startup_id : ::String) : Nil
       # gdk_toplevel_set_startup_id: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_toplevel_set_startup_id(self, startup_id)
@@ -328,8 +307,6 @@ module Gdk
       # gdk_toplevel_set_title: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_set_title(self, title)
 
@@ -339,8 +316,6 @@ module Gdk
     def transient_for=(parent : Gdk::Surface) : Nil
       # gdk_toplevel_set_transient_for: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_toplevel_set_transient_for(self, parent)
@@ -352,12 +327,11 @@ module Gdk
       # gdk_toplevel_show_window_menu: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_show_window_menu(self, event)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -365,12 +339,11 @@ module Gdk
       # gdk_toplevel_supports_edge_constraints: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_supports_edge_constraints(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -378,19 +351,98 @@ module Gdk
       # gdk_toplevel_titlebar_gesture: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_titlebar_gesture(self, gesture)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
+    end
+
+    struct ComputeSizeSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "compute-size::#{@detail}" : "compute-size"
+      end
+
+      def connect(&block : Proc(Gdk::ToplevelSize, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gdk::ToplevelSize, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gdk::ToplevelSize, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gdk::ToplevelSize.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gdk::ToplevelSize, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gdk::ToplevelSize, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gdk::ToplevelSize.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gdk::ToplevelSize, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gdk::Toplevel, Gdk::ToplevelSize, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gdk::Toplevel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gdk::ToplevelSize.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gdk::Toplevel, Gdk::ToplevelSize, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gdk::Toplevel, Gdk::ToplevelSize, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gdk::Toplevel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gdk::ToplevelSize.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gdk::Toplevel, Gdk::ToplevelSize, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(size : Gdk::ToplevelSize) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "compute-size", size)
+      end
+    end
+
+    def compute_size_signal
+      ComputeSizeSignal.new(self)
     end
 
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Toplevel__Impl < GObject::Object
     include Toplevel
 

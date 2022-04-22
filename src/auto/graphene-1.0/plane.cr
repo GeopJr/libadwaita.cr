@@ -7,7 +7,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Plane))
@@ -26,26 +26,27 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Plane)).zero?
+    end
+
     def normal : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def normal=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Plane))
       value
     end
 
     def constant : Float32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Float32))
       _var.value
     end
 
     def constant=(value : Float32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Float32)).value = value
       value
     end
@@ -59,12 +60,11 @@ module Graphene
       # graphene_plane_alloc: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_plane_alloc
 
       # Return value handling
+
       Graphene::Plane.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -72,12 +72,11 @@ module Graphene
       # graphene_plane_distance: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_plane_distance(self, point)
 
       # Return value handling
+
       _retval
     end
 
@@ -85,20 +84,17 @@ module Graphene
       # graphene_plane_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_plane_equal(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # graphene_plane_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_plane_free(self)
@@ -110,12 +106,11 @@ module Graphene
       # graphene_plane_get_constant: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_plane_get_constant(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -124,13 +119,14 @@ module Graphene
       # @normal: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       normal = Graphene::Vec3.new
 
       # C call
       LibGraphene.graphene_plane_get_normal(self, normal)
 
       # Return value handling
+
       normal
     end
 
@@ -139,7 +135,7 @@ module Graphene
       # @normal: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       normal = if normal.nil?
                  Pointer(Void).null
                else
@@ -150,6 +146,7 @@ module Graphene
       _retval = LibGraphene.graphene_plane_init(self, normal, constant)
 
       # Return value handling
+
       Graphene::Plane.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -157,12 +154,11 @@ module Graphene
       # graphene_plane_init_from_plane: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_plane_init_from_plane(self, src)
 
       # Return value handling
+
       Graphene::Plane.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -170,12 +166,11 @@ module Graphene
       # graphene_plane_init_from_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_plane_init_from_point(self, normal, point)
 
       # Return value handling
+
       Graphene::Plane.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -183,12 +178,11 @@ module Graphene
       # graphene_plane_init_from_points: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_plane_init_from_points(self, a, b, c)
 
       # Return value handling
+
       Graphene::Plane.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -196,12 +190,11 @@ module Graphene
       # graphene_plane_init_from_vec4: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_plane_init_from_vec4(self, src)
 
       # Return value handling
+
       Graphene::Plane.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -210,13 +203,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
 
       # C call
       LibGraphene.graphene_plane_negate(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -225,13 +219,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
 
       # C call
       LibGraphene.graphene_plane_normalize(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -241,18 +236,21 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       normal_matrix = if normal_matrix.nil?
                         Pointer(Void).null
                       else
                         normal_matrix.to_unsafe
                       end
+
+      # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
 
       # C call
       LibGraphene.graphene_plane_transform(self, matrix, normal_matrix, res)
 
       # Return value handling
+
       res
     end
 

@@ -2,8 +2,16 @@ require "./shortcut_trigger"
 
 module Gtk
   # A `GtkShortcutTrigger` that triggers when a specific keyval and modifiers are pressed.
+  @[GObject::GeneratedWrapper]
   class KeyvalTrigger < ShortcutTrigger
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::KeyvalTriggerClass), class_init,
+        sizeof(LibGtk::KeyvalTrigger), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,18 +23,22 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if keyval
+      if !keyval.nil?
         (_names.to_unsafe + _n).value = "keyval".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, keyval)
         _n += 1
       end
-      if modifiers
+      if !modifiers.nil?
         (_names.to_unsafe + _n).value = "modifiers".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, modifiers)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(KeyvalTrigger.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -61,46 +73,49 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "modifiers", pointerof(value), Pointer(Void).null)
-      Gdk::ModifierType.from_value(value)
+      Gdk::ModifierType.new(value)
     end
 
+    # Creates a `GtkShortcutTrigger` that will trigger whenever
+    # the key with the given @keyval and @modifiers is pressed.
     def initialize(keyval : UInt32, modifiers : Gdk::ModifierType)
       # gtk_keyval_trigger_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_keyval_trigger_new(keyval, modifiers)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the keyval that must be pressed to succeed
+    # triggering @self.
     def keyval : UInt32
       # gtk_keyval_trigger_get_keyval: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_keyval_trigger_get_keyval(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the modifiers that must be present to succeed
+    # triggering @self.
     def modifiers : Gdk::ModifierType
       # gtk_keyval_trigger_get_modifiers: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_keyval_trigger_get_modifiers(self)
 
       # Return value handling
-      Gdk::ModifierType.from_value(_retval)
+
+      Gdk::ModifierType.new(_retval)
     end
   end
 end

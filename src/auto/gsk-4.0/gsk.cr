@@ -44,6 +44,7 @@ require "./text_node.cr"
 require "./texture_node.cr"
 require "./transform.cr"
 require "./transform_node.cr"
+require "./vulkan_renderer.cr"
 
 module Gsk
   # Base class for all errors in this module.
@@ -245,6 +246,114 @@ module Gsk
   end
 
   # Flags
+
+  def self.serialization_error_quark : UInt32
+    # gsk_serialization_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGsk.gsk_serialization_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.transform_parse(string : ::String, out_transform : Gsk::Transform) : Bool
+    # gsk_transform_parse: (None)
+    # @out_transform: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGsk.gsk_transform_parse(string, out_transform)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.value_dup_render_node(value : _) : Gsk::RenderNode?
+    # gsk_value_dup_render_node: (None)
+    # Returns: (transfer full)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    _retval = LibGsk.gsk_value_dup_render_node(value)
+
+    # Return value handling
+
+    Gsk::RenderNode.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.value_get_render_node(value : _) : Gsk::RenderNode?
+    # gsk_value_get_render_node: (None)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    _retval = LibGsk.gsk_value_get_render_node(value)
+
+    # Return value handling
+
+    Gsk::RenderNode.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def self.value_set_render_node(value : _, node : Gsk::RenderNode) : Nil
+    # gsk_value_set_render_node: (None)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    LibGsk.gsk_value_set_render_node(value, node)
+
+    # Return value handling
+  end
+
+  def self.value_take_render_node(value : _, node : Gsk::RenderNode?) : Nil
+    # gsk_value_take_render_node: (None)
+    # @node: (transfer full) (nullable)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GObject::Value)
+              GObject::Value.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # Generator::NullableArrayPlan
+    node = if node.nil?
+             Pointer(Void).null
+           else
+             node.to_unsafe
+           end
+
+    # Generator::TransferFullArgPlan
+    LibGObject.gsk_render_node_ref(node)
+
+    # C call
+    LibGsk.gsk_value_take_render_node(value, node)
+
+    # Return value handling
+  end
 
   # Errors
 

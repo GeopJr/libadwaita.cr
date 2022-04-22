@@ -4,7 +4,7 @@ module Gdk
   # The `GdkPopup` is positioned relative to its parent surface.
   #
   # `GdkPopup`s are typically used to implement menus and similar popups.
-  # They can be modal, which is indicated by the [property@GdkPopup:autohide]
+  # They can be modal, which is indicated by the `GdkPopup#autohide`
   # property.
   module Popup
     def autohide=(value : Bool) : Bool
@@ -41,12 +41,11 @@ module Gdk
       # gdk_popup_get_autohide: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_get_autohide(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -54,12 +53,11 @@ module Gdk
       # gdk_popup_get_parent: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_get_parent(self)
 
       # Return value handling
+
       Gdk::Surface.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -67,12 +65,11 @@ module Gdk
       # gdk_popup_get_position_x: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_get_position_x(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -80,12 +77,11 @@ module Gdk
       # gdk_popup_get_position_y: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_get_position_y(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -93,38 +89,35 @@ module Gdk
       # gdk_popup_get_rect_anchor: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_get_rect_anchor(self)
 
       # Return value handling
-      Gdk::Gravity.from_value(_retval)
+
+      Gdk::Gravity.new(_retval)
     end
 
     def surface_anchor : Gdk::Gravity
       # gdk_popup_get_surface_anchor: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_get_surface_anchor(self)
 
       # Return value handling
-      Gdk::Gravity.from_value(_retval)
+
+      Gdk::Gravity.new(_retval)
     end
 
     def present(width : Int32, height : Int32, layout : Gdk::PopupLayout) : Bool
       # gdk_popup_present: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_present(self, width, height, layout)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -132,6 +125,7 @@ module Gdk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Popup__Impl < GObject::Object
     include Popup
 

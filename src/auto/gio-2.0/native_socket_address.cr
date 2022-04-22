@@ -3,10 +3,18 @@ require "./socket_connectable"
 
 module Gio
   # A socket address of some unknown native type.
+  @[GObject::GeneratedWrapper]
   class NativeSocketAddress < SocketAddress
     include SocketConnectable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::NativeSocketAddressClass), class_init,
+        sizeof(LibGio::NativeSocketAddress), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -18,13 +26,17 @@ module Gio
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if family
+      if !family.nil?
         (_names.to_unsafe + _n).value = "family".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, family)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(NativeSocketAddress.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -32,12 +44,13 @@ module Gio
       LibGio.g_native_socket_address_get_type
     end
 
+    # Creates a new #GNativeSocketAddress for @native and @len.
     def initialize(native : Pointer(Void)?, len : UInt64)
       # g_native_socket_address_new: (Constructor)
       # @native: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       native = if native.nil?
                  Pointer(Void).null
                else
@@ -48,6 +61,7 @@ module Gio
       _retval = LibGio.g_native_socket_address_new(native, len)
 
       # Return value handling
+
       @pointer = _retval
     end
   end

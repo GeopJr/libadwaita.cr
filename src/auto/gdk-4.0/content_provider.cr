@@ -4,14 +4,22 @@ module Gdk
   # A `GdkContentProvider` is used to provide content for the clipboard or
   # for drag-and-drop operations in a number of formats.
   #
-  # To create a `GdkContentProvider`, use [ctor@Gdk.ContentProvider.new_for_value]
-  # or [ctor@Gdk.ContentProvider.new_for_bytes].
+  # To create a `GdkContentProvider`, use `Gdk::ContentProvider#new_for_value`
+  # or `Gdk::ContentProvider#new_for_bytes`.
   #
   # GDK knows how to handle common text and image formats out-of-the-box. See
-  # [class@Gdk.ContentSerializer] and [class@Gdk.ContentDeserializer] if you want
+  # `Gdk#ContentSerializer` and `Gdk#ContentDeserializer` if you want
   # to add support for application-specific data formats.
+  @[GObject::GeneratedWrapper]
   class ContentProvider < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGdk::ContentProviderClass), class_init,
+        sizeof(LibGdk::ContentProvider), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -23,18 +31,22 @@ module Gdk
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if formats
+      if !formats.nil?
         (_names.to_unsafe + _n).value = "formats".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, formats)
         _n += 1
       end
-      if storable_formats
+      if !storable_formats.nil?
         (_names.to_unsafe + _n).value = "storable-formats".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, storable_formats)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ContentProvider.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -58,40 +70,66 @@ module Gdk
       Gdk::ContentFormats.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Create a content provider that provides the given @bytes as data for
+    # the given @mime_type.
     def self.new_for_bytes(mime_type : ::String, bytes : GLib::Bytes) : self
       # gdk_content_provider_new_for_bytes: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_provider_new_for_bytes(mime_type, bytes)
 
       # Return value handling
+
       Gdk::ContentProvider.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Create a content provider that provides the given @value.
     def self.new_for_value(value : _) : self
       # gdk_content_provider_new_for_value: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGdk.gdk_content_provider_new_for_value(value)
 
       # Return value handling
+
       Gdk::ContentProvider.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a content provider that represents all the given @providers.
+    #
+    # Whenever data needs to be written, the union provider will try the given
+    # @providers in the given order and the first one supporting a format will
+    # be chosen to provide it.
+    #
+    # This allows an easy way to support providing data in different formats.
+    # For example, an image may be provided by its file and by the image
+    # contents with a call such as
+    #
+    #
+    # WARNING: **⚠️ The following code is in c ⚠️**
+    # ```c
+    # gdk_content_provider_new_union ((GdkContentProvider *[2]) {
+    #                                   gdk_content_provider_new_typed (G_TYPE_FILE, file),
+    #                                   gdk_content_provider_new_typed (G_TYPE_TEXTURE, texture)
+    #                                 }, 2);
+    # ```
     def self.new_union(providers : Enumerable(Gdk::ContentProvider)?) : self
       # gdk_content_provider_new_union: (Constructor)
       # @providers: (transfer full) (nullable) (array length=n_providers element-type Interface)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_providers = providers.try(&.size) || 0
+      # Generator::NullableArrayPlan
       providers = if providers.nil?
                     Pointer(Pointer(Void)).null
                   else
@@ -102,6 +140,7 @@ module Gdk
       _retval = LibGdk.gdk_content_provider_new_union(providers, n_providers)
 
       # Return value handling
+
       Gdk::ContentProvider.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -109,11 +148,10 @@ module Gdk
       self.new_union(providers)
     end
 
+    # Emits the ::content-changed signal.
     def content_changed : Nil
       # gdk_content_provider_content_changed: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_content_provider_content_changed(self)
@@ -121,6 +159,13 @@ module Gdk
       # Return value handling
     end
 
+    # Gets the contents of @provider stored in @value.
+    #
+    # The @value will have been initialized to the `GType` the value should be
+    # provided in. This given `GType` does not need to be listed in the formats
+    # returned by `Gdk::ContentProvider#ref_formats`. However, if the
+    # given `GType` is not supported, this operation can fail and
+    # `G_IO_ERROR_NOT_SUPPORTED` will be reported.
     def value : GObject::Value
       # gdk_content_provider_get_value: (Method | Throws)
       # @value: (out) (caller-allocates)
@@ -128,7 +173,7 @@ module Gdk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       value = GObject::Value.new
 
       # C call
@@ -136,36 +181,55 @@ module Gdk
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       value
     end
 
+    # Gets the formats that the provider can provide its current contents in.
     def ref_formats : Gdk::ContentFormats
       # gdk_content_provider_ref_formats: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_provider_ref_formats(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the formats that the provider suggests other applications to store
+    # the data in.
+    #
+    # An example of such an application would be a clipboard manager.
+    #
+    # This can be assumed to be a subset of `Gdk::ContentProvider#ref_formats`.
     def ref_storable_formats : Gdk::ContentFormats
       # gdk_content_provider_ref_storable_formats: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_provider_ref_storable_formats(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Asynchronously writes the contents of @provider to @stream in the given
+    # @mime_type.
+    #
+    # When the operation is finished @callback will be called. You must then call
+    # `Gdk::ContentProvider#write_mime_type_finish` to get the result
+    # of the operation.
+    #
+    # The given mime type does not need to be listed in the formats returned by
+    # `Gdk::ContentProvider#ref_formats`. However, if the given `GType` is
+    # not supported, `G_IO_ERROR_NOT_SUPPORTED` will be reported.
+    #
+    # The given @stream will not be closed.
     def write_mime_type_async(mime_type : ::String, stream : Gio::OutputStream, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # gdk_content_provider_write_mime_type_async: (Method)
       # @cancellable: (nullable)
@@ -173,17 +237,21 @@ module Gdk
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -196,23 +264,27 @@ module Gdk
       # Return value handling
     end
 
+    # Finishes an asynchronous write operation.
+    #
+    # See `Gdk::ContentProvider#write_mime_type_async`.
     def write_mime_type_finish(result : Gio::AsyncResult) : Bool
       # gdk_content_provider_write_mime_type_finish: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_provider_write_mime_type_finish(self, result, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Emitted whenever the content provided by this provider has changed.
     struct ContentChangedSignal
       @source : GObject::Object
       @detail : String?

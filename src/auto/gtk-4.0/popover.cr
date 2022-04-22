@@ -17,24 +17,27 @@ module Gtk
   # It is primarily meant to provide context-dependent information
   # or options. Popovers are attached to a parent widget. By default,
   # they point to the whole widget area, although this behavior can be
-  # changed with [method@Gtk.Popover.set_pointing_to].
+  # changed with `Gtk::Popover#pointing_to=`.
   #
   # The position of a popover relative to the widget it is attached to
-  # can also be changed with [method@Gtk.Popover.set_position]
+  # can also be changed with `Gtk::Popover#position=`
   #
   # By default, `GtkPopover` performs a grab, in order to ensure input
   # events get redirected to it while it is shown, and also so the popover
   # is dismissed in the expected situations (clicks outside the popover,
   # or the Escape key being pressed). If no such modal behavior is desired
-  # on a popover, [method@Gtk.Popover.set_autohide] may be called on it to
+  # on a popover, `Gtk::Popover#autohide=` may be called on it to
   # tweak its behavior.
   #
   # ## GtkPopover as menu replacement
   #
   # `GtkPopover` is often used to replace menus. The best was to do this
-  # is to use the [class@Gtk.PopoverMenu] subclass which supports being
-  # populated from a `GMenuModel` with [ctor@Gtk.PopoverMenu.new_from_model].
+  # is to use the `Gtk#PopoverMenu` subclass which supports being
+  # populated from a `GMenuModel` with `Gtk::PopoverMenu#new_from_model`.
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   # <section>
   #   <attribute name="display-hint">horizontal-buttons</attribute>
@@ -86,6 +89,7 @@ module Gtk
   # be the same. The arrow also does not support any border shape other than
   # solid, no border-radius, only one border width (border-bottom-width is
   # used) and no box-shadow.
+  @[GObject::GeneratedWrapper]
   class Popover < Widget
     include Accessible
     include Buildable
@@ -94,6 +98,13 @@ module Gtk
     include ShortcutManager
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::PopoverClass), class_init,
+        sizeof(LibGtk::Popover), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -105,223 +116,228 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 43).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if autohide
+      if !autohide.nil?
         (_names.to_unsafe + _n).value = "autohide".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, autohide)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if cascade_popdown
+      if !cascade_popdown.nil?
         (_names.to_unsafe + _n).value = "cascade-popdown".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cascade_popdown)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if default_widget
+      if !default_widget.nil?
         (_names.to_unsafe + _n).value = "default-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_widget)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_arrow
+      if !has_arrow.nil?
         (_names.to_unsafe + _n).value = "has-arrow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_arrow)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if mnemonics_visible
+      if !mnemonics_visible.nil?
         (_names.to_unsafe + _n).value = "mnemonics-visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mnemonics_visible)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if pointing_to
+      if !pointing_to.nil?
         (_names.to_unsafe + _n).value = "pointing-to".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pointing_to)
         _n += 1
       end
-      if position
+      if !position.nil?
         (_names.to_unsafe + _n).value = "position".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, position)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Popover.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -446,100 +462,107 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "position", pointerof(value), Pointer(Void).null)
-      Gtk::PositionType.from_value(value)
+      Gtk::PositionType.new(value)
     end
 
+    # Creates a new `GtkPopover`.
     def initialize
       # gtk_popover_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Returns whether the popover is modal.
+    #
+    # See `Gtk::Popover#autohide=` for the
+    # implications of this.
     def autohide : Bool
       # gtk_popover_get_autohide: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_get_autohide(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the popover will close after a modal child is closed.
     def cascade_popdown : Bool
       # gtk_popover_get_cascade_popdown: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_get_cascade_popdown(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the child widget of @popover.
     def child : Gtk::Widget?
       # gtk_popover_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets whether this popover is showing an arrow
+    # pointing at the widget that it is relative to.
     def has_arrow : Bool
       # gtk_popover_get_has_arrow: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_get_has_arrow(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether mnemonics are visible.
     def mnemonics_visible : Bool
       # gtk_popover_get_mnemonics_visible: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_get_mnemonics_visible(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the offset previous set with gtk_popover_set_offset().
     def offset(x_offset : Int32?, y_offset : Int32?) : Nil
       # gtk_popover_get_offset: (Method)
       # @x_offset: (out) (transfer full) (nullable)
       # @y_offset: (out) (transfer full) (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       x_offset = if x_offset.nil?
                    Int32.null
                  else
                    x_offset.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       y_offset = if y_offset.nil?
                    Int32.null
                  else
@@ -552,39 +575,48 @@ module Gtk
       # Return value handling
     end
 
+    # Gets the rectangle that the popover points to.
+    #
+    # If a rectangle to point to has been set, this function will
+    # return %TRUE and fill in @rect with such rectangle, otherwise
+    # it will return %FALSE and fill in @rect with the parent
+    # widget coordinates.
     def pointing_to : Gdk::Rectangle
       # gtk_popover_get_pointing_to: (Method | Getter)
       # @rect: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
 
       # C call
       _retval = LibGtk.gtk_popover_get_pointing_to(self, rect)
 
       # Return value handling
+
       rect
     end
 
+    # Returns the preferred position of @popover.
     def position : Gtk::PositionType
       # gtk_popover_get_position: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_get_position(self)
 
       # Return value handling
-      Gtk::PositionType.from_value(_retval)
+
+      Gtk::PositionType.new(_retval)
     end
 
+    # Pops @popover down.
+    #
+    # This may have the side-effect of closing a parent popover
+    # as well. See [property@Gtk.Popover:cascade-popdown].
     def popdown : Nil
       # gtk_popover_popdown: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_popover_popdown(self)
@@ -592,11 +624,10 @@ module Gtk
       # Return value handling
     end
 
+    # Pops @popover up.
     def popup : Nil
       # gtk_popover_popup: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_popover_popup(self)
@@ -604,11 +635,10 @@ module Gtk
       # Return value handling
     end
 
+    # Presents the popover to the user.
     def present : Nil
       # gtk_popover_present: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_popover_present(self)
@@ -616,11 +646,18 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether @popover is modal.
+    #
+    # A modal popover will grab the keyboard focus on it when being
+    # displayed. Focus will wrap around within the popover. Clicking
+    # outside the popover area or pressing Esc will dismiss the popover.
+    #
+    # Called this function on an already showing popup with a new
+    # autohide value different from the current one, will cause the
+    # popup to be hidden.
     def autohide=(autohide : Bool) : Nil
       # gtk_popover_set_autohide: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_popover_set_autohide(self, autohide)
@@ -628,11 +665,13 @@ module Gtk
       # Return value handling
     end
 
+    # If @cascade_popdown is %TRUE, the popover will be
+    # closed when a child modal popover is closed.
+    #
+    # If %FALSE, @popover will stay visible.
     def cascade_popdown=(cascade_popdown : Bool) : Nil
       # gtk_popover_set_cascade_popdown: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_popover_set_cascade_popdown(self, cascade_popdown)
@@ -640,12 +679,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the child widget of @popover.
     def child=(child : Gtk::Widget?) : Nil
       # gtk_popover_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       child = if child.nil?
                 Pointer(Void).null
               else
@@ -658,12 +698,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the default widget of a `GtkPopover`.
+    #
+    # The default widget is the widget that’s activated when the user
+    # presses Enter in a dialog (for example). This function sets or
+    # unsets the default widget for a `GtkPopover`.
     def default_widget=(widget : Gtk::Widget?) : Nil
       # gtk_popover_set_default_widget: (Method | Setter)
       # @widget: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       widget = if widget.nil?
                  Pointer(Void).null
                else
@@ -676,11 +721,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether this popover should draw an arrow
+    # pointing at the widget it is relative to.
     def has_arrow=(has_arrow : Bool) : Nil
       # gtk_popover_set_has_arrow: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_popover_set_has_arrow(self, has_arrow)
@@ -688,11 +733,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether mnemonics should be visible.
     def mnemonics_visible=(mnemonics_visible : Bool) : Nil
       # gtk_popover_set_mnemonics_visible: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_popover_set_mnemonics_visible(self, mnemonics_visible)
@@ -700,11 +744,14 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the offset to use when calculating the position
+    # of the popover.
+    #
+    # These values are used when preparing the `Gdk#PopupLayout`
+    # for positioning the popover.
     def set_offset(x_offset : Int32, y_offset : Int32) : Nil
       # gtk_popover_set_offset: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_popover_set_offset(self, x_offset, y_offset)
@@ -712,12 +759,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the rectangle that @popover points to.
+    #
+    # This is in the coordinate space of the @popover parent.
     def pointing_to=(rect : Gdk::Rectangle?) : Nil
       # gtk_popover_set_pointing_to: (Method | Setter)
       # @rect: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       rect = if rect.nil?
                Pointer(Void).null
              else
@@ -730,11 +780,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the preferred position for @popover to appear.
+    #
+    # If the @popover is currently visible, it will be immediately
+    # updated.
+    #
+    # This preference will be respected where possible, although
+    # on lack of space (eg. if close to the window edges), the
+    # `GtkPopover` may choose to appear on the opposite side.
     def position=(position : Gtk::PositionType) : Nil
       # gtk_popover_set_position: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_popover_set_position(self, position)
@@ -742,6 +798,9 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted whend the user activates the default widget.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
     struct ActivateDefaultSignal
       @source : GObject::Object
       @detail : String?
@@ -817,6 +876,7 @@ module Gtk
       ActivateDefaultSignal.new(self)
     end
 
+    # Emitted when the popover is closed.
     struct ClosedSignal
       @source : GObject::Object
       @detail : String?

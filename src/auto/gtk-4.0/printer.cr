@@ -4,14 +4,22 @@ module Gtk
   # A `GtkPrinter` object represents a printer.
   #
   # You only need to deal directly with printers if you use the
-  # non-portable [class@Gtk.PrintUnixDialog] API.
+  # non-portable `Gtk#PrintUnixDialog` API.
   #
   # A `GtkPrinter` allows to get status information about the printer,
   # such as its description, its location, the number of queued jobs,
   # etc. Most importantly, a `GtkPrinter` object can be used to create
-  # a [class@Gtk.PrintJob] object, which lets you print to the printer.
+  # a `Gtk#PrintJob` object, which lets you print to the printer.
+  @[GObject::GeneratedWrapper]
   class Printer < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::Printer), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -23,58 +31,62 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 10).new(LibGObject::Value.new)
       _n = 0
 
-      if accepting_jobs
+      if !accepting_jobs.nil?
         (_names.to_unsafe + _n).value = "accepting-jobs".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accepting_jobs)
         _n += 1
       end
-      if accepts_pdf
+      if !accepts_pdf.nil?
         (_names.to_unsafe + _n).value = "accepts-pdf".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accepts_pdf)
         _n += 1
       end
-      if accepts_ps
+      if !accepts_ps.nil?
         (_names.to_unsafe + _n).value = "accepts-ps".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accepts_ps)
         _n += 1
       end
-      if icon_name
+      if !icon_name.nil?
         (_names.to_unsafe + _n).value = "icon-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon_name)
         _n += 1
       end
-      if is_virtual
+      if !is_virtual.nil?
         (_names.to_unsafe + _n).value = "is-virtual".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_virtual)
         _n += 1
       end
-      if job_count
+      if !job_count.nil?
         (_names.to_unsafe + _n).value = "job-count".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, job_count)
         _n += 1
       end
-      if location
+      if !location.nil?
         (_names.to_unsafe + _n).value = "location".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, location)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if paused
+      if !paused.nil?
         (_names.to_unsafe + _n).value = "paused".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, paused)
         _n += 1
       end
-      if state_message
+      if !state_message.nil?
         (_names.to_unsafe + _n).value = "state-message".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, state_message)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Printer.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -190,110 +202,128 @@ module Gtk
       ::String.new(value)
     end
 
+    # Creates a new `GtkPrinter`.
     def initialize(name : ::String, backend : Gtk::PrintBackend, virtual_ : Bool)
       # gtk_printer_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_new(name, backend, virtual_)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns whether the printer accepts input in
+    # PDF format.
     def accepts_pdf : Bool
       # gtk_printer_accepts_pdf: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_accepts_pdf(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the printer accepts input in
+    # PostScript format.
     def accepts_ps : Bool
       # gtk_printer_accepts_ps: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_accepts_ps(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Compares two printers.
     def compare(b : Gtk::Printer) : Int32
       # gtk_printer_compare: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_compare(self, b)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the backend of the printer.
     def backend : Gtk::PrintBackend
       # gtk_printer_get_backend: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_get_backend(self)
 
       # Return value handling
+
       Gtk::PrintBackend.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns the printer’s capabilities.
+    #
+    # This is useful when you’re using `GtkPrintUnixDialog`’s
+    # manual-capabilities setting and need to know which settings
+    # the printer can handle and which you must handle yourself.
+    #
+    # This will return 0 unless the printer’s details are
+    # available, see `Gtk::Printer#has_details` and
+    # `Gtk::Printer#request_details`.
     def capabilities : Gtk::PrintCapabilities
       # gtk_printer_get_capabilities: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_get_capabilities(self)
 
       # Return value handling
-      Gtk::PrintCapabilities.from_value(_retval)
+
+      Gtk::PrintCapabilities.new(_retval)
     end
 
+    # Returns default page size of @printer.
     def default_page_size : Gtk::PageSetup
       # gtk_printer_get_default_page_size: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_get_default_page_size(self)
 
       # Return value handling
+
       Gtk::PageSetup.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the description of the printer.
     def description : ::String
       # gtk_printer_get_description: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_get_description(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Retrieve the hard margins of @printer.
+    #
+    # These are the margins that define the area at the borders
+    # of the paper that the printer cannot print to.
+    #
+    # Note: This will not succeed unless the printer’s details are
+    # available, see `Gtk::Printer#has_details` and
+    # `Gtk::Printer#request_details`.
     def hard_margins(top : Float64, bottom : Float64, left : Float64, right : Float64) : Bool
       # gtk_printer_get_hard_margins: (Method)
       # @top: (out) (transfer full)
@@ -302,15 +332,22 @@ module Gtk
       # @right: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_printer_get_hard_margins(self, top, bottom, left, right)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Retrieve the hard margins of @printer for @paper_size.
+    #
+    # These are the margins that define the area at the borders
+    # of the paper that the printer cannot print to.
+    #
+    # Note: This will not succeed unless the printer’s details are
+    # available, see `Gtk::Printer#has_details` and
+    # `Gtk::Printer#request_details`.
     def hard_margins_for_paper_size(paper_size : Gtk::PaperSize, top : Float64, bottom : Float64, left : Float64, right : Float64) : Bool
       # gtk_printer_get_hard_margins_for_paper_size: (Method)
       # @top: (out) (transfer full)
@@ -319,176 +356,189 @@ module Gtk
       # @right: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_printer_get_hard_margins_for_paper_size(self, paper_size, top, bottom, left, right)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the name of the icon to use for the printer.
     def icon_name : ::String
       # gtk_printer_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_get_icon_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets the number of jobs currently queued on the printer.
     def job_count : Int32
       # gtk_printer_get_job_count: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_get_job_count(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns a description of the location of the printer.
     def location : ::String
       # gtk_printer_get_location: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_get_location(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Returns the name of the printer.
     def name : ::String
       # gtk_printer_get_name: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_get_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Returns the state message describing the current state
+    # of the printer.
     def state_message : ::String
       # gtk_printer_get_state_message: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_get_state_message(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Returns whether the printer details are available.
     def has_details : Bool
       # gtk_printer_has_details: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_has_details(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the printer is accepting jobs
     def is_accepting_jobs : Bool
       # gtk_printer_is_accepting_jobs: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_is_accepting_jobs(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the printer is currently active (i.e.
+    # accepts new jobs).
     def is_active : Bool
       # gtk_printer_is_active: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_is_active(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the printer is the default printer.
     def is_default : Bool
       # gtk_printer_is_default: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_is_default(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the printer is currently paused.
+    #
+    # A paused printer still accepts jobs, but it is not
+    # printing them.
     def is_paused : Bool
       # gtk_printer_is_paused: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_is_paused(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the printer is virtual (i.e. does not
+    # represent actual printer hardware, but something like
+    # a CUPS class).
     def is_virtual : Bool
       # gtk_printer_is_virtual: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_is_virtual(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Lists all the paper sizes @printer supports.
+    #
+    # This will return and empty list unless the printer’s details
+    # are available, see `Gtk::Printer#has_details` and
+    # `Gtk::Printer#request_details`.
     def list_papers : GLib::List
       # gtk_printer_list_papers: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_printer_list_papers(self)
 
       # Return value handling
+
       GLib::List(Gtk::PageSetup).new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Requests the printer details.
+    #
+    # When the details are available, the
+    # [signal@Gtk.Printer::details-acquired] signal
+    # will be emitted on @printer.
     def request_details : Nil
       # gtk_printer_request_details: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_printer_request_details(self)
@@ -496,6 +546,11 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted in response to a request for detailed information
+    # about a printer from the print backend.
+    #
+    # The @success parameter indicates if the information was
+    # actually obtained.
     struct DetailsAcquiredSignal
       @source : GObject::Object
       @detail : String?

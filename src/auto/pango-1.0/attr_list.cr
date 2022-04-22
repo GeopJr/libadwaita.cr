@@ -4,7 +4,7 @@ module Pango
   #
   # The attributes in a `PangoAttrList` are, in general, allowed to overlap in
   # an arbitrary fashion. However, if the attributes are manipulated only through
-  # [method@Pango.AttrList.change], the overlap between properties will meet
+  # `Pango::AttrList#change`, the overlap between properties will meet
   # stricter criteria.
   #
   # Since the `PangoAttrList` structure is stored as a linear list, it is not
@@ -14,7 +14,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(AttrList.g_type, pointer)
@@ -27,6 +27,10 @@ module Pango
       LibGObject.g_boxed_free(AttrList.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::AttrList)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibPango.pango_attr_list_get_type
@@ -36,12 +40,11 @@ module Pango
       # pango_attr_list_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_list_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -49,9 +52,6 @@ module Pango
       # pango_attr_list_change: (Method)
       # @attr: (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
-      LibGObject.g_object_ref(attr)
 
       # C call
       LibPango.pango_attr_list_change(self, attr)
@@ -63,12 +63,11 @@ module Pango
       # pango_attr_list_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_list_copy(self)
 
       # Return value handling
+
       Pango::AttrList.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -76,12 +75,11 @@ module Pango
       # pango_attr_list_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_list_equal(self, other_list)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -90,7 +88,7 @@ module Pango
       # @data: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(Void).null
              else
@@ -101,6 +99,7 @@ module Pango
       _retval = LibPango.pango_attr_list_filter(self, func, data)
 
       # Return value handling
+
       Pango::AttrList.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -108,12 +107,11 @@ module Pango
       # pango_attr_list_get_attributes: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_list_get_attributes(self)
 
       # Return value handling
+
       GLib::SList(Pango::Attribute).new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -121,12 +119,11 @@ module Pango
       # pango_attr_list_get_iterator: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_list_get_iterator(self)
 
       # Return value handling
+
       Pango::AttrIterator.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -134,9 +131,6 @@ module Pango
       # pango_attr_list_insert: (Method)
       # @attr: (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
-      LibGObject.g_object_ref(attr)
 
       # C call
       LibPango.pango_attr_list_insert(self, attr)
@@ -149,9 +143,6 @@ module Pango
       # @attr: (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-      LibGObject.g_object_ref(attr)
-
       # C call
       LibPango.pango_attr_list_insert_before(self, attr)
 
@@ -162,20 +153,17 @@ module Pango
       # pango_attr_list_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_list_ref(self)
 
       # Return value handling
+
       Pango::AttrList.new(_retval, GICrystal::Transfer::Full)
     end
 
     def splice(other : Pango::AttrList, pos : Int32, len : Int32) : Nil
       # pango_attr_list_splice: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_attr_list_splice(self, other, pos, len)
@@ -187,20 +175,17 @@ module Pango
       # pango_attr_list_to_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_list_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
     def unref : Nil
       # pango_attr_list_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_attr_list_unref(self)
@@ -212,8 +197,6 @@ module Pango
       # pango_attr_list_update: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibPango.pango_attr_list_update(self, pos, remove, add)
 
@@ -224,12 +207,11 @@ module Pango
       # pango_attr_list_from_string: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_list_from_string(text)
 
       # Return value handling
+
       Pango::AttrList.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 

@@ -4,7 +4,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Triangle))
@@ -24,39 +24,40 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Triangle)).zero?
+    end
+
     def a : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def a=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Triangle))
       value
     end
 
     def b : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def b=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Triangle))
       value
     end
 
     def c : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 32).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def c=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 32).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Triangle))
       value
     end
 
@@ -69,12 +70,11 @@ module Graphene
       # graphene_triangle_alloc: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_triangle_alloc
 
       # Return value handling
+
       Graphene::Triangle.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -82,12 +82,11 @@ module Graphene
       # graphene_triangle_contains_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_triangle_contains_point(self, p)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -95,20 +94,17 @@ module Graphene
       # graphene_triangle_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_triangle_equal(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # graphene_triangle_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_triangle_free(self)
@@ -120,12 +116,11 @@ module Graphene
       # graphene_triangle_get_area: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_triangle_get_area(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -135,18 +130,21 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       p = if p.nil?
             Pointer(Void).null
           else
             p.to_unsafe
           end
+
+      # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
 
       # C call
       _retval = LibGraphene.graphene_triangle_get_barycoords(self, p, res)
 
       # Return value handling
+
       res
     end
 
@@ -155,13 +153,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
 
       # C call
       LibGraphene.graphene_triangle_get_bounding_box(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -170,13 +169,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
 
       # C call
       LibGraphene.graphene_triangle_get_midpoint(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -185,13 +185,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
 
       # C call
       LibGraphene.graphene_triangle_get_normal(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -200,13 +201,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
 
       # C call
       LibGraphene.graphene_triangle_get_plane(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -217,16 +219,24 @@ module Graphene
       # @c: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       a = Pointer(Void).null
-      b = Pointer(Void).null
-      c = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       a = Graphene::Point3D.new
+      # Generator::OutArgUsedInReturnPlan
+      b = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      b = Graphene::Point3D.new
+      # Generator::OutArgUsedInReturnPlan
+      c = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      c = Graphene::Point3D.new
 
       # C call
       LibGraphene.graphene_triangle_get_points(self, a, b, c)
 
       # Return value handling
+
       a
     end
 
@@ -236,18 +246,21 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       p = if p.nil?
             Pointer(Void).null
           else
             p.to_unsafe
           end
+
+      # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
 
       # C call
       _retval = LibGraphene.graphene_triangle_get_uv(self, p, uv_a, uv_b, uv_c, res)
 
       # Return value handling
+
       res
     end
 
@@ -258,16 +271,24 @@ module Graphene
       # @c: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       a = Pointer(Void).null
-      b = Pointer(Void).null
-      c = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       a = Graphene::Vec3.new
+      # Generator::OutArgUsedInReturnPlan
+      b = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      b = Graphene::Vec3.new
+      # Generator::OutArgUsedInReturnPlan
+      c = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      c = Graphene::Vec3.new
 
       # C call
       LibGraphene.graphene_triangle_get_vertices(self, a, b, c)
 
       # Return value handling
+
       a
     end
 
@@ -278,17 +299,20 @@ module Graphene
       # @c: (array fixed-size=3 element-type Float)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayArgPlan
       a = a.to_a.to_unsafe
 
+      # Generator::ArrayArgPlan
       b = b.to_a.to_unsafe
 
+      # Generator::ArrayArgPlan
       c = c.to_a.to_unsafe
 
       # C call
       _retval = LibGraphene.graphene_triangle_init_from_float(self, a, b, c)
 
       # Return value handling
+
       Graphene::Triangle.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -299,17 +323,21 @@ module Graphene
       # @c: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       a = if a.nil?
             Pointer(Void).null
           else
             a.to_unsafe
           end
+
+      # Generator::NullableArrayPlan
       b = if b.nil?
             Pointer(Void).null
           else
             b.to_unsafe
           end
+
+      # Generator::NullableArrayPlan
       c = if c.nil?
             Pointer(Void).null
           else
@@ -320,6 +348,7 @@ module Graphene
       _retval = LibGraphene.graphene_triangle_init_from_point3d(self, a, b, c)
 
       # Return value handling
+
       Graphene::Triangle.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -330,17 +359,21 @@ module Graphene
       # @c: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       a = if a.nil?
             Pointer(Void).null
           else
             a.to_unsafe
           end
+
+      # Generator::NullableArrayPlan
       b = if b.nil?
             Pointer(Void).null
           else
             b.to_unsafe
           end
+
+      # Generator::NullableArrayPlan
       c = if c.nil?
             Pointer(Void).null
           else
@@ -351,6 +384,7 @@ module Graphene
       _retval = LibGraphene.graphene_triangle_init_from_vec3(self, a, b, c)
 
       # Return value handling
+
       Graphene::Triangle.new(_retval, GICrystal::Transfer::None)
     end
 

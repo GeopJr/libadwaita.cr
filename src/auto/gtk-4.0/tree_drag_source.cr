@@ -5,12 +5,11 @@ module Gtk
       # gtk_tree_drag_source_drag_data_delete: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_drag_source_drag_data_delete(self, path)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -18,12 +17,11 @@ module Gtk
       # gtk_tree_drag_source_drag_data_get: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_drag_source_drag_data_get(self, path)
 
       # Return value handling
+
       Gdk::ContentProvider.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -31,12 +29,11 @@ module Gtk
       # gtk_tree_drag_source_row_draggable: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_drag_source_row_draggable(self, path)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -44,6 +41,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class TreeDragSource__Impl < GObject::Object
     include TreeDragSource
 

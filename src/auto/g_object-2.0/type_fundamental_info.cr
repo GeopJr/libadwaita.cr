@@ -5,7 +5,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::TypeFundamentalInfo))
@@ -23,15 +23,18 @@ module GObject
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::TypeFundamentalInfo)).zero?
+    end
+
     def type_flags : GObject::TypeFundamentalFlags
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
-      GObject::TypeFundamentalFlags.from_value(_var.value)
+      GObject::TypeFundamentalFlags.new(_var)
     end
 
     def type_flags=(value : GObject::TypeFundamentalFlags)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(UInt32)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(UInt32))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeFundamentalInfo))
       value
     end
 

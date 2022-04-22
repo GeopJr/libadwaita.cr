@@ -5,8 +5,16 @@ module Gtk
   #
   # Whenever the angle between both handled sequences changes, the
   # [signal@Gtk.GestureRotate::angle-changed] signal is emitted.
+  @[GObject::GeneratedWrapper]
   class GestureRotate < Gesture
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::GestureRotateClass), class_init,
+        sizeof(LibGtk::GestureRotate), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -18,33 +26,37 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 5).new(LibGObject::Value.new)
       _n = 0
 
-      if n_points
+      if !n_points.nil?
         (_names.to_unsafe + _n).value = "n-points".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, n_points)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(GestureRotate.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -52,32 +64,38 @@ module Gtk
       LibGtk.gtk_gesture_rotate_get_type
     end
 
+    # Returns a newly created `GtkGesture` that recognizes 2-touch
+    # rotation gestures.
     def initialize
       # gtk_gesture_rotate_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_gesture_rotate_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the angle delta in radians.
+    #
+    # If @gesture is active, this function returns the angle difference
+    # in radians since the gesture was first recognized. If @gesture is
+    # not active, 0 is returned.
     def angle_delta : Float64
       # gtk_gesture_rotate_get_angle_delta: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_gesture_rotate_get_angle_delta(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Emitted when the angle between both tracked points changes.
     struct AngleChangedSignal
       @source : GObject::Object
       @detail : String?

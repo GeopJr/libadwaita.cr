@@ -6,7 +6,7 @@ module GModule
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = pointer
     end
@@ -14,24 +14,25 @@ module GModule
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGModule::Module)).zero?
+    end
+
     def close : Bool
       # g_module_close: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGModule.g_module_close(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def make_resident : Nil
       # g_module_make_resident: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGModule.g_module_make_resident(self)
@@ -43,12 +44,11 @@ module GModule
       # g_module_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGModule.g_module_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -57,7 +57,7 @@ module GModule
       # @symbol: (out) (transfer full) (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       symbol = if symbol.nil?
                  Pointer(Void).null
                else
@@ -68,6 +68,7 @@ module GModule
       _retval = LibGModule.g_module_symbol(self, symbol_name, symbol)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -76,7 +77,7 @@ module GModule
       # @directory: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       directory = if directory.nil?
                     Pointer(LibC::Char).null
                   else
@@ -87,6 +88,7 @@ module GModule
       _retval = LibGModule.g_module_build_path(directory, module_name)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -94,12 +96,11 @@ module GModule
       # g_module_error: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGModule.g_module_error
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -107,12 +108,11 @@ module GModule
       # g_module_error_quark: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGModule.g_module_error_quark
 
       # Return value handling
+
       _retval
     end
 
@@ -120,12 +120,11 @@ module GModule
       # g_module_supported: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGModule.g_module_supported
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 

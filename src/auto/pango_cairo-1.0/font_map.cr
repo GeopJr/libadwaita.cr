@@ -9,12 +9,11 @@ module PangoCairo
       # pango_cairo_font_map_get_default: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPangoCairo.pango_cairo_font_map_get_default
 
       # Return value handling
+
       Pango::FontMap.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -22,12 +21,11 @@ module PangoCairo
       # pango_cairo_font_map_new: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPangoCairo.pango_cairo_font_map_new
 
       # Return value handling
+
       Pango::FontMap.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -35,12 +33,11 @@ module PangoCairo
       # pango_cairo_font_map_new_for_font_type: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPangoCairo.pango_cairo_font_map_new_for_font_type(fonttype)
 
       # Return value handling
+
       Pango::FontMap.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -48,33 +45,29 @@ module PangoCairo
       # pango_cairo_font_map_get_font_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPangoCairo.pango_cairo_font_map_get_font_type(self)
 
       # Return value handling
-      Cairo::FontType.from_value(_retval)
+
+      Cairo::FontType.new(_retval)
     end
 
     def resolution : Float64
       # pango_cairo_font_map_get_resolution: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPangoCairo.pango_cairo_font_map_get_resolution(self)
 
       # Return value handling
+
       _retval
     end
 
     def set_default : Nil
       # pango_cairo_font_map_set_default: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPangoCairo.pango_cairo_font_map_set_default(self)
@@ -86,8 +79,6 @@ module PangoCairo
       # pango_cairo_font_map_set_resolution: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibPangoCairo.pango_cairo_font_map_set_resolution(self, dpi)
 
@@ -98,6 +89,7 @@ module PangoCairo
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class FontMap__Impl < GObject::Object
     include FontMap
 

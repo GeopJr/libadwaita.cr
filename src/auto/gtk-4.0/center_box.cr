@@ -13,9 +13,9 @@ module Gtk
   #
   # ![An example GtkCenterBox](centerbox.png)
   #
-  # To add children to `GtkCenterBox`, use [method@Gtk.CenterBox.set_start_widget],
-  # [method@Gtk.CenterBox.set_center_widget] and
-  # [method@Gtk.CenterBox.set_end_widget].
+  # To add children to `GtkCenterBox`, use `Gtk::CenterBox#start_widget=`,
+  # `Gtk::CenterBox#center_widget=` and
+  # `Gtk::CenterBox#end_widget=`.
   #
   # The sizing and positioning of children can be influenced with the
   # align and expand properties of the children.
@@ -40,6 +40,7 @@ module Gtk
   # # Accessibility
   #
   # `GtkCenterBox` uses the %GTK_ACCESSIBLE_ROLE_GROUP role.
+  @[GObject::GeneratedWrapper]
   class CenterBox < Widget
     include Accessible
     include Buildable
@@ -47,6 +48,13 @@ module Gtk
     include Orientable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::CenterBoxClass), class_init,
+        sizeof(LibGtk::CenterBox), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -58,193 +66,198 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 37).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if baseline_position
+      if !baseline_position.nil?
         (_names.to_unsafe + _n).value = "baseline-position".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, baseline_position)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(CenterBox.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -264,80 +277,85 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "baseline-position", pointerof(value), Pointer(Void).null)
-      Gtk::BaselinePosition.from_value(value)
+      Gtk::BaselinePosition.new(value)
     end
 
+    # Creates a new `GtkCenterBox`.
     def initialize
       # gtk_center_box_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_center_box_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Gets the value set by gtk_center_box_set_baseline_position().
     def baseline_position : Gtk::BaselinePosition
       # gtk_center_box_get_baseline_position: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_center_box_get_baseline_position(self)
 
       # Return value handling
-      Gtk::BaselinePosition.from_value(_retval)
+
+      Gtk::BaselinePosition.new(_retval)
     end
 
+    # Gets the center widget, or %NULL if there is none.
     def center_widget : Gtk::Widget?
       # gtk_center_box_get_center_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_center_box_get_center_widget(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the end widget, or %NULL if there is none.
     def end_widget : Gtk::Widget?
       # gtk_center_box_get_end_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_center_box_get_end_widget(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the start widget, or %NULL if there is none.
     def start_widget : Gtk::Widget?
       # gtk_center_box_get_start_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_center_box_get_start_widget(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets the baseline position of a center box.
+    #
+    # This affects only horizontal boxes with at least one baseline
+    # aligned child. If there is more vertical space available than
+    # requested, and the baseline is not allocated by the parent then
+    # @position is used to allocate the baseline wrt. the extra space
+    # available.
     def baseline_position=(position : Gtk::BaselinePosition) : Nil
       # gtk_center_box_set_baseline_position: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_center_box_set_baseline_position(self, position)
@@ -345,12 +363,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the center widget.
+    #
+    # To remove the existing center widget, pas %NULL.
     def center_widget=(child : Gtk::Widget?) : Nil
       # gtk_center_box_set_center_widget: (Method)
       # @child: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       child = if child.nil?
                 Pointer(Void).null
               else
@@ -363,12 +384,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the end widget.
+    #
+    # To remove the existing end widget, pass %NULL.
     def end_widget=(child : Gtk::Widget?) : Nil
       # gtk_center_box_set_end_widget: (Method)
       # @child: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       child = if child.nil?
                 Pointer(Void).null
               else
@@ -381,12 +405,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the start widget.
+    #
+    # To remove the existing start widget, pass %NULL.
     def start_widget=(child : Gtk::Widget?) : Nil
       # gtk_center_box_set_start_widget: (Method)
       # @child: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       child = if child.nil?
                 Pointer(Void).null
               else

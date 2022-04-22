@@ -38,8 +38,16 @@ module Gtk
   # corresponding “set” property, e.g. “cell-background-set” corresponds
   # to “cell-background”. These “set” properties reflect whether a property
   # has been set or not. You should not set them independently.
+  @[GObject::GeneratedWrapper]
   class CellRenderer < GObject::InitiallyUnowned
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::CellRendererClass), class_init,
+        sizeof(LibGtk::CellRenderer), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -51,83 +59,88 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 15).new(LibGObject::Value.new)
       _n = 0
 
-      if cell_background
+      if !cell_background.nil?
         (_names.to_unsafe + _n).value = "cell-background".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background)
         _n += 1
       end
-      if cell_background_rgba
+      if !cell_background_rgba.nil?
         (_names.to_unsafe + _n).value = "cell-background-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background_rgba)
         _n += 1
       end
-      if cell_background_set
+      if !cell_background_set.nil?
         (_names.to_unsafe + _n).value = "cell-background-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background_set)
         _n += 1
       end
-      if editing
+      if !editing.nil?
         (_names.to_unsafe + _n).value = "editing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editing)
         _n += 1
       end
-      if height
+      if !height.nil?
         (_names.to_unsafe + _n).value = "height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height)
         _n += 1
       end
-      if is_expanded
+      if !is_expanded.nil?
         (_names.to_unsafe + _n).value = "is-expanded".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_expanded)
         _n += 1
       end
-      if is_expander
+      if !is_expander.nil?
         (_names.to_unsafe + _n).value = "is-expander".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_expander)
         _n += 1
       end
-      if mode
+      if !mode.nil?
         (_names.to_unsafe + _n).value = "mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mode)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width
+      if !width.nil?
         (_names.to_unsafe + _n).value = "width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width)
         _n += 1
       end
-      if xalign
+      if !xalign.nil?
         (_names.to_unsafe + _n).value = "xalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xalign)
         _n += 1
       end
-      if xpad
+      if !xpad.nil?
         (_names.to_unsafe + _n).value = "xpad".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xpad)
         _n += 1
       end
-      if yalign
+      if !yalign.nil?
         (_names.to_unsafe + _n).value = "yalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, yalign)
         _n += 1
       end
-      if ypad
+      if !ypad.nil?
         (_names.to_unsafe + _n).value = "ypad".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, ypad)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(CellRenderer.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -237,7 +250,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "mode", pointerof(value), Pointer(Void).null)
-      Gtk::CellRendererMode.from_value(value)
+      Gtk::CellRendererMode.new(value)
     end
 
     def sensitive=(value : Bool) : Bool
@@ -345,42 +358,49 @@ module Gtk
       value
     end
 
+    # Passes an activate event to the cell renderer for possible processing.
+    # Some cell renderers may use events; for example, `GtkCellRendererToggle`
+    # toggles when it gets a mouse click.
     def activate(event : Gdk::Event, widget : Gtk::Widget, path : ::String, background_area : Gdk::Rectangle, cell_area : Gdk::Rectangle, flags : Gtk::CellRendererState) : Bool
       # gtk_cell_renderer_activate: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_activate(self, event, widget, path, background_area, cell_area, flags)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the aligned area used by @cell inside @cell_area. Used for finding
+    # the appropriate edit and focus rectangle.
     def aligned_area(widget : Gtk::Widget, flags : Gtk::CellRendererState, cell_area : Gdk::Rectangle) : Gdk::Rectangle
       # gtk_cell_renderer_get_aligned_area: (Method)
       # @aligned_area: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       aligned_area = Gdk::Rectangle.new
 
       # C call
       LibGtk.gtk_cell_renderer_get_aligned_area(self, widget, flags, cell_area, aligned_area)
 
       # Return value handling
+
       aligned_area
     end
 
+    # Fills in @xalign and @yalign with the appropriate values of @cell.
     def alignment : Nil
       # gtk_cell_renderer_get_alignment: (Method)
       # @xalign: (out) (transfer full) (optional)
       # @yalign: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       xalign = Pointer(Float32).null
+      # Generator::OutArgUsedInReturnPlan
       yalign = Pointer(Float32).null
 
       # C call
@@ -389,14 +409,16 @@ module Gtk
       # Return value handling
     end
 
+    # Fills in @width and @height with the appropriate size of @cell.
     def fixed_size : Nil
       # gtk_cell_renderer_get_fixed_size: (Method)
       # @width: (out) (transfer full) (optional)
       # @height: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       width = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
 
       # C call
@@ -405,40 +427,42 @@ module Gtk
       # Return value handling
     end
 
+    # Checks whether the given `GtkCellRenderer` is expanded.
     def is_expanded : Bool
       # gtk_cell_renderer_get_is_expanded: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_get_is_expanded(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Checks whether the given `GtkCellRenderer` is an expander.
     def is_expander : Bool
       # gtk_cell_renderer_get_is_expander: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_get_is_expander(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Fills in @xpad and @ypad with the appropriate values of @cell.
     def padding : Nil
       # gtk_cell_renderer_get_padding: (Method)
       # @xpad: (out) (transfer full) (optional)
       # @ypad: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       xpad = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       ypad = Pointer(Int32).null
 
       # C call
@@ -447,14 +471,16 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieves a renderer’s natural size when rendered to @widget.
     def preferred_height(widget : Gtk::Widget) : Nil
       # gtk_cell_renderer_get_preferred_height: (Method)
       # @minimum_size: (out) (transfer full) (optional)
       # @natural_size: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_size = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       natural_size = Pointer(Int32).null
 
       # C call
@@ -463,14 +489,17 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieves a cell renderers’s minimum and natural height if it were rendered to
+    # @widget with the specified @width.
     def preferred_height_for_width(widget : Gtk::Widget, width : Int32) : Nil
       # gtk_cell_renderer_get_preferred_height_for_width: (Method)
       # @minimum_height: (out) (transfer full) (optional)
       # @natural_height: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_height = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
 
       # C call
@@ -479,32 +508,41 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieves the minimum and natural size of a cell taking
+    # into account the widget’s preference for height-for-width management.
     def preferred_size(widget : Gtk::Widget) : Gtk::Requisition
       # gtk_cell_renderer_get_preferred_size: (Method)
       # @minimum_size: (out) (caller-allocates) (optional)
       # @natural_size: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_size = Pointer(Void).null
-      natural_size = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       minimum_size = Gtk::Requisition.new
+      # Generator::OutArgUsedInReturnPlan
+      natural_size = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      natural_size = Gtk::Requisition.new
 
       # C call
       LibGtk.gtk_cell_renderer_get_preferred_size(self, widget, minimum_size, natural_size)
 
       # Return value handling
+
       minimum_size
     end
 
+    # Retrieves a renderer’s natural size when rendered to @widget.
     def preferred_width(widget : Gtk::Widget) : Nil
       # gtk_cell_renderer_get_preferred_width: (Method)
       # @minimum_size: (out) (transfer full) (optional)
       # @natural_size: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_size = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       natural_size = Pointer(Int32).null
 
       # C call
@@ -513,14 +551,17 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieves a cell renderers’s minimum and natural width if it were rendered to
+    # @widget with the specified @height.
     def preferred_width_for_height(widget : Gtk::Widget, height : Int32) : Nil
       # gtk_cell_renderer_get_preferred_width_for_height: (Method)
       # @minimum_width: (out) (transfer full) (optional)
       # @natural_width: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_width = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
 
       # C call
@@ -529,38 +570,42 @@ module Gtk
       # Return value handling
     end
 
+    # Gets whether the cell renderer prefers a height-for-width layout
+    # or a width-for-height layout.
     def request_mode : Gtk::SizeRequestMode
       # gtk_cell_renderer_get_request_mode: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_get_request_mode(self)
 
       # Return value handling
-      Gtk::SizeRequestMode.from_value(_retval)
+
+      Gtk::SizeRequestMode.new(_retval)
     end
 
+    # Returns the cell renderer’s sensitivity.
     def sensitive : Bool
       # gtk_cell_renderer_get_sensitive: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_get_sensitive(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Translates the cell renderer state to `GtkStateFlags`,
+    # based on the cell renderer and widget sensitivity, and
+    # the given `GtkCellRenderer`State.
     def state(widget : Gtk::Widget?, cell_state : Gtk::CellRendererState) : Gtk::StateFlags
       # gtk_cell_renderer_get_state: (Method)
       # @widget: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       widget = if widget.nil?
                  Pointer(Void).null
                else
@@ -571,40 +616,40 @@ module Gtk
       _retval = LibGtk.gtk_cell_renderer_get_state(self, widget, cell_state)
 
       # Return value handling
-      Gtk::StateFlags.from_value(_retval)
+
+      Gtk::StateFlags.new(_retval)
     end
 
+    # Returns the cell renderer’s visibility.
     def visible : Bool
       # gtk_cell_renderer_get_visible: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_get_visible(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Checks whether the cell renderer can do something when activated.
     def is_activatable : Bool
       # gtk_cell_renderer_is_activatable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_is_activatable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets the renderer’s alignment within its available space.
     def set_alignment(xalign : Float32, yalign : Float32) : Nil
       # gtk_cell_renderer_set_alignment: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_set_alignment(self, xalign, yalign)
@@ -612,11 +657,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the renderer size to be explicit, independent of the properties set.
     def set_fixed_size(width : Int32, height : Int32) : Nil
       # gtk_cell_renderer_set_fixed_size: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_set_fixed_size(self, width, height)
@@ -624,11 +668,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the given `GtkCellRenderer` is expanded.
     def is_expanded=(is_expanded : Bool) : Nil
       # gtk_cell_renderer_set_is_expanded: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_set_is_expanded(self, is_expanded)
@@ -636,11 +679,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the given `GtkCellRenderer` is an expander.
     def is_expander=(is_expander : Bool) : Nil
       # gtk_cell_renderer_set_is_expander: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_set_is_expander(self, is_expander)
@@ -648,11 +690,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the renderer’s padding.
     def set_padding(xpad : Int32, ypad : Int32) : Nil
       # gtk_cell_renderer_set_padding: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_set_padding(self, xpad, ypad)
@@ -660,11 +701,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the cell renderer’s sensitivity.
     def sensitive=(sensitive : Bool) : Nil
       # gtk_cell_renderer_set_sensitive: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_set_sensitive(self, sensitive)
@@ -672,11 +712,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the cell renderer’s visibility.
     def visible=(visible : Bool) : Nil
       # gtk_cell_renderer_set_visible: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_set_visible(self, visible)
@@ -684,11 +723,16 @@ module Gtk
       # Return value handling
     end
 
+    # Invokes the virtual render function of the `GtkCellRenderer`. The three
+    # passed-in rectangles are areas in @cr. Most renderers will draw within
+    # @cell_area; the xalign, yalign, xpad, and ypad fields of the `GtkCellRenderer`
+    # should be honored with respect to @cell_area. @background_area includes the
+    # blank space around the cell, and also the area containing the tree expander;
+    # so the @background_area rectangles for all cells tile to cover the entire
+    # @window.
     def snapshot(snapshot : Gtk::Snapshot, widget : Gtk::Widget, background_area : Gdk::Rectangle, cell_area : Gdk::Rectangle, flags : Gtk::CellRendererState) : Nil
       # gtk_cell_renderer_snapshot: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_snapshot(self, snapshot, widget, background_area, cell_area, flags)
@@ -696,12 +740,14 @@ module Gtk
       # Return value handling
     end
 
+    # Starts editing the contents of this @cell, through a new `GtkCellEditable`
+    # widget created by the `GtkCellRenderer`Class.start_editing virtual function.
     def start_editing(event : Gdk::Event?, widget : Gtk::Widget, path : ::String, background_area : Gdk::Rectangle, cell_area : Gdk::Rectangle, flags : Gtk::CellRendererState) : Gtk::CellEditable?
       # gtk_cell_renderer_start_editing: (Method)
       # @event: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       event = if event.nil?
                 Pointer(Void).null
               else
@@ -712,14 +758,20 @@ module Gtk
       _retval = LibGtk.gtk_cell_renderer_start_editing(self, event, widget, path, background_area, cell_area, flags)
 
       # Return value handling
+
       Gtk::CellEditable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Informs the cell renderer that the editing is stopped.
+    # If @canceled is %TRUE, the cell renderer will emit the
+    # `GtkCellRenderer`::editing-canceled signal.
+    #
+    # This function should be called by cell renderer implementations
+    # in response to the `GtkCellEditable::editing-done` signal of
+    # `GtkCellEditable`.
     def stop_editing(canceled : Bool) : Nil
       # gtk_cell_renderer_stop_editing: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_stop_editing(self, canceled)
@@ -727,6 +779,11 @@ module Gtk
       # Return value handling
     end
 
+    # This signal gets emitted when the user cancels the process of editing a
+    # cell.  For example, an editable cell renderer could be written to cancel
+    # editing when the user presses Escape.
+    #
+    # See also: gtk_cell_renderer_stop_editing().
     struct EditingCanceledSignal
       @source : GObject::Object
       @detail : String?
@@ -802,6 +859,35 @@ module Gtk
       EditingCanceledSignal.new(self)
     end
 
+    # This signal gets emitted when a cell starts to be edited.
+    # The intended use of this signal is to do special setup
+    # on @editable, e.g. adding a `GtkEntryCompletion` or setting
+    # up additional columns in a `GtkComboBox`.
+    #
+    # See gtk_cell_editable_start_editing() for information on the lifecycle of
+    # the @editable and a way to do setup that doesn’t depend on the @renderer.
+    #
+    # Note that GTK doesn't guarantee that cell renderers will
+    # continue to use the same kind of widget for editing in future
+    # releases, therefore you should check the type of @editable
+    # before doing any specific setup, as in the following example:
+    # |[<!-- language="C" -->
+    # static void
+    # text_editing_started (GtkCellRenderer *cell,
+    #                       GtkCellEditable *editable,
+    #                       const char      *path,
+    #                       gpointer         data)
+    # {
+    #   if (GTK_IS_ENTRY (editable))
+    #     {
+    #       GtkEntry *entry = GTK_ENTRY (editable);
+    #
+    #       // ... create a GtkEntryCompletion
+    #
+    #       gtk_entry_set_completion (entry, completion);
+    #     }
+    # }
+    # ]|
     struct EditingStartedSignal
       @source : GObject::Object
       @detail : String?

@@ -2,8 +2,16 @@ require "./render_node"
 
 module Gsk
   # A render node for a border.
+  @[GObject::GeneratedWrapper]
   class BorderNode < RenderNode
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGsk::BorderNode), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,60 +23,66 @@ module Gsk
       LibGsk.gsk_border_node_get_type
     end
 
+    # Creates a `GskRenderNode` that will stroke a border rectangle inside the
+    # given @outline.
+    #
+    # The 4 sides of the border can have different widths and colors.
     def initialize(outline : Gsk::RoundedRect, border_width : Enumerable(Float32), border_color : Enumerable(Gdk::RGBA))
       # gsk_border_node_new: (Constructor)
       # @border_width: (array fixed-size=4 element-type Float)
       # @border_color: (array fixed-size=4 element-type Interface)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::ArrayArgPlan
       border_width = border_width.to_a.to_unsafe
 
+      # Generator::ArrayArgPlan
       border_color = border_color.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGsk.gsk_border_node_new(outline, border_width, border_color)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Retrieves the colors of the border.
     def colors : Gdk::RGBA
       # gsk_border_node_get_colors: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_border_node_get_colors(self)
 
       # Return value handling
+
       Gdk::RGBA.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Retrieves the outline of the border.
     def outline : Gsk::RoundedRect
       # gsk_border_node_get_outline: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_border_node_get_outline(self)
 
       # Return value handling
+
       Gsk::RoundedRect.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Retrieves the stroke widths of the border.
     def widths : Enumerable(Float32)
       # gsk_border_node_get_widths: (Method)
       # Returns: (transfer none) (array fixed-size=4 element-type Float)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_border_node_get_widths(self)
 
       # Return value handling
+
       _retval
     end
   end

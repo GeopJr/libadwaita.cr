@@ -15,8 +15,16 @@ module Gio
   # g_socket_address_enumerator_next() has returned %NULL, further
   # enumeration with that #GSocketAddressEnumerator is not possible, and it can
   # be unreffed.
+  @[GObject::GeneratedWrapper]
   class SocketAddressEnumerator < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::SocketAddressEnumeratorClass), class_init,
+        sizeof(LibGio::SocketAddressEnumerator), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -28,6 +36,19 @@ module Gio
       LibGio.g_socket_address_enumerator_get_type
     end
 
+    # Retrieves the next #GSocketAddress from @enumerator. Note that this
+    # may block for some amount of time. (Eg, a #GNetworkAddress may need
+    # to do a DNS lookup before it can return an address.) Use
+    # g_socket_address_enumerator_next_async() if you need to avoid
+    # blocking.
+    #
+    # If @enumerator is expected to yield addresses, but for some reason
+    # is unable to (eg, because of a DNS error), then the first call to
+    # g_socket_address_enumerator_next() will return an appropriate error
+    # in *@error. However, if the first call to
+    # g_socket_address_enumerator_next() succeeds, then any further
+    # internal errors (other than @cancellable being triggered) will be
+    # ignored.
     def _next(cancellable : Gio::Cancellable?) : Gio::SocketAddress
       # g_socket_address_enumerator_next: (Method | Throws)
       # @cancellable: (nullable)
@@ -35,7 +56,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -47,10 +68,17 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::SocketAddress.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Asynchronously retrieves the next #GSocketAddress from @enumerator
+    # and then calls @callback, which must call
+    # g_socket_address_enumerator_next_finish() to get the result.
+    #
+    # It is an error to call this multiple times before the previous callback has finished.
     def next_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # g_socket_address_enumerator_next_async: (Method)
       # @cancellable: (nullable)
@@ -58,17 +86,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -81,20 +113,24 @@ module Gio
       # Return value handling
     end
 
+    # Retrieves the result of a completed call to
+    # g_socket_address_enumerator_next_async(). See
+    # g_socket_address_enumerator_next() for more information about
+    # error handling.
     def next_finish(result : Gio::AsyncResult) : Gio::SocketAddress
       # g_socket_address_enumerator_next_finish: (Method | Throws)
       # Returns: (transfer full)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_socket_address_enumerator_next_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::SocketAddress.new(_retval, GICrystal::Transfer::Full)
     end
   end

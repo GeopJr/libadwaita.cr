@@ -18,12 +18,11 @@ module Gio
       # g_seekable_can_seek: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_seekable_can_seek(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -31,12 +30,11 @@ module Gio
       # g_seekable_can_truncate: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_seekable_can_truncate(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -47,7 +45,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -59,7 +57,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -67,12 +67,11 @@ module Gio
       # g_seekable_tell: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_seekable_tell(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -83,7 +82,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -95,7 +94,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -103,6 +104,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Seekable__Impl < GObject::Object
     include Seekable
 

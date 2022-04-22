@@ -21,7 +21,7 @@ module Gtk
   # for the operation.
   #
   # `GtkAssistant` handles which buttons to show and to make sensitive based
-  # on page sequence knowledge and the [enum@Gtk.AssistantPageType] of each
+  # on page sequence knowledge and the `Gtk#AssistantPageType` of each
   # page in addition to state information like the *completed* and *committed*
   # page statuses.
   #
@@ -31,7 +31,7 @@ module Gtk
   #
   # `GtkAssistant` maintains a `GtkAssistantPage` object for each added
   # child, which holds additional per-child properties. You
-  # obtain the `GtkAssistantPage` for a child with [method@Gtk.Assistant.get_page].
+  # obtain the `GtkAssistantPage` for a child with `Gtk::Assistant#page`.
   #
   # # GtkAssistant as GtkBuildable
   #
@@ -48,6 +48,7 @@ module Gtk
   #
   # `GtkAssistant` has a single CSS node with the name window and style
   # class .assistant.
+  @[GObject::GeneratedWrapper]
   class Assistant < Window
     include Accessible
     include Buildable
@@ -59,6 +60,13 @@ module Gtk
     @pointer : Pointer(Void)
 
     # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::Assistant), instance_init, 0)
+    end
+
+    # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
     end
@@ -68,313 +76,318 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 61).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if application
+      if !application.nil?
         (_names.to_unsafe + _n).value = "application".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, application)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if decorated
+      if !decorated.nil?
         (_names.to_unsafe + _n).value = "decorated".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, decorated)
         _n += 1
       end
-      if default_height
+      if !default_height.nil?
         (_names.to_unsafe + _n).value = "default-height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_height)
         _n += 1
       end
-      if default_widget
+      if !default_widget.nil?
         (_names.to_unsafe + _n).value = "default-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_widget)
         _n += 1
       end
-      if default_width
+      if !default_width.nil?
         (_names.to_unsafe + _n).value = "default-width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_width)
         _n += 1
       end
-      if deletable
+      if !deletable.nil?
         (_names.to_unsafe + _n).value = "deletable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, deletable)
         _n += 1
       end
-      if destroy_with_parent
+      if !destroy_with_parent.nil?
         (_names.to_unsafe + _n).value = "destroy-with-parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, destroy_with_parent)
         _n += 1
       end
-      if display
+      if !display.nil?
         (_names.to_unsafe + _n).value = "display".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, display)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focus_visible
+      if !focus_visible.nil?
         (_names.to_unsafe + _n).value = "focus-visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_visible)
         _n += 1
       end
-      if focus_widget
+      if !focus_widget.nil?
         (_names.to_unsafe + _n).value = "focus-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_widget)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if fullscreened
+      if !fullscreened.nil?
         (_names.to_unsafe + _n).value = "fullscreened".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, fullscreened)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if handle_menubar_accel
+      if !handle_menubar_accel.nil?
         (_names.to_unsafe + _n).value = "handle-menubar-accel".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, handle_menubar_accel)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if hide_on_close
+      if !hide_on_close.nil?
         (_names.to_unsafe + _n).value = "hide-on-close".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hide_on_close)
         _n += 1
       end
-      if icon_name
+      if !icon_name.nil?
         (_names.to_unsafe + _n).value = "icon-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon_name)
         _n += 1
       end
-      if is_active
+      if !is_active.nil?
         (_names.to_unsafe + _n).value = "is-active".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_active)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if maximized
+      if !maximized.nil?
         (_names.to_unsafe + _n).value = "maximized".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, maximized)
         _n += 1
       end
-      if mnemonics_visible
+      if !mnemonics_visible.nil?
         (_names.to_unsafe + _n).value = "mnemonics-visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mnemonics_visible)
         _n += 1
       end
-      if modal
+      if !modal.nil?
         (_names.to_unsafe + _n).value = "modal".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, modal)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if pages
+      if !pages.nil?
         (_names.to_unsafe + _n).value = "pages".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pages)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if resizable
+      if !resizable.nil?
         (_names.to_unsafe + _n).value = "resizable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, resizable)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if startup_id
+      if !startup_id.nil?
         (_names.to_unsafe + _n).value = "startup-id".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, startup_id)
         _n += 1
       end
-      if title
+      if !title.nil?
         (_names.to_unsafe + _n).value = "title".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
-      if titlebar
+      if !titlebar.nil?
         (_names.to_unsafe + _n).value = "titlebar".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, titlebar)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if transient_for
+      if !transient_for.nil?
         (_names.to_unsafe + _n).value = "transient-for".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, transient_for)
         _n += 1
       end
-      if use_header_bar
+      if !use_header_bar.nil?
         (_names.to_unsafe + _n).value = "use-header-bar".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_header_bar)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Assistant.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -405,25 +418,24 @@ module Gtk
       value
     end
 
+    # Creates a new `GtkAssistant`.
     def initialize
       # gtk_assistant_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Adds a widget to the action area of a `GtkAssistant`.
     def add_action_widget(child : Gtk::Widget) : Nil
       # gtk_assistant_add_action_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_add_action_widget(self, child)
@@ -431,24 +443,32 @@ module Gtk
       # Return value handling
     end
 
+    # Appends a page to the @assistant.
     def append_page(page : Gtk::Widget) : Int32
       # gtk_assistant_append_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_append_page(self, page)
 
       # Return value handling
+
       _retval
     end
 
+    # Erases the visited page history.
+    #
+    # GTK will then hide the back button on the current page,
+    # and removes the cancel button from subsequent pages.
+    #
+    # Use this when the information provided up to the current
+    # page is hereafter deemed permanent and cannot be modified
+    # or undone. For example, showing a progress page to track
+    # a long-running, unreversible operation after the user has
+    # clicked apply on a confirmation page.
     def commit : Nil
       # gtk_assistant_commit: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_commit(self)
@@ -456,128 +476,133 @@ module Gtk
       # Return value handling
     end
 
+    # Returns the page number of the current page.
     def current_page : Int32
       # gtk_assistant_get_current_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_get_current_page(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the number of pages in the @assistant
     def n_pages : Int32
       # gtk_assistant_get_n_pages: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_get_n_pages(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the child widget contained in page number @page_num.
     def nth_page(page_num : Int32) : Gtk::Widget?
       # gtk_assistant_get_nth_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_get_nth_page(self, page_num)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the `GtkAssistantPage` object for @child.
     def page(child : Gtk::Widget) : Gtk::AssistantPage
       # gtk_assistant_get_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_get_page(self, child)
 
       # Return value handling
+
       Gtk::AssistantPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets whether @page is complete.
     def page_complete(page : Gtk::Widget) : Bool
       # gtk_assistant_get_page_complete: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_get_page_complete(self, page)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the title for @page.
     def page_title(page : Gtk::Widget) : ::String
       # gtk_assistant_get_page_title: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_get_page_title(self, page)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets the page type of @page.
     def page_type(page : Gtk::Widget) : Gtk::AssistantPageType
       # gtk_assistant_get_page_type: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_get_page_type(self, page)
 
       # Return value handling
-      Gtk::AssistantPageType.from_value(_retval)
+
+      Gtk::AssistantPageType.new(_retval)
     end
 
+    # Gets a list model of the assistant pages.
     def pages : Gio::ListModel
       # gtk_assistant_get_pages: (Method | Getter)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_get_pages(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Inserts a page in the @assistant at a given position.
     def insert_page(page : Gtk::Widget, position : Int32) : Int32
       # gtk_assistant_insert_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_insert_page(self, page, position)
 
       # Return value handling
+
       _retval
     end
 
+    # Navigate to the next page.
+    #
+    # It is a programming error to call this function when
+    # there is no next page.
+    #
+    # This function is for use when creating pages of the
+    # %GTK_ASSISTANT_PAGE_CUSTOM type.
     def next_page : Nil
       # gtk_assistant_next_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_next_page(self)
@@ -585,24 +610,29 @@ module Gtk
       # Return value handling
     end
 
+    # Prepends a page to the @assistant.
     def prepend_page(page : Gtk::Widget) : Int32
       # gtk_assistant_prepend_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_assistant_prepend_page(self, page)
 
       # Return value handling
+
       _retval
     end
 
+    # Navigate to the previous visited page.
+    #
+    # It is a programming error to call this function when
+    # no previous page is available.
+    #
+    # This function is for use when creating pages of the
+    # %GTK_ASSISTANT_PAGE_CUSTOM type.
     def previous_page : Nil
       # gtk_assistant_previous_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_previous_page(self)
@@ -610,11 +640,10 @@ module Gtk
       # Return value handling
     end
 
+    # Removes a widget from the action area of a `GtkAssistant`.
     def remove_action_widget(child : Gtk::Widget) : Nil
       # gtk_assistant_remove_action_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_remove_action_widget(self, child)
@@ -622,11 +651,10 @@ module Gtk
       # Return value handling
     end
 
+    # Removes the @page_num’s page from @assistant.
     def remove_page(page_num : Int32) : Nil
       # gtk_assistant_remove_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_remove_page(self, page_num)
@@ -634,11 +662,14 @@ module Gtk
       # Return value handling
     end
 
+    # Switches the page to @page_num.
+    #
+    # Note that this will only be necessary in custom buttons,
+    # as the @assistant flow can be set with
+    # gtk_assistant_set_forward_page_func().
     def current_page=(page_num : Int32) : Nil
       # gtk_assistant_set_current_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_set_current_page(self, page_num)
@@ -646,18 +677,27 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the page forwarding function to be @page_func.
+    #
+    # This function will be used to determine what will be
+    # the next page when the user presses the forward button.
+    # Setting @page_func to %NULL will make the assistant to
+    # use the default forward function, which just goes to the
+    # next visible page.
     def set_forward_page_func(page_func : Pointer(Void)?, data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
       # gtk_assistant_set_forward_page_func: (Method)
       # @page_func: (nullable)
       # @data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       page_func = if page_func.nil?
                     LibGtk::AssistantPageFunc.null
                   else
                     page_func.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(Void).null
              else
@@ -670,11 +710,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether @page contents are complete.
+    #
+    # This will make @assistant update the buttons state
+    # to be able to continue the task.
     def set_page_complete(page : Gtk::Widget, complete : Bool) : Nil
       # gtk_assistant_set_page_complete: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_set_page_complete(self, page, complete)
@@ -682,11 +724,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets a title for @page.
+    #
+    # The title is displayed in the header area of the assistant
+    # when @page is the current page.
     def set_page_title(page : Gtk::Widget, title : ::String) : Nil
       # gtk_assistant_set_page_title: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_set_page_title(self, page, title)
@@ -694,11 +738,12 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the page type for @page.
+    #
+    # The page type determines the page behavior in the @assistant.
     def set_page_type(page : Gtk::Widget, type : Gtk::AssistantPageType) : Nil
       # gtk_assistant_set_page_type: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_set_page_type(self, page, type)
@@ -706,11 +751,18 @@ module Gtk
       # Return value handling
     end
 
+    # Forces @assistant to recompute the buttons state.
+    #
+    # GTK automatically takes care of this in most situations,
+    # e.g. when the user goes to a different page, or when the
+    # visibility or completeness of a page changes.
+    #
+    # One situation where it can be necessary to call this
+    # function is when changing a value on the current page
+    # affects the future page flow of the assistant.
     def update_buttons_state : Nil
       # gtk_assistant_update_buttons_state: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_assistant_update_buttons_state(self)
@@ -718,6 +770,17 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when the apply button is clicked.
+    #
+    # The default behavior of the `GtkAssistant` is to switch to the page
+    # after the current page, unless the current page is the last one.
+    #
+    # A handler for the ::apply signal should carry out the actions for
+    # which the wizard has collected data. If the action takes a long time
+    # to complete, you might consider putting a page of type
+    # %GTK_ASSISTANT_PAGE_PROGRESS after the confirmation page and handle
+    # this operation within the `Gtk::Assistant::#prepare` signal of
+    # the progress page.
     struct ApplySignal
       @source : GObject::Object
       @detail : String?
@@ -793,6 +856,7 @@ module Gtk
       ApplySignal.new(self)
     end
 
+    # Emitted when then the cancel button is clicked.
     struct CancelSignal
       @source : GObject::Object
       @detail : String?
@@ -868,6 +932,9 @@ module Gtk
       CancelSignal.new(self)
     end
 
+    # Emitted either when the close button of a summary page is clicked,
+    # or when the apply button in the last page in the flow (of type
+    # %GTK_ASSISTANT_PAGE_CONFIRM) is clicked.
     struct CloseSignal
       @source : GObject::Object
       @detail : String?
@@ -943,6 +1010,7 @@ module Gtk
       CloseSignal.new(self)
     end
 
+    # The action signal for the Escape binding.
     struct EscapeSignal
       @source : GObject::Object
       @detail : String?
@@ -1018,6 +1086,11 @@ module Gtk
       EscapeSignal.new(self)
     end
 
+    # Emitted when a new page is set as the assistant's current page,
+    # before making the new page visible.
+    #
+    # A handler for this signal can do any preparations which are
+    # necessary before showing @page.
     struct PrepareSignal
       @source : GObject::Object
       @detail : String?

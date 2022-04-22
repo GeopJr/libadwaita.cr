@@ -50,12 +50,20 @@ module Gio
   #
   # An example using a proxy for a well-known name can be found in
   # [gdbus-example-watch-proxy.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-watch-proxy.c)
+  @[GObject::GeneratedWrapper]
   class DBusProxy < GObject::Object
     include AsyncInitable
     include DBusInterface
     include Initable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::DBusProxyClass), class_init,
+        sizeof(LibGio::DBusProxy), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -67,53 +75,57 @@ module Gio
       _values = StaticArray(LibGObject::Value, 9).new(LibGObject::Value.new)
       _n = 0
 
-      if g_bus_type
+      if !g_bus_type.nil?
         (_names.to_unsafe + _n).value = "g-bus-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_bus_type)
         _n += 1
       end
-      if g_connection
+      if !g_connection.nil?
         (_names.to_unsafe + _n).value = "g-connection".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_connection)
         _n += 1
       end
-      if g_default_timeout
+      if !g_default_timeout.nil?
         (_names.to_unsafe + _n).value = "g-default-timeout".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_default_timeout)
         _n += 1
       end
-      if g_flags
+      if !g_flags.nil?
         (_names.to_unsafe + _n).value = "g-flags".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_flags)
         _n += 1
       end
-      if g_interface_info
+      if !g_interface_info.nil?
         (_names.to_unsafe + _n).value = "g-interface-info".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_interface_info)
         _n += 1
       end
-      if g_interface_name
+      if !g_interface_name.nil?
         (_names.to_unsafe + _n).value = "g-interface-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_interface_name)
         _n += 1
       end
-      if g_name
+      if !g_name.nil?
         (_names.to_unsafe + _n).value = "g-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_name)
         _n += 1
       end
-      if g_name_owner
+      if !g_name_owner.nil?
         (_names.to_unsafe + _n).value = "g-name-owner".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_name_owner)
         _n += 1
       end
-      if g_object_path
+      if !g_object_path.nil?
         (_names.to_unsafe + _n).value = "g-object-path".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_object_path)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DBusProxy.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -170,7 +182,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "g-flags", pointerof(value), Pointer(Void).null)
-      Gio::DBusProxyFlags.from_value(value)
+      Gio::DBusProxyFlags.new(value)
     end
 
     def g_interface_info=(value : Gio::DBusInterfaceInfo?) : Gio::DBusInterfaceInfo?
@@ -241,40 +253,45 @@ module Gio
       ::String.new(value)
     end
 
+    # Finishes creating a #GDBusProxy.
     def self.new_finish(res : Gio::AsyncResult) : self
       # g_dbus_proxy_new_finish: (Constructor | Throws)
       # Returns: (transfer full)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_proxy_new_finish(res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DBusProxy.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Finishes creating a #GDBusProxy.
     def self.new_for_bus_finish(res : Gio::AsyncResult) : self
       # g_dbus_proxy_new_for_bus_finish: (Constructor | Throws)
       # Returns: (transfer full)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_proxy_new_for_bus_finish(res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DBusProxy.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Like g_dbus_proxy_new_sync() but takes a #GBusType instead of a #GDBusConnection.
+    #
+    # #GDBusProxy is used in this [example][gdbus-wellknown-proxy].
     def self.new_for_bus_sync(bus_type : Gio::BusType, flags : Gio::DBusProxyFlags, info : Gio::DBusInterfaceInfo?, name : ::String, object_path : ::String, interface_name : ::String, cancellable : Gio::Cancellable?) : self
       # g_dbus_proxy_new_for_bus_sync: (Constructor | Throws)
       # @info: (nullable)
@@ -283,12 +300,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       info = if info.nil?
                Pointer(Void).null
              else
                info.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -300,10 +319,34 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DBusProxy.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a proxy for accessing @interface_name on the remote object
+    # at @object_path owned by @name at @connection and synchronously
+    # loads D-Bus properties unless the
+    # %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is used.
+    #
+    # If the %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets up
+    # match rules for signals. Connect to the #GDBusProxy::g-signal signal
+    # to handle signals from the remote object.
+    #
+    # If both %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES and
+    # %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS are set, this constructor is
+    # guaranteed to return immediately without blocking.
+    #
+    # If @name is a well-known name and the
+    # %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START and %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION
+    # flags aren't set and no name owner currently exists, the message bus
+    # will be requested to launch a name owner for the name.
+    #
+    # This is a synchronous failable constructor. See g_dbus_proxy_new()
+    # and g_dbus_proxy_new_finish() for the asynchronous version.
+    #
+    # #GDBusProxy is used in this [example][gdbus-wellknown-proxy].
     def self.new_sync(connection : Gio::DBusConnection, flags : Gio::DBusProxyFlags, info : Gio::DBusInterfaceInfo?, name : ::String?, object_path : ::String, interface_name : ::String, cancellable : Gio::Cancellable?) : self
       # g_dbus_proxy_new_sync: (Constructor | Throws)
       # @info: (nullable)
@@ -313,17 +356,21 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       info = if info.nil?
                Pointer(Void).null
              else
                info.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       name = if name.nil?
                Pointer(LibC::Char).null
              else
                name.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -335,10 +382,39 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DBusProxy.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a proxy for accessing @interface_name on the remote object
+    # at @object_path owned by @name at @connection and asynchronously
+    # loads D-Bus properties unless the
+    # %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is used. Connect to
+    # the #GDBusProxy::g-properties-changed signal to get notified about
+    # property changes.
+    #
+    # If the %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets up
+    # match rules for signals. Connect to the #GDBusProxy::g-signal signal
+    # to handle signals from the remote object.
+    #
+    # If both %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES and
+    # %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS are set, this constructor is
+    # guaranteed to complete immediately without blocking.
+    #
+    # If @name is a well-known name and the
+    # %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START and %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION
+    # flags aren't set and no name owner currently exists, the message bus
+    # will be requested to launch a name owner for the name.
+    #
+    # This is a failable asynchronous constructor - when the proxy is
+    # ready, @callback will be invoked and you can use
+    # g_dbus_proxy_new_finish() to get the result.
+    #
+    # See g_dbus_proxy_new_sync() and for a synchronous version of this constructor.
+    #
+    # #GDBusProxy is used in this [example][gdbus-wellknown-proxy].
     def self.new(connection : Gio::DBusConnection, flags : Gio::DBusProxyFlags, info : Gio::DBusInterfaceInfo?, name : ::String?, object_path : ::String, interface_name : ::String, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # g_dbus_proxy_new: (None)
       # @info: (nullable)
@@ -348,27 +424,35 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       info = if info.nil?
                Pointer(Void).null
              else
                info.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       name = if name.nil?
                Pointer(LibC::Char).null
              else
                name.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -381,6 +465,9 @@ module Gio
       # Return value handling
     end
 
+    # Like g_dbus_proxy_new() but takes a #GBusType instead of a #GDBusConnection.
+    #
+    # #GDBusProxy is used in this [example][gdbus-wellknown-proxy].
     def self.new_for_bus(bus_type : Gio::BusType, flags : Gio::DBusProxyFlags, info : Gio::DBusInterfaceInfo?, name : ::String, object_path : ::String, interface_name : ::String, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # g_dbus_proxy_new_for_bus: (None)
       # @info: (nullable)
@@ -389,22 +476,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       info = if info.nil?
                Pointer(Void).null
              else
                info.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -417,6 +510,48 @@ module Gio
       # Return value handling
     end
 
+    # Asynchronously invokes the @method_name method on @proxy.
+    #
+    # If @method_name contains any dots, then @name is split into interface and
+    # method name parts. This allows using @proxy for invoking methods on
+    # other interfaces.
+    #
+    # If the #GDBusConnection associated with @proxy is closed then
+    # the operation will fail with %G_IO_ERROR_CLOSED. If
+    # @cancellable is canceled, the operation will fail with
+    # %G_IO_ERROR_CANCELLED. If @parameters contains a value not
+    # compatible with the D-Bus protocol, the operation fails with
+    # %G_IO_ERROR_INVALID_ARGUMENT.
+    #
+    # If the @parameters #GVariant is floating, it is consumed. This allows
+    # convenient 'inline' use of g_variant_new(), e.g.:
+    # |[<!-- language="C" -->
+    #  g_dbus_proxy_call (proxy,
+    #                     "TwoStrings",
+    #                     g_variant_new ("(ss)",
+    #                                    "Thing One",
+    #                                    "Thing Two"),
+    #                     G_DBUS_CALL_FLAGS_NONE,
+    #                     -1,
+    #                     NULL,
+    #                     (GAsyncReadyCallback) two_strings_done,
+    #                     &data);
+    # ]|
+    #
+    # If @proxy has an expected interface (see
+    # #GDBusProxy:g-interface-info) and @method_name is referenced by it,
+    # then the return value is checked against the return type.
+    #
+    # This is an asynchronous method. When the operation is finished,
+    # @callback will be invoked in the
+    # [thread-default main context][g-main-context-push-thread-default]
+    # of the thread you are calling this method from.
+    # You can then call g_dbus_proxy_call_finish() to get the result of
+    # the operation. See g_dbus_proxy_call_sync() for the synchronous
+    # version of this method.
+    #
+    # If @callback is %NULL then the D-Bus method call message will be sent with
+    # the %G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
     def call(method_name : ::String, parameters : _?, flags : Gio::DBusCallFlags, timeout_msec : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # g_dbus_proxy_call: (Method)
       # @parameters: (nullable)
@@ -425,28 +560,35 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       parameters = if parameters.nil?
                      Pointer(Void).null
+                   elsif !parameters.is_a?(GLib::Variant)
+                     GLib::Variant.new(parameters).to_unsafe
                    else
                      parameters.to_unsafe
                    end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
-      parameters = GLib::Variant.new(parameters) unless parameters.is_a?(GLib::Variant)
 
       # C call
       LibGio.g_dbus_proxy_call(self, method_name, parameters, flags, timeout_msec, cancellable, callback, user_data)
@@ -454,23 +596,58 @@ module Gio
       # Return value handling
     end
 
+    # Finishes an operation started with g_dbus_proxy_call().
     def call_finish(res : Gio::AsyncResult) : GLib::Variant
       # g_dbus_proxy_call_finish: (Method | Throws)
       # Returns: (transfer full)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_proxy_call_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Synchronously invokes the @method_name method on @proxy.
+    #
+    # If @method_name contains any dots, then @name is split into interface and
+    # method name parts. This allows using @proxy for invoking methods on
+    # other interfaces.
+    #
+    # If the #GDBusConnection associated with @proxy is disconnected then
+    # the operation will fail with %G_IO_ERROR_CLOSED. If
+    # @cancellable is canceled, the operation will fail with
+    # %G_IO_ERROR_CANCELLED. If @parameters contains a value not
+    # compatible with the D-Bus protocol, the operation fails with
+    # %G_IO_ERROR_INVALID_ARGUMENT.
+    #
+    # If the @parameters #GVariant is floating, it is consumed. This allows
+    # convenient 'inline' use of g_variant_new(), e.g.:
+    # |[<!-- language="C" -->
+    #  g_dbus_proxy_call_sync (proxy,
+    #                          "TwoStrings",
+    #                          g_variant_new ("(ss)",
+    #                                         "Thing One",
+    #                                         "Thing Two"),
+    #                          G_DBUS_CALL_FLAGS_NONE,
+    #                          -1,
+    #                          NULL,
+    #                          &error);
+    # ]|
+    #
+    # The calling thread is blocked until a reply is received. See
+    # g_dbus_proxy_call() for the asynchronous version of this
+    # method.
+    #
+    # If @proxy has an expected interface (see
+    # #GDBusProxy:g-interface-info) and @method_name is referenced by it,
+    # then the return value is checked against the return type.
     def call_sync(method_name : ::String, parameters : _?, flags : Gio::DBusCallFlags, timeout_msec : Int32, cancellable : Gio::Cancellable?) : GLib::Variant
       # g_dbus_proxy_call_sync: (Method | Throws)
       # @parameters: (nullable)
@@ -479,28 +656,36 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       parameters = if parameters.nil?
                      Pointer(Void).null
+                   elsif !parameters.is_a?(GLib::Variant)
+                     GLib::Variant.new(parameters).to_unsafe
                    else
                      parameters.to_unsafe
                    end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-      parameters = GLib::Variant.new(parameters) unless parameters.is_a?(GLib::Variant)
 
       # C call
       _retval = LibGio.g_dbus_proxy_call_sync(self, method_name, parameters, flags, timeout_msec, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Like g_dbus_proxy_call() but also takes a #GUnixFDList object.
+    #
+    # This method is only available on UNIX.
     def call_with_unix_fd_list(method_name : ::String, parameters : _?, flags : Gio::DBusCallFlags, timeout_msec : Int32, fd_list : Gio::UnixFDList?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # g_dbus_proxy_call_with_unix_fd_list: (Method)
       # @parameters: (nullable)
@@ -510,33 +695,42 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       parameters = if parameters.nil?
                      Pointer(Void).null
+                   elsif !parameters.is_a?(GLib::Variant)
+                     GLib::Variant.new(parameters).to_unsafe
                    else
                      parameters.to_unsafe
                    end
+
+      # Generator::NullableArrayPlan
       fd_list = if fd_list.nil?
                   Pointer(Void).null
                 else
                   fd_list.to_unsafe
                 end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
-      parameters = GLib::Variant.new(parameters) unless parameters.is_a?(GLib::Variant)
 
       # C call
       LibGio.g_dbus_proxy_call_with_unix_fd_list(self, method_name, parameters, flags, timeout_msec, fd_list, cancellable, callback, user_data)
@@ -544,6 +738,7 @@ module Gio
       # Return value handling
     end
 
+    # Finishes an operation started with g_dbus_proxy_call_with_unix_fd_list().
     def call_with_unix_fd_list_finish(res : Gio::AsyncResult) : GLib::Variant
       # g_dbus_proxy_call_with_unix_fd_list_finish: (Method | Throws)
       # @out_fd_list: (out) (transfer full) (optional)
@@ -551,7 +746,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       out_fd_list = Pointer(Pointer(Void)).null
 
       # C call
@@ -559,10 +754,15 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Like g_dbus_proxy_call_sync() but also takes and returns #GUnixFDList objects.
+    #
+    # This method is only available on UNIX.
     def call_with_unix_fd_list_sync(method_name : ::String, parameters : _?, flags : Gio::DBusCallFlags, timeout_msec : Int32, fd_list : Gio::UnixFDList?, cancellable : Gio::Cancellable?) : GLib::Variant
       # g_dbus_proxy_call_with_unix_fd_list_sync: (Method | Throws)
       # @parameters: (nullable)
@@ -573,176 +773,236 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-      out_fd_list = Pointer(Pointer(Void)).null
+      # Generator::HandmadeArgPlan
       parameters = if parameters.nil?
                      Pointer(Void).null
+                   elsif !parameters.is_a?(GLib::Variant)
+                     GLib::Variant.new(parameters).to_unsafe
                    else
                      parameters.to_unsafe
                    end
+
+      # Generator::NullableArrayPlan
       fd_list = if fd_list.nil?
                   Pointer(Void).null
                 else
                   fd_list.to_unsafe
                 end
+
+      # Generator::OutArgUsedInReturnPlan
+      out_fd_list = Pointer(Pointer(Void)).null
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-      parameters = GLib::Variant.new(parameters) unless parameters.is_a?(GLib::Variant)
 
       # C call
       _retval = LibGio.g_dbus_proxy_call_with_unix_fd_list_sync(self, method_name, parameters, flags, timeout_msec, fd_list, out_fd_list, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Looks up the value for a property from the cache. This call does no
+    # blocking IO.
+    #
+    # If @proxy has an expected interface (see
+    # #GDBusProxy:g-interface-info) and @property_name is referenced by
+    # it, then @value is checked against the type of the property.
     def cached_property(property_name : ::String) : GLib::Variant?
       # g_dbus_proxy_get_cached_property: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_cached_property(self, property_name)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Gets the names of all cached properties on @proxy.
     def cached_property_names : Enumerable(::String)?
       # g_dbus_proxy_get_cached_property_names: (Method)
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_cached_property_names(self)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Gets the connection @proxy is for.
     def connection : Gio::DBusConnection
       # g_dbus_proxy_get_connection: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_connection(self)
 
       # Return value handling
+
       Gio::DBusConnection.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the timeout to use if -1 (specifying default timeout) is
+    # passed as @timeout_msec in the g_dbus_proxy_call() and
+    # g_dbus_proxy_call_sync() functions.
+    #
+    # See the #GDBusProxy:g-default-timeout property for more details.
     def default_timeout : Int32
       # g_dbus_proxy_get_default_timeout: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_default_timeout(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the flags that @proxy was constructed with.
     def flags : Gio::DBusProxyFlags
       # g_dbus_proxy_get_flags: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_flags(self)
 
       # Return value handling
-      Gio::DBusProxyFlags.from_value(_retval)
+
+      Gio::DBusProxyFlags.new(_retval)
     end
 
+    # Returns the #GDBusInterfaceInfo, if any, specifying the interface
+    # that @proxy conforms to. See the #GDBusProxy:g-interface-info
+    # property for more details.
     def interface_info : Gio::DBusInterfaceInfo?
       # g_dbus_proxy_get_interface_info: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_interface_info(self)
 
       # Return value handling
+
       Gio::DBusInterfaceInfo.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the D-Bus interface name @proxy is for.
     def interface_name : ::String
       # g_dbus_proxy_get_interface_name: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_interface_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets the name that @proxy was constructed for.
+    #
+    # When connected to a message bus, this will usually be non-%NULL.
+    # However, it may be %NULL for a proxy that communicates using a peer-to-peer
+    # pattern.
     def name : ::String?
       # g_dbus_proxy_get_name: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_name(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # The unique name that owns the name that @proxy is for or %NULL if
+    # no-one currently owns that name. You may connect to the
+    # #GObject::notify signal to track changes to the
+    # #GDBusProxy:g-name-owner property.
     def name_owner : ::String?
       # g_dbus_proxy_get_name_owner: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_name_owner(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
+    # Gets the object path @proxy is for.
     def object_path : ::String
       # g_dbus_proxy_get_object_path: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_proxy_get_object_path(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # If @value is not %NULL, sets the cached value for the property with
+    # name @property_name to the value in @value.
+    #
+    # If @value is %NULL, then the cached value is removed from the
+    # property cache.
+    #
+    # If @proxy has an expected interface (see
+    # #GDBusProxy:g-interface-info) and @property_name is referenced by
+    # it, then @value is checked against the type of the property.
+    #
+    # If the @value #GVariant is floating, it is consumed. This allows
+    # convenient 'inline' use of g_variant_new(), e.g.
+    # |[<!-- language="C" -->
+    #  g_dbus_proxy_set_cached_property (proxy,
+    #                                    "SomeProperty",
+    #                                    g_variant_new ("(si)",
+    #                                                  "A String",
+    #                                                  42));
+    # ]|
+    #
+    # Normally you will not need to use this method since @proxy
+    # is tracking changes using the
+    # `org.freedesktop.DBus.Properties.PropertiesChanged`
+    # D-Bus signal. However, for performance reasons an object may
+    # decide to not use this signal for some properties and instead
+    # use a proprietary out-of-band mechanism to transmit changes.
+    #
+    # As a concrete example, consider an object with a property
+    # `ChatroomParticipants` which is an array of strings. Instead of
+    # transmitting the same (long) array every time the property changes,
+    # it is more efficient to only transmit the delta using e.g. signals
+    # `ChatroomParticipantJoined(String name)` and
+    # `ChatroomParticipantParted(String name)`.
     def set_cached_property(property_name : ::String, value : _?) : Nil
       # g_dbus_proxy_set_cached_property: (Method)
       # @value: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       value = if value.nil?
                 Pointer(Void).null
+              elsif !value.is_a?(GLib::Variant)
+                GLib::Variant.new(value).to_unsafe
               else
                 value.to_unsafe
               end
-      value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
 
       # C call
       LibGio.g_dbus_proxy_set_cached_property(self, property_name, value)
@@ -750,11 +1010,14 @@ module Gio
       # Return value handling
     end
 
+    # Sets the timeout to use if -1 (specifying default timeout) is
+    # passed as @timeout_msec in the g_dbus_proxy_call() and
+    # g_dbus_proxy_call_sync() functions.
+    #
+    # See the #GDBusProxy:g-default-timeout property for more details.
     def default_timeout=(timeout_msec : Int32) : Nil
       # g_dbus_proxy_set_default_timeout: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dbus_proxy_set_default_timeout(self, timeout_msec)
@@ -762,12 +1025,15 @@ module Gio
       # Return value handling
     end
 
+    # Ensure that interactions with @proxy conform to the given
+    # interface. See the #GDBusProxy:g-interface-info property for more
+    # details.
     def interface_info=(info : Gio::DBusInterfaceInfo?) : Nil
       # g_dbus_proxy_set_interface_info: (Method)
       # @info: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       info = if info.nil?
                Pointer(Void).null
              else
@@ -780,6 +1046,18 @@ module Gio
       # Return value handling
     end
 
+    # Emitted when one or more D-Bus properties on @proxy changes. The
+    # local cache has already been updated when this signal fires. Note
+    # that both @changed_properties and @invalidated_properties are
+    # guaranteed to never be %NULL (either may be empty though).
+    #
+    # If the proxy has the flag
+    # %G_DBUS_PROXY_FLAGS_GET_INVALIDATED_PROPERTIES set, then
+    # @invalidated_properties will always be empty.
+    #
+    # This signal corresponds to the
+    # `PropertiesChanged` D-Bus signal on the
+    # `org.freedesktop.DBus.Properties` interface.
     struct GPropertiesChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -864,6 +1142,11 @@ module Gio
       GPropertiesChangedSignal.new(self)
     end
 
+    # Emitted when a signal from the remote object and interface that @proxy is for, has been received.
+    #
+    # Since 2.72 this signal supports detailed connections. You can connect to
+    # the detailed signal `g-signal::x` in order to receive callbacks only when
+    # signal `x` is received from the remote object.
     struct GSignalSignal
       @source : GObject::Object
       @detail : String?

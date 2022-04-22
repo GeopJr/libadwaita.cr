@@ -5,7 +5,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGLib::SourceCallbackFuncs))
@@ -25,39 +25,44 @@ module GLib
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::SourceCallbackFuncs)).zero?
+    end
+
     def ref : Pointer(Void)
-      # Property getter
       _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def ref=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceCallbackFuncs))
       value
     end
 
     def unref : Pointer(Void)
-      # Property getter
       _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def unref=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceCallbackFuncs))
       value
     end
 
-    def get : Pointer(Void)
-      # Property getter
+    def get!
+      self.get.not_nil!
+    end
+
+    def get : Pointer(Void)?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def get=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value
+    def get=(value : Pointer(Void)?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 

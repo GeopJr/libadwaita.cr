@@ -20,12 +20,13 @@ module Adw
   # The `AdwCarousel` widget can be used to display a set of pages with
   # swipe-based navigation between them.
   #
-  # [class@CarouselIndicatorDots] and [class@CarouselIndicatorLines] can be used
+  # `#CarouselIndicatorDots` and `#CarouselIndicatorLines` can be used
   # to provide page indicators for `AdwCarousel`.
   #
   # ## CSS nodes
   #
   # `AdwCarousel` has a single CSS node with name `carousel`.
+  @[GObject::GeneratedWrapper]
   class Carousel < Gtk::Widget
     include Swipeable
     include Gtk::Accessible
@@ -34,6 +35,13 @@ module Adw
     include Gtk::Orientable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::CarouselClass), class_init,
+        sizeof(LibAdw::Carousel), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -45,233 +53,238 @@ module Adw
       _values = StaticArray(LibGObject::Value, 45).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if allow_long_swipes
+      if !allow_long_swipes.nil?
         (_names.to_unsafe + _n).value = "allow-long-swipes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allow_long_swipes)
         _n += 1
       end
-      if allow_mouse_drag
+      if !allow_mouse_drag.nil?
         (_names.to_unsafe + _n).value = "allow-mouse-drag".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allow_mouse_drag)
         _n += 1
       end
-      if allow_scroll_wheel
+      if !allow_scroll_wheel.nil?
         (_names.to_unsafe + _n).value = "allow-scroll-wheel".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allow_scroll_wheel)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if interactive
+      if !interactive.nil?
         (_names.to_unsafe + _n).value = "interactive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, interactive)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if n_pages
+      if !n_pages.nil?
         (_names.to_unsafe + _n).value = "n-pages".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, n_pages)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if position
+      if !position.nil?
         (_names.to_unsafe + _n).value = "position".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, position)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if reveal_duration
+      if !reveal_duration.nil?
         (_names.to_unsafe + _n).value = "reveal-duration".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, reveal_duration)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if scroll_params
+      if !scroll_params.nil?
         (_names.to_unsafe + _n).value = "scroll-params".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scroll_params)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if spacing
+      if !spacing.nil?
         (_names.to_unsafe + _n).value = "spacing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, spacing)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Carousel.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -400,25 +413,24 @@ module Adw
       value
     end
 
+    # Creates a new `AdwCarousel`.
     def initialize
       # adw_carousel_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Appends @child to @self.
     def append(child : Gtk::Widget) : Nil
       # adw_carousel_append: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_append(self, child)
@@ -426,141 +438,145 @@ module Adw
       # Return value handling
     end
 
+    # Gets whether to allow swiping for more than one page at a time.
     def allow_long_swipes : Bool
       # adw_carousel_get_allow_long_swipes: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_allow_long_swipes(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets whether @self can be dragged with mouse pointer.
     def allow_mouse_drag : Bool
       # adw_carousel_get_allow_mouse_drag: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_allow_mouse_drag(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self will respond to scroll wheel events.
     def allow_scroll_wheel : Bool
       # adw_carousel_get_allow_scroll_wheel: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_allow_scroll_wheel(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self can be navigated.
     def interactive : Bool
       # adw_carousel_get_interactive: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_interactive(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the number of pages in @self.
     def n_pages : UInt32
       # adw_carousel_get_n_pages: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_n_pages(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the page at position @n.
     def nth_page(n : UInt32) : Gtk::Widget
       # adw_carousel_get_nth_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_nth_page(self, n)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets current scroll position in @self.
+    #
+    # It's unitless, 1 matches 1 page.
     def position : Float64
       # adw_carousel_get_position: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_position(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets duration of the animation used when adding or removing pages.
     def reveal_duration : UInt32
       # adw_carousel_get_reveal_duration: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_reveal_duration(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the scroll animation spring parameters for @self.
     def scroll_params : Adw::SpringParams
       # adw_carousel_get_scroll_params: (Method | Getter)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_scroll_params(self)
 
       # Return value handling
+
       Adw::SpringParams.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets spacing between pages in pixels.
     def spacing : UInt32
       # adw_carousel_get_spacing: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_carousel_get_spacing(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Inserts @child into @self at position @position.
+    #
+    # If position is -1, or larger than the number of pages,
+    # @child will be appended to the end.
     def insert(child : Gtk::Widget, position : Int32) : Nil
       # adw_carousel_insert: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_insert(self, child, position)
@@ -568,11 +584,10 @@ module Adw
       # Return value handling
     end
 
+    # Prepends @child to @self.
     def prepend(child : Gtk::Widget) : Nil
       # adw_carousel_prepend: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_prepend(self, child)
@@ -580,11 +595,10 @@ module Adw
       # Return value handling
     end
 
+    # Removes @child from @self.
     def remove(child : Gtk::Widget) : Nil
       # adw_carousel_remove: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_remove(self, child)
@@ -592,11 +606,13 @@ module Adw
       # Return value handling
     end
 
+    # Moves @child into position @position.
+    #
+    # If position is -1, or larger than the number of pages, @child will be moved
+    # at the end.
     def reorder(child : Gtk::Widget, position : Int32) : Nil
       # adw_carousel_reorder: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_reorder(self, child, position)
@@ -604,11 +620,12 @@ module Adw
       # Return value handling
     end
 
+    # Scrolls to @widget.
+    #
+    # If @animate is `TRUE`, the transition will be animated.
     def scroll_to(widget : Gtk::Widget, animate : Bool) : Nil
       # adw_carousel_scroll_to: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_scroll_to(self, widget, animate)
@@ -616,11 +633,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether to allow swiping for more than one page at a time.
     def allow_long_swipes=(allow_long_swipes : Bool) : Nil
       # adw_carousel_set_allow_long_swipes: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_set_allow_long_swipes(self, allow_long_swipes)
@@ -628,11 +644,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self can be dragged with mouse pointer.
     def allow_mouse_drag=(allow_mouse_drag : Bool) : Nil
       # adw_carousel_set_allow_mouse_drag: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_set_allow_mouse_drag(self, allow_mouse_drag)
@@ -640,11 +655,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self will respond to scroll wheel events.
     def allow_scroll_wheel=(allow_scroll_wheel : Bool) : Nil
       # adw_carousel_set_allow_scroll_wheel: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_set_allow_scroll_wheel(self, allow_scroll_wheel)
@@ -652,11 +666,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self can be navigated.
     def interactive=(interactive : Bool) : Nil
       # adw_carousel_set_interactive: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_set_interactive(self, interactive)
@@ -664,11 +677,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets duration of the animation used when adding or removing pages.
     def reveal_duration=(reveal_duration : UInt32) : Nil
       # adw_carousel_set_reveal_duration: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_set_reveal_duration(self, reveal_duration)
@@ -676,11 +688,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the scroll animation spring parameters for @self.
     def scroll_params=(params : Adw::SpringParams) : Nil
       # adw_carousel_set_scroll_params: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_set_scroll_params(self, params)
@@ -688,11 +699,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets spacing between pages in pixels.
     def spacing=(spacing : UInt32) : Nil
       # adw_carousel_set_spacing: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_carousel_set_spacing(self, spacing)
@@ -700,6 +710,10 @@ module Adw
       # Return value handling
     end
 
+    # This signal is emitted after a page has been changed.
+    #
+    # It can be used to implement "infinite scrolling" by amending the pages
+    # after every scroll.
     struct PageChangedSignal
       @source : GObject::Object
       @detail : String?

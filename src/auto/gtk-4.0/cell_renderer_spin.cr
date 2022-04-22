@@ -16,8 +16,16 @@ module Gtk
   # can be set in a handler for the `GtkCellRenderer::editing-started` signal.
   #
   # The `GtkCellRendererSpin` cell renderer was added in GTK 2.10.
+  @[GObject::GeneratedWrapper]
   class CellRendererSpin < CellRendererText
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::CellRendererSpin), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -29,328 +37,333 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 64).new(LibGObject::Value.new)
       _n = 0
 
-      if adjustment
+      if !adjustment.nil?
         (_names.to_unsafe + _n).value = "adjustment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, adjustment)
         _n += 1
       end
-      if align_set
+      if !align_set.nil?
         (_names.to_unsafe + _n).value = "align-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, align_set)
         _n += 1
       end
-      if alignment
+      if !alignment.nil?
         (_names.to_unsafe + _n).value = "alignment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, alignment)
         _n += 1
       end
-      if attributes
+      if !attributes.nil?
         (_names.to_unsafe + _n).value = "attributes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, attributes)
         _n += 1
       end
-      if background
+      if !background.nil?
         (_names.to_unsafe + _n).value = "background".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, background)
         _n += 1
       end
-      if background_rgba
+      if !background_rgba.nil?
         (_names.to_unsafe + _n).value = "background-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, background_rgba)
         _n += 1
       end
-      if background_set
+      if !background_set.nil?
         (_names.to_unsafe + _n).value = "background-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, background_set)
         _n += 1
       end
-      if cell_background
+      if !cell_background.nil?
         (_names.to_unsafe + _n).value = "cell-background".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background)
         _n += 1
       end
-      if cell_background_rgba
+      if !cell_background_rgba.nil?
         (_names.to_unsafe + _n).value = "cell-background-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background_rgba)
         _n += 1
       end
-      if cell_background_set
+      if !cell_background_set.nil?
         (_names.to_unsafe + _n).value = "cell-background-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background_set)
         _n += 1
       end
-      if climb_rate
+      if !climb_rate.nil?
         (_names.to_unsafe + _n).value = "climb-rate".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, climb_rate)
         _n += 1
       end
-      if digits
+      if !digits.nil?
         (_names.to_unsafe + _n).value = "digits".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, digits)
         _n += 1
       end
-      if editable
+      if !editable.nil?
         (_names.to_unsafe + _n).value = "editable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editable)
         _n += 1
       end
-      if editable_set
+      if !editable_set.nil?
         (_names.to_unsafe + _n).value = "editable-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editable_set)
         _n += 1
       end
-      if editing
+      if !editing.nil?
         (_names.to_unsafe + _n).value = "editing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editing)
         _n += 1
       end
-      if ellipsize
+      if !ellipsize.nil?
         (_names.to_unsafe + _n).value = "ellipsize".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, ellipsize)
         _n += 1
       end
-      if ellipsize_set
+      if !ellipsize_set.nil?
         (_names.to_unsafe + _n).value = "ellipsize-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, ellipsize_set)
         _n += 1
       end
-      if family
+      if !family.nil?
         (_names.to_unsafe + _n).value = "family".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, family)
         _n += 1
       end
-      if family_set
+      if !family_set.nil?
         (_names.to_unsafe + _n).value = "family-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, family_set)
         _n += 1
       end
-      if font
+      if !font.nil?
         (_names.to_unsafe + _n).value = "font".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, font)
         _n += 1
       end
-      if font_desc
+      if !font_desc.nil?
         (_names.to_unsafe + _n).value = "font-desc".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, font_desc)
         _n += 1
       end
-      if foreground
+      if !foreground.nil?
         (_names.to_unsafe + _n).value = "foreground".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, foreground)
         _n += 1
       end
-      if foreground_rgba
+      if !foreground_rgba.nil?
         (_names.to_unsafe + _n).value = "foreground-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, foreground_rgba)
         _n += 1
       end
-      if foreground_set
+      if !foreground_set.nil?
         (_names.to_unsafe + _n).value = "foreground-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, foreground_set)
         _n += 1
       end
-      if height
+      if !height.nil?
         (_names.to_unsafe + _n).value = "height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height)
         _n += 1
       end
-      if is_expanded
+      if !is_expanded.nil?
         (_names.to_unsafe + _n).value = "is-expanded".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_expanded)
         _n += 1
       end
-      if is_expander
+      if !is_expander.nil?
         (_names.to_unsafe + _n).value = "is-expander".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_expander)
         _n += 1
       end
-      if language
+      if !language.nil?
         (_names.to_unsafe + _n).value = "language".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, language)
         _n += 1
       end
-      if language_set
+      if !language_set.nil?
         (_names.to_unsafe + _n).value = "language-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, language_set)
         _n += 1
       end
-      if markup
+      if !markup.nil?
         (_names.to_unsafe + _n).value = "markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, markup)
         _n += 1
       end
-      if max_width_chars
+      if !max_width_chars.nil?
         (_names.to_unsafe + _n).value = "max-width-chars".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_width_chars)
         _n += 1
       end
-      if mode
+      if !mode.nil?
         (_names.to_unsafe + _n).value = "mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mode)
         _n += 1
       end
-      if placeholder_text
+      if !placeholder_text.nil?
         (_names.to_unsafe + _n).value = "placeholder-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, placeholder_text)
         _n += 1
       end
-      if rise
+      if !rise.nil?
         (_names.to_unsafe + _n).value = "rise".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, rise)
         _n += 1
       end
-      if rise_set
+      if !rise_set.nil?
         (_names.to_unsafe + _n).value = "rise-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, rise_set)
         _n += 1
       end
-      if scale
+      if !scale.nil?
         (_names.to_unsafe + _n).value = "scale".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale)
         _n += 1
       end
-      if scale_set
+      if !scale_set.nil?
         (_names.to_unsafe + _n).value = "scale-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_set)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if single_paragraph_mode
+      if !single_paragraph_mode.nil?
         (_names.to_unsafe + _n).value = "single-paragraph-mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, single_paragraph_mode)
         _n += 1
       end
-      if size
+      if !size.nil?
         (_names.to_unsafe + _n).value = "size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, size)
         _n += 1
       end
-      if size_points
+      if !size_points.nil?
         (_names.to_unsafe + _n).value = "size-points".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, size_points)
         _n += 1
       end
-      if size_set
+      if !size_set.nil?
         (_names.to_unsafe + _n).value = "size-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, size_set)
         _n += 1
       end
-      if stretch
+      if !stretch.nil?
         (_names.to_unsafe + _n).value = "stretch".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, stretch)
         _n += 1
       end
-      if stretch_set
+      if !stretch_set.nil?
         (_names.to_unsafe + _n).value = "stretch-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, stretch_set)
         _n += 1
       end
-      if strikethrough
+      if !strikethrough.nil?
         (_names.to_unsafe + _n).value = "strikethrough".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, strikethrough)
         _n += 1
       end
-      if strikethrough_set
+      if !strikethrough_set.nil?
         (_names.to_unsafe + _n).value = "strikethrough-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, strikethrough_set)
         _n += 1
       end
-      if style
+      if !style.nil?
         (_names.to_unsafe + _n).value = "style".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, style)
         _n += 1
       end
-      if style_set
+      if !style_set.nil?
         (_names.to_unsafe + _n).value = "style-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, style_set)
         _n += 1
       end
-      if text
+      if !text.nil?
         (_names.to_unsafe + _n).value = "text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, text)
         _n += 1
       end
-      if underline
+      if !underline.nil?
         (_names.to_unsafe + _n).value = "underline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, underline)
         _n += 1
       end
-      if underline_set
+      if !underline_set.nil?
         (_names.to_unsafe + _n).value = "underline-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, underline_set)
         _n += 1
       end
-      if variant
+      if !variant.nil?
         (_names.to_unsafe + _n).value = "variant".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, variant)
         _n += 1
       end
-      if variant_set
+      if !variant_set.nil?
         (_names.to_unsafe + _n).value = "variant-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, variant_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if weight
+      if !weight.nil?
         (_names.to_unsafe + _n).value = "weight".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, weight)
         _n += 1
       end
-      if weight_set
+      if !weight_set.nil?
         (_names.to_unsafe + _n).value = "weight-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, weight_set)
         _n += 1
       end
-      if width
+      if !width.nil?
         (_names.to_unsafe + _n).value = "width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width)
         _n += 1
       end
-      if width_chars
+      if !width_chars.nil?
         (_names.to_unsafe + _n).value = "width-chars".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_chars)
         _n += 1
       end
-      if wrap_mode
+      if !wrap_mode.nil?
         (_names.to_unsafe + _n).value = "wrap-mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, wrap_mode)
         _n += 1
       end
-      if wrap_width
+      if !wrap_width.nil?
         (_names.to_unsafe + _n).value = "wrap-width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, wrap_width)
         _n += 1
       end
-      if xalign
+      if !xalign.nil?
         (_names.to_unsafe + _n).value = "xalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xalign)
         _n += 1
       end
-      if xpad
+      if !xpad.nil?
         (_names.to_unsafe + _n).value = "xpad".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xpad)
         _n += 1
       end
-      if yalign
+      if !yalign.nil?
         (_names.to_unsafe + _n).value = "yalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, yalign)
         _n += 1
       end
-      if ypad
+      if !ypad.nil?
         (_names.to_unsafe + _n).value = "ypad".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, ypad)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(CellRendererSpin.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -403,18 +416,18 @@ module Gtk
       value
     end
 
+    # Creates a new `GtkCellRendererSpin`.
     def initialize
       # gtk_cell_renderer_spin_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_spin_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
   end
 end

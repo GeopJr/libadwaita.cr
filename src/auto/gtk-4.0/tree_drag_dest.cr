@@ -5,13 +5,18 @@ module Gtk
       # gtk_tree_drag_dest_drag_data_received: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGtk.gtk_tree_drag_dest_drag_data_received(self, dest, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -19,13 +24,18 @@ module Gtk
       # gtk_tree_drag_dest_row_drop_possible: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGtk.gtk_tree_drag_dest_row_drop_possible(self, dest_path, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -33,6 +43,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class TreeDragDest__Impl < GObject::Object
     include TreeDragDest
 

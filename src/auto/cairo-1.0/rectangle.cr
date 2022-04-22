@@ -3,7 +3,7 @@ module Cairo
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibCairo::Rectangle))
@@ -24,50 +24,46 @@ module Cairo
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibCairo::Rectangle)).zero?
+    end
+
     def x : Float64
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Float64))
       _var.value
     end
 
     def x=(value : Float64)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Float64)).value = value
       value
     end
 
     def y : Float64
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Float64))
       _var.value
     end
 
     def y=(value : Float64)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Float64)).value = value
       value
     end
 
     def width : Float64
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Float64))
       _var.value
     end
 
     def width=(value : Float64)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Float64)).value = value
       value
     end
 
     def height : Float64
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Float64))
       _var.value
     end
 
     def height=(value : Float64)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Float64)).value = value
       value
     end

@@ -25,7 +25,206 @@ lib LibAdw
 
   # Structs
 
+  struct ActionRowClass # 552 bytes long
+    parent_class : LibAdw::PreferencesRowClass
+    activate : -> Void
+    padding : Pointer(Void)[4]
+  end
+
+  type AnimationClass = Void # Struct with zero bytes
+
+  type AnimationTargetClass = Void # Struct with zero bytes
+
+  struct ApplicationClass # 424 bytes long
+    parent_class : LibGtk::ApplicationClass
+    padding : Pointer(Void)[4]
+  end
+
+  struct ApplicationWindowClass # 608 bytes long
+    parent_class : LibGtk::ApplicationWindowClass
+    padding : Pointer(Void)[4]
+  end
+
+  struct AvatarClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct BinClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct ButtonContentClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  type CallbackAnimationTargetClass = Void # Struct with zero bytes
+
+  struct CarouselClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct CarouselIndicatorDotsClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct CarouselIndicatorLinesClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct ClampClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct ClampLayoutClass # 320 bytes long
+    parent_class : LibGtk::LayoutManagerClass
+  end
+
+  struct ClampScrollableClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct ComboRowClass # 584 bytes long
+    parent_class : LibAdw::ActionRowClass
+    padding : Pointer(Void)[4]
+  end
+
+  struct EnumListItemClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct EnumListModelClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct ExpanderRowClass # 544 bytes long
+    parent_class : LibAdw::PreferencesRowClass
+    padding : Pointer(Void)[4]
+  end
+
+  struct FlapClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct HeaderBarClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct LeafletClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct LeafletPageClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct PreferencesGroupClass # 440 bytes long
+    parent_class : LibGtk::WidgetClass
+    padding : Pointer(Void)[4]
+  end
+
+  struct PreferencesPageClass # 440 bytes long
+    parent_class : LibGtk::WidgetClass
+    padding : Pointer(Void)[4]
+  end
+
+  struct PreferencesRowClass # 512 bytes long
+    parent_class : LibGtk::ListBoxRowClass
+    padding : Pointer(Void)[4]
+  end
+
+  struct PreferencesWindowClass # 576 bytes long
+    parent_class : LibAdw::WindowClass
+    padding : Pointer(Void)[4]
+  end
+
+  struct SplitButtonClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  type SpringAnimationClass = Void # Struct with zero bytes
+
   type SpringParams = Void # Struct with zero bytes
+
+  struct SqueezerClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct SqueezerPageClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct StatusPageClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct StyleManagerClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct SwipeTrackerClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct SwipeableInterface # 88 bytes long
+    parent : LibGObject::TypeInterface
+    get_distance : -> Void
+    get_snap_points : -> Void
+    get_progress : -> Void
+    get_cancel_progress : -> Void
+    get_swipe_area : -> Void
+    padding : Pointer(Void)[4]
+  end
+
+  struct TabBarClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct TabPageClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct TabViewClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  type TimedAnimationClass = Void # Struct with zero bytes
+
+  struct ToastClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct ToastOverlayClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct ViewStackClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct ViewStackPageClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct ViewSwitcherBarClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct ViewSwitcherClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct ViewSwitcherTitleClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct WindowClass # 544 bytes long
+    parent_class : LibGtk::WindowClass
+    padding : Pointer(Void)[4]
+  end
+
+  struct WindowTitleClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
 
   # Unions
 

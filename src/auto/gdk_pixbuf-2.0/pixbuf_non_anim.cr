@@ -1,8 +1,16 @@
 require "./pixbuf_animation"
 
 module GdkPixbuf
+  @[GObject::GeneratedWrapper]
   class PixbufNonAnim < PixbufAnimation
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGdkPixbuf::PixbufNonAnim), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -18,12 +26,11 @@ module GdkPixbuf
       # gdk_pixbuf_non_anim_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_non_anim_new(pixbuf)
 
       # Return value handling
+
       @pointer = _retval
     end
   end

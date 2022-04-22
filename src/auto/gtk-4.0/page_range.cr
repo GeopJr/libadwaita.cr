@@ -1,12 +1,12 @@
 module Gtk
   # A range of pages to print.
   #
-  # See also [method@Gtk.PrintSettings.set_page_ranges].
+  # See also `Gtk::PrintSettings#page_ranges=`.
   class PageRange
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGtk::PageRange))
@@ -25,26 +25,26 @@ module Gtk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::PageRange)).zero?
+    end
+
     def start : Int32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Int32))
       _var.value
     end
 
     def start=(value : Int32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Int32)).value = value
       value
     end
 
     def end : Int32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Int32))
       _var.value
     end
 
     def end=(value : Int32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Int32)).value = value
       value
     end

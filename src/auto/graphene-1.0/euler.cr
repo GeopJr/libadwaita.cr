@@ -7,7 +7,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Euler))
@@ -26,27 +26,29 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Euler)).zero?
+    end
+
     def angles : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def angles=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Euler))
       value
     end
 
     def order : Graphene::EulerOrder
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Int32))
-      Graphene::EulerOrder.from_value(_var.value)
+      Graphene::EulerOrder.new(_var)
     end
 
     def order=(value : Graphene::EulerOrder)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Int32)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(Int32))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Euler))
       value
     end
 
@@ -59,12 +61,11 @@ module Graphene
       # graphene_euler_alloc: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_alloc
 
       # Return value handling
+
       Graphene::Euler.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -72,20 +73,17 @@ module Graphene
       # graphene_euler_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_equal(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # graphene_euler_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_euler_free(self)
@@ -97,12 +95,11 @@ module Graphene
       # graphene_euler_get_alpha: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_get_alpha(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -110,12 +107,11 @@ module Graphene
       # graphene_euler_get_beta: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_get_beta(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -123,12 +119,11 @@ module Graphene
       # graphene_euler_get_gamma: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_get_gamma(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -136,25 +131,23 @@ module Graphene
       # graphene_euler_get_order: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_get_order(self)
 
       # Return value handling
-      Graphene::EulerOrder.from_value(_retval)
+
+      Graphene::EulerOrder.new(_retval)
     end
 
     def x : Float32
       # graphene_euler_get_x: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_get_x(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -162,12 +155,11 @@ module Graphene
       # graphene_euler_get_y: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_get_y(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -175,12 +167,11 @@ module Graphene
       # graphene_euler_get_z: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_get_z(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -188,12 +179,11 @@ module Graphene
       # graphene_euler_init: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_init(self, x, y, z)
 
       # Return value handling
+
       Graphene::Euler.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -202,7 +192,7 @@ module Graphene
       # @src: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       src = if src.nil?
               Pointer(Void).null
             else
@@ -213,6 +203,7 @@ module Graphene
       _retval = LibGraphene.graphene_euler_init_from_euler(self, src)
 
       # Return value handling
+
       Graphene::Euler.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -221,7 +212,7 @@ module Graphene
       # @m: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       m = if m.nil?
             Pointer(Void).null
           else
@@ -232,6 +223,7 @@ module Graphene
       _retval = LibGraphene.graphene_euler_init_from_matrix(self, m, order)
 
       # Return value handling
+
       Graphene::Euler.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -240,7 +232,7 @@ module Graphene
       # @q: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       q = if q.nil?
             Pointer(Void).null
           else
@@ -251,6 +243,7 @@ module Graphene
       _retval = LibGraphene.graphene_euler_init_from_quaternion(self, q, order)
 
       # Return value handling
+
       Graphene::Euler.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -258,12 +251,11 @@ module Graphene
       # graphene_euler_init_from_radians: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_init_from_radians(self, x, y, z, order)
 
       # Return value handling
+
       Graphene::Euler.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -272,7 +264,7 @@ module Graphene
       # @v: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       v = if v.nil?
             Pointer(Void).null
           else
@@ -283,6 +275,7 @@ module Graphene
       _retval = LibGraphene.graphene_euler_init_from_vec3(self, v, order)
 
       # Return value handling
+
       Graphene::Euler.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -290,12 +283,11 @@ module Graphene
       # graphene_euler_init_with_order: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_euler_init_with_order(self, x, y, z, order)
 
       # Return value handling
+
       Graphene::Euler.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -304,13 +296,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Euler.new
 
       # C call
       LibGraphene.graphene_euler_reorder(self, order, res)
 
       # Return value handling
+
       res
     end
 
@@ -319,13 +312,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
 
       # C call
       LibGraphene.graphene_euler_to_matrix(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -334,13 +328,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
 
       # C call
       LibGraphene.graphene_euler_to_quaternion(self, res)
 
       # Return value handling
+
       res
     end
 
@@ -349,13 +344,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
 
       # C call
       LibGraphene.graphene_euler_to_vec3(self, res)
 
       # Return value handling
+
       res
     end
 

@@ -5,18 +5,21 @@ module Gtk
   # drawing pages for printing.
   #
   # This includes the cairo context and important parameters like page size
-  # and resolution. It also lets you easily create [class@Pango.Layout] and
-  # [class@Pango.Context] objects that match the font metrics of the cairo surface.
+  # and resolution. It also lets you easily create `Pango#Layout` and
+  # `Pango#Context` objects that match the font metrics of the cairo surface.
   #
   # `GtkPrintContext` objects get passed to the
   # [signal@Gtk.PrintOperation::begin-print],
   # [signal@Gtk.PrintOperation::end-print],
   # [signal@Gtk.PrintOperation::request-page-setup] and
   # [signal@Gtk.PrintOperation::draw-page] signals on the
-  # [class@Gtk.PrintOperation] object.
+  # `Gtk#PrintOperation` object.
   #
   # ## Using GtkPrintContext in a ::draw-page callback
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static void
   # draw_page (GtkPrintOperation *operation,
@@ -70,8 +73,16 @@ module Gtk
   #   g_object_unref (layout);
   # }
   # ```
+  @[GObject::GeneratedWrapper]
   class PrintContext < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::PrintContext), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -83,71 +94,78 @@ module Gtk
       LibGtk.gtk_print_context_get_type
     end
 
+    # Creates a new `PangoContext` that can be used with the
+    # `GtkPrintContext`.
     def create_pango_context : Pango::Context
       # gtk_print_context_create_pango_context: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_print_context_create_pango_context(self)
 
       # Return value handling
+
       Pango::Context.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a new `PangoLayout` that is suitable for use
+    # with the `GtkPrintContext`.
     def create_pango_layout : Pango::Layout
       # gtk_print_context_create_pango_layout: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_print_context_create_pango_layout(self)
 
       # Return value handling
+
       Pango::Layout.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Obtains the cairo context that is associated with the
+    # `GtkPrintContext`.
     def cairo_context : Cairo::Context
       # gtk_print_context_get_cairo_context: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_print_context_get_cairo_context(self)
 
       # Return value handling
+
       Cairo::Context.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Obtains the horizontal resolution of the `GtkPrintContext`,
+    # in dots per inch.
     def dpi_x : Float64
       # gtk_print_context_get_dpi_x: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_print_context_get_dpi_x(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Obtains the vertical resolution of the `GtkPrintContext`,
+    # in dots per inch.
     def dpi_y : Float64
       # gtk_print_context_get_dpi_y: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_print_context_get_dpi_y(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Obtains the hardware printer margins of the `GtkPrintContext`,
+    # in units.
     def hard_margins(top : Float64, bottom : Float64, left : Float64, right : Float64) : Bool
       # gtk_print_context_get_hard_margins: (Method)
       # @top: (out) (transfer full)
@@ -156,72 +174,77 @@ module Gtk
       # @right: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_print_context_get_hard_margins(self, top, bottom, left, right)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Obtains the height of the `GtkPrintContext`, in pixels.
     def height : Float64
       # gtk_print_context_get_height: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_print_context_get_height(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Obtains the `GtkPageSetup` that determines the page
+    # dimensions of the `GtkPrintContext`.
     def page_setup : Gtk::PageSetup
       # gtk_print_context_get_page_setup: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_print_context_get_page_setup(self)
 
       # Return value handling
+
       Gtk::PageSetup.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns a `PangoFontMap` that is suitable for use
+    # with the `GtkPrintContext`.
     def pango_fontmap : Pango::FontMap
       # gtk_print_context_get_pango_fontmap: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_print_context_get_pango_fontmap(self)
 
       # Return value handling
+
       Pango::FontMap.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Obtains the width of the `GtkPrintContext`, in pixels.
     def width : Float64
       # gtk_print_context_get_width: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_print_context_get_width(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Sets a new cairo context on a print context.
+    #
+    # This function is intended to be used when implementing
+    # an internal print preview, it is not needed for printing,
+    # since GTK itself creates a suitable cairo context in that
+    # case.
     def set_cairo_context(cr : Cairo::Context, dpi_x : Float64, dpi_y : Float64) : Nil
       # gtk_print_context_set_cairo_context: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_print_context_set_cairo_context(self, cr, dpi_x, dpi_y)

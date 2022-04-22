@@ -73,12 +73,11 @@ module Gio
       # g_action_name_is_valid: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_action_name_is_valid(action_name)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -90,16 +89,21 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-      target_value = GLib::Variant.new(target_value) unless target_value.is_a?(GLib::Variant)
-      LibGObject.g_object_ref(target_value)
+      # Generator::HandmadeArgPlan
+      target_value = if !target_value.is_a?(GLib::Variant)
+                       GLib::Variant.new(target_value).to_unsafe
+                     else
+                       target_value.to_unsafe
+                     end
 
       # C call
       _retval = LibGio.g_action_parse_detailed_name(detailed_name, action_name, target_value, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -108,18 +112,20 @@ module Gio
       # @target_value: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       target_value = if target_value.nil?
                        Pointer(Void).null
+                     elsif !target_value.is_a?(GLib::Variant)
+                       GLib::Variant.new(target_value).to_unsafe
                      else
                        target_value.to_unsafe
                      end
-      target_value = GLib::Variant.new(target_value) unless target_value.is_a?(GLib::Variant)
 
       # C call
       _retval = LibGio.g_action_print_detailed_name(action_name, target_value)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -128,13 +134,14 @@ module Gio
       # @parameter: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       parameter = if parameter.nil?
                     Pointer(Void).null
+                  elsif !parameter.is_a?(GLib::Variant)
+                    GLib::Variant.new(parameter).to_unsafe
                   else
                     parameter.to_unsafe
                   end
-      parameter = GLib::Variant.new(parameter) unless parameter.is_a?(GLib::Variant)
 
       # C call
       LibGio.g_action_activate(self, parameter)
@@ -146,8 +153,12 @@ module Gio
       # g_action_change_state: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GLib::Variant)
+                GLib::Variant.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       LibGio.g_action_change_state(self, value)
@@ -159,12 +170,11 @@ module Gio
       # g_action_get_enabled: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_action_get_enabled(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -172,12 +182,11 @@ module Gio
       # g_action_get_name: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_action_get_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -185,12 +194,11 @@ module Gio
       # g_action_get_parameter_type: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_action_get_parameter_type(self)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -198,12 +206,11 @@ module Gio
       # g_action_get_state: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_action_get_state(self)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -211,12 +218,11 @@ module Gio
       # g_action_get_state_hint: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_action_get_state_hint(self)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -224,12 +230,11 @@ module Gio
       # g_action_get_state_type: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_action_get_state_type(self)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -237,6 +242,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Action__Impl < GObject::Object
     include Action
 

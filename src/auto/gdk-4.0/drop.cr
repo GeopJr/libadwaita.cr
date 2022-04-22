@@ -6,17 +6,25 @@ module Gdk
   # Possible drop sites get informed about the status of the ongoing drag
   # operation with events of type %GDK_DRAG_ENTER, %GDK_DRAG_LEAVE,
   # %GDK_DRAG_MOTION and %GDK_DROP_START. The `GdkDrop` object can be obtained
-  # from these [class@Gdk.Event] types using [method@Gdk.DNDEvent.get_drop].
+  # from these `Gdk#Event` types using `Gdk::DNDEvent#drop`.
   #
   # The actual data transfer is initiated from the target side via an async
   # read, using one of the `GdkDrop` methods for this purpose:
-  # [method@Gdk.Drop.read_async] or [method@Gdk.Drop.read_value_async].
+  # `Gdk::Drop#read_async` or `Gdk::Drop#read_value_async`.
   #
   # GTK provides a higher level abstraction based on top of these functions,
   # and so they are not normally needed in GTK applications. See the
   # "Drag and Drop" section of the GTK documentation for more information.
+  @[GObject::GeneratedWrapper]
   class Drop < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGdk::Drop), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -28,38 +36,42 @@ module Gdk
       _values = StaticArray(LibGObject::Value, 6).new(LibGObject::Value.new)
       _n = 0
 
-      if actions
+      if !actions.nil?
         (_names.to_unsafe + _n).value = "actions".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, actions)
         _n += 1
       end
-      if device
+      if !device.nil?
         (_names.to_unsafe + _n).value = "device".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, device)
         _n += 1
       end
-      if display
+      if !display.nil?
         (_names.to_unsafe + _n).value = "display".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, display)
         _n += 1
       end
-      if drag
+      if !drag.nil?
         (_names.to_unsafe + _n).value = "drag".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, drag)
         _n += 1
       end
-      if formats
+      if !formats.nil?
         (_names.to_unsafe + _n).value = "formats".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, formats)
         _n += 1
       end
-      if surface
+      if !surface.nil?
         (_names.to_unsafe + _n).value = "surface".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, surface)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Drop.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -79,7 +91,7 @@ module Gdk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "actions", pointerof(value), Pointer(Void).null)
-      Gdk::DragAction.from_value(value)
+      Gdk::DragAction.new(value)
     end
 
     def device=(value : Gdk::Device?) : Gdk::Device?
@@ -150,11 +162,13 @@ module Gdk
       Gdk::Surface.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Ends the drag operation after a drop.
+    #
+    # The @action must be a single action selected from the actions
+    # available via `Gdk::Drop#actions`.
     def finish(action : Gdk::DragAction) : Nil
       # gdk_drop_finish: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_drop_finish(self, action)
@@ -162,84 +176,103 @@ module Gdk
       # Return value handling
     end
 
+    # Returns the possible actions for this `GdkDrop`.
+    #
+    # If this value contains multiple actions - i.e.
+    # `Gdk::DragAction#is_unique?` returns %FALSE for the result -
+    # `Gdk::Drop#finish` must choose the action to use when
+    # accepting the drop. This will only happen if you passed
+    # %GDK_ACTION_ASK as one of the possible actions in
+    # `Gdk::Drop#status`. %GDK_ACTION_ASK itself will not
+    # be included in the actions returned by this function.
+    #
+    # This value may change over the lifetime of the `Gdk#Drop`
+    # both as a response to source side actions as well as to calls to
+    # `Gdk::Drop#status` or `Gdk::Drop#finish`. The source
+    # side will not change this value anymore once a drop has started.
     def actions : Gdk::DragAction
       # gdk_drop_get_actions: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_drop_get_actions(self)
 
       # Return value handling
-      Gdk::DragAction.from_value(_retval)
+
+      Gdk::DragAction.new(_retval)
     end
 
+    # Returns the `GdkDevice` performing the drop.
     def device : Gdk::Device
       # gdk_drop_get_device: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_drop_get_device(self)
 
       # Return value handling
+
       Gdk::Device.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the `GdkDisplay` that @self was created for.
     def display : Gdk::Display
       # gdk_drop_get_display: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_drop_get_display(self)
 
       # Return value handling
+
       Gdk::Display.new(_retval, GICrystal::Transfer::None)
     end
 
+    # If this is an in-app drag-and-drop operation, returns the `GdkDrag`
+    # that corresponds to this drop.
+    #
+    # If it is not, %NULL is returned.
     def drag : Gdk::Drag?
       # gdk_drop_get_drag: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_drop_get_drag(self)
 
       # Return value handling
+
       Gdk::Drag.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the `GdkContentFormats` that the drop offers the data
+    # to be read in.
     def formats : Gdk::ContentFormats
       # gdk_drop_get_formats: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_drop_get_formats(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns the `GdkSurface` performing the drop.
     def surface : Gdk::Surface
       # gdk_drop_get_surface: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_drop_get_surface(self)
 
       # Return value handling
+
       Gdk::Surface.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Asynchronously read the dropped data from a `GdkDrop`
+    # in a format that complies with one of the mime types.
     def read_async(mime_types : Enumerable(::String), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # gdk_drop_read_async: (Method)
       # @mime_types: (array zero-terminated=1 element-type Utf8)
@@ -248,23 +281,29 @@ module Gdk
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayArgPlan
+      mime_types = mime_types.to_a.map(&.to_unsafe).to_unsafe
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
-      mime_types = mime_types.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       LibGdk.gdk_drop_read_async(self, mime_types, io_priority, cancellable, callback, user_data)
@@ -272,6 +311,14 @@ module Gdk
       # Return value handling
     end
 
+    # Finishes an async drop read operation.
+    #
+    # Note that you must not use blocking read calls on the returned stream
+    # in the GTK thread, since some platforms might require communication with
+    # GTK to complete the data transfer. You can use async APIs such as
+    # g_input_stream_read_bytes_async().
+    #
+    # See `Gdk::Drop#read_async`.
     def read_finish(result : Gio::AsyncResult, out_mime_type : ::String) : Gio::InputStream?
       # gdk_drop_read_finish: (Method | Throws)
       # @out_mime_type: (out) (transfer full)
@@ -279,17 +326,27 @@ module Gdk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_drop_read_finish(self, result, out_mime_type, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::InputStream.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Asynchronously request the drag operation's contents converted
+    # to the given @type.
+    #
+    # When the operation is finished @callback will be called. You must
+    # then call `Gdk::Drop#read_value_finish` to get the resulting
+    # `GValue`.
+    #
+    # For local drag-and-drop operations that are available in the given
+    # `GType`, the value will be copied directly. Otherwise, GDK will
+    # try to use `Gdk#content_deserialize_async` to convert the data.
     def read_value_async(type : UInt64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # gdk_drop_read_value_async: (Method)
       # @cancellable: (nullable)
@@ -297,17 +354,21 @@ module Gdk
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -320,28 +381,42 @@ module Gdk
       # Return value handling
     end
 
+    # Finishes an async drop read.
+    #
+    # See `Gdk::Drop#read_value_async`.
     def read_value_finish(result : Gio::AsyncResult) : GObject::Value
       # gdk_drop_read_value_finish: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_drop_read_value_finish(self, result, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GObject::Value.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Selects all actions that are potentially supported by the destination.
+    #
+    # When calling this function, do not restrict the passed in actions to
+    # the ones provided by `Gdk::Drop#actions`. Those actions may
+    # change in the future, even depending on the actions you provide here.
+    #
+    # The @preferred action is a hint to the drag-and-drop mechanism about which
+    # action to use when multiple actions are possible.
+    #
+    # This function should be called by drag destinations in response to
+    # %GDK_DRAG_ENTER or %GDK_DRAG_MOTION events. If the destination does
+    # not yet know the exact actions it supports, it should set any possible
+    # actions first and then later call this function again.
     def status(actions : Gdk::DragAction, preferred : Gdk::DragAction) : Nil
       # gdk_drop_status: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_drop_status(self, actions, preferred)

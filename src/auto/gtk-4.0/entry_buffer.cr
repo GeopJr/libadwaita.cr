@@ -11,8 +11,16 @@ module Gtk
   # text to be stored in an alternate location, such as non-pageable memory,
   # useful in the case of important passwords. Or a derived class could
   # integrate with an application’s concept of undo/redo.
+  @[GObject::GeneratedWrapper]
   class EntryBuffer < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::EntryBufferClass), class_init,
+        sizeof(LibGtk::EntryBuffer), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -24,23 +32,27 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if length
+      if !length.nil?
         (_names.to_unsafe + _n).value = "length".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, length)
         _n += 1
       end
-      if max_length
+      if !max_length.nil?
         (_names.to_unsafe + _n).value = "max-length".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_length)
         _n += 1
       end
-      if text
+      if !text.nil?
         (_names.to_unsafe + _n).value = "text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, text)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(EntryBuffer.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -86,12 +98,15 @@ module Gtk
       ::String.new(value)
     end
 
+    # Create a new `GtkEntryBuffer` object.
+    #
+    # Optionally, specify initial text to set in the buffer.
     def initialize(initial_chars : ::String?, n_initial_chars : Int32)
       # gtk_entry_buffer_new: (Constructor)
       # @initial_chars: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       initial_chars = if initial_chars.nil?
                         Pointer(LibC::Char).null
                       else
@@ -102,27 +117,37 @@ module Gtk
       _retval = LibGtk.gtk_entry_buffer_new(initial_chars, n_initial_chars)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Deletes a sequence of characters from the buffer.
+    #
+    # @n_chars characters are deleted starting at @position.
+    # If @n_chars is negative, then all characters until the
+    # end of the text are deleted.
+    #
+    # If @position or @n_chars are out of bounds, then they
+    # are coerced to sane values.
+    #
+    # Note that the positions are specified in characters,
+    # not bytes.
     def delete_text(position : UInt32, n_chars : Int32) : UInt32
       # gtk_entry_buffer_delete_text: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_entry_buffer_delete_text(self, position, n_chars)
 
       # Return value handling
+
       _retval
     end
 
+    # Used when subclassing `GtkEntryBuffer`.
     def emit_deleted_text(position : UInt32, n_chars : UInt32) : Nil
       # gtk_entry_buffer_emit_deleted_text: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_entry_buffer_emit_deleted_text(self, position, n_chars)
@@ -130,11 +155,10 @@ module Gtk
       # Return value handling
     end
 
+    # Used when subclassing `GtkEntryBuffer`.
     def emit_inserted_text(position : UInt32, chars : ::String, n_chars : UInt32) : Nil
       # gtk_entry_buffer_emit_inserted_text: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_entry_buffer_emit_inserted_text(self, position, chars, n_chars)
@@ -142,76 +166,91 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieves the length in bytes of the buffer.
+    #
+    # See `Gtk::EntryBuffer#length`.
     def bytes : UInt64
       # gtk_entry_buffer_get_bytes: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_entry_buffer_get_bytes(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Retrieves the length in characters of the buffer.
     def length : UInt32
       # gtk_entry_buffer_get_length: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_entry_buffer_get_length(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Retrieves the maximum allowed length of the text in @buffer.
     def max_length : Int32
       # gtk_entry_buffer_get_max_length: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_entry_buffer_get_max_length(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Retrieves the contents of the buffer.
+    #
+    # The memory pointer returned by this call will not change
+    # unless this object emits a signal, or is finalized.
     def text : ::String
       # gtk_entry_buffer_get_text: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_entry_buffer_get_text(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Inserts @n_chars characters of @chars into the contents of the
+    # buffer, at position @position.
+    #
+    # If @n_chars is negative, then characters from chars will be inserted
+    # until a null-terminator is found. If @position or @n_chars are out of
+    # bounds, or the maximum buffer text length is exceeded, then they are
+    # coerced to sane values.
+    #
+    # Note that the position and length are in characters, not in bytes.
     def insert_text(position : UInt32, chars : ::String, n_chars : Int32) : UInt32
       # gtk_entry_buffer_insert_text: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_entry_buffer_insert_text(self, position, chars, n_chars)
 
       # Return value handling
+
       _retval
     end
 
+    # Sets the maximum allowed length of the contents of the buffer.
+    #
+    # If the current contents are longer than the given length, then
+    # they will be truncated to fit.
     def max_length=(max_length : Int32) : Nil
       # gtk_entry_buffer_set_max_length: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_entry_buffer_set_max_length(self, max_length)
@@ -219,11 +258,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the text in the buffer.
+    #
+    # This is roughly equivalent to calling
+    # `Gtk::EntryBuffer#delete_text` and
+    # `Gtk::EntryBuffer#insert_text`.
+    #
+    # Note that @n_chars is in characters, not in bytes.
     def set_text(chars : ::String, n_chars : Int32) : Nil
       # gtk_entry_buffer_set_text: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_entry_buffer_set_text(self, chars, n_chars)
@@ -231,6 +275,10 @@ module Gtk
       # Return value handling
     end
 
+    # The text is altered in the default handler for this signal.
+    #
+    # If you want access to the text after the text has been modified,
+    # use %G_CONNECT_AFTER.
     struct DeletedTextSignal
       @source : GObject::Object
       @detail : String?
@@ -314,6 +362,7 @@ module Gtk
       DeletedTextSignal.new(self)
     end
 
+    # This signal is emitted after text is inserted into the buffer.
     struct InsertedTextSignal
       @source : GObject::Object
       @detail : String?

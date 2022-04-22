@@ -61,12 +61,11 @@ module Gio
       # g_socket_connectable_enumerate: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_socket_connectable_enumerate(self)
 
       # Return value handling
+
       Gio::SocketAddressEnumerator.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -74,12 +73,11 @@ module Gio
       # g_socket_connectable_proxy_enumerate: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_socket_connectable_proxy_enumerate(self)
 
       # Return value handling
+
       Gio::SocketAddressEnumerator.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -87,12 +85,11 @@ module Gio
       # g_socket_connectable_to_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_socket_connectable_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -100,6 +97,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class SocketConnectable__Impl < GObject::Object
     include SocketConnectable
 

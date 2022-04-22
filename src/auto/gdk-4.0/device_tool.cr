@@ -2,8 +2,16 @@ require "../g_object-2.0/object"
 
 module Gdk
   # A physical tool associated to a `GdkDevice`.
+  @[GObject::GeneratedWrapper]
   class DeviceTool < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGdk::DeviceTool), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,28 +23,32 @@ module Gdk
       _values = StaticArray(LibGObject::Value, 4).new(LibGObject::Value.new)
       _n = 0
 
-      if axes
+      if !axes.nil?
         (_names.to_unsafe + _n).value = "axes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, axes)
         _n += 1
       end
-      if hardware_id
+      if !hardware_id.nil?
         (_names.to_unsafe + _n).value = "hardware-id".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hardware_id)
         _n += 1
       end
-      if serial
+      if !serial.nil?
         (_names.to_unsafe + _n).value = "serial".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, serial)
         _n += 1
       end
-      if tool_type
+      if !tool_type.nil?
         (_names.to_unsafe + _n).value = "tool-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tool_type)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DeviceTool.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -56,7 +68,7 @@ module Gdk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "axes", pointerof(value), Pointer(Void).null)
-      Gdk::AxisFlags.from_value(value)
+      Gdk::AxisFlags.new(value)
     end
 
     def hardware_id=(value : UInt64) : UInt64
@@ -101,59 +113,72 @@ module Gdk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "tool-type", pointerof(value), Pointer(Void).null)
-      Gdk::DeviceToolType.from_value(value)
+      Gdk::DeviceToolType.new(value)
     end
 
+    # Gets the axes of the tool.
     def axes : Gdk::AxisFlags
       # gdk_device_tool_get_axes: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_device_tool_get_axes(self)
 
       # Return value handling
-      Gdk::AxisFlags.from_value(_retval)
+
+      Gdk::AxisFlags.new(_retval)
     end
 
+    # Gets the hardware ID of this tool, or 0 if it's not known.
+    #
+    # When non-zero, the identificator is unique for the given tool model,
+    # meaning that two identical tools will share the same @hardware_id,
+    # but will have different serial numbers (see
+    # `Gdk::DeviceTool#serial`).
+    #
+    # This is a more concrete (and device specific) method to identify
+    # a `GdkDeviceTool` than `Gdk::DeviceTool#tool_type`,
+    # as a tablet may support multiple devices with the same
+    # `GdkDeviceToolType`, but different hardware identificators.
     def hardware_id : UInt64
       # gdk_device_tool_get_hardware_id: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_device_tool_get_hardware_id(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the serial number of this tool.
+    #
+    # This value can be used to identify a physical tool
+    # (eg. a tablet pen) across program executions.
     def serial : UInt64
       # gdk_device_tool_get_serial: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_device_tool_get_serial(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the `GdkDeviceToolType` of the tool.
     def tool_type : Gdk::DeviceToolType
       # gdk_device_tool_get_tool_type: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_device_tool_get_tool_type(self)
 
       # Return value handling
-      Gdk::DeviceToolType.from_value(_retval)
+
+      Gdk::DeviceToolType.new(_retval)
     end
   end
 end

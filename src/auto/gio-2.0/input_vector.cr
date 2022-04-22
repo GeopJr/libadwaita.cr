@@ -7,7 +7,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGio::InputVector))
@@ -26,26 +26,31 @@ module Gio
     def finalize
     end
 
-    def buffer : Pointer(Void)
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::InputVector)).zero?
+    end
+
+    def buffer!
+      self.buffer.not_nil!
+    end
+
+    def buffer : Pointer(Void)?
       _var = (@pointer + 0).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def buffer=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value
+    def buffer=(value : Pointer(Void)?)
+      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
     def size : UInt64
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt64))
       _var.value
     end
 
     def size=(value : UInt64)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(UInt64)).value = value
       value
     end

@@ -12,12 +12,12 @@ module Gtk
   #
   # ![Example GtkCheckButtons](check-button.png)
   #
-  # A `GtkCheckButton` is created by calling either [ctor@Gtk.CheckButton.new]
-  # or [ctor@Gtk.CheckButton.new_with_label].
+  # A `GtkCheckButton` is created by calling either `Gtk::CheckButton.new`
+  # or `Gtk::CheckButton#new_with_label`.
   #
   # The state of a `GtkCheckButton` can be set specifically using
-  # [method@Gtk.CheckButton.set_active], and retrieved using
-  # [method@Gtk.CheckButton.get_active].
+  # `Gtk::CheckButton#active=`, and retrieved using
+  # `Gtk::CheckButton#active`.
   #
   # # Inconsistent state
   #
@@ -28,7 +28,7 @@ module Gtk
   # and the current values in that range are inconsistent.
   #
   # To set a `GtkCheckButton` to inconsistent state, use
-  # [method@Gtk.CheckButton.set_inconsistent].
+  # `Gtk::CheckButton#inconsistent=`.
   #
   # # Grouping
   #
@@ -41,7 +41,7 @@ module Gtk
   #
   # ![Example GtkCheckButtons](radio-button.png)
   #
-  # To add a `GtkCheckButton` to a group, use [method@Gtk.CheckButton.set_group].
+  # To add a `GtkCheckButton` to a group, use `Gtk::CheckButton#group=`.
   #
   # # CSS nodes
   #
@@ -52,13 +52,14 @@ module Gtk
   # ```
   #
   # A `GtkCheckButton` has a main node with name checkbutton. If the
-  # [property@Gtk.CheckButton:label] property is set, it contains a label
+  # `Gtk::CheckButton#label` property is set, it contains a label
   # child. The indicator node is named check when no group is set, and
   # radio if the checkbutton is grouped together with other checkbuttons.
   #
   # # Accessibility
   #
   # `GtkCheckButton` uses the %GTK_ACCESSIBLE_ROLE_CHECKBOX role.
+  @[GObject::GeneratedWrapper]
   class CheckButton < Widget
     include Accessible
     include Actionable
@@ -66,6 +67,13 @@ module Gtk
     include ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::CheckButtonClass), class_init,
+        sizeof(LibGtk::CheckButton), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -77,218 +85,223 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 42).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if action_name
+      if !action_name.nil?
         (_names.to_unsafe + _n).value = "action-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, action_name)
         _n += 1
       end
-      if action_target
+      if !action_target.nil?
         (_names.to_unsafe + _n).value = "action-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, action_target)
         _n += 1
       end
-      if active
+      if !active.nil?
         (_names.to_unsafe + _n).value = "active".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, active)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if group
+      if !group.nil?
         (_names.to_unsafe + _n).value = "group".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, group)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if inconsistent
+      if !inconsistent.nil?
         (_names.to_unsafe + _n).value = "inconsistent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, inconsistent)
         _n += 1
       end
-      if label
+      if !label.nil?
         (_names.to_unsafe + _n).value = "label".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, label)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if use_underline
+      if !use_underline.nil?
         (_names.to_unsafe + _n).value = "use-underline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_underline)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(CheckButton.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -363,26 +376,27 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `GtkCheckButton`.
     def initialize
       # gtk_check_button_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_check_button_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Creates a new `GtkCheckButton` with the given text.
     def self.new_with_label(label : ::String?) : self
       # gtk_check_button_new_with_label: (Constructor)
       # @label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       label = if label.nil?
                 Pointer(LibC::Char).null
               else
@@ -393,15 +407,18 @@ module Gtk
       _retval = LibGtk.gtk_check_button_new_with_label(label)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       Gtk::CheckButton.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a new `GtkCheckButton` with the given text and a mnemonic.
     def self.new_with_mnemonic(label : ::String?) : self
       # gtk_check_button_new_with_mnemonic: (Constructor)
       # @label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       label = if label.nil?
                 Pointer(LibC::Char).null
               else
@@ -412,66 +429,67 @@ module Gtk
       _retval = LibGtk.gtk_check_button_new_with_mnemonic(label)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       Gtk::CheckButton.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Returns whether the check button is active.
     def active : Bool
       # gtk_check_button_get_active: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_check_button_get_active(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the check button is in an inconsistent state.
     def inconsistent : Bool
       # gtk_check_button_get_inconsistent: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_check_button_get_inconsistent(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the label of the check button.
     def label : ::String?
       # gtk_check_button_get_label: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_check_button_get_label(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Returns whether underlines in the label indicate mnemonics.
     def use_underline : Bool
       # gtk_check_button_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_check_button_get_use_underline(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Changes the check buttons active state.
     def active=(setting : Bool) : Nil
       # gtk_check_button_set_active: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_check_button_set_active(self, setting)
@@ -479,12 +497,27 @@ module Gtk
       # Return value handling
     end
 
+    # Adds @self to the group of @group.
+    #
+    # In a group of multiple check buttons, only one button can be active
+    # at a time. The behavior of a checkbutton in a group is also commonly
+    # known as a *radio button*.
+    #
+    # Setting the group of a check button also changes the css name of the
+    # indicator widget's CSS node to 'radio'.
+    #
+    # Setting up groups in a cycle leads to undefined behavior.
+    #
+    # Note that the same effect can be achieved via the `Gtk#Actionable`
+    # API, by using the same action with parameter type and state type 's'
+    # for all buttons in the group, and giving each button its own target
+    # value.
     def group=(group : Gtk::CheckButton?) : Nil
       # gtk_check_button_set_group: (Method | Setter)
       # @group: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       group = if group.nil?
                 Pointer(Void).null
               else
@@ -497,11 +530,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `GtkCheckButton` to inconsistent state.
+    #
+    # You shoud turn off the inconsistent state again if the user checks
+    # the check button. This has to be done manually.
     def inconsistent=(inconsistent : Bool) : Nil
       # gtk_check_button_set_inconsistent: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_check_button_set_inconsistent(self, inconsistent)
@@ -509,12 +544,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the text of @self.
+    #
+    # If [property@Gtk.CheckButton:use-underline] is %TRUE, an underscore
+    # in @label is interpreted as mnemonic indicator, see
+    # `Gtk::CheckButton#use_underline=` for details on this behavior.
     def label=(label : ::String?) : Nil
       # gtk_check_button_set_label: (Method | Setter)
       # @label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       label = if label.nil?
                 Pointer(LibC::Char).null
               else
@@ -527,11 +567,14 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether underlines in the label indicate mnemonics.
+    #
+    # If @setting is %TRUE, an underscore character in @self's label
+    # indicates a mnemonic accelerator key. This behavior is similar
+    # to [property@Gtk.Label:use-underline].
     def use_underline=(setting : Bool) : Nil
       # gtk_check_button_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_check_button_set_use_underline(self, setting)
@@ -539,6 +582,13 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted to when the check button is activated.
+    #
+    # The `::activate` signal on `GtkCheckButton` is an action signal and
+    # emitting it causes the button to animate press then release.
+    #
+    # Applications should never connect to this signal, but use the
+    # `Gtk::CheckButton::#toggled` signal.
     struct ActivateSignal
       @source : GObject::Object
       @detail : String?
@@ -614,6 +664,8 @@ module Gtk
       ActivateSignal.new(self)
     end
 
+    # Emitted when the buttons's `Gtk::CheckButton#active`
+    # property changes.
     struct ToggledSignal
       @source : GObject::Object
       @detail : String?

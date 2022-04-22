@@ -32,8 +32,16 @@ module Gtk
   # Finally, fixed positioning makes it kind of annoying to add/remove UI
   # elements, since you have to reposition all the other  elements. This is a
   # long-term maintenance problem for your application.
+  @[GObject::GeneratedWrapper]
   class FixedLayout < LayoutManager
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::FixedLayoutClass), class_init,
+        sizeof(LibGtk::FixedLayout), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -45,16 +53,16 @@ module Gtk
       LibGtk.gtk_fixed_layout_get_type
     end
 
+    # Creates a new `GtkFixedLayout`.
     def initialize
       # gtk_fixed_layout_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_fixed_layout_new
 
       # Return value handling
+
       @pointer = _retval
     end
   end

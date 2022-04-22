@@ -29,20 +29,20 @@ module Gtk
   # Models are accessed on a node/column level of granularity. One can
   # query for the value of a model at a certain node and a certain
   # column on that node. There are two structures used to reference a
-  # particular node in a model. They are the [struct@Gtk.TreePath] and
-  # the [struct@Gtk.TreeIter] (“iter” is short for iterator). Most of the
-  # interface consists of operations on a [struct@Gtk.TreeIter].
+  # particular node in a model. They are the `Gtk#TreePath` and
+  # the `Gtk#TreeIter` (“iter” is short for iterator). Most of the
+  # interface consists of operations on a `Gtk#TreeIter`.
   #
   # A path is essentially a potential node. It is a location on a model
   # that may or may not actually correspond to a node on a specific
-  # model. A [struct@Gtk.TreePath] can be converted into either an
+  # model. A `Gtk#TreePath` can be converted into either an
   # array of unsigned integers or a string. The string form is a list
   # of numbers separated by a colon. Each number refers to the offset
   # at that level. Thus, the path `0` refers to the root
   # node and the path `2:4` refers to the fifth child of
   # the third node.
   #
-  # By contrast, a [struct@Gtk.TreeIter] is a reference to a specific node on
+  # By contrast, a `Gtk#TreeIter` is a reference to a specific node on
   # a specific model. It is a generic struct with an integer and three
   # generic pointers. These are filled in by the model in a model-specific
   # way. One can convert a path to an iterator by calling
@@ -81,6 +81,9 @@ module Gtk
   #
   # ## Acquiring a `GtkTreeIter`
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # // Three ways of getting the iter pointing to the location
   # GtkTreePath *path;
@@ -116,6 +119,9 @@ module Gtk
   #
   # ## Reading data from a `GtkTreeModel`
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # enum
   # {
@@ -201,7 +207,7 @@ module Gtk
       # @root: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       root = if root.nil?
                Pointer(Void).null
              else
@@ -212,6 +218,7 @@ module Gtk
       _retval = LibGtk.gtk_tree_model_filter_new(self, root)
 
       # Return value handling
+
       Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -220,7 +227,7 @@ module Gtk
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -237,12 +244,11 @@ module Gtk
       # gtk_tree_model_get_column_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_model_get_column_type(self, index_)
 
       # Return value handling
+
       _retval
     end
 
@@ -250,13 +256,12 @@ module Gtk
       # gtk_tree_model_get_flags: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_model_get_flags(self)
 
       # Return value handling
-      Gtk::TreeModelFlags.from_value(_retval)
+
+      Gtk::TreeModelFlags.new(_retval)
     end
 
     def iter(path : Gtk::TreePath) : Gtk::TreeIter
@@ -264,13 +269,14 @@ module Gtk
       # @iter: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
 
       # C call
       _retval = LibGtk.gtk_tree_model_get_iter(self, iter, path)
 
       # Return value handling
+
       iter
     end
 
@@ -279,13 +285,14 @@ module Gtk
       # @iter: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
 
       # C call
       _retval = LibGtk.gtk_tree_model_get_iter_first(self, iter)
 
       # Return value handling
+
       iter
     end
 
@@ -294,13 +301,14 @@ module Gtk
       # @iter: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
 
       # C call
       _retval = LibGtk.gtk_tree_model_get_iter_from_string(self, iter, path_string)
 
       # Return value handling
+
       iter
     end
 
@@ -308,12 +316,11 @@ module Gtk
       # gtk_tree_model_get_n_columns: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_model_get_n_columns(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -321,12 +328,11 @@ module Gtk
       # gtk_tree_model_get_path: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_model_get_path(self, iter)
 
       # Return value handling
+
       Gtk::TreePath.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -334,12 +340,11 @@ module Gtk
       # gtk_tree_model_get_string_from_iter: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_model_get_string_from_iter(self, iter)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
@@ -348,13 +353,14 @@ module Gtk
       # @value: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       value = GObject::Value.new
 
       # C call
       LibGtk.gtk_tree_model_get_value(self, iter, column, value)
 
       # Return value handling
+
       value
     end
 
@@ -364,18 +370,20 @@ module Gtk
       # @parent: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
+      iter = Gtk::TreeIter.new
+      # Generator::NullableArrayPlan
       parent = if parent.nil?
                  Pointer(Void).null
                else
                  parent.to_unsafe
                end
-      iter = Gtk::TreeIter.new
 
       # C call
       _retval = LibGtk.gtk_tree_model_iter_children(self, iter, parent)
 
       # Return value handling
+
       iter
     end
 
@@ -383,12 +391,11 @@ module Gtk
       # gtk_tree_model_iter_has_child: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_model_iter_has_child(self, iter)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -397,7 +404,7 @@ module Gtk
       # @iter: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       iter = if iter.nil?
                Pointer(Void).null
              else
@@ -408,6 +415,7 @@ module Gtk
       _retval = LibGtk.gtk_tree_model_iter_n_children(self, iter)
 
       # Return value handling
+
       _retval
     end
 
@@ -415,12 +423,11 @@ module Gtk
       # gtk_tree_model_iter_next: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_model_iter_next(self, iter)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -430,18 +437,20 @@ module Gtk
       # @parent: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
+      iter = Gtk::TreeIter.new
+      # Generator::NullableArrayPlan
       parent = if parent.nil?
                  Pointer(Void).null
                else
                  parent.to_unsafe
                end
-      iter = Gtk::TreeIter.new
 
       # C call
       _retval = LibGtk.gtk_tree_model_iter_nth_child(self, iter, parent, n)
 
       # Return value handling
+
       iter
     end
 
@@ -450,13 +459,14 @@ module Gtk
       # @iter: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
 
       # C call
       _retval = LibGtk.gtk_tree_model_iter_parent(self, iter, child)
 
       # Return value handling
+
       iter
     end
 
@@ -464,20 +474,17 @@ module Gtk
       # gtk_tree_model_iter_previous: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_model_iter_previous(self, iter)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def ref_node(iter : Gtk::TreeIter) : Nil
       # gtk_tree_model_ref_node: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_model_ref_node(self, iter)
@@ -489,8 +496,6 @@ module Gtk
       # gtk_tree_model_row_changed: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_tree_model_row_changed(self, path, iter)
 
@@ -500,8 +505,6 @@ module Gtk
     def row_deleted(path : Gtk::TreePath) : Nil
       # gtk_tree_model_row_deleted: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_model_row_deleted(self, path)
@@ -513,8 +516,6 @@ module Gtk
       # gtk_tree_model_row_has_child_toggled: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_tree_model_row_has_child_toggled(self, path, iter)
 
@@ -524,8 +525,6 @@ module Gtk
     def row_inserted(path : Gtk::TreePath, iter : Gtk::TreeIter) : Nil
       # gtk_tree_model_row_inserted: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_model_row_inserted(self, path, iter)
@@ -539,13 +538,16 @@ module Gtk
       # @new_order: (array length=length element-type Int32)
       # Returns: (transfer none)
 
-      # Handle parameters
-      length = new_order.size
+      # Generator::NullableArrayPlan
       iter = if iter.nil?
                Pointer(Void).null
              else
                iter.to_unsafe
              end
+
+      # Generator::ArrayLengthArgPlan
+      length = new_order.size
+      # Generator::ArrayArgPlan
       new_order = new_order.to_a.to_unsafe
 
       # C call
@@ -558,18 +560,345 @@ module Gtk
       # gtk_tree_model_unref_node: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_tree_model_unref_node(self, iter)
 
       # Return value handling
     end
 
+    struct RowChangedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "row-changed::#{@detail}" : "row-changed"
+      end
+
+      def connect(&block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(path : Gtk::TreePath, iter : Gtk::TreeIter) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "row-changed", path, iter)
+      end
+    end
+
+    def row_changed_signal
+      RowChangedSignal.new(self)
+    end
+
+    struct RowDeletedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "row-deleted::#{@detail}" : "row-deleted"
+      end
+
+      def connect(&block : Proc(Gtk::TreePath, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gtk::TreePath, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gtk::TreePath, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreePath, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::TreePath, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreePath, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::TreeModel, Gtk::TreePath, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::TreeModel, Gtk::TreePath, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(path : Gtk::TreePath) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "row-deleted", path)
+      end
+    end
+
+    def row_deleted_signal
+      RowDeletedSignal.new(self)
+    end
+
+    struct RowHasChildToggledSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "row-has-child-toggled::#{@detail}" : "row-has-child-toggled"
+      end
+
+      def connect(&block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(path : Gtk::TreePath, iter : Gtk::TreeIter) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "row-has-child-toggled", path, iter)
+      end
+    end
+
+    def row_has_child_toggled_signal
+      RowHasChildToggledSignal.new(self)
+    end
+
+    struct RowInsertedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "row-inserted::#{@detail}" : "row-inserted"
+      end
+
+      def connect(&block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gtk::TreePath.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(path : Gtk::TreePath, iter : Gtk::TreeIter) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "row-inserted", path, iter)
+      end
+    end
+
+    def row_inserted_signal
+      RowInsertedSignal.new(self)
+    end
+
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class TreeModel__Impl < GObject::Object
     include TreeModel
 

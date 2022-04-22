@@ -4,14 +4,22 @@ module Gtk
   # `GtkEventControllerFocus` is an event controller to keep track of
   # keyboard focus.
   #
-  # The event controller offers [signal@Gtk.EventControllerFocus::enter]
-  # and [signal@Gtk.EventControllerFocus::leave] signals, as well as
+  # The event controller offers `Gtk::EventControllerFocus::#enter`
+  # and `Gtk::EventControllerFocus::#leave` signals, as well as
   # [property@Gtk.EventControllerFocus:is-focus] and
   # [property@Gtk.EventControllerFocus:contains-focus] properties
   # which are updated to reflect focus changes inside the widget hierarchy
   # that is rooted at the controllers widget.
+  @[GObject::GeneratedWrapper]
   class EventControllerFocus < EventController
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::EventControllerFocusClass), class_init,
+        sizeof(LibGtk::EventControllerFocus), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -23,38 +31,42 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 6).new(LibGObject::Value.new)
       _n = 0
 
-      if contains_focus
+      if !contains_focus.nil?
         (_names.to_unsafe + _n).value = "contains-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, contains_focus)
         _n += 1
       end
-      if is_focus
+      if !is_focus.nil?
         (_names.to_unsafe + _n).value = "is-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_focus)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(EventControllerFocus.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -78,45 +90,55 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new event controller that will handle focus events.
     def initialize
       # gtk_event_controller_focus_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_focus_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns %TRUE if focus is within @self or one of its children.
     def contains_focus : Bool
       # gtk_event_controller_focus_contains_focus: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_focus_contains_focus(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns %TRUE if focus is within @self, but not one of its children.
     def is_focus? : Bool
       # gtk_event_controller_focus_is_focus: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_focus_is_focus(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Emitted whenever the focus enters into the widget or one
+    # of its descendents.
+    #
+    # Note that this means you may not get an ::enter signal
+    # even though the widget becomes the focus location, in
+    # certain cases (such as when the focus moves from a descendent
+    # of the widget to the widget itself). If you are interested
+    # in these cases, you can monitor the
+    # [property@Gtk.EventControllerFocus:is-focus]
+    # property for changes.
     struct EnterSignal
       @source : GObject::Object
       @detail : String?
@@ -192,6 +214,15 @@ module Gtk
       EnterSignal.new(self)
     end
 
+    # Emitted whenever the focus leaves the widget hierarchy
+    # that is rooted at the widget that the controller is attached to.
+    #
+    # Note that this means you may not get a ::leave signal
+    # even though the focus moves away from the widget, in
+    # certain cases (such as when the focus moves from the widget
+    # to a descendent). If you are interested in these cases, you
+    # can monitor the [property@Gtk.EventControllerFocus:is-focus]
+    # property for changes.
     struct LeaveSignal
       @source : GObject::Object
       @detail : String?

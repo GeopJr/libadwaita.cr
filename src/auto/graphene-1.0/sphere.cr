@@ -4,7 +4,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Sphere))
@@ -23,26 +23,27 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Sphere)).zero?
+    end
+
     def center : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def center=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Sphere))
       value
     end
 
     def radius : Float32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Float32))
       _var.value
     end
 
     def radius=(value : Float32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Float32)).value = value
       value
     end
@@ -56,12 +57,11 @@ module Graphene
       # graphene_sphere_alloc: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_sphere_alloc
 
       # Return value handling
+
       Graphene::Sphere.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -69,12 +69,11 @@ module Graphene
       # graphene_sphere_contains_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_sphere_contains_point(self, point)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -82,12 +81,11 @@ module Graphene
       # graphene_sphere_distance: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_sphere_distance(self, point)
 
       # Return value handling
+
       _retval
     end
 
@@ -95,20 +93,17 @@ module Graphene
       # graphene_sphere_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_sphere_equal(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # graphene_sphere_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_sphere_free(self)
@@ -121,13 +116,14 @@ module Graphene
       # @box: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       box = Graphene::Box.new
 
       # C call
       LibGraphene.graphene_sphere_get_bounding_box(self, box)
 
       # Return value handling
+
       box
     end
 
@@ -136,13 +132,14 @@ module Graphene
       # @center: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       center = Graphene::Point3D.new
 
       # C call
       LibGraphene.graphene_sphere_get_center(self, center)
 
       # Return value handling
+
       center
     end
 
@@ -150,12 +147,11 @@ module Graphene
       # graphene_sphere_get_radius: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_sphere_get_radius(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -164,7 +160,7 @@ module Graphene
       # @center: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       center = if center.nil?
                  Pointer(Void).null
                else
@@ -175,6 +171,7 @@ module Graphene
       _retval = LibGraphene.graphene_sphere_init(self, center, radius)
 
       # Return value handling
+
       Graphene::Sphere.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -184,19 +181,23 @@ module Graphene
       # @center: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_points = points.size
+      # Generator::ArrayArgPlan
+      points = points.to_a.map(&.to_unsafe).to_unsafe
+
+      # Generator::NullableArrayPlan
       center = if center.nil?
                  Pointer(Void).null
                else
                  center.to_unsafe
                end
-      points = points.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGraphene.graphene_sphere_init_from_points(self, n_points, points, center)
 
       # Return value handling
+
       Graphene::Sphere.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -206,19 +207,23 @@ module Graphene
       # @center: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_vectors = vectors.size
+      # Generator::ArrayArgPlan
+      vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
+
+      # Generator::NullableArrayPlan
       center = if center.nil?
                  Pointer(Void).null
                else
                  center.to_unsafe
                end
-      vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGraphene.graphene_sphere_init_from_vectors(self, n_vectors, vectors, center)
 
       # Return value handling
+
       Graphene::Sphere.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -226,12 +231,11 @@ module Graphene
       # graphene_sphere_is_empty: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_sphere_is_empty(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -240,13 +244,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Sphere.new
 
       # C call
       LibGraphene.graphene_sphere_translate(self, point, res)
 
       # Return value handling
+
       res
     end
 

@@ -6,14 +6,22 @@ module Gtk
   # It allows navigating the model as a tree and modify the state of rows.
   #
   # `GtkTreeListRow` instances are created by a `GtkTreeListModel` only
-  # when the [property@Gtk.TreeListModel:passthrough] property is not set.
+  # when the `Gtk::TreeListModel#passthrough` property is not set.
   #
   # There are various support objects that can make use of `GtkTreeListRow`
-  # objects, such as the [class@Gtk.TreeExpander] widget that allows displaying
-  # an icon to expand or collapse a row or [class@Gtk.TreeListRowSorter] that
+  # objects, such as the `Gtk#TreeExpander` widget that allows displaying
+  # an icon to expand or collapse a row or `Gtk#TreeListRowSorter` that
   # makes it possible to sort trees properly.
+  @[GObject::GeneratedWrapper]
   class TreeListRow < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::TreeListRowClass), class_init,
+        sizeof(LibGtk::TreeListRow), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -25,33 +33,37 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 5).new(LibGObject::Value.new)
       _n = 0
 
-      if children
+      if !children.nil?
         (_names.to_unsafe + _n).value = "children".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, children)
         _n += 1
       end
-      if depth
+      if !depth.nil?
         (_names.to_unsafe + _n).value = "depth".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, depth)
         _n += 1
       end
-      if expandable
+      if !expandable.nil?
         (_names.to_unsafe + _n).value = "expandable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, expandable)
         _n += 1
       end
-      if expanded
+      if !expanded.nil?
         (_names.to_unsafe + _n).value = "expanded".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, expanded)
         _n += 1
       end
-      if item
+      if !item.nil?
         (_names.to_unsafe + _n).value = "item".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, item)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(TreeListRow.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -106,115 +118,151 @@ module Gtk
       GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # If @self is not expanded or @position is greater than the
+    # number of children, %NULL is returned.
     def child_row(position : UInt32) : Gtk::TreeListRow?
       # gtk_tree_list_row_get_child_row: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_get_child_row(self, position)
 
       # Return value handling
+
       Gtk::TreeListRow.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # If the row is expanded, gets the model holding the children of @self.
+    #
+    # This model is the model created by the
+    # `Gtk#TreeListModelCreateModelFunc`
+    # and contains the original items, no matter what value
+    # `Gtk::TreeListModel#passthrough` is set to.
     def children : Gio::ListModel?
       # gtk_tree_list_row_get_children: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_get_children(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the depth of this row.
+    #
+    # Rows that correspond to items in the root model have a depth
+    # of zero, rows corresponding to items of models of direct children
+    # of the root model have a depth of 1 and so on.
+    #
+    # The depth of a row never changes until the row is destroyed.
     def depth : UInt32
       # gtk_tree_list_row_get_depth: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_get_depth(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets if a row is currently expanded.
     def expanded : Bool
       # gtk_tree_list_row_get_expanded: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_get_expanded(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the item corresponding to this row,
+    #
+    # The value returned by this function never changes until the
+    # row is destroyed.
     def item : GObject::Object?
       # gtk_tree_list_row_get_item: (Method | Getter)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_get_item(self)
 
       # Return value handling
+
       GObject::Object.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Gets the row representing the parent for @self.
+    #
+    # That is the row that would need to be collapsed
+    # to make this row disappear.
+    #
+    # If @self is a row corresponding to the root model,
+    # %NULL is returned.
+    #
+    # The value returned by this function never changes
+    # until the row is destroyed.
     def parent : Gtk::TreeListRow?
       # gtk_tree_list_row_get_parent: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_get_parent(self)
 
       # Return value handling
+
       Gtk::TreeListRow.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Returns the position in the `GtkTreeListModel` that @self occupies
+    # at the moment.
     def position : UInt32
       # gtk_tree_list_row_get_position: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_get_position(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Checks if a row can be expanded.
+    #
+    # This does not mean that the row is actually expanded,
+    # this can be checked with `Gtk::TreeListRow#expanded`.
+    #
+    # If a row is expandable never changes until the row is destroyed.
     def is_expandable : Bool
       # gtk_tree_list_row_is_expandable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_list_row_is_expandable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Expands or collapses a row.
+    #
+    # If a row is expanded, the model of calling the
+    # `Gtk#TreeListModelCreateModelFunc` for the row's
+    # item will be inserted after this row. If a row is collapsed,
+    # those items will be removed from the model.
+    #
+    # If the row is not expandable, this function does nothing.
     def expanded=(expanded : Bool) : Nil
       # gtk_tree_list_row_set_expanded: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_list_row_set_expanded(self, expanded)

@@ -54,8 +54,6 @@ require "./d_bus_subtree_v_table.cr"
 require "./data_input_stream.cr"
 require "./data_output_stream.cr"
 require "./datagram_based.cr"
-require "./debug_controller.cr"
-require "./debug_controller_d_bus.cr"
 require "./desktop_app_info.cr"
 require "./desktop_app_info_lookup.cr"
 require "./drive.cr"
@@ -206,9 +204,6 @@ module Gio
   # In code that needs to be backwards-compatible with older GLib,
   # use %FALSE instead.
   DBUS_METHOD_INVOCATION_UNHANDLED = true
-  # Extension point for debug control functionality.
-  # See [Extending GIO][extending-gio].
-  DEBUG_CONTROLLER_EXTENSION_POINT_NAME = "gio-debug-controller"
   # Extension point for default handler to URI association. See
   # [Extending GIO][extending-gio].
   DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME = "gio-desktop-app-info-lookup"
@@ -900,8 +895,6 @@ module Gio
     NetbsdUnpcbid = 5
     # The native credentials type is a `struct xucred`. Added in 2.66.
     AppleXucred = 6
-    # The native credentials type is a PID `DWORD`. Added in 2.72.
-    Win32Pid = 7
   end
 
   # Enumeration used to describe the byte order of a D-Bus message.
@@ -1106,7 +1099,7 @@ module Gio
 
   # Indicates a hint from the file system whether files should be
   # previewed in a file manager. Returned as the value of the key
-  # %G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
+  # #G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
   enum FilesystemPreviewType : UInt32
     # Only preview files if user has explicitly requested it.
     IfAlways = 0
@@ -1659,7 +1652,6 @@ module Gio
     DoNotAutoStart               =  4
     GetInvalidatedProperties     =  8
     DoNotAutoStartAtConstruction = 16
-    NoMatchRule                  = 32
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
@@ -1873,15 +1865,14 @@ module Gio
   end
   @[Flags]
   enum SubprocessFlags : UInt32
-    StdinPipe          =   1
-    StdinInherit       =   2
-    StdoutPipe         =   4
-    StdoutSilence      =   8
-    StderrPipe         =  16
-    StderrSilence      =  32
-    StderrMerge        =  64
-    InheritFds         = 128
-    SearchPathFromEnvp = 256
+    StdinPipe     =   1
+    StdinInherit  =   2
+    StdoutPipe    =   4
+    StdoutSilence =   8
+    StderrPipe    =  16
+    StderrSilence =  32
+    StderrMerge   =  64
+    InheritFds    = 128
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
@@ -1933,6 +1924,2399 @@ module Gio
     def self.g_type : UInt64
       LibGio.g_tls_password_flags_get_type
     end
+  end
+
+  def self.action_name_is_valid(action_name : ::String) : Bool
+    # g_action_name_is_valid: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_action_name_is_valid(action_name)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def action_parse_detailed_name(detailed_name : ::String, action_name : ::String, target_value : _) : Bool
+    # g_action_parse_detailed_name: (Throws)
+    # @action_name: (out) (transfer full)
+    # @target_value: (out) (transfer full)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::HandmadeArgPlan
+    target_value = if !target_value.is_a?(GLib::Variant)
+                     GLib::Variant.new(target_value).to_unsafe
+                   else
+                     target_value.to_unsafe
+                   end
+
+    # C call
+    _retval = LibGio.g_action_parse_detailed_name(detailed_name, action_name, target_value, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.action_print_detailed_name(action_name : ::String, target_value : _?) : ::String
+    # g_action_print_detailed_name: (None)
+    # @target_value: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::HandmadeArgPlan
+    target_value = if target_value.nil?
+                     Pointer(Void).null
+                   elsif !target_value.is_a?(GLib::Variant)
+                     GLib::Variant.new(target_value).to_unsafe
+                   else
+                     target_value.to_unsafe
+                   end
+
+    # C call
+    _retval = LibGio.g_action_print_detailed_name(action_name, target_value)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def app_info_create_from_commandline(commandline : ::String, application_name : ::String?, flags : Gio::AppInfoCreateFlags) : Gio::AppInfo
+    # g_app_info_create_from_commandline: (Throws)
+    # @application_name: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    application_name = if application_name.nil?
+                         Pointer(LibC::Char).null
+                       else
+                         application_name.to_unsafe
+                       end
+
+    # C call
+    _retval = LibGio.g_app_info_create_from_commandline(commandline, application_name, flags, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.app_info_get_all : GLib::List
+    # g_app_info_get_all: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_app_info_get_all
+
+    # Return value handling
+
+    GLib::List(Gio::AppInfo).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.app_info_get_all_for_type(content_type : ::String) : GLib::List
+    # g_app_info_get_all_for_type: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_app_info_get_all_for_type(content_type)
+
+    # Return value handling
+
+    GLib::List(Gio::AppInfo).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.app_info_get_default_for_type(content_type : ::String, must_support_uris : Bool) : Gio::AppInfo?
+    # g_app_info_get_default_for_type: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_app_info_get_default_for_type(content_type, must_support_uris)
+
+    # Return value handling
+
+    Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.app_info_get_default_for_uri_scheme(uri_scheme : ::String) : Gio::AppInfo?
+    # g_app_info_get_default_for_uri_scheme: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_app_info_get_default_for_uri_scheme(uri_scheme)
+
+    # Return value handling
+
+    Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.app_info_get_fallback_for_type(content_type : ::String) : GLib::List
+    # g_app_info_get_fallback_for_type: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_app_info_get_fallback_for_type(content_type)
+
+    # Return value handling
+
+    GLib::List(Gio::AppInfo).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.app_info_get_recommended_for_type(content_type : ::String) : GLib::List
+    # g_app_info_get_recommended_for_type: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_app_info_get_recommended_for_type(content_type)
+
+    # Return value handling
+
+    GLib::List(Gio::AppInfo).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def app_info_launch_default_for_uri(uri : ::String, context : Gio::AppLaunchContext?) : Bool
+    # g_app_info_launch_default_for_uri: (Throws)
+    # @context: (nullable)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    context = if context.nil?
+                Pointer(Void).null
+              else
+                context.to_unsafe
+              end
+
+    # C call
+    _retval = LibGio.g_app_info_launch_default_for_uri(uri, context, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.app_info_launch_default_for_uri_async(uri : ::String, context : Gio::AppLaunchContext?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    # g_app_info_launch_default_for_uri_async: (None)
+    # @context: (nullable)
+    # @cancellable: (nullable)
+    # @callback: (nullable)
+    # @user_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    context = if context.nil?
+                Pointer(Void).null
+              else
+                context.to_unsafe
+              end
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # Generator::NullableArrayPlan
+    callback = if callback.nil?
+                 LibGio::AsyncReadyCallback.null
+               else
+                 callback.to_unsafe
+               end
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # C call
+    LibGio.g_app_info_launch_default_for_uri_async(uri, context, cancellable, callback, user_data)
+
+    # Return value handling
+  end
+
+  def app_info_launch_default_for_uri_finish(result : Gio::AsyncResult) : Bool
+    # g_app_info_launch_default_for_uri_finish: (Throws)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGio.g_app_info_launch_default_for_uri_finish(result, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.app_info_reset_type_associations(content_type : ::String) : Nil
+    # g_app_info_reset_type_associations: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_app_info_reset_type_associations(content_type)
+
+    # Return value handling
+  end
+
+  def self.async_initable_newv_async(object_type : UInt64, n_parameters : UInt32, parameters : GObject::Parameter, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    # g_async_initable_newv_async: (None)
+    # @cancellable: (nullable)
+    # @callback: (nullable)
+    # @user_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # Generator::NullableArrayPlan
+    callback = if callback.nil?
+                 LibGio::AsyncReadyCallback.null
+               else
+                 callback.to_unsafe
+               end
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # C call
+    LibGio.g_async_initable_newv_async(object_type, n_parameters, parameters, io_priority, cancellable, callback, user_data)
+
+    # Return value handling
+  end
+
+  def self.bus_get(bus_type : Gio::BusType, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    # g_bus_get: (None)
+    # @cancellable: (nullable)
+    # @callback: (nullable)
+    # @user_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # Generator::NullableArrayPlan
+    callback = if callback.nil?
+                 LibGio::AsyncReadyCallback.null
+               else
+                 callback.to_unsafe
+               end
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # C call
+    LibGio.g_bus_get(bus_type, cancellable, callback, user_data)
+
+    # Return value handling
+  end
+
+  def bus_get_finish(res : Gio::AsyncResult) : Gio::DBusConnection
+    # g_bus_get_finish: (Throws)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGio.g_bus_get_finish(res, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::DBusConnection.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def bus_get_sync(bus_type : Gio::BusType, cancellable : Gio::Cancellable?) : Gio::DBusConnection
+    # g_bus_get_sync: (Throws)
+    # @cancellable: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_bus_get_sync(bus_type, cancellable, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::DBusConnection.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.bus_own_name_on_connection(connection : Gio::DBusConnection, name : ::String, flags : Gio::BusNameOwnerFlags, name_acquired_closure : GObject::Closure?, name_lost_closure : GObject::Closure?) : UInt32
+    # g_bus_own_name_on_connection_with_closures: (None)
+    # @name_acquired_closure: (nullable)
+    # @name_lost_closure: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    name_acquired_closure = if name_acquired_closure.nil?
+                              Pointer(Void).null
+                            else
+                              name_acquired_closure.to_unsafe
+                            end
+
+    # Generator::NullableArrayPlan
+    name_lost_closure = if name_lost_closure.nil?
+                          Pointer(Void).null
+                        else
+                          name_lost_closure.to_unsafe
+                        end
+
+    # C call
+    _retval = LibGio.g_bus_own_name_on_connection_with_closures(connection, name, flags, name_acquired_closure, name_lost_closure)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.bus_own_name(bus_type : Gio::BusType, name : ::String, flags : Gio::BusNameOwnerFlags, bus_acquired_closure : GObject::Closure?, name_acquired_closure : GObject::Closure?, name_lost_closure : GObject::Closure?) : UInt32
+    # g_bus_own_name_with_closures: (None)
+    # @bus_acquired_closure: (nullable)
+    # @name_acquired_closure: (nullable)
+    # @name_lost_closure: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    bus_acquired_closure = if bus_acquired_closure.nil?
+                             Pointer(Void).null
+                           else
+                             bus_acquired_closure.to_unsafe
+                           end
+
+    # Generator::NullableArrayPlan
+    name_acquired_closure = if name_acquired_closure.nil?
+                              Pointer(Void).null
+                            else
+                              name_acquired_closure.to_unsafe
+                            end
+
+    # Generator::NullableArrayPlan
+    name_lost_closure = if name_lost_closure.nil?
+                          Pointer(Void).null
+                        else
+                          name_lost_closure.to_unsafe
+                        end
+
+    # C call
+    _retval = LibGio.g_bus_own_name_with_closures(bus_type, name, flags, bus_acquired_closure, name_acquired_closure, name_lost_closure)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.bus_unown_name(owner_id : UInt32) : Nil
+    # g_bus_unown_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_bus_unown_name(owner_id)
+
+    # Return value handling
+  end
+
+  def self.bus_unwatch_name(watcher_id : UInt32) : Nil
+    # g_bus_unwatch_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_bus_unwatch_name(watcher_id)
+
+    # Return value handling
+  end
+
+  def self.bus_watch_name_on_connection(connection : Gio::DBusConnection, name : ::String, flags : Gio::BusNameWatcherFlags, name_appeared_closure : GObject::Closure?, name_vanished_closure : GObject::Closure?) : UInt32
+    # g_bus_watch_name_on_connection_with_closures: (None)
+    # @name_appeared_closure: (nullable)
+    # @name_vanished_closure: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    name_appeared_closure = if name_appeared_closure.nil?
+                              Pointer(Void).null
+                            else
+                              name_appeared_closure.to_unsafe
+                            end
+
+    # Generator::NullableArrayPlan
+    name_vanished_closure = if name_vanished_closure.nil?
+                              Pointer(Void).null
+                            else
+                              name_vanished_closure.to_unsafe
+                            end
+
+    # C call
+    _retval = LibGio.g_bus_watch_name_on_connection_with_closures(connection, name, flags, name_appeared_closure, name_vanished_closure)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.bus_watch_name(bus_type : Gio::BusType, name : ::String, flags : Gio::BusNameWatcherFlags, name_appeared_closure : GObject::Closure?, name_vanished_closure : GObject::Closure?) : UInt32
+    # g_bus_watch_name_with_closures: (None)
+    # @name_appeared_closure: (nullable)
+    # @name_vanished_closure: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    name_appeared_closure = if name_appeared_closure.nil?
+                              Pointer(Void).null
+                            else
+                              name_appeared_closure.to_unsafe
+                            end
+
+    # Generator::NullableArrayPlan
+    name_vanished_closure = if name_vanished_closure.nil?
+                              Pointer(Void).null
+                            else
+                              name_vanished_closure.to_unsafe
+                            end
+
+    # C call
+    _retval = LibGio.g_bus_watch_name_with_closures(bus_type, name, flags, name_appeared_closure, name_vanished_closure)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.content_type_can_be_executable(type : ::String) : Bool
+    # g_content_type_can_be_executable: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_content_type_can_be_executable(type)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.content_type_equals(type1 : ::String, type2 : ::String) : Bool
+    # g_content_type_equals: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_content_type_equals(type1, type2)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.content_type_from_mime_type(mime_type : ::String) : ::String?
+    # g_content_type_from_mime_type: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_content_type_from_mime_type(mime_type)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval) unless _retval.null?
+  end
+
+  def self.content_type_get_description(type : ::String) : ::String
+    # g_content_type_get_description: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_content_type_get_description(type)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.content_type_get_generic_icon_name(type : ::String) : ::String?
+    # g_content_type_get_generic_icon_name: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_content_type_get_generic_icon_name(type)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval) unless _retval.null?
+  end
+
+  def self.content_type_get_icon(type : ::String) : Gio::Icon
+    # g_content_type_get_icon: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_content_type_get_icon(type)
+
+    # Return value handling
+
+    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.content_type_get_mime_dirs : Enumerable(::String)
+    # g_content_type_get_mime_dirs: (None)
+    # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
+
+    # C call
+    _retval = LibGio.g_content_type_get_mime_dirs
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.content_type_get_mime_type(type : ::String) : ::String?
+    # g_content_type_get_mime_type: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_content_type_get_mime_type(type)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval) unless _retval.null?
+  end
+
+  def self.content_type_get_symbolic_icon(type : ::String) : Gio::Icon
+    # g_content_type_get_symbolic_icon: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_content_type_get_symbolic_icon(type)
+
+    # Return value handling
+
+    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.content_type_guess(filename : ::String?, data : Enumerable(UInt8)?) : ::String
+    # g_content_type_guess: (None)
+    # @filename: (nullable)
+    # @data: (nullable) (array length=data_size element-type UInt8)
+    # @result_uncertain: (out) (transfer full) (optional)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    filename = if filename.nil?
+                 Pointer(LibC::Char).null
+               else
+                 filename.to_unsafe
+               end
+
+    # Generator::ArrayLengthArgPlan
+    data_size = data.try(&.size) || 0
+    # Generator::NullableArrayPlan
+    data = if data.nil?
+             Pointer(UInt8).null
+           else
+             data.to_a.to_unsafe
+           end
+
+    # Generator::OutArgUsedInReturnPlan
+    result_uncertain = Pointer(LibC::Int).null
+
+    # C call
+    _retval = LibGio.g_content_type_guess(filename, data, data_size, result_uncertain)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.content_type_guess_for_tree(root : Gio::File) : Enumerable(::String)
+    # g_content_type_guess_for_tree: (None)
+    # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
+
+    # C call
+    _retval = LibGio.g_content_type_guess_for_tree(root)
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.content_type_is_a(type : ::String, supertype : ::String) : Bool
+    # g_content_type_is_a: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_content_type_is_a(type, supertype)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.content_type_is_mime_type(type : ::String, mime_type : ::String) : Bool
+    # g_content_type_is_mime_type: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_content_type_is_mime_type(type, mime_type)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.content_type_is_unknown(type : ::String) : Bool
+    # g_content_type_is_unknown: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_content_type_is_unknown(type)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.content_type_set_mime_dirs(dirs : Enumerable(::String)?) : Nil
+    # g_content_type_set_mime_dirs: (None)
+    # @dirs: (nullable) (array zero-terminated=1 element-type Utf8)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    dirs = if dirs.nil?
+             Pointer(Pointer(LibC::Char)).null
+           else
+             dirs.to_a.map(&.to_unsafe).to_unsafe
+           end
+
+    # C call
+    LibGio.g_content_type_set_mime_dirs(dirs)
+
+    # Return value handling
+  end
+
+  def self.content_type_set_mime_dirs(*dirs : ::String)
+    self.content_type_set_mime_dirs(dirs)
+  end
+
+  def self.content_types_get_registered : GLib::List
+    # g_content_types_get_registered: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_content_types_get_registered
+
+    # Return value handling
+
+    GLib::List(::String).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.dbus_address_escape_value(string : ::String) : ::String
+    # g_dbus_address_escape_value: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_dbus_address_escape_value(string)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def dbus_address_get_for_bus_sync(bus_type : Gio::BusType, cancellable : Gio::Cancellable?) : ::String
+    # g_dbus_address_get_for_bus_sync: (Throws)
+    # @cancellable: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_dbus_address_get_for_bus_sync(bus_type, cancellable, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.dbus_address_get_stream(address : ::String, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    # g_dbus_address_get_stream: (None)
+    # @cancellable: (nullable)
+    # @callback: (nullable)
+    # @user_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # Generator::NullableArrayPlan
+    callback = if callback.nil?
+                 LibGio::AsyncReadyCallback.null
+               else
+                 callback.to_unsafe
+               end
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # C call
+    LibGio.g_dbus_address_get_stream(address, cancellable, callback, user_data)
+
+    # Return value handling
+  end
+
+  def dbus_address_get_stream_finish(res : Gio::AsyncResult) : Gio::IOStream
+    # g_dbus_address_get_stream_finish: (Throws)
+    # @out_guid: (out) (transfer full) (nullable) (optional)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::OutArgUsedInReturnPlan
+    out_guid = Pointer(Pointer(LibC::Char)).null
+
+    # C call
+    _retval = LibGio.g_dbus_address_get_stream_finish(res, out_guid, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::IOStream.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def dbus_address_get_stream_sync(address : ::String, cancellable : Gio::Cancellable?) : Gio::IOStream
+    # g_dbus_address_get_stream_sync: (Throws)
+    # @out_guid: (out) (transfer full) (nullable) (optional)
+    # @cancellable: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::OutArgUsedInReturnPlan
+    out_guid = Pointer(Pointer(LibC::Char)).null
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_dbus_address_get_stream_sync(address, out_guid, cancellable, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::IOStream.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.dbus_annotation_info_lookup(annotations : Enumerable(Gio::DBusAnnotationInfo)?, name : ::String) : ::String?
+    # g_dbus_annotation_info_lookup: (None)
+    # @annotations: (nullable) (array zero-terminated=1 element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    annotations = if annotations.nil?
+                    Pointer(Pointer(Void)).null
+                  else
+                    annotations.to_a.map(&.to_unsafe).to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_dbus_annotation_info_lookup(annotations, name)
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.dbus_error_encode_gerror(error : GLib::Error) : ::String
+    # g_dbus_error_encode_gerror: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_dbus_error_encode_gerror(error)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.dbus_error_get_remote_error(error : GLib::Error) : ::String?
+    # g_dbus_error_get_remote_error: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_dbus_error_get_remote_error(error)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval) unless _retval.null?
+  end
+
+  def self.dbus_error_is_remote_error(error : GLib::Error) : Bool
+    # g_dbus_error_is_remote_error: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_error_is_remote_error(error)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_error_new_for_dbus_error(dbus_error_name : ::String, dbus_error_message : ::String) : GLib::Error
+    # g_dbus_error_new_for_dbus_error: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_dbus_error_new_for_dbus_error(dbus_error_name, dbus_error_message)
+
+    # Return value handling
+
+    GLib::Error.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.dbus_error_quark : UInt32
+    # g_dbus_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.dbus_error_register_error(error_domain : UInt32, error_code : Int32, dbus_error_name : ::String) : Bool
+    # g_dbus_error_register_error: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_error_register_error(error_domain, error_code, dbus_error_name)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_error_register_error_domain(error_domain_quark_name : ::String, quark_volatile : Pointer(UInt64), entries : Enumerable(Gio::DBusErrorEntry)) : Nil
+    # g_dbus_error_register_error_domain: (None)
+    # @entries: (array length=num_entries element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    num_entries = entries.size
+    # Generator::ArrayArgPlan
+    entries = entries.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    LibGio.g_dbus_error_register_error_domain(error_domain_quark_name, quark_volatile, entries, num_entries)
+
+    # Return value handling
+  end
+
+  def self.dbus_error_strip_remote_error(error : GLib::Error) : Bool
+    # g_dbus_error_strip_remote_error: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_error_strip_remote_error(error)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_error_unregister_error(error_domain : UInt32, error_code : Int32, dbus_error_name : ::String) : Bool
+    # g_dbus_error_unregister_error: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_error_unregister_error(error_domain, error_code, dbus_error_name)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_escape_object_path(s : ::String) : ::String
+    # g_dbus_escape_object_path: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_dbus_escape_object_path(s)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.dbus_escape_object_path_bytestring(bytes : Enumerable(UInt8)) : ::String
+    # g_dbus_escape_object_path_bytestring: (None)
+    # @bytes: (array zero-terminated=1 element-type UInt8)
+    # Returns: (transfer full)
+
+    # Generator::ArrayArgPlan
+    bytes = bytes.to_a.to_unsafe
+
+    # C call
+    _retval = LibGio.g_dbus_escape_object_path_bytestring(bytes)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.dbus_escape_object_path_bytestring(*bytes : UInt8)
+    self.dbus_escape_object_path_bytestring(bytes)
+  end
+
+  def self.dbus_generate_guid : ::String
+    # g_dbus_generate_guid: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_dbus_generate_guid
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.dbus_gvalue_to_gvariant(gvalue : _, type : GLib::VariantType) : GLib::Variant
+    # g_dbus_gvalue_to_gvariant: (None)
+    # Returns: (transfer full)
+
+    # Generator::HandmadeArgPlan
+    gvalue = if !gvalue.is_a?(GObject::Value)
+               GObject::Value.new(gvalue).to_unsafe
+             else
+               gvalue.to_unsafe
+             end
+
+    # C call
+    _retval = LibGio.g_dbus_gvalue_to_gvariant(gvalue, type)
+
+    # Return value handling
+
+    GLib::Variant.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.dbus_gvariant_to_gvalue(value : _) : GObject::Value
+    # g_dbus_gvariant_to_gvalue: (None)
+    # @out_gvalue: (out) (caller-allocates)
+    # Returns: (transfer none)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GLib::Variant)
+              GLib::Variant.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # Generator::CallerAllocatesPlan
+    out_gvalue = GObject::Value.new
+
+    # C call
+    LibGio.g_dbus_gvariant_to_gvalue(value, out_gvalue)
+
+    # Return value handling
+
+    out_gvalue
+  end
+
+  def self.dbus_is_address(string : ::String) : Bool
+    # g_dbus_is_address: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_is_address(string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_is_error_name(string : ::String) : Bool
+    # g_dbus_is_error_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_is_error_name(string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_is_guid(string : ::String) : Bool
+    # g_dbus_is_guid: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_is_guid(string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_is_interface_name(string : ::String) : Bool
+    # g_dbus_is_interface_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_is_interface_name(string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_is_member_name(string : ::String) : Bool
+    # g_dbus_is_member_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_is_member_name(string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_is_name(string : ::String) : Bool
+    # g_dbus_is_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_is_name(string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def dbus_is_supported_address(string : ::String) : Bool
+    # g_dbus_is_supported_address: (Throws)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGio.g_dbus_is_supported_address(string, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_is_unique_name(string : ::String) : Bool
+    # g_dbus_is_unique_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_dbus_is_unique_name(string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.dbus_unescape_object_path(s : ::String) : Enumerable(UInt8)?
+    # g_dbus_unescape_object_path: (None)
+    # Returns: (transfer none) (array zero-terminated=1 element-type UInt8)
+
+    # C call
+    _retval = LibGio.g_dbus_unescape_object_path(s)
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def dtls_client_connection_new(base_socket : Gio::DatagramBased, server_identity : Gio::SocketConnectable?) : Gio::DtlsClientConnection
+    # g_dtls_client_connection_new: (Throws)
+    # @server_identity: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    server_identity = if server_identity.nil?
+                        Pointer(Void).null
+                      else
+                        server_identity.to_unsafe
+                      end
+
+    # C call
+    _retval = LibGio.g_dtls_client_connection_new(base_socket, server_identity, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::DtlsClientConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def dtls_server_connection_new(base_socket : Gio::DatagramBased, certificate : Gio::TlsCertificate?) : Gio::DtlsServerConnection
+    # g_dtls_server_connection_new: (Throws)
+    # @certificate: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    certificate = if certificate.nil?
+                    Pointer(Void).null
+                  else
+                    certificate.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_dtls_server_connection_new(base_socket, certificate, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::DtlsServerConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.file_new_for_commandline_arg(arg : ::String) : Gio::File
+    # g_file_new_for_commandline_arg: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_file_new_for_commandline_arg(arg)
+
+    # Return value handling
+
+    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.file_new_for_commandline_arg_and_cwd(arg : ::String, cwd : ::String) : Gio::File
+    # g_file_new_for_commandline_arg_and_cwd: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_file_new_for_commandline_arg_and_cwd(arg, cwd)
+
+    # Return value handling
+
+    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.file_new_for_path(path : ::String) : Gio::File
+    # g_file_new_for_path: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_file_new_for_path(path)
+
+    # Return value handling
+
+    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.file_new_for_uri(uri : ::String) : Gio::File
+    # g_file_new_for_uri: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_file_new_for_uri(uri)
+
+    # Return value handling
+
+    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def file_new_tmp(tmpl : ::String?, iostream : Gio::FileIOStream) : Gio::File
+    # g_file_new_tmp: (Throws)
+    # @tmpl: (nullable)
+    # @iostream: (out) (transfer full)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    tmpl = if tmpl.nil?
+             Pointer(LibC::Char).null
+           else
+             tmpl.to_unsafe
+           end
+
+    # Generator::TransferFullArgPlan
+    LibGObject.g_object_ref_sink(iostream)
+
+    # C call
+    _retval = LibGio.g_file_new_tmp(tmpl, iostream, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.file_parse_name(parse_name : ::String) : Gio::File
+    # g_file_parse_name: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_file_parse_name(parse_name)
+
+    # Return value handling
+
+    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.icon_deserialize(value : _) : Gio::Icon?
+    # g_icon_deserialize: (None)
+    # Returns: (transfer full)
+
+    # Generator::HandmadeArgPlan
+    value = if !value.is_a?(GLib::Variant)
+              GLib::Variant.new(value).to_unsafe
+            else
+              value.to_unsafe
+            end
+
+    # C call
+    _retval = LibGio.g_icon_deserialize(value)
+
+    # Return value handling
+
+    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.icon_hash(icon : Pointer(Void)) : UInt32
+    # g_icon_hash: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_icon_hash(icon)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def icon_new_for_string(str : ::String) : Gio::Icon
+    # g_icon_new_for_string: (Throws)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGio.g_icon_new_for_string(str, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def initable_newv(object_type : UInt64, parameters : Enumerable(GObject::Parameter), cancellable : Gio::Cancellable?) : GObject::Object
+    # g_initable_newv: (Throws)
+    # @parameters: (array length=n_parameters element-type Interface)
+    # @cancellable: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::ArrayLengthArgPlan
+    n_parameters = parameters.size
+    # Generator::ArrayArgPlan
+    parameters = parameters.to_a.map(&.to_unsafe).to_unsafe
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_initable_newv(object_type, n_parameters, parameters, cancellable, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GObject::Object.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.io_error_from_errno(err_no : Int32) : Gio::IOErrorEnum
+    # g_io_error_from_errno: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_io_error_from_errno(err_no)
+
+    # Return value handling
+
+    Gio::IOErrorEnum.new(_retval)
+  end
+
+  def self.io_error_quark : UInt32
+    # g_io_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_io_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.io_extension_point_implement(extension_point_name : ::String, type : UInt64, extension_name : ::String, priority : Int32) : Gio::IOExtension
+    # g_io_extension_point_implement: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_io_extension_point_implement(extension_point_name, type, extension_name, priority)
+
+    # Return value handling
+
+    Gio::IOExtension.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.io_extension_point_lookup(name : ::String) : Gio::IOExtensionPoint
+    # g_io_extension_point_lookup: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_io_extension_point_lookup(name)
+
+    # Return value handling
+
+    Gio::IOExtensionPoint.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.io_extension_point_register(name : ::String) : Gio::IOExtensionPoint
+    # g_io_extension_point_register: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_io_extension_point_register(name)
+
+    # Return value handling
+
+    Gio::IOExtensionPoint.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.io_modules_load_all_in_directory(dirname : ::String) : GLib::List
+    # g_io_modules_load_all_in_directory: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_io_modules_load_all_in_directory(dirname)
+
+    # Return value handling
+
+    GLib::List(Gio::IOModule).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.io_modules_load_all_in_directory_with_scope(dirname : ::String, scope : Gio::IOModuleScope) : GLib::List
+    # g_io_modules_load_all_in_directory_with_scope: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_io_modules_load_all_in_directory_with_scope(dirname, scope)
+
+    # Return value handling
+
+    GLib::List(Gio::IOModule).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.io_modules_scan_all_in_directory(dirname : ::String) : Nil
+    # g_io_modules_scan_all_in_directory: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_io_modules_scan_all_in_directory(dirname)
+
+    # Return value handling
+  end
+
+  def self.io_modules_scan_all_in_directory_with_scope(dirname : ::String, scope : Gio::IOModuleScope) : Nil
+    # g_io_modules_scan_all_in_directory_with_scope: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_io_modules_scan_all_in_directory_with_scope(dirname, scope)
+
+    # Return value handling
+  end
+
+  def self.io_scheduler_cancel_all_jobs : Nil
+    # g_io_scheduler_cancel_all_jobs: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_io_scheduler_cancel_all_jobs
+
+    # Return value handling
+  end
+
+  def self.io_scheduler_push_job(job_func : Pointer(Void), user_data : Pointer(Void)?, notify : Pointer(Void)?, io_priority : Int32, cancellable : Gio::Cancellable?) : Nil
+    # g_io_scheduler_push_job: (None)
+    # @user_data: (nullable)
+    # @notify: (nullable)
+    # @cancellable: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    notify = if notify.nil?
+               LibGLib::DestroyNotify.null
+             else
+               notify.to_unsafe
+             end
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # C call
+    LibGio.g_io_scheduler_push_job(job_func, user_data, notify, io_priority, cancellable)
+
+    # Return value handling
+  end
+
+  def self.keyfile_settings_backend_new(filename : ::String, root_path : ::String, root_group : ::String?) : Gio::SettingsBackend
+    # g_keyfile_settings_backend_new: (None)
+    # @root_group: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    root_group = if root_group.nil?
+                   Pointer(LibC::Char).null
+                 else
+                   root_group.to_unsafe
+                 end
+
+    # C call
+    _retval = LibGio.g_keyfile_settings_backend_new(filename, root_path, root_group)
+
+    # Return value handling
+
+    Gio::SettingsBackend.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.memory_monitor_dup_default : Gio::MemoryMonitor
+    # g_memory_monitor_dup_default: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_memory_monitor_dup_default
+
+    # Return value handling
+
+    Gio::MemoryMonitor__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.memory_settings_backend_new : Gio::SettingsBackend
+    # g_memory_settings_backend_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_memory_settings_backend_new
+
+    # Return value handling
+
+    Gio::SettingsBackend.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.network_monitor_get_default : Gio::NetworkMonitor
+    # g_network_monitor_get_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_network_monitor_get_default
+
+    # Return value handling
+
+    Gio::NetworkMonitor__Impl.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.networking_init : Nil
+    # g_networking_init: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_networking_init
+
+    # Return value handling
+  end
+
+  def self.null_settings_backend_new : Gio::SettingsBackend
+    # g_null_settings_backend_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_null_settings_backend_new
+
+    # Return value handling
+
+    Gio::SettingsBackend.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.pollable_source_new(pollable_stream : GObject::Object) : GLib::Source
+    # g_pollable_source_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_pollable_source_new(pollable_stream)
+
+    # Return value handling
+
+    GLib::Source.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.pollable_source_new_full(pollable_stream : GObject::Object, child_source : GLib::Source?, cancellable : Gio::Cancellable?) : GLib::Source
+    # g_pollable_source_new_full: (None)
+    # @child_source: (nullable)
+    # @cancellable: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    child_source = if child_source.nil?
+                     Pointer(Void).null
+                   else
+                     child_source.to_unsafe
+                   end
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_pollable_source_new_full(pollable_stream, child_source, cancellable)
+
+    # Return value handling
+
+    GLib::Source.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def pollable_stream_read(stream : Gio::InputStream, buffer : Enumerable(UInt8), blocking : Bool, cancellable : Gio::Cancellable?) : Int64
+    # g_pollable_stream_read: (Throws)
+    # @buffer: (array length=count element-type UInt8)
+    # @cancellable: (nullable)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::ArrayLengthArgPlan
+    count = buffer.size
+    # Generator::ArrayArgPlan
+    buffer = buffer.to_a.to_unsafe
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_pollable_stream_read(stream, buffer, count, blocking, cancellable, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    _retval
+  end
+
+  def pollable_stream_write(stream : Gio::OutputStream, buffer : Enumerable(UInt8), blocking : Bool, cancellable : Gio::Cancellable?) : Int64
+    # g_pollable_stream_write: (Throws)
+    # @buffer: (array length=count element-type UInt8)
+    # @cancellable: (nullable)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::ArrayLengthArgPlan
+    count = buffer.size
+    # Generator::ArrayArgPlan
+    buffer = buffer.to_a.to_unsafe
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_pollable_stream_write(stream, buffer, count, blocking, cancellable, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    _retval
+  end
+
+  def pollable_stream_write_all(stream : Gio::OutputStream, buffer : Enumerable(UInt8), blocking : Bool, bytes_written : UInt64, cancellable : Gio::Cancellable?) : Bool
+    # g_pollable_stream_write_all: (Throws)
+    # @buffer: (array length=count element-type UInt8)
+    # @bytes_written: (out) (transfer full)
+    # @cancellable: (nullable)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::ArrayLengthArgPlan
+    count = buffer.size
+    # Generator::ArrayArgPlan
+    buffer = buffer.to_a.to_unsafe
+
+    # Generator::NullableArrayPlan
+    cancellable = if cancellable.nil?
+                    Pointer(Void).null
+                  else
+                    cancellable.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_pollable_stream_write_all(stream, buffer, count, blocking, bytes_written, cancellable, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.power_profile_monitor_dup_default : Gio::PowerProfileMonitor
+    # g_power_profile_monitor_dup_default: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_power_profile_monitor_dup_default
+
+    # Return value handling
+
+    Gio::PowerProfileMonitor__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.proxy_get_default_for_protocol(protocol : ::String) : Gio::Proxy?
+    # g_proxy_get_default_for_protocol: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_proxy_get_default_for_protocol(protocol)
+
+    # Return value handling
+
+    Gio::Proxy__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.proxy_resolver_get_default : Gio::ProxyResolver
+    # g_proxy_resolver_get_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_proxy_resolver_get_default
+
+    # Return value handling
+
+    Gio::ProxyResolver__Impl.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.resolver_error_quark : UInt32
+    # g_resolver_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_resolver_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.resource_error_quark : UInt32
+    # g_resource_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_resource_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def resource_load(filename : ::String) : Gio::Resource
+    # g_resource_load: (Throws)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGio.g_resource_load(filename, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::Resource.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def resources_enumerate_children(path : ::String, lookup_flags : Gio::ResourceLookupFlags) : Enumerable(::String)
+    # g_resources_enumerate_children: (Throws)
+    # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGio.g_resources_enumerate_children(path, lookup_flags, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
+  end
+
+  def resources_get_info(path : ::String, lookup_flags : Gio::ResourceLookupFlags) : Bool
+    # g_resources_get_info: (Throws)
+    # @size: (out) (transfer full) (optional)
+    # @flags: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::OutArgUsedInReturnPlan
+    size = Pointer(UInt64).null
+    # Generator::OutArgUsedInReturnPlan
+    flags = Pointer(UInt32).null
+
+    # C call
+    _retval = LibGio.g_resources_get_info(path, lookup_flags, size, flags, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def resources_lookup_data(path : ::String, lookup_flags : Gio::ResourceLookupFlags) : GLib::Bytes
+    # g_resources_lookup_data: (Throws)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGio.g_resources_lookup_data(path, lookup_flags, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def resources_open_stream(path : ::String, lookup_flags : Gio::ResourceLookupFlags) : Gio::InputStream
+    # g_resources_open_stream: (Throws)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGio.g_resources_open_stream(path, lookup_flags, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::InputStream.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.resources_register(resource : Gio::Resource) : Nil
+    # g_resources_register: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_resources_register(resource)
+
+    # Return value handling
+  end
+
+  def self.resources_unregister(resource : Gio::Resource) : Nil
+    # g_resources_unregister: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_resources_unregister(resource)
+
+    # Return value handling
+  end
+
+  def self.settings_schema_source_get_default : Gio::SettingsSchemaSource?
+    # g_settings_schema_source_get_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_settings_schema_source_get_default
+
+    # Return value handling
+
+    Gio::SettingsSchemaSource.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def self.simple_async_report_gerror_in_idle(object : GObject::Object?, callback : Pointer(Void)?, user_data : Pointer(Void)?, error : GLib::Error) : Nil
+    # g_simple_async_report_gerror_in_idle: (None)
+    # @object: (nullable)
+    # @callback: (nullable)
+    # @user_data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    object = if object.nil?
+               Pointer(Void).null
+             else
+               object.to_unsafe
+             end
+
+    # Generator::NullableArrayPlan
+    callback = if callback.nil?
+                 LibGio::AsyncReadyCallback.null
+               else
+                 callback.to_unsafe
+               end
+
+    # Generator::NullableArrayPlan
+    user_data = if user_data.nil?
+                  Pointer(Void).null
+                else
+                  user_data.to_unsafe
+                end
+
+    # C call
+    LibGio.g_simple_async_report_gerror_in_idle(object, callback, user_data, error)
+
+    # Return value handling
+  end
+
+  def self.tls_backend_get_default : Gio::TlsBackend
+    # g_tls_backend_get_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_tls_backend_get_default
+
+    # Return value handling
+
+    Gio::TlsBackend__Impl.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.tls_channel_binding_error_quark : UInt32
+    # g_tls_channel_binding_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_tls_channel_binding_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def tls_client_connection_new(base_io_stream : Gio::IOStream, server_identity : Gio::SocketConnectable?) : Gio::TlsClientConnection
+    # g_tls_client_connection_new: (Throws)
+    # @server_identity: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    server_identity = if server_identity.nil?
+                        Pointer(Void).null
+                      else
+                        server_identity.to_unsafe
+                      end
+
+    # C call
+    _retval = LibGio.g_tls_client_connection_new(base_io_stream, server_identity, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::TlsClientConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.tls_error_quark : UInt32
+    # g_tls_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_tls_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def tls_file_database_new(anchors : ::String) : Gio::TlsFileDatabase
+    # g_tls_file_database_new: (Throws)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # C call
+    _retval = LibGio.g_tls_file_database_new(anchors, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::TlsFileDatabase__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def tls_server_connection_new(base_io_stream : Gio::IOStream, certificate : Gio::TlsCertificate?) : Gio::TlsServerConnection
+    # g_tls_server_connection_new: (Throws)
+    # @certificate: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    certificate = if certificate.nil?
+                    Pointer(Void).null
+                  else
+                    certificate.to_unsafe
+                  end
+
+    # C call
+    _retval = LibGio.g_tls_server_connection_new(base_io_stream, certificate, pointerof(_error))
+
+    # Error check
+    Gio.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    Gio::TlsServerConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.unix_is_mount_path_system_internal(mount_path : ::String) : Bool
+    # g_unix_is_mount_path_system_internal: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_is_mount_path_system_internal(mount_path)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.unix_is_system_device_path(device_path : ::String) : Bool
+    # g_unix_is_system_device_path: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_is_system_device_path(device_path)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.unix_is_system_fs_type(fs_type : ::String) : Bool
+    # g_unix_is_system_fs_type: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_is_system_fs_type(fs_type)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.unix_mount_at(mount_path : ::String) : Gio::UnixMountEntry?
+    # g_unix_mount_at: (None)
+    # @time_read: (out) (transfer full) (optional)
+    # Returns: (transfer full)
+
+    # Generator::OutArgUsedInReturnPlan
+    time_read = Pointer(UInt64).null
+
+    # C call
+    _retval = LibGio.g_unix_mount_at(mount_path, time_read)
+
+    # Return value handling
+
+    Gio::UnixMountEntry.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.unix_mount_compare(mount1 : Gio::UnixMountEntry, mount2 : Gio::UnixMountEntry) : Int32
+    # g_unix_mount_compare: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mount_compare(mount1, mount2)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.unix_mount_copy(mount_entry : Gio::UnixMountEntry) : Gio::UnixMountEntry
+    # g_unix_mount_copy: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_unix_mount_copy(mount_entry)
+
+    # Return value handling
+
+    Gio::UnixMountEntry.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.unix_mount_for(file_path : ::String) : Gio::UnixMountEntry?
+    # g_unix_mount_for: (None)
+    # @time_read: (out) (transfer full) (optional)
+    # Returns: (transfer full)
+
+    # Generator::OutArgUsedInReturnPlan
+    time_read = Pointer(UInt64).null
+
+    # C call
+    _retval = LibGio.g_unix_mount_for(file_path, time_read)
+
+    # Return value handling
+
+    Gio::UnixMountEntry.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.unix_mount_free(mount_entry : Gio::UnixMountEntry) : Nil
+    # g_unix_mount_free: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGio.g_unix_mount_free(mount_entry)
+
+    # Return value handling
+  end
+
+  def self.unix_mount_get_device_path(mount_entry : Gio::UnixMountEntry) : ::Path
+    # g_unix_mount_get_device_path: (None)
+    # Returns: (transfer none Filename)
+
+    # C call
+    _retval = LibGio.g_unix_mount_get_device_path(mount_entry)
+
+    # Return value handling
+
+    ::Path.new(::String.new(_retval))
+  end
+
+  def self.unix_mount_get_fs_type(mount_entry : Gio::UnixMountEntry) : ::String
+    # g_unix_mount_get_fs_type: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mount_get_fs_type(mount_entry)
+
+    # Return value handling
+
+    ::String.new(_retval)
+  end
+
+  def self.unix_mount_get_mount_path(mount_entry : Gio::UnixMountEntry) : ::Path
+    # g_unix_mount_get_mount_path: (None)
+    # Returns: (transfer none Filename)
+
+    # C call
+    _retval = LibGio.g_unix_mount_get_mount_path(mount_entry)
+
+    # Return value handling
+
+    ::Path.new(::String.new(_retval))
+  end
+
+  def self.unix_mount_get_options(mount_entry : Gio::UnixMountEntry) : ::String?
+    # g_unix_mount_get_options: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mount_get_options(mount_entry)
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.unix_mount_get_root_path(mount_entry : Gio::UnixMountEntry) : ::String?
+    # g_unix_mount_get_root_path: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mount_get_root_path(mount_entry)
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.unix_mount_guess_can_eject(mount_entry : Gio::UnixMountEntry) : Bool
+    # g_unix_mount_guess_can_eject: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mount_guess_can_eject(mount_entry)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.unix_mount_guess_icon(mount_entry : Gio::UnixMountEntry) : Gio::Icon
+    # g_unix_mount_guess_icon: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_unix_mount_guess_icon(mount_entry)
+
+    # Return value handling
+
+    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.unix_mount_guess_name(mount_entry : Gio::UnixMountEntry) : ::String
+    # g_unix_mount_guess_name: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_unix_mount_guess_name(mount_entry)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.unix_mount_guess_should_display(mount_entry : Gio::UnixMountEntry) : Bool
+    # g_unix_mount_guess_should_display: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mount_guess_should_display(mount_entry)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.unix_mount_guess_symbolic_icon(mount_entry : Gio::UnixMountEntry) : Gio::Icon
+    # g_unix_mount_guess_symbolic_icon: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGio.g_unix_mount_guess_symbolic_icon(mount_entry)
+
+    # Return value handling
+
+    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.unix_mount_is_readonly(mount_entry : Gio::UnixMountEntry) : Bool
+    # g_unix_mount_is_readonly: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mount_is_readonly(mount_entry)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.unix_mount_is_system_internal(mount_entry : Gio::UnixMountEntry) : Bool
+    # g_unix_mount_is_system_internal: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mount_is_system_internal(mount_entry)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.unix_mount_point_at(mount_path : ::String) : Gio::UnixMountPoint?
+    # g_unix_mount_point_at: (None)
+    # @time_read: (out) (transfer full) (optional)
+    # Returns: (transfer full)
+
+    # Generator::OutArgUsedInReturnPlan
+    time_read = Pointer(UInt64).null
+
+    # C call
+    _retval = LibGio.g_unix_mount_point_at(mount_path, time_read)
+
+    # Return value handling
+
+    Gio::UnixMountPoint.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.unix_mount_points_changed_since(time : UInt64) : Bool
+    # g_unix_mount_points_changed_since: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mount_points_changed_since(time)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.unix_mount_points_get : GLib::List
+    # g_unix_mount_points_get: (None)
+    # @time_read: (out) (transfer full) (optional)
+    # Returns: (transfer full)
+
+    # Generator::OutArgUsedInReturnPlan
+    time_read = Pointer(UInt64).null
+
+    # C call
+    _retval = LibGio.g_unix_mount_points_get(time_read)
+
+    # Return value handling
+
+    GLib::List(Gio::UnixMountPoint).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.unix_mounts_changed_since(time : UInt64) : Bool
+    # g_unix_mounts_changed_since: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGio.g_unix_mounts_changed_since(time)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.unix_mounts_get : GLib::List
+    # g_unix_mounts_get: (None)
+    # @time_read: (out) (transfer full) (optional)
+    # Returns: (transfer full)
+
+    # Generator::OutArgUsedInReturnPlan
+    time_read = Pointer(UInt64).null
+
+    # C call
+    _retval = LibGio.g_unix_mounts_get(time_read)
+
+    # Return value handling
+
+    GLib::List(Gio::UnixMountEntry).new(_retval, GICrystal::Transfer::Full)
   end
 
   # Errors
@@ -2224,7 +4608,7 @@ module Gio
   #   }
   # ]|
   # but should instead treat all unrecognized error codes the same as
-  # %G_IO_ERROR_FAILED.
+  # #G_IO_ERROR_FAILED.
   #
   # See also #GPollableReturn for a cheaper way of returning
   # %G_IO_ERROR_WOULD_BLOCK to callers without allocating a #GError.
@@ -2640,12 +5024,6 @@ module Gio
         7
       end
     end
-
-    class BadCertificatePassword < TlsError
-      def code : Int32
-        8
-      end
-    end
   end
 
   # :nodoc:
@@ -2780,7 +5158,6 @@ module Gio
       raise TlsError::CertificateRequired.new(error) if error_code == 5
       raise TlsError::Eof.new(error) if error_code == 6
       raise TlsError::InappropriateFallback.new(error) if error_code == 7
-      raise TlsError::BadCertificatePassword.new(error) if error_code == 8
     end
 
     GObject.raise_exception(error)
@@ -2790,3 +5167,4 @@ module Gio
 end
 
 # Extra includes
+require "../../../lib/gtk4/src/bindings/gio/application.cr"

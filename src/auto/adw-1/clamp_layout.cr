@@ -24,10 +24,18 @@ module Adw
   # Each child will get the style  classes .large when it reached its maximum
   # size, .small when it's allocated the full size, .medium in-between, or none
   # if it hasn't been allocated yet.
+  @[GObject::GeneratedWrapper]
   class ClampLayout < Gtk::LayoutManager
     include Gtk::Orientable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::ClampLayoutClass), class_init,
+        sizeof(LibAdw::ClampLayout), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -39,23 +47,27 @@ module Adw
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if maximum_size
+      if !maximum_size.nil?
         (_names.to_unsafe + _n).value = "maximum-size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, maximum_size)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if tightening_threshold
+      if !tightening_threshold.nil?
         (_names.to_unsafe + _n).value = "tightening-threshold".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tightening_threshold)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ClampLayout.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -93,50 +105,49 @@ module Adw
       value
     end
 
+    # Creates a new `AdwClampLayout`.
     def initialize
       # adw_clamp_layout_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_clamp_layout_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the maximum size allocated to the children.
     def maximum_size : Int32
       # adw_clamp_layout_get_maximum_size: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_clamp_layout_get_maximum_size(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the size above which the children are clamped.
     def tightening_threshold : Int32
       # adw_clamp_layout_get_tightening_threshold: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_clamp_layout_get_tightening_threshold(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Sets the maximum size allocated to the children.
     def maximum_size=(maximum_size : Int32) : Nil
       # adw_clamp_layout_set_maximum_size: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_clamp_layout_set_maximum_size(self, maximum_size)
@@ -144,11 +155,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the size above which the children are clamped.
     def tightening_threshold=(tightening_threshold : Int32) : Nil
       # adw_clamp_layout_set_tightening_threshold: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_clamp_layout_set_tightening_threshold(self, tightening_threshold)

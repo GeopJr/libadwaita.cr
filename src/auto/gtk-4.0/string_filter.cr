@@ -5,17 +5,25 @@ module Gtk
   # strings to a fixed search term.
   #
   # The strings are obtained from the items by evaluating a `GtkExpression`
-  # set with [method@Gtk.StringFilter.set_expression], and they are
-  # compared against a search term set with [method@Gtk.StringFilter.set_search].
+  # set with `Gtk::StringFilter#expression=`, and they are
+  # compared against a search term set with `Gtk::StringFilter#search=`.
   #
   # `GtkStringFilter` has several different modes of comparison - it
   # can match the whole string, just a prefix, or any substring. Use
-  # [method@Gtk.StringFilter.set_match_mode] choose a mode.
+  # `Gtk::StringFilter#match_mode=` choose a mode.
   #
   # It is also possible to make case-insensitive comparisons, with
-  # [method@Gtk.StringFilter.set_ignore_case].
+  # `Gtk::StringFilter#ignore_case=`.
+  @[GObject::GeneratedWrapper]
   class StringFilter < Filter
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::StringFilterClass), class_init,
+        sizeof(LibGtk::StringFilter), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -27,28 +35,32 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 4).new(LibGObject::Value.new)
       _n = 0
 
-      if expression
+      if !expression.nil?
         (_names.to_unsafe + _n).value = "expression".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, expression)
         _n += 1
       end
-      if ignore_case
+      if !ignore_case.nil?
         (_names.to_unsafe + _n).value = "ignore-case".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, ignore_case)
         _n += 1
       end
-      if match_mode
+      if !match_mode.nil?
         (_names.to_unsafe + _n).value = "match-mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, match_mode)
         _n += 1
       end
-      if search
+      if !search.nil?
         (_names.to_unsafe + _n).value = "search".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, search)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(StringFilter.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -98,7 +110,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "match-mode", pointerof(value), Pointer(Void).null)
-      Gtk::StringFilterMatchMode.from_value(value)
+      Gtk::StringFilterMatchMode.new(value)
     end
 
     def search=(value : ::String) : ::String
@@ -116,84 +128,96 @@ module Gtk
       ::String.new(value)
     end
 
+    # Creates a new string filter.
+    #
+    # You will want to set up the filter by providing a string to search for
+    # and by providing a property to look up on the item.
     def initialize(expression : Gtk::Expression?)
       # gtk_string_filter_new: (Constructor)
       # @expression: (transfer full) (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       expression = if expression.nil?
                      Pointer(Void).null
                    else
                      expression.to_unsafe
                    end
-      LibGObject.g_object_ref(expression)
+
+      # Generator::TransferFullArgPlan
+      LibGObject.gtk_expression_ref(expression)
 
       # C call
       _retval = LibGtk.gtk_string_filter_new(expression)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the expression that the string filter uses to
+    # obtain strings from items.
     def expression : Gtk::Expression?
       # gtk_string_filter_get_expression: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_string_filter_get_expression(self)
 
       # Return value handling
+
       Gtk::Expression.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns whether the filter ignores case differences.
     def ignore_case : Bool
       # gtk_string_filter_get_ignore_case: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_string_filter_get_ignore_case(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the match mode that the filter is using.
     def match_mode : Gtk::StringFilterMatchMode
       # gtk_string_filter_get_match_mode: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_string_filter_get_match_mode(self)
 
       # Return value handling
-      Gtk::StringFilterMatchMode.from_value(_retval)
+
+      Gtk::StringFilterMatchMode.new(_retval)
     end
 
+    # Gets the search term.
     def search : ::String?
       # gtk_string_filter_get_search: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_string_filter_get_search(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Sets the expression that the string filter uses to
+    # obtain strings from items.
+    #
+    # The expression must have a value type of %G_TYPE_STRING.
     def expression=(expression : Gtk::Expression?) : Nil
       # gtk_string_filter_set_expression: (Method | Setter)
       # @expression: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       expression = if expression.nil?
                      Pointer(Void).null
                    else
@@ -206,11 +230,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the filter ignores case differences.
     def ignore_case=(ignore_case : Bool) : Nil
       # gtk_string_filter_set_ignore_case: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_string_filter_set_ignore_case(self, ignore_case)
@@ -218,11 +241,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the match mode for the filter.
     def match_mode=(mode : Gtk::StringFilterMatchMode) : Nil
       # gtk_string_filter_set_match_mode: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_string_filter_set_match_mode(self, mode)
@@ -230,12 +252,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the string to search for.
     def search=(search : ::String?) : Nil
       # gtk_string_filter_set_search: (Method | Setter)
       # @search: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       search = if search.nil?
                  Pointer(LibC::Char).null
                else

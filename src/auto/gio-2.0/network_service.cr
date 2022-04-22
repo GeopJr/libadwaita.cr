@@ -11,10 +11,18 @@ module Gio
   # See #GSrvTarget for more information about SRV records, and see
   # #GSocketConnectable for an example of using the connectable
   # interface.
+  @[GObject::GeneratedWrapper]
   class NetworkService < GObject::Object
     include SocketConnectable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::NetworkServiceClass), class_init,
+        sizeof(LibGio::NetworkService), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -26,28 +34,32 @@ module Gio
       _values = StaticArray(LibGObject::Value, 4).new(LibGObject::Value.new)
       _n = 0
 
-      if domain
+      if !domain.nil?
         (_names.to_unsafe + _n).value = "domain".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, domain)
         _n += 1
       end
-      if protocol
+      if !protocol.nil?
         (_names.to_unsafe + _n).value = "protocol".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, protocol)
         _n += 1
       end
-      if scheme
+      if !scheme.nil?
         (_names.to_unsafe + _n).value = "scheme".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scheme)
         _n += 1
       end
-      if service
+      if !service.nil?
         (_names.to_unsafe + _n).value = "service".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, service)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(NetworkService.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -115,76 +127,80 @@ module Gio
       ::String.new(value)
     end
 
+    # Creates a new #GNetworkService representing the given @service,
+    # @protocol, and @domain. This will initially be unresolved; use the
+    # #GSocketConnectable interface to resolve it.
     def initialize(service : ::String, protocol : ::String, domain : ::String)
       # g_network_service_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_network_service_new(service, protocol, domain)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the domain that @srv serves. This might be either UTF-8 or
+    # ASCII-encoded, depending on what @srv was created with.
     def domain : ::String
       # g_network_service_get_domain: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_network_service_get_domain(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets @srv's protocol name (eg, "tcp").
     def protocol : ::String
       # g_network_service_get_protocol: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_network_service_get_protocol(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets the URI scheme used to resolve proxies. By default, the service name
+    # is used as scheme.
     def scheme : ::String
       # g_network_service_get_scheme: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_network_service_get_scheme(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets @srv's service name (eg, "ldap").
     def service : ::String
       # g_network_service_get_service: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_network_service_get_service(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Set's the URI scheme used to resolve proxies. By default, the service name
+    # is used as scheme.
     def scheme=(scheme : ::String) : Nil
       # g_network_service_set_scheme: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_network_service_set_scheme(self, scheme)

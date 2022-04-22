@@ -5,7 +5,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::Analysis))
@@ -31,111 +31,122 @@ module Pango
     def finalize
     end
 
-    def shape_engine : Pointer(Void)
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::Analysis)).zero?
+    end
+
+    def shape_engine!
+      self.shape_engine.not_nil!
+    end
+
+    def shape_engine : Pointer(Void)?
       _var = (@pointer + 0).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def shape_engine=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value
+    def shape_engine=(value : Pointer(Void)?)
+      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
-    def lang_engine : Pointer(Void)
-      # Property getter
+    def lang_engine!
+      self.lang_engine.not_nil!
+    end
+
+    def lang_engine : Pointer(Void)?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def lang_engine=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value
+    def lang_engine=(value : Pointer(Void)?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
-    def font : Pango::Font
-      # Property getter
+    def font!
+      self.font.not_nil!
+    end
+
+    def font : Pango::Font?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Pango::Font.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def font=(value : Pango::Font)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def font=(value : Pango::Font?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
     def level : UInt8
-      # Property getter
       _var = (@pointer + 24).as(Pointer(UInt8))
       _var.value
     end
 
     def level=(value : UInt8)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(UInt8)).value = value
       value
     end
 
     def gravity : UInt8
-      # Property getter
       _var = (@pointer + 25).as(Pointer(UInt8))
       _var.value
     end
 
     def gravity=(value : UInt8)
-      # Property setter
       _var = (@pointer + 25).as(Pointer(UInt8)).value = value
       value
     end
 
     def flags : UInt8
-      # Property getter
       _var = (@pointer + 26).as(Pointer(UInt8))
       _var.value
     end
 
     def flags=(value : UInt8)
-      # Property setter
       _var = (@pointer + 26).as(Pointer(UInt8)).value = value
       value
     end
 
     def script : UInt8
-      # Property getter
       _var = (@pointer + 27).as(Pointer(UInt8))
       _var.value
     end
 
     def script=(value : UInt8)
-      # Property setter
       _var = (@pointer + 27).as(Pointer(UInt8)).value = value
       value
     end
 
-    def language : Pango::Language
-      # Property getter
+    def language!
+      self.language.not_nil!
+    end
+
+    def language : Pango::Language?
       _var = (@pointer + 32).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Pango::Language.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def language=(value : Pango::Language)
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def language=(value : Pango::Language?)
+      _var = (@pointer + 32).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def extra_attrs : GLib::SList
-      # Property getter
+    def extra_attrs!
+      self.extra_attrs.not_nil!
+    end
+
+    def extra_attrs : GLib::SList?
       _var = (@pointer + 40).as(Pointer(Pointer(LibGLib::SList)))
+      return if _var.value.null?
       GLib::SList(Pointer(Void)).new(_var.value, GICrystal::Transfer::None)
     end
 
-    def extra_attrs=(value : GLib::SList)
-      # Property setter
-      _var = (@pointer + 40).as(Pointer(Pointer(LibGLib::SList))).value = value
+    def extra_attrs=(value : GLib::SList?)
+      _var = (@pointer + 40).as(Pointer(Pointer(LibGLib::SList))).value = value.nil? ? Pointer(LibGLib::SList).null : value
       value
     end
 

@@ -179,6 +179,318 @@ module Graphene
 
   # Flags
 
+  def self.box_empty : Graphene::Box
+    # graphene_box_empty: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_box_empty
+
+    # Return value handling
+
+    Graphene::Box.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.box_infinite : Graphene::Box
+    # graphene_box_infinite: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_box_infinite
+
+    # Return value handling
+
+    Graphene::Box.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.box_minus_one : Graphene::Box
+    # graphene_box_minus_one: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_box_minus_one
+
+    # Return value handling
+
+    Graphene::Box.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.box_one : Graphene::Box
+    # graphene_box_one: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_box_one
+
+    # Return value handling
+
+    Graphene::Box.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.box_one_minus_one : Graphene::Box
+    # graphene_box_one_minus_one: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_box_one_minus_one
+
+    # Return value handling
+
+    Graphene::Box.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.box_zero : Graphene::Box
+    # graphene_box_zero: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_box_zero
+
+    # Return value handling
+
+    Graphene::Box.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.point3d_zero : Graphene::Point3D
+    # graphene_point3d_zero: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_point3d_zero
+
+    # Return value handling
+
+    Graphene::Point3D.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.point_zero : Graphene::Point
+    # graphene_point_zero: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_point_zero
+
+    # Return value handling
+
+    Graphene::Point.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.rect_alloc : Graphene::Rect
+    # graphene_rect_alloc: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGraphene.graphene_rect_alloc
+
+    # Return value handling
+
+    Graphene::Rect.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.rect_zero : Graphene::Rect
+    # graphene_rect_zero: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_rect_zero
+
+    # Return value handling
+
+    Graphene::Rect.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.size_zero : Graphene::Size
+    # graphene_size_zero: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_size_zero
+
+    # Return value handling
+
+    Graphene::Size.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec2_one : Graphene::Vec2
+    # graphene_vec2_one: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec2_one
+
+    # Return value handling
+
+    Graphene::Vec2.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec2_x_axis : Graphene::Vec2
+    # graphene_vec2_x_axis: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec2_x_axis
+
+    # Return value handling
+
+    Graphene::Vec2.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec2_y_axis : Graphene::Vec2
+    # graphene_vec2_y_axis: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec2_y_axis
+
+    # Return value handling
+
+    Graphene::Vec2.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec2_zero : Graphene::Vec2
+    # graphene_vec2_zero: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec2_zero
+
+    # Return value handling
+
+    Graphene::Vec2.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec3_one : Graphene::Vec3
+    # graphene_vec3_one: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec3_one
+
+    # Return value handling
+
+    Graphene::Vec3.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec3_x_axis : Graphene::Vec3
+    # graphene_vec3_x_axis: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec3_x_axis
+
+    # Return value handling
+
+    Graphene::Vec3.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec3_y_axis : Graphene::Vec3
+    # graphene_vec3_y_axis: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec3_y_axis
+
+    # Return value handling
+
+    Graphene::Vec3.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec3_z_axis : Graphene::Vec3
+    # graphene_vec3_z_axis: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec3_z_axis
+
+    # Return value handling
+
+    Graphene::Vec3.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec3_zero : Graphene::Vec3
+    # graphene_vec3_zero: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec3_zero
+
+    # Return value handling
+
+    Graphene::Vec3.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec4_one : Graphene::Vec4
+    # graphene_vec4_one: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec4_one
+
+    # Return value handling
+
+    Graphene::Vec4.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec4_w_axis : Graphene::Vec4
+    # graphene_vec4_w_axis: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec4_w_axis
+
+    # Return value handling
+
+    Graphene::Vec4.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec4_x_axis : Graphene::Vec4
+    # graphene_vec4_x_axis: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec4_x_axis
+
+    # Return value handling
+
+    Graphene::Vec4.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec4_y_axis : Graphene::Vec4
+    # graphene_vec4_y_axis: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec4_y_axis
+
+    # Return value handling
+
+    Graphene::Vec4.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec4_z_axis : Graphene::Vec4
+    # graphene_vec4_z_axis: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec4_z_axis
+
+    # Return value handling
+
+    Graphene::Vec4.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.vec4_zero : Graphene::Vec4
+    # graphene_vec4_zero: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGraphene.graphene_vec4_zero
+
+    # Return value handling
+
+    Graphene::Vec4.new(_retval, GICrystal::Transfer::None)
+  end
+
   # Errors
 
   # :nodoc:

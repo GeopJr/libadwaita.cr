@@ -123,7 +123,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "peer-certificate-errors", pointerof(value), Pointer(Void).null)
-      Gio::TlsCertificateFlags.from_value(value)
+      Gio::TlsCertificateFlags.new(value)
     end
 
     def protocol_version : Gio::TlsProtocolVersion
@@ -131,7 +131,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "protocol-version", pointerof(value), Pointer(Void).null)
-      Gio::TlsProtocolVersion.from_value(value)
+      Gio::TlsProtocolVersion.new(value)
     end
 
     def rehandshake_mode=(value : Gio::TlsRehandshakeMode) : Gio::TlsRehandshakeMode
@@ -146,7 +146,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "rehandshake-mode", pointerof(value), Pointer(Void).null)
-      Gio::TlsRehandshakeMode.from_value(value)
+      Gio::TlsRehandshakeMode.new(value)
     end
 
     def require_close_notify=(value : Bool) : Bool
@@ -171,7 +171,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -183,7 +183,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -194,17 +196,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -223,14 +229,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_close_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -238,12 +244,11 @@ module Gio
       # g_dtls_connection_emit_accept_certificate: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_emit_accept_certificate(self, peer_cert, errors)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -251,12 +256,11 @@ module Gio
       # g_dtls_connection_get_certificate: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_certificate(self)
 
       # Return value handling
+
       Gio::TlsCertificate.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -267,8 +271,9 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       data = Pointer(Pointer(UInt8)).null
+      # Generator::ArrayArgPlan
       data = data.to_a.to_unsafe
 
       # C call
@@ -276,7 +281,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -284,12 +291,11 @@ module Gio
       # g_dtls_connection_get_ciphersuite_name: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_ciphersuite_name(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
@@ -297,12 +303,11 @@ module Gio
       # g_dtls_connection_get_database: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_database(self)
 
       # Return value handling
+
       Gio::TlsDatabase.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -310,12 +315,11 @@ module Gio
       # g_dtls_connection_get_interaction: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_interaction(self)
 
       # Return value handling
+
       Gio::TlsInteraction.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -323,12 +327,11 @@ module Gio
       # g_dtls_connection_get_negotiated_protocol: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_negotiated_protocol(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -336,12 +339,11 @@ module Gio
       # g_dtls_connection_get_peer_certificate: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_peer_certificate(self)
 
       # Return value handling
+
       Gio::TlsCertificate.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -349,51 +351,47 @@ module Gio
       # g_dtls_connection_get_peer_certificate_errors: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_peer_certificate_errors(self)
 
       # Return value handling
-      Gio::TlsCertificateFlags.from_value(_retval)
+
+      Gio::TlsCertificateFlags.new(_retval)
     end
 
     def protocol_version : Gio::TlsProtocolVersion
       # g_dtls_connection_get_protocol_version: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_protocol_version(self)
 
       # Return value handling
-      Gio::TlsProtocolVersion.from_value(_retval)
+
+      Gio::TlsProtocolVersion.new(_retval)
     end
 
     def rehandshake_mode : Gio::TlsRehandshakeMode
       # g_dtls_connection_get_rehandshake_mode: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_rehandshake_mode(self)
 
       # Return value handling
-      Gio::TlsRehandshakeMode.from_value(_retval)
+
+      Gio::TlsRehandshakeMode.new(_retval)
     end
 
     def require_close_notify : Bool
       # g_dtls_connection_get_require_close_notify: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_get_require_close_notify(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -404,7 +402,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -416,7 +414,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -427,17 +427,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -456,14 +460,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_handshake_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -472,7 +476,7 @@ module Gio
       # @protocols: (nullable) (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       protocols = if protocols.nil?
                     Pointer(Pointer(LibC::Char)).null
                   else
@@ -489,8 +493,6 @@ module Gio
       # g_dtls_connection_set_certificate: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGio.g_dtls_connection_set_certificate(self, certificate)
 
@@ -502,7 +504,7 @@ module Gio
       # @database: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       database = if database.nil?
                    Pointer(Void).null
                  else
@@ -520,7 +522,7 @@ module Gio
       # @interaction: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       interaction = if interaction.nil?
                       Pointer(Void).null
                     else
@@ -537,8 +539,6 @@ module Gio
       # g_dtls_connection_set_rehandshake_mode: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGio.g_dtls_connection_set_rehandshake_mode(self, mode)
 
@@ -548,8 +548,6 @@ module Gio
     def require_close_notify=(require_close_notify : Bool) : Nil
       # g_dtls_connection_set_require_close_notify: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dtls_connection_set_require_close_notify(self, require_close_notify)
@@ -564,7 +562,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -576,7 +574,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -587,17 +587,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -616,21 +620,107 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_connection_shutdown_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
+    end
+
+    struct AcceptCertificateSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "accept-certificate::#{@detail}" : "accept-certificate"
+      end
+
+      def connect(&block : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
+          arg0 = Gio::TlsCertificate.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gio::TlsCertificateFlags.new(lib_arg1)
+          _retval = ::Box(Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(box).call(arg0, arg1)
+          _retval
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
+          arg0 = Gio::TlsCertificate.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gio::TlsCertificateFlags.new(lib_arg1)
+          _retval = ::Box(Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(box).call(arg0, arg1)
+          _retval
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
+          sender = Gio::DtlsConnection__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::TlsCertificate.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gio::TlsCertificateFlags.new(lib_arg1)
+          ::Box(Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
+          sender = Gio::DtlsConnection__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::TlsCertificate.new(lib_arg0, GICrystal::Transfer::None)
+          arg1 = Gio::TlsCertificateFlags.new(lib_arg1)
+          ::Box(Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(peer_cert : Gio::TlsCertificate, errors : Gio::TlsCertificateFlags) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "accept-certificate", peer_cert, errors)
+      end
+    end
+
+    def accept_certificate_signal
+      AcceptCertificateSignal.new(self)
     end
 
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class DtlsConnection__Impl < GObject::Object
     include DtlsConnection
 

@@ -81,12 +81,20 @@ module Gio
   # originating from the #GDBusObjectManagerClient object will be created in
   # the same context and, consequently, will deliver signals in the
   # same main loop.
+  @[GObject::GeneratedWrapper]
   class DBusObjectManagerClient < GObject::Object
     include AsyncInitable
     include DBusObjectManager
     include Initable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::DBusObjectManagerClientClass), class_init,
+        sizeof(LibGio::DBusObjectManagerClient), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -98,53 +106,57 @@ module Gio
       _values = StaticArray(LibGObject::Value, 9).new(LibGObject::Value.new)
       _n = 0
 
-      if bus_type
+      if !bus_type.nil?
         (_names.to_unsafe + _n).value = "bus-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, bus_type)
         _n += 1
       end
-      if connection
+      if !connection.nil?
         (_names.to_unsafe + _n).value = "connection".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, connection)
         _n += 1
       end
-      if flags
+      if !flags.nil?
         (_names.to_unsafe + _n).value = "flags".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, flags)
         _n += 1
       end
-      if get_proxy_type_destroy_notify
+      if !get_proxy_type_destroy_notify.nil?
         (_names.to_unsafe + _n).value = "get-proxy-type-destroy-notify".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, get_proxy_type_destroy_notify)
         _n += 1
       end
-      if get_proxy_type_func
+      if !get_proxy_type_func.nil?
         (_names.to_unsafe + _n).value = "get-proxy-type-func".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, get_proxy_type_func)
         _n += 1
       end
-      if get_proxy_type_user_data
+      if !get_proxy_type_user_data.nil?
         (_names.to_unsafe + _n).value = "get-proxy-type-user-data".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, get_proxy_type_user_data)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if name_owner
+      if !name_owner.nil?
         (_names.to_unsafe + _n).value = "name-owner".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name_owner)
         _n += 1
       end
-      if object_path
+      if !object_path.nil?
         (_names.to_unsafe + _n).value = "object-path".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, object_path)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DBusObjectManagerClient.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -186,7 +198,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
-      Gio::DBusObjectManagerClientFlags.from_value(value)
+      Gio::DBusObjectManagerClientFlags.new(value)
     end
 
     def get_proxy_type_destroy_notify=(value : Pointer(Void)) : Pointer(Void)
@@ -272,40 +284,48 @@ module Gio
       ::String.new(value)
     end
 
+    # Finishes an operation started with g_dbus_object_manager_client_new().
     def self.new_finish(res : Gio::AsyncResult) : self
       # g_dbus_object_manager_client_new_finish: (Constructor | Throws)
       # Returns: (transfer full)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_object_manager_client_new_finish(res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DBusObjectManagerClient.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Finishes an operation started with g_dbus_object_manager_client_new_for_bus().
     def self.new_for_bus_finish(res : Gio::AsyncResult) : self
       # g_dbus_object_manager_client_new_for_bus_finish: (Constructor | Throws)
       # Returns: (transfer full)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_object_manager_client_new_for_bus_finish(res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DBusObjectManagerClient.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Like g_dbus_object_manager_client_new_sync() but takes a #GBusType instead
+    # of a #GDBusConnection.
+    #
+    # This is a synchronous failable constructor - the calling thread is
+    # blocked until a reply is received. See g_dbus_object_manager_client_new_for_bus()
+    # for the asynchronous version.
     def self.new_for_bus_sync(bus_type : Gio::BusType, flags : Gio::DBusObjectManagerClientFlags, name : ::String, object_path : ::String, get_proxy_type_func : Pointer(Void)?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : Pointer(Void)?, cancellable : Gio::Cancellable?) : self
       # g_dbus_object_manager_client_new_for_bus_sync: (Constructor | Throws)
       # @get_proxy_type_func: (nullable)
@@ -316,22 +336,28 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       get_proxy_type_func = if get_proxy_type_func.nil?
                               LibGio::DBusProxyTypeFunc.null
                             else
                               get_proxy_type_func.to_unsafe
                             end
+
+      # Generator::NullableArrayPlan
       get_proxy_type_user_data = if get_proxy_type_user_data.nil?
                                    Pointer(Void).null
                                  else
                                    get_proxy_type_user_data.to_unsafe
                                  end
+
+      # Generator::NullableArrayPlan
       get_proxy_type_destroy_notify = if get_proxy_type_destroy_notify.nil?
                                         LibGLib::DestroyNotify.null
                                       else
                                         get_proxy_type_destroy_notify.to_unsafe
                                       end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -343,10 +369,17 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DBusObjectManagerClient.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a new #GDBusObjectManagerClient object.
+    #
+    # This is a synchronous failable constructor - the calling thread is
+    # blocked until a reply is received. See g_dbus_object_manager_client_new()
+    # for the asynchronous version.
     def self.new_sync(connection : Gio::DBusConnection, flags : Gio::DBusObjectManagerClientFlags, name : ::String?, object_path : ::String, get_proxy_type_func : Pointer(Void)?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : Pointer(Void)?, cancellable : Gio::Cancellable?) : self
       # g_dbus_object_manager_client_new_sync: (Constructor | Throws)
       # @name: (nullable)
@@ -358,27 +391,35 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       name = if name.nil?
                Pointer(LibC::Char).null
              else
                name.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       get_proxy_type_func = if get_proxy_type_func.nil?
                               LibGio::DBusProxyTypeFunc.null
                             else
                               get_proxy_type_func.to_unsafe
                             end
+
+      # Generator::NullableArrayPlan
       get_proxy_type_user_data = if get_proxy_type_user_data.nil?
                                    Pointer(Void).null
                                  else
                                    get_proxy_type_user_data.to_unsafe
                                  end
+
+      # Generator::NullableArrayPlan
       get_proxy_type_destroy_notify = if get_proxy_type_destroy_notify.nil?
                                         LibGLib::DestroyNotify.null
                                       else
                                         get_proxy_type_destroy_notify.to_unsafe
                                       end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -390,10 +431,20 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DBusObjectManagerClient.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Asynchronously creates a new #GDBusObjectManagerClient object.
+    #
+    # This is an asynchronous failable constructor. When the result is
+    # ready, @callback will be invoked in the
+    # [thread-default main context][g-main-context-push-thread-default]
+    # of the thread you are calling this method from. You can
+    # then call g_dbus_object_manager_client_new_finish() to get the result. See
+    # g_dbus_object_manager_client_new_sync() for the synchronous version.
     def self.new(connection : Gio::DBusConnection, flags : Gio::DBusObjectManagerClientFlags, name : ::String, object_path : ::String, get_proxy_type_func : Pointer(Void)?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : Pointer(Void)?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # g_dbus_object_manager_client_new: (None)
       # @get_proxy_type_func: (nullable)
@@ -404,32 +455,42 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       get_proxy_type_func = if get_proxy_type_func.nil?
                               LibGio::DBusProxyTypeFunc.null
                             else
                               get_proxy_type_func.to_unsafe
                             end
+
+      # Generator::NullableArrayPlan
       get_proxy_type_user_data = if get_proxy_type_user_data.nil?
                                    Pointer(Void).null
                                  else
                                    get_proxy_type_user_data.to_unsafe
                                  end
+
+      # Generator::NullableArrayPlan
       get_proxy_type_destroy_notify = if get_proxy_type_destroy_notify.nil?
                                         LibGLib::DestroyNotify.null
                                       else
                                         get_proxy_type_destroy_notify.to_unsafe
                                       end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -442,6 +503,15 @@ module Gio
       # Return value handling
     end
 
+    # Like g_dbus_object_manager_client_new() but takes a #GBusType instead of a
+    # #GDBusConnection.
+    #
+    # This is an asynchronous failable constructor. When the result is
+    # ready, @callback will be invoked in the
+    # [thread-default main loop][g-main-context-push-thread-default]
+    # of the thread you are calling this method from. You can
+    # then call g_dbus_object_manager_client_new_for_bus_finish() to get the result. See
+    # g_dbus_object_manager_client_new_for_bus_sync() for the synchronous version.
     def self.new_for_bus(bus_type : Gio::BusType, flags : Gio::DBusObjectManagerClientFlags, name : ::String, object_path : ::String, get_proxy_type_func : Pointer(Void)?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : Pointer(Void)?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # g_dbus_object_manager_client_new_for_bus: (None)
       # @get_proxy_type_func: (nullable)
@@ -452,32 +522,42 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       get_proxy_type_func = if get_proxy_type_func.nil?
                               LibGio::DBusProxyTypeFunc.null
                             else
                               get_proxy_type_func.to_unsafe
                             end
+
+      # Generator::NullableArrayPlan
       get_proxy_type_user_data = if get_proxy_type_user_data.nil?
                                    Pointer(Void).null
                                  else
                                    get_proxy_type_user_data.to_unsafe
                                  end
+
+      # Generator::NullableArrayPlan
       get_proxy_type_destroy_notify = if get_proxy_type_destroy_notify.nil?
                                         LibGLib::DestroyNotify.null
                                       else
                                         get_proxy_type_destroy_notify.to_unsafe
                                       end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -490,58 +570,73 @@ module Gio
       # Return value handling
     end
 
+    # Gets the #GDBusConnection used by @manager.
     def connection : Gio::DBusConnection
       # g_dbus_object_manager_client_get_connection: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_object_manager_client_get_connection(self)
 
       # Return value handling
+
       Gio::DBusConnection.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the flags that @manager was constructed with.
     def flags : Gio::DBusObjectManagerClientFlags
       # g_dbus_object_manager_client_get_flags: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_object_manager_client_get_flags(self)
 
       # Return value handling
-      Gio::DBusObjectManagerClientFlags.from_value(_retval)
+
+      Gio::DBusObjectManagerClientFlags.new(_retval)
     end
 
+    # Gets the name that @manager is for, or %NULL if not a message bus
+    # connection.
     def name : ::String
       # g_dbus_object_manager_client_get_name: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_object_manager_client_get_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # The unique name that owns the name that @manager is for or %NULL if
+    # no-one currently owns that name. You can connect to the
+    # #GObject::notify signal to track changes to the
+    # #GDBusObjectManagerClient:name-owner property.
     def name_owner : ::String?
       # g_dbus_object_manager_client_get_name_owner: (Method | Getter)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_object_manager_client_get_name_owner(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
+    # Emitted when one or more D-Bus properties on proxy changes. The
+    # local cache has already been updated when this signal fires. Note
+    # that both @changed_properties and @invalidated_properties are
+    # guaranteed to never be %NULL (either may be empty though).
+    #
+    # This signal exists purely as a convenience to avoid having to
+    # connect signals to all interface proxies managed by @manager.
+    #
+    # This signal is emitted in the
+    # [thread-default main context][g-main-context-push-thread-default]
+    # that @manager was constructed in.
     struct InterfaceProxyPropertiesChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -634,6 +729,14 @@ module Gio
       InterfaceProxyPropertiesChangedSignal.new(self)
     end
 
+    # Emitted when a D-Bus signal is received on @interface_proxy.
+    #
+    # This signal exists purely as a convenience to avoid having to
+    # connect signals to all interface proxies managed by @manager.
+    #
+    # This signal is emitted in the
+    # [thread-default main context][g-main-context-push-thread-default]
+    # that @manager was constructed in.
     struct InterfaceProxySignalSignal
       @source : GObject::Object
       @detail : String?

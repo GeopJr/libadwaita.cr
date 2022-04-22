@@ -48,7 +48,7 @@ module GdkPixbuf
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGdkPixbuf::PixbufModule))
@@ -82,207 +82,234 @@ module GdkPixbuf
     def finalize
     end
 
-    def module_name : ::String
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule)).zero?
+    end
+
+    def module_name!
+      self.module_name.not_nil!
+    end
+
+    def module_name : ::String?
       _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def module_name=(value : ::String)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value
+    def module_name=(value : ::String?)
+      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def module_path : ::String
-      # Property getter
+    def module_path!
+      self.module_path.not_nil!
+    end
+
+    def module_path : ::String?
       _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def module_path=(value : ::String)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value
+    def module_path=(value : ::String?)
+      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def module : GModule::Module
-      # Property getter
+    def module!
+      self.module.not_nil!
+    end
+
+    def module : GModule::Module?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GModule::Module.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def module=(value : GModule::Module)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def module=(value : GModule::Module?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def info : GdkPixbuf::PixbufFormat
-      # Property getter
+    def info!
+      self.info.not_nil!
+    end
+
+    def info : GdkPixbuf::PixbufFormat?
       _var = (@pointer + 24).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GdkPixbuf::PixbufFormat.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def info=(value : GdkPixbuf::PixbufFormat)
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def info=(value : GdkPixbuf::PixbufFormat?)
+      _var = (@pointer + 24).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
     def load : Pointer(Void)
-      # Property getter
       _var = (@pointer + 32).as(Pointer(LibGdkPixbuf::PixbufModuleLoadFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def load=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(LibGdkPixbuf::PixbufModuleLoadFunc)).value = value.to_unsafe
+      _var = (@pointer + 32).as(Pointer(LibGdkPixbuf::PixbufModuleLoadFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
     def load_xpm_data : Pointer(Void)
-      # Property getter
       _var = (@pointer + 40).as(Pointer(LibGdkPixbuf::PixbufModuleLoadXpmDataFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def load_xpm_data=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 40).as(Pointer(LibGdkPixbuf::PixbufModuleLoadXpmDataFunc)).value = value.to_unsafe
+      _var = (@pointer + 40).as(Pointer(LibGdkPixbuf::PixbufModuleLoadXpmDataFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
-    def begin_load : Pointer(Void)
-      # Property getter
+    def begin_load!
+      self.begin_load.not_nil!
+    end
+
+    def begin_load : Pointer(Void)?
       _var = (@pointer + 48).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def begin_load=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 48).as(Pointer(Pointer(Void))).value = value
+    def begin_load=(value : Pointer(Void)?)
+      _var = (@pointer + 48).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
     def stop_load : Pointer(Void)
-      # Property getter
       _var = (@pointer + 56).as(Pointer(LibGdkPixbuf::PixbufModuleStopLoadFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def stop_load=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 56).as(Pointer(LibGdkPixbuf::PixbufModuleStopLoadFunc)).value = value.to_unsafe
+      _var = (@pointer + 56).as(Pointer(LibGdkPixbuf::PixbufModuleStopLoadFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
     def load_increment : Pointer(Void)
-      # Property getter
       _var = (@pointer + 64).as(Pointer(LibGdkPixbuf::PixbufModuleIncrementLoadFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def load_increment=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 64).as(Pointer(LibGdkPixbuf::PixbufModuleIncrementLoadFunc)).value = value.to_unsafe
+      _var = (@pointer + 64).as(Pointer(LibGdkPixbuf::PixbufModuleIncrementLoadFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
     def load_animation : Pointer(Void)
-      # Property getter
       _var = (@pointer + 72).as(Pointer(LibGdkPixbuf::PixbufModuleLoadAnimationFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def load_animation=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 72).as(Pointer(LibGdkPixbuf::PixbufModuleLoadAnimationFunc)).value = value.to_unsafe
+      _var = (@pointer + 72).as(Pointer(LibGdkPixbuf::PixbufModuleLoadAnimationFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
     def save : Pointer(Void)
-      # Property getter
       _var = (@pointer + 80).as(Pointer(LibGdkPixbuf::PixbufModuleSaveFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def save=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 80).as(Pointer(LibGdkPixbuf::PixbufModuleSaveFunc)).value = value.to_unsafe
+      _var = (@pointer + 80).as(Pointer(LibGdkPixbuf::PixbufModuleSaveFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
-    def save_to_callback : Pointer(Void)
-      # Property getter
+    def save_to_callback!
+      self.save_to_callback.not_nil!
+    end
+
+    def save_to_callback : Pointer(Void)?
       _var = (@pointer + 88).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def save_to_callback=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 88).as(Pointer(Pointer(Void))).value = value
+    def save_to_callback=(value : Pointer(Void)?)
+      _var = (@pointer + 88).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
     def is_save_option_supported : Pointer(Void)
-      # Property getter
       _var = (@pointer + 96).as(Pointer(LibGdkPixbuf::PixbufModuleSaveOptionSupportedFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def is_save_option_supported=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 96).as(Pointer(LibGdkPixbuf::PixbufModuleSaveOptionSupportedFunc)).value = value.to_unsafe
+      _var = (@pointer + 96).as(Pointer(LibGdkPixbuf::PixbufModuleSaveOptionSupportedFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
-    def _reserved1 : Pointer(Void)
-      # Property getter
+    def _reserved1!
+      self._reserved1.not_nil!
+    end
+
+    def _reserved1 : Pointer(Void)?
       _var = (@pointer + 104).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def _reserved1=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 104).as(Pointer(Pointer(Void))).value = value
+    def _reserved1=(value : Pointer(Void)?)
+      _var = (@pointer + 104).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
-    def _reserved2 : Pointer(Void)
-      # Property getter
+    def _reserved2!
+      self._reserved2.not_nil!
+    end
+
+    def _reserved2 : Pointer(Void)?
       _var = (@pointer + 112).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def _reserved2=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 112).as(Pointer(Pointer(Void))).value = value
+    def _reserved2=(value : Pointer(Void)?)
+      _var = (@pointer + 112).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
-    def _reserved3 : Pointer(Void)
-      # Property getter
+    def _reserved3!
+      self._reserved3.not_nil!
+    end
+
+    def _reserved3 : Pointer(Void)?
       _var = (@pointer + 120).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def _reserved3=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 120).as(Pointer(Pointer(Void))).value = value
+    def _reserved3=(value : Pointer(Void)?)
+      _var = (@pointer + 120).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
-    def _reserved4 : Pointer(Void)
-      # Property getter
+    def _reserved4!
+      self._reserved4.not_nil!
+    end
+
+    def _reserved4 : Pointer(Void)?
       _var = (@pointer + 128).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def _reserved4=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 128).as(Pointer(Pointer(Void))).value = value
+    def _reserved4=(value : Pointer(Void)?)
+      _var = (@pointer + 128).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 

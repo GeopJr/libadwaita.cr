@@ -9,10 +9,18 @@ module Gio
   # Ideally something like gtk_icon_theme_choose_icon() should be used to
   # resolve the list of names so that fallback icons work nicely with
   # themes that inherit other themes.
+  @[GObject::GeneratedWrapper]
   class ThemedIcon < GObject::Object
     include Icon
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::ThemedIconClass), class_init,
+        sizeof(LibGio::ThemedIcon), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -24,23 +32,27 @@ module Gio
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if names
+      if !names.nil?
         (_names.to_unsafe + _n).value = "names".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, names)
         _n += 1
       end
-      if use_default_fallbacks
+      if !use_default_fallbacks.nil?
         (_names.to_unsafe + _n).value = "use-default-fallbacks".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_default_fallbacks)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ThemedIcon.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -85,32 +97,35 @@ module Gio
       GICrystal.to_bool(value)
     end
 
+    # Creates a new themed icon for @iconname.
     def initialize(iconname : ::String)
       # g_themed_icon_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_themed_icon_new(iconname)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Creates a new themed icon for @iconnames.
     def self.new_from_names(iconnames : Enumerable(::String)) : self
       # g_themed_icon_new_from_names: (Constructor)
       # @iconnames: (array length=len element-type Utf8)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       len = iconnames.size
+      # Generator::ArrayArgPlan
       iconnames = iconnames.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGio.g_themed_icon_new_from_names(iconnames, len)
 
       # Return value handling
+
       Gio::ThemedIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -118,24 +133,40 @@ module Gio
       self.new_from_names(iconnames)
     end
 
+    # Creates a new themed icon for @iconname, and all the names
+    # that can be created by shortening @iconname at '-' characters.
+    #
+    # In the following example, @icon1 and @icon2 are equivalent:
+    # |[<!-- language="C" -->
+    # const char *names[] = {
+    #   "gnome-dev-cdrom-audio",
+    #   "gnome-dev-cdrom",
+    #   "gnome-dev",
+    #   "gnome"
+    # };
+    #
+    # icon1 = g_themed_icon_new_from_names (names, 4);
+    # icon2 = g_themed_icon_new_with_default_fallbacks ("gnome-dev-cdrom-audio");
+    # ]|
     def self.new_with_default_fallbacks(iconname : ::String) : self
       # g_themed_icon_new_with_default_fallbacks: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_themed_icon_new_with_default_fallbacks(iconname)
 
       # Return value handling
+
       Gio::ThemedIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Append a name to the list of icons from within @icon.
+    #
+    # Note that doing so invalidates the hash computed by prior calls
+    # to g_icon_hash().
     def append_name(iconname : ::String) : Nil
       # g_themed_icon_append_name: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_themed_icon_append_name(self, iconname)
@@ -143,24 +174,26 @@ module Gio
       # Return value handling
     end
 
+    # Gets the names of icons from within @icon.
     def names : Enumerable(::String)
       # g_themed_icon_get_names: (Method | Getter)
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_themed_icon_get_names(self)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
     end
 
+    # Prepend a name to the list of icons from within @icon.
+    #
+    # Note that doing so invalidates the hash computed by prior calls
+    # to g_icon_hash().
     def prepend_name(iconname : ::String) : Nil
       # g_themed_icon_prepend_name: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_themed_icon_prepend_name(self, iconname)

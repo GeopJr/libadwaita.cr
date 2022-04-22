@@ -4,7 +4,7 @@ module Gdk
   # A singleton object that offers notification when displays appear or
   # disappear.
   #
-  # You can use [func@Gdk.DisplayManager.get] to obtain the `GdkDisplayManager`
+  # You can use `Gdk::DisplayManager#get` to obtain the `GdkDisplayManager`
   # singleton, but that should be rarely necessary. Typically, initializing
   # GTK opens a display that you can work with without ever accessing the
   # `GdkDisplayManager`.
@@ -14,7 +14,7 @@ module Gdk
   # at runtime.
   #
   # In the rare case that you need to influence which of the backends
-  # is being used, you can use [func@Gdk.set_allowed_backends]. Note
+  # is being used, you can use `Gdk#allowed_backends=`. Note
   # that you need to call this function before initializing GTK.
   #
   # ## Backend-specific code
@@ -26,6 +26,9 @@ module Gdk
   # you are building your application against. At runtime, use type-check
   # macros like GDK_IS_X11_DISPLAY() to find out which backend is in use:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # #ifdef GDK_WINDOWING_X11
   #   if (GDK_IS_X11_DISPLAY (display))
@@ -43,8 +46,16 @@ module Gdk
   # #endif
   #   g_error ("Unsupported GDK backend");
   # ```
+  @[GObject::GeneratedWrapper]
   class DisplayManager < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGdk::DisplayManager), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -56,13 +67,17 @@ module Gdk
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if default_display
+      if !default_display.nil?
         (_names.to_unsafe + _n).value = "default-display".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_display)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DisplayManager.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -85,63 +100,70 @@ module Gdk
       Gdk::Display.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Gets the singleton `GdkDisplayManager` object.
+    #
+    # When called for the first time, this function consults the
+    # `GDK_BACKEND` environment variable to find out which of the
+    # supported GDK backends to use (in case GDK has been compiled
+    # with multiple backends).
+    #
+    # Applications can use `#allowed_backends=` to limit what
+    # backends wil be used.
     def self.get : Gdk::DisplayManager
       # gdk_display_manager_get: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_display_manager_get
 
       # Return value handling
+
       Gdk::DisplayManager.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the default `GdkDisplay`.
     def default_display : Gdk::Display?
       # gdk_display_manager_get_default_display: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_display_manager_get_default_display(self)
 
       # Return value handling
+
       Gdk::Display.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # List all currently open displays.
     def list_displays : GLib::SList
       # gdk_display_manager_list_displays: (Method)
       # Returns: (transfer container)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_display_manager_list_displays(self)
 
       # Return value handling
+
       GLib::SList(Gdk::Display).new(_retval, GICrystal::Transfer::Container)
     end
 
+    # Opens a display.
     def open_display(name : ::String) : Gdk::Display?
       # gdk_display_manager_open_display: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_display_manager_open_display(self, name)
 
       # Return value handling
+
       Gdk::Display.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets @display as the default display.
     def default_display=(display : Gdk::Display) : Nil
       # gdk_display_manager_set_default_display: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_display_manager_set_default_display(self, display)
@@ -149,6 +171,7 @@ module Gdk
       # Return value handling
     end
 
+    # Emitted when a display is opened.
     struct DisplayOpenedSignal
       @source : GObject::Object
       @detail : String?

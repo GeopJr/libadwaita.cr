@@ -13,7 +13,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGio::ActionEntry))
@@ -36,74 +36,83 @@ module Gio
     def finalize
     end
 
-    def name : ::String
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::ActionEntry)).zero?
+    end
+
+    def name!
+      self.name.not_nil!
+    end
+
+    def name : ::String?
       _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def name=(value : ::String)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value
+    def name=(value : ::String?)
+      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
     def activate : Pointer(Void)
-      # Property getter
       _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def activate=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGio::ActionEntry))
       value
     end
 
-    def parameter_type : ::String
-      # Property getter
+    def parameter_type!
+      self.parameter_type.not_nil!
+    end
+
+    def parameter_type : ::String?
       _var = (@pointer + 16).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def parameter_type=(value : ::String)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(LibC::Char))).value = value
+    def parameter_type=(value : ::String?)
+      _var = (@pointer + 16).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def state : ::String
-      # Property getter
+    def state!
+      self.state.not_nil!
+    end
+
+    def state : ::String?
       _var = (@pointer + 24).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def state=(value : ::String)
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(Pointer(LibC::Char))).value = value
+    def state=(value : ::String?)
+      _var = (@pointer + 24).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
     def change_state : Pointer(Void)
-      # Property getter
       _var = (@pointer + 32).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def change_state=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 32).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGio::ActionEntry))
       value
     end
 
     def padding : Enumerable(UInt64)
-      # Property getter
       _var = (@pointer + 40).as(Pointer(UInt64[3]))
       _var.value
     end
 
     def padding=(value : Enumerable(UInt64))
-      # Property setter
       _var = (@pointer + 40).as(Pointer(UInt64[3])).value = value
       value
     end

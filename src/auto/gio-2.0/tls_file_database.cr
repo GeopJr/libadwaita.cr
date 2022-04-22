@@ -24,14 +24,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_file_database_new(anchors, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::TlsFileDatabase__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -39,6 +39,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class TlsFileDatabase__Impl < GObject::Object
     include TlsFileDatabase
 

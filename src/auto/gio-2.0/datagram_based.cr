@@ -51,13 +51,12 @@ module Gio
       # g_datagram_based_condition_check: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_datagram_based_condition_check(self, condition)
 
       # Return value handling
-      GLib::IOCondition.from_value(_retval)
+
+      GLib::IOCondition.new(_retval)
     end
 
     def condition_wait(condition : GLib::IOCondition, timeout : Int64, cancellable : Gio::Cancellable?) : Bool
@@ -67,7 +66,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -79,7 +78,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -88,7 +89,7 @@ module Gio
       # @cancellable: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -99,6 +100,7 @@ module Gio
       _retval = LibGio.g_datagram_based_create_source(self, condition, cancellable)
 
       # Return value handling
+
       GLib::Source.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -110,21 +112,26 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       num_messages = messages.size
+      # Generator::ArrayArgPlan
+      messages = messages.to_a.map(&.to_unsafe).to_unsafe
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-      messages = messages.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGio.g_datagram_based_receive_messages(self, messages, num_messages, flags, timeout, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       _retval
     end
 
@@ -136,21 +143,26 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       num_messages = messages.size
+      # Generator::ArrayArgPlan
+      messages = messages.to_a.map(&.to_unsafe).to_unsafe
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-      messages = messages.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGio.g_datagram_based_send_messages(self, messages, num_messages, flags, timeout, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       _retval
     end
 
@@ -158,6 +170,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class DatagramBased__Impl < GObject::Object
     include DatagramBased
 

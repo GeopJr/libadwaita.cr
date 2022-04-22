@@ -4,7 +4,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibHarfBuzz::OtNameEntryT))
@@ -24,39 +24,43 @@ module HarfBuzz
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::OtNameEntryT)).zero?
+    end
+
     def name_id : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def name_id=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def var : HarfBuzz::VarIntT
-      # Property getter
       _var = (@pointer + 4).as(Pointer(LibHarfBuzz::VarIntT))
-      HarfBuzz::VarIntT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarIntT.new(_var, GICrystal::Transfer::None)
     end
 
     def var=(value : HarfBuzz::VarIntT)
-      # Property setter
-      _var = (@pointer + 4).as(Pointer(LibHarfBuzz::VarIntT)).value = value.to_unsafe
+      _var = (@pointer + 4).as(Pointer(LibHarfBuzz::VarIntT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::OtNameEntryT))
       value
     end
 
-    def language : HarfBuzz::LanguageT
-      # Property getter
+    def language!
+      self.language.not_nil!
+    end
+
+    def language : HarfBuzz::LanguageT?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       HarfBuzz::LanguageT.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def language=(value : HarfBuzz::LanguageT)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def language=(value : HarfBuzz::LanguageT?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 

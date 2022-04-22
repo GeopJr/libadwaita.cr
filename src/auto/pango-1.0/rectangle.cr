@@ -3,12 +3,12 @@ module Pango
   #
   # `PangoRectangle` is frequently used to represent the logical or ink
   # extents of a single glyph or section of text. (See, for instance,
-  # [method@Pango.Font.get_glyph_extents].)
+  # `Pango::Font#glyph_extents`.)
   class Rectangle
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::Rectangle))
@@ -29,50 +29,46 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::Rectangle)).zero?
+    end
+
     def x : Int32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Int32))
       _var.value
     end
 
     def x=(value : Int32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Int32)).value = value
       value
     end
 
     def y : Int32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Int32))
       _var.value
     end
 
     def y=(value : Int32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Int32)).value = value
       value
     end
 
     def width : Int32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Int32))
       _var.value
     end
 
     def width=(value : Int32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Int32)).value = value
       value
     end
 
     def height : Int32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Int32))
       _var.value
     end
 
     def height=(value : Int32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Int32)).value = value
       value
     end

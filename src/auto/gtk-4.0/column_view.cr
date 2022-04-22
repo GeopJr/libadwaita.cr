@@ -26,15 +26,15 @@ module Gtk
   #
   # The column view supports sorting that can be customized by the user by
   # clicking on column headers. To set this up, the `GtkSorter` returned by
-  # [method@Gtk.ColumnView.get_sorter] must be attached to a sort model for the
+  # `Gtk::ColumnView#sorter` must be attached to a sort model for the
   # data that the view is showing, and the columns must have sorters attached to
-  # them by calling [method@Gtk.ColumnViewColumn.set_sorter]. The initial sort
-  # order can be set with [method@Gtk.ColumnView.sort_by_column].
+  # them by calling `Gtk::ColumnViewColumn#sorter=`. The initial sort
+  # order can be set with `Gtk::ColumnView#sort_by_column`.
   #
   # The column view also supports interactive resizing and reordering of
   # columns, via Drag-and-Drop of the column headers. This can be enabled or
-  # disabled with the [property@Gtk.ColumnView:reorderable] and
-  # [property@Gtk.ColumnViewColumn:resizable] properties.
+  # disabled with the `Gtk::ColumnView#reorderable` and
+  # `Gtk::ColumnViewColumn#resizable` properties.
   #
   # To learn more about the list widget framework, see the
   # [overview](section-list-widget.html).
@@ -73,6 +73,7 @@ module Gtk
   # widgets are using the %GTK_ACCESSIBLE_ROLE_COLUMN_HEADER role. The row widgets
   # are using the %GTK_ACCESSIBLE_ROLE_ROW role, and individual cells are using
   # the %GTK_ACCESSIBLE_ROLE_GRID_CELL role
+  @[GObject::GeneratedWrapper]
   class ColumnView < Widget
     include Accessible
     include Buildable
@@ -80,6 +81,13 @@ module Gtk
     include Scrollable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::ColumnViewClass), class_init,
+        sizeof(LibGtk::ColumnView), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -91,243 +99,248 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 47).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if columns
+      if !columns.nil?
         (_names.to_unsafe + _n).value = "columns".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, columns)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if enable_rubberband
+      if !enable_rubberband.nil?
         (_names.to_unsafe + _n).value = "enable-rubberband".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, enable_rubberband)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if hadjustment
+      if !hadjustment.nil?
         (_names.to_unsafe + _n).value = "hadjustment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hadjustment)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if hscroll_policy
+      if !hscroll_policy.nil?
         (_names.to_unsafe + _n).value = "hscroll-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hscroll_policy)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if model
+      if !model.nil?
         (_names.to_unsafe + _n).value = "model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, model)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if reorderable
+      if !reorderable.nil?
         (_names.to_unsafe + _n).value = "reorderable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, reorderable)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if show_column_separators
+      if !show_column_separators.nil?
         (_names.to_unsafe + _n).value = "show-column-separators".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_column_separators)
         _n += 1
       end
-      if show_row_separators
+      if !show_row_separators.nil?
         (_names.to_unsafe + _n).value = "show-row-separators".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_row_separators)
         _n += 1
       end
-      if single_click_activate
+      if !single_click_activate.nil?
         (_names.to_unsafe + _n).value = "single-click-activate".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, single_click_activate)
         _n += 1
       end
-      if sorter
+      if !sorter.nil?
         (_names.to_unsafe + _n).value = "sorter".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sorter)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if vadjustment
+      if !vadjustment.nil?
         (_names.to_unsafe + _n).value = "vadjustment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vadjustment)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if vscroll_policy
+      if !vscroll_policy.nil?
         (_names.to_unsafe + _n).value = "vscroll-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vscroll_policy)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ColumnView.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -441,32 +454,35 @@ module Gtk
       Gtk::Sorter.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkColumnView`.
+    #
+    # You most likely want to call `Gtk::ColumnView#append_column`
+    # to add columns next.
     def initialize(model : Gtk::SelectionModel?)
       # gtk_column_view_new: (Constructor)
       # @model: (transfer full) (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
                 model.to_unsafe
               end
-      LibGObject.g_object_ref(model)
 
       # C call
       _retval = LibGtk.gtk_column_view_new(model)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Appends the @column to the end of the columns in @self.
     def append_column(column : Gtk::ColumnViewColumn) : Nil
       # gtk_column_view_append_column: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_column_view_append_column(self, column)
@@ -474,115 +490,144 @@ module Gtk
       # Return value handling
     end
 
+    # Gets the list of columns in this column view.
+    #
+    # This list is constant over the lifetime of @self and can be used to
+    # monitor changes to the columns of @self by connecting to the
+    # ::items-changed signal.
     def columns : Gio::ListModel
       # gtk_column_view_get_columns: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_column_view_get_columns(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns whether rows can be selected by dragging with the mouse.
     def enable_rubberband : Bool
       # gtk_column_view_get_enable_rubberband: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_column_view_get_enable_rubberband(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the model that's currently used to read the items displayed.
     def model : Gtk::SelectionModel?
       # gtk_column_view_get_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_column_view_get_model(self)
 
       # Return value handling
+
       Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns whether columns are reorderable.
     def reorderable : Bool
       # gtk_column_view_get_reorderable: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_column_view_get_reorderable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the list should show separators
+    # between columns.
     def show_column_separators : Bool
       # gtk_column_view_get_show_column_separators: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_column_view_get_show_column_separators(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the list should show separators
+    # between rows.
     def show_row_separators : Bool
       # gtk_column_view_get_show_row_separators: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_column_view_get_show_row_separators(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether rows will be activated on single click and
+    # selected on hover.
     def single_click_activate : Bool
       # gtk_column_view_get_single_click_activate: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_column_view_get_single_click_activate(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns a special sorter that reflects the users sorting
+    # choices in the column view.
+    #
+    # To allow users to customizable sorting by clicking on column
+    # headers, this sorter needs to be set on the sort model underneath
+    # the model that is displayed by the view.
+    #
+    # See `Gtk::ColumnViewColumn#sorter=` for setting up
+    # per-column sorting.
+    #
+    # Here is an example:
+    #
+    #
+    # WARNING: **⚠️ The following code is in c ⚠️**
+    # ```c
+    # gtk_column_view_column_set_sorter (column, sorter);
+    # gtk_column_view_append_column (view, column);
+    # sorter = g_object_ref (gtk_column_view_get_sorter (view)));
+    # model = gtk_sort_list_model_new (store, sorter);
+    # selection = gtk_no_selection_new (model);
+    # gtk_column_view_set_model (view, selection);
+    # ```
     def sorter : Gtk::Sorter?
       # gtk_column_view_get_sorter: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_column_view_get_sorter(self)
 
       # Return value handling
+
       Gtk::Sorter.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Inserts a column at the given position in the columns of @self.
+    #
+    # If @column is already a column of @self, it will be repositioned.
     def insert_column(position : UInt32, column : Gtk::ColumnViewColumn) : Nil
       # gtk_column_view_insert_column: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_column_view_insert_column(self, position, column)
@@ -590,11 +635,10 @@ module Gtk
       # Return value handling
     end
 
+    # Removes the @column from the list of columns of @self.
     def remove_column(column : Gtk::ColumnViewColumn) : Nil
       # gtk_column_view_remove_column: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_column_view_remove_column(self, column)
@@ -602,11 +646,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether selections can be changed by dragging with the mouse.
     def enable_rubberband=(enable_rubberband : Bool) : Nil
       # gtk_column_view_set_enable_rubberband: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_column_view_set_enable_rubberband(self, enable_rubberband)
@@ -614,12 +657,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the model to use.
+    #
+    # This must be a `Gtk#SelectionModel`.
     def model=(model : Gtk::SelectionModel?) : Nil
       # gtk_column_view_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
@@ -632,11 +678,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether columns should be reorderable by dragging.
     def reorderable=(reorderable : Bool) : Nil
       # gtk_column_view_set_reorderable: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_column_view_set_reorderable(self, reorderable)
@@ -644,11 +689,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the list should show separators
+    # between columns.
     def show_column_separators=(show_column_separators : Bool) : Nil
       # gtk_column_view_set_show_column_separators: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_column_view_set_show_column_separators(self, show_column_separators)
@@ -656,11 +701,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the list should show separators
+    # between rows.
     def show_row_separators=(show_row_separators : Bool) : Nil
       # gtk_column_view_set_show_row_separators: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_column_view_set_show_row_separators(self, show_row_separators)
@@ -668,11 +713,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether rows should be activated on single click and
+    # selected on hover.
     def single_click_activate=(single_click_activate : Bool) : Nil
       # gtk_column_view_set_single_click_activate: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_column_view_set_single_click_activate(self, single_click_activate)
@@ -680,12 +725,24 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the sorting of the view.
+    #
+    # This function should be used to set up the initial sorting.
+    # At runtime, users can change the sorting of a column view
+    # by clicking on the list headers.
+    #
+    # This call only has an effect if the sorter returned by
+    # `Gtk::ColumnView#sorter` is set on a sort model,
+    # and `Gtk::ColumnViewColumn#sorter=` has been called
+    # on @column to associate a sorter with the column.
+    #
+    # If @column is %NULL, the view will be unsorted.
     def sort_by_column(column : Gtk::ColumnViewColumn?, direction : Gtk::SortType) : Nil
       # gtk_column_view_sort_by_column: (Method)
       # @column: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       column = if column.nil?
                  Pointer(Void).null
                else
@@ -698,6 +755,12 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when a row has been activated by the user, usually via activating
+    # the GtkListBase|list.activate-item action.
+    #
+    # This allows for a convenient way to handle activation in a columnview.
+    # See `Gtk::ListItem#activatable=` for details on how to use this
+    # signal.
     struct ActivateSignal
       @source : GObject::Object
       @detail : String?

@@ -5,7 +5,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::FlagsClass))
@@ -26,51 +26,53 @@ module GObject
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::FlagsClass)).zero?
+    end
+
     def g_type_class : GObject::TypeClass
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      GObject::TypeClass.new(_var.value, GICrystal::Transfer::None)
+      GObject::TypeClass.new(_var, GICrystal::Transfer::None)
     end
 
     def g_type_class=(value : GObject::TypeClass)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::FlagsClass))
       value
     end
 
     def mask : UInt32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt32))
       _var.value
     end
 
     def mask=(value : UInt32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(UInt32)).value = value
       value
     end
 
     def n_values : UInt32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(UInt32))
       _var.value
     end
 
     def n_values=(value : UInt32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(UInt32)).value = value
       value
     end
 
-    def values : GObject::FlagsValue
-      # Property getter
+    def values!
+      self.values.not_nil!
+    end
+
+    def values : GObject::FlagsValue?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GObject::FlagsValue.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def values=(value : GObject::FlagsValue)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def values=(value : GObject::FlagsValue?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 

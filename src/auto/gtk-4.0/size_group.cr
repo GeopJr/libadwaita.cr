@@ -10,7 +10,7 @@ module Gtk
   # In detail, the size requested for each widget in a `GtkSizeGroup` is
   # the maximum of the sizes that would have been requested for each
   # widget in the size group if they were not in the size group. The mode
-  # of the size group (see [method@Gtk.SizeGroup.set_mode]) determines whether
+  # of the size group (see `Gtk::SizeGroup#mode=`) determines whether
   # this applies to the horizontal size, the vertical size, or both sizes.
   #
   # Note that size groups only affect the amount of space requested, not
@@ -57,6 +57,9 @@ module Gtk
   # size group. The ”name” attribute gives the id of the widget.
   #
   # An example of a UI definition fragment with `GtkSizeGroup`:
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   # <object class="GtkSizeGroup">
   #   <property name="mode">horizontal</property>
@@ -66,10 +69,18 @@ module Gtk
   #   </widgets>
   # </object>
   # ```
+  @[GObject::GeneratedWrapper]
   class SizeGroup < GObject::Object
     include Buildable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::SizeGroup), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -81,13 +92,17 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if mode
+      if !mode.nil?
         (_names.to_unsafe + _n).value = "mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mode)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(SizeGroup.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -107,27 +122,36 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "mode", pointerof(value), Pointer(Void).null)
-      Gtk::SizeGroupMode.from_value(value)
+      Gtk::SizeGroupMode.new(value)
     end
 
+    # Create a new `GtkSizeGroup`.
     def initialize(mode : Gtk::SizeGroupMode)
       # gtk_size_group_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_size_group_new(mode)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Adds a widget to a `GtkSizeGroup`.
+    #
+    # In the future, the requisition
+    # of the widget will be determined as the maximum of its requisition
+    # and the requisition of the other widgets in the size group.
+    # Whether this applies horizontally, vertically, or in both directions
+    # depends on the mode of the size group.
+    # See `Gtk::SizeGroup#mode=`.
+    #
+    # When the widget is destroyed or no longer referenced elsewhere, it
+    # will be removed from the size group.
     def add_widget(widget : Gtk::Widget) : Nil
       # gtk_size_group_add_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_size_group_add_widget(self, widget)
@@ -135,37 +159,36 @@ module Gtk
       # Return value handling
     end
 
+    # Gets the current mode of the size group.
     def mode : Gtk::SizeGroupMode
       # gtk_size_group_get_mode: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_size_group_get_mode(self)
 
       # Return value handling
-      Gtk::SizeGroupMode.from_value(_retval)
+
+      Gtk::SizeGroupMode.new(_retval)
     end
 
+    # Returns the list of widgets associated with @size_group.
     def widgets : GLib::SList
       # gtk_size_group_get_widgets: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_size_group_get_widgets(self)
 
       # Return value handling
+
       GLib::SList(Gtk::Widget).new(_retval, GICrystal::Transfer::None)
     end
 
+    # Removes a widget from a `GtkSizeGroup`.
     def remove_widget(widget : Gtk::Widget) : Nil
       # gtk_size_group_remove_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_size_group_remove_widget(self, widget)
@@ -173,11 +196,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `GtkSizeGroupMode` of the size group.
+    #
+    # The mode of the size group determines whether the widgets in the
+    # size group should all have the same horizontal requisition
+    # (%GTK_SIZE_GROUP_HORIZONTAL) all have the same vertical requisition
+    # (%GTK_SIZE_GROUP_VERTICAL), or should all have the same requisition
+    # in both directions (%GTK_SIZE_GROUP_BOTH).
     def mode=(mode : Gtk::SizeGroupMode) : Nil
       # gtk_size_group_set_mode: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_size_group_set_mode(self, mode)

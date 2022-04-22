@@ -5,26 +5,25 @@ module Gtk
   # The obvious example of a `GtkNative` is `GtkWindow`.
   #
   # Every widget that is not itself a `GtkNative` is contained in one,
-  # and you can get it with [method@Gtk.Widget.get_native].
+  # and you can get it with `Gtk::Widget#native`.
   #
-  # To get the surface of a `GtkNative`, use [method@Gtk.Native.get_surface].
+  # To get the surface of a `GtkNative`, use `Gtk::Native#surface`.
   # It is also possible to find the `GtkNative` to which a surface
-  # belongs, with [func@Gtk.Native.get_for_surface].
+  # belongs, with `Gtk::Native#for_surface`.
   #
-  # In addition to a [class@Gdk.Surface], a `GtkNative` also provides
-  # a [class@Gsk.Renderer] for rendering on that surface. To get the
-  # renderer, use [method@Gtk.Native.get_renderer].
+  # In addition to a `Gdk#Surface`, a `GtkNative` also provides
+  # a `Gsk#Renderer` for rendering on that surface. To get the
+  # renderer, use `Gtk::Native#renderer`.
   module Native
     def self.for_surface(surface : Gdk::Surface) : Gtk::Native?
       # gtk_native_get_for_surface: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_native_get_for_surface(surface)
 
       # Return value handling
+
       Gtk::Native__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -32,12 +31,11 @@ module Gtk
       # gtk_native_get_renderer: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_native_get_renderer(self)
 
       # Return value handling
+
       Gsk::Renderer.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -45,12 +43,11 @@ module Gtk
       # gtk_native_get_surface: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_native_get_surface(self)
 
       # Return value handling
+
       Gdk::Surface.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -59,8 +56,6 @@ module Gtk
       # @x: (out) (transfer full)
       # @y: (out) (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_native_get_surface_transform(self, x, y)
@@ -72,8 +67,6 @@ module Gtk
       # gtk_native_realize: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_native_realize(self)
 
@@ -83,8 +76,6 @@ module Gtk
     def unrealize : Nil
       # gtk_native_unrealize: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_native_unrealize(self)
@@ -96,6 +87,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Native__Impl < GObject::Object
     include Native
 

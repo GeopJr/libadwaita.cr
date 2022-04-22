@@ -15,8 +15,16 @@ module Gtk
   # renders that pixbuf, if the `GtkCellRenderer:is-expanded` property is %FALSE
   # and the `GtkCellRendererPixbuf:pixbuf-expander-closed` property is set to a
   # pixbuf, it renders that one.
+  @[GObject::GeneratedWrapper]
   class CellRendererPixbuf < CellRenderer
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::CellRendererPixbuf), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -28,118 +36,123 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 22).new(LibGObject::Value.new)
       _n = 0
 
-      if cell_background
+      if !cell_background.nil?
         (_names.to_unsafe + _n).value = "cell-background".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background)
         _n += 1
       end
-      if cell_background_rgba
+      if !cell_background_rgba.nil?
         (_names.to_unsafe + _n).value = "cell-background-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background_rgba)
         _n += 1
       end
-      if cell_background_set
+      if !cell_background_set.nil?
         (_names.to_unsafe + _n).value = "cell-background-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background_set)
         _n += 1
       end
-      if editing
+      if !editing.nil?
         (_names.to_unsafe + _n).value = "editing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editing)
         _n += 1
       end
-      if gicon
+      if !gicon.nil?
         (_names.to_unsafe + _n).value = "gicon".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gicon)
         _n += 1
       end
-      if height
+      if !height.nil?
         (_names.to_unsafe + _n).value = "height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height)
         _n += 1
       end
-      if icon_name
+      if !icon_name.nil?
         (_names.to_unsafe + _n).value = "icon-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon_name)
         _n += 1
       end
-      if icon_size
+      if !icon_size.nil?
         (_names.to_unsafe + _n).value = "icon-size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon_size)
         _n += 1
       end
-      if is_expanded
+      if !is_expanded.nil?
         (_names.to_unsafe + _n).value = "is-expanded".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_expanded)
         _n += 1
       end
-      if is_expander
+      if !is_expander.nil?
         (_names.to_unsafe + _n).value = "is-expander".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_expander)
         _n += 1
       end
-      if mode
+      if !mode.nil?
         (_names.to_unsafe + _n).value = "mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mode)
         _n += 1
       end
-      if pixbuf
+      if !pixbuf.nil?
         (_names.to_unsafe + _n).value = "pixbuf".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pixbuf)
         _n += 1
       end
-      if pixbuf_expander_closed
+      if !pixbuf_expander_closed.nil?
         (_names.to_unsafe + _n).value = "pixbuf-expander-closed".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pixbuf_expander_closed)
         _n += 1
       end
-      if pixbuf_expander_open
+      if !pixbuf_expander_open.nil?
         (_names.to_unsafe + _n).value = "pixbuf-expander-open".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pixbuf_expander_open)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if texture
+      if !texture.nil?
         (_names.to_unsafe + _n).value = "texture".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, texture)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width
+      if !width.nil?
         (_names.to_unsafe + _n).value = "width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width)
         _n += 1
       end
-      if xalign
+      if !xalign.nil?
         (_names.to_unsafe + _n).value = "xalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xalign)
         _n += 1
       end
-      if xpad
+      if !xpad.nil?
         (_names.to_unsafe + _n).value = "xpad".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xpad)
         _n += 1
       end
-      if yalign
+      if !yalign.nil?
         (_names.to_unsafe + _n).value = "yalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, yalign)
         _n += 1
       end
-      if ypad
+      if !ypad.nil?
         (_names.to_unsafe + _n).value = "ypad".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, ypad)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(CellRendererPixbuf.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -189,7 +202,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "icon-size", pointerof(value), Pointer(Void).null)
-      Gtk::IconSize.from_value(value)
+      Gtk::IconSize.new(value)
     end
 
     def pixbuf=(value : GdkPixbuf::Pixbuf?) : GdkPixbuf::Pixbuf?
@@ -244,18 +257,24 @@ module Gtk
       Gdk::Texture.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkCellRendererPixbuf`. Adjust rendering
+    # parameters using object properties. Object properties can be set
+    # globally (with g_object_set()). Also, with `GtkTreeViewColumn`, you
+    # can bind a property to a value in a `GtkTreeModel`. For example, you
+    # can bind the “pixbuf” property on the cell renderer to a pixbuf value
+    # in the model, thus rendering a different image in each row of the
+    # `GtkTreeView`.
     def initialize
       # gtk_cell_renderer_pixbuf_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_pixbuf_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
   end
 end

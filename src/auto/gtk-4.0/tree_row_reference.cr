@@ -6,7 +6,7 @@ module Gtk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(TreeRowReference.g_type, pointer)
@@ -19,6 +19,10 @@ module Gtk
       LibGObject.g_boxed_free(TreeRowReference.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::TreeRowReference)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGtk.gtk_tree_row_reference_get_type
@@ -28,12 +32,11 @@ module Gtk
       # gtk_tree_row_reference_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_row_reference_new(model, path)
 
       # Return value handling
+
       @pointer = _retval unless _retval.null?
     end
 
@@ -41,12 +44,11 @@ module Gtk
       # gtk_tree_row_reference_new_proxy: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_row_reference_new_proxy(proxy, model, path)
 
       # Return value handling
+
       Gtk::TreeRowReference.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -54,20 +56,17 @@ module Gtk
       # gtk_tree_row_reference_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_row_reference_copy(self)
 
       # Return value handling
+
       Gtk::TreeRowReference.new(_retval, GICrystal::Transfer::Full)
     end
 
     def free : Nil
       # gtk_tree_row_reference_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_row_reference_free(self)
@@ -79,12 +78,11 @@ module Gtk
       # gtk_tree_row_reference_get_model: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_row_reference_get_model(self)
 
       # Return value handling
+
       Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -92,12 +90,11 @@ module Gtk
       # gtk_tree_row_reference_get_path: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_row_reference_get_path(self)
 
       # Return value handling
+
       Gtk::TreePath.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -105,20 +102,17 @@ module Gtk
       # gtk_tree_row_reference_valid: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_row_reference_valid(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def self.deleted(proxy : GObject::Object, path : Gtk::TreePath) : Nil
       # gtk_tree_row_reference_deleted: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_row_reference_deleted(proxy, path)
@@ -129,8 +123,6 @@ module Gtk
     def self.inserted(proxy : GObject::Object, path : Gtk::TreePath) : Nil
       # gtk_tree_row_reference_inserted: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_row_reference_inserted(proxy, path)

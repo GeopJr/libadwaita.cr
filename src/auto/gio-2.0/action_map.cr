@@ -13,8 +13,6 @@ module Gio
       # g_action_map_add_action: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGio.g_action_map_add_action(self, action)
 
@@ -27,14 +25,17 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_entries = entries.size
+      # Generator::ArrayArgPlan
+      entries = entries.to_a.map(&.to_unsafe).to_unsafe
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
-      entries = entries.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       LibGio.g_action_map_add_action_entries(self, entries, n_entries, user_data)
@@ -46,20 +47,17 @@ module Gio
       # g_action_map_lookup_action: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_action_map_lookup_action(self, action_name)
 
       # Return value handling
+
       Gio::Action__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def remove_action(action_name : ::String) : Nil
       # g_action_map_remove_action: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_action_map_remove_action(self, action_name)
@@ -71,6 +69,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class ActionMap__Impl < GObject::Object
     include ActionMap
 

@@ -6,8 +6,16 @@ module Gtk
   #
   # It should only be used as a last resort if none of the other event
   # controllers or gestures do the job.
+  @[GObject::GeneratedWrapper]
   class EventControllerLegacy < EventController
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::EventControllerLegacyClass), class_init,
+        sizeof(LibGtk::EventControllerLegacy), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -19,28 +27,32 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 4).new(LibGObject::Value.new)
       _n = 0
 
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(EventControllerLegacy.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -48,19 +60,20 @@ module Gtk
       LibGtk.gtk_event_controller_legacy_get_type
     end
 
+    # Creates a new legacy event controller.
     def initialize
       # gtk_event_controller_legacy_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_legacy_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Emitted for each GDK event delivered to @controller.
     struct EventSignal
       @source : GObject::Object
       @detail : String?
@@ -89,7 +102,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gdk::Event.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Event, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Gdk::Event, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -100,7 +114,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gdk::Event.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Event, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Gdk::Event, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,

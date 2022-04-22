@@ -2,8 +2,16 @@ require "../g_object-2.0/object"
 
 module Gtk
   # `GtkNotebookPage` is an auxiliary object used by `GtkNotebook`.
+  @[GObject::GeneratedWrapper]
   class NotebookPage < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::NotebookPage), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,58 +23,62 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 10).new(LibGObject::Value.new)
       _n = 0
 
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if detachable
+      if !detachable.nil?
         (_names.to_unsafe + _n).value = "detachable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, detachable)
         _n += 1
       end
-      if menu
+      if !menu.nil?
         (_names.to_unsafe + _n).value = "menu".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, menu)
         _n += 1
       end
-      if menu_label
+      if !menu_label.nil?
         (_names.to_unsafe + _n).value = "menu-label".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, menu_label)
         _n += 1
       end
-      if position
+      if !position.nil?
         (_names.to_unsafe + _n).value = "position".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, position)
         _n += 1
       end
-      if reorderable
+      if !reorderable.nil?
         (_names.to_unsafe + _n).value = "reorderable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, reorderable)
         _n += 1
       end
-      if tab
+      if !tab.nil?
         (_names.to_unsafe + _n).value = "tab".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tab)
         _n += 1
       end
-      if tab_expand
+      if !tab_expand.nil?
         (_names.to_unsafe + _n).value = "tab-expand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tab_expand)
         _n += 1
       end
-      if tab_fill
+      if !tab_fill.nil?
         (_names.to_unsafe + _n).value = "tab-fill".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tab_fill)
         _n += 1
       end
-      if tab_label
+      if !tab_label.nil?
         (_names.to_unsafe + _n).value = "tab-label".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tab_label)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(NotebookPage.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -224,16 +236,16 @@ module Gtk
       ::String.new(value)
     end
 
+    # Returns the notebook child to which @page belongs.
     def child : Gtk::Widget
       # gtk_notebook_page_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_notebook_page_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
   end

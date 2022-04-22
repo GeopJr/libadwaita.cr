@@ -5,7 +5,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGio::StaticResource))
@@ -27,71 +27,83 @@ module Gio
     def finalize
     end
 
-    def data : Pointer(UInt8)
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::StaticResource)).zero?
+    end
+
+    def data!
+      self.data.not_nil!
+    end
+
+    def data : Pointer(UInt8)?
       _var = (@pointer + 0).as(Pointer(Pointer(UInt8)))
+      return if _var.value.null?
       _var.value
     end
 
-    def data=(value : Pointer(UInt8))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(UInt8))).value = value
+    def data=(value : Pointer(UInt8)?)
+      _var = (@pointer + 0).as(Pointer(Pointer(UInt8))).value = value.nil? ? Pointer(UInt8).null : value
       value
     end
 
     def data_len : UInt64
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt64))
       _var.value
     end
 
     def data_len=(value : UInt64)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(UInt64)).value = value
       value
     end
 
-    def resource : Gio::Resource
-      # Property getter
+    def resource!
+      self.resource.not_nil!
+    end
+
+    def resource : Gio::Resource?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Gio::Resource.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def resource=(value : Gio::Resource)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def resource=(value : Gio::Resource?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def next : Gio::StaticResource
-      # Property getter
+    def next!
+      self.next.not_nil!
+    end
+
+    def next : Gio::StaticResource?
       _var = (@pointer + 24).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Gio::StaticResource.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def next=(value : Gio::StaticResource)
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def next=(value : Gio::StaticResource?)
+      _var = (@pointer + 24).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def padding : Pointer(Void)
-      # Property getter
+    def padding!
+      self.padding.not_nil!
+    end
+
+    def padding : Pointer(Void)?
       _var = (@pointer + 32).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def padding=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(Pointer(Void))).value = value
+    def padding=(value : Pointer(Void)?)
+      _var = (@pointer + 32).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
     def fini : Nil
       # g_static_resource_fini: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_static_resource_fini(self)
@@ -103,20 +115,17 @@ module Gio
       # g_static_resource_get_resource: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_static_resource_get_resource(self)
 
       # Return value handling
+
       Gio::Resource.new(_retval, GICrystal::Transfer::None)
     end
 
     def init : Nil
       # g_static_resource_init: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_static_resource_init(self)

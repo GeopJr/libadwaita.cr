@@ -8,7 +8,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(MarkupParseContext.g_type, pointer)
@@ -21,6 +21,10 @@ module GLib
       LibGObject.g_boxed_free(MarkupParseContext.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::MarkupParseContext)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGLib.g_markup_parse_context_get_type
@@ -31,7 +35,7 @@ module GLib
       # @user_data: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -42,6 +46,7 @@ module GLib
       _retval = LibGLib.g_markup_parse_context_new(parser, flags, user_data, user_data_dnotify)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -51,22 +56,20 @@ module GLib
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_markup_parse_context_end_parse(self, pointerof(_error))
 
       # Error check
       GLib.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # g_markup_parse_context_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_markup_parse_context_free(self)
@@ -78,12 +81,11 @@ module GLib
       # g_markup_parse_context_get_element: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_markup_parse_context_get_element(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -93,8 +95,9 @@ module GLib
       # @char_number: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       line_number = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       char_number = Pointer(Int32).null
 
       # C call
@@ -107,12 +110,11 @@ module GLib
       # g_markup_parse_context_get_user_data: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_markup_parse_context_get_user_data(self)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
@@ -122,14 +124,14 @@ module GLib
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_markup_parse_context_parse(self, text, text_len, pointerof(_error))
 
       # Error check
       GLib.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -137,12 +139,11 @@ module GLib
       # g_markup_parse_context_pop: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_markup_parse_context_pop(self)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
@@ -151,7 +152,7 @@ module GLib
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -168,20 +169,17 @@ module GLib
       # g_markup_parse_context_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_markup_parse_context_ref(self)
 
       # Return value handling
+
       GLib::MarkupParseContext.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # g_markup_parse_context_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_markup_parse_context_unref(self)

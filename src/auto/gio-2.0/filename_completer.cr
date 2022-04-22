@@ -4,8 +4,16 @@ module Gio
   # Completes partial file and directory names given a partial string by
   # looking in the file system for clues. Can return a list of possible
   # completion strings for widget implementations.
+  @[GObject::GeneratedWrapper]
   class FilenameCompleter < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::FilenameCompleterClass), class_init,
+        sizeof(LibGio::FilenameCompleter), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -17,50 +25,50 @@ module Gio
       LibGio.g_filename_completer_get_type
     end
 
+    # Creates a new filename completer.
     def initialize
       # g_filename_completer_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_filename_completer_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Obtains a completion for @initial_text from @completer.
     def completion_suffix(initial_text : ::String) : ::String?
       # g_filename_completer_get_completion_suffix: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_filename_completer_get_completion_suffix(self, initial_text)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
+    # Gets an array of completion strings for a given initial text.
     def completions(initial_text : ::String) : Enumerable(::String)
       # g_filename_completer_get_completions: (Method)
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_filename_completer_get_completions(self, initial_text)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
+    # If @dirs_only is %TRUE, @completer will only
+    # complete directory names, and not file names.
     def dirs_only=(dirs_only : Bool) : Nil
       # g_filename_completer_set_dirs_only: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_filename_completer_set_dirs_only(self, dirs_only)
@@ -68,6 +76,7 @@ module Gio
       # Return value handling
     end
 
+    # Emitted when the file name completion information comes available.
     struct GotCompletionDataSignal
       @source : GObject::Object
       @detail : String?

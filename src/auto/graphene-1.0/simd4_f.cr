@@ -3,7 +3,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Simd4F))
@@ -24,50 +24,46 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Simd4F)).zero?
+    end
+
     def x : Float32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Float32))
       _var.value
     end
 
     def x=(value : Float32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Float32)).value = value
       value
     end
 
     def y : Float32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Float32))
       _var.value
     end
 
     def y=(value : Float32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Float32)).value = value
       value
     end
 
     def z : Float32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Float32))
       _var.value
     end
 
     def z=(value : Float32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Float32)).value = value
       value
     end
 
     def w : Float32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Float32))
       _var.value
     end
 
     def w=(value : Float32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Float32)).value = value
       value
     end

@@ -4,7 +4,7 @@ module Gtk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = pointer
     end
@@ -12,16 +12,19 @@ module Gtk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::BuildableParseContext)).zero?
+    end
+
     def element : ::String?
       # gtk_buildable_parse_context_get_element: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_buildable_parse_context_get_element(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -29,12 +32,11 @@ module Gtk
       # gtk_buildable_parse_context_get_element_stack: (Method)
       # Returns: (transfer none) (array element-type Utf8)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_buildable_parse_context_get_element_stack(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -44,8 +46,9 @@ module Gtk
       # @char_number: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       line_number = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       char_number = Pointer(Int32).null
 
       # C call
@@ -58,12 +61,11 @@ module Gtk
       # gtk_buildable_parse_context_pop: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_buildable_parse_context_pop(self)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
@@ -72,7 +74,7 @@ module Gtk
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else

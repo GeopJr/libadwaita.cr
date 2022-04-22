@@ -3,8 +3,16 @@ require "./event_controller"
 module Gtk
   # `GtkEventControllerKey` is an event controller that provides access
   # to key events.
+  @[GObject::GeneratedWrapper]
   class EventControllerKey < EventController
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::EventControllerKeyClass), class_init,
+        sizeof(LibGtk::EventControllerKey), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -16,28 +24,32 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 4).new(LibGObject::Value.new)
       _n = 0
 
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(EventControllerKey.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -45,64 +57,72 @@ module Gtk
       LibGtk.gtk_event_controller_key_get_type
     end
 
+    # Creates a new event controller that will handle key events.
     def initialize
       # gtk_event_controller_key_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_key_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Forwards the current event of this @controller to a @widget.
+    #
+    # This function can only be used in handlers for the
+    # [signal@Gtk.EventControllerKey::key-pressed],
+    # [signal@Gtk.EventControllerKey::key-released]
+    # or `Gtk::EventControllerKey::#modifiers` signals.
     def forward(widget : Gtk::Widget) : Bool
       # gtk_event_controller_key_forward: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_key_forward(self, widget)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the key group of the current event of this @controller.
+    #
+    # See `Gdk::KeyEvent#layout`.
     def group : UInt32
       # gtk_event_controller_key_get_group: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_key_get_group(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the input method context of the key @controller.
     def im_context : Gtk::IMContext?
       # gtk_event_controller_key_get_im_context: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_key_get_im_context(self)
 
       # Return value handling
+
       Gtk::IMContext.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets the input method context of the key @controller.
     def im_context=(im_context : Gtk::IMContext?) : Nil
       # gtk_event_controller_key_set_im_context: (Method)
       # @im_context: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       im_context = if im_context.nil?
                      Pointer(Void).null
                    else
@@ -115,6 +135,11 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted whenever the input method context filters away
+    # a keypress and prevents the @controller receiving it.
+    #
+    # See `Gtk::EventControllerKey#im_context=` and
+    # `Gtk::IMContext#filter_keypress`.
     struct ImUpdateSignal
       @source : GObject::Object
       @detail : String?
@@ -190,6 +215,7 @@ module Gtk
       ImUpdateSignal.new(self)
     end
 
+    # Emitted whenever a key is pressed.
     struct KeyPressedSignal
       @source : GObject::Object
       @detail : String?
@@ -219,8 +245,9 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, lib_arg2 : UInt32, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          arg2 = Gdk::ModifierType.from_value(lib_arg2)
-          ::Box(Proc(UInt32, UInt32, Gdk::ModifierType, Bool)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          arg2 = Gdk::ModifierType.new(lib_arg2)
+          _retval = ::Box(Proc(UInt32, UInt32, Gdk::ModifierType, Bool)).unbox(box).call(arg0, arg1, arg2)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -232,8 +259,9 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, lib_arg2 : UInt32, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          arg2 = Gdk::ModifierType.from_value(lib_arg2)
-          ::Box(Proc(UInt32, UInt32, Gdk::ModifierType, Bool)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          arg2 = Gdk::ModifierType.new(lib_arg2)
+          _retval = ::Box(Proc(UInt32, UInt32, Gdk::ModifierType, Bool)).unbox(box).call(arg0, arg1, arg2)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -246,7 +274,7 @@ module Gtk
           sender = Gtk::EventControllerKey.new(lib_sender, GICrystal::Transfer::None)
           arg0 = lib_arg0
           arg1 = lib_arg1
-          arg2 = Gdk::ModifierType.from_value(lib_arg2)
+          arg2 = Gdk::ModifierType.new(lib_arg2)
           ::Box(Proc(Gtk::EventControllerKey, UInt32, UInt32, Gdk::ModifierType, Bool)).unbox(box).call(sender, arg0, arg1, arg2).to_unsafe
         }
 
@@ -260,7 +288,7 @@ module Gtk
           sender = Gtk::EventControllerKey.new(lib_sender, GICrystal::Transfer::None)
           arg0 = lib_arg0
           arg1 = lib_arg1
-          arg2 = Gdk::ModifierType.from_value(lib_arg2)
+          arg2 = Gdk::ModifierType.new(lib_arg2)
           ::Box(Proc(Gtk::EventControllerKey, UInt32, UInt32, Gdk::ModifierType, Bool)).unbox(box).call(sender, arg0, arg1, arg2).to_unsafe
         }
 
@@ -277,6 +305,7 @@ module Gtk
       KeyPressedSignal.new(self)
     end
 
+    # Emitted whenever a key is released.
     struct KeyReleasedSignal
       @source : GObject::Object
       @detail : String?
@@ -306,7 +335,7 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, lib_arg2 : UInt32, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          arg2 = Gdk::ModifierType.from_value(lib_arg2)
+          arg2 = Gdk::ModifierType.new(lib_arg2)
           ::Box(Proc(UInt32, UInt32, Gdk::ModifierType, Nil)).unbox(box).call(arg0, arg1, arg2)
         }
 
@@ -319,7 +348,7 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, lib_arg2 : UInt32, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          arg2 = Gdk::ModifierType.from_value(lib_arg2)
+          arg2 = Gdk::ModifierType.new(lib_arg2)
           ::Box(Proc(UInt32, UInt32, Gdk::ModifierType, Nil)).unbox(box).call(arg0, arg1, arg2)
         }
 
@@ -333,7 +362,7 @@ module Gtk
           sender = Gtk::EventControllerKey.new(lib_sender, GICrystal::Transfer::None)
           arg0 = lib_arg0
           arg1 = lib_arg1
-          arg2 = Gdk::ModifierType.from_value(lib_arg2)
+          arg2 = Gdk::ModifierType.new(lib_arg2)
           ::Box(Proc(Gtk::EventControllerKey, UInt32, UInt32, Gdk::ModifierType, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
         }
 
@@ -347,7 +376,7 @@ module Gtk
           sender = Gtk::EventControllerKey.new(lib_sender, GICrystal::Transfer::None)
           arg0 = lib_arg0
           arg1 = lib_arg1
-          arg2 = Gdk::ModifierType.from_value(lib_arg2)
+          arg2 = Gdk::ModifierType.new(lib_arg2)
           ::Box(Proc(Gtk::EventControllerKey, UInt32, UInt32, Gdk::ModifierType, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
         }
 
@@ -364,6 +393,7 @@ module Gtk
       KeyReleasedSignal.new(self)
     end
 
+    # Emitted whenever the state of modifier keys and pointer buttons change.
     struct ModifiersSignal
       @source : GObject::Object
       @detail : String?
@@ -391,8 +421,9 @@ module Gtk
       def connect(block : Proc(Gdk::ModifierType, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gdk::ModifierType.from_value(lib_arg0)
-          ::Box(Proc(Gdk::ModifierType, Bool)).unbox(box).call(arg0).to_unsafe
+          arg0 = Gdk::ModifierType.new(lib_arg0)
+          _retval = ::Box(Proc(Gdk::ModifierType, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -402,8 +433,9 @@ module Gtk
       def connect_after(block : Proc(Gdk::ModifierType, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gdk::ModifierType.from_value(lib_arg0)
-          ::Box(Proc(Gdk::ModifierType, Bool)).unbox(box).call(arg0).to_unsafe
+          arg0 = Gdk::ModifierType.new(lib_arg0)
+          _retval = ::Box(Proc(Gdk::ModifierType, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -414,7 +446,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::EventControllerKey.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::ModifierType.from_value(lib_arg0)
+          arg0 = Gdk::ModifierType.new(lib_arg0)
           ::Box(Proc(Gtk::EventControllerKey, Gdk::ModifierType, Bool)).unbox(box).call(sender, arg0).to_unsafe
         }
 
@@ -426,7 +458,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::EventControllerKey.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::ModifierType.from_value(lib_arg0)
+          arg0 = Gdk::ModifierType.new(lib_arg0)
           ::Box(Proc(Gtk::EventControllerKey, Gdk::ModifierType, Bool)).unbox(box).call(sender, arg0).to_unsafe
         }
 

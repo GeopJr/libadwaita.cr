@@ -8,7 +8,7 @@ require "../gtk-4.0/buildable"
 require "../gtk-4.0/constraint_target"
 
 module Adw
-  # A [class@Gtk.ListBoxRow] used to choose from a list of items.
+  # A `Gtk#ListBoxRow` used to choose from a list of items.
   #
   # <picture>
   #   <source srcset="combo-row-dark.png" media="(prefers-color-scheme: dark)">
@@ -19,9 +19,9 @@ module Adw
   # choices. The row displays the selected choice. When activated, the row
   # displays a popover which allows the user to make a new choice.
   #
-  # `AdwComboRow` mirrors [class@Gtk.DropDown], see that widget for details.
+  # `AdwComboRow` mirrors `Gtk#DropDown`, see that widget for details.
   #
-  # `AdwComboRow` is [property@Gtk.ListBoxRow:activatable] if a model is set.
+  # `AdwComboRow` is `Gtk::ListBoxRow#activatable` if a model is set.
   #
   # ## CSS nodes
   #
@@ -29,12 +29,13 @@ module Adw
   # class.
   #
   # Its popover has the node named `popover` with the `.menu` style class, it
-  # contains a [class@Gtk.ScrolledWindow], which in turn contains a
-  # [class@Gtk.ListView], both are accessible via their regular nodes.
+  # contains a `Gtk#ScrolledWindow`, which in turn contains a
+  # `Gtk#ListView`, both are accessible via their regular nodes.
   #
   # ## Accessibility
   #
   # `AdwComboRow` uses the `GTK_ACCESSIBLE_ROLE_COMBO_BOX` role.
+  @[GObject::GeneratedWrapper]
   class ComboRow < ActionRow
     include Gtk::Accessible
     include Gtk::Actionable
@@ -42,6 +43,13 @@ module Adw
     include Gtk::ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::ComboRowClass), class_init,
+        sizeof(LibAdw::ComboRow), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -53,283 +61,288 @@ module Adw
       _values = StaticArray(LibGObject::Value, 55).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if action_name
+      if !action_name.nil?
         (_names.to_unsafe + _n).value = "action-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, action_name)
         _n += 1
       end
-      if action_target
+      if !action_target.nil?
         (_names.to_unsafe + _n).value = "action-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, action_target)
         _n += 1
       end
-      if activatable
+      if !activatable.nil?
         (_names.to_unsafe + _n).value = "activatable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, activatable)
         _n += 1
       end
-      if activatable_widget
+      if !activatable_widget.nil?
         (_names.to_unsafe + _n).value = "activatable-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, activatable_widget)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if expression
+      if !expression.nil?
         (_names.to_unsafe + _n).value = "expression".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, expression)
         _n += 1
       end
-      if factory
+      if !factory.nil?
         (_names.to_unsafe + _n).value = "factory".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, factory)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if icon_name
+      if !icon_name.nil?
         (_names.to_unsafe + _n).value = "icon-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon_name)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if list_factory
+      if !list_factory.nil?
         (_names.to_unsafe + _n).value = "list-factory".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, list_factory)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if model
+      if !model.nil?
         (_names.to_unsafe + _n).value = "model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, model)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if selectable
+      if !selectable.nil?
         (_names.to_unsafe + _n).value = "selectable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, selectable)
         _n += 1
       end
-      if selected
+      if !selected.nil?
         (_names.to_unsafe + _n).value = "selected".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, selected)
         _n += 1
       end
-      if selected_item
+      if !selected_item.nil?
         (_names.to_unsafe + _n).value = "selected-item".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, selected_item)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if subtitle
+      if !subtitle.nil?
         (_names.to_unsafe + _n).value = "subtitle".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, subtitle)
         _n += 1
       end
-      if subtitle_lines
+      if !subtitle_lines.nil?
         (_names.to_unsafe + _n).value = "subtitle-lines".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, subtitle_lines)
         _n += 1
       end
-      if title
+      if !title.nil?
         (_names.to_unsafe + _n).value = "title".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
-      if title_lines
+      if !title_lines.nil?
         (_names.to_unsafe + _n).value = "title-lines".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title_lines)
         _n += 1
       end
-      if title_selectable
+      if !title_selectable.nil?
         (_names.to_unsafe + _n).value = "title-selectable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title_selectable)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if use_subtitle
+      if !use_subtitle.nil?
         (_names.to_unsafe + _n).value = "use-subtitle".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_subtitle)
         _n += 1
       end
-      if use_underline
+      if !use_underline.nil?
         (_names.to_unsafe + _n).value = "use-underline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_underline)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ComboRow.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -435,117 +448,120 @@ module Adw
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `AdwComboRow`.
     def initialize
       # adw_combo_row_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_combo_row_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Gets the expression used to obtain strings from items.
     def expression : Gtk::Expression?
       # adw_combo_row_get_expression: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_combo_row_get_expression(self)
 
       # Return value handling
+
       Gtk::Expression.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the factory that's currently used to populate list items.
     def factory : Gtk::ListItemFactory?
       # adw_combo_row_get_factory: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_combo_row_get_factory(self)
 
       # Return value handling
+
       Gtk::ListItemFactory.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the factory that's currently used to populate list items in the popup.
     def list_factory : Gtk::ListItemFactory?
       # adw_combo_row_get_list_factory: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_combo_row_get_list_factory(self)
 
       # Return value handling
+
       Gtk::ListItemFactory.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the model that provides the displayed items.
     def model : Gio::ListModel?
       # adw_combo_row_get_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_combo_row_get_model(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the position of the selected item.
     def selected : UInt32
       # adw_combo_row_get_selected: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_combo_row_get_selected(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the selected item.
     def selected_item : GObject::Object?
       # adw_combo_row_get_selected_item: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_combo_row_get_selected_item(self)
 
       # Return value handling
+
       GObject::Object.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets whether to use the current value as the subtitle.
     def use_subtitle : Bool
       # adw_combo_row_get_use_subtitle: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_combo_row_get_use_subtitle(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets the expression used to obtain strings from items.
+    #
+    # The expression must have a value type of `G_TYPE_STRING`.
     def expression=(expression : Gtk::Expression?) : Nil
       # adw_combo_row_set_expression: (Method | Setter)
       # @expression: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       expression = if expression.nil?
                      Pointer(Void).null
                    else
@@ -558,12 +574,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the `GtkListItemFactory` to use for populating list items.
     def factory=(factory : Gtk::ListItemFactory?) : Nil
       # adw_combo_row_set_factory: (Method | Setter)
       # @factory: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       factory = if factory.nil?
                   Pointer(Void).null
                 else
@@ -576,12 +593,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the `GtkListItemFactory` to use for populating list items in the popup.
     def list_factory=(factory : Gtk::ListItemFactory?) : Nil
       # adw_combo_row_set_list_factory: (Method | Setter)
       # @factory: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       factory = if factory.nil?
                   Pointer(Void).null
                 else
@@ -594,12 +612,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the `Gio#ListModel` to use.
     def model=(model : Gio::ListModel?) : Nil
       # adw_combo_row_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
@@ -612,11 +631,10 @@ module Adw
       # Return value handling
     end
 
+    # Selects the item at the given position.
     def selected=(position : UInt32) : Nil
       # adw_combo_row_set_selected: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_combo_row_set_selected(self, position)
@@ -624,11 +642,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether to use the current value as the subtitle.
     def use_subtitle=(use_subtitle : Bool) : Nil
       # adw_combo_row_set_use_subtitle: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_combo_row_set_use_subtitle(self, use_subtitle)

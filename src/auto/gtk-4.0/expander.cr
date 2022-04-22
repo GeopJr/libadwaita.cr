@@ -14,7 +14,7 @@ module Gtk
   # This is similar to the triangles used in a `GtkTreeView`.
   #
   # Normally you use an expander as you would use a frame; you create
-  # the child widget and use [method@Gtk.Expander.set_child] to add it
+  # the child widget and use `Gtk::Expander#child=` to add it
   # to the expander. When the expander is toggled, it will take care of
   # showing and hiding the child automatically.
   #
@@ -28,6 +28,9 @@ module Gtk
   # monitor its expansion state. You should watch this property with
   # a signal connection as follows:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static void
   # expander_callback (GObject    *object,
@@ -68,6 +71,9 @@ module Gtk
   #
   # An example of a UI definition fragment with GtkExpander:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   # <object class="GtkExpander">
   #   <child type="label">
@@ -97,12 +103,20 @@ module Gtk
   # # Accessibility
   #
   # `GtkExpander` uses the %GTK_ACCESSIBLE_ROLE_BUTTON role.
+  @[GObject::GeneratedWrapper]
   class Expander < Widget
     include Accessible
     include Buildable
     include ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::Expander), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -114,218 +128,223 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 42).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if expanded
+      if !expanded.nil?
         (_names.to_unsafe + _n).value = "expanded".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, expanded)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if label
+      if !label.nil?
         (_names.to_unsafe + _n).value = "label".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, label)
         _n += 1
       end
-      if label_widget
+      if !label_widget.nil?
         (_names.to_unsafe + _n).value = "label-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, label_widget)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if resize_toplevel
+      if !resize_toplevel.nil?
         (_names.to_unsafe + _n).value = "resize-toplevel".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, resize_toplevel)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if use_markup
+      if !use_markup.nil?
         (_names.to_unsafe + _n).value = "use-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_markup)
         _n += 1
       end
-      if use_underline
+      if !use_underline.nil?
         (_names.to_unsafe + _n).value = "use-underline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_underline)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Expander.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -438,12 +457,13 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new expander using @label as the text of the label.
     def initialize(label : ::String?)
       # gtk_expander_new: (Constructor)
       # @label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       label = if label.nil?
                 Pointer(LibC::Char).null
               else
@@ -454,16 +474,25 @@ module Gtk
       _retval = LibGtk.gtk_expander_new(label)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Creates a new expander using @label as the text of the label.
+    #
+    # If characters in @label are preceded by an underscore, they are
+    # underlined. If you need a literal underscore character in a label,
+    # use “__” (two underscores). The first underlined character represents
+    # a keyboard accelerator called a mnemonic.
+    #
+    # Pressing Alt and that key activates the button.
     def self.new_with_mnemonic(label : ::String?) : self
       # gtk_expander_new_with_mnemonic: (Constructor)
       # @label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       label = if label.nil?
                 Pointer(LibC::Char).null
               else
@@ -474,106 +503,118 @@ module Gtk
       _retval = LibGtk.gtk_expander_new_with_mnemonic(label)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       Gtk::Expander.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the child widget of @expander.
     def child : Gtk::Widget?
       # gtk_expander_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expander_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Queries a `GtkExpander` and returns its current state.
+    #
+    # Returns %TRUE if the child widget is revealed.
     def expanded : Bool
       # gtk_expander_get_expanded: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expander_get_expanded(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Fetches the text from a label widget.
+    #
+    # This is including any embedded underlines indicating mnemonics and
+    # Pango markup, as set by `Gtk::Expander#label=`. If the label
+    # text has not been set the return value will be %NULL. This will be the
+    # case if you create an empty button with gtk_button_new() to use as a
+    # container.
     def label : ::String?
       # gtk_expander_get_label: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expander_get_label(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Retrieves the label widget for the frame.
     def label_widget : Gtk::Widget?
       # gtk_expander_get_label_widget: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expander_get_label_widget(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns whether the expander will resize the toplevel widget
+    # containing the expander upon resizing and collpasing.
     def resize_toplevel : Bool
       # gtk_expander_get_resize_toplevel: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expander_get_resize_toplevel(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the label’s text is interpreted as Pango markup.
     def use_markup : Bool
       # gtk_expander_get_use_markup: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expander_get_use_markup(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether an underline in the text indicates a mnemonic.
     def use_underline : Bool
       # gtk_expander_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expander_get_use_underline(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets the child widget of @expander.
     def child=(child : Gtk::Widget?) : Nil
       # gtk_expander_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       child = if child.nil?
                 Pointer(Void).null
               else
@@ -586,11 +627,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the state of the expander.
+    #
+    # Set to %TRUE, if you want the child widget to be revealed,
+    # and %FALSE if you want the child widget to be hidden.
     def expanded=(expanded : Bool) : Nil
       # gtk_expander_set_expanded: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_expander_set_expanded(self, expanded)
@@ -598,12 +641,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the text of the label of the expander to @label.
+    #
+    # This will also clear any previously set labels.
     def label=(label : ::String?) : Nil
       # gtk_expander_set_label: (Method | Setter)
       # @label: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       label = if label.nil?
                 Pointer(LibC::Char).null
               else
@@ -616,12 +662,16 @@ module Gtk
       # Return value handling
     end
 
+    # Set the label widget for the expander.
+    #
+    # This is the widget that will appear embedded alongside
+    # the expander arrow.
     def label_widget=(label_widget : Gtk::Widget?) : Nil
       # gtk_expander_set_label_widget: (Method | Setter)
       # @label_widget: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       label_widget = if label_widget.nil?
                        Pointer(Void).null
                      else
@@ -634,11 +684,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the expander will resize the toplevel widget
+    # containing the expander upon resizing and collpasing.
     def resize_toplevel=(resize_toplevel : Bool) : Nil
       # gtk_expander_set_resize_toplevel: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_expander_set_resize_toplevel(self, resize_toplevel)
@@ -646,11 +696,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the text of the label contains Pango markup.
     def use_markup=(use_markup : Bool) : Nil
       # gtk_expander_set_use_markup: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_expander_set_use_markup(self, use_markup)
@@ -658,11 +707,10 @@ module Gtk
       # Return value handling
     end
 
+    # If true, an underline in the text indicates a mnemonic.
     def use_underline=(use_underline : Bool) : Nil
       # gtk_expander_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_expander_set_use_underline(self, use_underline)
@@ -670,6 +718,7 @@ module Gtk
       # Return value handling
     end
 
+    # Activates the `GtkExpander`.
     struct ActivateSignal
       @source : GObject::Object
       @detail : String?

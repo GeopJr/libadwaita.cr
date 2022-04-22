@@ -8,7 +8,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::GlyphString))
@@ -29,50 +29,56 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::GlyphString)).zero?
+    end
+
     def num_glyphs : Int32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Int32))
       _var.value
     end
 
     def num_glyphs=(value : Int32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Int32)).value = value
       value
     end
 
-    def glyphs : Enumerable(Pango::GlyphInfo)
-      # Property getter
+    def glyphs!
+      self.glyphs.not_nil!
+    end
+
+    def glyphs : Enumerable(Pango::GlyphInfo)?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GICrystal.transfer_array(_var.value, num_glyphs, GICrystal::Transfer::None)
     end
 
-    def glyphs=(value : Enumerable(Pango::GlyphInfo))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value
+    def glyphs=(value : Enumerable(Pango::GlyphInfo)?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
-    def log_clusters : Pointer(Int32)
-      # Property getter
+    def log_clusters!
+      self.log_clusters.not_nil!
+    end
+
+    def log_clusters : Pointer(Int32)?
       _var = (@pointer + 16).as(Pointer(Pointer(Int32)))
+      return if _var.value.null?
       _var.value
     end
 
-    def log_clusters=(value : Pointer(Int32))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Int32))).value = value
+    def log_clusters=(value : Pointer(Int32)?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Int32))).value = value.nil? ? Pointer(Int32).null : value
       value
     end
 
     def space : Int32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Int32))
       _var.value
     end
 
     def space=(value : Int32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Int32)).value = value
       value
     end
@@ -86,12 +92,11 @@ module Pango
       # pango_glyph_string_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_glyph_string_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -99,12 +104,11 @@ module Pango
       # pango_glyph_string_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_glyph_string_copy(self)
 
       # Return value handling
+
       Pango::GlyphString.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -114,15 +118,20 @@ module Pango
       # @logical_rect: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       ink_rect = Pointer(Void).null
-      logical_rect = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       ink_rect = Pango::Rectangle.new
+      # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      logical_rect = Pango::Rectangle.new
 
       # C call
       LibPango.pango_glyph_string_extents(self, font, ink_rect, logical_rect)
 
       # Return value handling
+
       ink_rect
     end
 
@@ -132,23 +141,26 @@ module Pango
       # @logical_rect: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       ink_rect = Pointer(Void).null
-      logical_rect = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       ink_rect = Pango::Rectangle.new
+      # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      logical_rect = Pango::Rectangle.new
 
       # C call
       LibPango.pango_glyph_string_extents_range(self, start, _end, font, ink_rect, logical_rect)
 
       # Return value handling
+
       ink_rect
     end
 
     def free : Nil
       # pango_glyph_string_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_glyph_string_free(self)
@@ -161,7 +173,7 @@ module Pango
       # @logical_widths: (array element-type Int32)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayArgPlan
       logical_widths = logical_widths.to_a.to_unsafe
 
       # C call
@@ -174,12 +186,11 @@ module Pango
       # pango_glyph_string_get_width: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_glyph_string_get_width(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -187,8 +198,6 @@ module Pango
       # pango_glyph_string_index_to_x: (Method)
       # @x_pos: (out) (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_glyph_string_index_to_x(self, text, length, analysis, index_, trailing, x_pos)
@@ -202,7 +211,7 @@ module Pango
       # @x_pos: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       attrs = if attrs.nil?
                 Pointer(Void).null
               else
@@ -219,8 +228,6 @@ module Pango
       # pango_glyph_string_set_size: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibPango.pango_glyph_string_set_size(self, new_len)
 
@@ -232,8 +239,6 @@ module Pango
       # @index_: (out) (transfer full)
       # @trailing: (out) (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_glyph_string_x_to_index(self, text, length, analysis, x_pos, index_, trailing)

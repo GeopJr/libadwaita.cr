@@ -15,8 +15,8 @@ module Gtk
   #
   # ![An example GtkLevelBar](levelbar.png)
   #
-  # Use [method@Gtk.LevelBar.set_value] to set the current value, and
-  # [method@Gtk.LevelBar.add_offset_value] to set the value offsets at which
+  # Use `Gtk::LevelBar#value=` to set the current value, and
+  # `Gtk::LevelBar#add_offset_value` to set the value offsets at which
   # the bar will be considered in a different state. GTK will add a few
   # offsets by default on the level bar: %GTK_LEVEL_BAR_OFFSET_LOW,
   # %GTK_LEVEL_BAR_OFFSET_HIGH and %GTK_LEVEL_BAR_OFFSET_FULL, with
@@ -28,6 +28,9 @@ module Gtk
   #
   # ## Adding a custom offset on the bar
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static GtkWidget *
   # create_level_bar (void)
@@ -61,8 +64,8 @@ module Gtk
   # ```
   #
   # The default interval of values is between zero and one, but it’s possible
-  # to modify the interval using [method@Gtk.LevelBar.set_min_value] and
-  # [method@Gtk.LevelBar.set_max_value]. The value will be always drawn in
+  # to modify the interval using `Gtk::LevelBar#min_value=` and
+  # `Gtk::LevelBar#max_value=`. The value will be always drawn in
   # proportion to the admissible interval, i.e. a value of 15 with a specified
   # interval between 10 and 20 is equivalent to a value of 0.5 with an interval
   # between 0 and 1. When %GTK_LEVEL_BAR_MODE_DISCRETE is used, the bar level
@@ -105,6 +108,7 @@ module Gtk
   # # Accessibility
   #
   # `GtkLevelBar` uses the %GTK_ACCESSIBLE_ROLE_METER role.
+  @[GObject::GeneratedWrapper]
   class LevelBar < Widget
     include Accessible
     include Buildable
@@ -112,6 +116,13 @@ module Gtk
     include Orientable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::LevelBar), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -123,213 +134,218 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 41).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if inverted
+      if !inverted.nil?
         (_names.to_unsafe + _n).value = "inverted".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, inverted)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if max_value
+      if !max_value.nil?
         (_names.to_unsafe + _n).value = "max-value".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_value)
         _n += 1
       end
-      if min_value
+      if !min_value.nil?
         (_names.to_unsafe + _n).value = "min-value".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, min_value)
         _n += 1
       end
-      if mode
+      if !mode.nil?
         (_names.to_unsafe + _n).value = "mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mode)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if value
+      if !value.nil?
         (_names.to_unsafe + _n).value = "value".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, value)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(LevelBar.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -394,7 +410,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "mode", pointerof(value), Pointer(Void).null)
-      Gtk::LevelBarMode.from_value(value)
+      Gtk::LevelBarMode.new(value)
     end
 
     def value=(value : Float64) : Float64
@@ -412,38 +428,46 @@ module Gtk
       value
     end
 
+    # Creates a new `GtkLevelBar`.
     def initialize
       # gtk_level_bar_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_level_bar_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Creates a new `GtkLevelBar` for the specified interval.
     def self.new_for_interval(min_value : Float64, max_value : Float64) : self
       # gtk_level_bar_new_for_interval: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_level_bar_new_for_interval(min_value, max_value)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       Gtk::LevelBar.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Adds a new offset marker on @self at the position specified by @value.
+    #
+    # When the bar value is in the interval topped by @value (or between @value
+    # and [property@Gtk.LevelBar:max-value] in case the offset is the last one
+    # on the bar) a style class named `level-`@name will be applied
+    # when rendering the level bar fill.
+    #
+    # If another offset marker named @name exists, its value will be
+    # replaced by @value.
     def add_offset_value(name : ::String, value : Float64) : Nil
       # gtk_level_bar_add_offset_value: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_level_bar_add_offset_value(self, name, value)
@@ -451,65 +475,66 @@ module Gtk
       # Return value handling
     end
 
+    # Returns whether the levelbar is inverted.
     def inverted : Bool
       # gtk_level_bar_get_inverted: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_level_bar_get_inverted(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the `max-value` of the `GtkLevelBar`.
     def max_value : Float64
       # gtk_level_bar_get_max_value: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_level_bar_get_max_value(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the `min-value of the `GtkLevelBar`.
     def min_value : Float64
       # gtk_level_bar_get_min_value: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_level_bar_get_min_value(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the `mode` of the `GtkLevelBar`.
     def mode : Gtk::LevelBarMode
       # gtk_level_bar_get_mode: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_level_bar_get_mode(self)
 
       # Return value handling
-      Gtk::LevelBarMode.from_value(_retval)
+
+      Gtk::LevelBarMode.new(_retval)
     end
 
+    # Fetches the value specified for the offset marker @name in @self.
     def offset_value(name : ::String?, value : Float64) : Bool
       # gtk_level_bar_get_offset_value: (Method)
       # @name: (nullable)
       # @value: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       name = if name.nil?
                Pointer(LibC::Char).null
              else
@@ -520,28 +545,33 @@ module Gtk
       _retval = LibGtk.gtk_level_bar_get_offset_value(self, name, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the `value` of the `GtkLevelBar`.
     def value : Float64
       # gtk_level_bar_get_value: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_level_bar_get_value(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Removes an offset marker from a `GtkLevelBar`.
+    #
+    # The marker must have been previously added with
+    # `Gtk::LevelBar#add_offset_value`.
     def remove_offset_value(name : ::String?) : Nil
       # gtk_level_bar_remove_offset_value: (Method)
       # @name: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       name = if name.nil?
                Pointer(LibC::Char).null
              else
@@ -554,11 +584,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the `GtkLevelBar` is inverted.
     def inverted=(inverted : Bool) : Nil
       # gtk_level_bar_set_inverted: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_level_bar_set_inverted(self, inverted)
@@ -566,11 +595,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `max-value` of the `GtkLevelBar`.
+    #
+    # You probably want to update preexisting level offsets after calling
+    # this function.
     def max_value=(value : Float64) : Nil
       # gtk_level_bar_set_max_value: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_level_bar_set_max_value(self, value)
@@ -578,11 +609,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `min-value` of the `GtkLevelBar`.
+    #
+    # You probably want to update preexisting level offsets after calling
+    # this function.
     def min_value=(value : Float64) : Nil
       # gtk_level_bar_set_min_value: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_level_bar_set_min_value(self, value)
@@ -590,11 +623,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `mode` of the `GtkLevelBar`.
     def mode=(mode : Gtk::LevelBarMode) : Nil
       # gtk_level_bar_set_mode: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_level_bar_set_mode(self, mode)
@@ -602,11 +634,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the value of the `GtkLevelBar`.
     def value=(value : Float64) : Nil
       # gtk_level_bar_set_value: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_level_bar_set_value(self, value)
@@ -614,6 +645,14 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when an offset specified on the bar changes value.
+    #
+    # This typically is the result of a `Gtk::LevelBar#add_offset_value`
+    # call.
+    #
+    # The signal supports detailed connections; you can connect to the
+    # detailed signal "changed::x" in order to only receive callbacks when
+    # the value of offset "x" changes.
     struct OffsetChangedSignal
       @source : GObject::Object
       @detail : String?

@@ -199,7 +199,8 @@ module GLib
   KEY_FILE_DESKTOP_KEY_EXEC = "Exec"
   # A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a localized
   # string giving the generic name of the desktop entry.
-  KEY_FILE_DESKTOP_KEY_GENERIC_NAME = "GenericName"
+  KEY_FILE_DESKTOP_KEY_GENERIC_NAME   = "GenericName"
+  KEY_FILE_DESKTOP_KEY_GETTEXT_DOMAIN = "X-SUSE-Gettext-Domain"
   # A key under %G_KEY_FILE_DESKTOP_GROUP, whose value is a boolean
   # stating whether the desktop entry has been deleted by the user.
   KEY_FILE_DESKTOP_KEY_HIDDEN = "Hidden"
@@ -339,7 +340,7 @@ module GLib
   # Like #gtk_micro_version, but from the headers used at
   # application compile time, rather than from the library
   # linked against at application run time.
-  MICRO_VERSION = 0
+  MICRO_VERSION = 5
   # The minimum value which can be held in a #gint16.
   MININT16 = -32768_i16
   # The minimum value which can be held in a #gint32.
@@ -353,7 +354,7 @@ module GLib
   # Like #gtk_minor_version, but from the headers used at
   # application compile time, rather than from the library
   # linked against at application run time.
-  MINOR_VERSION = 72
+  MINOR_VERSION = 70
   MODULE_SUFFIX = "so"
   # If a long option in the main group has this name, it is not treated as a
   # regular option. Instead it collects all non-option arguments which would
@@ -362,7 +363,7 @@ module GLib
   # or %G_OPTION_ARG_FILENAME_ARRAY.
   #
   #
-  # Using %G_OPTION_REMAINING instead of simply scanning `argv`
+  # Using #G_OPTION_REMAINING instead of simply scanning `argv`
   # for leftover arguments has the advantage that GOption takes care of
   # necessary encoding conversions for strings or filenames.
   OPTION_REMAINING = ""
@@ -398,8 +399,8 @@ module GLib
   PRIORITY_HIGH = -100
   # Use this for high priority idle functions.
   #
-  # GTK+ uses %G_PRIORITY_HIGH_IDLE + 10 for resizing operations,
-  # and %G_PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is
+  # GTK+ uses #G_PRIORITY_HIGH_IDLE + 10 for resizing operations,
+  # and #G_PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is
   # done to ensure that any pending resizes are processed before any
   # pending redraws, so that widgets are not redrawn twice unnecessarily.)
   PRIORITY_HIGH_IDLE = 100
@@ -450,7 +451,6 @@ module GLib
   #  - g_get_user_config_dir()
   #  - g_get_system_data_dirs()
   #  - g_get_user_data_dir()
-  #  - g_get_user_state_dir()
   #  - g_get_user_runtime_dir()
   #
   # The subdirectories may not be created by the test harness; as with normal
@@ -1312,18 +1312,6 @@ module GLib
     KhitanSmallScript = 155
     # Yezidi. Since: 2.66
     Yezidi = 156
-    # Cypro-Minoan. Since: 2.72
-    CyproMinoan = 157
-    # Old Uyghur. Since: 2.72
-    OldUyghur = 158
-    # Tangsa. Since: 2.72
-    Tangsa = 159
-    # Toto. Since: 2.72
-    Toto = 160
-    # Vithkuqi. Since: 2.72
-    Vithkuqi = 161
-    # Mathematical notation. Since: 2.72
-    Math = 162
   end
 
   # These are the possible character classifications from the
@@ -1548,10 +1536,6 @@ module GLib
     LevelMask     =  -4
   end
   @[Flags]
-  enum MainContextFlags : UInt32
-    OwnerlessPolling = 1
-  end
-  @[Flags]
   enum MarkupCollectType : UInt32
     Invalid  =     0
     String   =     1
@@ -1674,6 +1658,623 @@ module GLib
     CaseInsensitive = 1
     WwwForm         = 2
     ParseRelaxed    = 4
+  end
+
+  def self.bit_nth_lsf(mask : UInt64, nth_bit : Int32) : Int32
+    # g_bit_nth_lsf: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_bit_nth_lsf(mask, nth_bit)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.bit_nth_msf(mask : UInt64, nth_bit : Int32) : Int32
+    # g_bit_nth_msf: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_bit_nth_msf(mask, nth_bit)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.bit_storage(number : UInt64) : UInt32
+    # g_bit_storage: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_bit_storage(number)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.check_version(required_major : UInt32, required_minor : UInt32, required_micro : UInt32) : ::String?
+    # glib_check_version: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.glib_check_version(required_major, required_minor, required_micro)
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.format_size_for_display(size : Int64) : ::String
+    # g_format_size_for_display: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGLib.g_format_size_for_display(size)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.application_name : ::String?
+    # g_get_application_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_get_application_name
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.os_info(key_name : ::String) : ::String?
+    # g_get_os_info: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGLib.g_get_os_info(key_name)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval) unless _retval.null?
+  end
+
+  def self.prgname : ::String?
+    # g_get_prgname: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_get_prgname
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.system_config_dirs : Enumerable(::String)
+    # g_get_system_config_dirs: (None)
+    # Returns: (transfer none) (array zero-terminated=1 element-type Filename)
+
+    # C call
+    _retval = LibGLib.g_get_system_config_dirs
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.system_data_dirs : Enumerable(::String)
+    # g_get_system_data_dirs: (None)
+    # Returns: (transfer none) (array zero-terminated=1 element-type Filename)
+
+    # C call
+    _retval = LibGLib.g_get_system_data_dirs
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.user_cache_dir : ::Path
+    # g_get_user_cache_dir: (None)
+    # Returns: (transfer none Filename)
+
+    # C call
+    _retval = LibGLib.g_get_user_cache_dir
+
+    # Return value handling
+
+    ::Path.new(::String.new(_retval))
+  end
+
+  def self.user_config_dir : ::Path
+    # g_get_user_config_dir: (None)
+    # Returns: (transfer none Filename)
+
+    # C call
+    _retval = LibGLib.g_get_user_config_dir
+
+    # Return value handling
+
+    ::Path.new(::String.new(_retval))
+  end
+
+  def self.user_data_dir : ::Path
+    # g_get_user_data_dir: (None)
+    # Returns: (transfer none Filename)
+
+    # C call
+    _retval = LibGLib.g_get_user_data_dir
+
+    # Return value handling
+
+    ::Path.new(::String.new(_retval))
+  end
+
+  def self.user_runtime_dir : ::Path
+    # g_get_user_runtime_dir: (None)
+    # Returns: (transfer none Filename)
+
+    # C call
+    _retval = LibGLib.g_get_user_runtime_dir
+
+    # Return value handling
+
+    ::Path.new(::String.new(_retval))
+  end
+
+  def self.user_special_dir(directory : GLib::UserDirectory) : ::Path?
+    # g_get_user_special_dir: (None)
+    # Returns: (transfer none Filename)
+
+    # C call
+    _retval = LibGLib.g_get_user_special_dir(directory)
+
+    # Return value handling
+
+    ::Path.new(::String.new(_retval)) unless _retval.null?
+  end
+
+  def self.idle_remove_by_data(data : Pointer(Void)?) : Bool
+    # g_idle_remove_by_data: (None)
+    # @data: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    data = if data.nil?
+             Pointer(Void).null
+           else
+             data.to_unsafe
+           end
+
+    # C call
+    _retval = LibGLib.g_idle_remove_by_data(data)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.idle_source_new : GLib::Source
+    # g_idle_source_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGLib.g_idle_source_new
+
+    # Return value handling
+
+    GLib::Source.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.main_context_default : GLib::MainContext
+    # g_main_context_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_main_context_default
+
+    # Return value handling
+
+    GLib::MainContext.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.main_context_get_thread_default : GLib::MainContext?
+    # g_main_context_get_thread_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_main_context_get_thread_default
+
+    # Return value handling
+
+    GLib::MainContext.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def self.main_context_ref_thread_default : GLib::MainContext
+    # g_main_context_ref_thread_default: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGLib.g_main_context_ref_thread_default
+
+    # Return value handling
+
+    GLib::MainContext.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.main_current_source : GLib::Source?
+    # g_main_current_source: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_main_current_source
+
+    # Return value handling
+
+    GLib::Source.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def self.main_depth : Int32
+    # g_main_depth: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_main_depth
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.markup_escape_text(text : ::String, length : Int64) : ::String
+    # g_markup_escape_text: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGLib.g_markup_escape_text(text, length)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.on_error_query(prg_name : ::String) : Nil
+    # g_on_error_query: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGLib.g_on_error_query(prg_name)
+
+    # Return value handling
+  end
+
+  def self.on_error_stack_trace(prg_name : ::String) : Nil
+    # g_on_error_stack_trace: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGLib.g_on_error_stack_trace(prg_name)
+
+    # Return value handling
+  end
+
+  def self.quark_from_string(string : ::String?) : UInt32
+    # g_quark_from_string: (None)
+    # @string: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    string = if string.nil?
+               Pointer(LibC::Char).null
+             else
+               string.to_unsafe
+             end
+
+    # C call
+    _retval = LibGLib.g_quark_from_string(string)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.quark_to_string(quark : UInt32) : ::String
+    # g_quark_to_string: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_quark_to_string(quark)
+
+    # Return value handling
+
+    ::String.new(_retval)
+  end
+
+  def self.quark_try_string(string : ::String?) : UInt32
+    # g_quark_try_string: (None)
+    # @string: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    string = if string.nil?
+               Pointer(LibC::Char).null
+             else
+               string.to_unsafe
+             end
+
+    # C call
+    _retval = LibGLib.g_quark_try_string(string)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.reload_user_special_dirs_cache : Nil
+    # g_reload_user_special_dirs_cache: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGLib.g_reload_user_special_dirs_cache
+
+    # Return value handling
+  end
+
+  def self.application_name=(application_name : ::String) : Nil
+    # g_set_application_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGLib.g_set_application_name(application_name)
+
+    # Return value handling
+  end
+
+  def self.prgname=(prgname : ::String) : Nil
+    # g_set_prgname: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGLib.g_set_prgname(prgname)
+
+    # Return value handling
+  end
+
+  def self.source_remove(tag : UInt32) : Bool
+    # g_source_remove: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_source_remove(tag)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.source_set_name_by_id(tag : UInt32, name : ::String) : Nil
+    # g_source_set_name_by_id: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibGLib.g_source_set_name_by_id(tag, name)
+
+    # Return value handling
+  end
+
+  def self.spaced_primes_closest(num : UInt32) : UInt32
+    # g_spaced_primes_closest: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_spaced_primes_closest(num)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.timeout_source_new(interval : UInt32) : GLib::Source
+    # g_timeout_source_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGLib.g_timeout_source_new(interval)
+
+    # Return value handling
+
+    GLib::Source.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.timeout_source_new_seconds(interval : UInt32) : GLib::Source
+    # g_timeout_source_new_seconds: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGLib.g_timeout_source_new_seconds(interval)
+
+    # Return value handling
+
+    GLib::Source.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.variant_get_gtype : UInt64
+    # g_variant_get_gtype: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_variant_get_gtype
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.variant_is_object_path(string : ::String) : Bool
+    # g_variant_is_object_path: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_variant_is_object_path(string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.variant_is_signature(string : ::String) : Bool
+    # g_variant_is_signature: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_variant_is_signature(string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def variant_parse(type : GLib::VariantType?, text : ::String, limit : ::String?, endptr : ::String?) : GLib::Variant
+    # g_variant_parse: (Throws)
+    # @type: (nullable)
+    # @limit: (nullable)
+    # @endptr: (nullable)
+    # Returns: (transfer full)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::NullableArrayPlan
+    type = if type.nil?
+             Pointer(Void).null
+           else
+             type.to_unsafe
+           end
+
+    # Generator::NullableArrayPlan
+    limit = if limit.nil?
+              Pointer(LibC::Char).null
+            else
+              limit.to_unsafe
+            end
+
+    # Generator::NullableArrayPlan
+    endptr = if endptr.nil?
+               Pointer(LibC::Char).null
+             else
+               endptr.to_unsafe
+             end
+
+    # C call
+    _retval = LibGLib.g_variant_parse(type, text, limit, endptr, pointerof(_error))
+
+    # Error check
+    GLib.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GLib::Variant.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.variant_parse_error_print_context(error : GLib::Error, source_str : ::String) : ::String
+    # g_variant_parse_error_print_context: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibGLib.g_variant_parse_error_print_context(error, source_str)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.variant_parse_error_quark : UInt32
+    # g_variant_parse_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_variant_parse_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.variant_parser_get_error_quark : UInt32
+    # g_variant_parser_get_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_variant_parser_get_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.variant_type_checked_(arg0 : ::String) : GLib::VariantType
+    # g_variant_type_checked_: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_variant_type_checked_(arg0)
+
+    # Return value handling
+
+    GLib::VariantType.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.variant_type_string_get_depth_(type_string : ::String) : UInt64
+    # g_variant_type_string_get_depth_: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_variant_type_string_get_depth_(type_string)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.variant_type_string_is_valid(type_string : ::String) : Bool
+    # g_variant_type_string_is_valid: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGLib.g_variant_type_string_is_valid(type_string)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.variant_type_string_scan(string : ::String, limit : ::String?) : Bool
+    # g_variant_type_string_scan: (None)
+    # @limit: (nullable)
+    # @endptr: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    limit = if limit.nil?
+              Pointer(LibC::Char).null
+            else
+              limit.to_unsafe
+            end
+
+    # Generator::OutArgUsedInReturnPlan
+    endptr = Pointer(Pointer(LibC::Char)).null
+
+    # C call
+    _retval = LibGLib.g_variant_type_string_scan(string, limit, endptr)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
   end
 
   # Errors

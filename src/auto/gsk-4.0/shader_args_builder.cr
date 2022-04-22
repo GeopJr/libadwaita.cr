@@ -4,7 +4,7 @@ module Gsk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(ShaderArgsBuilder.g_type, pointer)
@@ -17,6 +17,10 @@ module Gsk
       LibGObject.g_boxed_free(ShaderArgsBuilder.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGsk::ShaderArgsBuilder)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGsk.gsk_shader_args_builder_get_type
@@ -27,7 +31,7 @@ module Gsk
       # @initial_values: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       initial_values = if initial_values.nil?
                          Pointer(Void).null
                        else
@@ -38,6 +42,7 @@ module Gsk
       _retval = LibGsk.gsk_shader_args_builder_new(shader, initial_values)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -45,20 +50,17 @@ module Gsk
       # gsk_shader_args_builder_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_shader_args_builder_ref(self)
 
       # Return value handling
+
       Gsk::ShaderArgsBuilder.new(_retval, GICrystal::Transfer::Full)
     end
 
     def set_bool(idx : Int32, value : Bool) : Nil
       # gsk_shader_args_builder_set_bool: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_shader_args_builder_set_bool(self, idx, value)
@@ -70,8 +72,6 @@ module Gsk
       # gsk_shader_args_builder_set_float: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGsk.gsk_shader_args_builder_set_float(self, idx, value)
 
@@ -81,8 +81,6 @@ module Gsk
     def set_int(idx : Int32, value : Int32) : Nil
       # gsk_shader_args_builder_set_int: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_shader_args_builder_set_int(self, idx, value)
@@ -94,8 +92,6 @@ module Gsk
       # gsk_shader_args_builder_set_uint: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGsk.gsk_shader_args_builder_set_uint(self, idx, value)
 
@@ -105,8 +101,6 @@ module Gsk
     def set_vec2(idx : Int32, value : Graphene::Vec2) : Nil
       # gsk_shader_args_builder_set_vec2: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_shader_args_builder_set_vec2(self, idx, value)
@@ -118,8 +112,6 @@ module Gsk
       # gsk_shader_args_builder_set_vec3: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGsk.gsk_shader_args_builder_set_vec3(self, idx, value)
 
@@ -129,8 +121,6 @@ module Gsk
     def set_vec4(idx : Int32, value : Graphene::Vec4) : Nil
       # gsk_shader_args_builder_set_vec4: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_shader_args_builder_set_vec4(self, idx, value)
@@ -142,20 +132,17 @@ module Gsk
       # gsk_shader_args_builder_to_args: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_shader_args_builder_to_args(self)
 
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # gsk_shader_args_builder_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_shader_args_builder_unref(self)

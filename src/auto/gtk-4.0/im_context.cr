@@ -13,7 +13,7 @@ module Gtk
   # [signal@Gtk.IMContext::preedit-start], [signal@Gtk.IMContext::preedit-changed]
   # and [signal@Gtk.IMContext::preedit-end] signals.
   #
-  # For instance, the built-in GTK input method [class@Gtk.IMContextSimple]
+  # For instance, the built-in GTK input method `Gtk#IMContextSimple`
   # implements the input of arbitrary Unicode code points by holding down the
   # <kbd>Control</kbd> and <kbd>Shift</kbd> keys and then typing <kbd>u</kbd>
   # followed by the hexadecimal digits of the code point. When releasing the
@@ -29,9 +29,17 @@ module Gtk
   # provides a `GIOExtension` for the extension point named "gtk-im-module".
   #
   # To connect a widget to the users preferred input method, you should use
-  # [class@Gtk.IMMulticontext].
+  # `Gtk#IMMulticontext`.
+  @[GObject::GeneratedWrapper]
   class IMContext < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::IMContextClass), class_init,
+        sizeof(LibGtk::IMContext), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -43,18 +51,22 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if input_hints
+      if !input_hints.nil?
         (_names.to_unsafe + _n).value = "input-hints".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, input_hints)
         _n += 1
       end
-      if input_purpose
+      if !input_purpose.nil?
         (_names.to_unsafe + _n).value = "input-purpose".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, input_purpose)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(IMContext.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -74,7 +86,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "input-hints", pointerof(value), Pointer(Void).null)
-      Gtk::InputHints.from_value(value)
+      Gtk::InputHints.new(value)
     end
 
     def input_purpose=(value : Gtk::InputPurpose) : Gtk::InputPurpose
@@ -89,53 +101,78 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "input-purpose", pointerof(value), Pointer(Void).null)
-      Gtk::InputPurpose.from_value(value)
+      Gtk::InputPurpose.new(value)
     end
 
+    # Asks the widget that the input context is attached to delete
+    # characters around the cursor position by emitting the
+    # `::delete_surrounding` signal.
+    #
+    # Note that @offset and @n_chars are in characters not in bytes
+    # which differs from the usage other places in `GtkIMContext`.
+    #
+    # In order to use this function, you should first call
+    # `Gtk::IMContext#surrounding` to get the current context,
+    # and call this function immediately afterwards to make sure that you
+    # know what you are deleting. You should also account for the fact
+    # that even if the signal was handled, the input context might not
+    # have deleted all the characters that were requested to be deleted.
+    #
+    # This function is used by an input method that wants to make
+    # subsitutions in the existing text in response to new input.
+    # It is not useful for applications.
     def delete_surrounding(offset : Int32, n_chars : Int32) : Bool
       # gtk_im_context_delete_surrounding: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_im_context_delete_surrounding(self, offset, n_chars)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Allow an input method to forward key press and release events
+    # to another input method without necessarily having a `GdkEvent`
+    # available.
     def filter_key(press : Bool, surface : Gdk::Surface, device : Gdk::Device, time : UInt32, keycode : UInt32, state : Gdk::ModifierType, group : Int32) : Bool
       # gtk_im_context_filter_key: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_im_context_filter_key(self, press, surface, device, time, keycode, state, group)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Allow an input method to internally handle key press and release
+    # events.
+    #
+    # If this function returns %TRUE, then no further processing
+    # should be done for this key event.
     def filter_keypress(event : Gdk::Event) : Bool
       # gtk_im_context_filter_keypress: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_im_context_filter_keypress(self, event)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Notify the input method that the widget to which this
+    # input context corresponds has gained focus.
+    #
+    # The input method may, for example, change the displayed
+    # feedback to reflect this change.
     def focus_in : Nil
       # gtk_im_context_focus_in: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_im_context_focus_in(self)
@@ -143,11 +180,14 @@ module Gtk
       # Return value handling
     end
 
+    # Notify the input method that the widget to which this
+    # input context corresponds has lost focus.
+    #
+    # The input method may, for example, change the displayed
+    # feedback or reset the contexts state to reflect this change.
     def focus_out : Nil
       # gtk_im_context_focus_out: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_im_context_focus_out(self)
@@ -155,6 +195,10 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieve the current preedit string for the input context,
+    # and a list of attributes to apply to the string.
+    #
+    # This string should be displayed inserted at the insertion point.
     def preedit_string(str : ::String, attrs : Pango::AttrList, cursor_pos : Int32) : Nil
       # gtk_im_context_get_preedit_string: (Method)
       # @str: (out) (transfer full)
@@ -162,30 +206,56 @@ module Gtk
       # @cursor_pos: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-      LibGObject.g_object_ref(attrs)
-
       # C call
       LibGtk.gtk_im_context_get_preedit_string(self, str, attrs, cursor_pos)
 
       # Return value handling
     end
 
+    # Retrieves context around the insertion point.
+    #
+    # Input methods typically want context in order to constrain input text
+    # based on existing text; this is important for languages such as Thai
+    # where only some sequences of characters are allowed.
+    #
+    # This function is implemented by emitting the
+    # [signal@Gtk.IMContext::retrieve-surrounding] signal on the input method;
+    # in response to this signal, a widget should provide as much context as
+    # is available, up to an entire paragraph, by calling
+    # `Gtk::IMContext#surrounding=`.
+    #
+    # Note that there is no obligation for a widget to respond to the
+    # `::retrieve-surrounding` signal, so input methods must be prepared to
+    # function without context.
     def surrounding(text : ::String, cursor_index : Int32) : Bool
       # gtk_im_context_get_surrounding: (Method)
       # @text: (out) (transfer full)
       # @cursor_index: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_im_context_get_surrounding(self, text, cursor_index)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Retrieves context around the insertion point.
+    #
+    # Input methods typically want context in order to constrain input
+    # text based on existing text; this is important for languages such
+    # as Thai where only some sequences of characters are allowed.
+    #
+    # This function is implemented by emitting the
+    # [signal@Gtk.IMContext::retrieve-surrounding] signal on the input method;
+    # in response to this signal, a widget should provide as much context as
+    # is available, up to an entire paragraph, by calling
+    # `Gtk::IMContext#surrounding_with_selection=`.
+    #
+    # Note that there is no obligation for a widget to respond to the
+    # `::retrieve-surrounding` signal, so input methods must be prepared to
+    # function without context.
     def surrounding_with_selection(text : ::String, cursor_index : Int32, anchor_index : Int32) : Bool
       # gtk_im_context_get_surrounding_with_selection: (Method)
       # @text: (out) (transfer full)
@@ -193,20 +263,21 @@ module Gtk
       # @anchor_index: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_im_context_get_surrounding_with_selection(self, text, cursor_index, anchor_index)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Notify the input method that a change such as a change in cursor
+    # position has been made.
+    #
+    # This will typically cause the input method to clear the preedit state.
     def reset : Nil
       # gtk_im_context_reset: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_im_context_reset(self)
@@ -214,12 +285,17 @@ module Gtk
       # Return value handling
     end
 
+    # Set the client widget for the input context.
+    #
+    # This is the `GtkWidget` holding the input focus. This widget is
+    # used in order to correctly position status windows, and may
+    # also be used for purposes internal to the input method.
     def client_widget=(widget : Gtk::Widget?) : Nil
       # gtk_im_context_set_client_widget: (Method)
       # @widget: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       widget = if widget.nil?
                  Pointer(Void).null
                else
@@ -232,11 +308,13 @@ module Gtk
       # Return value handling
     end
 
+    # Notify the input method that a change in cursor
+    # position has been made.
+    #
+    # The location is relative to the client widget.
     def cursor_location=(area : Gdk::Rectangle) : Nil
       # gtk_im_context_set_cursor_location: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_im_context_set_cursor_location(self, area)
@@ -244,11 +322,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets surrounding context around the insertion point and preedit
+    # string.
+    #
+    # This function is expected to be called in response to the
+    # [signal@Gtk.IMContext::retrieve-surrounding] signal, and will
+    # likely have no effect if called at other times.
     def set_surrounding(text : ::String, len : Int32, cursor_index : Int32) : Nil
       # gtk_im_context_set_surrounding: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_im_context_set_surrounding(self, text, len, cursor_index)
@@ -256,11 +338,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets surrounding context around the insertion point and preedit
+    # string. This function is expected to be called in response to the
+    # `Gtk::IMContext::#retrieve_surrounding` signal, and will likely
+    # have no effect if called at other times.
     def set_surrounding_with_selection(text : ::String, len : Int32, cursor_index : Int32, anchor_index : Int32) : Nil
       # gtk_im_context_set_surrounding_with_selection: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_im_context_set_surrounding_with_selection(self, text, len, cursor_index, anchor_index)
@@ -268,11 +352,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the IM context should use the preedit string
+    # to display feedback.
+    #
+    # If @use_preedit is %FALSE (default is %TRUE), then the IM context
+    # may use some other method to display feedback, such as displaying
+    # it in a child of the root window.
     def use_preedit=(use_preedit : Bool) : Nil
       # gtk_im_context_set_use_preedit: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_im_context_set_use_preedit(self, use_preedit)
@@ -280,6 +368,14 @@ module Gtk
       # Return value handling
     end
 
+    # The ::commit signal is emitted when a complete input sequence
+    # has been entered by the user.
+    #
+    # If the commit comes after a preediting sequence, the
+    # ::commit signal is emitted after ::preedit-end.
+    #
+    # This can be a single character immediately after a key press or
+    # the final result of preediting.
     struct CommitSignal
       @source : GObject::Object
       @detail : String?
@@ -359,6 +455,8 @@ module Gtk
       CommitSignal.new(self)
     end
 
+    # The ::delete-surrounding signal is emitted when the input method
+    # needs to delete all or part of the context surrounding the cursor.
     struct DeleteSurroundingSignal
       @source : GObject::Object
       @detail : String?
@@ -388,7 +486,8 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          ::Box(Proc(Int32, Int32, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Int32, Int32, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -400,7 +499,8 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          ::Box(Proc(Int32, Int32, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Int32, Int32, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -442,6 +542,11 @@ module Gtk
       DeleteSurroundingSignal.new(self)
     end
 
+    # The ::preedit-changed signal is emitted whenever the preedit sequence
+    # currently being entered has changed.
+    #
+    # It is also emitted at the end of a preedit sequence, in which case
+    # `Gtk::IMContext#preedit_string` returns the empty string.
     struct PreeditChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -517,6 +622,8 @@ module Gtk
       PreeditChangedSignal.new(self)
     end
 
+    # The ::preedit-end signal is emitted when a preediting sequence
+    # has been completed or canceled.
     struct PreeditEndSignal
       @source : GObject::Object
       @detail : String?
@@ -592,6 +699,8 @@ module Gtk
       PreeditEndSignal.new(self)
     end
 
+    # The ::preedit-start signal is emitted when a new preediting sequence
+    # starts.
     struct PreeditStartSignal
       @source : GObject::Object
       @detail : String?
@@ -667,6 +776,11 @@ module Gtk
       PreeditStartSignal.new(self)
     end
 
+    # The ::retrieve-surrounding signal is emitted when the input method
+    # requires the context surrounding the cursor.
+    #
+    # The callback should set the input method surrounding context by
+    # calling the `Gtk::IMContext#surrounding=` method.
     struct RetrieveSurroundingSignal
       @source : GObject::Object
       @detail : String?
@@ -694,7 +808,8 @@ module Gtk
       def connect(block : Proc(Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(box).call.to_unsafe
+          _retval = ::Box(Proc(Bool)).unbox(box).call
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -704,7 +819,8 @@ module Gtk
       def connect_after(block : Proc(Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(box).call.to_unsafe
+          _retval = ::Box(Proc(Bool)).unbox(box).call
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,

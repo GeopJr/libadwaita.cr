@@ -4,7 +4,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGio::DBusErrorEntry))
@@ -23,27 +23,32 @@ module Gio
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::DBusErrorEntry)).zero?
+    end
+
     def error_code : Int32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Int32))
       _var.value
     end
 
     def error_code=(value : Int32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Int32)).value = value
       value
     end
 
-    def dbus_error_name : ::String
-      # Property getter
+    def dbus_error_name!
+      self.dbus_error_name.not_nil!
+    end
+
+    def dbus_error_name : ::String?
       _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def dbus_error_name=(value : ::String)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value
+    def dbus_error_name=(value : ::String?)
+      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 

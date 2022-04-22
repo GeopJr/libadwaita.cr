@@ -8,6 +8,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class ConstraintTarget__Impl < GObject::Object
     include ConstraintTarget
 

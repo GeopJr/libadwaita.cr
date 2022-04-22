@@ -45,8 +45,16 @@ module Gio
   # clicked.
   #
   # A notification can be sent with g_application_send_notification().
+  @[GObject::GeneratedWrapper]
   class Notification < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGio::Notification), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -58,24 +66,35 @@ module Gio
       LibGio.g_notification_get_type
     end
 
+    # Creates a new #GNotification with @title as its title.
+    #
+    # After populating @notification with more details, it can be sent to
+    # the desktop shell with g_application_send_notification(). Changing
+    # any properties after this call will not have any effect until
+    # resending @notification.
     def initialize(title : ::String)
       # g_notification_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_notification_new(title)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Adds a button to @notification that activates the action in
+    # @detailed_action when clicked. That action must be an
+    # application-wide action (starting with "app."). If @detailed_action
+    # contains a target, the action will be activated with that target as
+    # its parameter.
+    #
+    # See g_action_parse_detailed_name() for a description of the format
+    # for @detailed_action.
     def add_button(label : ::String, detailed_action : ::String) : Nil
       # g_notification_add_button: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_notification_add_button(self, label, detailed_action)
@@ -83,18 +102,26 @@ module Gio
       # Return value handling
     end
 
+    # Adds a button to @notification that activates @action when clicked.
+    # @action must be an application-wide action (it must start with "app.").
+    #
+    # If @target_format is given, it is used to collect remaining
+    # positional parameters into a #GVariant instance, similar to
+    # g_variant_new(). @action will be activated with that #GVariant as its
+    # parameter.
     def add_button_with_target(label : ::String, action : ::String, target : _?) : Nil
       # g_notification_add_button_with_target_value: (Method)
       # @target: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       target = if target.nil?
                  Pointer(Void).null
+               elsif !target.is_a?(GLib::Variant)
+                 GLib::Variant.new(target).to_unsafe
                else
                  target.to_unsafe
                end
-      target = GLib::Variant.new(target) unless target.is_a?(GLib::Variant)
 
       # C call
       LibGio.g_notification_add_button_with_target_value(self, label, action, target)
@@ -102,12 +129,13 @@ module Gio
       # Return value handling
     end
 
+    # Sets the body of @notification to @body.
     def body=(body : ::String?) : Nil
       # g_notification_set_body: (Method)
       # @body: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       body = if body.nil?
                Pointer(LibC::Char).null
              else
@@ -120,12 +148,18 @@ module Gio
       # Return value handling
     end
 
+    # Sets the type of @notification to @category. Categories have a main
+    # type like `email`, `im` or `device` and can have a detail separated
+    # by a `.`, e.g. `im.received` or `email.arrived`. Setting the category
+    # helps the notification server to select proper feedback to the user.
+    #
+    # Standard categories are [listed in the specification](https://specifications.freedesktop.org/notification-spec/latest/ar01s06.html).
     def category=(category : ::String?) : Nil
       # g_notification_set_category: (Method)
       # @category: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       category = if category.nil?
                    Pointer(LibC::Char).null
                  else
@@ -138,11 +172,20 @@ module Gio
       # Return value handling
     end
 
+    # Sets the default action of @notification to @detailed_action. This
+    # action is activated when the notification is clicked on.
+    #
+    # The action in @detailed_action must be an application-wide action (it
+    # must start with "app."). If @detailed_action contains a target, the
+    # given action will be activated with that target as its parameter.
+    # See g_action_parse_detailed_name() for a description of the format
+    # for @detailed_action.
+    #
+    # When no default action is set, the application that the notification
+    # was sent on is activated.
     def default_action=(detailed_action : ::String) : Nil
       # g_notification_set_default_action: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_notification_set_default_action(self, detailed_action)
@@ -150,18 +193,30 @@ module Gio
       # Return value handling
     end
 
+    # Sets the default action of @notification to @action. This action is
+    # activated when the notification is clicked on. It must be an
+    # application-wide action (it must start with "app.").
+    #
+    # If @target_format is given, it is used to collect remaining
+    # positional parameters into a #GVariant instance, similar to
+    # g_variant_new(). @action will be activated with that #GVariant as its
+    # parameter.
+    #
+    # When no default action is set, the application that the notification
+    # was sent on is activated.
     def set_default_action_and_target(action : ::String, target : _?) : Nil
       # g_notification_set_default_action_and_target_value: (Method)
       # @target: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       target = if target.nil?
                  Pointer(Void).null
+               elsif !target.is_a?(GLib::Variant)
+                 GLib::Variant.new(target).to_unsafe
                else
                  target.to_unsafe
                end
-      target = GLib::Variant.new(target) unless target.is_a?(GLib::Variant)
 
       # C call
       LibGio.g_notification_set_default_action_and_target_value(self, action, target)
@@ -169,11 +224,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the icon of @notification to @icon.
     def icon=(icon : Gio::Icon) : Nil
       # g_notification_set_icon: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_notification_set_icon(self, icon)
@@ -181,11 +235,11 @@ module Gio
       # Return value handling
     end
 
+    # Sets the priority of @notification to @priority. See
+    # #GNotificationPriority for possible values.
     def priority=(priority : Gio::NotificationPriority) : Nil
       # g_notification_set_priority: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_notification_set_priority(self, priority)
@@ -193,11 +247,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the title of @notification to @title.
     def title=(title : ::String) : Nil
       # g_notification_set_title: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_notification_set_title(self, title)
@@ -205,11 +258,10 @@ module Gio
       # Return value handling
     end
 
+    # Deprecated in favor of g_notification_set_priority().
     def urgent=(urgent : Bool) : Nil
       # g_notification_set_urgent: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_notification_set_urgent(self, urgent)

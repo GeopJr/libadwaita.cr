@@ -5,7 +5,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGLib::Source))
@@ -35,159 +35,182 @@ module GLib
     def finalize
     end
 
-    def callback_data : Pointer(Void)
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::Source)).zero?
+    end
+
+    def callback_data!
+      self.callback_data.not_nil!
+    end
+
+    def callback_data : Pointer(Void)?
       _var = (@pointer + 0).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def callback_data=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value
+    def callback_data=(value : Pointer(Void)?)
+      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
-    def callback_funcs : GLib::SourceCallbackFuncs
-      # Property getter
+    def callback_funcs!
+      self.callback_funcs.not_nil!
+    end
+
+    def callback_funcs : GLib::SourceCallbackFuncs?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GLib::SourceCallbackFuncs.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def callback_funcs=(value : GLib::SourceCallbackFuncs)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def callback_funcs=(value : GLib::SourceCallbackFuncs?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def source_funcs : GLib::SourceFuncs
-      # Property getter
+    def source_funcs!
+      self.source_funcs.not_nil!
+    end
+
+    def source_funcs : GLib::SourceFuncs?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GLib::SourceFuncs.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def source_funcs=(value : GLib::SourceFuncs)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def source_funcs=(value : GLib::SourceFuncs?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
     def ref_count : UInt32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(UInt32))
       _var.value
     end
 
     def ref_count=(value : UInt32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(UInt32)).value = value
       value
     end
 
-    def context : GLib::MainContext
-      # Property getter
+    def context!
+      self.context.not_nil!
+    end
+
+    def context : GLib::MainContext?
       _var = (@pointer + 32).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GLib::MainContext.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def context=(value : GLib::MainContext)
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def context=(value : GLib::MainContext?)
+      _var = (@pointer + 32).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
     def priority : Int32
-      # Property getter
       _var = (@pointer + 40).as(Pointer(Int32))
       _var.value
     end
 
     def priority=(value : Int32)
-      # Property setter
       _var = (@pointer + 40).as(Pointer(Int32)).value = value
       value
     end
 
     def flags : UInt32
-      # Property getter
       _var = (@pointer + 44).as(Pointer(UInt32))
       _var.value
     end
 
     def flags=(value : UInt32)
-      # Property setter
       _var = (@pointer + 44).as(Pointer(UInt32)).value = value
       value
     end
 
     def source_id : UInt32
-      # Property getter
       _var = (@pointer + 48).as(Pointer(UInt32))
       _var.value
     end
 
     def source_id=(value : UInt32)
-      # Property setter
       _var = (@pointer + 48).as(Pointer(UInt32)).value = value
       value
     end
 
-    def poll_fds : GLib::SList
-      # Property getter
+    def poll_fds!
+      self.poll_fds.not_nil!
+    end
+
+    def poll_fds : GLib::SList?
       _var = (@pointer + 56).as(Pointer(Pointer(LibGLib::SList)))
+      return if _var.value.null?
       GLib::SList(Pointer(Void)).new(_var.value, GICrystal::Transfer::None)
     end
 
-    def poll_fds=(value : GLib::SList)
-      # Property setter
-      _var = (@pointer + 56).as(Pointer(Pointer(LibGLib::SList))).value = value
+    def poll_fds=(value : GLib::SList?)
+      _var = (@pointer + 56).as(Pointer(Pointer(LibGLib::SList))).value = value.nil? ? Pointer(LibGLib::SList).null : value
       value
     end
 
-    def prev : GLib::Source
-      # Property getter
+    def prev!
+      self.prev.not_nil!
+    end
+
+    def prev : GLib::Source?
       _var = (@pointer + 64).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GLib::Source.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def prev=(value : GLib::Source)
-      # Property setter
-      _var = (@pointer + 64).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def prev=(value : GLib::Source?)
+      _var = (@pointer + 64).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def next : GLib::Source
-      # Property getter
+    def next!
+      self.next.not_nil!
+    end
+
+    def next : GLib::Source?
       _var = (@pointer + 72).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GLib::Source.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def next=(value : GLib::Source)
-      # Property setter
-      _var = (@pointer + 72).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def next=(value : GLib::Source?)
+      _var = (@pointer + 72).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def name : ::String
-      # Property getter
+    def name!
+      self.name.not_nil!
+    end
+
+    def name : ::String?
       _var = (@pointer + 80).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def name=(value : ::String)
-      # Property setter
-      _var = (@pointer + 80).as(Pointer(Pointer(LibC::Char))).value = value
+    def name=(value : ::String?)
+      _var = (@pointer + 80).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def priv : GLib::SourcePrivate
-      # Property getter
+    def priv!
+      self.priv.not_nil!
+    end
+
+    def priv : GLib::SourcePrivate?
       _var = (@pointer + 88).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GLib::SourcePrivate.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def priv=(value : GLib::SourcePrivate)
-      # Property setter
-      _var = (@pointer + 88).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def priv=(value : GLib::SourcePrivate?)
+      _var = (@pointer + 88).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
@@ -200,20 +223,17 @@ module GLib
       # g_source_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_new(source_funcs, struct_size)
 
       # Return value handling
+
       @pointer = _retval
     end
 
     def add_child_source(child_source : GLib::Source) : Nil
       # g_source_add_child_source: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_add_child_source(self, child_source)
@@ -225,12 +245,11 @@ module GLib
       # g_source_add_unix_fd: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_add_unix_fd(self, fd, events)
 
       # Return value handling
+
       _retval
     end
 
@@ -239,7 +258,7 @@ module GLib
       # @context: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
                 else
@@ -250,14 +269,13 @@ module GLib
       _retval = LibGLib.g_source_attach(self, context)
 
       # Return value handling
+
       _retval
     end
 
     def destroy : Nil
       # g_source_destroy: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_destroy(self)
@@ -269,12 +287,11 @@ module GLib
       # g_source_get_can_recurse: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_get_can_recurse(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -282,20 +299,17 @@ module GLib
       # g_source_get_context: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_get_context(self)
 
       # Return value handling
+
       GLib::MainContext.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def current_time(timeval : GLib::TimeVal) : Nil
       # g_source_get_current_time: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_get_current_time(self, timeval)
@@ -307,12 +321,11 @@ module GLib
       # g_source_get_id: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_get_id(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -320,12 +333,11 @@ module GLib
       # g_source_get_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_get_name(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -333,12 +345,11 @@ module GLib
       # g_source_get_priority: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_get_priority(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -346,12 +357,11 @@ module GLib
       # g_source_get_ready_time: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_get_ready_time(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -359,12 +369,11 @@ module GLib
       # g_source_get_time: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_get_time(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -372,20 +381,17 @@ module GLib
       # g_source_is_destroyed: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_is_destroyed(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def modify_unix_fd(tag : Pointer(Void), new_events : GLib::IOCondition) : Nil
       # g_source_modify_unix_fd: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_modify_unix_fd(self, tag, new_events)
@@ -397,33 +403,29 @@ module GLib
       # g_source_query_unix_fd: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_query_unix_fd(self, tag)
 
       # Return value handling
-      GLib::IOCondition.from_value(_retval)
+
+      GLib::IOCondition.new(_retval)
     end
 
     def ref : GLib::Source
       # g_source_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_ref(self)
 
       # Return value handling
+
       GLib::Source.new(_retval, GICrystal::Transfer::Full)
     end
 
     def remove_child_source(child_source : GLib::Source) : Nil
       # g_source_remove_child_source: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_remove_child_source(self, child_source)
@@ -434,8 +436,6 @@ module GLib
     def remove_unix_fd(tag : Pointer(Void)) : Nil
       # g_source_remove_unix_fd: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_remove_unix_fd(self, tag)
@@ -449,12 +449,14 @@ module GLib
       # @notify: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(Void).null
              else
                data.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       notify = if notify.nil?
                  LibGLib::DestroyNotify.null
                else
@@ -472,7 +474,7 @@ module GLib
       # @callback_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       callback_data = if callback_data.nil?
                         Pointer(Void).null
                       else
@@ -489,8 +491,6 @@ module GLib
       # g_source_set_can_recurse: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGLib.g_source_set_can_recurse(self, can_recurse)
 
@@ -500,8 +500,6 @@ module GLib
     def funcs=(funcs : GLib::SourceFuncs) : Nil
       # g_source_set_funcs: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_set_funcs(self, funcs)
@@ -513,8 +511,6 @@ module GLib
       # g_source_set_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGLib.g_source_set_name(self, name)
 
@@ -524,8 +520,6 @@ module GLib
     def priority=(priority : Int32) : Nil
       # g_source_set_priority: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_set_priority(self, priority)
@@ -537,8 +531,6 @@ module GLib
       # g_source_set_ready_time: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGLib.g_source_set_ready_time(self, ready_time)
 
@@ -548,8 +540,6 @@ module GLib
     def static_name=(name : ::String) : Nil
       # g_source_set_static_name: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_set_static_name(self, name)
@@ -561,8 +551,6 @@ module GLib
       # g_source_unref: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGLib.g_source_unref(self)
 
@@ -573,58 +561,17 @@ module GLib
       # g_source_remove: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_source_remove(tag)
 
       # Return value handling
-      GICrystal.to_bool(_retval)
-    end
 
-    def self.remove_by_funcs_user_data(funcs : GLib::SourceFuncs, user_data : Pointer(Void)?) : Bool
-      # g_source_remove_by_funcs_user_data: (None)
-      # @user_data: (nullable)
-      # Returns: (transfer none)
-
-      # Handle parameters
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # C call
-      _retval = LibGLib.g_source_remove_by_funcs_user_data(funcs, user_data)
-
-      # Return value handling
-      GICrystal.to_bool(_retval)
-    end
-
-    def self.remove_by_user_data(user_data : Pointer(Void)?) : Bool
-      # g_source_remove_by_user_data: (None)
-      # @user_data: (nullable)
-      # Returns: (transfer none)
-
-      # Handle parameters
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # C call
-      _retval = LibGLib.g_source_remove_by_user_data(user_data)
-
-      # Return value handling
       GICrystal.to_bool(_retval)
     end
 
     def self.set_name_by_id(tag : UInt32, name : ::String) : Nil
       # g_source_set_name_by_id: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_source_set_name_by_id(tag, name)

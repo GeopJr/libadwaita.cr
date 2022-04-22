@@ -4,38 +4,38 @@ module Gdk
   #
   # You will encounter `GdkContentFormats` when interacting with objects
   # controlling operations that pass data between different widgets, window
-  # or application, like [class@Gdk.Drag], [class@Gdk.Drop],
-  # [class@Gdk.Clipboard] or [class@Gdk.ContentProvider].
+  # or application, like `Gdk#Drag`, `Gdk#Drop`,
+  # `Gdk#Clipboard` or `Gdk#ContentProvider`.
   #
   # GDK supports content in 2 forms: `GType` and mime type.
   # Using `GTypes` is meant only for in-process content transfers. Mime types
   # are meant to be used for data passing both in-process and out-of-process.
   # The details of how data is passed is described in the documentation of
   # the actual implementations. To transform between the two forms,
-  # [class@Gdk.ContentSerializer] and [class@Gdk.ContentDeserializer] are used.
+  # `Gdk#ContentSerializer` and `Gdk#ContentDeserializer` are used.
   #
   # A `GdkContentFormats` describes a set of possible formats content can be
   # exchanged in. It is assumed that this set is ordered. `GTypes` are more
   # important than mime types. Order between different `GTypes` or mime types
   # is the order they were added in, most important first. Functions that
-  # care about order, such as [method@Gdk.ContentFormats.union], will describe
+  # care about order, such as `Gdk::ContentFormats#union`, will describe
   # in their documentation how they interpret that order, though in general the
   # order of the first argument is considered the primary order of the result,
   # followed by the order of further arguments.
   #
-  # For debugging purposes, the function [method@Gdk.ContentFormats.to_string]
+  # For debugging purposes, the function `Gdk::ContentFormats#to_string`
   # exists. It will print a comma-separated list of formats from most important
   # to least important.
   #
   # `GdkContentFormats` is an immutable struct. After creation, you cannot change
   # the types it represents. Instead, new `GdkContentFormats` have to be created.
-  # The [struct@Gdk.ContentFormatsBuilder] structure is meant to help in this
+  # The `Gdk#ContentFormatsBuilder` structure is meant to help in this
   # endeavor.
   class ContentFormats
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(ContentFormats.g_type, pointer)
@@ -48,6 +48,10 @@ module Gdk
       LibGObject.g_boxed_free(ContentFormats.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGdk::ContentFormats)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGdk.gdk_content_formats_get_type
@@ -58,8 +62,9 @@ module Gdk
       # @mime_types: (nullable) (array length=n_mime_types element-type Utf8)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_mime_types = mime_types.try(&.size) || 0
+      # Generator::NullableArrayPlan
       mime_types = if mime_types.nil?
                      Pointer(Pointer(LibC::Char)).null
                    else
@@ -70,6 +75,7 @@ module Gdk
       _retval = LibGdk.gdk_content_formats_new(mime_types, n_mime_types)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -81,12 +87,11 @@ module Gdk
       # gdk_content_formats_new_for_gtype: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_new_for_gtype(type)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -94,12 +99,11 @@ module Gdk
       # gdk_content_formats_contain_gtype: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_contain_gtype(self, type)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -107,12 +111,11 @@ module Gdk
       # gdk_content_formats_contain_mime_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_contain_mime_type(self, mime_type)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -121,13 +124,14 @@ module Gdk
       # @n_gtypes: (out) (transfer full) (optional)
       # Returns: (transfer none) (array length=n_gtypes zero-terminated=1 element-type Gtype)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       n_gtypes = 0_u64
 
       # C call
       _retval = LibGdk.gdk_content_formats_get_gtypes(self, pointerof(n_gtypes))
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -136,13 +140,14 @@ module Gdk
       # @n_mime_types: (out) (transfer full) (optional)
       # Returns: (transfer none) (array length=n_mime_types zero-terminated=1 element-type Utf8)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       n_mime_types = 0_u64
 
       # C call
       _retval = LibGdk.gdk_content_formats_get_mime_types(self, pointerof(n_mime_types))
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -150,12 +155,11 @@ module Gdk
       # gdk_content_formats_match: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_match(self, second)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -163,12 +167,11 @@ module Gdk
       # gdk_content_formats_match_gtype: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_match_gtype(self, second)
 
       # Return value handling
+
       _retval
     end
 
@@ -176,20 +179,17 @@ module Gdk
       # gdk_content_formats_match_mime_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_match_mime_type(self, second)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
     def print(string : GLib::String) : Nil
       # gdk_content_formats_print: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_content_formats_print(self, string)
@@ -201,12 +201,11 @@ module Gdk
       # gdk_content_formats_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_ref(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -214,12 +213,11 @@ module Gdk
       # gdk_content_formats_to_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -227,12 +225,11 @@ module Gdk
       # gdk_content_formats_union: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_union(self, second)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -240,12 +237,11 @@ module Gdk
       # gdk_content_formats_union_deserialize_gtypes: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_union_deserialize_gtypes(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -253,12 +249,11 @@ module Gdk
       # gdk_content_formats_union_deserialize_mime_types: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_union_deserialize_mime_types(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -266,12 +261,11 @@ module Gdk
       # gdk_content_formats_union_serialize_gtypes: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_union_serialize_gtypes(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -279,20 +273,17 @@ module Gdk
       # gdk_content_formats_union_serialize_mime_types: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_union_serialize_mime_types(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # gdk_content_formats_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_content_formats_unref(self)
@@ -304,12 +295,11 @@ module Gdk
       # gdk_content_formats_parse: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_content_formats_parse(string)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 

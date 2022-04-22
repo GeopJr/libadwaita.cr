@@ -44,7 +44,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGio::DBusInterfaceVTable))
@@ -65,50 +65,49 @@ module Gio
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::DBusInterfaceVTable)).zero?
+    end
+
     def method_call : Pointer(Void)
-      # Property getter
       _var = (@pointer + 0).as(Pointer(LibGio::DBusInterfaceMethodCallFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def method_call=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(LibGio::DBusInterfaceMethodCallFunc)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(LibGio::DBusInterfaceMethodCallFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusInterfaceVTable))
       value
     end
 
     def get_property : Pointer(Void)
-      # Property getter
       _var = (@pointer + 8).as(Pointer(LibGio::DBusInterfaceGetPropertyFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def get_property=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(LibGio::DBusInterfaceGetPropertyFunc)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(LibGio::DBusInterfaceGetPropertyFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusInterfaceVTable))
       value
     end
 
     def set_property : Pointer(Void)
-      # Property getter
       _var = (@pointer + 16).as(Pointer(LibGio::DBusInterfaceSetPropertyFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def set_property=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(LibGio::DBusInterfaceSetPropertyFunc)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(LibGio::DBusInterfaceSetPropertyFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusInterfaceVTable))
       value
     end
 
     def padding : Enumerable(Pointer(Void))
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Pointer(Void)[8]))
       _var.value
     end
 
     def padding=(value : Enumerable(Pointer(Void)))
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Pointer(Void)[8])).value = value
       value
     end

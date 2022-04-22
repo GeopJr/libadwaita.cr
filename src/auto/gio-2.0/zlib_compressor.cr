@@ -4,10 +4,18 @@ require "./converter"
 module Gio
   # #GZlibCompressor is an implementation of #GConverter that
   # compresses data using zlib.
+  @[GObject::GeneratedWrapper]
   class ZlibCompressor < GObject::Object
     include Converter
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::ZlibCompressorClass), class_init,
+        sizeof(LibGio::ZlibCompressor), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -19,23 +27,27 @@ module Gio
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if file_info
+      if !file_info.nil?
         (_names.to_unsafe + _n).value = "file-info".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, file_info)
         _n += 1
       end
-      if format
+      if !format.nil?
         (_names.to_unsafe + _n).value = "format".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, format)
         _n += 1
       end
-      if level
+      if !level.nil?
         (_names.to_unsafe + _n).value = "level".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, level)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ZlibCompressor.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -70,7 +82,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "format", pointerof(value), Pointer(Void).null)
-      Gio::ZlibCompressorFormat.from_value(value)
+      Gio::ZlibCompressorFormat.new(value)
     end
 
     def level=(value : Int32) : Int32
@@ -88,38 +100,46 @@ module Gio
       value
     end
 
+    # Creates a new #GZlibCompressor.
     def initialize(format : Gio::ZlibCompressorFormat, level : Int32)
       # g_zlib_compressor_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_zlib_compressor_new(format, level)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns the #GZlibCompressor:file-info property.
     def file_info : Gio::FileInfo?
       # g_zlib_compressor_get_file_info: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_zlib_compressor_get_file_info(self)
 
       # Return value handling
+
       Gio::FileInfo.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets @file_info in @compressor. If non-%NULL, and @compressor's
+    # #GZlibCompressor:format property is %G_ZLIB_COMPRESSOR_FORMAT_GZIP,
+    # it will be used to set the file name and modification time in
+    # the GZIP header of the compressed data.
+    #
+    # Note: it is an error to call this function while a compression is in
+    # progress; it may only be called immediately after creation of @compressor,
+    # or after resetting it with g_converter_reset().
     def file_info=(file_info : Gio::FileInfo?) : Nil
       # g_zlib_compressor_set_file_info: (Method | Setter)
       # @file_info: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       file_info = if file_info.nil?
                     Pointer(Void).null
                   else

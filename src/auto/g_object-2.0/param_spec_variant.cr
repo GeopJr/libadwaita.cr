@@ -8,8 +8,16 @@ module GObject
   # be checked for equality with g_variant_equal(), and their sort order is
   # otherwise undefined. %NULL is ordered before non-%NULL variants. Two %NULL
   # values compare equal.
+  @[GObject::GeneratedWrapper]
   class ParamSpecVariant < ParamSpec
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGObject::ParamSpecVariant), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)

@@ -7,12 +7,11 @@ module Gio
       # g_dbus_interface_dup_object: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_interface_dup_object(self)
 
       # Return value handling
+
       Gio::DBusObject__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -20,12 +19,11 @@ module Gio
       # g_dbus_interface_get_info: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_interface_get_info(self)
 
       # Return value handling
+
       Gio::DBusInterfaceInfo.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -34,7 +32,7 @@ module Gio
       # @object: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       object = if object.nil?
                  Pointer(Void).null
                else
@@ -51,6 +49,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class DBusInterface__Impl < GObject::Object
     include DBusInterface
 

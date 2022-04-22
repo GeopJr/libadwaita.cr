@@ -4,10 +4,13 @@ module Gtk
   # `GtkDropTarget` is an event controller to receive Drag-and-Drop operations.
   #
   # The most basic way to use a `GtkDropTarget` to receive drops on a
-  # widget is to create it via [ctor@Gtk.DropTarget.new], passing in the
+  # widget is to create it via `Gtk::DropTarget.new`, passing in the
   # `GType` of the data you want to receive and connect to the
-  # [signal@Gtk.DropTarget::drop] signal to receive the data:
+  # `Gtk::DropTarget::#drop` signal to receive the data:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static gboolean
   # on_drop (GtkDropTarget *target,
@@ -50,19 +53,19 @@ module Gtk
   #
   # `GtkDropTarget` supports more options, such as:
   #
-  #  * rejecting potential drops via the [signal@Gtk.DropTarget::accept] signal
-  #    and the [method@Gtk.DropTarget.reject] function to let other drop
+  #  * rejecting potential drops via the `Gtk::DropTarget::#accept` signal
+  #    and the `Gtk::DropTarget#reject` function to let other drop
   #    targets handle the drop
   #  * tracking an ongoing drag operation before the drop via the
-  #    [signal@Gtk.DropTarget::enter], [signal@Gtk.DropTarget::motion] and
-  #    [signal@Gtk.DropTarget::leave] signals
+  #    `Gtk::DropTarget::#enter`, `Gtk::DropTarget::#motion` and
+  #    `Gtk::DropTarget::#leave` signals
   #  * configuring how to receive data by setting the
-  #    [property@Gtk.DropTarget:preload] property and listening for its
-  #    availability via the [property@Gtk.DropTarget:value] property
+  #    `Gtk::DropTarget#preload` property and listening for its
+  #    availability via the `Gtk::DropTarget#value` property
   #
   # However, `GtkDropTarget` is ultimately modeled in a synchronous way
   # and only supports data transferred via `GType`. If you want full control
-  # over an ongoing drop, the [class@Gtk.DropTargetAsync] object gives you
+  # over an ongoing drop, the `Gtk#DropTargetAsync` object gives you
   # this ability.
   #
   # While a pointer is dragged over the drop target's widget and the drop
@@ -71,9 +74,17 @@ module Gtk
   #
   # If you are not interested in receiving the drop, but just want to update
   # UI state during a Drag-and-Drop operation (e.g. switching tabs), you can
-  # use [class@Gtk.DropControllerMotion].
+  # use `Gtk#DropControllerMotion`.
+  @[GObject::GeneratedWrapper]
   class DropTarget < EventController
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::DropTargetClass), class_init,
+        sizeof(LibGtk::DropTarget), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -85,53 +96,57 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 9).new(LibGObject::Value.new)
       _n = 0
 
-      if actions
+      if !actions.nil?
         (_names.to_unsafe + _n).value = "actions".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, actions)
         _n += 1
       end
-      if current_drop
+      if !current_drop.nil?
         (_names.to_unsafe + _n).value = "current-drop".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, current_drop)
         _n += 1
       end
-      if formats
+      if !formats.nil?
         (_names.to_unsafe + _n).value = "formats".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, formats)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if preload
+      if !preload.nil?
         (_names.to_unsafe + _n).value = "preload".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, preload)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if value
+      if !value.nil?
         (_names.to_unsafe + _n).value = "value".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, value)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DropTarget.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -151,7 +166,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "actions", pointerof(value), Pointer(Void).null)
-      Gdk::DragAction.from_value(value)
+      Gdk::DragAction.new(value)
     end
 
     def current_drop : Gdk::Drop?
@@ -200,117 +215,137 @@ module Gtk
       GObject::Value.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkDropTarget` object.
+    #
+    # If the drop target should support more than 1 type, pass
+    # %G_TYPE_INVALID for @type and then call
+    # `Gtk::DropTarget#gtypes=`.
     def initialize(type : UInt64, actions : Gdk::DragAction)
       # gtk_drop_target_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_target_new(type, actions)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the actions that this drop target supports.
     def actions : Gdk::DragAction
       # gtk_drop_target_get_actions: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_target_get_actions(self)
 
       # Return value handling
-      Gdk::DragAction.from_value(_retval)
+
+      Gdk::DragAction.new(_retval)
     end
 
+    # Gets the currently handled drop operation.
+    #
+    # If no drop operation is going on, %NULL is returned.
     def current_drop : Gdk::Drop?
       # gtk_drop_target_get_current_drop: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_target_get_current_drop(self)
 
       # Return value handling
+
       Gdk::Drop.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the currently handled drop operation.
+    #
+    # If no drop operation is going on, %NULL is returned.
     def drop : Gdk::Drop?
       # gtk_drop_target_get_drop: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_target_get_drop(self)
 
       # Return value handling
+
       Gdk::Drop.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the data formats that this drop target accepts.
+    #
+    # If the result is %NULL, all formats are expected to be supported.
     def formats : Gdk::ContentFormats?
       # gtk_drop_target_get_formats: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_target_get_formats(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the list of supported `GType`s that can be dropped on the target.
+    #
+    # If no types have been set, `NULL` will be returned.
     def gtypes : Enumerable(UInt64)?
       # gtk_drop_target_get_gtypes: (Method)
       # @n_types: (out) (transfer full) (optional)
       # Returns: (transfer none) (array length=n_types element-type Gtype)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       n_types = 0_u64
 
       # C call
       _retval = LibGtk.gtk_drop_target_get_gtypes(self, pointerof(n_types))
 
       # Return value handling
+
       GICrystal.transfer_array(_retval, n_types, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets whether data should be preloaded on hover.
     def preload : Bool
       # gtk_drop_target_get_preload: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_target_get_preload(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the current drop data, as a `GValue`.
     def value : GObject::Value?
       # gtk_drop_target_get_value: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_target_get_value(self)
 
       # Return value handling
+
       GObject::Value.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Rejects the ongoing drop operation.
+    #
+    # If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:current-drop]
+    # is %NULL, this function does nothing.
+    #
+    # This function should be used when delaying the decision
+    # on whether to accept a drag or not until after reading
+    # the data.
     def reject : Nil
       # gtk_drop_target_reject: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_drop_target_reject(self)
@@ -318,11 +353,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the actions that this drop target supports.
     def actions=(actions : Gdk::DragAction) : Nil
       # gtk_drop_target_set_actions: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_drop_target_set_actions(self, actions)
@@ -330,13 +364,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the supported `GTypes` for this drop target.
     def set_gtypes(types : Enumerable(UInt64)?) : Nil
       # gtk_drop_target_set_gtypes: (Method)
       # @types: (nullable) (array length=n_types element-type Gtype)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_types = types.try(&.size) || 0
+      # Generator::NullableArrayPlan
       types = if types.nil?
                 Pointer(UInt64).null
               else
@@ -353,11 +389,10 @@ module Gtk
       set_gtypes(types)
     end
 
+    # Sets whether data should be preloaded on hover.
     def preload=(preload : Bool) : Nil
       # gtk_drop_target_set_preload: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_drop_target_set_preload(self, preload)
@@ -365,6 +400,22 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted on the drop site when a drop operation is about to begin.
+    #
+    # If the drop is not accepted, %FALSE will be returned and the drop target
+    # will ignore the drop. If %TRUE is returned, the drop is accepted for now
+    # but may be rejected later via a call to `Gtk::DropTarget#reject`
+    # or ultimately by returning %FALSE from a `Gtk::DropTarget::#drop`
+    # handler.
+    #
+    # The default handler for this signal decides whether to accept the drop
+    # based on the formats provided by the @drop.
+    #
+    # If the decision whether the drop will be accepted or rejected depends
+    # on the data, this function should return %TRUE, the
+    # `Gtk::DropTarget#preload` property should be set and the value
+    # should be inspected via the ::notify:value signal, calling
+    # `Gtk::DropTarget#reject` if required.
     struct AcceptSignal
       @source : GObject::Object
       @detail : String?
@@ -393,7 +444,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Drop, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -404,7 +456,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Drop, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -444,6 +497,15 @@ module Gtk
       AcceptSignal.new(self)
     end
 
+    # Emitted on the drop site when the user drops the data onto the widget.
+    #
+    # The signal handler must determine whether the pointer position is in
+    # a drop zone or not. If it is not in a drop zone, it returns %FALSE
+    # and no further processing is necessary.
+    #
+    # Otherwise, the handler returns %TRUE. In this case, this handler will
+    # accept the drop. The handler is responsible for using the given @value
+    # and performing the drop operation.
     struct DropSignal
       @source : GObject::Object
       @detail : String?
@@ -474,7 +536,8 @@ module Gtk
           arg0 = GObject::Value.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = lib_arg1
           arg2 = lib_arg2
-          ::Box(Proc(GObject::Value, Float64, Float64, Bool)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          _retval = ::Box(Proc(GObject::Value, Float64, Float64, Bool)).unbox(box).call(arg0, arg1, arg2)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -487,7 +550,8 @@ module Gtk
           arg0 = GObject::Value.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = lib_arg1
           arg2 = lib_arg2
-          ::Box(Proc(GObject::Value, Float64, Float64, Bool)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          _retval = ::Box(Proc(GObject::Value, Float64, Float64, Bool)).unbox(box).call(arg0, arg1, arg2)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -532,6 +596,9 @@ module Gtk
       DropSignal.new(self)
     end
 
+    # Emitted on the drop site when the pointer enters the widget.
+    #
+    # It can be used to set up custom highlighting.
     struct EnterSignal
       @source : GObject::Object
       @detail : String?
@@ -561,7 +628,8 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          ::Box(Proc(Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -573,7 +641,8 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          ::Box(Proc(Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -615,6 +684,10 @@ module Gtk
       EnterSignal.new(self)
     end
 
+    # Emitted on the drop site when the pointer leaves the widget.
+    #
+    # Its main purpose it to undo things done in
+    # `Gtk::DropTarget::#enter`.
     struct LeaveSignal
       @source : GObject::Object
       @detail : String?
@@ -690,6 +763,7 @@ module Gtk
       LeaveSignal.new(self)
     end
 
+    # Emitted while the pointer is moving over the drop target.
     struct MotionSignal
       @source : GObject::Object
       @detail : String?
@@ -719,7 +793,8 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          ::Box(Proc(Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -731,7 +806,8 @@ module Gtk
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
           arg0 = lib_arg0
           arg1 = lib_arg1
-          ::Box(Proc(Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,

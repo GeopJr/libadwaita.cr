@@ -4,13 +4,21 @@ module Gtk
   # `GtkDropControllerMotion` is an event controller tracking
   # the pointer during Drag-and-Drop operations.
   #
-  # It is modeled after [class@Gtk.EventControllerMotion] so if you
+  # It is modeled after `Gtk#EventControllerMotion` so if you
   # have used that, this should feel really familiar.
   #
-  # This controller is not able to accept drops, use [class@Gtk.DropTarget]
+  # This controller is not able to accept drops, use `Gtk#DropTarget`
   # for that purpose.
+  @[GObject::GeneratedWrapper]
   class DropControllerMotion < EventController
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::DropControllerMotionClass), class_init,
+        sizeof(LibGtk::DropControllerMotion), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -22,43 +30,47 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 7).new(LibGObject::Value.new)
       _n = 0
 
-      if contains_pointer
+      if !contains_pointer.nil?
         (_names.to_unsafe + _n).value = "contains-pointer".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, contains_pointer)
         _n += 1
       end
-      if drop
+      if !drop.nil?
         (_names.to_unsafe + _n).value = "drop".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, drop)
         _n += 1
       end
-      if is_pointer
+      if !is_pointer.nil?
         (_names.to_unsafe + _n).value = "is-pointer".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_pointer)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DropControllerMotion.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -90,58 +102,63 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new event controller that will handle pointer motion
+    # events during drag and drop.
     def initialize
       # gtk_drop_controller_motion_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_controller_motion_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns if a Drag-and-Drop operation is within the widget
+    # @self or one of its children.
     def contains_pointer : Bool
       # gtk_drop_controller_motion_contains_pointer: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_controller_motion_contains_pointer(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the `GdkDrop` of a current Drag-and-Drop operation
+    # over the widget of @self.
     def drop : Gdk::Drop?
       # gtk_drop_controller_motion_get_drop: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_controller_motion_get_drop(self)
 
       # Return value handling
+
       Gdk::Drop.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns if a Drag-and-Drop operation is within the widget
+    # @self, not one of its children.
     def is_pointer? : Bool
       # gtk_drop_controller_motion_is_pointer: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_controller_motion_is_pointer(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Signals that the pointer has entered the widget.
     struct EnterSignal
       @source : GObject::Object
       @detail : String?
@@ -225,6 +242,7 @@ module Gtk
       EnterSignal.new(self)
     end
 
+    # Signals that the pointer has left the widget.
     struct LeaveSignal
       @source : GObject::Object
       @detail : String?
@@ -300,6 +318,7 @@ module Gtk
       LeaveSignal.new(self)
     end
 
+    # Emitted when the pointer moves inside the widget.
     struct MotionSignal
       @source : GObject::Object
       @detail : String?

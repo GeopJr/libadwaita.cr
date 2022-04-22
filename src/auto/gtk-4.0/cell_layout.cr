@@ -28,6 +28,9 @@ module Gtk
   #
   # This is an example of a UI definition fragment specifying attributes:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   # <object class="GtkCellView">
   #   <child>
@@ -47,6 +50,9 @@ module Gtk
   #
   # Here is a UI definition fragment specifying cell properties:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   # <object class="GtkTreeViewColumn">
   #   <child>
@@ -67,6 +73,9 @@ module Gtk
   # The cell area is exposed as a construct-only property by these
   # widgets. This means that it is possible to e.g. do
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GtkWIdget *combo =
   #   g_object_new (GTK_TYPE_COMBO_BOX, "cell-area", my_cell_area, NULL);
@@ -80,6 +89,9 @@ module Gtk
   # construct property value will be ignored (with a warning, to alert
   # you to the problem).
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static void
   # my_combo_box_init (MyComboBox *b)
@@ -112,8 +124,6 @@ module Gtk
       # gtk_cell_layout_add_attribute: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_cell_layout_add_attribute(self, cell, attribute, column)
 
@@ -123,8 +133,6 @@ module Gtk
     def clear : Nil
       # gtk_cell_layout_clear: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_layout_clear(self)
@@ -136,8 +144,6 @@ module Gtk
       # gtk_cell_layout_clear_attributes: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_cell_layout_clear_attributes(self, cell)
 
@@ -148,12 +154,11 @@ module Gtk
       # gtk_cell_layout_get_area: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_cell_layout_get_area(self)
 
       # Return value handling
+
       Gtk::CellArea.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -161,20 +166,17 @@ module Gtk
       # gtk_cell_layout_get_cells: (Method)
       # Returns: (transfer container)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_cell_layout_get_cells(self)
 
       # Return value handling
+
       GLib::List(Gtk::CellRenderer).new(_retval, GICrystal::Transfer::Container)
     end
 
     def pack_end(cell : Gtk::CellRenderer, expand : Bool) : Nil
       # gtk_cell_layout_pack_end: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_layout_pack_end(self, cell, expand)
@@ -186,8 +188,6 @@ module Gtk
       # gtk_cell_layout_pack_start: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_cell_layout_pack_start(self, cell, expand)
 
@@ -197,8 +197,6 @@ module Gtk
     def reorder(cell : Gtk::CellRenderer, position : Int32) : Nil
       # gtk_cell_layout_reorder: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_layout_reorder(self, cell, position)
@@ -212,12 +210,14 @@ module Gtk
       # @func_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       func = if func.nil?
                LibGtk::CellLayoutDataFunc.null
              else
                func.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       func_data = if func_data.nil?
                     Pointer(Void).null
                   else
@@ -234,6 +234,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class CellLayout__Impl < GObject::Object
     include CellLayout
 

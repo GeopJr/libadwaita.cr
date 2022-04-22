@@ -34,12 +34,11 @@ module Gio
       # g_power_profile_monitor_dup_default: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_power_profile_monitor_dup_default
 
       # Return value handling
+
       Gio::PowerProfileMonitor__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -47,12 +46,11 @@ module Gio
       # g_power_profile_monitor_get_power_saver_enabled: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_power_profile_monitor_get_power_saver_enabled(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -60,6 +58,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class PowerProfileMonitor__Impl < GObject::Object
     include PowerProfileMonitor
 

@@ -5,16 +5,16 @@ module Gtk
   # operations, asynchronously.
   #
   # It is the more complete but also more complex method of handling drop
-  # operations compared to [class@Gtk.DropTarget], and you should only use
+  # operations compared to `Gtk#DropTarget`, and you should only use
   # it if `GtkDropTarget` doesn't provide all the features you need.
   #
   # To use a `GtkDropTargetAsync` to receive drops on a widget, you create
   # a `GtkDropTargetAsync` object, configure which data formats and actions
   # you support, connect to its signals, and then attach it to the widget
-  # with [method@Gtk.Widget.add_controller].
+  # with `Gtk::Widget#add_controller`.
   #
   # During a drag operation, the first signal that a `GtkDropTargetAsync`
-  # emits is [signal@Gtk.DropTargetAsync::accept], which is meant to determine
+  # emits is `Gtk::DropTargetAsync::#accept`, which is meant to determine
   # whether the target is a possible drop site for the ongoing drop. The
   # default handler for the ::accept signal accepts the drop if it finds
   # a compatible data format and an action that is supported on both sides.
@@ -22,7 +22,7 @@ module Gtk
   # If it is, and the widget becomes a target, you will receive a
   # [signal@Gtk.DropTargetAsync::drag-enter] signal, followed by
   # [signal@Gtk.DropTargetAsync::drag-motion] signals as the pointer moves,
-  # optionally a [signal@Gtk.DropTargetAsync::drop] signal when a drop happens,
+  # optionally a `Gtk::DropTargetAsync::#drop` signal when a drop happens,
   # and finally a [signal@Gtk.DropTargetAsync::drag-leave] signal when the
   # pointer moves off the widget.
   #
@@ -30,13 +30,21 @@ module Gtk
   # to update the status of the ongoing operation. The ::drop handler
   # should decide if it ultimately accepts the drop and if it does, it
   # should initiate the data transfer and finish the operation by calling
-  # [method@Gdk.Drop.finish].
+  # `Gdk::Drop#finish`.
   #
   # Between the ::drag-enter and ::drag-leave signals the widget is a
   # current drop target, and will receive the %GTK_STATE_FLAG_DROP_ACTIVE
   # state, which can be used by themes to style the widget as a drop target.
+  @[GObject::GeneratedWrapper]
   class DropTargetAsync < EventController
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::DropTargetAsyncClass), class_init,
+        sizeof(LibGtk::DropTargetAsync), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -48,38 +56,42 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 6).new(LibGObject::Value.new)
       _n = 0
 
-      if actions
+      if !actions.nil?
         (_names.to_unsafe + _n).value = "actions".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, actions)
         _n += 1
       end
-      if formats
+      if !formats.nil?
         (_names.to_unsafe + _n).value = "formats".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, formats)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DropTargetAsync.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -99,7 +111,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "actions", pointerof(value), Pointer(Void).null)
-      Gdk::DragAction.from_value(value)
+      Gdk::DragAction.new(value)
     end
 
     def formats=(value : Gdk::ContentFormats?) : Gdk::ContentFormats?
@@ -117,57 +129,63 @@ module Gtk
       Gdk::ContentFormats.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkDropTargetAsync` object.
     def initialize(formats : Gdk::ContentFormats?, actions : Gdk::DragAction)
       # gtk_drop_target_async_new: (Constructor)
       # @formats: (transfer full) (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       formats = if formats.nil?
                   Pointer(Void).null
                 else
                   formats.to_unsafe
                 end
-      LibGObject.g_object_ref(formats)
 
       # C call
       _retval = LibGtk.gtk_drop_target_async_new(formats, actions)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the actions that this drop target supports.
     def actions : Gdk::DragAction
       # gtk_drop_target_async_get_actions: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_target_async_get_actions(self)
 
       # Return value handling
-      Gdk::DragAction.from_value(_retval)
+
+      Gdk::DragAction.new(_retval)
     end
 
+    # Gets the data formats that this drop target accepts.
+    #
+    # If the result is %NULL, all formats are expected to be supported.
     def formats : Gdk::ContentFormats?
       # gtk_drop_target_async_get_formats: (Method | Getter)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_drop_target_async_get_formats(self)
 
       # Return value handling
+
       Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Sets the @drop as not accepted on this drag site.
+    #
+    # This function should be used when delaying the decision
+    # on whether to accept a drag or not until after reading
+    # the data.
     def reject_drop(drop : Gdk::Drop) : Nil
       # gtk_drop_target_async_reject_drop: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_drop_target_async_reject_drop(self, drop)
@@ -175,11 +193,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the actions that this drop target supports.
     def actions=(actions : Gdk::DragAction) : Nil
       # gtk_drop_target_async_set_actions: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_drop_target_async_set_actions(self, actions)
@@ -187,12 +204,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the data formats that this drop target will accept.
     def formats=(formats : Gdk::ContentFormats?) : Nil
       # gtk_drop_target_async_set_formats: (Method | Setter)
       # @formats: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       formats = if formats.nil?
                   Pointer(Void).null
                 else
@@ -205,6 +223,21 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted on the drop site when a drop operation is about to begin.
+    #
+    # If the drop is not accepted, %FALSE will be returned and the drop target
+    # will ignore the drop. If %TRUE is returned, the drop is accepted for now
+    # but may be rejected later via a call to `Gtk::DropTargetAsync#reject_drop`
+    # or ultimately by returning %FALSE from a `Gtk::DropTargetAsync::#drop`
+    # handler.
+    #
+    # The default handler for this signal decides whether to accept the drop
+    # based on the formats provided by the @drop.
+    #
+    # If the decision whether the drop will be accepted or rejected needs
+    # further processing, such as inspecting the data, this function should
+    # return %TRUE and proceed as is @drop was accepted and if it decides to
+    # reject the drop later, it should call `Gtk::DropTargetAsync#reject_drop`.
     struct AcceptSignal
       @source : GObject::Object
       @detail : String?
@@ -233,7 +266,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Drop, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -244,7 +278,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Drop, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -284,6 +319,9 @@ module Gtk
       AcceptSignal.new(self)
     end
 
+    # Emitted on the drop site when the pointer enters the widget.
+    #
+    # It can be used to set up custom highlighting.
     struct DragEnterSignal
       @source : GObject::Object
       @detail : String?
@@ -314,7 +352,8 @@ module Gtk
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = lib_arg1
           arg2 = lib_arg2
-          ::Box(Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1, arg2)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -327,7 +366,8 @@ module Gtk
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = lib_arg1
           arg2 = lib_arg2
-          ::Box(Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1, arg2)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -371,6 +411,10 @@ module Gtk
       DragEnterSignal.new(self)
     end
 
+    # Emitted on the drop site when the pointer leaves the widget.
+    #
+    # Its main purpose it to undo things done in
+    # `GtkDropTargetAsync`::drag-enter.
     struct DragLeaveSignal
       @source : GObject::Object
       @detail : String?
@@ -450,6 +494,7 @@ module Gtk
       DragLeaveSignal.new(self)
     end
 
+    # Emitted while the pointer is moving over the drop target.
     struct DragMotionSignal
       @source : GObject::Object
       @detail : String?
@@ -480,7 +525,8 @@ module Gtk
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = lib_arg1
           arg2 = lib_arg2
-          ::Box(Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1, arg2)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -493,7 +539,8 @@ module Gtk
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = lib_arg1
           arg2 = lib_arg2
-          ::Box(Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction)).unbox(box).call(arg0, arg1, arg2)
+          _retval.to_unsafe
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -537,6 +584,20 @@ module Gtk
       DragMotionSignal.new(self)
     end
 
+    # Emitted on the drop site when the user drops the data onto the widget.
+    #
+    # The signal handler must determine whether the pointer position is in a
+    # drop zone or not. If it is not in a drop zone, it returns %FALSE and no
+    # further processing is necessary.
+    #
+    # Otherwise, the handler returns %TRUE. In this case, this handler will
+    # accept the drop. The handler must ensure that `Gdk::Drop#finish`
+    # is called to let the source know that the drop is done. The call to
+    # `Gdk::Drop#finish` must only be done when all data has been received.
+    #
+    # To receive the data, use one of the read functions provided by
+    # `Gdk#Drop` such as `Gdk::Drop#read_async` or
+    # `Gdk::Drop#read_value_async`.
     struct DropSignal
       @source : GObject::Object
       @detail : String?
@@ -567,7 +628,8 @@ module Gtk
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = lib_arg1
           arg2 = lib_arg2
-          ::Box(Proc(Gdk::Drop, Float64, Float64, Bool)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Float64, Float64, Bool)).unbox(box).call(arg0, arg1, arg2)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -580,7 +642,8 @@ module Gtk
           arg0 = Gdk::Drop.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = lib_arg1
           arg2 = lib_arg2
-          ::Box(Proc(Gdk::Drop, Float64, Float64, Bool)).unbox(box).call(arg0, arg1, arg2).to_unsafe
+          _retval = ::Box(Proc(Gdk::Drop, Float64, Float64, Bool)).unbox(box).call(arg0, arg1, arg2)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,

@@ -1,4 +1,3 @@
-@[Link("harfbuzz", pkg_config: "harfbuzz")]
 @[Link("harfbuzz-gobject", pkg_config: "harfbuzz-gobject")]
 
 lib LibHarfBuzz
@@ -577,6 +576,7 @@ lib LibHarfBuzz
   fun hb_segment_properties_overlay(p : Pointer(Void), src : Pointer(Void)) : Void
   fun hb_set_add(set : Pointer(Void), codepoint : UInt32) : Void
   fun hb_set_add_range(set : Pointer(Void), first : UInt32, last : UInt32) : Void
+  fun hb_set_add_sorted_array(set : Pointer(Void), sorted_codepoints : Pointer(UInt32), num_codepoints : UInt32) : Void
   fun hb_set_allocation_successful(set : Pointer(Void)) : Int32
   fun hb_set_clear(set : Pointer(Void)) : Void
   fun hb_set_copy(set : Pointer(Void)) : Pointer(Void)
@@ -594,6 +594,7 @@ lib LibHarfBuzz
   fun hb_set_is_equal(set : Pointer(Void), other : Pointer(Void)) : Int32
   fun hb_set_is_subset(set : Pointer(Void), larger_set : Pointer(Void)) : Int32
   fun hb_set_next(set : Pointer(Void), codepoint : Pointer(UInt32)) : Int32
+  fun hb_set_next_many(set : Pointer(Void), codepoint : UInt32, _out : Pointer(UInt32), size : UInt32) : UInt32
   fun hb_set_next_range(set : Pointer(Void), first : Pointer(UInt32), last : Pointer(UInt32)) : Int32
   fun hb_set_previous(set : Pointer(Void), codepoint : Pointer(UInt32)) : Int32
   fun hb_set_previous_range(set : Pointer(Void), first : Pointer(UInt32), last : Pointer(UInt32)) : Int32
@@ -639,7 +640,4 @@ lib LibHarfBuzz
   fun hb_variation_from_string(str : Pointer(UInt8), len : Int32, variation : Pointer(Void)) : Int32
   fun hb_variation_to_string(this : Void*, buf : Pointer(Pointer(Pointer(LibC::Char))), size : Pointer(UInt32)) : Void
   fun hb_variation_to_string(variation : Pointer(Void), buf : Pointer(Pointer(Pointer(LibC::Char))), size : Pointer(UInt32)) : Void
-  fun hb_version(major : Pointer(UInt32), minor : Pointer(UInt32), micro : Pointer(UInt32)) : Void
-  fun hb_version_atleast(major : UInt32, minor : UInt32, micro : UInt32) : Int32
-  fun hb_version_string : Pointer(LibC::Char)
 end

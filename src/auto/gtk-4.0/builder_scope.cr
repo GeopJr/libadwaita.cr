@@ -12,12 +12,13 @@ module Gtk
   # even at once.
   #
   # By default, GTK will use its own implementation of `GtkBuilderScope`
-  # for the C language which can be created via [ctor@Gtk.BuilderCScope.new].
+  # for the C language which can be created via `Gtk::BuilderCScope.new`.
   module BuilderScope
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class BuilderScope__Impl < GObject::Object
     include BuilderScope
 

@@ -85,12 +85,11 @@ module Gio
       # g_file_new_for_commandline_arg: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_new_for_commandline_arg(arg)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -98,12 +97,11 @@ module Gio
       # g_file_new_for_commandline_arg_and_cwd: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_new_for_commandline_arg_and_cwd(arg, cwd)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -111,12 +109,11 @@ module Gio
       # g_file_new_for_path: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_new_for_path(path)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -124,12 +121,11 @@ module Gio
       # g_file_new_for_uri: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_new_for_uri(uri)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -141,20 +137,24 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       tmpl = if tmpl.nil?
                Pointer(LibC::Char).null
              else
                tmpl.to_unsafe
              end
-      LibGObject.g_object_ref(iostream)
+
+      # Generator::TransferFullArgPlan
+      LibGObject.g_object_ref_sink(iostream)
 
       # C call
       _retval = LibGio.g_file_new_tmp(tmpl, iostream, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -162,12 +162,11 @@ module Gio
       # g_file_parse_name: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_parse_name(parse_name)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -178,7 +177,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -190,7 +189,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -201,17 +202,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -230,14 +235,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_append_to_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -248,7 +253,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -260,7 +265,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -273,17 +280,21 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       progress_callback = if progress_callback.nil?
                             LibGio::FileProgressCallback.null
                           else
                             progress_callback.to_unsafe
                           end
+
+      # Generator::NullableArrayPlan
       progress_callback_data = if progress_callback_data.nil?
                                  Pointer(Void).null
                                else
@@ -295,7 +306,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -308,27 +321,35 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       progress_callback = if progress_callback.nil?
                             LibGio::FileProgressCallback.null
                           else
                             progress_callback.to_unsafe
                           end
+
+      # Generator::NullableArrayPlan
       progress_callback_data = if progress_callback_data.nil?
                                  Pointer(Void).null
                                else
                                  progress_callback_data.to_unsafe
                                end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -348,7 +369,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -360,7 +381,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -370,14 +393,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_copy_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -388,7 +411,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -400,7 +423,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -411,17 +436,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -440,14 +469,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_create_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -458,7 +487,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -470,7 +499,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileIOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -481,17 +512,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -510,14 +545,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_create_readwrite_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileIOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -528,7 +563,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -540,7 +575,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -551,17 +588,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -580,14 +621,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_delete_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -595,12 +636,11 @@ module Gio
       # g_file_dup: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_dup(self)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -611,17 +651,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -640,14 +684,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_eject_mountable_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -659,22 +703,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       mount_operation = if mount_operation.nil?
                           Pointer(Void).null
                         else
                           mount_operation.to_unsafe
                         end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -693,14 +743,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_eject_mountable_with_operation_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -711,7 +761,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -723,7 +773,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileEnumerator.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -734,17 +786,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -763,14 +819,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_enumerate_children_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileEnumerator.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -778,12 +834,11 @@ module Gio
       # g_file_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_equal(self, file2)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -794,7 +849,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -806,7 +861,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::Mount__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -817,17 +874,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -846,14 +907,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_find_enclosing_mount_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::Mount__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -861,12 +922,11 @@ module Gio
       # g_file_get_basename: (Method)
       # Returns: (transfer full Filename)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_get_basename(self)
 
       # Return value handling
+
       ::Path.new(GICrystal.transfer_full(_retval)) unless _retval.null?
     end
 
@@ -874,12 +934,11 @@ module Gio
       # g_file_get_child: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_get_child(self, name)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -889,14 +948,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_get_child_for_display_name(self, display_name, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -904,12 +963,11 @@ module Gio
       # g_file_get_parent: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_get_parent(self)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -917,12 +975,11 @@ module Gio
       # g_file_get_parse_name: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_get_parse_name(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -930,12 +987,11 @@ module Gio
       # g_file_get_path: (Method)
       # Returns: (transfer full Filename)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_get_path(self)
 
       # Return value handling
+
       ::Path.new(GICrystal.transfer_full(_retval)) unless _retval.null?
     end
 
@@ -943,12 +999,11 @@ module Gio
       # g_file_get_relative_path: (Method)
       # Returns: (transfer full Filename)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_get_relative_path(self, descendant)
 
       # Return value handling
+
       ::Path.new(GICrystal.transfer_full(_retval)) unless _retval.null?
     end
 
@@ -956,12 +1011,11 @@ module Gio
       # g_file_get_uri: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_get_uri(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -969,12 +1023,11 @@ module Gio
       # g_file_get_uri_scheme: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_get_uri_scheme(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
@@ -983,7 +1036,7 @@ module Gio
       # @parent: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       parent = if parent.nil?
                  Pointer(Void).null
                else
@@ -994,6 +1047,7 @@ module Gio
       _retval = LibGio.g_file_has_parent(self, parent)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1001,12 +1055,11 @@ module Gio
       # g_file_has_prefix: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_has_prefix(self, prefix)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1014,12 +1067,11 @@ module Gio
       # g_file_has_uri_scheme: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_has_uri_scheme(self, uri_scheme)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1027,12 +1079,11 @@ module Gio
       # g_file_hash: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_hash(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -1040,12 +1091,11 @@ module Gio
       # g_file_is_native: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_is_native(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1057,25 +1107,24 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-      etag_out = Pointer(Pointer(LibC::Char)).null
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-      etag_out = if etag_out.nil?
-                   Pointer(LibC::Char).null
-                 else
-                   etag_out.to_unsafe
-                 end
+
+      # Generator::OutArgUsedInReturnPlan
+      etag_out = Pointer(Pointer(LibC::Char)).null
 
       # C call
       _retval = LibGio.g_file_load_bytes(self, cancellable, etag_out, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1086,17 +1135,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -1116,20 +1169,17 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       etag_out = Pointer(Pointer(LibC::Char)).null
-      etag_out = if etag_out.nil?
-                   Pointer(LibC::Char).null
-                 else
-                   etag_out.to_unsafe
-                 end
 
       # C call
       _retval = LibGio.g_file_load_bytes_finish(self, result, etag_out, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1143,28 +1193,31 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-      length = contents.size
-      length = Pointer(UInt64).null
-      etag_out = Pointer(Pointer(LibC::Char)).null
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-      etag_out = if etag_out.nil?
-                   Pointer(LibC::Char).null
-                 else
-                   etag_out.to_unsafe
-                 end
+
+      # Generator::ArrayLengthArgPlan
+      length = contents.size
+      # Generator::ArrayArgPlan
       contents = contents.to_a.to_unsafe
+
+      # Generator::OutArgUsedInReturnPlan
+      length = Pointer(UInt64).null
+      # Generator::OutArgUsedInReturnPlan
+      etag_out = Pointer(Pointer(LibC::Char)).null
 
       # C call
       _retval = LibGio.g_file_load_contents(self, cancellable, contents, length, etag_out, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1175,17 +1228,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -1207,23 +1264,24 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       length = contents.size
-      length = Pointer(UInt64).null
-      etag_out = Pointer(Pointer(LibC::Char)).null
-      etag_out = if etag_out.nil?
-                   Pointer(LibC::Char).null
-                 else
-                   etag_out.to_unsafe
-                 end
+      # Generator::ArrayArgPlan
       contents = contents.to_a.to_unsafe
+
+      # Generator::OutArgUsedInReturnPlan
+      length = Pointer(UInt64).null
+      # Generator::OutArgUsedInReturnPlan
+      etag_out = Pointer(Pointer(LibC::Char)).null
 
       # C call
       _retval = LibGio.g_file_load_contents_finish(self, res, contents, length, etag_out, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1236,23 +1294,24 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       length = contents.size
-      length = Pointer(UInt64).null
-      etag_out = Pointer(Pointer(LibC::Char)).null
-      etag_out = if etag_out.nil?
-                   Pointer(LibC::Char).null
-                 else
-                   etag_out.to_unsafe
-                 end
+      # Generator::ArrayArgPlan
       contents = contents.to_a.to_unsafe
+
+      # Generator::OutArgUsedInReturnPlan
+      length = Pointer(UInt64).null
+      # Generator::OutArgUsedInReturnPlan
+      etag_out = Pointer(Pointer(LibC::Char)).null
 
       # C call
       _retval = LibGio.g_file_load_partial_contents_finish(self, res, contents, length, etag_out, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1263,7 +1322,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1275,7 +1334,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1286,17 +1347,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -1315,14 +1380,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_make_directory_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1333,7 +1398,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1345,7 +1410,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1356,7 +1423,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1368,7 +1435,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1381,9 +1450,11 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       disk_usage = Pointer(UInt64).null
+      # Generator::OutArgUsedInReturnPlan
       num_dirs = Pointer(UInt64).null
+      # Generator::OutArgUsedInReturnPlan
       num_files = Pointer(UInt64).null
 
       # C call
@@ -1391,7 +1462,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1402,7 +1475,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1414,7 +1487,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileMonitor.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1425,7 +1500,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1437,7 +1512,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileMonitor.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1448,7 +1525,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1460,7 +1537,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileMonitor.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1472,22 +1551,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       mount_operation = if mount_operation.nil?
                           Pointer(Void).null
                         else
                           mount_operation.to_unsafe
                         end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -1506,14 +1591,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_mount_enclosing_volume_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1525,22 +1610,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       mount_operation = if mount_operation.nil?
                           Pointer(Void).null
                         else
                           mount_operation.to_unsafe
                         end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -1559,14 +1650,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_mount_mountable_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1579,17 +1670,21 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       progress_callback = if progress_callback.nil?
                             LibGio::FileProgressCallback.null
                           else
                             progress_callback.to_unsafe
                           end
+
+      # Generator::NullableArrayPlan
       progress_callback_data = if progress_callback_data.nil?
                                  Pointer(Void).null
                                else
@@ -1601,66 +1696,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
-      # Return value handling
-      GICrystal.to_bool(_retval)
-    end
-
-    def move_async(destination : Gio::File, flags : Gio::FileCopyFlags, io_priority : Int32, cancellable : Gio::Cancellable?, progress_callback : Pointer(Void)?, progress_callback_data : Pointer(Void)?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
-      # g_file_move_async: (Method)
-      # @cancellable: (nullable)
-      # @progress_callback: (nullable)
-      # @progress_callback_data: (nullable)
-      # @callback: (nullable)
-      # @user_data: (nullable)
-      # Returns: (transfer none)
-
-      # Handle parameters
-      cancellable = if cancellable.nil?
-                      Pointer(Void).null
-                    else
-                      cancellable.to_unsafe
-                    end
-      progress_callback = if progress_callback.nil?
-                            LibGio::FileProgressCallback.null
-                          else
-                            progress_callback.to_unsafe
-                          end
-      progress_callback_data = if progress_callback_data.nil?
-                                 Pointer(Void).null
-                               else
-                                 progress_callback_data.to_unsafe
-                               end
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # C call
-      LibGio.g_file_move_async(self, destination, flags, io_priority, cancellable, progress_callback, progress_callback_data, callback, user_data)
 
       # Return value handling
-    end
 
-    def move_finish(result : Gio::AsyncResult) : Bool
-      # g_file_move_finish: (Method | Throws)
-      # Returns: (transfer none)
-
-      _error = Pointer(LibGLib::Error).null
-
-      # Handle parameters
-
-      # C call
-      _retval = LibGio.g_file_move_finish(self, result, pointerof(_error))
-
-      # Error check
-      Gio.raise_exception(_error) unless _error.null?
-      # Return value handling
       GICrystal.to_bool(_retval)
     end
 
@@ -1671,7 +1709,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1683,7 +1721,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileIOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1694,17 +1734,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -1723,14 +1767,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_open_readwrite_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileIOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1738,12 +1782,11 @@ module Gio
       # g_file_peek_path: (Method)
       # Returns: (transfer none Filename)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_peek_path(self)
 
       # Return value handling
+
       ::Path.new(::String.new(_retval)) unless _retval.null?
     end
 
@@ -1754,17 +1797,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -1783,14 +1830,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_poll_mountable_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1801,7 +1848,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1813,7 +1860,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1824,17 +1873,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -1853,14 +1906,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_query_default_handler_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1869,7 +1922,7 @@ module Gio
       # @cancellable: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1880,6 +1933,7 @@ module Gio
       _retval = LibGio.g_file_query_exists(self, cancellable)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -1888,7 +1942,7 @@ module Gio
       # @cancellable: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1899,7 +1953,8 @@ module Gio
       _retval = LibGio.g_file_query_file_type(self, flags, cancellable)
 
       # Return value handling
-      Gio::FileType.from_value(_retval)
+
+      Gio::FileType.new(_retval)
     end
 
     def query_filesystem_info(attributes : ::String, cancellable : Gio::Cancellable?) : Gio::FileInfo
@@ -1909,7 +1964,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1921,7 +1976,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1932,17 +1989,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -1961,14 +2022,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_query_filesystem_info_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -1979,7 +2040,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1991,7 +2052,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2002,17 +2065,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2031,14 +2098,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_query_info_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2049,7 +2116,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2061,7 +2128,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileAttributeInfoList.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2072,7 +2141,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2084,7 +2153,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileAttributeInfoList.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2095,7 +2166,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2107,7 +2178,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileInputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2118,17 +2191,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2147,14 +2224,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_read_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileInputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2166,12 +2243,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       etag = if etag.nil?
                Pointer(LibC::Char).null
              else
                etag.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2183,7 +2262,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2195,22 +2276,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       etag = if etag.nil?
                Pointer(LibC::Char).null
              else
                etag.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2233,32 +2320,35 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       length = contents.size
-      new_etag = Pointer(Pointer(LibC::Char)).null
+      # Generator::ArrayArgPlan
+      contents = contents.to_a.to_unsafe
+
+      # Generator::NullableArrayPlan
       etag = if etag.nil?
                Pointer(LibC::Char).null
              else
                etag.to_unsafe
              end
-      new_etag = if new_etag.nil?
-                   Pointer(LibC::Char).null
-                 else
-                   new_etag.to_unsafe
-                 end
+
+      # Generator::OutArgUsedInReturnPlan
+      new_etag = Pointer(Pointer(LibC::Char)).null
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-      contents = contents.to_a.to_unsafe
 
       # C call
       _retval = LibGio.g_file_replace_contents(self, contents, length, etag, make_backup, flags, new_etag, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2271,29 +2361,38 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       length = contents.size
+      # Generator::ArrayArgPlan
+      contents = contents.to_a.to_unsafe
+
+      # Generator::NullableArrayPlan
       etag = if etag.nil?
                Pointer(LibC::Char).null
              else
                etag.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
-      contents = contents.to_a.to_unsafe
 
       # C call
       LibGio.g_file_replace_contents_async(self, contents, length, etag, make_backup, flags, cancellable, callback, user_data)
@@ -2309,22 +2408,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       etag = if etag.nil?
                Pointer(LibC::Char).null
              else
                etag.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2344,20 +2449,17 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       new_etag = Pointer(Pointer(LibC::Char)).null
-      new_etag = if new_etag.nil?
-                   Pointer(LibC::Char).null
-                 else
-                   new_etag.to_unsafe
-                 end
 
       # C call
       _retval = LibGio.g_file_replace_contents_finish(self, res, new_etag, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2367,14 +2469,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_replace_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2386,12 +2488,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       etag = if etag.nil?
                Pointer(LibC::Char).null
              else
                etag.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2403,7 +2507,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileIOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2415,22 +2521,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       etag = if etag.nil?
                Pointer(LibC::Char).null
              else
                etag.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2449,14 +2561,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_replace_readwrite_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::FileIOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2464,12 +2576,11 @@ module Gio
       # g_file_resolve_relative_path: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_resolve_relative_path(self, relative_path)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2481,12 +2592,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       value_p = if value_p.nil?
                   Pointer(Void).null
                 else
                   value_p.to_unsafe
                 end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2498,7 +2611,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2509,7 +2624,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2521,7 +2636,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2532,7 +2649,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2544,7 +2661,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2555,7 +2674,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2567,7 +2686,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2578,7 +2699,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2590,7 +2711,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2601,7 +2724,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2613,7 +2736,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2624,7 +2749,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2636,7 +2761,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2647,17 +2774,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2677,15 +2808,17 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-      LibGObject.g_object_ref(info)
+      # Generator::TransferFullArgPlan
+      LibGObject.g_object_ref_sink(info)
 
       # C call
       _retval = LibGio.g_file_set_attributes_finish(self, result, info, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2696,7 +2829,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2708,7 +2841,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2719,7 +2854,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2731,7 +2866,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2742,17 +2879,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2771,14 +2912,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_set_display_name_finish(self, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -2790,22 +2931,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       start_operation = if start_operation.nil?
                           Pointer(Void).null
                         else
                           start_operation.to_unsafe
                         end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2824,14 +2971,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_start_mountable_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2843,22 +2990,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       mount_operation = if mount_operation.nil?
                           Pointer(Void).null
                         else
                           mount_operation.to_unsafe
                         end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2877,14 +3030,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_stop_mountable_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2892,12 +3045,11 @@ module Gio
       # g_file_supports_thread_contexts: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_supports_thread_contexts(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2908,7 +3060,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2920,7 +3072,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2931,17 +3085,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -2960,14 +3118,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_trash_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -2978,17 +3136,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -3007,14 +3169,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_unmount_mountable_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -3026,22 +3188,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       mount_operation = if mount_operation.nil?
                           Pointer(Void).null
                         else
                           mount_operation.to_unsafe
                         end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -3060,14 +3228,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_unmount_mountable_with_operation_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -3075,6 +3243,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class File__Impl < GObject::Object
     include File
 

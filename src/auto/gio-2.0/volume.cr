@@ -45,12 +45,11 @@ module Gio
       # g_volume_can_eject: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_can_eject(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -58,12 +57,11 @@ module Gio
       # g_volume_can_mount: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_can_mount(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -74,17 +72,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -103,14 +105,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_eject_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -122,22 +124,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       mount_operation = if mount_operation.nil?
                           Pointer(Void).null
                         else
                           mount_operation.to_unsafe
                         end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -156,14 +164,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_eject_with_operation_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -171,12 +179,11 @@ module Gio
       # g_volume_enumerate_identifiers: (Method)
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_enumerate_identifiers(self)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
@@ -184,12 +191,11 @@ module Gio
       # g_volume_get_activation_root: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_get_activation_root(self)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -197,12 +203,11 @@ module Gio
       # g_volume_get_drive: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_get_drive(self)
 
       # Return value handling
+
       Gio::Drive__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -210,12 +215,11 @@ module Gio
       # g_volume_get_icon: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_get_icon(self)
 
       # Return value handling
+
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -223,12 +227,11 @@ module Gio
       # g_volume_get_identifier: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_get_identifier(self, kind)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
@@ -236,12 +239,11 @@ module Gio
       # g_volume_get_mount: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_get_mount(self)
 
       # Return value handling
+
       Gio::Mount__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -249,12 +251,11 @@ module Gio
       # g_volume_get_name: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_get_name(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -262,12 +263,11 @@ module Gio
       # g_volume_get_sort_key: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_get_sort_key(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -275,12 +275,11 @@ module Gio
       # g_volume_get_symbolic_icon: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_get_symbolic_icon(self)
 
       # Return value handling
+
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -288,12 +287,11 @@ module Gio
       # g_volume_get_uuid: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_get_uuid(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
@@ -305,22 +303,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       mount_operation = if mount_operation.nil?
                           Pointer(Void).null
                         else
                           mount_operation.to_unsafe
                         end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -339,14 +343,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_mount_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -354,19 +358,169 @@ module Gio
       # g_volume_should_automount: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_volume_should_automount(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
+    end
+
+    struct ChangedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "changed::#{@detail}" : "changed"
+      end
+
+      def connect(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gio::Volume, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::Volume__Impl.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::Volume, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::Volume__Impl.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit : Nil
+        LibGObject.g_signal_emit_by_name(@source, "changed")
+      end
+    end
+
+    def changed_signal
+      ChangedSignal.new(self)
+    end
+
+    struct RemovedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "removed::#{@detail}" : "removed"
+      end
+
+      def connect(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gio::Volume, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::Volume__Impl.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::Volume, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::Volume__Impl.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit : Nil
+        LibGObject.g_signal_emit_by_name(@source, "removed")
+      end
+    end
+
+    def removed_signal
+      RemovedSignal.new(self)
     end
 
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Volume__Impl < GObject::Object
     include Volume
 

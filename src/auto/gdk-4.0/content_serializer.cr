@@ -11,13 +11,21 @@ module Gdk
   #
   # GTK provides serializers and deserializers for common data types
   # such as text, colors, images or file lists. To register your own
-  # serialization functions, use [func@Gdk.content_register_serializer].
+  # serialization functions, use `Gdk#content_register_serializer`.
   #
-  # Also see [class@Gdk.ContentDeserializer].
+  # Also see `Gdk#ContentDeserializer`.
+  @[GObject::GeneratedWrapper]
   class ContentSerializer < GObject::Object
     include Gio::AsyncResult
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGdk::ContentSerializer), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -29,116 +37,125 @@ module Gdk
       LibGdk.gdk_content_serializer_get_type
     end
 
+    # Gets the cancellable for the current operation.
+    #
+    # This is the `GCancellable` that was passed to `#content_serialize_async`.
     def cancellable : Gio::Cancellable?
       # gdk_content_serializer_get_cancellable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_serializer_get_cancellable(self)
 
       # Return value handling
+
       Gio::Cancellable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the `GType` to of the object to serialize.
     def gtype : UInt64
       # gdk_content_serializer_get_gtype: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_serializer_get_gtype(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the mime type to serialize to.
     def mime_type : ::String
       # gdk_content_serializer_get_mime_type: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_serializer_get_mime_type(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets the output stream for the current operation.
+    #
+    # This is the stream that was passed to `#content_serialize_async`.
     def output_stream : Gio::OutputStream
       # gdk_content_serializer_get_output_stream: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_serializer_get_output_stream(self)
 
       # Return value handling
+
       Gio::OutputStream.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the I/O priority for the current operation.
+    #
+    # This is the priority that was passed to `#content_serialize_async`.
     def priority : Int32
       # gdk_content_serializer_get_priority: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_serializer_get_priority(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the data that was associated with the current operation.
+    #
+    # See `Gdk::ContentSerializer#task_data=`.
     def task_data : Pointer(Void)?
       # gdk_content_serializer_get_task_data: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_serializer_get_task_data(self)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
+    # Gets the user data that was passed when the serializer was registered.
     def user_data : Pointer(Void)?
       # gdk_content_serializer_get_user_data: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_serializer_get_user_data(self)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
+    # Gets the `GValue` to read the object to serialize from.
     def value : GObject::Value
       # gdk_content_serializer_get_value: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_content_serializer_get_value(self)
 
       # Return value handling
+
       GObject::Value.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Indicate that the serialization has ended with an error.
+    #
+    # This function consumes @error.
     def return_error(error : GLib::Error) : Nil
       # gdk_content_serializer_return_error: (Method)
       # @error: (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_content_serializer_return_error(self, error)
@@ -146,11 +163,10 @@ module Gdk
       # Return value handling
     end
 
+    # Indicate that the serialization has been successfully completed.
     def return_success : Nil
       # gdk_content_serializer_return_success: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_content_serializer_return_success(self)
@@ -158,12 +174,13 @@ module Gdk
       # Return value handling
     end
 
+    # Associate data with the current serialization operation.
     def set_task_data(data : Pointer(Void)?, notify : Pointer(Void)) : Nil
       # gdk_content_serializer_set_task_data: (Method)
       # @data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(Void).null
              else

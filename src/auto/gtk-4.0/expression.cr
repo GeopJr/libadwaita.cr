@@ -14,16 +14,19 @@ module Gtk
   # refers to. An evaluation always happens in the context of a current object
   # called `this` (it mirrors the behavior of object-oriented languages),
   # which may or may not influence the result of the evaluation. Use
-  # [method@Gtk.Expression.evaluate] for evaluating an expression.
+  # `Gtk::Expression#evaluate` for evaluating an expression.
   #
   # Various methods for defining expressions exist, from simple constants via
-  # [ctor@Gtk.ConstantExpression.new] to looking up properties in a `GObject`
-  # (even recursively) via [ctor@Gtk.PropertyExpression.new] or providing
+  # `Gtk::ConstantExpression.new` to looking up properties in a `GObject`
+  # (even recursively) via `Gtk::PropertyExpression.new` or providing
   # custom functions to transform and combine expressions via
-  # [ctor@Gtk.ClosureExpression.new].
+  # `Gtk::ClosureExpression.new`.
   #
   # Here is an example of a complex expression:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   #   color_expr = gtk_property_expression_new (GTK_TYPE_LIST_ITEM,
   #                                             NULL, "item");
@@ -49,20 +52,23 @@ module Gtk
   #
   # By default, expressions are not paying attention to changes and evaluation is
   # just a snapshot of the current state at a given time. To get informed about
-  # changes, an expression needs to be "watched" via a [struct@Gtk.ExpressionWatch],
+  # changes, an expression needs to be "watched" via a `Gtk#ExpressionWatch`,
   # which will cause a callback to be called whenever the value of the expression may
-  # have changed; [method@Gtk.Expression.watch] starts watching an expression, and
-  # [method@Gtk.ExpressionWatch.unwatch] stops.
+  # have changed; `Gtk::Expression#watch` starts watching an expression, and
+  # `Gtk::ExpressionWatch#unwatch` stops.
   #
   # Watches can be created for automatically updating the property of an object,
-  # similar to GObject's `GBinding` mechanism, by using [method@Gtk.Expression.bind].
+  # similar to GObject's `GBinding` mechanism, by using `Gtk::Expression#bind`.
   #
   # ## GtkExpression in GObject properties
   #
   # In order to use a `GtkExpression` as a `GObject` property, you must use the
-  # [id@gtk_param_spec_expression] when creating a `GParamSpec` to install in the
+  # `#gtk_param_spec_expression` when creating a `GParamSpec` to install in the
   # `GObject` class being defined; for instance:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # obj_props[PROP_EXPRESSION] =
   #   gtk_param_spec_expression ("expression",
@@ -74,10 +80,13 @@ module Gtk
   # ```
   #
   # When implementing the `GObjectClass.set_property` and `GObjectClass.get_property`
-  # virtual functions, you must use [id@gtk_value_get_expression], to retrieve the
-  # stored `GtkExpression` from the `GValue` container, and [id@gtk_value_set_expression],
+  # virtual functions, you must use `#gtk_value_get_expression`, to retrieve the
+  # stored `GtkExpression` from the `GValue` container, and `#gtk_value_set_expression`,
   # to store the `GtkExpression` into the `GValue`; for instance:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   #   // in set_property()...
   #   case PROP_EXPRESSION:
@@ -103,6 +112,9 @@ module Gtk
   #
   # Example:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   #   <lookup name='search'>string_filter</lookup>
   # ```
@@ -111,6 +123,9 @@ module Gtk
   # is specified, the element content is interpreted as a value of that type. Otherwise,
   # it is assumed to be an object. For instance:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   #   <constant>string_filter</constant>
   #   <constant type='gchararray'>Hello, world</constant>
@@ -120,27 +135,41 @@ module Gtk
   # attributes specify what function to use for the closure, the content of the element
   # contains the expressions for the parameters. For instance:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   #   <closure type='gchararray' function='combine_args_somehow'>
   #     <constant type='gchararray'>File size:</constant>
   #     <lookup type='GFile' name='size'>myfile</lookup>
   #   </closure>
   # ```
+  @[GObject::GeneratedWrapper]
   class Expression
     @pointer : Pointer(Void)
 
     # :nodoc:
-    def initialize(@pointer, transfer : GICrystal::Transfer)
-      LibGObject.g_object_ref(self) unless transfer.full?
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::Expression), instance_init, 0)
     end
 
+    # :nodoc:
+    def initialize(@pointer, transfer : GICrystal::Transfer)
+      LibGObject.gtk_expression_ref(self) unless transfer.full?
+    end
+
+    # Called by the garbage collector. Decreases the reference count of object.
+    # (i.e. its memory is freed).
     def finalize
       {% if flag?(:debugmemory) %}
         LibC.printf("~%s at %p - ref count: %d\n", self.class.name.to_unsafe, self, ref_count)
       {% end %}
-      LibGObject.g_object_unref(self)
+      LibGObject.gtk_expression_unref(self)
     end
 
+    # Returns a pointer to the C object.
     def to_unsafe
       @pointer
     end
@@ -165,12 +194,24 @@ module Gtk
       LibGtk.gtk_expression_get_type
     end
 
+    # Bind `target`'s property named `property` to `self`.
+    #
+    # The value that `self` evaluates to is set via `g_object_set()` on
+    # `target`. This is repeated whenever `self` changes to ensure that
+    # the object's property stays synchronized with `self`.
+    #
+    # If `self`'s evaluation fails, `target`'s `property` is not updated.
+    # You can ensure that this doesn't happen by using a fallback
+    # expression.
+    #
+    # Note that this function takes ownership of `self`. If you want
+    # to keep it around, you should `Gtk::Expression#ref` it beforehand.
     def bind(target : GObject::Object, property : ::String, this_ : GObject::Object?) : Gtk::ExpressionWatch
       # gtk_expression_bind: (Method)
       # @this_: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       this_ = if this_.nil?
                 Pointer(Void).null
               else
@@ -181,73 +222,102 @@ module Gtk
       _retval = LibGtk.gtk_expression_bind(self, target, property, this_)
 
       # Return value handling
+
       Gtk::ExpressionWatch.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Evaluates the given expression and on success stores the result
+    # in @value.
+    #
+    # The `GType` of `value` will be the type given by
+    # `Gtk::Expression#value_type`.
+    #
+    # It is possible that expressions cannot be evaluated - for example
+    # when the expression references objects that have been destroyed or
+    # set to `NULL`. In that case `value` will remain empty and `FALSE`
+    # will be returned.
     def evaluate(this_ : GObject::Object?, value : _) : Bool
       # gtk_expression_evaluate: (Method)
       # @this_: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       this_ = if this_.nil?
                 Pointer(Void).null
               else
                 this_.to_unsafe
               end
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGtk.gtk_expression_evaluate(self, this_, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the `GType` that this expression evaluates to.
+    #
+    # This type is constant and will not change over the lifetime
+    # of this expression.
     def value_type : UInt64
       # gtk_expression_get_value_type: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expression_get_value_type(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Checks if the expression is static.
+    #
+    # A static expression will never change its result when
+    # `Gtk::Expression#evaluate` is called on it with the same arguments.
+    #
+    # That means a call to `Gtk::Expression#watch` is not necessary because
+    # it will never trigger a notify.
     def is_static : Bool
       # gtk_expression_is_static: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expression_is_static(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Acquires a reference on the given `GtkExpression`.
     def ref : Gtk::Expression
       # gtk_expression_ref: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_expression_ref(self)
 
       # Return value handling
+
       Gtk::Expression.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Releases a reference on the given `GtkExpression`.
+    #
+    # If the reference was the last, the resources associated to the `self` are
+    # freed.
     def unref : Nil
       # gtk_expression_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_expression_unref(self)
@@ -255,18 +325,28 @@ module Gtk
       # Return value handling
     end
 
+    # Watch the given `expression` for changes.
+    #
+    # The @notify function will be called whenever the evaluation of `self`
+    # may have changed.
+    #
+    # GTK cannot guarantee that the evaluation did indeed change when the @notify
+    # gets invoked, but it guarantees the opposite: When it did in fact change,
+    # the @notify will be invoked.
     def watch(this_ : GObject::Object?, notify : Pointer(Void), user_data : Pointer(Void)?, user_destroy : Pointer(Void)) : Gtk::ExpressionWatch
       # gtk_expression_watch: (Method)
       # @this_: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       this_ = if this_.nil?
                 Pointer(Void).null
               else
                 this_.to_unsafe
               end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -277,6 +357,7 @@ module Gtk
       _retval = LibGtk.gtk_expression_watch(self, this_, notify, user_data, user_destroy)
 
       # Return value handling
+
       Gtk::ExpressionWatch.new(_retval, GICrystal::Transfer::None)
     end
   end

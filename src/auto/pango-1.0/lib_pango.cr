@@ -126,7 +126,54 @@ lib LibPango
     blue : UInt16
   end
 
+  type ContextClass = Void # Struct with zero bytes
+
+  struct FontClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    describe : -> Void
+    get_coverage : -> Void
+    get_glyph_extents : -> Void
+    get_metrics : -> Void
+    get_font_map : -> Void
+    describe_absolute : -> Void
+    get_features : -> Void
+    create_hb_font : -> Void
+  end
+
   type FontDescription = Void # Struct with zero bytes
+
+  struct FontFaceClass # 192 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_face_name : -> Void
+    describe : -> Void
+    list_sizes : -> Void
+    is_synthesized : -> Void
+    get_family : -> Void
+    _pango_reserved3 : Pointer(Void)
+    _pango_reserved4 : Pointer(Void)
+  end
+
+  struct FontFamilyClass # 184 bytes long
+    parent_class : LibGObject::ObjectClass
+    list_faces : -> Void
+    get_name : -> Void
+    is_monospace : -> Void
+    is_variable : -> Void
+    get_face : -> Void
+    _pango_reserved2 : Pointer(Void)
+  end
+
+  struct FontMapClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    load_font : -> Void
+    list_families : -> Void
+    load_fontset : -> Void
+    shape_engine_type : Pointer(LibC::Char)
+    get_serial : -> Void
+    changed : -> Void
+    get_family : -> Void
+    get_face : Pointer(Void)
+  end
 
   struct FontMetrics # 40 bytes long
     ref_count : UInt32
@@ -140,6 +187,20 @@ lib LibPango
     strikethrough_position : Int32
     strikethrough_thickness : Int32
   end
+
+  struct FontsetClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_font : -> Void
+    get_metrics : -> Void
+    get_language : -> Void
+    foreach : -> Void
+    _pango_reserved1 : Pointer(Void)
+    _pango_reserved2 : Pointer(Void)
+    _pango_reserved3 : Pointer(Void)
+    _pango_reserved4 : Pointer(Void)
+  end
+
+  type FontsetSimpleClass = Void # Struct with zero bytes
 
   struct GlyphGeometry # 12 bytes long
     width : Int32
@@ -193,6 +254,8 @@ lib LibPango
 
   type Language = Void # Struct with zero bytes
 
+  type LayoutClass = Void # Struct with zero bytes
+
   type LayoutIter = Void # Struct with zero bytes
 
   struct LayoutLine # 32 bytes long
@@ -237,6 +300,24 @@ lib LibPango
     y : Int32
     width : Int32
     height : Int32
+  end
+
+  struct RendererClass # 248 bytes long
+    parent_class : LibGObject::ObjectClass
+    draw_glyphs : -> Void
+    draw_rectangle : -> Void
+    draw_error_underline : -> Void
+    draw_shape : -> Void
+    draw_trapezoid : -> Void
+    draw_glyph : -> Void
+    part_changed : -> Void
+    _begin : -> Void
+    _end : -> Void
+    prepare_run : -> Void
+    draw_glyph_item : -> Void
+    _pango_reserved2 : Pointer(Void)
+    _pango_reserved3 : Pointer(Void)
+    _pango_reserved4 : Pointer(Void)
   end
 
   type RendererPrivate = Void # Struct with zero bytes

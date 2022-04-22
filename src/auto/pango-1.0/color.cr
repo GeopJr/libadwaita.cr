@@ -5,7 +5,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::Color))
@@ -25,38 +25,36 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::Color)).zero?
+    end
+
     def red : UInt16
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt16))
       _var.value
     end
 
     def red=(value : UInt16)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt16)).value = value
       value
     end
 
     def green : UInt16
-      # Property getter
       _var = (@pointer + 2).as(Pointer(UInt16))
       _var.value
     end
 
     def green=(value : UInt16)
-      # Property setter
       _var = (@pointer + 2).as(Pointer(UInt16)).value = value
       value
     end
 
     def blue : UInt16
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt16))
       _var.value
     end
 
     def blue=(value : UInt16)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(UInt16)).value = value
       value
     end
@@ -70,20 +68,17 @@ module Pango
       # pango_color_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_color_copy(self)
 
       # Return value handling
+
       Pango::Color.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def free : Nil
       # pango_color_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_color_free(self)
@@ -95,12 +90,11 @@ module Pango
       # pango_color_parse: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_color_parse(self, spec)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -109,13 +103,14 @@ module Pango
       # @alpha: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       alpha = Pointer(UInt16).null
 
       # C call
       _retval = LibPango.pango_color_parse_with_alpha(self, alpha, spec)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -123,12 +118,11 @@ module Pango
       # pango_color_to_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_color_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 

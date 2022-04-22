@@ -52,7 +52,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "validation-flags", pointerof(value), Pointer(Void).null)
-      Gio::TlsCertificateFlags.from_value(value)
+      Gio::TlsCertificateFlags.new(value)
     end
 
     def new(base_io_stream : Gio::IOStream, server_identity : Gio::SocketConnectable?) : Gio::TlsClientConnection
@@ -62,7 +62,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       server_identity = if server_identity.nil?
                           Pointer(Void).null
                         else
@@ -74,15 +74,15 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::TlsClientConnection__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
     def copy_session_state(source : Gio::TlsClientConnection) : Nil
       # g_tls_client_connection_copy_session_state: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_tls_client_connection_copy_session_state(self, source)
@@ -94,12 +94,11 @@ module Gio
       # g_tls_client_connection_get_accepted_cas: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_client_connection_get_accepted_cas(self)
 
       # Return value handling
+
       GLib::List(Enumerable(UInt8)).new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -107,12 +106,11 @@ module Gio
       # g_tls_client_connection_get_server_identity: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_client_connection_get_server_identity(self)
 
       # Return value handling
+
       Gio::SocketConnectable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -120,12 +118,11 @@ module Gio
       # g_tls_client_connection_get_use_ssl3: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_client_connection_get_use_ssl3(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -133,20 +130,17 @@ module Gio
       # g_tls_client_connection_get_validation_flags: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_client_connection_get_validation_flags(self)
 
       # Return value handling
-      Gio::TlsCertificateFlags.from_value(_retval)
+
+      Gio::TlsCertificateFlags.new(_retval)
     end
 
     def server_identity=(identity : Gio::SocketConnectable) : Nil
       # g_tls_client_connection_set_server_identity: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_tls_client_connection_set_server_identity(self, identity)
@@ -158,8 +152,6 @@ module Gio
       # g_tls_client_connection_set_use_ssl3: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGio.g_tls_client_connection_set_use_ssl3(self, use_ssl3)
 
@@ -169,8 +161,6 @@ module Gio
     def validation_flags=(flags : Gio::TlsCertificateFlags) : Nil
       # g_tls_client_connection_set_validation_flags: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_tls_client_connection_set_validation_flags(self, flags)
@@ -182,6 +172,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class TlsClientConnection__Impl < GObject::Object
     include TlsClientConnection
 

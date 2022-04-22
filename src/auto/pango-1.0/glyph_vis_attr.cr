@@ -13,7 +13,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::GlyphVisAttr))
@@ -32,26 +32,26 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::GlyphVisAttr)).zero?
+    end
+
     def is_cluster_start : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def is_cluster_start=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_color : UInt32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt32))
       _var.value
     end
 
     def is_color=(value : UInt32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(UInt32)).value = value
       value
     end

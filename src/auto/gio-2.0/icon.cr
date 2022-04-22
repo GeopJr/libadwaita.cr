@@ -32,13 +32,18 @@ module Gio
       # g_icon_deserialize: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-      value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GLib::Variant)
+                GLib::Variant.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGio.g_icon_deserialize(value)
 
       # Return value handling
+
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -46,12 +51,11 @@ module Gio
       # g_icon_hash: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_icon_hash(icon)
 
       # Return value handling
+
       _retval
     end
 
@@ -61,14 +65,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_icon_new_for_string(str, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -77,7 +81,7 @@ module Gio
       # @icon2: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       icon2 = if icon2.nil?
                 Pointer(Void).null
               else
@@ -88,6 +92,7 @@ module Gio
       _retval = LibGio.g_icon_equal(self, icon2)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -95,12 +100,11 @@ module Gio
       # g_icon_serialize: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_icon_serialize(self)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -108,12 +112,11 @@ module Gio
       # g_icon_to_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_icon_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
@@ -121,6 +124,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Icon__Impl < GObject::Object
     include Icon
 

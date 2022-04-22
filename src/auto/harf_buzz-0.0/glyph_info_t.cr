@@ -5,7 +5,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibHarfBuzz::GlyphInfoT))
@@ -27,63 +27,59 @@ module HarfBuzz
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::GlyphInfoT)).zero?
+    end
+
     def codepoint : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def codepoint=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def mask : UInt32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt32))
       _var.value
     end
 
     def mask=(value : UInt32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(UInt32)).value = value
       value
     end
 
     def cluster : UInt32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt32))
       _var.value
     end
 
     def cluster=(value : UInt32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(UInt32)).value = value
       value
     end
 
     def var1 : HarfBuzz::VarIntT
-      # Property getter
       _var = (@pointer + 12).as(Pointer(LibHarfBuzz::VarIntT))
-      HarfBuzz::VarIntT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarIntT.new(_var, GICrystal::Transfer::None)
     end
 
     def var1=(value : HarfBuzz::VarIntT)
-      # Property setter
-      _var = (@pointer + 12).as(Pointer(LibHarfBuzz::VarIntT)).value = value.to_unsafe
+      _var = (@pointer + 12).as(Pointer(LibHarfBuzz::VarIntT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::GlyphInfoT))
       value
     end
 
     def var2 : HarfBuzz::VarIntT
-      # Property getter
       _var = (@pointer + 16).as(Pointer(LibHarfBuzz::VarIntT))
-      HarfBuzz::VarIntT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarIntT.new(_var, GICrystal::Transfer::None)
     end
 
     def var2=(value : HarfBuzz::VarIntT)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(LibHarfBuzz::VarIntT)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(LibHarfBuzz::VarIntT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::GlyphInfoT))
       value
     end
 

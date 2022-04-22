@@ -8,10 +8,10 @@ module Gtk
   # It is able to parse CSS-like input in order to style widgets.
   #
   # An application can make GTK parse a specific CSS style sheet by calling
-  # [method@Gtk.CssProvider.load_from_file] or
-  # [method@Gtk.CssProvider.load_from_resource]
-  # and adding the provider with [method@Gtk.StyleContext.add_provider] or
-  # [func@Gtk.StyleContext.add_provider_for_display].
+  # `Gtk::CssProvider#load_from_file` or
+  # `Gtk::CssProvider#load_from_resource`
+  # and adding the provider with `Gtk::StyleContext#add_provider` or
+  # `Gtk::StyleContext#add_provider_for_display`.
   #
   # In addition, certain files will be read when GTK is initialized.
   # First, the file `$XDG_CONFIG_HOME/gtk-4.0/gtk.css` is loaded if it
@@ -31,10 +31,18 @@ module Gtk
   #
   # To track errors while loading CSS, connect to the
   # [signal@Gtk.CssProvider::parsing-error] signal.
+  @[GObject::GeneratedWrapper]
   class CssProvider < GObject::Object
     include StyleProvider
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::CssProviderClass), class_init,
+        sizeof(LibGtk::CssProvider), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -46,26 +54,30 @@ module Gtk
       LibGtk.gtk_css_provider_get_type
     end
 
+    # Returns a newly created `GtkCssProvider`.
     def initialize
       # gtk_css_provider_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_css_provider_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Loads @data into @css_provider.
+    #
+    # This clears any previously loaded information.
     def load_from_data(data : Enumerable(UInt8)) : Nil
       # gtk_css_provider_load_from_data: (Method)
       # @data: (array length=length element-type UInt8)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       length = data.size
+      # Generator::ArrayArgPlan
       data = data.to_a.to_unsafe
 
       # C call
@@ -78,11 +90,12 @@ module Gtk
       load_from_data(data)
     end
 
+    # Loads the data contained in @file into @css_provider.
+    #
+    # This clears any previously loaded information.
     def load_from_file(file : Gio::File) : Nil
       # gtk_css_provider_load_from_file: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_css_provider_load_from_file(self, file)
@@ -90,11 +103,12 @@ module Gtk
       # Return value handling
     end
 
+    # Loads the data contained in @path into @css_provider.
+    #
+    # This clears any previously loaded information.
     def load_from_path(path : ::String) : Nil
       # gtk_css_provider_load_from_path: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_css_provider_load_from_path(self, path)
@@ -102,11 +116,13 @@ module Gtk
       # Return value handling
     end
 
+    # Loads the data contained in the resource at @resource_path into
+    # the @css_provider.
+    #
+    # This clears any previously loaded information.
     def load_from_resource(resource_path : ::String) : Nil
       # gtk_css_provider_load_from_resource: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_css_provider_load_from_resource(self, resource_path)
@@ -114,12 +130,17 @@ module Gtk
       # Return value handling
     end
 
+    # Loads a theme from the usual theme paths.
+    #
+    # The actual process of finding the theme might change between
+    # releases, but it is guaranteed that this function uses the same
+    # mechanism to load the theme that GTK uses for loading its own theme.
     def load_named(name : ::String, variant : ::String?) : Nil
       # gtk_css_provider_load_named: (Method)
       # @variant: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       variant = if variant.nil?
                   Pointer(LibC::Char).null
                 else
@@ -132,19 +153,38 @@ module Gtk
       # Return value handling
     end
 
+    # Converts the @provider into a string representation in CSS
+    # format.
+    #
+    # Using `Gtk::CssProvider#load_from_data` with the return
+    # value from this function on a new provider created with
+    # `Gtk::CssProvider.new` will basically create a duplicate
+    # of this @provider.
     def to_string : ::String
       # gtk_css_provider_to_string: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_css_provider_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
+    # Signals that a parsing error occurred.
+    #
+    # The @path, @line and @position describe the actual location of
+    # the error as accurately as possible.
+    #
+    # Parsing errors are never fatal, so the parsing will resume after
+    # the error. Errors may however cause parts of the given data or
+    # even all of it to not be parsed at all. So it is a useful idea
+    # to check that the parsing succeeds by connecting to this signal.
+    #
+    # Note that this signal may be emitted at any time as the css provider
+    # may opt to defer parsing parts or all of the input to a later time
+    # than when a loading function was called.
     struct ParsingErrorSignal
       @source : GObject::Object
       @detail : String?

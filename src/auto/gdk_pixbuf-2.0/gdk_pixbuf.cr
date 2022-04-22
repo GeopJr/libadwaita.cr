@@ -136,6 +136,18 @@ module GdkPixbuf
     Threadsafe = 4
   end
 
+  def self.pixbuf_error_quark : UInt32
+    # gdk_pixbuf_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGdkPixbuf.gdk_pixbuf_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
   # Errors
 
   # An error code in the `GDK_PIXBUF_ERROR` domain.

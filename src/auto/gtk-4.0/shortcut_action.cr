@@ -12,24 +12,32 @@ module Gtk
   # have to replace it with a new one. If you need to pass arguments to
   # an action, these are specified by the higher-level `GtkShortcut` object.
   #
-  # To activate a `GtkShortcutAction` manually, [method@Gtk.ShortcutAction.activate]
+  # To activate a `GtkShortcutAction` manually, `Gtk::ShortcutAction#activate`
   # can be called.
   #
   # GTK provides various actions:
   #
-  #  - [class@Gtk.MnemonicAction]: a shortcut action that calls
+  #  - `Gtk#MnemonicAction`: a shortcut action that calls
   #    gtk_widget_mnemonic_activate()
-  #  - [class@Gtk.CallbackAction]: a shortcut action that invokes
+  #  - `Gtk#CallbackAction`: a shortcut action that invokes
   #    a given callback
-  #  - [class@Gtk.SignalAction]: a shortcut action that emits a
+  #  - `Gtk#SignalAction`: a shortcut action that emits a
   #    given signal
-  #  - [class@Gtk.ActivateAction]: a shortcut action that calls
+  #  - `Gtk#ActivateAction`: a shortcut action that calls
   #    gtk_widget_activate()
-  #  - [class@Gtk.NamedAction]: a shortcut action that calls
+  #  - `Gtk#NamedAction`: a shortcut action that calls
   #    gtk_widget_activate_action()
-  #  - [class@Gtk.NothingAction]: a shortcut action that does nothing
+  #  - `Gtk#NothingAction`: a shortcut action that does nothing
+  @[GObject::GeneratedWrapper]
   class ShortcutAction < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::ShortcutActionClass), class_init,
+        sizeof(LibGtk::ShortcutAction), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -41,44 +49,68 @@ module Gtk
       LibGtk.gtk_shortcut_action_get_type
     end
 
+    # Tries to parse the given string into an action.
+    #
+    # On success, the parsed action is returned. When parsing
+    # failed, %NULL is returned.
+    #
+    # The accepted strings are:
+    #
+    # - `nothing`, for `GtkNothingAction`
+    # - `activate`, for `GtkActivateAction`
+    # - `mnemonic-activate`, for `GtkMnemonicAction`
+    # - `action(NAME)`, for a `GtkNamedAction` for the action named `NAME`
+    # - `signal(NAME)`, for a `GtkSignalAction` for the signal `NAME`
     def self.parse_string(string : ::String) : self?
       # gtk_shortcut_action_parse_string: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_shortcut_action_parse_string(string)
 
       # Return value handling
+
       Gtk::ShortcutAction.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Activates the action on the @widget with the given @args.
+    #
+    # Note that some actions ignore the passed in @flags, @widget or @args.
+    #
+    # Activation of an action can fail for various reasons. If the action
+    # is not supported by the @widget, if the @args don't match the action
+    # or if the activation otherwise had no effect, %FALSE will be returned.
     def activate(flags : Gtk::ShortcutActionFlags, widget : Gtk::Widget, args : _?) : Bool
       # gtk_shortcut_action_activate: (Method)
       # @args: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       args = if args.nil?
                Pointer(Void).null
+             elsif !args.is_a?(GLib::Variant)
+               GLib::Variant.new(args).to_unsafe
              else
                args.to_unsafe
              end
-      args = GLib::Variant.new(args) unless args.is_a?(GLib::Variant)
 
       # C call
       _retval = LibGtk.gtk_shortcut_action_activate(self, flags, widget, args)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Prints the given action into a string for the developer.
+    #
+    # This is meant for debugging and logging.
+    #
+    # The form of the representation may change at any time and is
+    # not guaranteed to stay identical.
     def print(string : GLib::String) : Nil
       # gtk_shortcut_action_print: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_shortcut_action_print(self, string)
@@ -86,16 +118,19 @@ module Gtk
       # Return value handling
     end
 
+    # Prints the given action into a human-readable string.
+    #
+    # This is a small wrapper around `Gtk::ShortcutAction#print`
+    # to help when debugging.
     def to_string : ::String
       # gtk_shortcut_action_to_string: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_shortcut_action_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
   end

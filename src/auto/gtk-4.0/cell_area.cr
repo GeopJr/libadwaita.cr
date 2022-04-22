@@ -6,10 +6,10 @@ require "./cell_layout"
 module Gtk
   # An abstract class for laying out `GtkCellRenderer`s
   #
-  # The `GtkCellArea` is an abstract class for [iface@Gtk.CellLayout]
+  # The `GtkCellArea` is an abstract class for `Gtk#CellLayout`
   # widgets (also referred to as "layouting widgets") to interface with
-  # an arbitrary number of [class@Gtk.CellRenderer]s and interact with the user
-  # for a given [iface@Gtk.TreeModel] row.
+  # an arbitrary number of `Gtk#CellRenderer`s and interact with the user
+  # for a given `Gtk#TreeModel` row.
   #
   # The cell area handles events, focus navigation, drawing and
   # size requests and allocations for a given row of data.
@@ -28,8 +28,8 @@ module Gtk
   #
   # When requesting the size of a cell area one needs to calculate
   # the size for a handful of rows, and this will be done differently by
-  # different layouting widgets. For instance a [class@Gtk.TreeViewColumn]
-  # always lines up the areas from top to bottom while a [class@Gtk.IconView]
+  # different layouting widgets. For instance a `Gtk#TreeViewColumn`
+  # always lines up the areas from top to bottom while a `Gtk#IconView`
   # on the other hand might enforce that all areas received the same
   # width and wrap the areas around, requesting height for more cell
   # areas when allocated less width.
@@ -38,24 +38,27 @@ module Gtk
   # alignments with areas rendered for adjacent rows (cells can
   # appear “columnized” inside an area even when the size of
   # cells are different in each row). For this reason the `GtkCellArea`
-  # uses a [class@Gtk.CellAreaContext] object to store the alignments
+  # uses a `Gtk#CellAreaContext` object to store the alignments
   # and sizes along the way (as well as the overall largest minimum
   # and natural size for all the rows which have been calculated
   # with the said context).
   #
-  # The [class@Gtk.CellAreaContext] is an opaque object specific to the
-  # `GtkCellArea` which created it (see [method@Gtk.CellArea.create_context]).
+  # The `Gtk#CellAreaContext` is an opaque object specific to the
+  # `GtkCellArea` which created it (see `Gtk::CellArea#create_context`).
   #
   # The owning cell-layouting widget can create as many contexts as
   # it wishes to calculate sizes of rows which should receive the
   # same size in at least one orientation (horizontally or vertically),
-  # However, it’s important that the same [class@Gtk.CellAreaContext] which
+  # However, it’s important that the same `Gtk#CellAreaContext` which
   # was used to request the sizes for a given `GtkTreeModel` row be
   # used when rendering or processing events for that row.
   #
   # In order to request the width of all the rows at the root level
   # of a `GtkTreeModel` one would do the following:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GtkTreeIter iter;
   # int minimum_width;
@@ -84,14 +87,17 @@ module Gtk
   # support requesting and rendering rows in treemodels with an
   # exceedingly large amount of rows. The `GtkCellLayout` widget in
   # that case would calculate the required width of the rows in an
-  # idle or timeout source (see [func@GLib.timeout_add]) and when the widget
-  # is requested its actual width in [vfunc@Gtk.Widget.measure]
+  # idle or timeout source (see `GLib#timeout_add`) and when the widget
+  # is requested its actual width in `Gtk::Widget#measure`
   # it can simply consult the width accumulated so far in the
   # `GtkCellAreaContext` object.
   #
   # A simple example where rows are rendered from top to bottom and
   # take up the full width of the layouting widget would look like:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static void
   # foo_get_preferred_width (GtkWidget *widget,
@@ -123,6 +129,9 @@ module Gtk
   # In order to request the height for width of all the rows at the
   # root level of a `GtkTreeModel` one would do the following:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GtkTreeIter iter;
   # int minimum_height;
@@ -161,7 +170,7 @@ module Gtk
   # synchronously. The reasoning here is that any layouting widget is
   # at least capable of synchronously calculating enough height to fill
   # the screen height (or scrolled window height) in response to a single
-  # call to [vfunc@Gtk.Widget.measure]. Returning
+  # call to `Gtk::Widget#measure`. Returning
   # a perfect height for width that is larger than the screen area is
   # inconsequential since after the layouting receives an allocation
   # from a scrolled window it simply continues to drive the scrollbar
@@ -172,11 +181,14 @@ module Gtk
   #
   # Once area sizes have been acquired at least for the rows in the
   # visible area of the layouting widget they can be rendered at
-  # [vfunc@Gtk.Widget.snapshot] time.
+  # `Gtk::Widget#snapshot` time.
   #
   # A crude example of how to render all the rows at the root level
   # runs as follows:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GtkAllocation allocation;
   # GdkRectangle cell_area = { 0, };
@@ -207,19 +219,19 @@ module Gtk
   # give every row its minimum or natural height or, if the model content
   # is expected to fit inside the layouting widget without scrolling, it
   # would make sense to calculate the allocation for each row at
-  # the time the widget is allocated using [func@Gtk.distribute_natural_allocation].
+  # the time the widget is allocated using `Gtk#distribute_natural_allocation`.
   #
   # # Handling Events and Driving Keyboard Focus
   #
   # Passing events to the area is as simple as handling events on any
-  # normal widget and then passing them to the [method@Gtk.CellArea.event]
+  # normal widget and then passing them to the `Gtk::CellArea#event`
   # API as they come in. Usually `GtkCellArea` is only interested in
   # button events, however some customized derived areas can be implemented
   # who are interested in handling other events. Handling an event can
   # trigger the [`signal@Gtk.CellArea::focus-changed`] signal to fire; as well
   # as [`signal@GtkCellArea::add-editable`] in the case that an editable cell
   # was clicked and needs to start editing. You can call
-  # [method@Gtk.CellArea.stop_editing] at any time to cancel any cell editing
+  # `Gtk::CellArea#stop_editing` at any time to cancel any cell editing
   # that is currently in progress.
   #
   # The `GtkCellArea` drives keyboard focus from cell to cell in a way
@@ -229,14 +241,14 @@ module Gtk
   # area to paint the focus at render time.
   #
   # Layouting widgets that accept focus on cells should implement the
-  # [vfunc@Gtk.Widget.focus] virtual method. The layouting widget is always
+  # `Gtk::Widget#focus` virtual method. The layouting widget is always
   # responsible for knowing where `GtkTreeModel` rows are rendered inside
-  # the widget, so at [vfunc@Gtk.Widget.focus] time the layouting widget
+  # the widget, so at `Gtk::Widget#focus` time the layouting widget
   # should use the `GtkCellArea` methods to navigate focus inside the area
-  # and then observe the [enum@Gtk.DirectionType] to pass the focus to adjacent
+  # and then observe the `Gtk#DirectionType` to pass the focus to adjacent
   # rows and areas.
   #
-  # A basic example of how the [vfunc@Gtk.Widget.focus] virtual method
+  # A basic example of how the `Gtk::Widget#focus` virtual method
   # should be implemented:
   #
   # ```
@@ -302,26 +314,34 @@ module Gtk
   #
   # The `GtkCellArea` introduces cell properties for `GtkCellRenderer`s.
   # This provides some general interfaces for defining the relationship
-  # cell areas have with their cells. For instance in a [class@Gtk.CellAreaBox]
+  # cell areas have with their cells. For instance in a `Gtk#CellAreaBox`
   # a cell might “expand” and receive extra space when the area is allocated
   # more than its full natural request, or a cell might be configured to “align”
   # with adjacent rows which were requested and rendered with the same
   # `GtkCellAreaContext`.
   #
-  # Use [method@Gtk.CellAreaClass.install_cell_property] to install cell
-  # properties for a cell area class and [method@Gtk.CellAreaClass.find_cell_property]
-  # or [method@Gtk.CellAreaClass.list_cell_properties] to get information about
+  # Use `Gtk::CellAreaClass#install_cell_property` to install cell
+  # properties for a cell area class and `Gtk::CellAreaClass#find_cell_property`
+  # or `Gtk::CellAreaClass#list_cell_properties` to get information about
   # existing cell properties.
   #
-  # To set the value of a cell property, use [method@Gtk.CellArea.cell_set_property],
-  # [method@Gtk.CellArea.cell_set] or [method@Gtk.CellArea.cell_set_valist]. To obtain
-  # the value of a cell property, use [method@Gtk.CellArea.cell_get_property]
-  # [method@Gtk.CellArea.cell_get] or [method@Gtk.CellArea.cell_get_valist].
+  # To set the value of a cell property, use `Gtk::CellArea#cell_set_property`,
+  # `Gtk::CellArea#cell_set` or `Gtk::CellArea#cell_set_valist`. To obtain
+  # the value of a cell property, use `Gtk::CellArea#cell_get_property`
+  # `Gtk::CellArea#cell_get` or `Gtk::CellArea#cell_get_valist`.
+  @[GObject::GeneratedWrapper]
   class CellArea < GObject::InitiallyUnowned
     include Buildable
     include CellLayout
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::CellAreaClass), class_init,
+        sizeof(LibGtk::CellArea), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -333,23 +353,28 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if edit_widget
+      if !edit_widget.nil?
         (_names.to_unsafe + _n).value = "edit-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, edit_widget)
         _n += 1
       end
-      if edited_cell
+      if !edited_cell.nil?
         (_names.to_unsafe + _n).value = "edited-cell".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, edited_cell)
         _n += 1
       end
-      if focus_cell
+      if !focus_cell.nil?
         (_names.to_unsafe + _n).value = "focus-cell".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_cell)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(CellArea.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -388,37 +413,41 @@ module Gtk
       Gtk::CellRenderer.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Activates @area, usually by activating the currently focused
+    # cell, however some subclasses which embed widgets in the area
+    # can also activate a widget if it currently has the focus.
     def activate(context : Gtk::CellAreaContext, widget : Gtk::Widget, cell_area : Gdk::Rectangle, flags : Gtk::CellRendererState, edit_only : Bool) : Bool
       # gtk_cell_area_activate: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_activate(self, context, widget, cell_area, flags, edit_only)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # This is used by `GtkCellArea` subclasses when handling events
+    # to activate cells, the base `GtkCellArea` class activates cells
+    # for keyboard events for free in its own GtkCellArea->activate()
+    # implementation.
     def activate_cell(widget : Gtk::Widget, renderer : Gtk::CellRenderer, event : Gdk::Event, cell_area : Gdk::Rectangle, flags : Gtk::CellRendererState) : Bool
       # gtk_cell_area_activate_cell: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_activate_cell(self, widget, renderer, event, cell_area, flags)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Adds @renderer to @area with the default child cell properties.
     def add(renderer : Gtk::CellRenderer) : Nil
       # gtk_cell_area_add: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_area_add(self, renderer)
@@ -426,11 +455,15 @@ module Gtk
       # Return value handling
     end
 
+    # Adds @sibling to @renderer’s focusable area, focus will be drawn
+    # around @renderer and all of its siblings if @renderer can
+    # focus for a given row.
+    #
+    # Events handled by focus siblings can also activate the given
+    # focusable @renderer.
     def add_focus_sibling(renderer : Gtk::CellRenderer, sibling : Gtk::CellRenderer) : Nil
       # gtk_cell_area_add_focus_sibling: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_area_add_focus_sibling(self, renderer, sibling)
@@ -438,11 +471,11 @@ module Gtk
       # Return value handling
     end
 
+    # Applies any connected attributes to the renderers in
+    # @area by pulling the values from @tree_model.
     def apply_attributes(tree_model : Gtk::TreeModel, iter : Gtk::TreeIter, is_expander : Bool, is_expanded : Bool) : Nil
       # gtk_cell_area_apply_attributes: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_area_apply_attributes(self, tree_model, iter, is_expander, is_expanded)
@@ -450,11 +483,11 @@ module Gtk
       # Return value handling
     end
 
+    # Connects an @attribute to apply values from @column for the
+    # `GtkTreeModel` in use.
     def attribute_connect(renderer : Gtk::CellRenderer, attribute : ::String, column : Int32) : Nil
       # gtk_cell_area_attribute_connect: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_area_attribute_connect(self, renderer, attribute, column)
@@ -462,11 +495,12 @@ module Gtk
       # Return value handling
     end
 
+    # Disconnects @attribute for the @renderer in @area so that
+    # attribute will no longer be updated with values from the
+    # model.
     def attribute_disconnect(renderer : Gtk::CellRenderer, attribute : ::String) : Nil
       # gtk_cell_area_attribute_disconnect: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_area_attribute_disconnect(self, renderer, attribute)
@@ -474,25 +508,31 @@ module Gtk
       # Return value handling
     end
 
+    # Returns the model column that an attribute has been mapped to,
+    # or -1 if the attribute is not mapped.
     def attribute_get_column(renderer : Gtk::CellRenderer, attribute : ::String) : Int32
       # gtk_cell_area_attribute_get_column: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_attribute_get_column(self, renderer, attribute)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the value of a cell property for @renderer in @area.
     def cell_get_property(renderer : Gtk::CellRenderer, property_name : ::String, value : _) : Nil
       # gtk_cell_area_cell_get_property: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       LibGtk.gtk_cell_area_cell_get_property(self, renderer, property_name, value)
@@ -500,12 +540,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets a cell property for @renderer in @area.
     def cell_set_property(renderer : Gtk::CellRenderer, property_name : ::String, value : _) : Nil
       # gtk_cell_area_cell_set_property: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       LibGtk.gtk_cell_area_cell_set_property(self, renderer, property_name, value)
@@ -513,64 +558,86 @@ module Gtk
       # Return value handling
     end
 
+    # This is sometimes needed for cases where rows need to share
+    # alignments in one orientation but may be separately grouped
+    # in the opposing orientation.
+    #
+    # For instance, `GtkIconView` creates all icons (rows) to have
+    # the same width and the cells theirin to have the same
+    # horizontal alignments. However each row of icons may have
+    # a separate collective height. `GtkIconView` uses this to
+    # request the heights of each row based on a context which
+    # was already used to request all the row widths that are
+    # to be displayed.
     def copy_context(context : Gtk::CellAreaContext) : Gtk::CellAreaContext
       # gtk_cell_area_copy_context: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_copy_context(self, context)
 
       # Return value handling
+
       Gtk::CellAreaContext.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a `GtkCellArea`Context to be used with @area for
+    # all purposes. `GtkCellArea`Context stores geometry information
+    # for rows for which it was operated on, it is important to use
+    # the same context for the same row of data at all times (i.e.
+    # one should render and handle events with the same `GtkCellArea`Context
+    # which was used to request the size of those rows of data).
     def create_context : Gtk::CellAreaContext
       # gtk_cell_area_create_context: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_create_context(self)
 
       # Return value handling
+
       Gtk::CellAreaContext.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Delegates event handling to a `GtkCellArea`.
     def event(context : Gtk::CellAreaContext, widget : Gtk::Widget, event : Gdk::Event, cell_area : Gdk::Rectangle, flags : Gtk::CellRendererState) : Int32
       # gtk_cell_area_event: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_event(self, context, widget, event, cell_area, flags)
 
       # Return value handling
+
       _retval
     end
 
+    # This should be called by the @area’s owning layout widget
+    # when focus is to be passed to @area, or moved within @area
+    # for a given @direction and row data.
+    #
+    # Implementing `GtkCellArea` classes should implement this
+    # method to receive and navigate focus in its own way particular
+    # to how it lays out cells.
     def focus(direction : Gtk::DirectionType) : Bool
       # gtk_cell_area_focus: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_focus(self, direction)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Calls @callback for every `GtkCellRenderer` in @area.
     def foreach(callback : Pointer(Void), callback_data : Pointer(Void)?) : Nil
       # gtk_cell_area_foreach: (Method)
       # @callback_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       callback_data = if callback_data.nil?
                         Pointer(Void).null
                       else
@@ -583,12 +650,14 @@ module Gtk
       # Return value handling
     end
 
+    # Calls @callback for every `GtkCellRenderer` in @area with the
+    # allocated rectangle inside @cell_area.
     def foreach_alloc(context : Gtk::CellAreaContext, widget : Gtk::Widget, cell_area : Gdk::Rectangle, background_area : Gdk::Rectangle, callback : Pointer(Void), callback_data : Pointer(Void)?) : Nil
       # gtk_cell_area_foreach_alloc: (Method)
       # @callback_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       callback_data = if callback_data.nil?
                         Pointer(Void).null
                       else
@@ -601,123 +670,150 @@ module Gtk
       # Return value handling
     end
 
+    # Derives the allocation of @renderer inside @area if @area
+    # were to be renderered in @cell_area.
     def cell_allocation(context : Gtk::CellAreaContext, widget : Gtk::Widget, renderer : Gtk::CellRenderer, cell_area : Gdk::Rectangle) : Gdk::Rectangle
       # gtk_cell_area_get_cell_allocation: (Method)
       # @allocation: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       allocation = Gdk::Rectangle.new
 
       # C call
       LibGtk.gtk_cell_area_get_cell_allocation(self, context, widget, renderer, cell_area, allocation)
 
       # Return value handling
+
       allocation
     end
 
+    # Gets the `GtkCellRenderer` at @x and @y coordinates inside @area and optionally
+    # returns the full cell allocation for it inside @cell_area.
     def cell_at_position(context : Gtk::CellAreaContext, widget : Gtk::Widget, cell_area : Gdk::Rectangle, x : Int32, y : Int32) : Gdk::Rectangle
       # gtk_cell_area_get_cell_at_position: (Method)
       # @alloc_area: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       alloc_area = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       alloc_area = Gdk::Rectangle.new
 
       # C call
       _retval = LibGtk.gtk_cell_area_get_cell_at_position(self, context, widget, cell_area, x, y, alloc_area)
 
       # Return value handling
+
       alloc_area
     end
 
+    # Gets the current `GtkTreePath` string for the currently
+    # applied `GtkTreeIter`, this is implicitly updated when
+    # gtk_cell_area_apply_attributes() is called and can be
+    # used to interact with renderers from `GtkCellArea`
+    # subclasses.
     def current_path_string : ::String
       # gtk_cell_area_get_current_path_string: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_get_current_path_string(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets the `GtkCellEditable` widget currently used
+    # to edit the currently edited cell.
     def edit_widget : Gtk::CellEditable?
       # gtk_cell_area_get_edit_widget: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_get_edit_widget(self)
 
       # Return value handling
+
       Gtk::CellEditable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the `GtkCellRenderer` in @area that is currently
+    # being edited.
     def edited_cell : Gtk::CellRenderer?
       # gtk_cell_area_get_edited_cell: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_get_edited_cell(self)
 
       # Return value handling
+
       Gtk::CellRenderer.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Retrieves the currently focused cell for @area
     def focus_cell : Gtk::CellRenderer?
       # gtk_cell_area_get_focus_cell: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_get_focus_cell(self)
 
       # Return value handling
+
       Gtk::CellRenderer.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the `GtkCellRenderer` which is expected to be focusable
+    # for which @renderer is, or may be a sibling.
+    #
+    # This is handy for `GtkCellArea` subclasses when handling events,
+    # after determining the renderer at the event location it can
+    # then chose to activate the focus cell for which the event
+    # cell may have been a sibling.
     def focus_from_sibling(renderer : Gtk::CellRenderer) : Gtk::CellRenderer?
       # gtk_cell_area_get_focus_from_sibling: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_get_focus_from_sibling(self, renderer)
 
       # Return value handling
+
       Gtk::CellRenderer.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the focus sibling cell renderers for @renderer.
     def focus_siblings(renderer : Gtk::CellRenderer) : GLib::List
       # gtk_cell_area_get_focus_siblings: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_get_focus_siblings(self, renderer)
 
       # Return value handling
+
       GLib::List(Gtk::CellRenderer).new(_retval, GICrystal::Transfer::None)
     end
 
+    # Retrieves a cell area’s initial minimum and natural height.
+    #
+    # @area will store some geometrical information in @context along the way;
+    # when requesting sizes over an arbitrary number of rows, it’s not important
+    # to check the @minimum_height and @natural_height of this call but rather to
+    # consult gtk_cell_area_context_get_preferred_height() after a series of
+    # requests.
     def preferred_height(context : Gtk::CellAreaContext, widget : Gtk::Widget) : Nil
       # gtk_cell_area_get_preferred_height: (Method)
       # @minimum_height: (out) (transfer full) (optional)
       # @natural_height: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_height = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
 
       # C call
@@ -726,14 +822,29 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieves a cell area’s minimum and natural height if it would be given
+    # the specified @width.
+    #
+    # @area stores some geometrical information in @context along the way
+    # while calling gtk_cell_area_get_preferred_width(). It’s important to
+    # perform a series of gtk_cell_area_get_preferred_width() requests with
+    # @context first and then call gtk_cell_area_get_preferred_height_for_width()
+    # on each cell area individually to get the height for width of each
+    # fully requested row.
+    #
+    # If at some point, the width of a single row changes, it should be
+    # requested with gtk_cell_area_get_preferred_width() again and then
+    # the full width of the requested rows checked again with
+    # gtk_cell_area_context_get_preferred_width().
     def preferred_height_for_width(context : Gtk::CellAreaContext, widget : Gtk::Widget, width : Int32) : Nil
       # gtk_cell_area_get_preferred_height_for_width: (Method)
       # @minimum_height: (out) (transfer full) (optional)
       # @natural_height: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_height = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
 
       # C call
@@ -742,14 +853,22 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieves a cell area’s initial minimum and natural width.
+    #
+    # @area will store some geometrical information in @context along the way;
+    # when requesting sizes over an arbitrary number of rows, it’s not important
+    # to check the @minimum_width and @natural_width of this call but rather to
+    # consult gtk_cell_area_context_get_preferred_width() after a series of
+    # requests.
     def preferred_width(context : Gtk::CellAreaContext, widget : Gtk::Widget) : Nil
       # gtk_cell_area_get_preferred_width: (Method)
       # @minimum_width: (out) (transfer full) (optional)
       # @natural_width: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_width = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
 
       # C call
@@ -758,14 +877,29 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieves a cell area’s minimum and natural width if it would be given
+    # the specified @height.
+    #
+    # @area stores some geometrical information in @context along the way
+    # while calling gtk_cell_area_get_preferred_height(). It’s important to
+    # perform a series of gtk_cell_area_get_preferred_height() requests with
+    # @context first and then call gtk_cell_area_get_preferred_width_for_height()
+    # on each cell area individually to get the height for width of each
+    # fully requested row.
+    #
+    # If at some point, the height of a single row changes, it should be
+    # requested with gtk_cell_area_get_preferred_height() again and then
+    # the full height of the requested rows checked again with
+    # gtk_cell_area_context_get_preferred_height().
     def preferred_width_for_height(context : Gtk::CellAreaContext, widget : Gtk::Widget, height : Int32) : Nil
       # gtk_cell_area_get_preferred_width_for_height: (Method)
       # @minimum_width: (out) (transfer full) (optional)
       # @natural_width: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_width = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
 
       # C call
@@ -774,78 +908,84 @@ module Gtk
       # Return value handling
     end
 
+    # Gets whether the area prefers a height-for-width layout
+    # or a width-for-height layout.
     def request_mode : Gtk::SizeRequestMode
       # gtk_cell_area_get_request_mode: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_get_request_mode(self)
 
       # Return value handling
-      Gtk::SizeRequestMode.from_value(_retval)
+
+      Gtk::SizeRequestMode.new(_retval)
     end
 
+    # Checks if @area contains @renderer.
     def has_renderer(renderer : Gtk::CellRenderer) : Bool
       # gtk_cell_area_has_renderer: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_has_renderer(self, renderer)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # This is a convenience function for `GtkCellArea` implementations
+    # to get the inner area where a given `GtkCellRenderer` will be
+    # rendered. It removes any padding previously added by gtk_cell_area_request_renderer().
     def inner_cell_area(widget : Gtk::Widget, cell_area : Gdk::Rectangle) : Gdk::Rectangle
       # gtk_cell_area_inner_cell_area: (Method)
       # @inner_area: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       inner_area = Gdk::Rectangle.new
 
       # C call
       LibGtk.gtk_cell_area_inner_cell_area(self, widget, cell_area, inner_area)
 
       # Return value handling
+
       inner_area
     end
 
+    # Returns whether the area can do anything when activated,
+    # after applying new attributes to @area.
     def is_activatable : Bool
       # gtk_cell_area_is_activatable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_is_activatable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether @sibling is one of @renderer’s focus siblings
+    # (see gtk_cell_area_add_focus_sibling()).
     def is_focus_sibling(renderer : Gtk::CellRenderer, sibling : Gtk::CellRenderer) : Bool
       # gtk_cell_area_is_focus_sibling: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_area_is_focus_sibling(self, renderer, sibling)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Removes @renderer from @area.
     def remove(renderer : Gtk::CellRenderer) : Nil
       # gtk_cell_area_remove: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_area_remove(self, renderer)
@@ -853,11 +993,11 @@ module Gtk
       # Return value handling
     end
 
+    # Removes @sibling from @renderer’s focus sibling list
+    # (see gtk_cell_area_add_focus_sibling()).
     def remove_focus_sibling(renderer : Gtk::CellRenderer, sibling : Gtk::CellRenderer) : Nil
       # gtk_cell_area_remove_focus_sibling: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_area_remove_focus_sibling(self, renderer, sibling)
@@ -865,14 +1005,20 @@ module Gtk
       # Return value handling
     end
 
+    # This is a convenience function for `GtkCellArea` implementations
+    # to request size for cell renderers. It’s important to use this
+    # function to request size and then use gtk_cell_area_inner_cell_area()
+    # at render and event time since this function will add padding
+    # around the cell for focus painting.
     def request_renderer(renderer : Gtk::CellRenderer, orientation : Gtk::Orientation, widget : Gtk::Widget, for_size : Int32) : Nil
       # gtk_cell_area_request_renderer: (Method)
       # @minimum_size: (out) (transfer full) (optional)
       # @natural_size: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       minimum_size = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       natural_size = Pointer(Int32).null
 
       # C call
@@ -881,12 +1027,18 @@ module Gtk
       # Return value handling
     end
 
+    # Explicitly sets the currently focused cell to @renderer.
+    #
+    # This is generally called by implementations of
+    # `GtkCellAreaClass.focus()` or `GtkCellAreaClass.event()`,
+    # however it can also be used to implement functions such
+    # as gtk_tree_view_set_cursor_on_cell().
     def focus_cell=(renderer : Gtk::CellRenderer?) : Nil
       # gtk_cell_area_set_focus_cell: (Method | Setter)
       # @renderer: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       renderer = if renderer.nil?
                    Pointer(Void).null
                  else
@@ -899,11 +1051,11 @@ module Gtk
       # Return value handling
     end
 
+    # Snapshots @area’s cells according to @area’s layout onto at
+    # the given coordinates.
     def snapshot(context : Gtk::CellAreaContext, widget : Gtk::Widget, snapshot : Gtk::Snapshot, background_area : Gdk::Rectangle, cell_area : Gdk::Rectangle, flags : Gtk::CellRendererState, paint_focus : Bool) : Nil
       # gtk_cell_area_snapshot: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_area_snapshot(self, context, widget, snapshot, background_area, cell_area, flags, paint_focus)
@@ -911,11 +1063,17 @@ module Gtk
       # Return value handling
     end
 
+    # Explicitly stops the editing of the currently edited cell.
+    #
+    # If @canceled is %TRUE, the currently edited cell renderer
+    # will emit the ::editing-canceled signal, otherwise the
+    # the ::editing-done signal will be emitted on the current
+    # edit widget.
+    #
+    # See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
     def stop_editing(canceled : Bool) : Nil
       # gtk_cell_area_stop_editing: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_area_stop_editing(self, canceled)
@@ -923,6 +1081,8 @@ module Gtk
       # Return value handling
     end
 
+    # Indicates that editing has started on @renderer and that @editable
+    # should be added to the owning cell-layouting widget at @cell_area.
     struct AddEditableSignal
       @source : GObject::Object
       @detail : String?
@@ -1014,6 +1174,7 @@ module Gtk
       AddEditableSignal.new(self)
     end
 
+    # This signal is emitted whenever applying attributes to @area from @model
     struct ApplyAttributesSignal
       @source : GObject::Object
       @detail : String?
@@ -1105,6 +1266,14 @@ module Gtk
       ApplyAttributesSignal.new(self)
     end
 
+    # Indicates that focus changed on this @area. This signal
+    # is emitted either as a result of focus handling or event
+    # handling.
+    #
+    # It's possible that the signal is emitted even if the
+    # currently focused renderer did not change, this is
+    # because focus may change to the same renderer in the
+    # same cell area for a different row of data.
     struct FocusChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -1188,6 +1357,8 @@ module Gtk
       FocusChangedSignal.new(self)
     end
 
+    # Indicates that editing finished on @renderer and that @editable
+    # should be removed from the owning cell-layouting widget.
     struct RemoveEditableSignal
       @source : GObject::Object
       @detail : String?

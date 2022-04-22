@@ -8,7 +8,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = pointer
     end
@@ -16,11 +16,13 @@ module Gio
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::IOModuleScope)).zero?
+    end
+
     def block(basename : ::String) : Nil
       # g_io_module_scope_block: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_io_module_scope_block(self, basename)
@@ -31,8 +33,6 @@ module Gio
     def free : Nil
       # g_io_module_scope_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_io_module_scope_free(self)

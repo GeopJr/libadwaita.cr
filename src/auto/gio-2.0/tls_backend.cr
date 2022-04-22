@@ -5,12 +5,11 @@ module Gio
       # g_tls_backend_get_default: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_get_default
 
       # Return value handling
+
       Gio::TlsBackend__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -18,12 +17,11 @@ module Gio
       # g_tls_backend_get_certificate_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_get_certificate_type(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -31,12 +29,11 @@ module Gio
       # g_tls_backend_get_client_connection_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_get_client_connection_type(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -44,12 +41,11 @@ module Gio
       # g_tls_backend_get_default_database: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_get_default_database(self)
 
       # Return value handling
+
       Gio::TlsDatabase.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -57,12 +53,11 @@ module Gio
       # g_tls_backend_get_dtls_client_connection_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_get_dtls_client_connection_type(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -70,12 +65,11 @@ module Gio
       # g_tls_backend_get_dtls_server_connection_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_get_dtls_server_connection_type(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -83,12 +77,11 @@ module Gio
       # g_tls_backend_get_file_database_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_get_file_database_type(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -96,12 +89,11 @@ module Gio
       # g_tls_backend_get_server_connection_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_get_server_connection_type(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -110,7 +102,7 @@ module Gio
       # @database: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       database = if database.nil?
                    Pointer(Void).null
                  else
@@ -127,12 +119,11 @@ module Gio
       # g_tls_backend_supports_dtls: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_supports_dtls(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -140,12 +131,11 @@ module Gio
       # g_tls_backend_supports_tls: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_tls_backend_supports_tls(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -153,6 +143,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class TlsBackend__Impl < GObject::Object
     include TlsBackend
 

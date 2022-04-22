@@ -26,12 +26,20 @@ module Gtk
   # configuration facility.
   #
   # There is one `GtkSettings` instance per display. It can be obtained with
-  # [func@Gtk.Settings.get_for_display], but in many cases, it is more
-  # convenient to use [method@Gtk.Widget.get_settings].
+  # `Gtk::Settings#for_display`, but in many cases, it is more
+  # convenient to use `Gtk::Widget#settings`.
+  @[GObject::GeneratedWrapper]
   class Settings < GObject::Object
     include StyleProvider
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::Settings), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -43,258 +51,262 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 50).new(LibGObject::Value.new)
       _n = 0
 
-      if gtk_alternative_button_order
+      if !gtk_alternative_button_order.nil?
         (_names.to_unsafe + _n).value = "gtk-alternative-button-order".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_alternative_button_order)
         _n += 1
       end
-      if gtk_alternative_sort_arrows
+      if !gtk_alternative_sort_arrows.nil?
         (_names.to_unsafe + _n).value = "gtk-alternative-sort-arrows".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_alternative_sort_arrows)
         _n += 1
       end
-      if gtk_application_prefer_dark_theme
+      if !gtk_application_prefer_dark_theme.nil?
         (_names.to_unsafe + _n).value = "gtk-application-prefer-dark-theme".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_application_prefer_dark_theme)
         _n += 1
       end
-      if gtk_cursor_aspect_ratio
+      if !gtk_cursor_aspect_ratio.nil?
         (_names.to_unsafe + _n).value = "gtk-cursor-aspect-ratio".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_cursor_aspect_ratio)
         _n += 1
       end
-      if gtk_cursor_blink
+      if !gtk_cursor_blink.nil?
         (_names.to_unsafe + _n).value = "gtk-cursor-blink".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_cursor_blink)
         _n += 1
       end
-      if gtk_cursor_blink_time
+      if !gtk_cursor_blink_time.nil?
         (_names.to_unsafe + _n).value = "gtk-cursor-blink-time".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_cursor_blink_time)
         _n += 1
       end
-      if gtk_cursor_blink_timeout
+      if !gtk_cursor_blink_timeout.nil?
         (_names.to_unsafe + _n).value = "gtk-cursor-blink-timeout".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_cursor_blink_timeout)
         _n += 1
       end
-      if gtk_cursor_theme_name
+      if !gtk_cursor_theme_name.nil?
         (_names.to_unsafe + _n).value = "gtk-cursor-theme-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_cursor_theme_name)
         _n += 1
       end
-      if gtk_cursor_theme_size
+      if !gtk_cursor_theme_size.nil?
         (_names.to_unsafe + _n).value = "gtk-cursor-theme-size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_cursor_theme_size)
         _n += 1
       end
-      if gtk_decoration_layout
+      if !gtk_decoration_layout.nil?
         (_names.to_unsafe + _n).value = "gtk-decoration-layout".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_decoration_layout)
         _n += 1
       end
-      if gtk_dialogs_use_header
+      if !gtk_dialogs_use_header.nil?
         (_names.to_unsafe + _n).value = "gtk-dialogs-use-header".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_dialogs_use_header)
         _n += 1
       end
-      if gtk_dnd_drag_threshold
+      if !gtk_dnd_drag_threshold.nil?
         (_names.to_unsafe + _n).value = "gtk-dnd-drag-threshold".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_dnd_drag_threshold)
         _n += 1
       end
-      if gtk_double_click_distance
+      if !gtk_double_click_distance.nil?
         (_names.to_unsafe + _n).value = "gtk-double-click-distance".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_double_click_distance)
         _n += 1
       end
-      if gtk_double_click_time
+      if !gtk_double_click_time.nil?
         (_names.to_unsafe + _n).value = "gtk-double-click-time".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_double_click_time)
         _n += 1
       end
-      if gtk_enable_accels
+      if !gtk_enable_accels.nil?
         (_names.to_unsafe + _n).value = "gtk-enable-accels".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_enable_accels)
         _n += 1
       end
-      if gtk_enable_animations
+      if !gtk_enable_animations.nil?
         (_names.to_unsafe + _n).value = "gtk-enable-animations".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_enable_animations)
         _n += 1
       end
-      if gtk_enable_event_sounds
+      if !gtk_enable_event_sounds.nil?
         (_names.to_unsafe + _n).value = "gtk-enable-event-sounds".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_enable_event_sounds)
         _n += 1
       end
-      if gtk_enable_input_feedback_sounds
+      if !gtk_enable_input_feedback_sounds.nil?
         (_names.to_unsafe + _n).value = "gtk-enable-input-feedback-sounds".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_enable_input_feedback_sounds)
         _n += 1
       end
-      if gtk_enable_primary_paste
+      if !gtk_enable_primary_paste.nil?
         (_names.to_unsafe + _n).value = "gtk-enable-primary-paste".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_enable_primary_paste)
         _n += 1
       end
-      if gtk_entry_password_hint_timeout
+      if !gtk_entry_password_hint_timeout.nil?
         (_names.to_unsafe + _n).value = "gtk-entry-password-hint-timeout".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_entry_password_hint_timeout)
         _n += 1
       end
-      if gtk_entry_select_on_focus
+      if !gtk_entry_select_on_focus.nil?
         (_names.to_unsafe + _n).value = "gtk-entry-select-on-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_entry_select_on_focus)
         _n += 1
       end
-      if gtk_error_bell
+      if !gtk_error_bell.nil?
         (_names.to_unsafe + _n).value = "gtk-error-bell".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_error_bell)
         _n += 1
       end
-      if gtk_font_name
+      if !gtk_font_name.nil?
         (_names.to_unsafe + _n).value = "gtk-font-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_font_name)
         _n += 1
       end
-      if gtk_fontconfig_timestamp
+      if !gtk_fontconfig_timestamp.nil?
         (_names.to_unsafe + _n).value = "gtk-fontconfig-timestamp".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_fontconfig_timestamp)
         _n += 1
       end
-      if gtk_hint_font_metrics
+      if !gtk_hint_font_metrics.nil?
         (_names.to_unsafe + _n).value = "gtk-hint-font-metrics".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_hint_font_metrics)
         _n += 1
       end
-      if gtk_icon_theme_name
+      if !gtk_icon_theme_name.nil?
         (_names.to_unsafe + _n).value = "gtk-icon-theme-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_icon_theme_name)
         _n += 1
       end
-      if gtk_im_module
+      if !gtk_im_module.nil?
         (_names.to_unsafe + _n).value = "gtk-im-module".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_im_module)
         _n += 1
       end
-      if gtk_keynav_use_caret
+      if !gtk_keynav_use_caret.nil?
         (_names.to_unsafe + _n).value = "gtk-keynav-use-caret".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_keynav_use_caret)
         _n += 1
       end
-      if gtk_label_select_on_focus
+      if !gtk_label_select_on_focus.nil?
         (_names.to_unsafe + _n).value = "gtk-label-select-on-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_label_select_on_focus)
         _n += 1
       end
-      if gtk_long_press_time
+      if !gtk_long_press_time.nil?
         (_names.to_unsafe + _n).value = "gtk-long-press-time".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_long_press_time)
         _n += 1
       end
-      if gtk_overlay_scrolling
+      if !gtk_overlay_scrolling.nil?
         (_names.to_unsafe + _n).value = "gtk-overlay-scrolling".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_overlay_scrolling)
         _n += 1
       end
-      if gtk_primary_button_warps_slider
+      if !gtk_primary_button_warps_slider.nil?
         (_names.to_unsafe + _n).value = "gtk-primary-button-warps-slider".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_primary_button_warps_slider)
         _n += 1
       end
-      if gtk_print_backends
+      if !gtk_print_backends.nil?
         (_names.to_unsafe + _n).value = "gtk-print-backends".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_print_backends)
         _n += 1
       end
-      if gtk_print_preview_command
+      if !gtk_print_preview_command.nil?
         (_names.to_unsafe + _n).value = "gtk-print-preview-command".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_print_preview_command)
         _n += 1
       end
-      if gtk_recent_files_enabled
+      if !gtk_recent_files_enabled.nil?
         (_names.to_unsafe + _n).value = "gtk-recent-files-enabled".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_recent_files_enabled)
         _n += 1
       end
-      if gtk_recent_files_max_age
+      if !gtk_recent_files_max_age.nil?
         (_names.to_unsafe + _n).value = "gtk-recent-files-max-age".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_recent_files_max_age)
         _n += 1
       end
-      if gtk_shell_shows_app_menu
+      if !gtk_shell_shows_app_menu.nil?
         (_names.to_unsafe + _n).value = "gtk-shell-shows-app-menu".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_shell_shows_app_menu)
         _n += 1
       end
-      if gtk_shell_shows_desktop
+      if !gtk_shell_shows_desktop.nil?
         (_names.to_unsafe + _n).value = "gtk-shell-shows-desktop".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_shell_shows_desktop)
         _n += 1
       end
-      if gtk_shell_shows_menubar
+      if !gtk_shell_shows_menubar.nil?
         (_names.to_unsafe + _n).value = "gtk-shell-shows-menubar".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_shell_shows_menubar)
         _n += 1
       end
-      if gtk_sound_theme_name
+      if !gtk_sound_theme_name.nil?
         (_names.to_unsafe + _n).value = "gtk-sound-theme-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_sound_theme_name)
         _n += 1
       end
-      if gtk_split_cursor
+      if !gtk_split_cursor.nil?
         (_names.to_unsafe + _n).value = "gtk-split-cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_split_cursor)
         _n += 1
       end
-      if gtk_theme_name
+      if !gtk_theme_name.nil?
         (_names.to_unsafe + _n).value = "gtk-theme-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_theme_name)
         _n += 1
       end
-      if gtk_titlebar_double_click
+      if !gtk_titlebar_double_click.nil?
         (_names.to_unsafe + _n).value = "gtk-titlebar-double-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_titlebar_double_click)
         _n += 1
       end
-      if gtk_titlebar_middle_click
+      if !gtk_titlebar_middle_click.nil?
         (_names.to_unsafe + _n).value = "gtk-titlebar-middle-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_titlebar_middle_click)
         _n += 1
       end
-      if gtk_titlebar_right_click
+      if !gtk_titlebar_right_click.nil?
         (_names.to_unsafe + _n).value = "gtk-titlebar-right-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_titlebar_right_click)
         _n += 1
       end
-      if gtk_xft_antialias
+      if !gtk_xft_antialias.nil?
         (_names.to_unsafe + _n).value = "gtk-xft-antialias".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_xft_antialias)
         _n += 1
       end
-      if gtk_xft_dpi
+      if !gtk_xft_dpi.nil?
         (_names.to_unsafe + _n).value = "gtk-xft-dpi".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_xft_dpi)
         _n += 1
       end
-      if gtk_xft_hinting
+      if !gtk_xft_hinting.nil?
         (_names.to_unsafe + _n).value = "gtk-xft-hinting".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_xft_hinting)
         _n += 1
       end
-      if gtk_xft_hintstyle
+      if !gtk_xft_hintstyle.nil?
         (_names.to_unsafe + _n).value = "gtk-xft-hintstyle".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_xft_hintstyle)
         _n += 1
       end
-      if gtk_xft_rgba
+      if !gtk_xft_rgba.nil?
         (_names.to_unsafe + _n).value = "gtk-xft-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, gtk_xft_rgba)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Settings.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -1052,37 +1064,43 @@ module Gtk
       ::String.new(value)
     end
 
+    # Gets the `GtkSettings` object for the default display, creating
+    # it if necessary.
+    #
+    # See `Gtk::Settings#for_display`.
     def self.default : Gtk::Settings?
       # gtk_settings_get_default: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_settings_get_default
 
       # Return value handling
+
       Gtk::Settings.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the `GtkSettings` object for @display, creating it if necessary.
     def self.for_display(display : Gdk::Display) : Gtk::Settings
       # gtk_settings_get_for_display: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_settings_get_for_display(display)
 
       # Return value handling
+
       Gtk::Settings.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Undoes the effect of calling g_object_set() to install an
+    # application-specific value for a setting.
+    #
+    # After this call, the setting will again follow the session-wide
+    # value for this setting.
     def reset_property(name : ::String) : Nil
       # gtk_settings_reset_property: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_settings_reset_property(self, name)

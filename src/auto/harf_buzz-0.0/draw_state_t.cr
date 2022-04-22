@@ -4,7 +4,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibHarfBuzz::DrawStateT))
@@ -33,147 +33,134 @@ module HarfBuzz
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::DrawStateT)).zero?
+    end
+
     def path_open : Int32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Int32))
       _var.value
     end
 
     def path_open=(value : Int32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Int32)).value = value
       value
     end
 
     def path_start_x : Float32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Float32))
       _var.value
     end
 
     def path_start_x=(value : Float32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Float32)).value = value
       value
     end
 
     def path_start_y : Float32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Float32))
       _var.value
     end
 
     def path_start_y=(value : Float32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Float32)).value = value
       value
     end
 
     def current_x : Float32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Float32))
       _var.value
     end
 
     def current_x=(value : Float32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Float32)).value = value
       value
     end
 
     def current_y : Float32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Float32))
       _var.value
     end
 
     def current_y=(value : Float32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Float32)).value = value
       value
     end
 
     def reserved1 : HarfBuzz::VarNumT
-      # Property getter
       _var = (@pointer + 20).as(Pointer(LibHarfBuzz::VarNumT))
-      HarfBuzz::VarNumT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarNumT.new(_var, GICrystal::Transfer::None)
     end
 
     def reserved1=(value : HarfBuzz::VarNumT)
-      # Property setter
-      _var = (@pointer + 20).as(Pointer(LibHarfBuzz::VarNumT)).value = value.to_unsafe
+      _var = (@pointer + 20).as(Pointer(LibHarfBuzz::VarNumT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::DrawStateT))
       value
     end
 
     def reserved2 : HarfBuzz::VarNumT
-      # Property getter
       _var = (@pointer + 24).as(Pointer(LibHarfBuzz::VarNumT))
-      HarfBuzz::VarNumT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarNumT.new(_var, GICrystal::Transfer::None)
     end
 
     def reserved2=(value : HarfBuzz::VarNumT)
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(LibHarfBuzz::VarNumT)).value = value.to_unsafe
+      _var = (@pointer + 24).as(Pointer(LibHarfBuzz::VarNumT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::DrawStateT))
       value
     end
 
     def reserved3 : HarfBuzz::VarNumT
-      # Property getter
       _var = (@pointer + 28).as(Pointer(LibHarfBuzz::VarNumT))
-      HarfBuzz::VarNumT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarNumT.new(_var, GICrystal::Transfer::None)
     end
 
     def reserved3=(value : HarfBuzz::VarNumT)
-      # Property setter
-      _var = (@pointer + 28).as(Pointer(LibHarfBuzz::VarNumT)).value = value.to_unsafe
+      _var = (@pointer + 28).as(Pointer(LibHarfBuzz::VarNumT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::DrawStateT))
       value
     end
 
     def reserved4 : HarfBuzz::VarNumT
-      # Property getter
       _var = (@pointer + 32).as(Pointer(LibHarfBuzz::VarNumT))
-      HarfBuzz::VarNumT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarNumT.new(_var, GICrystal::Transfer::None)
     end
 
     def reserved4=(value : HarfBuzz::VarNumT)
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(LibHarfBuzz::VarNumT)).value = value.to_unsafe
+      _var = (@pointer + 32).as(Pointer(LibHarfBuzz::VarNumT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::DrawStateT))
       value
     end
 
     def reserved5 : HarfBuzz::VarNumT
-      # Property getter
       _var = (@pointer + 36).as(Pointer(LibHarfBuzz::VarNumT))
-      HarfBuzz::VarNumT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarNumT.new(_var, GICrystal::Transfer::None)
     end
 
     def reserved5=(value : HarfBuzz::VarNumT)
-      # Property setter
-      _var = (@pointer + 36).as(Pointer(LibHarfBuzz::VarNumT)).value = value.to_unsafe
+      _var = (@pointer + 36).as(Pointer(LibHarfBuzz::VarNumT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::DrawStateT))
       value
     end
 
     def reserved6 : HarfBuzz::VarNumT
-      # Property getter
       _var = (@pointer + 40).as(Pointer(LibHarfBuzz::VarNumT))
-      HarfBuzz::VarNumT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarNumT.new(_var, GICrystal::Transfer::None)
     end
 
     def reserved6=(value : HarfBuzz::VarNumT)
-      # Property setter
-      _var = (@pointer + 40).as(Pointer(LibHarfBuzz::VarNumT)).value = value.to_unsafe
+      _var = (@pointer + 40).as(Pointer(LibHarfBuzz::VarNumT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::DrawStateT))
       value
     end
 
     def reserved7 : HarfBuzz::VarNumT
-      # Property getter
       _var = (@pointer + 44).as(Pointer(LibHarfBuzz::VarNumT))
-      HarfBuzz::VarNumT.new(_var.value, GICrystal::Transfer::None)
+      HarfBuzz::VarNumT.new(_var, GICrystal::Transfer::None)
     end
 
     def reserved7=(value : HarfBuzz::VarNumT)
-      # Property setter
-      _var = (@pointer + 44).as(Pointer(LibHarfBuzz::VarNumT)).value = value.to_unsafe
+      _var = (@pointer + 44).as(Pointer(LibHarfBuzz::VarNumT))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::DrawStateT))
       value
     end
 

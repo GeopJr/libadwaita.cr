@@ -1,9 +1,17 @@
 require "../g_object-2.0/object"
 
 module Adw
-  # An auxiliary class used by [class@ViewStack].
+  # An auxiliary class used by `#ViewStack`.
+  @[GObject::GeneratedWrapper]
   class ViewStackPage < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::ViewStackPageClass), class_init,
+        sizeof(LibAdw::ViewStackPage), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,48 +23,52 @@ module Adw
       _values = StaticArray(LibGObject::Value, 8).new(LibGObject::Value.new)
       _n = 0
 
-      if badge_number
+      if !badge_number.nil?
         (_names.to_unsafe + _n).value = "badge-number".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, badge_number)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if icon_name
+      if !icon_name.nil?
         (_names.to_unsafe + _n).value = "icon-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon_name)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if needs_attention
+      if !needs_attention.nil?
         (_names.to_unsafe + _n).value = "needs-attention".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, needs_attention)
         _n += 1
       end
-      if title
+      if !title.nil?
         (_names.to_unsafe + _n).value = "title".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
-      if use_underline
+      if !use_underline.nil?
         (_names.to_unsafe + _n).value = "use-underline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_underline)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ViewStackPage.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -184,115 +196,117 @@ module Adw
       GICrystal.to_bool(value)
     end
 
+    # Gets the badge number for this page.
     def badge_number : UInt32
       # adw_view_stack_page_get_badge_number: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_stack_page_get_badge_number(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the stack child to which @self belongs.
     def child : Gtk::Widget
       # adw_view_stack_page_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_stack_page_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the icon name of the page.
     def icon_name : ::String?
       # adw_view_stack_page_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_stack_page_get_icon_name(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the name of the page.
     def name : ::String?
       # adw_view_stack_page_get_name: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_stack_page_get_name(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets whether the page is marked as “needs attention”.
     def needs_attention : Bool
       # adw_view_stack_page_get_needs_attention: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_stack_page_get_needs_attention(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the page title.
     def title : ::String?
       # adw_view_stack_page_get_title: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_stack_page_get_title(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets whether underlines in the page title indicate mnemonics.
     def use_underline : Bool
       # adw_view_stack_page_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_stack_page_get_use_underline(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self is visible in its `AdwViewStack`.
+    #
+    # This is independent from the `Gtk::Widget#visible`
+    # property of its widget.
     def visible : Bool
       # adw_view_stack_page_get_visible: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_stack_page_get_visible(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets the badge number for this page.
     def badge_number=(badge_number : UInt32) : Nil
       # adw_view_stack_page_set_badge_number: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_view_stack_page_set_badge_number(self, badge_number)
@@ -300,12 +314,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the icon name of the page.
     def icon_name=(icon_name : ::String?) : Nil
       # adw_view_stack_page_set_icon_name: (Method | Setter)
       # @icon_name: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       icon_name = if icon_name.nil?
                     Pointer(LibC::Char).null
                   else
@@ -318,12 +333,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the name of the page.
     def name=(name : ::String?) : Nil
       # adw_view_stack_page_set_name: (Method | Setter)
       # @name: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       name = if name.nil?
                Pointer(LibC::Char).null
              else
@@ -336,11 +352,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether the page is marked as “needs attention”.
     def needs_attention=(needs_attention : Bool) : Nil
       # adw_view_stack_page_set_needs_attention: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_view_stack_page_set_needs_attention(self, needs_attention)
@@ -348,12 +363,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the page title.
     def title=(title : ::String?) : Nil
       # adw_view_stack_page_set_title: (Method | Setter)
       # @title: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       title = if title.nil?
                 Pointer(LibC::Char).null
               else
@@ -366,11 +382,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether underlines in the page title indicate mnemonics.
     def use_underline=(use_underline : Bool) : Nil
       # adw_view_stack_page_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_view_stack_page_set_use_underline(self, use_underline)
@@ -378,11 +393,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @page is visible in its `AdwViewStack`.
     def visible=(visible : Bool) : Nil
       # adw_view_stack_page_set_visible: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_view_stack_page_set_visible(self, visible)

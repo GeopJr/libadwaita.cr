@@ -4,12 +4,20 @@ module Gtk
   # `GtkGestureClick` is a `GtkGesture` implementation for clicks.
   #
   # It is able to recognize multiple clicks on a nearby zone, which
-  # can be listened for through the [signal@Gtk.GestureClick::pressed]
+  # can be listened for through the `Gtk::GestureClick::#pressed`
   # signal. Whenever time or distance between clicks exceed the GTK
-  # defaults, [signal@Gtk.GestureClick::stopped] is emitted, and the
+  # defaults, `Gtk::GestureClick::#stopped` is emitted, and the
   # click counter is reset.
+  @[GObject::GeneratedWrapper]
   class GestureClick < GestureSingle
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::GestureClickClass), class_init,
+        sizeof(LibGtk::GestureClick), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -21,48 +29,52 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 8).new(LibGObject::Value.new)
       _n = 0
 
-      if button
+      if !button.nil?
         (_names.to_unsafe + _n).value = "button".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, button)
         _n += 1
       end
-      if exclusive
+      if !exclusive.nil?
         (_names.to_unsafe + _n).value = "exclusive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, exclusive)
         _n += 1
       end
-      if n_points
+      if !n_points.nil?
         (_names.to_unsafe + _n).value = "n-points".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, n_points)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if touch_only
+      if !touch_only.nil?
         (_names.to_unsafe + _n).value = "touch-only".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, touch_only)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(GestureClick.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -70,19 +82,21 @@ module Gtk
       LibGtk.gtk_gesture_click_get_type
     end
 
+    # Returns a newly created `GtkGesture` that recognizes
+    # single and multiple presses.
     def initialize
       # gtk_gesture_click_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_gesture_click_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Emitted whenever a button or touch press happens.
     struct PressedSignal
       @source : GObject::Object
       @detail : String?
@@ -170,6 +184,12 @@ module Gtk
       PressedSignal.new(self)
     end
 
+    # Emitted when a button or touch is released.
+    #
+    # @n_press will report the number of press that is paired to
+    # this event, note that `Gtk::GestureClick::#stopped` may
+    # have been emitted between the press and its release, @n_press
+    # will only start over at the next press.
     struct ReleasedSignal
       @source : GObject::Object
       @detail : String?
@@ -257,6 +277,7 @@ module Gtk
       ReleasedSignal.new(self)
     end
 
+    # Emitted whenever any time/distance threshold has been exceeded.
     struct StoppedSignal
       @source : GObject::Object
       @detail : String?
@@ -332,6 +353,12 @@ module Gtk
       StoppedSignal.new(self)
     end
 
+    # Emitted whenever the gesture receives a release
+    # event that had no previous corresponding press.
+    #
+    # Due to implicit grabs, this can only happen on situations
+    # where input is grabbed elsewhere mid-press or the pressed
+    # widget voluntarily relinquishes its implicit grab.
     struct UnpairedReleaseSignal
       @source : GObject::Object
       @detail : String?

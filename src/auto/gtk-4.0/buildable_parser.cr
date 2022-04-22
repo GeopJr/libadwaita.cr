@@ -4,7 +4,7 @@ module Gtk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGtk::BuildableParser))
@@ -26,62 +26,60 @@ module Gtk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::BuildableParser)).zero?
+    end
+
     def start_element : Pointer(Void)
-      # Property getter
       _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def start_element=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGtk::BuildableParser))
       value
     end
 
     def end_element : Pointer(Void)
-      # Property getter
       _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def end_element=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGtk::BuildableParser))
       value
     end
 
     def text : Pointer(Void)
-      # Property getter
       _var = (@pointer + 16).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def text=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGtk::BuildableParser))
       value
     end
 
     def error : Pointer(Void)
-      # Property getter
       _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def error=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 24).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGtk::BuildableParser))
       value
     end
 
     def padding : Enumerable(Pointer(Void))
-      # Property getter
       _var = (@pointer + 32).as(Pointer(Pointer(Void)[4]))
       _var.value
     end
 
     def padding=(value : Enumerable(Pointer(Void)))
-      # Property setter
       _var = (@pointer + 32).as(Pointer(Pointer(Void)[4])).value = value
       value
     end

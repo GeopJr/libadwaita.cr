@@ -3,8 +3,8 @@ module Gtk
   # for choosing fonts.
   #
   # In GTK, the main objects that implement this interface are
-  # [class@Gtk.FontChooserWidget], [class@Gtk.FontChooserDialog] and
-  # [class@Gtk.FontButton].
+  # `Gtk#FontChooserWidget`, `Gtk#FontChooserDialog` and
+  # `Gtk#FontButton`.
   module FontChooser
     def font=(value : ::String) : ::String
       unsafe_value = value
@@ -71,7 +71,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "level", pointerof(value), Pointer(Void).null)
-      Gtk::FontChooserLevel.from_value(value)
+      Gtk::FontChooserLevel.new(value)
     end
 
     def preview_text=(value : ::String) : ::String
@@ -108,12 +108,11 @@ module Gtk
       # gtk_font_chooser_get_font: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_font(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
@@ -121,12 +120,11 @@ module Gtk
       # gtk_font_chooser_get_font_desc: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_font_desc(self)
 
       # Return value handling
+
       Pango::FontDescription.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -134,12 +132,11 @@ module Gtk
       # gtk_font_chooser_get_font_face: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_font_face(self)
 
       # Return value handling
+
       Pango::FontFace.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -147,12 +144,11 @@ module Gtk
       # gtk_font_chooser_get_font_family: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_font_family(self)
 
       # Return value handling
+
       Pango::FontFamily.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -160,12 +156,11 @@ module Gtk
       # gtk_font_chooser_get_font_features: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_font_features(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -173,12 +168,11 @@ module Gtk
       # gtk_font_chooser_get_font_map: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_font_map(self)
 
       # Return value handling
+
       Pango::FontMap.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -186,12 +180,11 @@ module Gtk
       # gtk_font_chooser_get_font_size: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_font_size(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -199,12 +192,11 @@ module Gtk
       # gtk_font_chooser_get_language: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_language(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -212,25 +204,23 @@ module Gtk
       # gtk_font_chooser_get_level: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_level(self)
 
       # Return value handling
-      Gtk::FontChooserLevel.from_value(_retval)
+
+      Gtk::FontChooserLevel.new(_retval)
     end
 
     def preview_text : ::String
       # gtk_font_chooser_get_preview_text: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_preview_text(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -238,12 +228,11 @@ module Gtk
       # gtk_font_chooser_get_show_preview_entry: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_font_chooser_get_show_preview_entry(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -253,12 +242,14 @@ module Gtk
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       filter = if filter.nil?
                  LibGtk::FontFilterFunc.null
                else
                  filter.to_unsafe
                end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -275,8 +266,6 @@ module Gtk
       # gtk_font_chooser_set_font: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_font_chooser_set_font(self, fontname)
 
@@ -286,8 +275,6 @@ module Gtk
     def font_desc=(font_desc : Pango::FontDescription) : Nil
       # gtk_font_chooser_set_font_desc: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_font_chooser_set_font_desc(self, font_desc)
@@ -300,7 +287,7 @@ module Gtk
       # @fontmap: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       fontmap = if fontmap.nil?
                   Pointer(Void).null
                 else
@@ -317,8 +304,6 @@ module Gtk
       # gtk_font_chooser_set_language: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_font_chooser_set_language(self, language)
 
@@ -328,8 +313,6 @@ module Gtk
     def level=(level : Gtk::FontChooserLevel) : Nil
       # gtk_font_chooser_set_level: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_font_chooser_set_level(self, level)
@@ -341,8 +324,6 @@ module Gtk
       # gtk_font_chooser_set_preview_text: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_font_chooser_set_preview_text(self, text)
 
@@ -353,18 +334,96 @@ module Gtk
       # gtk_font_chooser_set_show_preview_entry: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_font_chooser_set_show_preview_entry(self, show_preview_entry)
 
       # Return value handling
     end
 
+    struct FontActivatedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "font-activated::#{@detail}" : "font-activated"
+      end
+
+      def connect(&block : Proc(::String, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(::String, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(::String, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
+          arg0 = ::String.new(lib_arg0)
+          ::Box(Proc(::String, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(::String, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
+          arg0 = ::String.new(lib_arg0)
+          ::Box(Proc(::String, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::FontChooser, ::String, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
+          sender = Gtk::FontChooser__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = ::String.new(lib_arg0)
+          ::Box(Proc(Gtk::FontChooser, ::String, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::FontChooser, ::String, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
+          sender = Gtk::FontChooser__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = ::String.new(lib_arg0)
+          ::Box(Proc(Gtk::FontChooser, ::String, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(fontname : ::String) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "font-activated", fontname)
+      end
+    end
+
+    def font_activated_signal
+      FontActivatedSignal.new(self)
+    end
+
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class FontChooser__Impl < GObject::Object
     include FontChooser
 

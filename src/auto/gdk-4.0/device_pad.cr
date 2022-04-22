@@ -5,28 +5,27 @@ module Gdk
   # It allows querying the features provided by the pad device.
   #
   # Tablet pads may contain one or more groups, each containing a subset
-  # of the buttons/rings/strips available. [method@Gdk.DevicePad.get_n_groups]
-  # can be used to obtain the number of groups, [method@Gdk.DevicePad.get_n_features]
-  # and [method@Gdk.DevicePad.get_feature_group] can be combined to find out
+  # of the buttons/rings/strips available. `Gdk::DevicePad#n_groups`
+  # can be used to obtain the number of groups, `Gdk::DevicePad#n_features`
+  # and `Gdk::DevicePad#feature_group` can be combined to find out
   # the number of buttons/rings/strips the device has, and how are they grouped.
   #
   # Each of those groups have different modes, which may be used to map each
   # individual pad feature to multiple actions. Only one mode is effective
   # (current) for each given group, different groups may have different
   # current modes. The number of available modes in a group can be found
-  # out through [method@Gdk.DevicePad.get_group_n_modes], and the current mode
+  # out through `Gdk::DevicePad#group_n_modes`, and the current mode
   # for a given group will be notified through events of type `GDK_PAD_GROUP_MODE`.
   module DevicePad
     def feature_group(feature : Gdk::DevicePadFeature, feature_idx : Int32) : Int32
       # gdk_device_pad_get_feature_group: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_device_pad_get_feature_group(self, feature, feature_idx)
 
       # Return value handling
+
       _retval
     end
 
@@ -34,12 +33,11 @@ module Gdk
       # gdk_device_pad_get_group_n_modes: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_device_pad_get_group_n_modes(self, group_idx)
 
       # Return value handling
+
       _retval
     end
 
@@ -47,12 +45,11 @@ module Gdk
       # gdk_device_pad_get_n_features: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_device_pad_get_n_features(self, feature)
 
       # Return value handling
+
       _retval
     end
 
@@ -60,12 +57,11 @@ module Gdk
       # gdk_device_pad_get_n_groups: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_device_pad_get_n_groups(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -73,6 +69,7 @@ module Gdk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class DevicePad__Impl < GObject::Object
     include DevicePad
 

@@ -4,7 +4,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::TypeInstance))
@@ -22,15 +22,22 @@ module GObject
     def finalize
     end
 
-    def g_class : GObject::TypeClass
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::TypeInstance)).zero?
+    end
+
+    def g_class!
+      self.g_class.not_nil!
+    end
+
+    def g_class : GObject::TypeClass?
       _var = (@pointer + 0).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GObject::TypeClass.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def g_class=(value : GObject::TypeClass)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def g_class=(value : GObject::TypeClass?)
+      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
@@ -38,12 +45,11 @@ module GObject
       # g_type_instance_get_private: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGObject.g_type_instance_get_private(self, private_type)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 

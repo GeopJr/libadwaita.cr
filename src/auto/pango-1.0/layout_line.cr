@@ -3,13 +3,13 @@ module Pango
   # out a paragraph via `PangoLayout`.
   #
   # `PangoLayoutLine` structures are obtained by calling
-  # [method@Pango.Layout.get_line] and are only valid until the text,
+  # `Pango::Layout#line` and are only valid until the text,
   # attributes, or settings of the parent `PangoLayout` are modified.
   class LayoutLine
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::LayoutLine))
@@ -32,74 +32,76 @@ module Pango
     def finalize
     end
 
-    def layout : Pango::Layout
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::LayoutLine)).zero?
+    end
+
+    def layout!
+      self.layout.not_nil!
+    end
+
+    def layout : Pango::Layout?
       _var = (@pointer + 0).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Pango::Layout.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def layout=(value : Pango::Layout)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def layout=(value : Pango::Layout?)
+      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
     def start_index : Int32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Int32))
       _var.value
     end
 
     def start_index=(value : Int32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Int32)).value = value
       value
     end
 
     def length : Int32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Int32))
       _var.value
     end
 
     def length=(value : Int32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Int32)).value = value
       value
     end
 
-    def runs : GLib::SList
-      # Property getter
+    def runs!
+      self.runs.not_nil!
+    end
+
+    def runs : GLib::SList?
       _var = (@pointer + 16).as(Pointer(Pointer(LibGLib::SList)))
+      return if _var.value.null?
       GLib::SList(Pango::GlyphItem).new(_var.value, GICrystal::Transfer::None)
     end
 
-    def runs=(value : GLib::SList)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(LibGLib::SList))).value = value
+    def runs=(value : GLib::SList?)
+      _var = (@pointer + 16).as(Pointer(Pointer(LibGLib::SList))).value = value.nil? ? Pointer(LibGLib::SList).null : value
       value
     end
 
     def is_paragraph_start : UInt32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(UInt32))
       _var.value
     end
 
     def is_paragraph_start=(value : UInt32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(UInt32)).value = value
       value
     end
 
     def resolved_dir : UInt32
-      # Property getter
       _var = (@pointer + 28).as(Pointer(UInt32))
       _var.value
     end
 
     def resolved_dir=(value : UInt32)
-      # Property setter
       _var = (@pointer + 28).as(Pointer(UInt32)).value = value
       value
     end
@@ -115,15 +117,20 @@ module Pango
       # @logical_rect: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       ink_rect = Pointer(Void).null
-      logical_rect = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       ink_rect = Pango::Rectangle.new
+      # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      logical_rect = Pango::Rectangle.new
 
       # C call
       LibPango.pango_layout_line_get_extents(self, ink_rect, logical_rect)
 
       # Return value handling
+
       ink_rect
     end
 
@@ -132,7 +139,7 @@ module Pango
       # @height: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
 
       # C call
@@ -145,12 +152,11 @@ module Pango
       # pango_layout_line_get_length: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_layout_line_get_length(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -160,15 +166,20 @@ module Pango
       # @logical_rect: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       ink_rect = Pointer(Void).null
-      logical_rect = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       ink_rect = Pango::Rectangle.new
+      # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      logical_rect = Pango::Rectangle.new
 
       # C call
       LibPango.pango_layout_line_get_pixel_extents(self, ink_rect, logical_rect)
 
       # Return value handling
+
       ink_rect
     end
 
@@ -176,25 +187,23 @@ module Pango
       # pango_layout_line_get_resolved_direction: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_layout_line_get_resolved_direction(self)
 
       # Return value handling
-      Pango::Direction.from_value(_retval)
+
+      Pango::Direction.new(_retval)
     end
 
     def start_index : Int32
       # pango_layout_line_get_start_index: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_layout_line_get_start_index(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -204,8 +213,9 @@ module Pango
       # @n_ranges: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_ranges = ranges.size
+      # Generator::ArrayArgPlan
       ranges = ranges.to_a.to_unsafe
 
       # C call
@@ -219,8 +229,6 @@ module Pango
       # @x_pos: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibPango.pango_layout_line_index_to_x(self, index_, trailing, x_pos)
 
@@ -231,12 +239,11 @@ module Pango
       # pango_layout_line_is_paragraph_start: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_layout_line_is_paragraph_start(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -244,20 +251,17 @@ module Pango
       # pango_layout_line_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_layout_line_ref(self)
 
       # Return value handling
+
       Pango::LayoutLine.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # pango_layout_line_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_layout_line_unref(self)
@@ -271,12 +275,11 @@ module Pango
       # @trailing: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_layout_line_x_to_index(self, x_pos, index_, trailing)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 

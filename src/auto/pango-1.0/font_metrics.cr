@@ -17,7 +17,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::FontMetrics))
@@ -44,122 +44,106 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::FontMetrics)).zero?
+    end
+
     def ref_count : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def ref_count=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def ascent : Int32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Int32))
       _var.value
     end
 
     def ascent=(value : Int32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Int32)).value = value
       value
     end
 
     def descent : Int32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Int32))
       _var.value
     end
 
     def descent=(value : Int32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Int32)).value = value
       value
     end
 
     def height : Int32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Int32))
       _var.value
     end
 
     def height=(value : Int32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Int32)).value = value
       value
     end
 
     def approximate_char_width : Int32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Int32))
       _var.value
     end
 
     def approximate_char_width=(value : Int32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Int32)).value = value
       value
     end
 
     def approximate_digit_width : Int32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(Int32))
       _var.value
     end
 
     def approximate_digit_width=(value : Int32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(Int32)).value = value
       value
     end
 
     def underline_position : Int32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Int32))
       _var.value
     end
 
     def underline_position=(value : Int32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Int32)).value = value
       value
     end
 
     def underline_thickness : Int32
-      # Property getter
       _var = (@pointer + 28).as(Pointer(Int32))
       _var.value
     end
 
     def underline_thickness=(value : Int32)
-      # Property setter
       _var = (@pointer + 28).as(Pointer(Int32)).value = value
       value
     end
 
     def strikethrough_position : Int32
-      # Property getter
       _var = (@pointer + 32).as(Pointer(Int32))
       _var.value
     end
 
     def strikethrough_position=(value : Int32)
-      # Property setter
       _var = (@pointer + 32).as(Pointer(Int32)).value = value
       value
     end
 
     def strikethrough_thickness : Int32
-      # Property getter
       _var = (@pointer + 36).as(Pointer(Int32))
       _var.value
     end
 
     def strikethrough_thickness=(value : Int32)
-      # Property setter
       _var = (@pointer + 36).as(Pointer(Int32)).value = value
       value
     end
@@ -173,12 +157,11 @@ module Pango
       # pango_font_metrics_get_approximate_char_width: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_get_approximate_char_width(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -186,12 +169,11 @@ module Pango
       # pango_font_metrics_get_approximate_digit_width: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_get_approximate_digit_width(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -199,12 +181,11 @@ module Pango
       # pango_font_metrics_get_ascent: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_get_ascent(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -212,12 +193,11 @@ module Pango
       # pango_font_metrics_get_descent: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_get_descent(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -225,12 +205,11 @@ module Pango
       # pango_font_metrics_get_height: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_get_height(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -238,12 +217,11 @@ module Pango
       # pango_font_metrics_get_strikethrough_position: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_get_strikethrough_position(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -251,12 +229,11 @@ module Pango
       # pango_font_metrics_get_strikethrough_thickness: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_get_strikethrough_thickness(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -264,12 +241,11 @@ module Pango
       # pango_font_metrics_get_underline_position: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_get_underline_position(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -277,12 +253,11 @@ module Pango
       # pango_font_metrics_get_underline_thickness: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_get_underline_thickness(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -290,20 +265,17 @@ module Pango
       # pango_font_metrics_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_font_metrics_ref(self)
 
       # Return value handling
+
       Pango::FontMetrics.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def unref : Nil
       # pango_font_metrics_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_font_metrics_unref(self)

@@ -3,7 +3,7 @@ module Gtk
   # paintables.
   #
   # `GdkPaintable`s implementing the interface will have the
-  # [vfunc@Gtk.SymbolicPaintable.snapshot_symbolic] function called and
+  # `Gtk::SymbolicPaintable#snapshot_symbolic` function called and
   # have the colors for drawing symbolic icons passed. At least 4 colors are guaranteed
   # to be passed every time.
   #
@@ -17,8 +17,9 @@ module Gtk
       # @colors: (array length=n_colors element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_colors = colors.size
+      # Generator::ArrayArgPlan
       colors = colors.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -31,6 +32,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class SymbolicPaintable__Impl < GObject::Object
     include SymbolicPaintable
 

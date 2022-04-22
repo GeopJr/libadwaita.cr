@@ -18,10 +18,19 @@ lib LibGsk
   # Interface types
 
   # Structs
+  type BroadwayRendererClass = Void # Struct with zero bytes
+
+  type CairoRendererClass = Void # Struct with zero bytes
 
   struct ColorStop # 20 bytes long
     offset : Float32
     color : LibGdk::RGBA
+  end
+
+  type GLRendererClass = Void # Struct with zero bytes
+
+  struct GLShaderClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
   end
 
   struct ParseLocation # 40 bytes long
@@ -31,6 +40,8 @@ lib LibGsk
     line_bytes : UInt64
     line_chars : UInt64
   end
+
+  type RendererClass = Void # Struct with zero bytes
 
   struct RoundedRect # 48 bytes long
     bounds : LibGraphene::Rect
@@ -47,6 +58,8 @@ lib LibGsk
   end
 
   type Transform = Void # Struct with zero bytes
+
+  type VulkanRendererClass = Void # Struct with zero bytes
 
   # Unions
 
@@ -114,6 +127,8 @@ lib LibGsk
   type TextureNode = Void # Object struct with no fields
 
   type TransformNode = Void # Object struct with no fields
+
+  type VulkanRenderer = Void # Object struct with no fields
 
   # All C Functions
   fun gsk_blend_node_get_blend_mode(this : Void*) : UInt32
@@ -339,4 +354,6 @@ lib LibGsk
   fun gsk_value_get_render_node(value : Pointer(Void)) : Pointer(Void)
   fun gsk_value_set_render_node(value : Pointer(Void), node : Pointer(Void)) : Void
   fun gsk_value_take_render_node(value : Pointer(Void), node : Pointer(Void)) : Void
+  fun gsk_vulkan_renderer_get_type : UInt64
+  fun gsk_vulkan_renderer_new : Pointer(Void)
 end

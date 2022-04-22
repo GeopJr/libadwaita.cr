@@ -12,7 +12,7 @@ module Gsk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(Transform.g_type, pointer)
@@ -25,6 +25,10 @@ module Gsk
       LibGObject.g_boxed_free(Transform.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGsk::Transform)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGsk.gsk_transform_get_type
@@ -34,12 +38,11 @@ module Gsk
       # gsk_transform_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -48,7 +51,7 @@ module Gsk
       # @second: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       second = if second.nil?
                  Pointer(Void).null
                else
@@ -59,6 +62,7 @@ module Gsk
       _retval = LibGsk.gsk_transform_equal(self, second)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -66,25 +70,23 @@ module Gsk
       # gsk_transform_get_category: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_get_category(self)
 
       # Return value handling
-      Gsk::TransformCategory.from_value(_retval)
+
+      Gsk::TransformCategory.new(_retval)
     end
 
     def invert : Gsk::Transform?
       # gsk_transform_invert: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_invert(self)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -92,12 +94,11 @@ module Gsk
       # gsk_transform_matrix: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_matrix(self, matrix)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -105,20 +106,17 @@ module Gsk
       # gsk_transform_perspective: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_perspective(self, depth)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full)
     end
 
     def print(string : GLib::String) : Nil
       # gsk_transform_print: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_transform_print(self, string)
@@ -130,12 +128,11 @@ module Gsk
       # gsk_transform_ref: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_ref(self)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -143,12 +140,11 @@ module Gsk
       # gsk_transform_rotate: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_rotate(self, angle)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -156,12 +152,11 @@ module Gsk
       # gsk_transform_rotate_3d: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_rotate_3d(self, angle, axis)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -169,12 +164,11 @@ module Gsk
       # gsk_transform_scale: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_scale(self, factor_x, factor_y)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -182,12 +176,11 @@ module Gsk
       # gsk_transform_scale_3d: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_scale_3d(self, factor_x, factor_y, factor_z)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -195,12 +188,11 @@ module Gsk
       # gsk_transform_skew: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_skew(self, skew_x, skew_y)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -213,8 +205,6 @@ module Gsk
       # @out_dx: (out) (transfer full)
       # @out_dy: (out) (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_transform_to_2d(self, out_xx, out_yx, out_xy, out_yy, out_dx, out_dy)
@@ -233,8 +223,6 @@ module Gsk
       # @out_dy: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGsk.gsk_transform_to_2d_components(self, out_skew_x, out_skew_y, out_scale_x, out_scale_y, out_angle, out_dx, out_dy)
 
@@ -249,8 +237,6 @@ module Gsk
       # @out_dy: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGsk.gsk_transform_to_affine(self, out_scale_x, out_scale_y, out_dx, out_dy)
 
@@ -262,13 +248,14 @@ module Gsk
       # @out_matrix: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       out_matrix = Graphene::Matrix.new
 
       # C call
       LibGsk.gsk_transform_to_matrix(self, out_matrix)
 
       # Return value handling
+
       out_matrix
     end
 
@@ -276,12 +263,11 @@ module Gsk
       # gsk_transform_to_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -290,8 +276,6 @@ module Gsk
       # @out_dx: (out) (transfer full)
       # @out_dy: (out) (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_transform_to_translate(self, out_dx, out_dy)
@@ -304,7 +288,7 @@ module Gsk
       # @other: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       other = if other.nil?
                 Pointer(Void).null
               else
@@ -315,6 +299,7 @@ module Gsk
       _retval = LibGsk.gsk_transform_transform(self, other)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -323,13 +308,14 @@ module Gsk
       # @out_rect: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       out_rect = Graphene::Rect.new
 
       # C call
       LibGsk.gsk_transform_transform_bounds(self, rect, out_rect)
 
       # Return value handling
+
       out_rect
     end
 
@@ -338,13 +324,14 @@ module Gsk
       # @out_point: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       out_point = Graphene::Point.new
 
       # C call
       LibGsk.gsk_transform_transform_point(self, point, out_point)
 
       # Return value handling
+
       out_point
     end
 
@@ -352,12 +339,11 @@ module Gsk
       # gsk_transform_translate: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_translate(self, point)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -365,20 +351,17 @@ module Gsk
       # gsk_transform_translate_3d: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_transform_translate_3d(self, point)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def unref : Nil
       # gsk_transform_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_transform_unref(self)
@@ -391,13 +374,11 @@ module Gsk
       # @out_transform: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-      LibGObject.g_object_ref(out_transform)
-
       # C call
       _retval = LibGsk.gsk_transform_parse(string, out_transform)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 

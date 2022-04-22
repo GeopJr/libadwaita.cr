@@ -10,7 +10,7 @@ module Gtk
   # the widgets ancestors. Most commonly, these will be the actions with
   # the “win.” or “app.” prefix that are associated with the
   # `GtkApplicationWindow` or `GtkApplication`, but other action groups that
-  # are added with [method@Gtk.Widget.insert_action_group] will be consulted
+  # are added with `Gtk::Widget#insert_action_group` will be consulted
   # as well.
   module Actionable
     def action_name=(value : ::String) : ::String
@@ -47,12 +47,11 @@ module Gtk
       # gtk_actionable_get_action_name: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_actionable_get_action_name(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -60,12 +59,11 @@ module Gtk
       # gtk_actionable_get_action_target_value: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_actionable_get_action_target_value(self)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -74,7 +72,7 @@ module Gtk
       # @action_name: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       action_name = if action_name.nil?
                       Pointer(LibC::Char).null
                     else
@@ -92,13 +90,14 @@ module Gtk
       # @target_value: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       target_value = if target_value.nil?
                        Pointer(Void).null
+                     elsif !target_value.is_a?(GLib::Variant)
+                       GLib::Variant.new(target_value).to_unsafe
                      else
                        target_value.to_unsafe
                      end
-      target_value = GLib::Variant.new(target_value) unless target_value.is_a?(GLib::Variant)
 
       # C call
       LibGtk.gtk_actionable_set_action_target_value(self, target_value)
@@ -110,8 +109,6 @@ module Gtk
       # gtk_actionable_set_detailed_action_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_actionable_set_detailed_action_name(self, detailed_action_name)
 
@@ -122,6 +119,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Actionable__Impl < GObject::Object
     include Actionable
 

@@ -4,7 +4,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(FileAttributeMatcher.g_type, pointer)
@@ -17,6 +17,10 @@ module Gio
       LibGObject.g_boxed_free(FileAttributeMatcher.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::FileAttributeMatcher)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGio.g_file_attribute_matcher_get_type
@@ -26,12 +30,11 @@ module Gio
       # g_file_attribute_matcher_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_attribute_matcher_new(attributes)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -39,12 +42,11 @@ module Gio
       # g_file_attribute_matcher_enumerate_namespace: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_attribute_matcher_enumerate_namespace(self, ns)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -52,12 +54,11 @@ module Gio
       # g_file_attribute_matcher_enumerate_next: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_attribute_matcher_enumerate_next(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -65,12 +66,11 @@ module Gio
       # g_file_attribute_matcher_matches: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_attribute_matcher_matches(self, attribute)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -78,12 +78,11 @@ module Gio
       # g_file_attribute_matcher_matches_only: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_attribute_matcher_matches_only(self, attribute)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -91,12 +90,11 @@ module Gio
       # g_file_attribute_matcher_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_attribute_matcher_ref(self)
 
       # Return value handling
+
       Gio::FileAttributeMatcher.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -105,7 +103,7 @@ module Gio
       # @subtract: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       subtract = if subtract.nil?
                    Pointer(Void).null
                  else
@@ -116,6 +114,7 @@ module Gio
       _retval = LibGio.g_file_attribute_matcher_subtract(self, subtract)
 
       # Return value handling
+
       Gio::FileAttributeMatcher.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -123,20 +122,17 @@ module Gio
       # g_file_attribute_matcher_to_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_attribute_matcher_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
     def unref : Nil
       # g_file_attribute_matcher_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_file_attribute_matcher_unref(self)

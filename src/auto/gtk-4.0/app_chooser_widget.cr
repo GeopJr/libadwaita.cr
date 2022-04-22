@@ -10,7 +10,7 @@ require "./constraint_target"
 module Gtk
   # `GtkAppChooserWidget` is a widget for selecting applications.
   #
-  # It is the main building block for [class@Gtk.AppChooserDialog].
+  # It is the main building block for `Gtk#AppChooserDialog`.
   # Most applications only need to use the latter; but you can use
   # this widget as part of a larger widget if you have special needs.
   #
@@ -21,7 +21,7 @@ module Gtk
   # [property@Gtk.AppChooserWidget:show-fallback],
   # [property@Gtk.AppChooserWidget:show-other] and
   # [property@Gtk.AppChooserWidget:show-all] properties. See the
-  # [iface@Gtk.AppChooser] documentation for more information about these
+  # `Gtk#AppChooser` documentation for more information about these
   # groups of applications.
   #
   # To keep track of the selected application, use the
@@ -31,6 +31,7 @@ module Gtk
   # # CSS nodes
   #
   # `GtkAppChooserWidget` has a single CSS node with name appchooser.
+  @[GObject::GeneratedWrapper]
   class AppChooserWidget < Widget
     include Accessible
     include AppChooser
@@ -38,6 +39,13 @@ module Gtk
     include ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::AppChooserWidget), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -49,218 +57,223 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 42).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if content_type
+      if !content_type.nil?
         (_names.to_unsafe + _n).value = "content-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, content_type)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if default_text
+      if !default_text.nil?
         (_names.to_unsafe + _n).value = "default-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_text)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if show_all
+      if !show_all.nil?
         (_names.to_unsafe + _n).value = "show-all".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_all)
         _n += 1
       end
-      if show_default
+      if !show_default.nil?
         (_names.to_unsafe + _n).value = "show-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_default)
         _n += 1
       end
-      if show_fallback
+      if !show_fallback.nil?
         (_names.to_unsafe + _n).value = "show-fallback".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_fallback)
         _n += 1
       end
-      if show_other
+      if !show_other.nil?
         (_names.to_unsafe + _n).value = "show-other".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_other)
         _n += 1
       end
-      if show_recommended
+      if !show_recommended.nil?
         (_names.to_unsafe + _n).value = "show-recommended".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_recommended)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(AppChooserWidget.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -358,103 +371,110 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `GtkAppChooserWidget` for applications
+    # that can handle content of the given type.
     def initialize(content_type : ::String)
       # gtk_app_chooser_widget_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_app_chooser_widget_new(content_type)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Returns the text that is shown if there are not applications
+    # that can handle the content type.
     def default_text : ::String?
       # gtk_app_chooser_widget_get_default_text: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_app_chooser_widget_get_default_text(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets whether the app chooser should show all applications
+    # in a flat list.
     def show_all : Bool
       # gtk_app_chooser_widget_get_show_all: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_app_chooser_widget_get_show_all(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether the app chooser should show the default handler
+    # for the content type in a separate section.
     def show_default : Bool
       # gtk_app_chooser_widget_get_show_default: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_app_chooser_widget_get_show_default(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether the app chooser should show related applications
+    # for the content type in a separate section.
     def show_fallback : Bool
       # gtk_app_chooser_widget_get_show_fallback: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_app_chooser_widget_get_show_fallback(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether the app chooser should show applications
+    # which are unrelated to the content type.
     def show_other : Bool
       # gtk_app_chooser_widget_get_show_other: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_app_chooser_widget_get_show_other(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether the app chooser should show recommended applications
+    # for the content type in a separate section.
     def show_recommended : Bool
       # gtk_app_chooser_widget_get_show_recommended: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_app_chooser_widget_get_show_recommended(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets the text that is shown if there are not applications
+    # that can handle the content type.
     def default_text=(text : ::String) : Nil
       # gtk_app_chooser_widget_set_default_text: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_app_chooser_widget_set_default_text(self, text)
@@ -462,11 +482,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the app chooser should show all applications
+    # in a flat list.
     def show_all=(setting : Bool) : Nil
       # gtk_app_chooser_widget_set_show_all: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_app_chooser_widget_set_show_all(self, setting)
@@ -474,11 +494,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the app chooser should show the default handler
+    # for the content type in a separate section.
     def show_default=(setting : Bool) : Nil
       # gtk_app_chooser_widget_set_show_default: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_app_chooser_widget_set_show_default(self, setting)
@@ -486,11 +506,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the app chooser should show related applications
+    # for the content type in a separate section.
     def show_fallback=(setting : Bool) : Nil
       # gtk_app_chooser_widget_set_show_fallback: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_app_chooser_widget_set_show_fallback(self, setting)
@@ -498,11 +518,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the app chooser should show applications
+    # which are unrelated to the content type.
     def show_other=(setting : Bool) : Nil
       # gtk_app_chooser_widget_set_show_other: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_app_chooser_widget_set_show_other(self, setting)
@@ -510,11 +530,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the app chooser should show recommended applications
+    # for the content type in a separate section.
     def show_recommended=(setting : Bool) : Nil
       # gtk_app_chooser_widget_set_show_recommended: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_app_chooser_widget_set_show_recommended(self, setting)
@@ -522,6 +542,11 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when an application item is activated from the widget's list.
+    #
+    # This usually happens when the user double clicks an item, or an item
+    # is selected and the user presses one of the keys Space, Shift+Space,
+    # Return or Enter.
     struct ApplicationActivatedSignal
       @source : GObject::Object
       @detail : String?
@@ -601,6 +626,7 @@ module Gtk
       ApplicationActivatedSignal.new(self)
     end
 
+    # Emitted when an application item is selected from the widget's list.
     struct ApplicationSelectedSignal
       @source : GObject::Object
       @detail : String?

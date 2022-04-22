@@ -69,7 +69,7 @@ module Pango
   # A `PangoGlyph` value that indicates a zero-width empty glpyh.
   #
   # This is useful for example in shaper modules, to use as the glyph for
-  # various zero-width Unicode characters (those passing [func@is_zero_width]).
+  # various zero-width Unicode characters (those passing `#is_zero_width?`).
   GLYPH_EMPTY = 268435455_u32
   # A `PangoGlyph` value for invalid input.
   #
@@ -96,11 +96,11 @@ module Pango
   # The major component of the version of Pango available at compile-time.
   VERSION_MAJOR = 1
   # The micro component of the version of Pango available at compile-time.
-  VERSION_MICRO = 6
+  VERSION_MICRO = 4
   # The minor component of the version of Pango available at compile-time.
   VERSION_MINOR = 50
   # A string literal containing the version of Pango available at compile-time.
-  VERSION_STRING = "1.50.6"
+  VERSION_STRING = "1.50.4"
 
   # Base class for all errors in this module.
   class PangoError < RuntimeError
@@ -117,10 +117,10 @@ module Pango
   # `PangoAlignment` describes how to align the lines of a `PangoLayout`
   # within the available space.
   #
-  # If the `PangoLayout` is set to justify using [method@Pango.Layout.set_justify],
+  # If the `PangoLayout` is set to justify using `Pango::Layout#justify=`,
   # this only affects partial lines.
   #
-  # See [method@Pango.Layout.set_auto_dir] for how text direction affects
+  # See `Pango::Layout#auto_dir=` for how text direction affects
   # the interpretation of `PangoAlignment` values.
   enum Alignment : UInt32
     # Put all available space on the right
@@ -134,84 +134,84 @@ module Pango
   # The `PangoAttrType` distinguishes between different types of attributes.
   #
   # Along with the predefined values, it is possible to allocate additional
-  # values for custom attributes using [func@AttrType.register]. The predefined
+  # values for custom attributes using `AttrType#register`. The predefined
   # values are given below. The type of structure used to store the attribute is
   # listed in parentheses after the description.
   enum AttrType : UInt32
     # does not happen
     Invalid = 0
-    # language ([struct@Pango.AttrLanguage])
+    # language (`Pango#AttrLanguage`)
     Language = 1
-    # font family name list ([struct@Pango.AttrString])
+    # font family name list (`Pango#AttrString`)
     Family = 2
-    # font slant style ([struct@Pango.AttrInt])
+    # font slant style (`Pango#AttrInt`)
     Style = 3
-    # font weight ([struct@Pango.AttrInt])
+    # font weight (`Pango#AttrInt`)
     Weight = 4
-    # font variant (normal or small caps) ([struct@Pango.AttrInt])
+    # font variant (normal or small caps) (`Pango#AttrInt`)
     Variant = 5
-    # font stretch ([struct@Pango.AttrInt])
+    # font stretch (`Pango#AttrInt`)
     Stretch = 6
-    # font size in points scaled by %PANGO_SCALE ([struct@Pango.AttrInt])
+    # font size in points scaled by %PANGO_SCALE (`Pango#AttrInt`)
     Size = 7
-    # font description ([struct@Pango.AttrFontDesc])
+    # font description (`Pango#AttrFontDesc`)
     FontDesc = 8
-    # foreground color ([struct@Pango.AttrColor])
+    # foreground color (`Pango#AttrColor`)
     Foreground = 9
-    # background color ([struct@Pango.AttrColor])
+    # background color (`Pango#AttrColor`)
     Background = 10
-    # whether the text has an underline ([struct@Pango.AttrInt])
+    # whether the text has an underline (`Pango#AttrInt`)
     Underline = 11
-    # whether the text is struck-through ([struct@Pango.AttrInt])
+    # whether the text is struck-through (`Pango#AttrInt`)
     Strikethrough = 12
-    # baseline displacement ([struct@Pango.AttrInt])
+    # baseline displacement (`Pango#AttrInt`)
     Rise = 13
-    # shape ([struct@Pango.AttrShape])
+    # shape (`Pango#AttrShape`)
     Shape = 14
-    # font size scale factor ([struct@Pango.AttrFloat])
+    # font size scale factor (`Pango#AttrFloat`)
     Scale = 15
-    # whether fallback is enabled ([struct@Pango.AttrInt])
+    # whether fallback is enabled (`Pango#AttrInt`)
     Fallback = 16
-    # letter spacing ([struct@PangoAttrInt])
+    # letter spacing (`#PangoAttrInt`)
     LetterSpacing = 17
-    # underline color ([struct@Pango.AttrColor])
+    # underline color (`Pango#AttrColor`)
     UnderlineColor = 18
-    # strikethrough color ([struct@Pango.AttrColor])
+    # strikethrough color (`Pango#AttrColor`)
     StrikethroughColor = 19
-    # font size in pixels scaled by %PANGO_SCALE ([struct@Pango.AttrInt])
+    # font size in pixels scaled by %PANGO_SCALE (`Pango#AttrInt`)
     AbsoluteSize = 20
-    # base text gravity ([struct@Pango.AttrInt])
+    # base text gravity (`Pango#AttrInt`)
     Gravity = 21
-    # gravity hint ([struct@Pango.AttrInt])
+    # gravity hint (`Pango#AttrInt`)
     GravityHint = 22
-    # OpenType font features ([struct@Pango.AttrFontFeatures]). Since 1.38
+    # OpenType font features (`Pango#AttrFontFeatures`). Since 1.38
     FontFeatures = 23
-    # foreground alpha ([struct@Pango.AttrInt]). Since 1.38
+    # foreground alpha (`Pango#AttrInt`). Since 1.38
     ForegroundAlpha = 24
-    # background alpha ([struct@Pango.AttrInt]). Since 1.38
+    # background alpha (`Pango#AttrInt`). Since 1.38
     BackgroundAlpha = 25
-    # whether breaks are allowed ([struct@Pango.AttrInt]). Since 1.44
+    # whether breaks are allowed (`Pango#AttrInt`). Since 1.44
     AllowBreaks = 26
-    # how to render invisible characters ([struct@Pango.AttrInt]). Since 1.44
+    # how to render invisible characters (`Pango#AttrInt`). Since 1.44
     Show = 27
-    # whether to insert hyphens at intra-word line breaks ([struct@Pango.AttrInt]). Since 1.44
+    # whether to insert hyphens at intra-word line breaks (`Pango#AttrInt`). Since 1.44
     InsertHyphens = 28
-    # whether the text has an overline ([struct@Pango.AttrInt]). Since 1.46
+    # whether the text has an overline (`Pango#AttrInt`). Since 1.46
     Overline = 29
-    # overline color ([struct@Pango.AttrColor]). Since 1.46
+    # overline color (`Pango#AttrColor`). Since 1.46
     OverlineColor = 30
-    # line height factor ([struct@Pango.AttrFloat]). Since: 1.50
+    # line height factor (`Pango#AttrFloat`). Since: 1.50
     LineHeight = 31
-    # line height ([struct@Pango.AttrInt]). Since: 1.50
+    # line height (`Pango#AttrInt`). Since: 1.50
     AbsoluteLineHeight = 32
     TextTransform      = 33
-    # override segmentation to classify the range of the attribute as a single word ([struct@Pango.AttrInt]). Since 1.50
+    # override segmentation to classify the range of the attribute as a single word (`Pango#AttrInt`). Since 1.50
     Word = 34
-    # override segmentation to classify the range of the attribute as a single sentence ([struct@Pango.AttrInt]). Since 1.50
+    # override segmentation to classify the range of the attribute as a single sentence (`Pango#AttrInt`). Since 1.50
     Sentence = 35
-    # baseline displacement ([struct@Pango.AttrInt]). Since 1.50
+    # baseline displacement (`Pango#AttrInt`). Since 1.50
     BaselineShift = 36
-    # font-relative size change ([struct@Pango.AttrInt]). Since 1.50
+    # font-relative size change (`Pango#AttrInt`). Since 1.50
     FontScale = 37
   end
 
@@ -309,11 +309,11 @@ module Pango
   # algorithm.
   #
   # Not every value in this enumeration makes sense for every usage of
-  # `PangoDirection`; for example, the return value of [func@unichar_direction]
-  # and [func@find_base_dir] cannot be `PANGO_DIRECTION_WEAK_LTR` or
+  # `PangoDirection`; for example, the return value of `#unichar_direction`
+  # and `#find_base_dir` cannot be `PANGO_DIRECTION_WEAK_LTR` or
   # `PANGO_DIRECTION_WEAK_RTL`, since every character is either neutral
   # or has a strong direction; on the other hand `PANGO_DIRECTION_NEUTRAL`
-  # doesn't make sense to pass to [func@itemize_with_base_dir].
+  # doesn't make sense to pass to `#itemize_with_base_dir`.
   #
   # The `PANGO_DIRECTION_TTB_LTR`, `PANGO_DIRECTION_TTB_RTL` values come from
   # an earlier interpretation of this enumeration as the writing direction
@@ -376,15 +376,15 @@ module Pango
   # of text.
   #
   # This is useful when rendering vertical text layouts. In those situations,
-  # the layout is rotated using a non-identity [struct@Pango.Matrix], and then
+  # the layout is rotated using a non-identity `Pango#Matrix`, and then
   # glyph orientation is controlled using `PangoGravity`.
   #
   # Not every value in this enumeration makes sense for every usage of
   # `PangoGravity`; for example, %PANGO_GRAVITY_AUTO only can be passed to
-  # [method@Pango.Context.set_base_gravity] and can only be returned by
-  # [method@Pango.Context.get_base_gravity].
+  # `Pango::Context#base_gravity=` and can only be returned by
+  # `Pango::Context#base_gravity`.
   #
-  # See also: [enum@Pango.GravityHint]
+  # See also: `Pango#GravityHint`
   enum Gravity : UInt32
     # Glyphs stand upright (default) <img align="right" valign="center" src="m-south.png">
     South = 0
@@ -403,7 +403,7 @@ module Pango
   #
   # That is, English excerpts in a vertical paragraph for example.
   #
-  # See also [enum@Pango.Gravity]
+  # See also `Pango#Gravity`
   enum GravityHint : UInt32
     # scripts will take their natural gravity based
     #   on the base gravity and the script.  This is the default.
@@ -451,7 +451,7 @@ module Pango
   #
   # Note that this enumeration is deprecated and will not be updated to include values
   # in newer versions of the Unicode standard. Applications should use the
-  # [enum@GLib.UnicodeScript] enumeration instead,
+  # `GLib#UnicodeScript` enumeration instead,
   # whose values are interchangeable with `PangoScript`.
   enum Script : Int32
     # a value never returned from pango_script_for_unichar()
@@ -928,9 +928,1315 @@ module Pango
     end
   end
 
+  def self.attr_allow_breaks_new(allow_breaks : Bool) : Pango::Attribute
+    # pango_attr_allow_breaks_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_allow_breaks_new(allow_breaks)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_background_alpha_new(alpha : UInt16) : Pango::Attribute
+    # pango_attr_background_alpha_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_background_alpha_new(alpha)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_background_new(red : UInt16, green : UInt16, blue : UInt16) : Pango::Attribute
+    # pango_attr_background_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_background_new(red, green, blue)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_baseline_shift_new(shift : Int32) : Pango::Attribute
+    # pango_attr_baseline_shift_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_baseline_shift_new(shift)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_break(text : ::String, length : Int32, attr_list : Pango::AttrList, offset : Int32, attrs : Enumerable(Pango::LogAttr)) : Nil
+    # pango_attr_break: (None)
+    # @attrs: (array length=attrs_len element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    attrs_len = attrs.size
+    # Generator::ArrayArgPlan
+    attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    LibPango.pango_attr_break(text, length, attr_list, offset, attrs, attrs_len)
+
+    # Return value handling
+  end
+
+  def self.attr_fallback_new(enable_fallback : Bool) : Pango::Attribute
+    # pango_attr_fallback_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_fallback_new(enable_fallback)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_family_new(family : ::String) : Pango::Attribute
+    # pango_attr_family_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_family_new(family)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_font_desc_new(desc : Pango::FontDescription) : Pango::Attribute
+    # pango_attr_font_desc_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_font_desc_new(desc)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_font_features_new(features : ::String) : Pango::Attribute
+    # pango_attr_font_features_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_font_features_new(features)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_font_scale_new(scale : Pango::FontScale) : Pango::Attribute
+    # pango_attr_font_scale_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_font_scale_new(scale)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_foreground_alpha_new(alpha : UInt16) : Pango::Attribute
+    # pango_attr_foreground_alpha_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_foreground_alpha_new(alpha)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_foreground_new(red : UInt16, green : UInt16, blue : UInt16) : Pango::Attribute
+    # pango_attr_foreground_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_foreground_new(red, green, blue)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_gravity_hint_new(hint : Pango::GravityHint) : Pango::Attribute
+    # pango_attr_gravity_hint_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_gravity_hint_new(hint)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_gravity_new(gravity : Pango::Gravity) : Pango::Attribute
+    # pango_attr_gravity_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_gravity_new(gravity)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_insert_hyphens_new(insert_hyphens : Bool) : Pango::Attribute
+    # pango_attr_insert_hyphens_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_insert_hyphens_new(insert_hyphens)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_language_new(language : Pango::Language) : Pango::Attribute
+    # pango_attr_language_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_language_new(language)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_letter_spacing_new(letter_spacing : Int32) : Pango::Attribute
+    # pango_attr_letter_spacing_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_letter_spacing_new(letter_spacing)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_line_height_new(factor : Float64) : Pango::Attribute
+    # pango_attr_line_height_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_line_height_new(factor)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_line_height_new_absolute(height : Int32) : Pango::Attribute
+    # pango_attr_line_height_new_absolute: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_line_height_new_absolute(height)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_list_from_string(text : ::String) : Pango::AttrList?
+    # pango_attr_list_from_string: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_list_from_string(text)
+
+    # Return value handling
+
+    Pango::AttrList.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.attr_overline_color_new(red : UInt16, green : UInt16, blue : UInt16) : Pango::Attribute
+    # pango_attr_overline_color_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_overline_color_new(red, green, blue)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_overline_new(overline : Pango::Overline) : Pango::Attribute
+    # pango_attr_overline_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_overline_new(overline)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_rise_new(rise : Int32) : Pango::Attribute
+    # pango_attr_rise_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_rise_new(rise)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_scale_new(scale_factor : Float64) : Pango::Attribute
+    # pango_attr_scale_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_scale_new(scale_factor)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_sentence_new : Pango::Attribute
+    # pango_attr_sentence_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_sentence_new
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_shape_new(ink_rect : Pango::Rectangle, logical_rect : Pango::Rectangle) : Pango::Attribute
+    # pango_attr_shape_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_shape_new(ink_rect, logical_rect)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_shape_new_with_data(ink_rect : Pango::Rectangle, logical_rect : Pango::Rectangle, data : Pointer(Void)?, copy_func : Pointer(Void)?, destroy_func : Pointer(Void)?) : Pango::Attribute
+    # pango_attr_shape_new_with_data: (None)
+    # @data: (nullable)
+    # @copy_func: (nullable)
+    # @destroy_func: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    data = if data.nil?
+             Pointer(Void).null
+           else
+             data.to_unsafe
+           end
+
+    # Generator::NullableArrayPlan
+    copy_func = if copy_func.nil?
+                  LibPango::AttrDataCopyFunc.null
+                else
+                  copy_func.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    destroy_func = if destroy_func.nil?
+                     LibGLib::DestroyNotify.null
+                   else
+                     destroy_func.to_unsafe
+                   end
+
+    # C call
+    _retval = LibPango.pango_attr_shape_new_with_data(ink_rect, logical_rect, data, copy_func, destroy_func)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_show_new(flags : Pango::ShowFlags) : Pango::Attribute
+    # pango_attr_show_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_show_new(flags)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_size_new(size : Int32) : Pango::Attribute
+    # pango_attr_size_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_size_new(size)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_size_new_absolute(size : Int32) : Pango::Attribute
+    # pango_attr_size_new_absolute: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_size_new_absolute(size)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_stretch_new(stretch : Pango::Stretch) : Pango::Attribute
+    # pango_attr_stretch_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_stretch_new(stretch)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_strikethrough_color_new(red : UInt16, green : UInt16, blue : UInt16) : Pango::Attribute
+    # pango_attr_strikethrough_color_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_strikethrough_color_new(red, green, blue)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_strikethrough_new(strikethrough : Bool) : Pango::Attribute
+    # pango_attr_strikethrough_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_strikethrough_new(strikethrough)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_style_new(style : Pango::Style) : Pango::Attribute
+    # pango_attr_style_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_style_new(style)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_text_transform_new(transform : Pango::TextTransform) : Pango::Attribute
+    # pango_attr_text_transform_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_text_transform_new(transform)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_type_get_name(type : Pango::AttrType) : ::String?
+    # pango_attr_type_get_name: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_attr_type_get_name(type)
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.attr_type_register(name : ::String) : Pango::AttrType
+    # pango_attr_type_register: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_attr_type_register(name)
+
+    # Return value handling
+
+    Pango::AttrType.new(_retval)
+  end
+
+  def self.attr_underline_color_new(red : UInt16, green : UInt16, blue : UInt16) : Pango::Attribute
+    # pango_attr_underline_color_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_underline_color_new(red, green, blue)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_underline_new(underline : Pango::Underline) : Pango::Attribute
+    # pango_attr_underline_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_underline_new(underline)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_variant_new(variant : Pango::Variant) : Pango::Attribute
+    # pango_attr_variant_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_variant_new(variant)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_weight_new(weight : Pango::Weight) : Pango::Attribute
+    # pango_attr_weight_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_weight_new(weight)
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.attr_word_new : Pango::Attribute
+    # pango_attr_word_new: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_attr_word_new
+
+    # Return value handling
+
+    Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.bidi_type_for_unichar(ch : UInt32) : Pango::BidiType
+    # pango_bidi_type_for_unichar: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_bidi_type_for_unichar(ch)
+
+    # Return value handling
+
+    Pango::BidiType.new(_retval)
+  end
+
+  def self.break(text : ::String, length : Int32, analysis : Pango::Analysis, attrs : Enumerable(Pango::LogAttr)) : Nil
+    # pango_break: (None)
+    # @attrs: (array length=attrs_len element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    attrs_len = attrs.size
+    # Generator::ArrayArgPlan
+    attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    LibPango.pango_break(text, length, analysis, attrs, attrs_len)
+
+    # Return value handling
+  end
+
+  def self.default_break(text : ::String, length : Int32, analysis : Pango::Analysis?, attrs : Pango::LogAttr, attrs_len : Int32) : Nil
+    # pango_default_break: (None)
+    # @analysis: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    analysis = if analysis.nil?
+                 Pointer(Void).null
+               else
+                 analysis.to_unsafe
+               end
+
+    # C call
+    LibPango.pango_default_break(text, length, analysis, attrs, attrs_len)
+
+    # Return value handling
+  end
+
+  def self.extents_to_pixels(inclusive : Pango::Rectangle?, nearest : Pango::Rectangle?) : Nil
+    # pango_extents_to_pixels: (None)
+    # @inclusive: (nullable)
+    # @nearest: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    inclusive = if inclusive.nil?
+                  Pointer(Void).null
+                else
+                  inclusive.to_unsafe
+                end
+
+    # Generator::NullableArrayPlan
+    nearest = if nearest.nil?
+                Pointer(Void).null
+              else
+                nearest.to_unsafe
+              end
+
+    # C call
+    LibPango.pango_extents_to_pixels(inclusive, nearest)
+
+    # Return value handling
+  end
+
+  def self.find_base_dir(text : ::String, length : Int32) : Pango::Direction
+    # pango_find_base_dir: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_find_base_dir(text, length)
+
+    # Return value handling
+
+    Pango::Direction.new(_retval)
+  end
+
+  def self.find_paragraph_boundary(text : ::String, length : Int32, paragraph_delimiter_index : Int32, next_paragraph_start : Int32) : Nil
+    # pango_find_paragraph_boundary: (None)
+    # @paragraph_delimiter_index: (out) (transfer full)
+    # @next_paragraph_start: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibPango.pango_find_paragraph_boundary(text, length, paragraph_delimiter_index, next_paragraph_start)
+
+    # Return value handling
+  end
+
+  def self.font_description_from_string(str : ::String) : Pango::FontDescription
+    # pango_font_description_from_string: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_font_description_from_string(str)
+
+    # Return value handling
+
+    Pango::FontDescription.new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.log_attrs(text : ::String, length : Int32, level : Int32, language : Pango::Language, attrs : Enumerable(Pango::LogAttr)) : Nil
+    # pango_get_log_attrs: (None)
+    # @attrs: (array length=attrs_len element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    attrs_len = attrs.size
+    # Generator::ArrayArgPlan
+    attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    LibPango.pango_get_log_attrs(text, length, level, language, attrs, attrs_len)
+
+    # Return value handling
+  end
+
+  def self.mirror_char(ch : UInt32, mirrored_ch : Pointer(UInt32)) : Bool
+    # pango_get_mirror_char: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_get_mirror_char(ch, mirrored_ch)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.gravity_get_for_matrix(matrix : Pango::Matrix?) : Pango::Gravity
+    # pango_gravity_get_for_matrix: (None)
+    # @matrix: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    matrix = if matrix.nil?
+               Pointer(Void).null
+             else
+               matrix.to_unsafe
+             end
+
+    # C call
+    _retval = LibPango.pango_gravity_get_for_matrix(matrix)
+
+    # Return value handling
+
+    Pango::Gravity.new(_retval)
+  end
+
+  def self.gravity_get_for_script(script : Pango::Script, base_gravity : Pango::Gravity, hint : Pango::GravityHint) : Pango::Gravity
+    # pango_gravity_get_for_script: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_gravity_get_for_script(script, base_gravity, hint)
+
+    # Return value handling
+
+    Pango::Gravity.new(_retval)
+  end
+
+  def self.gravity_get_for_script_and_width(script : Pango::Script, wide : Bool, base_gravity : Pango::Gravity, hint : Pango::GravityHint) : Pango::Gravity
+    # pango_gravity_get_for_script_and_width: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_gravity_get_for_script_and_width(script, wide, base_gravity, hint)
+
+    # Return value handling
+
+    Pango::Gravity.new(_retval)
+  end
+
+  def self.gravity_to_rotation(gravity : Pango::Gravity) : Float64
+    # pango_gravity_to_rotation: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_gravity_to_rotation(gravity)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.is_zero_width(ch : UInt32) : Bool
+    # pango_is_zero_width: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_is_zero_width(ch)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.itemize(context : Pango::Context, text : ::String, start_index : Int32, length : Int32, attrs : Pango::AttrList, cached_iter : Pango::AttrIterator?) : GLib::List
+    # pango_itemize: (None)
+    # @cached_iter: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    cached_iter = if cached_iter.nil?
+                    Pointer(Void).null
+                  else
+                    cached_iter.to_unsafe
+                  end
+
+    # C call
+    _retval = LibPango.pango_itemize(context, text, start_index, length, attrs, cached_iter)
+
+    # Return value handling
+
+    GLib::List(Pango::Item).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.itemize_with_base_dir(context : Pango::Context, base_dir : Pango::Direction, text : ::String, start_index : Int32, length : Int32, attrs : Pango::AttrList, cached_iter : Pango::AttrIterator?) : GLib::List
+    # pango_itemize_with_base_dir: (None)
+    # @cached_iter: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    cached_iter = if cached_iter.nil?
+                    Pointer(Void).null
+                  else
+                    cached_iter.to_unsafe
+                  end
+
+    # C call
+    _retval = LibPango.pango_itemize_with_base_dir(context, base_dir, text, start_index, length, attrs, cached_iter)
+
+    # Return value handling
+
+    GLib::List(Pango::Item).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.language_from_string(language : ::String?) : Pango::Language?
+    # pango_language_from_string: (None)
+    # @language: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    language = if language.nil?
+                 Pointer(LibC::Char).null
+               else
+                 language.to_unsafe
+               end
+
+    # C call
+    _retval = LibPango.pango_language_from_string(language)
+
+    # Return value handling
+
+    Pango::Language.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def self.language_get_default : Pango::Language
+    # pango_language_get_default: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_language_get_default
+
+    # Return value handling
+
+    Pango::Language.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.language_get_preferred : Pango::Language?
+    # pango_language_get_preferred: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_language_get_preferred
+
+    # Return value handling
+
+    Pango::Language.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+  end
+
+  def self.layout_deserialize_error_quark : UInt32
+    # pango_layout_deserialize_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_layout_deserialize_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.log2vis_get_embedding_levels(text : ::String, length : Int32, pbase_dir : Pango::Direction) : Pointer(UInt8)
+    # pango_log2vis_get_embedding_levels: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_log2vis_get_embedding_levels(text, length, pbase_dir)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def markup_parser_finish(context : GLib::MarkupParseContext) : Bool
+    # pango_markup_parser_finish: (Throws)
+    # @attr_list: (out) (transfer full) (optional)
+    # @text: (out) (transfer full) (optional)
+    # @accel_char: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::OutArgUsedInReturnPlan
+    attr_list = Pointer(Pointer(Void)).null
+    # Generator::OutArgUsedInReturnPlan
+    text = Pointer(Pointer(LibC::Char)).null
+    # Generator::OutArgUsedInReturnPlan
+    accel_char = Pointer(UInt32).null
+
+    # C call
+    _retval = LibPango.pango_markup_parser_finish(context, attr_list, text, accel_char, pointerof(_error))
+
+    # Error check
+    Pango.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.markup_parser_new(accel_marker : UInt32) : GLib::MarkupParseContext
+    # pango_markup_parser_new: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_markup_parser_new(accel_marker)
+
+    # Return value handling
+
+    GLib::MarkupParseContext.new(_retval, GICrystal::Transfer::None)
+  end
+
+  def self.parse_enum(type : UInt64, str : ::String?, warn : Bool) : Bool
+    # pango_parse_enum: (None)
+    # @str: (nullable)
+    # @value: (out) (transfer full) (optional)
+    # @possible_values: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    str = if str.nil?
+            Pointer(LibC::Char).null
+          else
+            str.to_unsafe
+          end
+
+    # Generator::OutArgUsedInReturnPlan
+    value = Pointer(Int32).null
+    # Generator::OutArgUsedInReturnPlan
+    possible_values = Pointer(Pointer(LibC::Char)).null
+
+    # C call
+    _retval = LibPango.pango_parse_enum(type, str, value, warn, possible_values)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def parse_markup(markup_text : ::String, length : Int32, accel_marker : UInt32) : Bool
+    # pango_parse_markup: (Throws)
+    # @attr_list: (out) (transfer full) (optional)
+    # @text: (out) (transfer full) (optional)
+    # @accel_char: (out) (transfer full) (optional)
+    # Returns: (transfer none)
+
+    _error = Pointer(LibGLib::Error).null
+
+    # Generator::OutArgUsedInReturnPlan
+    attr_list = Pointer(Pointer(Void)).null
+    # Generator::OutArgUsedInReturnPlan
+    text = Pointer(Pointer(LibC::Char)).null
+    # Generator::OutArgUsedInReturnPlan
+    accel_char = Pointer(UInt32).null
+
+    # C call
+    _retval = LibPango.pango_parse_markup(markup_text, length, accel_marker, attr_list, text, accel_char, pointerof(_error))
+
+    # Error check
+    Pango.raise_exception(_error) unless _error.null?
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.parse_stretch(str : ::String, stretch : Pango::Stretch, warn : Bool) : Bool
+    # pango_parse_stretch: (None)
+    # @stretch: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_parse_stretch(str, stretch, warn)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.parse_style(str : ::String, style : Pango::Style, warn : Bool) : Bool
+    # pango_parse_style: (None)
+    # @style: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_parse_style(str, style, warn)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.parse_variant(str : ::String, variant : Pango::Variant, warn : Bool) : Bool
+    # pango_parse_variant: (None)
+    # @variant: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_parse_variant(str, variant, warn)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.parse_weight(str : ::String, weight : Pango::Weight, warn : Bool) : Bool
+    # pango_parse_weight: (None)
+    # @weight: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_parse_weight(str, weight, warn)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.quantize_line_geometry(thickness : Int32, position : Int32) : Nil
+    # pango_quantize_line_geometry: (None)
+    # @thickness: (inout) (transfer full)
+    # @position: (inout) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    LibPango.pango_quantize_line_geometry(thickness, position)
+
+    # Return value handling
+  end
+
+  def self.read_line(stream : Pointer(Void)?, str : GLib::String) : Int32
+    # pango_read_line: (None)
+    # @stream: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    stream = if stream.nil?
+               Pointer(Void).null
+             else
+               stream.to_unsafe
+             end
+
+    # C call
+    _retval = LibPango.pango_read_line(stream, str)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.reorder_items(items : GLib::List) : GLib::List
+    # pango_reorder_items: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_reorder_items(items)
+
+    # Return value handling
+
+    GLib::List(Pango::Item).new(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.scan_int(pos : ::String, out _out : Int32) : Bool
+    # pango_scan_int: (None)
+    # @pos: (inout) (transfer full)
+    # @out: (out) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_scan_int(pos, _out)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.scan_string(pos : ::String, out _out : GLib::String) : Bool
+    # pango_scan_string: (None)
+    # @pos: (inout) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_scan_string(pos, _out)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.scan_word(pos : ::String, out _out : GLib::String) : Bool
+    # pango_scan_word: (None)
+    # @pos: (inout) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_scan_word(pos, _out)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.script_for_unichar(ch : UInt32) : Pango::Script
+    # pango_script_for_unichar: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_script_for_unichar(ch)
+
+    # Return value handling
+
+    Pango::Script.new(_retval)
+  end
+
+  def self.script_get_sample_language(script : Pango::Script) : Pango::Language?
+    # pango_script_get_sample_language: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_script_get_sample_language(script)
+
+    # Return value handling
+
+    Pango::Language.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.shape(text : ::String, length : Int32, analysis : Pango::Analysis, glyphs : Pango::GlyphString) : Nil
+    # pango_shape: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibPango.pango_shape(text, length, analysis, glyphs)
+
+    # Return value handling
+  end
+
+  def self.shape_full(item_text : ::String, item_length : Int32, paragraph_text : ::String?, paragraph_length : Int32, analysis : Pango::Analysis, glyphs : Pango::GlyphString) : Nil
+    # pango_shape_full: (None)
+    # @paragraph_text: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    paragraph_text = if paragraph_text.nil?
+                       Pointer(LibC::Char).null
+                     else
+                       paragraph_text.to_unsafe
+                     end
+
+    # C call
+    LibPango.pango_shape_full(item_text, item_length, paragraph_text, paragraph_length, analysis, glyphs)
+
+    # Return value handling
+  end
+
+  def self.shape_item(item : Pango::Item, paragraph_text : ::String?, paragraph_length : Int32, log_attrs : Pango::LogAttr?, glyphs : Pango::GlyphString, flags : Pango::ShapeFlags) : Nil
+    # pango_shape_item: (None)
+    # @paragraph_text: (nullable)
+    # @log_attrs: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    paragraph_text = if paragraph_text.nil?
+                       Pointer(LibC::Char).null
+                     else
+                       paragraph_text.to_unsafe
+                     end
+
+    # Generator::NullableArrayPlan
+    log_attrs = if log_attrs.nil?
+                  Pointer(Void).null
+                else
+                  log_attrs.to_unsafe
+                end
+
+    # C call
+    LibPango.pango_shape_item(item, paragraph_text, paragraph_length, log_attrs, glyphs, flags)
+
+    # Return value handling
+  end
+
+  def self.shape_with_flags(item_text : ::String, item_length : Int32, paragraph_text : ::String?, paragraph_length : Int32, analysis : Pango::Analysis, glyphs : Pango::GlyphString, flags : Pango::ShapeFlags) : Nil
+    # pango_shape_with_flags: (None)
+    # @paragraph_text: (nullable)
+    # Returns: (transfer none)
+
+    # Generator::NullableArrayPlan
+    paragraph_text = if paragraph_text.nil?
+                       Pointer(LibC::Char).null
+                     else
+                       paragraph_text.to_unsafe
+                     end
+
+    # C call
+    LibPango.pango_shape_with_flags(item_text, item_length, paragraph_text, paragraph_length, analysis, glyphs, flags)
+
+    # Return value handling
+  end
+
+  def self.skip_space(pos : ::String) : Bool
+    # pango_skip_space: (None)
+    # @pos: (inout) (transfer full)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_skip_space(pos)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.split_file_list(str : ::String) : Enumerable(::String)
+    # pango_split_file_list: (None)
+    # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
+
+    # C call
+    _retval = LibPango.pango_split_file_list(str)
+
+    # Return value handling
+
+    GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
+  end
+
+  def self.tab_array_from_string(text : ::String) : Pango::TabArray?
+    # pango_tab_array_from_string: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_tab_array_from_string(text)
+
+    # Return value handling
+
+    Pango::TabArray.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+  end
+
+  def self.tailor_break(text : ::String, length : Int32, analysis : Pango::Analysis, offset : Int32, attrs : Enumerable(Pango::LogAttr)) : Nil
+    # pango_tailor_break: (None)
+    # @attrs: (array length=attrs_len element-type Interface)
+    # Returns: (transfer none)
+
+    # Generator::ArrayLengthArgPlan
+    attrs_len = attrs.size
+    # Generator::ArrayArgPlan
+    attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
+
+    # C call
+    LibPango.pango_tailor_break(text, length, analysis, offset, attrs, attrs_len)
+
+    # Return value handling
+  end
+
+  def self.trim_string(str : ::String) : ::String
+    # pango_trim_string: (None)
+    # Returns: (transfer full)
+
+    # C call
+    _retval = LibPango.pango_trim_string(str)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.unichar_direction(ch : UInt32) : Pango::Direction
+    # pango_unichar_direction: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_unichar_direction(ch)
+
+    # Return value handling
+
+    Pango::Direction.new(_retval)
+  end
+
+  def self.units_from_double(d : Float64) : Int32
+    # pango_units_from_double: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_units_from_double(d)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.units_to_double(i : Int32) : Float64
+    # pango_units_to_double: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_units_to_double(i)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.version : Int32
+    # pango_version: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_version
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.version_check(required_major : Int32, required_minor : Int32, required_micro : Int32) : ::String?
+    # pango_version_check: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_version_check(required_major, required_minor, required_micro)
+
+    # Return value handling
+
+    ::String.new(_retval) unless _retval.null?
+  end
+
+  def self.version_string : ::String
+    # pango_version_string: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibPango.pango_version_string
+
+    # Return value handling
+
+    ::String.new(_retval)
+  end
+
   # Errors
 
-  # Errors that can be returned by [func@Pango.Layout.deserialize].
+  # Errors that can be returned by `Pango::Layout#deserialize`.
   class LayoutDeserializeError < PangoError
     class Invalid < LayoutDeserializeError
       def code : Int32

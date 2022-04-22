@@ -2,12 +2,12 @@ module Gtk
   # Defines a part of a CSS document.
   #
   # Because sections are nested into one another, you can use
-  # [method@CssSection.get_parent] to get the containing region.
+  # `CssSection#parent` to get the containing region.
   class CssSection
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(CssSection.g_type, pointer)
@@ -20,6 +20,10 @@ module Gtk
       LibGObject.g_boxed_free(CssSection.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::CssSection)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGtk.gtk_css_section_get_type
@@ -30,7 +34,7 @@ module Gtk
       # @file: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       file = if file.nil?
                Pointer(Void).null
              else
@@ -41,6 +45,7 @@ module Gtk
       _retval = LibGtk.gtk_css_section_new(file, start, _end)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -48,12 +53,11 @@ module Gtk
       # gtk_css_section_get_end_location: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_css_section_get_end_location(self)
 
       # Return value handling
+
       Gtk::CssLocation.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -61,12 +65,11 @@ module Gtk
       # gtk_css_section_get_file: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_css_section_get_file(self)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -74,12 +77,11 @@ module Gtk
       # gtk_css_section_get_parent: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_css_section_get_parent(self)
 
       # Return value handling
+
       Gtk::CssSection.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -87,20 +89,17 @@ module Gtk
       # gtk_css_section_get_start_location: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_css_section_get_start_location(self)
 
       # Return value handling
+
       Gtk::CssLocation.new(_retval, GICrystal::Transfer::None)
     end
 
     def print(string : GLib::String) : Nil
       # gtk_css_section_print: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_css_section_print(self, string)
@@ -112,12 +111,11 @@ module Gtk
       # gtk_css_section_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_css_section_ref(self)
 
       # Return value handling
+
       Gtk::CssSection.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -125,20 +123,17 @@ module Gtk
       # gtk_css_section_to_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_css_section_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
     def unref : Nil
       # gtk_css_section_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_css_section_unref(self)

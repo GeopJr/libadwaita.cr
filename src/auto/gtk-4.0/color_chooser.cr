@@ -5,8 +5,8 @@ module Gtk
   # Depending on the situation, colors may be allowed to have alpha (translucency).
   #
   # In GTK, the main widgets that implement this interface are
-  # [class@Gtk.ColorChooserWidget], [class@Gtk.ColorChooserDialog] and
-  # [class@Gtk.ColorButton].
+  # `Gtk#ColorChooserWidget`, `Gtk#ColorChooserDialog` and
+  # `Gtk#ColorButton`.
   module ColorChooser
     def rgba=(value : Gdk::RGBA?) : Gdk::RGBA?
       unsafe_value = value
@@ -43,8 +43,9 @@ module Gtk
       # @colors: (nullable) (array length=n_colors element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_colors = colors.try(&.size) || 0
+      # Generator::NullableArrayPlan
       colors = if colors.nil?
                  Pointer(Void).null
                else
@@ -62,13 +63,14 @@ module Gtk
       # @color: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       color = Gdk::RGBA.new
 
       # C call
       LibGtk.gtk_color_chooser_get_rgba(self, color)
 
       # Return value handling
+
       color
     end
 
@@ -76,20 +78,17 @@ module Gtk
       # gtk_color_chooser_get_use_alpha: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_color_chooser_get_use_alpha(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def rgba=(color : Gdk::RGBA) : Nil
       # gtk_color_chooser_set_rgba: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_color_chooser_set_rgba(self, color)
@@ -101,18 +100,96 @@ module Gtk
       # gtk_color_chooser_set_use_alpha: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_color_chooser_set_use_alpha(self, use_alpha)
 
       # Return value handling
     end
 
+    struct ColorActivatedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "color-activated::#{@detail}" : "color-activated"
+      end
+
+      def connect(&block : Proc(Gdk::RGBA, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gdk::RGBA, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gdk::RGBA, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gdk::RGBA.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gdk::RGBA, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gdk::RGBA, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gdk::RGBA.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gdk::RGBA, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::ColorChooser__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gdk::RGBA.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::ColorChooser__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gdk::RGBA.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(color : Gdk::RGBA) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "color-activated", color)
+      end
+    end
+
+    def color_activated_signal
+      ColorActivatedSignal.new(self)
+    end
+
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class ColorChooser__Impl < GObject::Object
     include ColorChooser
 

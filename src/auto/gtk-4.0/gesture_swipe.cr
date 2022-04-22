@@ -4,17 +4,25 @@ module Gtk
   # `GtkGestureSwipe` is a `GtkGesture` for swipe gestures.
   #
   # After a press/move/.../move/release sequence happens, the
-  # [signal@Gtk.GestureSwipe::swipe] signal will be emitted,
+  # `Gtk::GestureSwipe::#swipe` signal will be emitted,
   # providing the velocity and directionality of the sequence
   # at the time it was lifted.
   #
   # If the velocity is desired in intermediate points,
-  # [method@Gtk.GestureSwipe.get_velocity] can be called in a
-  # [signal@Gtk.Gesture::update] handler.
+  # `Gtk::GestureSwipe#velocity` can be called in a
+  # `Gtk::Gesture::#update` handler.
   #
   # All velocities are reported in pixels/sec units.
+  @[GObject::GeneratedWrapper]
   class GestureSwipe < GestureSingle
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::GestureSwipeClass), class_init,
+        sizeof(LibGtk::GestureSwipe), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -26,48 +34,52 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 8).new(LibGObject::Value.new)
       _n = 0
 
-      if button
+      if !button.nil?
         (_names.to_unsafe + _n).value = "button".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, button)
         _n += 1
       end
-      if exclusive
+      if !exclusive.nil?
         (_names.to_unsafe + _n).value = "exclusive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, exclusive)
         _n += 1
       end
-      if n_points
+      if !n_points.nil?
         (_names.to_unsafe + _n).value = "n-points".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, n_points)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if touch_only
+      if !touch_only.nil?
         (_names.to_unsafe + _n).value = "touch-only".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, touch_only)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(GestureSwipe.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -75,34 +87,41 @@ module Gtk
       LibGtk.gtk_gesture_swipe_get_type
     end
 
+    # Returns a newly created `GtkGesture` that recognizes swipes.
     def initialize
       # gtk_gesture_swipe_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_gesture_swipe_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the current velocity.
+    #
+    # If the gesture is recognized, this function returns %TRUE and fills
+    # in @velocity_x and @velocity_y with the recorded velocity, as per the
+    # last events processed.
     def velocity(velocity_x : Float64, velocity_y : Float64) : Bool
       # gtk_gesture_swipe_get_velocity: (Method)
       # @velocity_x: (out) (transfer full)
       # @velocity_y: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_gesture_swipe_get_velocity(self, velocity_x, velocity_y)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Emitted when the recognized gesture is finished.
+    #
+    # Velocity and direction are a product of previously recorded events.
     struct SwipeSignal
       @source : GObject::Object
       @detail : String?

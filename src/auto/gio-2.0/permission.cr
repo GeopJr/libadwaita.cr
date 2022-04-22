@@ -16,8 +16,16 @@ module Gio
   # then be used to decide if it is appropriate to show a "Click here to
   # unlock" button in a dialog and to provide the mechanism to invoke
   # when that button is clicked.
+  @[GObject::GeneratedWrapper]
   class Permission < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::PermissionClass), class_init,
+        sizeof(LibGio::Permission), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -29,23 +37,27 @@ module Gio
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if allowed
+      if !allowed.nil?
         (_names.to_unsafe + _n).value = "allowed".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allowed)
         _n += 1
       end
-      if can_acquire
+      if !can_acquire.nil?
         (_names.to_unsafe + _n).value = "can-acquire".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_acquire)
         _n += 1
       end
-      if can_release
+      if !can_release.nil?
         (_names.to_unsafe + _n).value = "can-release".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_release)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Permission.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -77,6 +89,21 @@ module Gio
       GICrystal.to_bool(value)
     end
 
+    # Attempts to acquire the permission represented by @permission.
+    #
+    # The precise method by which this happens depends on the permission
+    # and the underlying authentication mechanism.  A simple example is
+    # that a dialog may appear asking the user to enter their password.
+    #
+    # You should check with g_permission_get_can_acquire() before calling
+    # this function.
+    #
+    # If the permission is acquired then %TRUE is returned.  Otherwise,
+    # %FALSE is returned and @error is set appropriately.
+    #
+    # This call is blocking, likely for a very long time (in the case that
+    # user interaction is required).  See g_permission_acquire_async() for
+    # the non-blocking version.
     def acquire(cancellable : Gio::Cancellable?) : Bool
       # g_permission_acquire: (Method | Throws)
       # @cancellable: (nullable)
@@ -84,7 +111,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -96,10 +123,16 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Attempts to acquire the permission represented by @permission.
+    #
+    # This is the first half of the asynchronous version of
+    # g_permission_acquire().
     def acquire_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # g_permission_acquire_async: (Method)
       # @cancellable: (nullable)
@@ -107,17 +140,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -130,67 +167,81 @@ module Gio
       # Return value handling
     end
 
+    # Collects the result of attempting to acquire the permission
+    # represented by @permission.
+    #
+    # This is the second half of the asynchronous version of
+    # g_permission_acquire().
     def acquire_finish(result : Gio::AsyncResult) : Bool
       # g_permission_acquire_finish: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_permission_acquire_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the value of the 'allowed' property.  This property is %TRUE if
+    # the caller currently has permission to perform the action that
+    # @permission represents the permission to perform.
     def allowed : Bool
       # g_permission_get_allowed: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_permission_get_allowed(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the value of the 'can-acquire' property.  This property is %TRUE
+    # if it is generally possible to acquire the permission by calling
+    # g_permission_acquire().
     def can_acquire : Bool
       # g_permission_get_can_acquire: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_permission_get_can_acquire(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the value of the 'can-release' property.  This property is %TRUE
+    # if it is generally possible to release the permission by calling
+    # g_permission_release().
     def can_release : Bool
       # g_permission_get_can_release: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_permission_get_can_release(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # This function is called by the #GPermission implementation to update
+    # the properties of the permission.  You should never call this
+    # function except from a #GPermission implementation.
+    #
+    # GObject notify signals are generated, as appropriate.
     def impl_update(allowed : Bool, can_acquire : Bool, can_release : Bool) : Nil
       # g_permission_impl_update: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_permission_impl_update(self, allowed, can_acquire, can_release)
@@ -198,6 +249,21 @@ module Gio
       # Return value handling
     end
 
+    # Attempts to release the permission represented by @permission.
+    #
+    # The precise method by which this happens depends on the permission
+    # and the underlying authentication mechanism.  In most cases the
+    # permission will be dropped immediately without further action.
+    #
+    # You should check with g_permission_get_can_release() before calling
+    # this function.
+    #
+    # If the permission is released then %TRUE is returned.  Otherwise,
+    # %FALSE is returned and @error is set appropriately.
+    #
+    # This call is blocking, likely for a very long time (in the case that
+    # user interaction is required).  See g_permission_release_async() for
+    # the non-blocking version.
     def release(cancellable : Gio::Cancellable?) : Bool
       # g_permission_release: (Method | Throws)
       # @cancellable: (nullable)
@@ -205,7 +271,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -217,10 +283,16 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Attempts to release the permission represented by @permission.
+    #
+    # This is the first half of the asynchronous version of
+    # g_permission_release().
     def release_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
       # g_permission_release_async: (Method)
       # @cancellable: (nullable)
@@ -228,17 +300,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -251,20 +327,25 @@ module Gio
       # Return value handling
     end
 
+    # Collects the result of attempting to release the permission
+    # represented by @permission.
+    #
+    # This is the second half of the asynchronous version of
+    # g_permission_release().
     def release_finish(result : Gio::AsyncResult) : Bool
       # g_permission_release_finish: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_permission_release_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
   end

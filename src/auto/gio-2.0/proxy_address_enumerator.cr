@@ -10,8 +10,16 @@ module Gio
   # g_socket_connectable_enumerate()) as appropriate when a proxy is configured;
   # there should be no need to manually wrap a #GSocketAddressEnumerator instance
   # with one.
+  @[GObject::GeneratedWrapper]
   class ProxyAddressEnumerator < SocketAddressEnumerator
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::ProxyAddressEnumeratorClass), class_init,
+        sizeof(LibGio::ProxyAddressEnumerator), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -23,28 +31,32 @@ module Gio
       _values = StaticArray(LibGObject::Value, 4).new(LibGObject::Value.new)
       _n = 0
 
-      if connectable
+      if !connectable.nil?
         (_names.to_unsafe + _n).value = "connectable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, connectable)
         _n += 1
       end
-      if default_port
+      if !default_port.nil?
         (_names.to_unsafe + _n).value = "default-port".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_port)
         _n += 1
       end
-      if proxy_resolver
+      if !proxy_resolver.nil?
         (_names.to_unsafe + _n).value = "proxy-resolver".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, proxy_resolver)
         _n += 1
       end
-      if uri
+      if !uri.nil?
         (_names.to_unsafe + _n).value = "uri".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, uri)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ProxyAddressEnumerator.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.

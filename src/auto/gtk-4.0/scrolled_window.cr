@@ -12,17 +12,20 @@ module Gtk
   # associated adjustments, and optionally draws a frame around the child.
   #
   # Widgets with native scrolling support, i.e. those whose classes implement
-  # the [iface@Gtk.Scrollable] interface, are added directly. For other types
-  # of widget, the class [class@Gtk.Viewport] acts as an adaptor, giving
-  # scrollability to other widgets. [method@Gtk.ScrolledWindow.set_child]
+  # the `Gtk#Scrollable` interface, are added directly. For other types
+  # of widget, the class `Gtk#Viewport` acts as an adaptor, giving
+  # scrollability to other widgets. `Gtk::ScrolledWindow#child=`
   # intelligently accounts for whether or not the added child is a `GtkScrollable`.
   # If it isn’t, then it wraps the child in a `GtkViewport`. Therefore, you can
   # just add any child widget and not worry about the details.
   #
-  # If [method@Gtk.ScrolledWindow.set_child] has added a `GtkViewport` for you,
+  # If `Gtk::ScrolledWindow#child=` has added a `GtkViewport` for you,
   # you can remove both your added child widget from the `GtkViewport`, and the
   # `GtkViewport` from the `GtkScrolledWindow`, like this:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GtkWidget *scrolled_window = gtk_scrolled_window_new ();
   # GtkWidget *child_widget = gtk_button_new ();
@@ -42,9 +45,9 @@ module Gtk
   # [property@Gtk.ScrolledWindow:vscrollbar-policy] are %GTK_POLICY_NEVER or
   # %GTK_POLICY_EXTERNAL, `GtkScrolledWindow` adds internal `GtkScrollbar` widgets
   # around its child. The scroll position of the child, and if applicable the
-  # scrollbars, is controlled by the [property@Gtk.ScrolledWindow:hadjustment]
-  # and [property@Gtk.ScrolledWindow:vadjustment] that are associated with the
-  # `GtkScrolledWindow`. See the docs on [class@Gtk.Scrollbar] for the details,
+  # scrollbars, is controlled by the `Gtk::ScrolledWindow#hadjustment`
+  # and `Gtk::ScrolledWindow#vadjustment` that are associated with the
+  # `GtkScrolledWindow`. See the docs on `Gtk#Scrollbar` for the details,
   # but note that the “step_increment” and “page_increment” fields are only
   # effective if the policy causes scrollbars to be present.
   #
@@ -89,12 +92,20 @@ module Gtk
   # # Accessibility
   #
   # `GtkScrolledWindow` uses the %GTK_ACCESSIBLE_ROLE_GROUP role.
+  @[GObject::GeneratedWrapper]
   class ScrolledWindow < Widget
     include Accessible
     include Buildable
     include ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::ScrolledWindow), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -106,258 +117,263 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 50).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if hadjustment
+      if !hadjustment.nil?
         (_names.to_unsafe + _n).value = "hadjustment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hadjustment)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_frame
+      if !has_frame.nil?
         (_names.to_unsafe + _n).value = "has-frame".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_frame)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if hscrollbar_policy
+      if !hscrollbar_policy.nil?
         (_names.to_unsafe + _n).value = "hscrollbar-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hscrollbar_policy)
         _n += 1
       end
-      if kinetic_scrolling
+      if !kinetic_scrolling.nil?
         (_names.to_unsafe + _n).value = "kinetic-scrolling".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, kinetic_scrolling)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if max_content_height
+      if !max_content_height.nil?
         (_names.to_unsafe + _n).value = "max-content-height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_content_height)
         _n += 1
       end
-      if max_content_width
+      if !max_content_width.nil?
         (_names.to_unsafe + _n).value = "max-content-width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_content_width)
         _n += 1
       end
-      if min_content_height
+      if !min_content_height.nil?
         (_names.to_unsafe + _n).value = "min-content-height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, min_content_height)
         _n += 1
       end
-      if min_content_width
+      if !min_content_width.nil?
         (_names.to_unsafe + _n).value = "min-content-width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, min_content_width)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if overlay_scrolling
+      if !overlay_scrolling.nil?
         (_names.to_unsafe + _n).value = "overlay-scrolling".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overlay_scrolling)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if propagate_natural_height
+      if !propagate_natural_height.nil?
         (_names.to_unsafe + _n).value = "propagate-natural-height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagate_natural_height)
         _n += 1
       end
-      if propagate_natural_width
+      if !propagate_natural_width.nil?
         (_names.to_unsafe + _n).value = "propagate-natural-width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagate_natural_width)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if vadjustment
+      if !vadjustment.nil?
         (_names.to_unsafe + _n).value = "vadjustment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vadjustment)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if vscrollbar_policy
+      if !vscrollbar_policy.nil?
         (_names.to_unsafe + _n).value = "vscrollbar-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vscrollbar_policy)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
-      if window_placement
+      if !window_placement.nil?
         (_names.to_unsafe + _n).value = "window-placement".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, window_placement)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ScrolledWindow.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -422,7 +438,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "hscrollbar-policy", pointerof(value), Pointer(Void).null)
-      Gtk::PolicyType.from_value(value)
+      Gtk::PolicyType.new(value)
     end
 
     def kinetic_scrolling=(value : Bool) : Bool
@@ -572,7 +588,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "vscrollbar-policy", pointerof(value), Pointer(Void).null)
-      Gtk::PolicyType.from_value(value)
+      Gtk::PolicyType.new(value)
     end
 
     def window_placement=(value : Gtk::CornerType) : Gtk::CornerType
@@ -587,174 +603,182 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "window-placement", pointerof(value), Pointer(Void).null)
-      Gtk::CornerType.from_value(value)
+      Gtk::CornerType.new(value)
     end
 
+    # Creates a new scrolled window.
     def initialize
       # gtk_scrolled_window_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Gets the child widget of @scrolled_window.
     def child : Gtk::Widget?
       # gtk_scrolled_window_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the horizontal scrollbar’s adjustment.
+    #
+    # This is the adjustment used to connect the horizontal scrollbar
+    # to the child widget’s horizontal scroll functionality.
     def hadjustment : Gtk::Adjustment
       # gtk_scrolled_window_get_hadjustment: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_hadjustment(self)
 
       # Return value handling
+
       Gtk::Adjustment.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets whether the scrolled window draws a frame.
     def has_frame : Bool
       # gtk_scrolled_window_get_has_frame: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_has_frame(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the horizontal scrollbar of @scrolled_window.
     def hscrollbar : Gtk::Widget
       # gtk_scrolled_window_get_hscrollbar: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_hscrollbar(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns the specified kinetic scrolling behavior.
     def kinetic_scrolling : Bool
       # gtk_scrolled_window_get_kinetic_scrolling: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_kinetic_scrolling(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the maximum content height set.
     def max_content_height : Int32
       # gtk_scrolled_window_get_max_content_height: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_max_content_height(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the maximum content width set.
     def max_content_width : Int32
       # gtk_scrolled_window_get_max_content_width: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_max_content_width(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the minimal content height of @scrolled_window.
     def min_content_height : Int32
       # gtk_scrolled_window_get_min_content_height: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_min_content_height(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the minimum content width of @scrolled_window.
     def min_content_width : Int32
       # gtk_scrolled_window_get_min_content_width: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_min_content_width(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns whether overlay scrolling is enabled for this scrolled window.
     def overlay_scrolling : Bool
       # gtk_scrolled_window_get_overlay_scrolling: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_overlay_scrolling(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the placement of the contents with respect to the scrollbars.
     def placement : Gtk::CornerType
       # gtk_scrolled_window_get_placement: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_placement(self)
 
       # Return value handling
-      Gtk::CornerType.from_value(_retval)
+
+      Gtk::CornerType.new(_retval)
     end
 
+    # Retrieves the current policy values for the horizontal and vertical
+    # scrollbars.
+    #
+    # See `Gtk::ScrolledWindow#policy=`.
     def policy : Nil
       # gtk_scrolled_window_get_policy: (Method)
       # @hscrollbar_policy: (out) (transfer full) (optional)
       # @vscrollbar_policy: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       hscrollbar_policy = Pointer(UInt32).null
+      # Generator::OutArgUsedInReturnPlan
       vscrollbar_policy = Pointer(UInt32).null
 
       # C call
@@ -763,64 +787,70 @@ module Gtk
       # Return value handling
     end
 
+    # Reports whether the natural height of the child will be calculated
+    # and propagated through the scrolled window’s requested natural height.
     def propagate_natural_height : Bool
       # gtk_scrolled_window_get_propagate_natural_height: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_propagate_natural_height(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Reports whether the natural width of the child will be calculated
+    # and propagated through the scrolled window’s requested natural width.
     def propagate_natural_width : Bool
       # gtk_scrolled_window_get_propagate_natural_width: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_propagate_natural_width(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the vertical scrollbar’s adjustment.
+    #
+    # This is the adjustment used to connect the vertical
+    # scrollbar to the child widget’s vertical scroll functionality.
     def vadjustment : Gtk::Adjustment
       # gtk_scrolled_window_get_vadjustment: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_vadjustment(self)
 
       # Return value handling
+
       Gtk::Adjustment.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns the vertical scrollbar of @scrolled_window.
     def vscrollbar : Gtk::Widget
       # gtk_scrolled_window_get_vscrollbar: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_scrolled_window_get_vscrollbar(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Sets the child widget of @scrolled_window.
     def child=(child : Gtk::Widget?) : Nil
       # gtk_scrolled_window_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       child = if child.nil?
                 Pointer(Void).null
               else
@@ -833,12 +863,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `GtkAdjustment` for the horizontal scrollbar.
     def hadjustment=(hadjustment : Gtk::Adjustment?) : Nil
       # gtk_scrolled_window_set_hadjustment: (Method | Setter)
       # @hadjustment: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       hadjustment = if hadjustment.nil?
                       Pointer(Void).null
                     else
@@ -851,11 +882,10 @@ module Gtk
       # Return value handling
     end
 
+    # Changes the frame drawn around the contents of @scrolled_window.
     def has_frame=(has_frame : Bool) : Nil
       # gtk_scrolled_window_set_has_frame: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_has_frame(self, has_frame)
@@ -863,11 +893,13 @@ module Gtk
       # Return value handling
     end
 
+    # Turns kinetic scrolling on or off.
+    #
+    # Kinetic scrolling only applies to devices with source
+    # %GDK_SOURCE_TOUCHSCREEN.
     def kinetic_scrolling=(kinetic_scrolling : Bool) : Nil
       # gtk_scrolled_window_set_kinetic_scrolling: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_kinetic_scrolling(self, kinetic_scrolling)
@@ -875,11 +907,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the maximum height that @scrolled_window should keep visible.
+    #
+    # The @scrolled_window will grow up to this height before it starts
+    # scrolling the content.
+    #
+    # It is a programming error to set the maximum content height to a value
+    # smaller than [property@Gtk.ScrolledWindow:min-content-height].
     def max_content_height=(height : Int32) : Nil
       # gtk_scrolled_window_set_max_content_height: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_max_content_height(self, height)
@@ -887,11 +924,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the maximum width that @scrolled_window should keep visible.
+    #
+    # The @scrolled_window will grow up to this width before it starts
+    # scrolling the content.
+    #
+    # It is a programming error to set the maximum content width to a
+    # value smaller than [property@Gtk.ScrolledWindow:min-content-width].
     def max_content_width=(width : Int32) : Nil
       # gtk_scrolled_window_set_max_content_width: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_max_content_width(self, width)
@@ -899,11 +941,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the minimum height that @scrolled_window should keep visible.
+    #
+    # Note that this can and (usually will) be smaller than the minimum
+    # size of the content.
+    #
+    # It is a programming error to set the minimum content height to a
+    # value greater than [property@Gtk.ScrolledWindow:max-content-height].
     def min_content_height=(height : Int32) : Nil
       # gtk_scrolled_window_set_min_content_height: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_min_content_height(self, height)
@@ -911,11 +958,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the minimum width that @scrolled_window should keep visible.
+    #
+    # Note that this can and (usually will) be smaller than the minimum
+    # size of the content.
+    #
+    # It is a programming error to set the minimum content width to a
+    # value greater than [property@Gtk.ScrolledWindow:max-content-width].
     def min_content_width=(width : Int32) : Nil
       # gtk_scrolled_window_set_min_content_width: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_min_content_width(self, width)
@@ -923,11 +975,10 @@ module Gtk
       # Return value handling
     end
 
+    # Enables or disables overlay scrolling for this scrolled window.
     def overlay_scrolling=(overlay_scrolling : Bool) : Nil
       # gtk_scrolled_window_set_overlay_scrolling: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_overlay_scrolling(self, overlay_scrolling)
@@ -935,11 +986,19 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the placement of the contents with respect to the scrollbars
+    # for the scrolled window.
+    #
+    # The default is %GTK_CORNER_TOP_LEFT, meaning the child is
+    # in the top left, with the scrollbars underneath and to the right.
+    # Other values in `Gtk#CornerType` are %GTK_CORNER_TOP_RIGHT,
+    # %GTK_CORNER_BOTTOM_LEFT, and %GTK_CORNER_BOTTOM_RIGHT.
+    #
+    # See also `Gtk::ScrolledWindow#placement` and
+    # `Gtk::ScrolledWindow#unset_placement`.
     def placement=(window_placement : Gtk::CornerType) : Nil
       # gtk_scrolled_window_set_placement: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_placement(self, window_placement)
@@ -947,11 +1006,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the scrollbar policy for the horizontal and vertical scrollbars.
+    #
+    # The policy determines when the scrollbar should appear; it is a value
+    # from the `Gtk#PolicyType` enumeration. If %GTK_POLICY_ALWAYS, the
+    # scrollbar is always present; if %GTK_POLICY_NEVER, the scrollbar is
+    # never present; if %GTK_POLICY_AUTOMATIC, the scrollbar is present only
+    # if needed (that is, if the slider part of the bar would be smaller
+    # than the trough — the display is larger than the page size).
     def set_policy(hscrollbar_policy : Gtk::PolicyType, vscrollbar_policy : Gtk::PolicyType) : Nil
       # gtk_scrolled_window_set_policy: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_policy(self, hscrollbar_policy, vscrollbar_policy)
@@ -959,11 +1024,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the natural height of the child should be calculated
+    # and propagated through the scrolled window’s requested natural height.
     def propagate_natural_height=(propagate : Bool) : Nil
       # gtk_scrolled_window_set_propagate_natural_height: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_propagate_natural_height(self, propagate)
@@ -971,11 +1036,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the natural width of the child should be calculated
+    # and propagated through the scrolled window’s requested natural width.
     def propagate_natural_width=(propagate : Bool) : Nil
       # gtk_scrolled_window_set_propagate_natural_width: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_set_propagate_natural_width(self, propagate)
@@ -983,12 +1048,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `GtkAdjustment` for the vertical scrollbar.
     def vadjustment=(vadjustment : Gtk::Adjustment?) : Nil
       # gtk_scrolled_window_set_vadjustment: (Method | Setter)
       # @vadjustment: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       vadjustment = if vadjustment.nil?
                       Pointer(Void).null
                     else
@@ -1001,11 +1067,13 @@ module Gtk
       # Return value handling
     end
 
+    # Unsets the placement of the contents with respect to the scrollbars.
+    #
+    # If no window placement is set for a scrolled window,
+    # it defaults to %GTK_CORNER_TOP_LEFT.
     def unset_placement : Nil
       # gtk_scrolled_window_unset_placement: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_scrolled_window_unset_placement(self)
@@ -1013,6 +1081,15 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted whenever user initiated scrolling makes the scrolled
+    # window firmly surpass the limits defined by the adjustment
+    # in that orientation.
+    #
+    # A similar behavior without edge resistance is provided by the
+    # [signal@Gtk.ScrolledWindow::edge-reached] signal.
+    #
+    # Note: The @pos argument is LTR/RTL aware, so callers should be
+    # aware too if intending to provide behavior on horizontal edges.
     struct EdgeOvershotSignal
       @source : GObject::Object
       @detail : String?
@@ -1040,7 +1117,7 @@ module Gtk
       def connect(block : Proc(Gtk::PositionType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::PositionType.from_value(lib_arg0)
+          arg0 = Gtk::PositionType.new(lib_arg0)
           ::Box(Proc(Gtk::PositionType, Nil)).unbox(box).call(arg0)
         }
 
@@ -1051,7 +1128,7 @@ module Gtk
       def connect_after(block : Proc(Gtk::PositionType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::PositionType.from_value(lib_arg0)
+          arg0 = Gtk::PositionType.new(lib_arg0)
           ::Box(Proc(Gtk::PositionType, Nil)).unbox(box).call(arg0)
         }
 
@@ -1063,7 +1140,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::ScrolledWindow.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::PositionType.from_value(lib_arg0)
+          arg0 = Gtk::PositionType.new(lib_arg0)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::PositionType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -1075,7 +1152,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::ScrolledWindow.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::PositionType.from_value(lib_arg0)
+          arg0 = Gtk::PositionType.new(lib_arg0)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::PositionType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -1092,6 +1169,15 @@ module Gtk
       EdgeOvershotSignal.new(self)
     end
 
+    # Emitted whenever user-initiated scrolling makes the scrolled
+    # window exactly reach the lower or upper limits defined by the
+    # adjustment in that orientation.
+    #
+    # A similar behavior with edge resistance is provided by the
+    # [signal@Gtk.ScrolledWindow::edge-overshot] signal.
+    #
+    # Note: The @pos argument is LTR/RTL aware, so callers should be
+    # aware too if intending to provide behavior on horizontal edges.
     struct EdgeReachedSignal
       @source : GObject::Object
       @detail : String?
@@ -1119,7 +1205,7 @@ module Gtk
       def connect(block : Proc(Gtk::PositionType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::PositionType.from_value(lib_arg0)
+          arg0 = Gtk::PositionType.new(lib_arg0)
           ::Box(Proc(Gtk::PositionType, Nil)).unbox(box).call(arg0)
         }
 
@@ -1130,7 +1216,7 @@ module Gtk
       def connect_after(block : Proc(Gtk::PositionType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::PositionType.from_value(lib_arg0)
+          arg0 = Gtk::PositionType.new(lib_arg0)
           ::Box(Proc(Gtk::PositionType, Nil)).unbox(box).call(arg0)
         }
 
@@ -1142,7 +1228,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::ScrolledWindow.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::PositionType.from_value(lib_arg0)
+          arg0 = Gtk::PositionType.new(lib_arg0)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::PositionType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -1154,7 +1240,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::ScrolledWindow.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::PositionType.from_value(lib_arg0)
+          arg0 = Gtk::PositionType.new(lib_arg0)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::PositionType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -1171,6 +1257,14 @@ module Gtk
       EdgeReachedSignal.new(self)
     end
 
+    # Emitted when focus is moved away from the scrolled window by a
+    # keybinding.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    #
+    # The default bindings for this signal are
+    # `Ctrl + Tab` to move forward and `Ctrl + Shift + Tab` to
+    # move backward.
     struct MoveFocusOutSignal
       @source : GObject::Object
       @detail : String?
@@ -1198,7 +1292,7 @@ module Gtk
       def connect(block : Proc(Gtk::DirectionType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(box).call(arg0)
         }
 
@@ -1209,7 +1303,7 @@ module Gtk
       def connect_after(block : Proc(Gtk::DirectionType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(box).call(arg0)
         }
 
@@ -1221,7 +1315,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::ScrolledWindow.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::DirectionType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -1233,7 +1327,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::ScrolledWindow.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::DirectionType.from_value(lib_arg0)
+          arg0 = Gtk::DirectionType.new(lib_arg0)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::DirectionType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -1250,6 +1344,12 @@ module Gtk
       MoveFocusOutSignal.new(self)
     end
 
+    # Emitted when a keybinding that scrolls is pressed.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    #
+    # The horizontal or vertical adjustment is updated which triggers a
+    # signal that the scrolled window’s child may listen to and scroll itself.
     struct ScrollChildSignal
       @source : GObject::Object
       @detail : String?
@@ -1277,9 +1377,10 @@ module Gtk
       def connect(block : Proc(Gtk::ScrollType, Bool, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::ScrollType.from_value(lib_arg0)
+          arg0 = Gtk::ScrollType.new(lib_arg0)
           arg1 = GICrystal.to_bool(lib_arg1)
-          ::Box(Proc(Gtk::ScrollType, Bool, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gtk::ScrollType, Bool, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1289,9 +1390,10 @@ module Gtk
       def connect_after(block : Proc(Gtk::ScrollType, Bool, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::ScrollType.from_value(lib_arg0)
+          arg0 = Gtk::ScrollType.new(lib_arg0)
           arg1 = GICrystal.to_bool(lib_arg1)
-          ::Box(Proc(Gtk::ScrollType, Bool, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gtk::ScrollType, Bool, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1302,7 +1404,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : LibC::Int, box : Pointer(Void)) {
           sender = Gtk::ScrolledWindow.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::ScrollType.from_value(lib_arg0)
+          arg0 = Gtk::ScrollType.new(lib_arg0)
           arg1 = GICrystal.to_bool(lib_arg1)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::ScrollType, Bool, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
         }
@@ -1315,7 +1417,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : LibC::Int, box : Pointer(Void)) {
           sender = Gtk::ScrolledWindow.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::ScrollType.from_value(lib_arg0)
+          arg0 = Gtk::ScrollType.new(lib_arg0)
           arg1 = GICrystal.to_bool(lib_arg1)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::ScrollType, Bool, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
         }

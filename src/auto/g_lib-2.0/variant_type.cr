@@ -150,7 +150,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(VariantType.g_type, pointer)
@@ -163,6 +163,10 @@ module GLib
       LibGObject.g_boxed_free(VariantType.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::VariantType)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGLib.g_variant_type_get_gtype
@@ -172,12 +176,11 @@ module GLib
       # g_variant_type_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_new(type_string)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -185,12 +188,11 @@ module GLib
       # g_variant_type_new_array: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_new_array(element)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -198,12 +200,11 @@ module GLib
       # g_variant_type_new_dict_entry: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_new_dict_entry(key, value)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -211,12 +212,11 @@ module GLib
       # g_variant_type_new_maybe: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_new_maybe(element)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -225,14 +225,16 @@ module GLib
       # @items: (array length=length element-type Interface)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       length = items.size
+      # Generator::ArrayArgPlan
       items = items.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGLib.g_variant_type_new_tuple(items, length)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -244,12 +246,11 @@ module GLib
       # g_variant_type_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_copy(self)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -257,12 +258,11 @@ module GLib
       # g_variant_type_dup_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_dup_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -270,12 +270,11 @@ module GLib
       # g_variant_type_element: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_element(self)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -283,12 +282,11 @@ module GLib
       # g_variant_type_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_equal(self, type2)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -296,20 +294,17 @@ module GLib
       # g_variant_type_first: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_first(self)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::None)
     end
 
     def free : Nil
       # g_variant_type_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_variant_type_free(self)
@@ -321,12 +316,11 @@ module GLib
       # g_variant_type_get_string_length: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_get_string_length(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -334,12 +328,11 @@ module GLib
       # g_variant_type_hash: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_hash(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -347,12 +340,11 @@ module GLib
       # g_variant_type_is_array: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_is_array(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -360,12 +352,11 @@ module GLib
       # g_variant_type_is_basic: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_is_basic(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -373,12 +364,11 @@ module GLib
       # g_variant_type_is_container: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_is_container(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -386,12 +376,11 @@ module GLib
       # g_variant_type_is_definite: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_is_definite(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -399,12 +388,11 @@ module GLib
       # g_variant_type_is_dict_entry: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_is_dict_entry(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -412,12 +400,11 @@ module GLib
       # g_variant_type_is_maybe: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_is_maybe(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -425,12 +412,11 @@ module GLib
       # g_variant_type_is_subtype_of: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_is_subtype_of(self, supertype)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -438,12 +424,11 @@ module GLib
       # g_variant_type_is_tuple: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_is_tuple(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -451,12 +436,11 @@ module GLib
       # g_variant_type_is_variant: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_is_variant(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -464,12 +448,11 @@ module GLib
       # g_variant_type_key: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_key(self)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -477,12 +460,11 @@ module GLib
       # g_variant_type_n_items: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_n_items(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -490,12 +472,11 @@ module GLib
       # g_variant_type_next: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_next(self)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -503,12 +484,11 @@ module GLib
       # g_variant_type_value: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_value(self)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -516,12 +496,11 @@ module GLib
       # g_variant_type_checked_: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_checked_(arg0)
 
       # Return value handling
+
       GLib::VariantType.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -529,12 +508,11 @@ module GLib
       # g_variant_type_string_get_depth_: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_string_get_depth_(type_string)
 
       # Return value handling
+
       _retval
     end
 
@@ -542,12 +520,11 @@ module GLib
       # g_variant_type_string_is_valid: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_type_string_is_valid(type_string)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -557,18 +534,21 @@ module GLib
       # @endptr: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
-      endptr = Pointer(Pointer(LibC::Char)).null
+      # Generator::NullableArrayPlan
       limit = if limit.nil?
                 Pointer(LibC::Char).null
               else
                 limit.to_unsafe
               end
 
+      # Generator::OutArgUsedInReturnPlan
+      endptr = Pointer(Pointer(LibC::Char)).null
+
       # C call
       _retval = LibGLib.g_variant_type_string_scan(string, limit, endptr)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 

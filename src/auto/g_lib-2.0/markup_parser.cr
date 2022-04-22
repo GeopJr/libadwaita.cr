@@ -10,7 +10,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGLib::MarkupParser))
@@ -32,63 +32,62 @@ module GLib
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::MarkupParser)).zero?
+    end
+
     def start_element : Pointer(Void)
-      # Property getter
       _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def start_element=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end
 
     def end_element : Pointer(Void)
-      # Property getter
       _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def end_element=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end
 
     def text : Pointer(Void)
-      # Property getter
       _var = (@pointer + 16).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def text=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end
 
     def passthrough : Pointer(Void)
-      # Property getter
       _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def passthrough=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 24).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end
 
     def error : Pointer(Void)
-      # Property getter
       _var = (@pointer + 32).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def error=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 32).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end
 

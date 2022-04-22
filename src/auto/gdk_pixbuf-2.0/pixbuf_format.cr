@@ -8,7 +8,7 @@ module GdkPixbuf
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGdkPixbuf::PixbufFormat))
@@ -34,111 +34,132 @@ module GdkPixbuf
     def finalize
     end
 
-    def name : ::String
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGdkPixbuf::PixbufFormat)).zero?
+    end
+
+    def name!
+      self.name.not_nil!
+    end
+
+    def name : ::String?
       _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def name=(value : ::String)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value
+    def name=(value : ::String?)
+      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def signature : GdkPixbuf::PixbufModulePattern
-      # Property getter
+    def signature!
+      self.signature.not_nil!
+    end
+
+    def signature : GdkPixbuf::PixbufModulePattern?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GdkPixbuf::PixbufModulePattern.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def signature=(value : GdkPixbuf::PixbufModulePattern)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def signature=(value : GdkPixbuf::PixbufModulePattern?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def domain : ::String
-      # Property getter
+    def domain!
+      self.domain.not_nil!
+    end
+
+    def domain : ::String?
       _var = (@pointer + 16).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def domain=(value : ::String)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(LibC::Char))).value = value
+    def domain=(value : ::String?)
+      _var = (@pointer + 16).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def description : ::String
-      # Property getter
+    def description!
+      self.description.not_nil!
+    end
+
+    def description : ::String?
       _var = (@pointer + 24).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def description=(value : ::String)
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(Pointer(LibC::Char))).value = value
+    def description=(value : ::String?)
+      _var = (@pointer + 24).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def mime_types : Enumerable(::String)
-      # Property getter
+    def mime_types!
+      self.mime_types.not_nil!
+    end
+
+    def mime_types : Enumerable(::String)?
       _var = (@pointer + 32).as(Pointer(Pointer(Pointer(LibC::Char))))
+      return if _var.value.null?
       GICrystal.transfer_null_ended_array(_var.value, GICrystal::Transfer::None)
     end
 
-    def mime_types=(value : Enumerable(::String))
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(Pointer(Pointer(LibC::Char)))).value = value
+    def mime_types=(value : Enumerable(::String)?)
+      _var = (@pointer + 32).as(Pointer(Pointer(Pointer(LibC::Char)))).value = value.nil? ? Pointer(Pointer(LibC::Char)).null : value
       value
     end
 
-    def extensions : Enumerable(::String)
-      # Property getter
+    def extensions!
+      self.extensions.not_nil!
+    end
+
+    def extensions : Enumerable(::String)?
       _var = (@pointer + 40).as(Pointer(Pointer(Pointer(LibC::Char))))
+      return if _var.value.null?
       GICrystal.transfer_null_ended_array(_var.value, GICrystal::Transfer::None)
     end
 
-    def extensions=(value : Enumerable(::String))
-      # Property setter
-      _var = (@pointer + 40).as(Pointer(Pointer(Pointer(LibC::Char)))).value = value
+    def extensions=(value : Enumerable(::String)?)
+      _var = (@pointer + 40).as(Pointer(Pointer(Pointer(LibC::Char)))).value = value.nil? ? Pointer(Pointer(LibC::Char)).null : value
       value
     end
 
     def flags : UInt32
-      # Property getter
       _var = (@pointer + 48).as(Pointer(UInt32))
       _var.value
     end
 
     def flags=(value : UInt32)
-      # Property setter
       _var = (@pointer + 48).as(Pointer(UInt32)).value = value
       value
     end
 
     def disabled : Bool
-      # Property getter
       _var = (@pointer + 52).as(Pointer(LibC::Int))
       GICrystal.to_bool(_var.value)
     end
 
     def disabled=(value : Bool)
-      # Property setter
       _var = (@pointer + 52).as(Pointer(LibC::Int)).value = value
       value
     end
 
-    def license : ::String
-      # Property getter
+    def license!
+      self.license.not_nil!
+    end
+
+    def license : ::String?
       _var = (@pointer + 56).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def license=(value : ::String)
-      # Property setter
-      _var = (@pointer + 56).as(Pointer(Pointer(LibC::Char))).value = value
+    def license=(value : ::String?)
+      _var = (@pointer + 56).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
@@ -151,20 +172,17 @@ module GdkPixbuf
       # gdk_pixbuf_format_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_copy(self)
 
       # Return value handling
+
       GdkPixbuf::PixbufFormat.new(_retval, GICrystal::Transfer::Full)
     end
 
     def free : Nil
       # gdk_pixbuf_format_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdkPixbuf.gdk_pixbuf_format_free(self)
@@ -176,12 +194,11 @@ module GdkPixbuf
       # gdk_pixbuf_format_get_description: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_get_description(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -189,12 +206,11 @@ module GdkPixbuf
       # gdk_pixbuf_format_get_extensions: (Method)
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_get_extensions(self)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
@@ -202,12 +218,11 @@ module GdkPixbuf
       # gdk_pixbuf_format_get_license: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_get_license(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -215,12 +230,11 @@ module GdkPixbuf
       # gdk_pixbuf_format_get_mime_types: (Method)
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_get_mime_types(self)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
@@ -228,12 +242,11 @@ module GdkPixbuf
       # gdk_pixbuf_format_get_name: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_get_name(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -241,12 +254,11 @@ module GdkPixbuf
       # gdk_pixbuf_format_is_disabled: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_is_disabled(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -254,12 +266,11 @@ module GdkPixbuf
       # gdk_pixbuf_format_is_save_option_supported: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_is_save_option_supported(self, option_key)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -267,12 +278,11 @@ module GdkPixbuf
       # gdk_pixbuf_format_is_scalable: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_is_scalable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -280,20 +290,17 @@ module GdkPixbuf
       # gdk_pixbuf_format_is_writable: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_format_is_writable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def disabled=(disabled : Bool) : Nil
       # gdk_pixbuf_format_set_disabled: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdkPixbuf.gdk_pixbuf_format_set_disabled(self, disabled)

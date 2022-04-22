@@ -7,7 +7,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Ray))
@@ -26,27 +26,29 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Ray)).zero?
+    end
+
     def origin : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def origin=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Ray))
       value
     end
 
     def direction : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def direction=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Ray))
       value
     end
 
@@ -59,12 +61,11 @@ module Graphene
       # graphene_ray_alloc: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_alloc
 
       # Return value handling
+
       Graphene::Ray.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -72,20 +73,17 @@ module Graphene
       # graphene_ray_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_equal(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # graphene_ray_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_ray_free(self)
@@ -98,13 +96,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
 
       # C call
       LibGraphene.graphene_ray_get_closest_point_to_point(self, p, res)
 
       # Return value handling
+
       res
     end
 
@@ -113,13 +112,14 @@ module Graphene
       # @direction: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       direction = Graphene::Vec3.new
 
       # C call
       LibGraphene.graphene_ray_get_direction(self, direction)
 
       # Return value handling
+
       direction
     end
 
@@ -127,12 +127,11 @@ module Graphene
       # graphene_ray_get_distance_to_plane: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_get_distance_to_plane(self, p)
 
       # Return value handling
+
       _retval
     end
 
@@ -140,12 +139,11 @@ module Graphene
       # graphene_ray_get_distance_to_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_get_distance_to_point(self, p)
 
       # Return value handling
+
       _retval
     end
 
@@ -154,13 +152,14 @@ module Graphene
       # @origin: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       origin = Graphene::Point3D.new
 
       # C call
       LibGraphene.graphene_ray_get_origin(self, origin)
 
       # Return value handling
+
       origin
     end
 
@@ -169,13 +168,14 @@ module Graphene
       # @position: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       position = Graphene::Point3D.new
 
       # C call
       LibGraphene.graphene_ray_get_position_at(self, t, position)
 
       # Return value handling
+
       position
     end
 
@@ -185,12 +185,14 @@ module Graphene
       # @direction: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       origin = if origin.nil?
                  Pointer(Void).null
                else
                  origin.to_unsafe
                end
+
+      # Generator::NullableArrayPlan
       direction = if direction.nil?
                     Pointer(Void).null
                   else
@@ -201,6 +203,7 @@ module Graphene
       _retval = LibGraphene.graphene_ray_init(self, origin, direction)
 
       # Return value handling
+
       Graphene::Ray.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -208,12 +211,11 @@ module Graphene
       # graphene_ray_init_from_ray: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_init_from_ray(self, src)
 
       # Return value handling
+
       Graphene::Ray.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -223,12 +225,14 @@ module Graphene
       # @direction: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       origin = if origin.nil?
                  Pointer(Void).null
                else
                  origin.to_unsafe
                end
+
+      # Generator::NullableArrayPlan
       direction = if direction.nil?
                     Pointer(Void).null
                   else
@@ -239,6 +243,7 @@ module Graphene
       _retval = LibGraphene.graphene_ray_init_from_vec3(self, origin, direction)
 
       # Return value handling
+
       Graphene::Ray.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -247,13 +252,12 @@ module Graphene
       # @t_out: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_intersect_box(self, b, t_out)
 
       # Return value handling
-      Graphene::RayIntersectionKind.from_value(_retval)
+
+      Graphene::RayIntersectionKind.new(_retval)
     end
 
     def intersect_sphere(s : Graphene::Sphere, t_out : Float32) : Graphene::RayIntersectionKind
@@ -261,13 +265,12 @@ module Graphene
       # @t_out: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_intersect_sphere(self, s, t_out)
 
       # Return value handling
-      Graphene::RayIntersectionKind.from_value(_retval)
+
+      Graphene::RayIntersectionKind.new(_retval)
     end
 
     def intersect_triangle(t : Graphene::Triangle, t_out : Float32) : Graphene::RayIntersectionKind
@@ -275,25 +278,23 @@ module Graphene
       # @t_out: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_intersect_triangle(self, t, t_out)
 
       # Return value handling
-      Graphene::RayIntersectionKind.from_value(_retval)
+
+      Graphene::RayIntersectionKind.new(_retval)
     end
 
     def intersects_box(b : Graphene::Box) : Bool
       # graphene_ray_intersects_box: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_intersects_box(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -301,12 +302,11 @@ module Graphene
       # graphene_ray_intersects_sphere: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_intersects_sphere(self, s)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -314,12 +314,11 @@ module Graphene
       # graphene_ray_intersects_triangle: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_ray_intersects_triangle(self, t)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 

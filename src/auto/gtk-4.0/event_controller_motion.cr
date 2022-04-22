@@ -4,14 +4,22 @@ module Gtk
   # `GtkEventControllerMotion` is an event controller tracking the pointer
   # position.
   #
-  # The event controller offers [signal@Gtk.EventControllerMotion::enter]
-  # and [signal@Gtk.EventControllerMotion::leave] signals, as well as
+  # The event controller offers `Gtk::EventControllerMotion::#enter`
+  # and `Gtk::EventControllerMotion::#leave` signals, as well as
   # [property@Gtk.EventControllerMotion:is-pointer] and
   # [property@Gtk.EventControllerMotion:contains-pointer] properties
   # which are updated to reflect changes in the pointer position as it
   # moves over the widget.
+  @[GObject::GeneratedWrapper]
   class EventControllerMotion < EventController
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::EventControllerMotionClass), class_init,
+        sizeof(LibGtk::EventControllerMotion), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -23,38 +31,42 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 6).new(LibGObject::Value.new)
       _n = 0
 
-      if contains_pointer
+      if !contains_pointer.nil?
         (_names.to_unsafe + _n).value = "contains-pointer".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, contains_pointer)
         _n += 1
       end
-      if is_pointer
+      if !is_pointer.nil?
         (_names.to_unsafe + _n).value = "is-pointer".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_pointer)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if propagation_limit
+      if !propagation_limit.nil?
         (_names.to_unsafe + _n).value = "propagation-limit".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_limit)
         _n += 1
       end
-      if propagation_phase
+      if !propagation_phase.nil?
         (_names.to_unsafe + _n).value = "propagation-phase".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, propagation_phase)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(EventControllerMotion.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -78,45 +90,46 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new event controller that will handle motion events.
     def initialize
       # gtk_event_controller_motion_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_motion_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns if a pointer is within @self or one of its children.
     def contains_pointer : Bool
       # gtk_event_controller_motion_contains_pointer: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_motion_contains_pointer(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns if a pointer is within @self, but not one of its children.
     def is_pointer? : Bool
       # gtk_event_controller_motion_is_pointer: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_event_controller_motion_is_pointer(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Signals that the pointer has entered the widget.
     struct EnterSignal
       @source : GObject::Object
       @detail : String?
@@ -200,6 +213,7 @@ module Gtk
       EnterSignal.new(self)
     end
 
+    # Signals that the pointer has left the widget.
     struct LeaveSignal
       @source : GObject::Object
       @detail : String?
@@ -275,6 +289,7 @@ module Gtk
       LeaveSignal.new(self)
     end
 
+    # Emitted when the pointer moves inside the widget.
     struct MotionSignal
       @source : GObject::Object
       @detail : String?

@@ -2,18 +2,26 @@ require "../g_object-2.0/object"
 
 module Gsk
   # `GskRenderer` is a class that renders a scene graph defined via a
-  # tree of [class@Gsk.RenderNode] instances.
+  # tree of `Gsk#RenderNode` instances.
   #
   # Typically you will use a `GskRenderer` instance to repeatedly call
-  # [method@Gsk.Renderer.render] to update the contents of its associated
-  # [class@Gdk.Surface].
+  # `Gsk::Renderer#render` to update the contents of its associated
+  # `Gdk#Surface`.
   #
   # It is necessary to realize a `GskRenderer` instance using
-  # [method@Gsk.Renderer.realize] before calling [method@Gsk.Renderer.render],
+  # `Gsk::Renderer#realize` before calling `Gsk::Renderer#render`,
   # in order to create the appropriate windowing system resources needed
   # to render the scene.
+  @[GObject::GeneratedWrapper]
   class Renderer < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGsk::RendererClass), class_init,
+        sizeof(LibGsk::Renderer), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -25,18 +33,22 @@ module Gsk
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if realized
+      if !realized.nil?
         (_names.to_unsafe + _n).value = "realized".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, realized)
         _n += 1
       end
-      if surface
+      if !surface.nil?
         (_names.to_unsafe + _n).value = "surface".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, surface)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Renderer.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -60,45 +72,61 @@ module Gsk
       Gdk::Surface.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates an appropriate `GskRenderer` instance for the given @surface.
+    #
+    # If the `GSK_RENDERER` environment variable is set, GSK will
+    # try that renderer first, before trying the backend-specific
+    # default. The ultimate fallback is the cairo renderer.
+    #
+    # The renderer will be realized before it is returned.
     def self.new_for_surface(surface : Gdk::Surface) : self?
       # gsk_renderer_new_for_surface: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_renderer_new_for_surface(surface)
 
       # Return value handling
+
       Gsk::Renderer.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Retrieves the `GdkSurface` set using gsk_enderer_realize().
+    #
+    # If the renderer has not been realized yet, %NULL will be returned.
     def surface : Gdk::Surface?
       # gsk_renderer_get_surface: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_renderer_get_surface(self)
 
       # Return value handling
+
       Gdk::Surface.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Checks whether the @renderer is realized or not.
     def is_realized : Bool
       # gsk_renderer_is_realized: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_renderer_is_realized(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Creates the resources needed by the @renderer to render the scene
+    # graph.
+    #
+    # Since GTK 4.6, the surface may be `NULL`, which allows using
+    # renderers without having to create a surface.
+    #
+    # Note that it is mandatory to call `Gsk::Renderer#unrealize` before
+    # destroying the renderer.
     def realize(surface : Gdk::Surface?) : Bool
       # gsk_renderer_realize: (Method | Throws)
       # @surface: (nullable)
@@ -106,7 +134,7 @@ module Gsk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       surface = if surface.nil?
                   Pointer(Void).null
                 else
@@ -118,16 +146,30 @@ module Gsk
 
       # Error check
       Gsk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Renders the scene graph, described by a tree of `GskRenderNode` instances
+    # to the renderer's surface,  ensuring that the given @region gets redrawn.
+    #
+    # If the renderer has no associated surface, this function does nothing.
+    #
+    # Renderers must ensure that changes of the contents given by the @root
+    # node as well as the area given by @region are redrawn. They are however
+    # free to not redraw any pixel outside of @region if they can guarantee that
+    # it didn't change.
+    #
+    # The @renderer will acquire a reference on the `GskRenderNode` tree while
+    # the rendering is in progress.
     def render(root : Gsk::RenderNode, region : Cairo::Region?) : Nil
       # gsk_renderer_render: (Method)
       # @region: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       region = if region.nil?
                  Pointer(Void).null
                else
@@ -140,12 +182,20 @@ module Gsk
       # Return value handling
     end
 
+    # Renders the scene graph, described by a tree of `GskRenderNode` instances,
+    # to a `GdkTexture`.
+    #
+    # The @renderer will acquire a reference on the `GskRenderNode` tree while
+    # the rendering is in progress.
+    #
+    # If you want to apply any transformations to @root, you should put it into a
+    # transform node and pass that node instead.
     def render_texture(root : Gsk::RenderNode, viewport : Graphene::Rect?) : Gdk::Texture
       # gsk_renderer_render_texture: (Method)
       # @viewport: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       viewport = if viewport.nil?
                    Pointer(Void).null
                  else
@@ -156,14 +206,14 @@ module Gsk
       _retval = LibGsk.gsk_renderer_render_texture(self, root, viewport)
 
       # Return value handling
+
       Gdk::Texture.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Releases all the resources created by gsk_renderer_realize().
     def unrealize : Nil
       # gsk_renderer_unrealize: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_renderer_unrealize(self)

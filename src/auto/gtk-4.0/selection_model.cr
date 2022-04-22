@@ -5,14 +5,14 @@ module Gtk
   # to select and unselect various items.
   #
   # GTK provides default implementations of the most common selection modes such
-  # as [class@Gtk.SingleSelection], so you will only need to implement this
+  # as `Gtk#SingleSelection`, so you will only need to implement this
   # interface if you want detailed control about how selections should be handled.
   #
   # A `GtkSelectionModel` supports a single boolean per item indicating if an item is
-  # selected or not. This can be queried via [method@Gtk.SelectionModel.is_selected].
+  # selected or not. This can be queried via `Gtk::SelectionModel#is_selected?`.
   # When the selected state of one or more items changes, the model will emit the
   # [signal@Gtk.SelectionModel::selection-changed] signal by calling the
-  # [method@Gtk.SelectionModel.selection_changed] function. The positions given
+  # `Gtk::SelectionModel#selection_changed` function. The positions given
   # in that signal may have their selection state changed, though that is not a
   # requirement. If new items added to the model via the ::items-changed signal
   # are selected or not is up to the implementation.
@@ -39,12 +39,11 @@ module Gtk
       # gtk_selection_model_get_selection: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_get_selection(self)
 
       # Return value handling
+
       Gtk::Bitset.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -52,12 +51,11 @@ module Gtk
       # gtk_selection_model_get_selection_in_range: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_get_selection_in_range(self, position, n_items)
 
       # Return value handling
+
       Gtk::Bitset.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -65,12 +63,11 @@ module Gtk
       # gtk_selection_model_is_selected: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_is_selected(self, position)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -78,12 +75,11 @@ module Gtk
       # gtk_selection_model_select_all: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_select_all(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -91,12 +87,11 @@ module Gtk
       # gtk_selection_model_select_item: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_select_item(self, position, unselect_rest)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -104,20 +99,17 @@ module Gtk
       # gtk_selection_model_select_range: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_select_range(self, position, n_items, unselect_rest)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def selection_changed(position : UInt32, n_items : UInt32) : Nil
       # gtk_selection_model_selection_changed: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_selection_model_selection_changed(self, position, n_items)
@@ -129,12 +121,11 @@ module Gtk
       # gtk_selection_model_set_selection: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_set_selection(self, selected, mask)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -142,12 +133,11 @@ module Gtk
       # gtk_selection_model_unselect_all: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_unselect_all(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -155,12 +145,11 @@ module Gtk
       # gtk_selection_model_unselect_item: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_unselect_item(self, position)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -168,19 +157,102 @@ module Gtk
       # gtk_selection_model_unselect_range: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_selection_model_unselect_range(self, position, n_items)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
+    end
+
+    struct SelectionChangedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "selection-changed::#{@detail}" : "selection-changed"
+      end
+
+      def connect(&block : Proc(UInt32, UInt32, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(UInt32, UInt32, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(UInt32, UInt32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, box : Pointer(Void)) {
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(UInt32, UInt32, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(UInt32, UInt32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, box : Pointer(Void)) {
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(UInt32, UInt32, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::SelectionModel, UInt32, UInt32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, box : Pointer(Void)) {
+          sender = Gtk::SelectionModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Gtk::SelectionModel, UInt32, UInt32, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::SelectionModel, UInt32, UInt32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, box : Pointer(Void)) {
+          sender = Gtk::SelectionModel__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Gtk::SelectionModel, UInt32, UInt32, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(position : UInt32, n_items : UInt32) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "selection-changed", position, n_items)
+      end
+    end
+
+    def selection_changed_signal
+      SelectionChangedSignal.new(self)
     end
 
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class SelectionModel__Impl < GObject::Object
     include SelectionModel
 

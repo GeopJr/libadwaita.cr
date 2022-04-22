@@ -288,8 +288,16 @@ module Gio
   # automatically included in the schema compilation, install and uninstall
   # rules. It should not be committed to version control or included in
   # `EXTRA_DIST`.
+  @[GObject::GeneratedWrapper]
   class Settings < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::SettingsClass), class_init,
+        sizeof(LibGio::Settings), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -301,43 +309,47 @@ module Gio
       _values = StaticArray(LibGObject::Value, 7).new(LibGObject::Value.new)
       _n = 0
 
-      if backend
+      if !backend.nil?
         (_names.to_unsafe + _n).value = "backend".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, backend)
         _n += 1
       end
-      if delay_apply
+      if !delay_apply.nil?
         (_names.to_unsafe + _n).value = "delay-apply".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, delay_apply)
         _n += 1
       end
-      if has_unapplied
+      if !has_unapplied.nil?
         (_names.to_unsafe + _n).value = "has-unapplied".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_unapplied)
         _n += 1
       end
-      if path
+      if !path.nil?
         (_names.to_unsafe + _n).value = "path".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, path)
         _n += 1
       end
-      if schema
+      if !schema.nil?
         (_names.to_unsafe + _n).value = "schema".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, schema)
         _n += 1
       end
-      if schema_id
+      if !schema_id.nil?
         (_names.to_unsafe + _n).value = "schema-id".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, schema_id)
         _n += 1
       end
-      if settings_schema
+      if !settings_schema.nil?
         (_names.to_unsafe + _n).value = "settings-schema".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, settings_schema)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Settings.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -436,31 +448,68 @@ module Gio
       Gio::SettingsSchema.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new #GSettings object with the schema specified by
+    # @schema_id.
+    #
+    # It is an error for the schema to not exist: schemas are an
+    # essential part of a program, as they provide type information.
+    # If schemas need to be dynamically loaded (for example, from an
+    # optional runtime dependency), g_settings_schema_source_lookup()
+    # can be used to test for their existence before loading them.
+    #
+    # Signals on the newly created #GSettings object will be dispatched
+    # via the thread-default #GMainContext in effect at the time of the
+    # call to g_settings_new().  The new #GSettings will hold a reference
+    # on the context.  See g_main_context_push_thread_default().
     def initialize(schema_id : ::String)
       # g_settings_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_new(schema_id)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Creates a new #GSettings object with a given schema, backend and
+    # path.
+    #
+    # It should be extremely rare that you ever want to use this function.
+    # It is made available for advanced use-cases (such as plugin systems
+    # that want to provide access to schemas loaded from custom locations,
+    # etc).
+    #
+    # At the most basic level, a #GSettings object is a pure composition of
+    # 4 things: a #GSettingsSchema, a #GSettingsBackend, a path within that
+    # backend, and a #GMainContext to which signals are dispatched.
+    #
+    # This constructor therefore gives you full control over constructing
+    # #GSettings instances.  The first 3 parameters are given directly as
+    # @schema, @backend and @path, and the main context is taken from the
+    # thread-default (as per g_settings_new()).
+    #
+    # If @backend is %NULL then the default backend is used.
+    #
+    # If @path is %NULL then the path from the schema is used.  It is an
+    # error if @path is %NULL and the schema has no path of its own or if
+    # @path is non-%NULL and not equal to the path that the schema does
+    # have.
     def self.new_full(schema : Gio::SettingsSchema, backend : Gio::SettingsBackend?, path : ::String?) : self
       # g_settings_new_full: (Constructor)
       # @backend: (nullable)
       # @path: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       backend = if backend.nil?
                   Pointer(Void).null
                 else
                   backend.to_unsafe
                 end
+
+      # Generator::NullableArrayPlan
       path = if path.nil?
                Pointer(LibC::Char).null
              else
@@ -471,79 +520,111 @@ module Gio
       _retval = LibGio.g_settings_new_full(schema, backend, path)
 
       # Return value handling
+
       Gio::Settings.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a new #GSettings object with the schema specified by
+    # @schema_id and a given #GSettingsBackend.
+    #
+    # Creating a #GSettings object with a different backend allows accessing
+    # settings from a database other than the usual one. For example, it may make
+    # sense to pass a backend corresponding to the "defaults" settings database on
+    # the system to get a settings object that modifies the system default
+    # settings instead of the settings for this user.
     def self.new_with_backend(schema_id : ::String, backend : Gio::SettingsBackend) : self
       # g_settings_new_with_backend: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_new_with_backend(schema_id, backend)
 
       # Return value handling
+
       Gio::Settings.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a new #GSettings object with the schema specified by
+    # @schema_id and a given #GSettingsBackend and path.
+    #
+    # This is a mix of g_settings_new_with_backend() and
+    # g_settings_new_with_path().
     def self.new_with_backend_and_path(schema_id : ::String, backend : Gio::SettingsBackend, path : ::String) : self
       # g_settings_new_with_backend_and_path: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_new_with_backend_and_path(schema_id, backend, path)
 
       # Return value handling
+
       Gio::Settings.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a new #GSettings object with the relocatable schema specified
+    # by @schema_id and a given path.
+    #
+    # You only need to do this if you want to directly create a settings
+    # object with a schema that doesn't have a specified path of its own.
+    # That's quite rare.
+    #
+    # It is a programmer error to call this function for a schema that
+    # has an explicitly specified path.
+    #
+    # It is a programmer error if @path is not a valid path.  A valid path
+    # begins and ends with '/' and does not contain two consecutive '/'
+    # characters.
     def self.new_with_path(schema_id : ::String, path : ::String) : self
       # g_settings_new_with_path: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_new_with_path(schema_id, path)
 
       # Return value handling
+
       Gio::Settings.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Deprecated.
     def self.list_relocatable_schemas : Enumerable(::String)
       # g_settings_list_relocatable_schemas: (None)
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_list_relocatable_schemas
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
     end
 
+    # Deprecated.
     def self.list_schemas : Enumerable(::String)
       # g_settings_list_schemas: (None)
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_list_schemas
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
     end
 
+    # Ensures that all pending operations are complete for the default backend.
+    #
+    # Writes made to a #GSettings are handled asynchronously.  For this
+    # reason, it is very unlikely that the changes have it to disk by the
+    # time g_settings_set() returns.
+    #
+    # This call will block until all of the writes have made it to the
+    # backend.  Since the mainloop is not running, no change notifications
+    # will be dispatched during this call (but some may be queued by the
+    # time the call is done).
     def self.sync : Nil
       # g_settings_sync: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_settings_sync
@@ -551,11 +632,14 @@ module Gio
       # Return value handling
     end
 
+    # Removes an existing binding for @property on @object.
+    #
+    # Note that bindings are automatically removed when the
+    # object is finalized, so it is rarely necessary to call this
+    # function.
     def self.unbind(object : GObject::Object, property : ::String) : Nil
       # g_settings_unbind: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_settings_unbind(object, property)
@@ -563,11 +647,13 @@ module Gio
       # Return value handling
     end
 
+    # Applies any changes that have been made to the settings.  This
+    # function does nothing unless @settings is in 'delay-apply' mode;
+    # see g_settings_delay().  In the normal case settings are always
+    # applied immediately.
     def apply : Nil
       # g_settings_apply: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_settings_apply(self)
@@ -575,11 +661,29 @@ module Gio
       # Return value handling
     end
 
+    # Create a binding between the @key in the @settings object
+    # and the property @property of @object.
+    #
+    # The binding uses the default GIO mapping functions to map
+    # between the settings and property values. These functions
+    # handle booleans, numeric types and string types in a
+    # straightforward way. Use g_settings_bind_with_mapping() if
+    # you need a custom mapping, or map between types that are not
+    # supported by the default mapping functions.
+    #
+    # Unless the @flags include %G_SETTINGS_BIND_NO_SENSITIVITY, this
+    # function also establishes a binding between the writability of
+    # @key and the "sensitive" property of @object (if @object has
+    # a boolean property by that name). See g_settings_bind_writable()
+    # for more details about writable bindings.
+    #
+    # Note that the lifecycle of the binding is tied to @object,
+    # and that you can have only one binding per object property.
+    # If you bind the same property twice on the same object, the second
+    # binding overrides the first one.
     def bind(key : ::String, object : GObject::Object, property : ::String, flags : Gio::SettingsBindFlags) : Nil
       # g_settings_bind: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_settings_bind(self, key, object, property, flags)
@@ -587,11 +691,26 @@ module Gio
       # Return value handling
     end
 
+    # Create a binding between the writability of @key in the
+    # @settings object and the property @property of @object.
+    # The property must be boolean; "sensitive" or "visible"
+    # properties of widgets are the most likely candidates.
+    #
+    # Writable bindings are always uni-directional; changes of the
+    # writability of the setting will be propagated to the object
+    # property, not the other way.
+    #
+    # When the @inverted argument is %TRUE, the binding inverts the
+    # value as it passes from the setting to the object, i.e. @property
+    # will be set to %TRUE if the key is not writable.
+    #
+    # Note that the lifecycle of the binding is tied to @object,
+    # and that you can have only one binding per object property.
+    # If you bind the same property twice on the same object, the second
+    # binding overrides the first one.
     def bind_writable(key : ::String, object : GObject::Object, property : ::String, inverted : Bool) : Nil
       # g_settings_bind_writable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_settings_bind_writable(self, key, object, property, inverted)
@@ -599,24 +718,38 @@ module Gio
       # Return value handling
     end
 
+    # Creates a #GAction corresponding to a given #GSettings key.
+    #
+    # The action has the same name as the key.
+    #
+    # The value of the key becomes the state of the action and the action
+    # is enabled when the key is writable.  Changing the state of the
+    # action results in the key being written to.  Changes to the value or
+    # writability of the key cause appropriate change notifications to be
+    # emitted for the action.
+    #
+    # For boolean-valued keys, action activations take no parameter and
+    # result in the toggling of the value.  For all other types,
+    # activations take the new value for the key (which must have the
+    # correct type).
     def create_action(key : ::String) : Gio::Action
       # g_settings_create_action: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_create_action(self, key)
 
       # Return value handling
+
       Gio::Action__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Changes the #GSettings object into 'delay-apply' mode. In this
+    # mode, changes to @settings are not immediately propagated to the
+    # backend, but kept locally until g_settings_apply() is called.
     def delay : Nil
       # g_settings_delay: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_settings_delay(self)
@@ -624,129 +757,227 @@ module Gio
       # Return value handling
     end
 
+    # Gets the value that is stored at @key in @settings.
+    #
+    # A convenience variant of g_settings_get() for booleans.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a boolean type in the schema for @settings.
     def boolean(key : ::String) : Bool
       # g_settings_get_boolean: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_boolean(self, key)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Creates a child settings object which has a base path of
+    # `base-path/@name`, where `base-path` is the base path of
+    # @settings.
+    #
+    # The schema for the child settings object must have been declared
+    # in the schema of @settings using a `<child>` element.
+    #
+    # The created child settings object will inherit the #GSettings:delay-apply
+    # mode from @settings.
     def child(name : ::String) : Gio::Settings
       # g_settings_get_child: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_child(self, name)
 
       # Return value handling
+
       Gio::Settings.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the "default value" of a key.
+    #
+    # This is the value that would be read if g_settings_reset() were to be
+    # called on the key.
+    #
+    # Note that this may be a different value than returned by
+    # g_settings_schema_key_get_default_value() if the system administrator
+    # has provided a default value.
+    #
+    # Comparing the return values of g_settings_get_default_value() and
+    # g_settings_get_value() is not sufficient for determining if a value
+    # has been set because the user may have explicitly set the value to
+    # something that happens to be equal to the default.  The difference
+    # here is that if the default changes in the future, the user's key
+    # will still be set.
+    #
+    # This function may be useful for adding an indication to a UI of what
+    # the default value was before the user set it.
+    #
+    # It is a programmer error to give a @key that isn't contained in the
+    # schema for @settings.
     def default_value(key : ::String) : GLib::Variant?
       # g_settings_get_default_value: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_default_value(self, key)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Gets the value that is stored at @key in @settings.
+    #
+    # A convenience variant of g_settings_get() for doubles.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a 'double' type in the schema for @settings.
     def double(key : ::String) : Float64
       # g_settings_get_double: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_double(self, key)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the value that is stored in @settings for @key and converts it
+    # to the enum value that it represents.
+    #
+    # In order to use this function the type of the value must be a string
+    # and it must be marked in the schema file as an enumerated type.
+    #
+    # It is a programmer error to give a @key that isn't contained in the
+    # schema for @settings or is not marked as an enumerated type.
+    #
+    # If the value stored in the configuration database is not a valid
+    # value for the enumerated type then this function will return the
+    # default value.
     def enum(key : ::String) : Int32
       # g_settings_get_enum: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_enum(self, key)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the value that is stored in @settings for @key and converts it
+    # to the flags value that it represents.
+    #
+    # In order to use this function the type of the value must be an array
+    # of strings and it must be marked in the schema file as a flags type.
+    #
+    # It is a programmer error to give a @key that isn't contained in the
+    # schema for @settings or is not marked as a flags type.
+    #
+    # If the value stored in the configuration database is not a valid
+    # value for the flags type then this function will return the default
+    # value.
     def flags(key : ::String) : UInt32
       # g_settings_get_flags: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_flags(self, key)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns whether the #GSettings object has any unapplied
+    # changes.  This can only be the case if it is in 'delayed-apply' mode.
     def has_unapplied : Bool
       # g_settings_get_has_unapplied: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_has_unapplied(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the value that is stored at @key in @settings.
+    #
+    # A convenience variant of g_settings_get() for 32-bit integers.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a int32 type in the schema for @settings.
     def int(key : ::String) : Int32
       # g_settings_get_int: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_int(self, key)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the value that is stored at @key in @settings.
+    #
+    # A convenience variant of g_settings_get() for 64-bit integers.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a int64 type in the schema for @settings.
     def int64(key : ::String) : Int64
       # g_settings_get_int64: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_int64(self, key)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the value that is stored at @key in @settings, subject to
+    # application-level validation/mapping.
+    #
+    # You should use this function when the application needs to perform
+    # some processing on the value of the key (for example, parsing).  The
+    # @mapping function performs that processing.  If the function
+    # indicates that the processing was unsuccessful (due to a parse error,
+    # for example) then the mapping is tried again with another value.
+    #
+    # This allows a robust 'fall back to defaults' behaviour to be
+    # implemented somewhat automatically.
+    #
+    # The first value that is tried is the user's setting for the key.  If
+    # the mapping function fails to map this value, other values may be
+    # tried in an unspecified order (system or site defaults, translated
+    # schema default values, untranslated schema default values, etc).
+    #
+    # If the mapping function fails for all possible values, one additional
+    # attempt is made: the mapping function is called with a %NULL value.
+    # If the mapping function still indicates failure at this point then
+    # the application will be aborted.
+    #
+    # The result parameter for the @mapping function is pointed to a
+    # #gpointer which is initially set to %NULL.  The same pointer is given
+    # to each invocation of @mapping.  The final value of that #gpointer is
+    # what is returned by this function.  %NULL is valid; it is returned
+    # just as any other value would be.
     def mapped(key : ::String, mapping : Pointer(Void), user_data : Pointer(Void)?) : Pointer(Void)?
       # g_settings_get_mapped: (Method)
       # @user_data: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -757,158 +988,226 @@ module Gio
       _retval = LibGio.g_settings_get_mapped(self, key, mapping, user_data)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
+    # Queries the range of a key.
     def range(key : ::String) : GLib::Variant
       # g_settings_get_range: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_range(self, key)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the value that is stored at @key in @settings.
+    #
+    # A convenience variant of g_settings_get() for strings.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a string type in the schema for @settings.
     def string(key : ::String) : ::String
       # g_settings_get_string: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_string(self, key)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
+    # A convenience variant of g_settings_get() for string arrays.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having an array of strings type in the schema for @settings.
     def strv(key : ::String) : Enumerable(::String)
       # g_settings_get_strv: (Method)
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_strv(self, key)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the value that is stored at @key in @settings.
+    #
+    # A convenience variant of g_settings_get() for 32-bit unsigned
+    # integers.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a uint32 type in the schema for @settings.
     def uint(key : ::String) : UInt32
       # g_settings_get_uint: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_uint(self, key)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the value that is stored at @key in @settings.
+    #
+    # A convenience variant of g_settings_get() for 64-bit unsigned
+    # integers.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a uint64 type in the schema for @settings.
     def uint64(key : ::String) : UInt64
       # g_settings_get_uint64: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_uint64(self, key)
 
       # Return value handling
+
       _retval
     end
 
+    # Checks the "user value" of a key, if there is one.
+    #
+    # The user value of a key is the last value that was set by the user.
+    #
+    # After calling g_settings_reset() this function should always return
+    # %NULL (assuming something is not wrong with the system
+    # configuration).
+    #
+    # It is possible that g_settings_get_value() will return a different
+    # value than this function.  This can happen in the case that the user
+    # set a value for a key that was subsequently locked down by the system
+    # administrator -- this function will return the user's old value.
+    #
+    # This function may be useful for adding a "reset" option to a UI or
+    # for providing indication that a particular value has been changed.
+    #
+    # It is a programmer error to give a @key that isn't contained in the
+    # schema for @settings.
     def user_value(key : ::String) : GLib::Variant?
       # g_settings_get_user_value: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_user_value(self, key)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Gets the value that is stored in @settings for @key.
+    #
+    # It is a programmer error to give a @key that isn't contained in the
+    # schema for @settings.
     def value(key : ::String) : GLib::Variant
       # g_settings_get_value: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_get_value(self, key)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Finds out if a key can be written or not
     def is_writable(name : ::String) : Bool
       # g_settings_is_writable: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_is_writable(self, name)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the list of children on @settings.
+    #
+    # The list is exactly the list of strings for which it is not an error
+    # to call g_settings_get_child().
+    #
+    # There is little reason to call this function from "normal" code, since
+    # you should already know what children are in your schema. This function
+    # may still be useful there for introspection reasons, however.
+    #
+    # You should free the return value with g_strfreev() when you are done
+    # with it.
     def list_children : Enumerable(::String)
       # g_settings_list_children: (Method)
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_list_children(self)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
+    # Introspects the list of keys on @settings.
+    #
+    # You should probably not be calling this function from "normal" code
+    # (since you should already know what keys are in your schema).  This
+    # function is intended for introspection reasons.
+    #
+    # You should free the return value with g_strfreev() when you are done
+    # with it.
     def list_keys : Enumerable(::String)
       # g_settings_list_keys: (Method)
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_list_keys(self)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
+    # Checks if the given @value is of the correct type and within the
+    # permitted range for @key.
     def range_check(key : ::String, value : _) : Bool
       # g_settings_range_check: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GLib::Variant)
+                GLib::Variant.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGio.g_settings_range_check(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Resets @key to its default value.
+    #
+    # This call resets the key, as much as possible, to its default value.
+    # That might be the value specified in the schema or the one set by the
+    # administrator.
     def reset(key : ::String) : Nil
       # g_settings_reset: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_settings_reset(self, key)
@@ -916,11 +1215,15 @@ module Gio
       # Return value handling
     end
 
+    # Reverts all non-applied changes to the settings.  This function
+    # does nothing unless @settings is in 'delay-apply' mode; see
+    # g_settings_delay().  In the normal case settings are always applied
+    # immediately.
+    #
+    # Change notifications will be emitted for affected keys.
     def revert : Nil
       # g_settings_revert: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_settings_revert(self)
@@ -928,103 +1231,154 @@ module Gio
       # Return value handling
     end
 
+    # Sets @key in @settings to @value.
+    #
+    # A convenience variant of g_settings_set() for booleans.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a boolean type in the schema for @settings.
     def set_boolean(key : ::String, value : Bool) : Bool
       # g_settings_set_boolean: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_set_boolean(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets @key in @settings to @value.
+    #
+    # A convenience variant of g_settings_set() for doubles.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a 'double' type in the schema for @settings.
     def set_double(key : ::String, value : Float64) : Bool
       # g_settings_set_double: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_set_double(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Looks up the enumerated type nick for @value and writes it to @key,
+    # within @settings.
+    #
+    # It is a programmer error to give a @key that isn't contained in the
+    # schema for @settings or is not marked as an enumerated type, or for
+    # @value not to be a valid value for the named type.
+    #
+    # After performing the write, accessing @key directly with
+    # g_settings_get_string() will return the 'nick' associated with
+    # @value.
     def set_enum(key : ::String, value : Int32) : Bool
       # g_settings_set_enum: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_set_enum(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Looks up the flags type nicks for the bits specified by @value, puts
+    # them in an array of strings and writes the array to @key, within
+    # @settings.
+    #
+    # It is a programmer error to give a @key that isn't contained in the
+    # schema for @settings or is not marked as a flags type, or for @value
+    # to contain any bits that are not value for the named type.
+    #
+    # After performing the write, accessing @key directly with
+    # g_settings_get_strv() will return an array of 'nicks'; one for each
+    # bit in @value.
     def set_flags(key : ::String, value : UInt32) : Bool
       # g_settings_set_flags: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_set_flags(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets @key in @settings to @value.
+    #
+    # A convenience variant of g_settings_set() for 32-bit integers.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a int32 type in the schema for @settings.
     def set_int(key : ::String, value : Int32) : Bool
       # g_settings_set_int: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_set_int(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets @key in @settings to @value.
+    #
+    # A convenience variant of g_settings_set() for 64-bit integers.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a int64 type in the schema for @settings.
     def set_int64(key : ::String, value : Int64) : Bool
       # g_settings_set_int64: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_set_int64(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets @key in @settings to @value.
+    #
+    # A convenience variant of g_settings_set() for strings.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a string type in the schema for @settings.
     def set_string(key : ::String, value : ::String) : Bool
       # g_settings_set_string: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_set_string(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets @key in @settings to @value.
+    #
+    # A convenience variant of g_settings_set() for string arrays.  If
+    # @value is %NULL, then @key is set to be the empty array.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having an array of strings type in the schema for @settings.
     def set_strv(key : ::String, value : Enumerable(::String)?) : Bool
       # g_settings_set_strv: (Method)
       # @value: (nullable) (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       value = if value.nil?
                 Pointer(Pointer(LibC::Char)).null
               else
@@ -1035,49 +1389,89 @@ module Gio
       _retval = LibGio.g_settings_set_strv(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets @key in @settings to @value.
+    #
+    # A convenience variant of g_settings_set() for 32-bit unsigned
+    # integers.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a uint32 type in the schema for @settings.
     def set_uint(key : ::String, value : UInt32) : Bool
       # g_settings_set_uint: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_set_uint(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets @key in @settings to @value.
+    #
+    # A convenience variant of g_settings_set() for 64-bit unsigned
+    # integers.
+    #
+    # It is a programmer error to give a @key that isn't specified as
+    # having a uint64 type in the schema for @settings.
     def set_uint64(key : ::String, value : UInt64) : Bool
       # g_settings_set_uint64: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_settings_set_uint64(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets @key in @settings to @value.
+    #
+    # It is a programmer error to give a @key that isn't contained in the
+    # schema for @settings or for @value to have the incorrect type, per
+    # the schema.
+    #
+    # If @value is floating then this function consumes the reference.
     def set_value(key : ::String, value : _) : Bool
       # g_settings_set_value: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GLib::Variant)
+                GLib::Variant.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGio.g_settings_set_value(self, key, value)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # The "change-event" signal is emitted once per change event that
+    # affects this settings object.  You should connect to this signal
+    # only if you are interested in viewing groups of changes before they
+    # are split out into multiple emissions of the "changed" signal.
+    # For most use cases it is more appropriate to use the "changed" signal.
+    #
+    # In the event that the change event applies to one or more specified
+    # keys, @keys will be an array of #GQuark of length @n_keys.  In the
+    # event that the change event applies to the #GSettings object as a
+    # whole (ie: potentially every key has been changed) then @keys will
+    # be %NULL and @n_keys will be 0.
+    #
+    # The default handler for this signal invokes the "changed" signal
+    # for each affected key.  If any other connected handler returns
+    # %TRUE then this default functionality will be suppressed.
     struct ChangeEventSignal
       @source : GObject::Object
       @detail : String?
@@ -1107,7 +1501,8 @@ module Gio
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(UInt32), lib_arg1 : Int32, box : Pointer(Void)) {
           arg0 = (lib_arg0.null? ? nil : GICrystal.transfer_array(lib_arg0, n_keys, GICrystal::Transfer::None))
           arg1 = lib_arg1
-          ::Box(Proc(Enumerable(UInt32)?, Int32, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Enumerable(UInt32)?, Int32, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1119,7 +1514,8 @@ module Gio
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(UInt32), lib_arg1 : Int32, box : Pointer(Void)) {
           arg0 = (lib_arg0.null? ? nil : GICrystal.transfer_array(lib_arg0, n_keys, GICrystal::Transfer::None))
           arg1 = lib_arg1
-          ::Box(Proc(Enumerable(UInt32)?, Int32, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Enumerable(UInt32)?, Int32, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1161,6 +1557,16 @@ module Gio
       ChangeEventSignal.new(self)
     end
 
+    # The "changed" signal is emitted when a key has potentially changed.
+    # You should call one of the g_settings_get() calls to check the new
+    # value.
+    #
+    # This signal supports detailed connections.  You can connect to the
+    # detailed signal "changed::x" in order to only receive callbacks
+    # when key "x" changes.
+    #
+    # Note that @settings only emits this signal if you have read @key at
+    # least once while a signal handler was already connected for @key.
     struct ChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -1240,6 +1646,24 @@ module Gio
       ChangedSignal.new(self)
     end
 
+    # The "writable-change-event" signal is emitted once per writability
+    # change event that affects this settings object.  You should connect
+    # to this signal if you are interested in viewing groups of changes
+    # before they are split out into multiple emissions of the
+    # "writable-changed" signal.  For most use cases it is more
+    # appropriate to use the "writable-changed" signal.
+    #
+    # In the event that the writability change applies only to a single
+    # key, @key will be set to the #GQuark for that key.  In the event
+    # that the writability change affects the entire settings object,
+    # @key will be 0.
+    #
+    # The default handler for this signal invokes the "writable-changed"
+    # and "changed" signals for each affected key.  This is done because
+    # changes in writability might also imply changes in value (if for
+    # example, a new mandatory setting is introduced).  If any other
+    # connected handler returns %TRUE then this default functionality
+    # will be suppressed.
     struct WritableChangeEventSignal
       @source : GObject::Object
       @detail : String?
@@ -1268,7 +1692,8 @@ module Gio
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           arg0 = lib_arg0
-          ::Box(Proc(UInt32, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(UInt32, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1279,7 +1704,8 @@ module Gio
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           arg0 = lib_arg0
-          ::Box(Proc(UInt32, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(UInt32, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1319,6 +1745,13 @@ module Gio
       WritableChangeEventSignal.new(self)
     end
 
+    # The "writable-changed" signal is emitted when the writability of a
+    # key has potentially changed.  You should call
+    # g_settings_is_writable() in order to determine the new status.
+    #
+    # This signal supports detailed connections.  You can connect to the
+    # detailed signal "writable-changed::x" in order to only receive
+    # callbacks when the writability of "x" changes.
     struct WritableChangedSignal
       @source : GObject::Object
       @detail : String?

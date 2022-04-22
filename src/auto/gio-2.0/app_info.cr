@@ -55,7 +55,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       application_name = if application_name.nil?
                            Pointer(LibC::Char).null
                          else
@@ -67,7 +67,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -75,12 +77,11 @@ module Gio
       # g_app_info_get_all: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_all
 
       # Return value handling
+
       GLib::List(Gio::AppInfo).new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -88,12 +89,11 @@ module Gio
       # g_app_info_get_all_for_type: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_all_for_type(content_type)
 
       # Return value handling
+
       GLib::List(Gio::AppInfo).new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -101,12 +101,11 @@ module Gio
       # g_app_info_get_default_for_type: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_default_for_type(content_type, must_support_uris)
 
       # Return value handling
+
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -114,12 +113,11 @@ module Gio
       # g_app_info_get_default_for_uri_scheme: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_default_for_uri_scheme(uri_scheme)
 
       # Return value handling
+
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -127,12 +125,11 @@ module Gio
       # g_app_info_get_fallback_for_type: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_fallback_for_type(content_type)
 
       # Return value handling
+
       GLib::List(Gio::AppInfo).new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -140,12 +137,11 @@ module Gio
       # g_app_info_get_recommended_for_type: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_recommended_for_type(content_type)
 
       # Return value handling
+
       GLib::List(Gio::AppInfo).new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -156,7 +152,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
                 else
@@ -168,7 +164,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -180,22 +178,28 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
                 else
                   context.to_unsafe
                 end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -214,22 +218,20 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_launch_default_for_uri_finish(result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def self.reset_type_associations(content_type : ::String) : Nil
       # g_app_info_reset_type_associations: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_app_info_reset_type_associations(content_type)
@@ -243,14 +245,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_add_supports_type(self, content_type, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -258,12 +260,11 @@ module Gio
       # g_app_info_can_delete: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_can_delete(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -271,12 +272,11 @@ module Gio
       # g_app_info_can_remove_supports_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_can_remove_supports_type(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -284,12 +284,11 @@ module Gio
       # g_app_info_delete: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_delete(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -297,12 +296,11 @@ module Gio
       # g_app_info_dup: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_dup(self)
 
       # Return value handling
+
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -310,12 +308,11 @@ module Gio
       # g_app_info_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_equal(self, appinfo2)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -323,12 +320,11 @@ module Gio
       # g_app_info_get_commandline: (Method)
       # Returns: (transfer none Filename)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_commandline(self)
 
       # Return value handling
+
       ::Path.new(::String.new(_retval)) unless _retval.null?
     end
 
@@ -336,12 +332,11 @@ module Gio
       # g_app_info_get_description: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_description(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -349,12 +344,11 @@ module Gio
       # g_app_info_get_display_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_display_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -362,12 +356,11 @@ module Gio
       # g_app_info_get_executable: (Method)
       # Returns: (transfer none Filename)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_executable(self)
 
       # Return value handling
+
       ::Path.new(::String.new(_retval))
     end
 
@@ -375,12 +368,11 @@ module Gio
       # g_app_info_get_icon: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_icon(self)
 
       # Return value handling
+
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -388,12 +380,11 @@ module Gio
       # g_app_info_get_id: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_id(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -401,12 +392,11 @@ module Gio
       # g_app_info_get_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -414,12 +404,11 @@ module Gio
       # g_app_info_get_supported_types: (Method)
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_get_supported_types(self)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
     end
 
@@ -431,12 +420,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       files = if files.nil?
                 Pointer(LibGLib::List).null
               else
                 files.to_unsafe
               end
+
+      # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
                 else
@@ -448,7 +439,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -460,12 +453,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       uris = if uris.nil?
                Pointer(LibGLib::List).null
              else
                uris.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
                 else
@@ -477,7 +472,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -490,27 +487,35 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       uris = if uris.nil?
                Pointer(LibGLib::List).null
              else
                uris.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
                 else
                   context.to_unsafe
                 end
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -529,14 +534,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_launch_uris_finish(self, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -546,14 +551,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_remove_supports_type(self, content_type, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -563,14 +568,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_set_as_default_for_extension(self, extension, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -580,14 +585,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_set_as_default_for_type(self, content_type, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -597,14 +602,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_set_as_last_used_for_type(self, content_type, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -612,12 +617,11 @@ module Gio
       # g_app_info_should_show: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_should_show(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -625,12 +629,11 @@ module Gio
       # g_app_info_supports_files: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_supports_files(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -638,12 +641,11 @@ module Gio
       # g_app_info_supports_uris: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_app_info_supports_uris(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -651,6 +653,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class AppInfo__Impl < GObject::Object
     include AppInfo
 

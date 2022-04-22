@@ -19,6 +19,9 @@ module GdkPixbuf
   # `GdkPixbufModulePatterns`. The array is terminated by a pattern
   # where the `prefix` is `NULL`.
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GdkPixbufModulePattern *signature[] = {
   #   { "abcdx", " !x z", 100 },
@@ -33,7 +36,7 @@ module GdkPixbuf
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGdkPixbuf::PixbufModulePattern))
@@ -53,38 +56,46 @@ module GdkPixbuf
     def finalize
     end
 
-    def prefix : ::String
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGdkPixbuf::PixbufModulePattern)).zero?
+    end
+
+    def prefix!
+      self.prefix.not_nil!
+    end
+
+    def prefix : ::String?
       _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def prefix=(value : ::String)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value
+    def prefix=(value : ::String?)
+      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def mask : ::String
-      # Property getter
+    def mask!
+      self.mask.not_nil!
+    end
+
+    def mask : ::String?
       _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def mask=(value : ::String)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value
+    def mask=(value : ::String?)
+      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
     def relevance : Int32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Int32))
       _var.value
     end
 
     def relevance=(value : Int32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Int32)).value = value
       value
     end

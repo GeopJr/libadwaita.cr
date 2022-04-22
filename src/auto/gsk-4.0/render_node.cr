@@ -1,6 +1,6 @@
 module Gsk
   # `GskRenderNode` is the basic block in a scene graph to be
-  # rendered using [class@Gsk.Renderer].
+  # rendered using `Gsk#Renderer`.
   #
   # Each node has a parent, except the top-level node; each node may have
   # children nodes.
@@ -9,24 +9,35 @@ module Gsk
   # the rectangle set when creating it.
   #
   # Render nodes are meant to be transient; once they have been associated
-  # to a [class@Gsk.Renderer] it's safe to release any reference you have on
-  # them. All [class@Gsk.RenderNode]s are immutable, you can only specify their
+  # to a `Gsk#Renderer` it's safe to release any reference you have on
+  # them. All `Gsk#RenderNode`s are immutable, you can only specify their
   # properties during construction.
+  @[GObject::GeneratedWrapper]
   class RenderNode
     @pointer : Pointer(Void)
 
     # :nodoc:
-    def initialize(@pointer, transfer : GICrystal::Transfer)
-      LibGObject.g_object_ref(self) unless transfer.full?
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGsk::RenderNode), instance_init, 0)
     end
 
+    # :nodoc:
+    def initialize(@pointer, transfer : GICrystal::Transfer)
+      LibGObject.gsk_render_node_ref(self) unless transfer.full?
+    end
+
+    # Called by the garbage collector. Decreases the reference count of object.
+    # (i.e. its memory is freed).
     def finalize
       {% if flag?(:debugmemory) %}
         LibC.printf("~%s at %p - ref count: %d\n", self.class.name.to_unsafe, self, ref_count)
       {% end %}
-      LibGObject.g_object_unref(self)
+      LibGObject.gsk_render_node_unref(self)
     end
 
+    # Returns a pointer to the C object.
     def to_unsafe
       @pointer
     end
@@ -51,18 +62,23 @@ module Gsk
       LibGsk.gsk_render_node_get_type
     end
 
+    # Loads data previously created via `Gsk::RenderNode#serialize`.
+    #
+    # For a discussion of the supported format, see that function.
     def self.deserialize(bytes : GLib::Bytes, error_func : Pointer(Void)?, user_data : Pointer(Void)?) : Gsk::RenderNode?
       # gsk_render_node_deserialize: (None)
       # @error_func: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       error_func = if error_func.nil?
                      LibGsk::ParseErrorFunc.null
                    else
                      error_func.to_unsafe
                    end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -73,14 +89,21 @@ module Gsk
       _retval = LibGsk.gsk_render_node_deserialize(bytes, error_func, user_data)
 
       # Return value handling
+
       Gsk::RenderNode.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Draw the contents of @node to the given cairo context.
+    #
+    # Typically, you'll use this function to implement fallback rendering
+    # of `GskRenderNode`s on an intermediate Cairo context, instead of using
+    # the drawing context associated to a `Gdk#Surface`'s rendering buffer.
+    #
+    # For advanced nodes that cannot be supported using Cairo, in particular
+    # for nodes doing 3D operations, this function may fail.
     def draw(cr : Cairo::Context) : Nil
       # gsk_render_node_draw: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_render_node_draw(self, cr)
@@ -88,65 +111,79 @@ module Gsk
       # Return value handling
     end
 
+    # Retrieves the boundaries of the @node.
+    #
+    # The node will not draw outside of its boundaries.
     def bounds : Graphene::Rect
       # gsk_render_node_get_bounds: (Method)
       # @bounds: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       bounds = Graphene::Rect.new
 
       # C call
       LibGsk.gsk_render_node_get_bounds(self, bounds)
 
       # Return value handling
+
       bounds
     end
 
+    # Returns the type of the @node.
     def node_type : Gsk::RenderNodeType
       # gsk_render_node_get_node_type: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_render_node_get_node_type(self)
 
       # Return value handling
-      Gsk::RenderNodeType.from_value(_retval)
+
+      Gsk::RenderNodeType.new(_retval)
     end
 
+    # Acquires a reference on the given `GskRenderNode`.
     def ref : Gsk::RenderNode
       # gsk_render_node_ref: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_render_node_ref(self)
 
       # Return value handling
+
       Gsk::RenderNode.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Serializes the @node for later deserialization via
+    # gsk_render_node_deserialize(). No guarantees are made about the format
+    # used other than that the same version of GTK will be able to deserialize
+    # the result of a call to gsk_render_node_serialize() and
+    # gsk_render_node_deserialize() will correctly reject files it cannot open
+    # that were created with previous versions of GTK.
+    #
+    # The intended use of this functions is testing, benchmarking and debugging.
+    # The format is not meant as a permanent storage format.
     def serialize : GLib::Bytes
       # gsk_render_node_serialize: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_render_node_serialize(self)
 
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Releases a reference on the given `GskRenderNode`.
+    #
+    # If the reference was the last, the resources associated to the @node are
+    # freed.
     def unref : Nil
       # gsk_render_node_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGsk.gsk_render_node_unref(self)
@@ -154,20 +191,27 @@ module Gsk
       # Return value handling
     end
 
+    # This function is equivalent to calling `Gsk::RenderNode#serialize`
+    # followed by `GLib#file_set_contents`.
+    #
+    # See those two functions for details on the arguments.
+    #
+    # It is mostly intended for use inside a debugger to quickly dump a render
+    # node to a file for later inspection.
     def write_to_file(filename : ::String) : Bool
       # gsk_render_node_write_to_file: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_render_node_write_to_file(self, filename, pointerof(_error))
 
       # Error check
       Gsk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
   end

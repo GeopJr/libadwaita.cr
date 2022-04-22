@@ -193,6 +193,49 @@ lib LibGtk
   type TreeSortable = Void
 
   # Structs
+  type ATContextClass = Void # Struct with zero bytes
+
+  type AccessibleInterface = Void # Struct with zero bytes
+
+  struct ActionableInterface # 48 bytes long
+    g_iface : LibGObject::TypeInterface
+    get_action_name : -> Void
+    set_action_name : -> Void
+    get_action_target_value : -> Void
+    set_action_target_value : -> Void
+  end
+
+  type ActivateActionClass = Void # Struct with zero bytes
+
+  struct AdjustmentClass # 184 bytes long
+    parent_class : LibGObject::InitiallyUnownedClass
+    changed : -> Void
+    value_changed : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+  end
+
+  type AlternativeTriggerClass = Void # Struct with zero bytes
+
+  type AnyFilterClass = Void # Struct with zero bytes
+
+  struct ApplicationClass # 392 bytes long
+    parent_class : LibGio::ApplicationClass
+    window_added : -> Void
+    window_removed : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct ApplicationWindowClass # 576 bytes long
+    parent_class : LibGtk::WindowClass
+    padding : Pointer(Void)[8]
+  end
+
+  struct BinLayoutClass # 320 bytes long
+    parent_class : LibGtk::LayoutManagerClass
+  end
 
   type Bitset = Void # Struct with zero bytes
 
@@ -200,11 +243,42 @@ lib LibGtk
     private_data : Pointer(Void)[10]
   end
 
+  struct BookmarkListClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct BoolFilterClass # 216 bytes long
+    parent_class : LibGtk::FilterClass
+  end
+
   struct Border # 8 bytes long
     left : Int16
     right : Int16
     top : Int16
     bottom : Int16
+  end
+
+  struct BoxClass # 472 bytes long
+    parent_class : LibGtk::WidgetClass
+    padding : Pointer(Void)[8]
+  end
+
+  struct BoxLayoutClass # 320 bytes long
+    parent_class : LibGtk::LayoutManagerClass
+  end
+
+  struct BuildableIface # 96 bytes long
+    g_iface : LibGObject::TypeInterface
+    set_id : -> Void
+    get_id : -> Void
+    add_child : -> Void
+    set_buildable_property : -> Void
+    construct_child : Pointer(Void)
+    custom_tag_start : -> Void
+    custom_tag_end : -> Void
+    custom_finished : -> Void
+    parser_finished : -> Void
+    get_internal_child : -> Void
   end
 
   type BuildableParseContext = Void # Struct with zero bytes
@@ -217,13 +291,164 @@ lib LibGtk
     padding : Pointer(Void)[4]
   end
 
+  struct BuilderCScopeClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  type BuilderClass = Void # Struct with zero bytes
+
+  type BuilderListItemFactoryClass = Void # Struct with zero bytes
+
+  struct BuilderScopeInterface # 40 bytes long
+    g_iface : LibGObject::TypeInterface
+    get_type_from_name : -> Void
+    get_type_from_function : -> Void
+    create_closure : -> Void
+  end
+
+  struct ButtonClass # 488 bytes long
+    parent_class : LibGtk::WidgetClass
+    clicked : -> Void
+    activate : -> Void
+    padding : Pointer(Void)[8]
+  end
+
   type ButtonPrivate = Void # Struct with zero bytes
 
+  type CallbackActionClass = Void # Struct with zero bytes
+
+  struct CellAreaClass # 352 bytes long
+    parent_class : LibGObject::InitiallyUnownedClass
+    add : -> Void
+    remove : -> Void
+    foreach : -> Void
+    foreach_alloc : -> Void
+    event : -> Void
+    snapshot : -> Void
+    apply_attributes : -> Void
+    create_context : -> Void
+    copy_context : -> Void
+    get_request_mode : -> Void
+    get_preferred_width : -> Void
+    get_preferred_height_for_width : -> Void
+    get_preferred_height : -> Void
+    get_preferred_width_for_height : -> Void
+    set_cell_property : -> Void
+    get_cell_property : -> Void
+    focus : -> Void
+    is_activatable : -> Void
+    activate : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct CellAreaContextClass # 232 bytes long
+    parent_class : LibGObject::ObjectClass
+    allocate : -> Void
+    reset : -> Void
+    get_preferred_height_for_width : -> Void
+    get_preferred_width_for_height : -> Void
+    padding : Pointer(Void)[8]
+  end
+
   type CellAreaContextPrivate = Void # Struct with zero bytes
+
+  struct CellEditableIface # 40 bytes long
+    g_iface : LibGObject::TypeInterface
+    editing_done : -> Void
+    remove_widget : -> Void
+    start_editing : -> Void
+  end
+
+  struct CellLayoutIface # 88 bytes long
+    g_iface : LibGObject::TypeInterface
+    pack_start : -> Void
+    pack_end : -> Void
+    clear : -> Void
+    add_attribute : -> Void
+    set_cell_data_func : -> Void
+    clear_attributes : -> Void
+    reorder : -> Void
+    get_cells : -> Void
+    get_area : -> Void
+  end
+
+  struct CellRendererClass # 288 bytes long
+    parent_class : LibGObject::InitiallyUnownedClass
+    get_request_mode : -> Void
+    get_preferred_width : -> Void
+    get_preferred_height_for_width : -> Void
+    get_preferred_height : -> Void
+    get_preferred_width_for_height : -> Void
+    get_aligned_area : -> Void
+    snapshot : -> Void
+    activate : -> Void
+    start_editing : -> Void
+    editing_canceled : -> Void
+    editing_started : -> Void
+    padding : Pointer(Void)[8]
+  end
 
   type CellRendererClassPrivate = Void # Struct with zero bytes
 
   type CellRendererPrivate = Void # Struct with zero bytes
+
+  struct CellRendererTextClass # 360 bytes long
+    parent_class : LibGtk::CellRendererClass
+    edited : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  type CenterBoxClass = Void # Struct with zero bytes
+
+  struct CenterLayoutClass # 320 bytes long
+    parent_class : LibGtk::LayoutManagerClass
+  end
+
+  struct CheckButtonClass # 480 bytes long
+    parent_class : LibGtk::WidgetClass
+    toggled : -> Void
+    activate : -> Void
+    padding : Pointer(Void)[7]
+  end
+
+  struct ColorChooserInterface # 144 bytes long
+    base_interface : LibGObject::TypeInterface
+    get_rgba : -> Void
+    set_rgba : -> Void
+    add_palette : -> Void
+    color_activated : -> Void
+    padding : Pointer(Void)[12]
+  end
+
+  type ColumnViewClass = Void # Struct with zero bytes
+
+  type ColumnViewColumnClass = Void # Struct with zero bytes
+
+  struct ComboBoxClass # 488 bytes long
+    parent_class : LibGtk::WidgetClass
+    changed : -> Void
+    format_entry_text : -> Void
+    activate : -> Void
+    padding : Pointer(Void)[7]
+  end
+
+  struct ConstraintClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct ConstraintGuideClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct ConstraintLayoutChildClass # 136 bytes long
+    parent_class : LibGtk::LayoutChildClass
+  end
+
+  struct ConstraintLayoutClass # 320 bytes long
+    parent_class : LibGtk::LayoutManagerClass
+  end
+
+  type ConstraintTargetInterface = Void # Struct with zero bytes
 
   struct CssLocation # 40 bytes long
     bytes : UInt64
@@ -233,21 +458,406 @@ lib LibGtk
     line_chars : UInt64
   end
 
+  type CssProviderClass = Void # Struct with zero bytes
+
   type CssProviderPrivate = Void # Struct with zero bytes
 
   type CssSection = Void # Struct with zero bytes
 
   type CssStyleChange = Void # Struct with zero bytes
 
+  struct CustomFilterClass # 216 bytes long
+    parent_class : LibGtk::FilterClass
+  end
+
+  struct CustomLayoutClass # 320 bytes long
+    parent_class : LibGtk::LayoutManagerClass
+  end
+
+  struct CustomSorterClass # 216 bytes long
+    parent_class : LibGtk::SorterClass
+  end
+
+  struct DialogClass # 592 bytes long
+    parent_class : LibGtk::WindowClass
+    response : -> Void
+    close : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct DirectoryListClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct DragIconClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  type DragSourceClass = Void # Struct with zero bytes
+
+  struct DrawingAreaClass # 480 bytes long
+    parent_class : LibGtk::WidgetClass
+    resize : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  type DropControllerMotionClass = Void # Struct with zero bytes
+
+  struct DropDownClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  type DropTargetAsyncClass = Void # Struct with zero bytes
+
+  type DropTargetClass = Void # Struct with zero bytes
+
+  struct EditableInterface # 88 bytes long
+    base_iface : LibGObject::TypeInterface
+    insert_text : -> Void
+    delete_text : -> Void
+    changed : -> Void
+    get_text : -> Void
+    do_insert_text : -> Void
+    do_delete_text : -> Void
+    get_selection_bounds : -> Void
+    set_selection_bounds : -> Void
+    get_delegate : -> Void
+  end
+
+  struct EditableLabelClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  type EmojiChooserClass = Void # Struct with zero bytes
+
+  struct EntryBufferClass # 248 bytes long
+    parent_class : LibGObject::ObjectClass
+    inserted_text : -> Void
+    deleted_text : -> Void
+    get_text : -> Void
+    get_length : -> Void
+    insert_text : -> Void
+    delete_text : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+    _gtk_reserved5 : Pointer(Void)
+    _gtk_reserved6 : Pointer(Void)
+    _gtk_reserved7 : Pointer(Void)
+    _gtk_reserved8 : Pointer(Void)
+  end
+
+  struct EntryClass # 480 bytes long
+    parent_class : LibGtk::WidgetClass
+    activate : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  type EventControllerClass = Void # Struct with zero bytes
+
+  type EventControllerFocusClass = Void # Struct with zero bytes
+
+  type EventControllerKeyClass = Void # Struct with zero bytes
+
+  type EventControllerLegacyClass = Void # Struct with zero bytes
+
+  type EventControllerMotionClass = Void # Struct with zero bytes
+
+  type EventControllerScrollClass = Void # Struct with zero bytes
+
+  type EveryFilterClass = Void # Struct with zero bytes
+
   type ExpressionWatch = Void # Struct with zero bytes
+
+  struct FileChooserNativeClass # 192 bytes long
+    parent_class : LibGtk::NativeDialogClass
+  end
+
+  struct FilterClass # 216 bytes long
+    parent_class : LibGObject::ObjectClass
+    match : -> Void
+    get_strictness : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+    _gtk_reserved5 : Pointer(Void)
+    _gtk_reserved6 : Pointer(Void)
+    _gtk_reserved7 : Pointer(Void)
+    _gtk_reserved8 : Pointer(Void)
+  end
+
+  struct FilterListModelClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct FixedClass # 472 bytes long
+    parent_class : LibGtk::WidgetClass
+    padding : Pointer(Void)[8]
+  end
+
+  struct FixedLayoutChildClass # 136 bytes long
+    parent_class : LibGtk::LayoutChildClass
+  end
+
+  struct FixedLayoutClass # 320 bytes long
+    parent_class : LibGtk::LayoutManagerClass
+  end
+
+  struct FlattenListModelClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct FlowBoxChildClass # 480 bytes long
+    parent_class : LibGtk::WidgetClass
+    activate : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct FontChooserIface # 152 bytes long
+    base_iface : LibGObject::TypeInterface
+    get_font_family : -> Void
+    get_font_face : -> Void
+    get_font_size : -> Void
+    set_filter_func : -> Void
+    font_activated : -> Void
+    set_font_map : -> Void
+    get_font_map : -> Void
+    padding : Pointer(Void)[10]
+  end
+
+  struct FrameClass # 480 bytes long
+    parent_class : LibGtk::WidgetClass
+    compute_child_allocation : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct GLAreaClass # 496 bytes long
+    parent_class : LibGtk::WidgetClass
+    render : -> Void
+    resize : -> Void
+    create_context : Pointer(Void)
+    _padding : Pointer(Void)[8]
+  end
+
+  type GestureClass = Void # Struct with zero bytes
+
+  type GestureClickClass = Void # Struct with zero bytes
+
+  type GestureDragClass = Void # Struct with zero bytes
+
+  type GestureLongPressClass = Void # Struct with zero bytes
+
+  type GesturePanClass = Void # Struct with zero bytes
+
+  type GestureRotateClass = Void # Struct with zero bytes
+
+  type GestureSingleClass = Void # Struct with zero bytes
+
+  type GestureStylusClass = Void # Struct with zero bytes
+
+  type GestureSwipeClass = Void # Struct with zero bytes
+
+  type GestureZoomClass = Void # Struct with zero bytes
+
+  struct GridClass # 472 bytes long
+    parent_class : LibGtk::WidgetClass
+    padding : Pointer(Void)[8]
+  end
+
+  struct GridLayoutChildClass # 136 bytes long
+    parent_class : LibGtk::LayoutChildClass
+  end
+
+  struct GridLayoutClass # 320 bytes long
+    parent_class : LibGtk::LayoutManagerClass
+  end
+
+  type GridViewClass = Void # Struct with zero bytes
+
+  struct IMContextClass # 320 bytes long
+    parent_class : LibGObject::ObjectClass
+    preedit_start : -> Void
+    preedit_end : -> Void
+    preedit_changed : -> Void
+    commit : -> Void
+    retrieve_surrounding : -> Void
+    delete_surrounding : -> Void
+    set_client_widget : -> Void
+    get_preedit_string : -> Void
+    filter_keypress : -> Void
+    focus_in : -> Void
+    focus_out : -> Void
+    reset : -> Void
+    set_cursor_location : -> Void
+    set_use_preedit : -> Void
+    set_surrounding : -> Void
+    get_surrounding : -> Void
+    set_surrounding_with_selection : -> Void
+    get_surrounding_with_selection : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+    _gtk_reserved5 : Pointer(Void)
+  end
+
+  struct IMContextSimpleClass # 320 bytes long
+    parent_class : LibGtk::IMContextClass
+  end
 
   type IMContextSimplePrivate = Void # Struct with zero bytes
 
+  struct IMMulticontextClass # 352 bytes long
+    parent_class : LibGtk::IMContextClass
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+  end
+
   type IMMulticontextPrivate = Void # Struct with zero bytes
+
+  type KeyvalTriggerClass = Void # Struct with zero bytes
+
+  struct LayoutChildClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct LayoutManagerClass # 320 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_request_mode : -> Void
+    measure : -> Void
+    allocate : -> Void
+    layout_child_type : UInt64
+    create_layout_child : -> Void
+    root : -> Void
+    unroot : -> Void
+    _padding : Pointer(Void)[16]
+  end
+
+  type ListBaseClass = Void # Struct with zero bytes
+
+  struct ListBoxRowClass # 480 bytes long
+    parent_class : LibGtk::WidgetClass
+    activate : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  type ListItemClass = Void # Struct with zero bytes
+
+  type ListItemFactoryClass = Void # Struct with zero bytes
+
+  struct ListStoreClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    padding : Pointer(Void)[8]
+  end
 
   type ListStorePrivate = Void # Struct with zero bytes
 
+  type ListViewClass = Void # Struct with zero bytes
+
+  struct MapListModelClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct MediaControlsClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct MediaFileClass # 296 bytes long
+    parent_class : LibGtk::MediaStreamClass
+    open : -> Void
+    close : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+  end
+
+  struct MediaStreamClass # 248 bytes long
+    parent_class : LibGObject::ObjectClass
+    play : -> Void
+    pause : -> Void
+    seek : -> Void
+    update_audio : -> Void
+    realize : -> Void
+    unrealize : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+    _gtk_reserved5 : Pointer(Void)
+    _gtk_reserved6 : Pointer(Void)
+    _gtk_reserved7 : Pointer(Void)
+    _gtk_reserved8 : Pointer(Void)
+  end
+
+  type MessageDialogClass = Void # Struct with zero bytes
+
+  type MnemonicActionClass = Void # Struct with zero bytes
+
+  type MnemonicTriggerClass = Void # Struct with zero bytes
+
+  struct MountOperationClass # 288 bytes long
+    parent_class : LibGio::MountOperationClass
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+  end
+
   type MountOperationPrivate = Void # Struct with zero bytes
+
+  type MultiFilterClass = Void # Struct with zero bytes
+
+  struct MultiSelectionClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct MultiSorterClass # 216 bytes long
+    parent_class : LibGtk::SorterClass
+  end
+
+  type NamedActionClass = Void # Struct with zero bytes
+
+  struct NativeDialogClass # 192 bytes long
+    parent_class : LibGObject::ObjectClass
+    response : -> Void
+    show : -> Void
+    hide : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+  end
+
+  type NativeInterface = Void # Struct with zero bytes
+
+  type NeverTriggerClass = Void # Struct with zero bytes
+
+  struct NoSelectionClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  type NothingActionClass = Void # Struct with zero bytes
+
+  struct NumericSorterClass # 216 bytes long
+    parent_class : LibGtk::SorterClass
+  end
+
+  struct OrientableIface # 16 bytes long
+    base_iface : LibGObject::TypeInterface
+  end
+
+  struct OverlayLayoutChildClass # 136 bytes long
+    parent_class : LibGtk::LayoutChildClass
+  end
+
+  struct OverlayLayoutClass # 320 bytes long
+    parent_class : LibGtk::LayoutManagerClass
+  end
 
   struct PadActionEntry # 32 bytes long
     type : UInt32
@@ -257,6 +867,8 @@ lib LibGtk
     action_name : Pointer(LibC::Char)
   end
 
+  type PadControllerClass = Void # Struct with zero bytes
+
   struct PageRange # 8 bytes long
     start : Int32
     _end : Int32
@@ -264,9 +876,69 @@ lib LibGtk
 
   type PaperSize = Void # Struct with zero bytes
 
+  struct PasswordEntryBufferClass # 248 bytes long
+    parent_class : LibGtk::EntryBufferClass
+  end
+
+  type PasswordEntryClass = Void # Struct with zero bytes
+
+  struct PictureClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct PopoverClass # 488 bytes long
+    parent_class : LibGtk::WidgetClass
+    closed : -> Void
+    activate_default : -> Void
+    reserved : Pointer(Void)[8]
+  end
+
   type PrintBackend = Void # Struct with zero bytes
 
+  struct PrintOperationClass # 288 bytes long
+    parent_class : LibGObject::ObjectClass
+    done : -> Void
+    begin_print : -> Void
+    paginate : -> Void
+    request_page_setup : -> Void
+    draw_page : -> Void
+    end_print : -> Void
+    status_changed : -> Void
+    create_custom_widget : Pointer(Void)
+    custom_widget_apply : -> Void
+    preview : -> Void
+    update_custom_widget : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct PrintOperationPreviewIface # 120 bytes long
+    g_iface : LibGObject::TypeInterface
+    ready : -> Void
+    got_page_size : -> Void
+    render_page : -> Void
+    is_selected : -> Void
+    end_preview : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+    _gtk_reserved5 : Pointer(Void)
+    _gtk_reserved6 : Pointer(Void)
+    _gtk_reserved7 : Pointer(Void)
+    _gtk_reserved8 : Pointer(Void)
+  end
+
   type PrintOperationPrivate = Void # Struct with zero bytes
+
+  struct RangeClass # 512 bytes long
+    parent_class : LibGtk::WidgetClass
+    value_changed : -> Void
+    adjust_bounds : -> Void
+    move_slider : -> Void
+    get_range_border : -> Void
+    change_value : -> Void
+    padding : Pointer(Void)[8]
+  end
 
   struct RecentData # 56 bytes long
     display_name : Pointer(LibC::Char)
@@ -279,6 +951,15 @@ lib LibGtk
   end
 
   type RecentInfo = Void # Struct with zero bytes
+
+  struct RecentManagerClass # 176 bytes long
+    parent_class : LibGObject::ObjectClass
+    changed : -> Void
+    _gtk_recent1 : Pointer(Void)
+    _gtk_recent2 : Pointer(Void)
+    _gtk_recent3 : Pointer(Void)
+    _gtk_recent4 : Pointer(Void)
+  end
 
   type RecentManagerPrivate = Void # Struct with zero bytes
 
@@ -293,7 +974,160 @@ lib LibGtk
     height : Int32
   end
 
+  type RootInterface = Void # Struct with zero bytes
+
+  struct ScaleButtonClass # 480 bytes long
+    parent_class : LibGtk::WidgetClass
+    value_changed : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct ScaleClass # 584 bytes long
+    parent_class : LibGtk::RangeClass
+    get_layout_offsets : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct ScrollableInterface # 24 bytes long
+    base_iface : LibGObject::TypeInterface
+    get_border : -> Void
+  end
+
+  struct SelectionFilterModelClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct SelectionModelInterface # 88 bytes long
+    g_iface : LibGObject::TypeInterface
+    is_selected : -> Void
+    get_selection_in_range : -> Void
+    select_item : -> Void
+    unselect_item : -> Void
+    select_range : -> Void
+    unselect_range : -> Void
+    select_all : -> Void
+    unselect_all : -> Void
+    set_selection : -> Void
+  end
+
+  type ShortcutActionClass = Void # Struct with zero bytes
+
+  struct ShortcutClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  type ShortcutControllerClass = Void # Struct with zero bytes
+
+  type ShortcutLabelClass = Void # Struct with zero bytes
+
+  struct ShortcutManagerInterface # 32 bytes long
+    g_iface : LibGObject::TypeInterface
+    add_controller : -> Void
+    remove_controller : -> Void
+  end
+
+  type ShortcutTriggerClass = Void # Struct with zero bytes
+
+  type ShortcutsGroupClass = Void # Struct with zero bytes
+
+  type ShortcutsSectionClass = Void # Struct with zero bytes
+
+  type ShortcutsShortcutClass = Void # Struct with zero bytes
+
+  type SignalActionClass = Void # Struct with zero bytes
+
+  type SignalListItemFactoryClass = Void # Struct with zero bytes
+
+  struct SingleSelectionClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct SliceListModelClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  type SnapshotClass = Void # Struct with zero bytes
+
+  struct SortListModelClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct SorterClass # 216 bytes long
+    parent_class : LibGObject::ObjectClass
+    compare : -> Void
+    get_order : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+    _gtk_reserved5 : Pointer(Void)
+    _gtk_reserved6 : Pointer(Void)
+    _gtk_reserved7 : Pointer(Void)
+    _gtk_reserved8 : Pointer(Void)
+  end
+
+  struct StringFilterClass # 216 bytes long
+    parent_class : LibGtk::FilterClass
+  end
+
+  struct StringListClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct StringObjectClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct StringSorterClass # 216 bytes long
+    parent_class : LibGtk::SorterClass
+  end
+
+  struct StyleContextClass # 176 bytes long
+    parent_class : LibGObject::ObjectClass
+    changed : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+  end
+
+  struct SymbolicPaintableInterface # 24 bytes long
+    g_iface : LibGObject::TypeInterface
+    snapshot_symbolic : -> Void
+  end
+
+  struct TextBufferClass # 288 bytes long
+    parent_class : LibGObject::ObjectClass
+    insert_text : -> Void
+    insert_paintable : -> Void
+    insert_child_anchor : -> Void
+    delete_range : -> Void
+    changed : -> Void
+    modified_changed : -> Void
+    mark_set : -> Void
+    mark_deleted : -> Void
+    apply_tag : -> Void
+    remove_tag : -> Void
+    begin_user_action : -> Void
+    end_user_action : -> Void
+    paste_done : -> Void
+    undo : -> Void
+    redo : -> Void
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+  end
+
   type TextBufferPrivate = Void # Struct with zero bytes
+
+  struct TextChildAnchorClass # 168 bytes long
+    parent_class : LibGObject::ObjectClass
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+  end
 
   struct TextIter # 80 bytes long
     dummy1 : Pointer(Void)
@@ -312,9 +1146,60 @@ lib LibGtk
     dummy14 : Pointer(Void)
   end
 
+  struct TextMarkClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    padding : Pointer(Void)[8]
+  end
+
+  struct TextTagClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    padding : Pointer(Void)[8]
+  end
+
   type TextTagPrivate = Void # Struct with zero bytes
 
+  struct TextViewClass # 576 bytes long
+    parent_class : LibGtk::WidgetClass
+    move_cursor : -> Void
+    set_anchor : -> Void
+    insert_at_cursor : -> Void
+    delete_from_cursor : -> Void
+    backspace : -> Void
+    cut_clipboard : -> Void
+    copy_clipboard : -> Void
+    paste_clipboard : -> Void
+    toggle_overwrite : -> Void
+    create_buffer : Pointer(Void)
+    snapshot_layer : -> Void
+    extend_selection : -> Void
+    insert_emoji : -> Void
+    padding : Pointer(Void)[8]
+  end
+
   type TextViewPrivate = Void # Struct with zero bytes
+
+  struct ToggleButtonClass # 560 bytes long
+    parent_class : LibGtk::ButtonClass
+    toggled : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct TreeDragDestIface # 32 bytes long
+    g_iface : LibGObject::TypeInterface
+    drag_data_received : -> Void
+    row_drop_possible : -> Void
+  end
+
+  struct TreeDragSourceIface # 40 bytes long
+    g_iface : LibGObject::TypeInterface
+    row_draggable : -> Void
+    drag_data_get : -> Void
+    drag_data_delete : -> Void
+  end
+
+  struct TreeExpanderClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
 
   struct TreeIter # 32 bytes long
     stamp : Int32
@@ -323,7 +1208,55 @@ lib LibGtk
     user_data3 : Pointer(Void)
   end
 
+  struct TreeListModelClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct TreeListRowClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct TreeListRowSorterClass # 216 bytes long
+    parent_class : LibGtk::SorterClass
+  end
+
+  struct TreeModelFilterClass # 216 bytes long
+    parent_class : LibGObject::ObjectClass
+    visible : -> Void
+    modify : -> Void
+    padding : Pointer(Void)[8]
+  end
+
   type TreeModelFilterPrivate = Void # Struct with zero bytes
+
+  struct TreeModelIface # 176 bytes long
+    g_iface : LibGObject::TypeInterface
+    row_changed : -> Void
+    row_inserted : -> Void
+    row_has_child_toggled : -> Void
+    row_deleted : -> Void
+    rows_reordered : -> Void
+    get_flags : -> Void
+    get_n_columns : -> Void
+    get_column_type : -> Void
+    get_iter : -> Void
+    get_path : -> Void
+    get_value : -> Void
+    iter_next : -> Void
+    iter_previous : -> Void
+    iter_children : -> Void
+    iter_has_child : -> Void
+    iter_n_children : -> Void
+    iter_nth_child : -> Void
+    iter_parent : -> Void
+    ref_node : -> Void
+    unref_node : -> Void
+  end
+
+  struct TreeModelSortClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    padding : Pointer(Void)[8]
+  end
 
   type TreeModelSortPrivate = Void # Struct with zero bytes
 
@@ -331,13 +1264,113 @@ lib LibGtk
 
   type TreeRowReference = Void # Struct with zero bytes
 
+  struct TreeSortableIface # 64 bytes long
+    g_iface : LibGObject::TypeInterface
+    sort_column_changed : -> Void
+    get_sort_column_id : -> Void
+    set_sort_column_id : -> Void
+    set_sort_func : -> Void
+    set_default_sort_func : -> Void
+    has_default_sort_func : -> Void
+  end
+
+  struct TreeStoreClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    padding : Pointer(Void)[8]
+  end
+
   type TreeStorePrivate = Void # Struct with zero bytes
+
+  struct TreeViewClass # 656 bytes long
+    parent_class : LibGtk::WidgetClass
+    row_activated : -> Void
+    test_expand_row : -> Void
+    test_collapse_row : -> Void
+    row_expanded : -> Void
+    row_collapsed : -> Void
+    columns_changed : -> Void
+    cursor_changed : -> Void
+    move_cursor : -> Void
+    select_all : -> Void
+    unselect_all : -> Void
+    select_cursor_row : -> Void
+    toggle_cursor_row : -> Void
+    expand_collapse_cursor_row : -> Void
+    select_cursor_parent : -> Void
+    start_interactive_search : -> Void
+    _reserved : Pointer(Void)[16]
+  end
+
+  struct VideoClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct WidgetClass # 408 bytes long
+    parent_class : LibGObject::InitiallyUnownedClass
+    show : -> Void
+    hide : -> Void
+    map : -> Void
+    unmap : -> Void
+    realize : -> Void
+    unrealize : -> Void
+    root : -> Void
+    unroot : -> Void
+    size_allocate : -> Void
+    state_flags_changed : -> Void
+    direction_changed : -> Void
+    get_request_mode : -> Void
+    measure : -> Void
+    mnemonic_activate : -> Void
+    grab_focus : -> Void
+    focus : -> Void
+    set_focus_child : -> Void
+    move_focus : -> Void
+    keynav_failed : -> Void
+    query_tooltip : -> Void
+    compute_expand : -> Void
+    css_changed : -> Void
+    system_setting_changed : -> Void
+    snapshot : -> Void
+    contains : -> Void
+    priv : Pointer(LibGtk::WidgetClassPrivate)
+    padding : Pointer(Void)[8]
+  end
 
   type WidgetClassPrivate = Void # Struct with zero bytes
 
+  struct WidgetPaintableClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
   type WidgetPrivate = Void # Struct with zero bytes
 
+  struct WindowClass # 512 bytes long
+    parent_class : LibGtk::WidgetClass
+    activate_focus : -> Void
+    activate_default : -> Void
+    keys_changed : -> Void
+    enable_debugging : -> Void
+    close_request : -> Void
+    padding : Pointer(Void)[8]
+  end
+
+  struct WindowControlsClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
+
+  struct WindowGroupClass # 168 bytes long
+    parent_class : LibGObject::ObjectClass
+    _gtk_reserved1 : Pointer(Void)
+    _gtk_reserved2 : Pointer(Void)
+    _gtk_reserved3 : Pointer(Void)
+    _gtk_reserved4 : Pointer(Void)
+  end
+
   type WindowGroupPrivate = Void # Struct with zero bytes
+
+  struct WindowHandleClass # 408 bytes long
+    parent_class : LibGtk::WidgetClass
+  end
 
   # Unions
 

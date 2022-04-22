@@ -3,7 +3,7 @@ module Gdk
   # is necessary to present a sovereign window on screen.
   #
   # The `GdkToplevelLayout` struct is necessary for using
-  # [method@Gdk.Toplevel.present].
+  # `Gdk::Toplevel#present`.
   #
   # Toplevel surfaces are sovereign windows that can be presented
   # to the user in various states (maximized, on all workspaces,
@@ -12,7 +12,7 @@ module Gdk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(ToplevelLayout.g_type, pointer)
@@ -25,6 +25,10 @@ module Gdk
       LibGObject.g_boxed_free(ToplevelLayout.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGdk::ToplevelLayout)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGdk.gdk_toplevel_layout_get_type
@@ -34,12 +38,11 @@ module Gdk
       # gdk_toplevel_layout_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_layout_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -47,12 +50,11 @@ module Gdk
       # gdk_toplevel_layout_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_layout_copy(self)
 
       # Return value handling
+
       Gdk::ToplevelLayout.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -60,12 +62,11 @@ module Gdk
       # gdk_toplevel_layout_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_layout_equal(self, other)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -74,12 +75,11 @@ module Gdk
       # @fullscreen: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_layout_get_fullscreen(self, fullscreen)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -87,12 +87,11 @@ module Gdk
       # gdk_toplevel_layout_get_fullscreen_monitor: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_layout_get_fullscreen_monitor(self)
 
       # Return value handling
+
       Gdk::Monitor.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -101,12 +100,11 @@ module Gdk
       # @maximized: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_layout_get_maximized(self, maximized)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -114,12 +112,11 @@ module Gdk
       # gdk_toplevel_layout_get_resizable: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_layout_get_resizable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -127,12 +124,11 @@ module Gdk
       # gdk_toplevel_layout_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_toplevel_layout_ref(self)
 
       # Return value handling
+
       Gdk::ToplevelLayout.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -141,7 +137,7 @@ module Gdk
       # @monitor: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       monitor = if monitor.nil?
                   Pointer(Void).null
                 else
@@ -158,8 +154,6 @@ module Gdk
       # gdk_toplevel_layout_set_maximized: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_layout_set_maximized(self, maximized)
 
@@ -170,8 +164,6 @@ module Gdk
       # gdk_toplevel_layout_set_resizable: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_toplevel_layout_set_resizable(self, resizable)
 
@@ -181,8 +173,6 @@ module Gdk
     def unref : Nil
       # gdk_toplevel_layout_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_toplevel_layout_unref(self)

@@ -8,12 +8,11 @@ module Gio
       # g_dbus_object_get_interface: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_object_get_interface(self, interface_name)
 
       # Return value handling
+
       Gio::DBusInterface__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -21,12 +20,11 @@ module Gio
       # g_dbus_object_get_interfaces: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_object_get_interfaces(self)
 
       # Return value handling
+
       GLib::List(Gio::DBusInterface).new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -34,19 +32,177 @@ module Gio
       # g_dbus_object_get_object_path: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_object_get_object_path(self)
 
       # Return value handling
+
       ::String.new(_retval)
+    end
+
+    struct InterfaceAddedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "interface-added::#{@detail}" : "interface-added"
+      end
+
+      def connect(&block : Proc(Gio::DBusInterface, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gio::DBusInterface, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gio::DBusInterface, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gio::DBusInterface__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::DBusInterface, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::DBusInterface, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gio::DBusInterface__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::DBusInterface, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gio::DBusObject, Gio::DBusInterface, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::DBusObject__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::DBusInterface__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::DBusObject, Gio::DBusInterface, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::DBusObject, Gio::DBusInterface, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::DBusObject__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::DBusInterface__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::DBusObject, Gio::DBusInterface, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(interface : Gio::DBusInterface) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "interface-added", interface)
+      end
+    end
+
+    def interface_added_signal
+      InterfaceAddedSignal.new(self)
+    end
+
+    struct InterfaceRemovedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "interface-removed::#{@detail}" : "interface-removed"
+      end
+
+      def connect(&block : Proc(Gio::DBusInterface, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gio::DBusInterface, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gio::DBusInterface, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gio::DBusInterface__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::DBusInterface, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::DBusInterface, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          arg0 = Gio::DBusInterface__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::DBusInterface, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gio::DBusObject, Gio::DBusInterface, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::DBusObject__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::DBusInterface__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::DBusObject, Gio::DBusInterface, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::DBusObject, Gio::DBusInterface, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
+          sender = Gio::DBusObject__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::DBusInterface__Impl.new(lib_arg0, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::DBusObject, Gio::DBusInterface, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(interface : Gio::DBusInterface) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "interface-removed", interface)
+      end
+    end
+
+    def interface_removed_signal
+      InterfaceRemovedSignal.new(self)
     end
 
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class DBusObject__Impl < GObject::Object
     include DBusObject
 

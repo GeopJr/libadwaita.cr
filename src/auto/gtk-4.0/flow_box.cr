@@ -28,11 +28,11 @@ module Gtk
   # The children of a `GtkFlowBox` can be dynamically sorted and filtered.
   #
   # Although a `GtkFlowBox` must have only `GtkFlowBoxChild` children, you
-  # can add any kind of widget to it via [method@Gtk.FlowBox.insert], and a
+  # can add any kind of widget to it via `Gtk::FlowBox#insert`, and a
   # `GtkFlowBoxChild` widget will automatically be inserted between the box
   # and the widget.
   #
-  # Also see [class@Gtk.ListBox].
+  # Also see `Gtk#ListBox`.
   #
   # # CSS nodes
   #
@@ -54,6 +54,7 @@ module Gtk
   #
   # `GtkFlowBox` uses the %GTK_ACCESSIBLE_ROLE_GRID role, and `GtkFlowBoxChild`
   # uses the %GTK_ACCESSIBLE_ROLE_GRID_CELL role.
+  @[GObject::GeneratedWrapper]
   class FlowBox < Widget
     include Accessible
     include Buildable
@@ -61,6 +62,13 @@ module Gtk
     include Orientable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::FlowBox), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -72,228 +80,233 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 44).new(LibGObject::Value.new)
       _n = 0
 
-      if accept_unpaired_release
+      if !accept_unpaired_release.nil?
         (_names.to_unsafe + _n).value = "accept-unpaired-release".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accept_unpaired_release)
         _n += 1
       end
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if activate_on_single_click
+      if !activate_on_single_click.nil?
         (_names.to_unsafe + _n).value = "activate-on-single-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, activate_on_single_click)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if column_spacing
+      if !column_spacing.nil?
         (_names.to_unsafe + _n).value = "column-spacing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, column_spacing)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if homogeneous
+      if !homogeneous.nil?
         (_names.to_unsafe + _n).value = "homogeneous".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, homogeneous)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if max_children_per_line
+      if !max_children_per_line.nil?
         (_names.to_unsafe + _n).value = "max-children-per-line".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_children_per_line)
         _n += 1
       end
-      if min_children_per_line
+      if !min_children_per_line.nil?
         (_names.to_unsafe + _n).value = "min-children-per-line".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, min_children_per_line)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if row_spacing
+      if !row_spacing.nil?
         (_names.to_unsafe + _n).value = "row-spacing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, row_spacing)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if selection_mode
+      if !selection_mode.nil?
         (_names.to_unsafe + _n).value = "selection-mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, selection_mode)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(FlowBox.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -418,28 +431,32 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "selection-mode", pointerof(value), Pointer(Void).null)
-      Gtk::SelectionMode.from_value(value)
+      Gtk::SelectionMode.new(value)
     end
 
+    # Creates a `GtkFlowBox`.
     def initialize
       # gtk_flow_box_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Adds @child to the end of @self.
+    #
+    # If a sort function is set, the widget will
+    # actually be inserted at the calculated position.
+    #
+    # See also: `Gtk::FlowBox#insert`.
     def append(child : Gtk::Widget) : Nil
       # gtk_flow_box_append: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_append(self, child)
@@ -447,18 +464,35 @@ module Gtk
       # Return value handling
     end
 
+    # Binds @model to @box.
+    #
+    # If @box was already bound to a model, that previous binding is
+    # destroyed.
+    #
+    # The contents of @box are cleared and then filled with widgets that
+    # represent items from @model. @box is updated whenever @model changes.
+    # If @model is %NULL, @box is left empty.
+    #
+    # It is undefined to add or remove widgets directly (for example, with
+    # `Gtk::FlowBox#insert`) while @box is bound to a model.
+    #
+    # Note that using a model is incompatible with the filtering and sorting
+    # functionality in `GtkFlowBox`. When using a model, filtering and sorting
+    # should be implemented by the model.
     def bind_model(model : Gio::ListModel?, create_widget_func : Pointer(Void), user_data : Pointer(Void)?, user_data_free_func : Pointer(Void)) : Nil
       # gtk_flow_box_bind_model: (Method)
       # @model: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
                 model.to_unsafe
               end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -471,141 +505,148 @@ module Gtk
       # Return value handling
     end
 
+    # Returns whether children activate on single clicks.
     def activate_on_single_click : Bool
       # gtk_flow_box_get_activate_on_single_click: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_activate_on_single_click(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the nth child in the @box.
     def child_at_index(idx : Int32) : Gtk::FlowBoxChild?
       # gtk_flow_box_get_child_at_index: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_child_at_index(self, idx)
 
       # Return value handling
+
       Gtk::FlowBoxChild.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the child in the (@x, @y) position.
+    #
+    # Both @x and @y are assumed to be relative to the origin of @box.
     def child_at_pos(x : Int32, y : Int32) : Gtk::FlowBoxChild?
       # gtk_flow_box_get_child_at_pos: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_child_at_pos(self, x, y)
 
       # Return value handling
+
       Gtk::FlowBoxChild.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the horizontal spacing.
     def column_spacing : UInt32
       # gtk_flow_box_get_column_spacing: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_column_spacing(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns whether the box is homogeneous.
     def homogeneous : Bool
       # gtk_flow_box_get_homogeneous: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_homogeneous(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the maximum number of children per line.
     def max_children_per_line : UInt32
       # gtk_flow_box_get_max_children_per_line: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_max_children_per_line(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the minimum number of children per line.
     def min_children_per_line : UInt32
       # gtk_flow_box_get_min_children_per_line: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_min_children_per_line(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the vertical spacing.
     def row_spacing : UInt32
       # gtk_flow_box_get_row_spacing: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_row_spacing(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Creates a list of all selected children.
     def selected_children : GLib::List
       # gtk_flow_box_get_selected_children: (Method)
       # Returns: (transfer container)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_selected_children(self)
 
       # Return value handling
+
       GLib::List(Gtk::FlowBoxChild).new(_retval, GICrystal::Transfer::Container)
     end
 
+    # Gets the selection mode of @box.
     def selection_mode : Gtk::SelectionMode
       # gtk_flow_box_get_selection_mode: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flow_box_get_selection_mode(self)
 
       # Return value handling
-      Gtk::SelectionMode.from_value(_retval)
+
+      Gtk::SelectionMode.new(_retval)
     end
 
+    # Inserts the @widget into @box at @position.
+    #
+    # If a sort function is set, the widget will actually be inserted
+    # at the calculated position.
+    #
+    # If @position is -1, or larger than the total number of children
+    # in the @box, then the @widget will be appended to the end.
     def insert(widget : Gtk::Widget, position : Int32) : Nil
       # gtk_flow_box_insert: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_insert(self, widget, position)
@@ -613,11 +654,16 @@ module Gtk
       # Return value handling
     end
 
+    # Updates the filtering for all children.
+    #
+    # Call this function when the result of the filter
+    # function on the @box is changed due ot an external
+    # factor. For instance, this would be used if the
+    # filter function just looked for a specific search
+    # term, and the entry with the string has changed.
     def invalidate_filter : Nil
       # gtk_flow_box_invalidate_filter: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_invalidate_filter(self)
@@ -625,11 +671,13 @@ module Gtk
       # Return value handling
     end
 
+    # Updates the sorting for all children.
+    #
+    # Call this when the result of the sort function on
+    # @box is changed due to an external factor.
     def invalidate_sort : Nil
       # gtk_flow_box_invalidate_sort: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_invalidate_sort(self)
@@ -637,11 +685,15 @@ module Gtk
       # Return value handling
     end
 
+    # Adds @child to the start of @self.
+    #
+    # If a sort function is set, the widget will
+    # actually be inserted at the calculated position.
+    #
+    # See also: `Gtk::FlowBox#insert`.
     def prepend(child : Gtk::Widget) : Nil
       # gtk_flow_box_prepend: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_prepend(self, child)
@@ -649,11 +701,10 @@ module Gtk
       # Return value handling
     end
 
+    # Removes a child from @box.
     def remove(widget : Gtk::Widget) : Nil
       # gtk_flow_box_remove: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_remove(self, widget)
@@ -661,11 +712,11 @@ module Gtk
       # Return value handling
     end
 
+    # Select all children of @box, if the selection
+    # mode allows it.
     def select_all : Nil
       # gtk_flow_box_select_all: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_select_all(self)
@@ -673,11 +724,11 @@ module Gtk
       # Return value handling
     end
 
+    # Selects a single child of @box, if the selection
+    # mode allows it.
     def select_child(child : Gtk::FlowBoxChild) : Nil
       # gtk_flow_box_select_child: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_select_child(self, child)
@@ -685,12 +736,16 @@ module Gtk
       # Return value handling
     end
 
+    # Calls a function for each selected child.
+    #
+    # Note that the selection cannot be modified from within
+    # this function.
     def selected_foreach(func : Pointer(Void), data : Pointer(Void)?) : Nil
       # gtk_flow_box_selected_foreach: (Method)
       # @data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(Void).null
              else
@@ -703,11 +758,11 @@ module Gtk
       # Return value handling
     end
 
+    # If @single is %TRUE, children will be activated when you click
+    # on them, otherwise you need to double-click.
     def activate_on_single_click=(single : Bool) : Nil
       # gtk_flow_box_set_activate_on_single_click: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_set_activate_on_single_click(self, single)
@@ -715,11 +770,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the horizontal space to add between children.
     def column_spacing=(spacing : UInt32) : Nil
       # gtk_flow_box_set_column_spacing: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_set_column_spacing(self, spacing)
@@ -727,18 +781,33 @@ module Gtk
       # Return value handling
     end
 
+    # By setting a filter function on the @box one can decide dynamically
+    # which of the children to show.
+    #
+    # For instance, to implement a search function that only shows the
+    # children matching the search terms.
+    #
+    # The @filter_func will be called for each child after the call, and
+    # it will continue to be called each time a child changes (via
+    # `Gtk::FlowBoxChild#changed`) or when
+    # `Gtk::FlowBox#invalidate_filter` is called.
+    #
+    # Note that using a filter function is incompatible with using a model
+    # (see `Gtk::FlowBox#bind_model`).
     def set_filter_func(filter_func : Pointer(Void)?, user_data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
       # gtk_flow_box_set_filter_func: (Method)
       # @filter_func: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       filter_func = if filter_func.nil?
                       LibGtk::FlowBoxFilterFunc.null
                     else
                       filter_func.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -751,11 +820,20 @@ module Gtk
       # Return value handling
     end
 
+    # Hooks up an adjustment to focus handling in @box.
+    #
+    # The adjustment is also used for autoscrolling during
+    # rubberband selection. See `Gtk::ScrolledWindow#hadjustment`
+    # for a typical way of obtaining the adjustment, and
+    # `Gtk::FlowBox#vadjustment=` for setting the vertical
+    # adjustment.
+    #
+    # The adjustments have to be in pixel units and in the same
+    # coordinate system as the allocation for immediate children
+    # of the box.
     def hadjustment=(adjustment : Gtk::Adjustment) : Nil
       # gtk_flow_box_set_hadjustment: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_set_hadjustment(self, adjustment)
@@ -763,11 +841,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether or not all children of @box are given
+    # equal space in the box.
     def homogeneous=(homogeneous : Bool) : Nil
       # gtk_flow_box_set_homogeneous: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_set_homogeneous(self, homogeneous)
@@ -775,11 +853,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the maximum number of children to request and
+    # allocate space for in @box’s orientation.
+    #
+    # Setting the maximum number of children per line
+    # limits the overall natural size request to be no more
+    # than @n_children children long in the given orientation.
     def max_children_per_line=(n_children : UInt32) : Nil
       # gtk_flow_box_set_max_children_per_line: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_set_max_children_per_line(self, n_children)
@@ -787,11 +869,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the minimum number of children to line up
+    # in @box’s orientation before flowing.
     def min_children_per_line=(n_children : UInt32) : Nil
       # gtk_flow_box_set_min_children_per_line: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_set_min_children_per_line(self, n_children)
@@ -799,11 +881,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the vertical space to add between children.
     def row_spacing=(spacing : UInt32) : Nil
       # gtk_flow_box_set_row_spacing: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_set_row_spacing(self, spacing)
@@ -811,11 +892,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets how selection works in @box.
     def selection_mode=(mode : Gtk::SelectionMode) : Nil
       # gtk_flow_box_set_selection_mode: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_set_selection_mode(self, mode)
@@ -823,18 +903,31 @@ module Gtk
       # Return value handling
     end
 
+    # By setting a sort function on the @box, one can dynamically
+    # reorder the children of the box, based on the contents of
+    # the children.
+    #
+    # The @sort_func will be called for each child after the call,
+    # and will continue to be called each time a child changes (via
+    # `Gtk::FlowBoxChild#changed`) and when
+    # `Gtk::FlowBox#invalidate_sort` is called.
+    #
+    # Note that using a sort function is incompatible with using a model
+    # (see `Gtk::FlowBox#bind_model`).
     def set_sort_func(sort_func : Pointer(Void)?, user_data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
       # gtk_flow_box_set_sort_func: (Method)
       # @sort_func: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       sort_func = if sort_func.nil?
                     LibGtk::FlowBoxSortFunc.null
                   else
                     sort_func.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -847,11 +940,20 @@ module Gtk
       # Return value handling
     end
 
+    # Hooks up an adjustment to focus handling in @box.
+    #
+    # The adjustment is also used for autoscrolling during
+    # rubberband selection. See `Gtk::ScrolledWindow#vadjustment`
+    # for a typical way of obtaining the adjustment, and
+    # `Gtk::FlowBox#hadjustment=` for setting the horizontal
+    # adjustment.
+    #
+    # The adjustments have to be in pixel units and in the same
+    # coordinate system as the allocation for immediate children
+    # of the box.
     def vadjustment=(adjustment : Gtk::Adjustment) : Nil
       # gtk_flow_box_set_vadjustment: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_set_vadjustment(self, adjustment)
@@ -859,11 +961,11 @@ module Gtk
       # Return value handling
     end
 
+    # Unselect all children of @box, if the selection
+    # mode allows it.
     def unselect_all : Nil
       # gtk_flow_box_unselect_all: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_unselect_all(self)
@@ -871,11 +973,11 @@ module Gtk
       # Return value handling
     end
 
+    # Unselects a single child of @box, if the selection
+    # mode allows it.
     def unselect_child(child : Gtk::FlowBoxChild) : Nil
       # gtk_flow_box_unselect_child: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_flow_box_unselect_child(self, child)
@@ -883,6 +985,9 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when the user activates the @box.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
     struct ActivateCursorChildSignal
       @source : GObject::Object
       @detail : String?
@@ -958,6 +1063,7 @@ module Gtk
       ActivateCursorChildSignal.new(self)
     end
 
+    # Emitted when a child has been activated by the user.
     struct ChildActivatedSignal
       @source : GObject::Object
       @detail : String?
@@ -1037,6 +1143,22 @@ module Gtk
       ChildActivatedSignal.new(self)
     end
 
+    # Emitted when the user initiates a cursor movement.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    # Applications should not connect to it, but may emit it with
+    # g_signal_emit_by_name() if they need to control the cursor
+    # programmatically.
+    #
+    # The default bindings for this signal come in two variants,
+    # the variant with the Shift modifier extends the selection,
+    # the variant without the Shift modifier does not.
+    # There are too many key combinations to list them all here.
+    #
+    # - <kbd>←</kbd>, <kbd>→</kbd>, <kbd>↑</kbd>, <kbd>↓</kbd>
+    #   move by individual children
+    # - <kbd>Home</kbd>, <kbd>End</kbd> move to the ends of the box
+    # - <kbd>PgUp</kbd>, <kbd>PgDn</kbd> move vertically by pages
     struct MoveCursorSignal
       @source : GObject::Object
       @detail : String?
@@ -1064,11 +1186,12 @@ module Gtk
       def connect(block : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Int32, lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::MovementStep.from_value(lib_arg0)
+          arg0 = Gtk::MovementStep.new(lib_arg0)
           arg1 = lib_arg1
           arg2 = GICrystal.to_bool(lib_arg2)
           arg3 = GICrystal.to_bool(lib_arg3)
-          ::Box(Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool)).unbox(box).call(arg0, arg1, arg2, arg3).to_unsafe
+          _retval = ::Box(Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool)).unbox(box).call(arg0, arg1, arg2, arg3)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1078,11 +1201,12 @@ module Gtk
       def connect_after(block : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Int32, lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::MovementStep.from_value(lib_arg0)
+          arg0 = Gtk::MovementStep.new(lib_arg0)
           arg1 = lib_arg1
           arg2 = GICrystal.to_bool(lib_arg2)
           arg3 = GICrystal.to_bool(lib_arg3)
-          ::Box(Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool)).unbox(box).call(arg0, arg1, arg2, arg3).to_unsafe
+          _retval = ::Box(Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool)).unbox(box).call(arg0, arg1, arg2, arg3)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1093,7 +1217,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Int32, lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
           sender = Gtk::FlowBox.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::MovementStep.from_value(lib_arg0)
+          arg0 = Gtk::MovementStep.new(lib_arg0)
           arg1 = lib_arg1
           arg2 = GICrystal.to_bool(lib_arg2)
           arg3 = GICrystal.to_bool(lib_arg3)
@@ -1108,7 +1232,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Int32, lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
           sender = Gtk::FlowBox.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::MovementStep.from_value(lib_arg0)
+          arg0 = Gtk::MovementStep.new(lib_arg0)
           arg1 = lib_arg1
           arg2 = GICrystal.to_bool(lib_arg2)
           arg3 = GICrystal.to_bool(lib_arg3)
@@ -1128,6 +1252,12 @@ module Gtk
       MoveCursorSignal.new(self)
     end
 
+    # Emitted to select all children of the box,
+    # if the selection mode permits it.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    #
+    # The default bindings for this signal is <kbd>Ctrl</kbd>-<kbd>a</kbd>.
     struct SelectAllSignal
       @source : GObject::Object
       @detail : String?
@@ -1203,6 +1333,11 @@ module Gtk
       SelectAllSignal.new(self)
     end
 
+    # Emitted when the set of selected children changes.
+    #
+    # Use `Gtk::FlowBox#selected_foreach` or
+    # `Gtk::FlowBox#selected_children` to obtain the
+    # selected children.
     struct SelectedChildrenChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -1278,6 +1413,11 @@ module Gtk
       SelectedChildrenChangedSignal.new(self)
     end
 
+    # Emitted to toggle the selection of the child that has the focus.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    #
+    # The default binding for this signal is <kbd>Ctrl</kbd>-<kbd>Space</kbd>.
     struct ToggleCursorChildSignal
       @source : GObject::Object
       @detail : String?
@@ -1353,6 +1493,12 @@ module Gtk
       ToggleCursorChildSignal.new(self)
     end
 
+    # Emitted to unselect all children of the box,
+    # if the selection mode permits it.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    #
+    # The default bindings for this signal is <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>.
     struct UnselectAllSignal
       @source : GObject::Object
       @detail : String?

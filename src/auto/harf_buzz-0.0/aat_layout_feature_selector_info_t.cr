@@ -4,7 +4,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibHarfBuzz::AatLayoutFeatureSelectorInfoT))
@@ -25,50 +25,48 @@ module HarfBuzz
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::AatLayoutFeatureSelectorInfoT)).zero?
+    end
+
     def name_id : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def name_id=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def enable : HarfBuzz::AatLayoutFeatureSelectorT
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt32))
-      HarfBuzz::AatLayoutFeatureSelectorT.from_value(_var.value)
+      HarfBuzz::AatLayoutFeatureSelectorT.new(_var)
     end
 
     def enable=(value : HarfBuzz::AatLayoutFeatureSelectorT)
-      # Property setter
-      _var = (@pointer + 4).as(Pointer(UInt32)).value = value.to_unsafe
+      _var = (@pointer + 4).as(Pointer(UInt32))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::AatLayoutFeatureSelectorInfoT))
       value
     end
 
     def disable : HarfBuzz::AatLayoutFeatureSelectorT
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt32))
-      HarfBuzz::AatLayoutFeatureSelectorT.from_value(_var.value)
+      HarfBuzz::AatLayoutFeatureSelectorT.new(_var)
     end
 
     def disable=(value : HarfBuzz::AatLayoutFeatureSelectorT)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(UInt32)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(UInt32))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::AatLayoutFeatureSelectorInfoT))
       value
     end
 
     def reserved : UInt32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(UInt32))
       _var.value
     end
 
     def reserved=(value : UInt32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(UInt32)).value = value
       value
     end

@@ -7,8 +7,16 @@ module Pango
   # against a particular `PangoContext`. It has operations for finding the
   # component font for a particular Unicode character, and for finding a
   # composite set of metrics for the entire fontset.
+  @[GObject::GeneratedWrapper]
   class Fontset < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibPango::FontsetClass), class_init,
+        sizeof(LibPango::Fontset), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -20,12 +28,16 @@ module Pango
       LibPango.pango_fontset_get_type
     end
 
+    # Iterates through all the fonts in a fontset, calling @func for
+    # each one.
+    #
+    # If @func returns %TRUE, that stops the iteration.
     def foreach(func : Pointer(Void), data : Pointer(Void)?) : Nil
       # pango_fontset_foreach: (Method)
       # @data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(Void).null
              else
@@ -38,29 +50,30 @@ module Pango
       # Return value handling
     end
 
+    # Returns the font in the fontset that contains the best
+    # glyph for a Unicode character.
     def font(wc : UInt32) : Pango::Font
       # pango_fontset_get_font: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibPango.pango_fontset_get_font(self, wc)
 
       # Return value handling
+
       Pango::Font.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Get overall metric information for the fonts in the fontset.
     def metrics : Pango::FontMetrics
       # pango_fontset_get_metrics: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibPango.pango_fontset_get_metrics(self)
 
       # Return value handling
+
       Pango::FontMetrics.new(_retval, GICrystal::Transfer::Full)
     end
   end

@@ -4,7 +4,7 @@ require "./buildable"
 require "./cell_layout"
 
 module Gtk
-  # A visible column in a [class@Gtk.TreeView] widget
+  # A visible column in a `Gtk#TreeView` widget
   #
   # The `GtkTreeViewColumn` object represents a visible column in a `GtkTreeView` widget.
   # It allows to set properties of the column header, and functions as a holding pen
@@ -12,13 +12,21 @@ module Gtk
   #
   # Please refer to the [tree widget conceptual overview](section-tree-widget.html)
   # for an overview of all the objects and data types related to the tree widget and
-  # how they work together, and to the [class@Gtk.TreeView] documentation for specifics
+  # how they work together, and to the `Gtk#TreeView` documentation for specifics
   # about the CSS node structure for treeviews and their headers.
+  @[GObject::GeneratedWrapper]
   class TreeViewColumn < GObject::InitiallyUnowned
     include Buildable
     include CellLayout
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::TreeViewColumn), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -30,103 +38,108 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 19).new(LibGObject::Value.new)
       _n = 0
 
-      if alignment
+      if !alignment.nil?
         (_names.to_unsafe + _n).value = "alignment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, alignment)
         _n += 1
       end
-      if cell_area
+      if !cell_area.nil?
         (_names.to_unsafe + _n).value = "cell-area".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_area)
         _n += 1
       end
-      if clickable
+      if !clickable.nil?
         (_names.to_unsafe + _n).value = "clickable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, clickable)
         _n += 1
       end
-      if expand
+      if !expand.nil?
         (_names.to_unsafe + _n).value = "expand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, expand)
         _n += 1
       end
-      if fixed_width
+      if !fixed_width.nil?
         (_names.to_unsafe + _n).value = "fixed-width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, fixed_width)
         _n += 1
       end
-      if max_width
+      if !max_width.nil?
         (_names.to_unsafe + _n).value = "max-width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_width)
         _n += 1
       end
-      if min_width
+      if !min_width.nil?
         (_names.to_unsafe + _n).value = "min-width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, min_width)
         _n += 1
       end
-      if reorderable
+      if !reorderable.nil?
         (_names.to_unsafe + _n).value = "reorderable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, reorderable)
         _n += 1
       end
-      if resizable
+      if !resizable.nil?
         (_names.to_unsafe + _n).value = "resizable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, resizable)
         _n += 1
       end
-      if sizing
+      if !sizing.nil?
         (_names.to_unsafe + _n).value = "sizing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sizing)
         _n += 1
       end
-      if sort_column_id
+      if !sort_column_id.nil?
         (_names.to_unsafe + _n).value = "sort-column-id".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sort_column_id)
         _n += 1
       end
-      if sort_indicator
+      if !sort_indicator.nil?
         (_names.to_unsafe + _n).value = "sort-indicator".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sort_indicator)
         _n += 1
       end
-      if sort_order
+      if !sort_order.nil?
         (_names.to_unsafe + _n).value = "sort-order".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sort_order)
         _n += 1
       end
-      if spacing
+      if !spacing.nil?
         (_names.to_unsafe + _n).value = "spacing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, spacing)
         _n += 1
       end
-      if title
+      if !title.nil?
         (_names.to_unsafe + _n).value = "title".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
-      if width
+      if !width.nil?
         (_names.to_unsafe + _n).value = "width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width)
         _n += 1
       end
-      if x_offset
+      if !x_offset.nil?
         (_names.to_unsafe + _n).value = "x-offset".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, x_offset)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(TreeViewColumn.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -281,7 +294,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "sizing", pointerof(value), Pointer(Void).null)
-      Gtk::TreeViewColumnSizing.from_value(value)
+      Gtk::TreeViewColumnSizing.new(value)
     end
 
     def sort_column_id=(value : Int32) : Int32
@@ -326,7 +339,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "sort-order", pointerof(value), Pointer(Void).null)
-      Gtk::SortType.from_value(value)
+      Gtk::SortType.new(value)
     end
 
     def spacing=(value : Int32) : Int32
@@ -405,38 +418,45 @@ module Gtk
       value
     end
 
+    # Creates a new `GtkTreeViewColumn`.
     def initialize
       # gtk_tree_view_column_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Creates a new `GtkTreeViewColumn` using @area to render its cells.
     def self.new_with_area(area : Gtk::CellArea) : self
       # gtk_tree_view_column_new_with_area: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_new_with_area(area)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       Gtk::TreeViewColumn.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Adds an attribute mapping to the list in @tree_column.
+    #
+    # The @column is the
+    # column of the model to get a value from, and the @attribute is the
+    # parameter on @cell_renderer to be set from the value. So for example
+    # if column 2 of the model contains strings, you could have the
+    # “text” attribute of a `GtkCellRendererText` get its values from
+    # column 2.
     def add_attribute(cell_renderer : Gtk::CellRenderer, attribute : ::String, column : Int32) : Nil
       # gtk_tree_view_column_add_attribute: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_add_attribute(self, cell_renderer, attribute, column)
@@ -444,23 +464,31 @@ module Gtk
       # Return value handling
     end
 
+    # Obtains the horizontal position and size of a cell in a column.
+    #
+    # If the  cell is not found in the column, @start_pos and @width
+    # are not changed and %FALSE is returned.
     def cell_get_position(cell_renderer : Gtk::CellRenderer) : Bool
       # gtk_tree_view_column_cell_get_position: (Method)
       # @x_offset: (out) (transfer full) (optional)
       # @width: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       x_offset = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       width = Pointer(Int32).null
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_cell_get_position(self, cell_renderer, x_offset, width)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Obtains the width and height needed to render the column.  This is used
+    # primarily by the `GtkTreeView`.
     def cell_get_size : Nil
       # gtk_tree_view_column_cell_get_size: (Method)
       # @x_offset: (out) (transfer full) (optional)
@@ -469,10 +497,13 @@ module Gtk
       # @height: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       x_offset = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       y_offset = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       width = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
 
       # C call
@@ -481,24 +512,28 @@ module Gtk
       # Return value handling
     end
 
+    # Returns %TRUE if any of the cells packed into the @tree_column are visible.
+    # For this to be meaningful, you must first initialize the cells with
+    # gtk_tree_view_column_cell_set_cell_data()
     def cell_is_visible : Bool
       # gtk_tree_view_column_cell_is_visible: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_cell_is_visible(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets the cell renderer based on the @tree_model and @iter.  That is, for
+    # every attribute mapping in @tree_column, it will get a value from the set
+    # column on the @iter, and use that value to set the attribute on the cell
+    # renderer.  This is used primarily by the `GtkTreeView`.
     def cell_set_cell_data(tree_model : Gtk::TreeModel, iter : Gtk::TreeIter, is_expander : Bool, is_expanded : Bool) : Nil
       # gtk_tree_view_column_cell_set_cell_data: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_cell_set_cell_data(self, tree_model, iter, is_expander, is_expanded)
@@ -506,11 +541,10 @@ module Gtk
       # Return value handling
     end
 
+    # Unsets all the mappings on all renderers on the @tree_column.
     def clear : Nil
       # gtk_tree_view_column_clear: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_clear(self)
@@ -518,11 +552,11 @@ module Gtk
       # Return value handling
     end
 
+    # Clears all existing attributes previously set with
+    # gtk_tree_view_column_set_attributes().
     def clear_attributes(cell_renderer : Gtk::CellRenderer) : Nil
       # gtk_tree_view_column_clear_attributes: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_clear_attributes(self, cell_renderer)
@@ -530,11 +564,11 @@ module Gtk
       # Return value handling
     end
 
+    # Emits the “clicked” signal on the column.  This function will only work if
+    # @tree_column is clickable.
     def clicked : Nil
       # gtk_tree_view_column_clicked: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_clicked(self)
@@ -542,11 +576,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the current keyboard focus to be at @cell, if the column contains
+    # 2 or more editable and activatable cells.
     def focus_cell(cell : Gtk::CellRenderer) : Nil
       # gtk_tree_view_column_focus_cell: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_focus_cell(self, cell)
@@ -554,271 +588,283 @@ module Gtk
       # Return value handling
     end
 
+    # Returns the current x alignment of @tree_column.  This value can range
+    # between 0.0 and 1.0.
     def alignment : Float32
       # gtk_tree_view_column_get_alignment: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_alignment(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the button used in the treeview column header
     def button : Gtk::Widget
       # gtk_tree_view_column_get_button: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_button(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns %TRUE if the user can click on the header for the column.
     def clickable : Bool
       # gtk_tree_view_column_get_clickable: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_clickable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns %TRUE if the column expands to fill available space.
     def expand : Bool
       # gtk_tree_view_column_get_expand: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_expand(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the fixed width of the column.  This may not be the actual displayed
+    # width of the column; for that, use gtk_tree_view_column_get_width().
     def fixed_width : Int32
       # gtk_tree_view_column_get_fixed_width: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_fixed_width(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the maximum width in pixels of the @tree_column, or -1 if no maximum
+    # width is set.
     def max_width : Int32
       # gtk_tree_view_column_get_max_width: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_max_width(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the minimum width in pixels of the @tree_column, or -1 if no minimum
+    # width is set.
     def min_width : Int32
       # gtk_tree_view_column_get_min_width: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_min_width(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns %TRUE if the @tree_column can be reordered by the user.
     def reorderable : Bool
       # gtk_tree_view_column_get_reorderable: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_reorderable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns %TRUE if the @tree_column can be resized by the end user.
     def resizable : Bool
       # gtk_tree_view_column_get_resizable: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_resizable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the current type of @tree_column.
     def sizing : Gtk::TreeViewColumnSizing
       # gtk_tree_view_column_get_sizing: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_sizing(self)
 
       # Return value handling
-      Gtk::TreeViewColumnSizing.from_value(_retval)
+
+      Gtk::TreeViewColumnSizing.new(_retval)
     end
 
+    # Gets the logical @sort_column_id that the model sorts on
+    # when this column is selected for sorting.
+    #
+    # See `Gtk::TreeViewColumn#sort_column_id=`.
     def sort_column_id : Int32
       # gtk_tree_view_column_get_sort_column_id: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_sort_column_id(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the value set by gtk_tree_view_column_set_sort_indicator().
     def sort_indicator : Bool
       # gtk_tree_view_column_get_sort_indicator: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_sort_indicator(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the value set by gtk_tree_view_column_set_sort_order().
     def sort_order : Gtk::SortType
       # gtk_tree_view_column_get_sort_order: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_sort_order(self)
 
       # Return value handling
-      Gtk::SortType.from_value(_retval)
+
+      Gtk::SortType.new(_retval)
     end
 
+    # Returns the spacing of @tree_column.
     def spacing : Int32
       # gtk_tree_view_column_get_spacing: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_spacing(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the title of the widget.
     def title : ::String
       # gtk_tree_view_column_get_title: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_title(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Returns the `GtkTreeView` wherein @tree_column has been inserted.
+    # If @column is currently not inserted in any tree view, %NULL is
+    # returned.
     def tree_view : Gtk::Widget?
       # gtk_tree_view_column_get_tree_view: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_tree_view(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns %TRUE if @tree_column is visible.
     def visible : Bool
       # gtk_tree_view_column_get_visible: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_visible(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the `GtkWidget` in the button on the column header.
+    #
+    # If a custom widget has not been set then %NULL is returned.
     def widget : Gtk::Widget?
       # gtk_tree_view_column_get_widget: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_widget(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the current size of @tree_column in pixels.
     def width : Int32
       # gtk_tree_view_column_get_width: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_width(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns the current X offset of @tree_column in pixels.
     def x_offset : Int32
       # gtk_tree_view_column_get_x_offset: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_tree_view_column_get_x_offset(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Adds the @cell to end of the column. If @expand is %FALSE, then the @cell
+    # is allocated no more space than it needs. Any unused space is divided
+    # evenly between cells for which @expand is %TRUE.
     def pack_end(cell : Gtk::CellRenderer, expand : Bool) : Nil
       # gtk_tree_view_column_pack_end: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_pack_end(self, cell, expand)
@@ -826,11 +872,12 @@ module Gtk
       # Return value handling
     end
 
+    # Packs the @cell into the beginning of the column. If @expand is %FALSE, then
+    # the @cell is allocated no more space than it needs. Any unused space is divided
+    # evenly between cells for which @expand is %TRUE.
     def pack_start(cell : Gtk::CellRenderer, expand : Bool) : Nil
       # gtk_tree_view_column_pack_start: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_pack_start(self, cell, expand)
@@ -838,11 +885,11 @@ module Gtk
       # Return value handling
     end
 
+    # Flags the column, and the cell renderers added to this column, to have
+    # their sizes renegotiated.
     def queue_resize : Nil
       # gtk_tree_view_column_queue_resize: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_queue_resize(self)
@@ -850,11 +897,12 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the alignment of the title or custom widget inside the column header.
+    # The alignment determines its location inside the button -- 0.0 for left, 0.5
+    # for center, 1.0 for right.
     def alignment=(xalign : Float32) : Nil
       # gtk_tree_view_column_set_alignment: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_alignment(self, xalign)
@@ -862,18 +910,27 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `GtkTreeCellDataFunc` to use for the column.
+    #
+    # This
+    # function is used instead of the standard attributes mapping for
+    # setting the column value, and should set the value of @tree_column's
+    # cell renderer as appropriate.  @func may be %NULL to remove an
+    # older one.
     def set_cell_data_func(cell_renderer : Gtk::CellRenderer, func : Pointer(Void)?, func_data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
       # gtk_tree_view_column_set_cell_data_func: (Method)
       # @func: (nullable)
       # @func_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       func = if func.nil?
                LibGtk::TreeCellDataFunc.null
              else
                func.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       func_data = if func_data.nil?
                     Pointer(Void).null
                   else
@@ -886,11 +943,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the header to be active if @clickable is %TRUE.  When the header is
+    # active, then it can take keyboard focus, and can be clicked.
     def clickable=(clickable : Bool) : Nil
       # gtk_tree_view_column_set_clickable: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_clickable(self, clickable)
@@ -898,11 +955,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the column to take available extra space.  This space is shared equally
+    # amongst all columns that have the expand set to %TRUE.  If no column has this
+    # option set, then the last column gets all extra space.  By default, every
+    # column is created with this %FALSE.
+    #
+    # Along with “fixed-width”, the “expand” property changes when the column is
+    # resized by the user.
     def expand=(expand : Bool) : Nil
       # gtk_tree_view_column_set_expand: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_expand(self, expand)
@@ -910,11 +972,20 @@ module Gtk
       # Return value handling
     end
 
+    # If @fixed_width is not -1, sets the fixed width of @tree_column; otherwise
+    # unsets it.  The effective value of @fixed_width is clamped between the
+    # minimum and maximum width of the column; however, the value stored in the
+    # “fixed-width” property is not clamped.  If the column sizing is
+    # %GTK_TREE_VIEW_COLUMN_GROW_ONLY or %GTK_TREE_VIEW_COLUMN_AUTOSIZE, setting
+    # a fixed width overrides the automatically calculated width.  Note that
+    # @fixed_width is only a hint to GTK; the width actually allocated to the
+    # column may be greater or less than requested.
+    #
+    # Along with “expand”, the “fixed-width” property changes when the column is
+    # resized by the user.
     def fixed_width=(fixed_width : Int32) : Nil
       # gtk_tree_view_column_set_fixed_width: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_fixed_width(self, fixed_width)
@@ -922,11 +993,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the maximum width of the @tree_column.  If @max_width is -1, then the
+    # maximum width is unset.  Note, the column can actually be wider than max
+    # width if it’s the last column in a view.  In this case, the column expands to
+    # fill any extra space.
     def max_width=(max_width : Int32) : Nil
       # gtk_tree_view_column_set_max_width: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_max_width(self, max_width)
@@ -934,11 +1007,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the minimum width of the @tree_column.  If @min_width is -1, then the
+    # minimum width is unset.
     def min_width=(min_width : Int32) : Nil
       # gtk_tree_view_column_set_min_width: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_min_width(self, min_width)
@@ -946,11 +1019,11 @@ module Gtk
       # Return value handling
     end
 
+    # If @reorderable is %TRUE, then the column can be reordered by the end user
+    # dragging the header.
     def reorderable=(reorderable : Bool) : Nil
       # gtk_tree_view_column_set_reorderable: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_reorderable(self, reorderable)
@@ -958,11 +1031,15 @@ module Gtk
       # Return value handling
     end
 
+    # If @resizable is %TRUE, then the user can explicitly resize the column by
+    # grabbing the outer edge of the column button.
+    #
+    # If resizable is %TRUE and
+    # sizing mode of the column is %GTK_TREE_VIEW_COLUMN_AUTOSIZE, then the sizing
+    # mode is changed to %GTK_TREE_VIEW_COLUMN_GROW_ONLY.
     def resizable=(resizable : Bool) : Nil
       # gtk_tree_view_column_set_resizable: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_resizable(self, resizable)
@@ -970,11 +1047,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the growth behavior of @tree_column to @type.
     def sizing=(type : Gtk::TreeViewColumnSizing) : Nil
       # gtk_tree_view_column_set_sizing: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_sizing(self, type)
@@ -982,11 +1058,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the logical @sort_column_id that this column sorts on when this column
+    # is selected for sorting.  Doing so makes the column header clickable.
     def sort_column_id=(sort_column_id : Int32) : Nil
       # gtk_tree_view_column_set_sort_column_id: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_sort_column_id(self, sort_column_id)
@@ -994,11 +1070,13 @@ module Gtk
       # Return value handling
     end
 
+    # Call this function with a @setting of %TRUE to display an arrow in
+    # the header button indicating the column is sorted. Call
+    # gtk_tree_view_column_set_sort_order() to change the direction of
+    # the arrow.
     def sort_indicator=(setting : Bool) : Nil
       # gtk_tree_view_column_set_sort_indicator: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_sort_indicator(self, setting)
@@ -1006,11 +1084,20 @@ module Gtk
       # Return value handling
     end
 
+    # Changes the appearance of the sort indicator.
+    #
+    # This does not actually sort the model.  Use
+    # gtk_tree_view_column_set_sort_column_id() if you want automatic sorting
+    # support.  This function is primarily for custom sorting behavior, and should
+    # be used in conjunction with gtk_tree_sortable_set_sort_column_id() to do
+    # that. For custom models, the mechanism will vary.
+    #
+    # The sort indicator changes direction to indicate normal sort or reverse sort.
+    # Note that you must have the sort indicator enabled to see anything when
+    # calling this function; see gtk_tree_view_column_set_sort_indicator().
     def sort_order=(order : Gtk::SortType) : Nil
       # gtk_tree_view_column_set_sort_order: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_sort_order(self, order)
@@ -1018,11 +1105,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the spacing field of @tree_column, which is the number of pixels to
+    # place between cell renderers packed into it.
     def spacing=(spacing : Int32) : Nil
       # gtk_tree_view_column_set_spacing: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_spacing(self, spacing)
@@ -1030,11 +1117,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the title of the @tree_column.  If a custom widget has been set, then
+    # this value is ignored.
     def title=(title : ::String) : Nil
       # gtk_tree_view_column_set_title: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_title(self, title)
@@ -1042,11 +1129,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the visibility of @tree_column.
     def visible=(visible : Bool) : Nil
       # gtk_tree_view_column_set_visible: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_tree_view_column_set_visible(self, visible)
@@ -1054,12 +1140,14 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the widget in the header to be @widget.  If widget is %NULL, then the
+    # header button is set with a `GtkLabel` set to the title of @tree_column.
     def widget=(widget : Gtk::Widget?) : Nil
       # gtk_tree_view_column_set_widget: (Method | Setter)
       # @widget: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       widget = if widget.nil?
                  Pointer(Void).null
                else
@@ -1072,6 +1160,7 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when the column's header has been clicked.
     struct ClickedSignal
       @source : GObject::Object
       @detail : String?

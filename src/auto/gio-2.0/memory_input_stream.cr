@@ -9,11 +9,19 @@ module Gio
   #
   # As of GLib 2.34, #GMemoryInputStream implements
   # #GPollableInputStream.
+  @[GObject::GeneratedWrapper]
   class MemoryInputStream < InputStream
     include PollableInputStream
     include Seekable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::MemoryInputStreamClass), class_init,
+        sizeof(LibGio::MemoryInputStream), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -25,59 +33,63 @@ module Gio
       LibGio.g_memory_input_stream_get_type
     end
 
+    # Creates a new empty #GMemoryInputStream.
     def initialize
       # g_memory_input_stream_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_memory_input_stream_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Creates a new #GMemoryInputStream with data from the given @bytes.
     def self.new_from_bytes(bytes : GLib::Bytes) : self
       # g_memory_input_stream_new_from_bytes: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_memory_input_stream_new_from_bytes(bytes)
 
       # Return value handling
+
       Gio::MemoryInputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a new #GMemoryInputStream with data in memory of a given size.
     def self.new_from_data(data : Enumerable(UInt8), destroy : Pointer(Void)?) : self
       # g_memory_input_stream_new_from_data: (Constructor)
       # @data: (transfer full) (array length=len element-type UInt8)
       # @destroy: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       len = data.size
+      # Generator::ArrayArgPlan
+      data = data.to_a.to_unsafe
+
+      # Generator::NullableArrayPlan
       destroy = if destroy.nil?
                   LibGLib::DestroyNotify.null
                 else
                   destroy.to_unsafe
                 end
-      data = data.to_a.to_unsafe
 
       # C call
       _retval = LibGio.g_memory_input_stream_new_from_data(data, len, destroy)
 
       # Return value handling
+
       Gio::MemoryInputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Appends @bytes to data that can be read from the input stream.
     def add_bytes(bytes : GLib::Bytes) : Nil
       # g_memory_input_stream_add_bytes: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_memory_input_stream_add_bytes(self, bytes)
@@ -85,20 +97,24 @@ module Gio
       # Return value handling
     end
 
+    # Appends @data to data that can be read from the input stream
     def add_data(data : Enumerable(UInt8), destroy : Pointer(Void)?) : Nil
       # g_memory_input_stream_add_data: (Method)
       # @data: (transfer full) (array length=len element-type UInt8)
       # @destroy: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       len = data.size
+      # Generator::ArrayArgPlan
+      data = data.to_a.to_unsafe
+
+      # Generator::NullableArrayPlan
       destroy = if destroy.nil?
                   LibGLib::DestroyNotify.null
                 else
                   destroy.to_unsafe
                 end
-      data = data.to_a.to_unsafe
 
       # C call
       LibGio.g_memory_input_stream_add_data(self, data, len, destroy)

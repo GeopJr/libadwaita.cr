@@ -4,7 +4,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGio::DBusSubtreeVTable))
@@ -25,50 +25,49 @@ module Gio
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::DBusSubtreeVTable)).zero?
+    end
+
     def enumerate : Pointer(Void)
-      # Property getter
       _var = (@pointer + 0).as(Pointer(LibGio::DBusSubtreeEnumerateFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def enumerate=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(LibGio::DBusSubtreeEnumerateFunc)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(LibGio::DBusSubtreeEnumerateFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusSubtreeVTable))
       value
     end
 
     def introspect : Pointer(Void)
-      # Property getter
       _var = (@pointer + 8).as(Pointer(LibGio::DBusSubtreeIntrospectFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def introspect=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(LibGio::DBusSubtreeIntrospectFunc)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(LibGio::DBusSubtreeIntrospectFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusSubtreeVTable))
       value
     end
 
     def dispatch : Pointer(Void)
-      # Property getter
       _var = (@pointer + 16).as(Pointer(LibGio::DBusSubtreeDispatchFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def dispatch=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(LibGio::DBusSubtreeDispatchFunc)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(LibGio::DBusSubtreeDispatchFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusSubtreeVTable))
       value
     end
 
     def padding : Enumerable(Pointer(Void))
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Pointer(Void)[8]))
       _var.value
     end
 
     def padding=(value : Enumerable(Pointer(Void)))
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Pointer(Void)[8])).value = value
       value
     end

@@ -5,7 +5,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::AttrFontDesc))
@@ -24,27 +24,33 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::AttrFontDesc)).zero?
+    end
+
     def attr : Pango::Attribute
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Pango::Attribute.new(_var.value, GICrystal::Transfer::None)
+      Pango::Attribute.new(_var, GICrystal::Transfer::None)
     end
 
     def attr=(value : Pango::Attribute)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibPango::AttrFontDesc))
       value
     end
 
-    def desc : Pango::FontDescription
-      # Property getter
+    def desc!
+      self.desc.not_nil!
+    end
+
+    def desc : Pango::FontDescription?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Pango::FontDescription.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def desc=(value : Pango::FontDescription)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def desc=(value : Pango::FontDescription?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
@@ -52,12 +58,11 @@ module Pango
       # pango_attr_font_desc_new: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_font_desc_new(desc)
 
       # Return value handling
+
       Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
     end
 

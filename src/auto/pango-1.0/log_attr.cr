@@ -5,7 +5,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::LogAttr))
@@ -38,194 +38,166 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::LogAttr)).zero?
+    end
+
     def is_line_break : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def is_line_break=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_mandatory_break : UInt32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt32))
       _var.value
     end
 
     def is_mandatory_break=(value : UInt32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_char_break : UInt32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt32))
       _var.value
     end
 
     def is_char_break=(value : UInt32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_white : UInt32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(UInt32))
       _var.value
     end
 
     def is_white=(value : UInt32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_cursor_position : UInt32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(UInt32))
       _var.value
     end
 
     def is_cursor_position=(value : UInt32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_word_start : UInt32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(UInt32))
       _var.value
     end
 
     def is_word_start=(value : UInt32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_word_end : UInt32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(UInt32))
       _var.value
     end
 
     def is_word_end=(value : UInt32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_sentence_boundary : UInt32
-      # Property getter
       _var = (@pointer + 28).as(Pointer(UInt32))
       _var.value
     end
 
     def is_sentence_boundary=(value : UInt32)
-      # Property setter
       _var = (@pointer + 28).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_sentence_start : UInt32
-      # Property getter
       _var = (@pointer + 32).as(Pointer(UInt32))
       _var.value
     end
 
     def is_sentence_start=(value : UInt32)
-      # Property setter
       _var = (@pointer + 32).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_sentence_end : UInt32
-      # Property getter
       _var = (@pointer + 36).as(Pointer(UInt32))
       _var.value
     end
 
     def is_sentence_end=(value : UInt32)
-      # Property setter
       _var = (@pointer + 36).as(Pointer(UInt32)).value = value
       value
     end
 
     def backspace_deletes_character : UInt32
-      # Property getter
       _var = (@pointer + 40).as(Pointer(UInt32))
       _var.value
     end
 
     def backspace_deletes_character=(value : UInt32)
-      # Property setter
       _var = (@pointer + 40).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_expandable_space : UInt32
-      # Property getter
       _var = (@pointer + 44).as(Pointer(UInt32))
       _var.value
     end
 
     def is_expandable_space=(value : UInt32)
-      # Property setter
       _var = (@pointer + 44).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_word_boundary : UInt32
-      # Property getter
       _var = (@pointer + 48).as(Pointer(UInt32))
       _var.value
     end
 
     def is_word_boundary=(value : UInt32)
-      # Property setter
       _var = (@pointer + 48).as(Pointer(UInt32)).value = value
       value
     end
 
     def break_inserts_hyphen : UInt32
-      # Property getter
       _var = (@pointer + 52).as(Pointer(UInt32))
       _var.value
     end
 
     def break_inserts_hyphen=(value : UInt32)
-      # Property setter
       _var = (@pointer + 52).as(Pointer(UInt32)).value = value
       value
     end
 
     def break_removes_preceding : UInt32
-      # Property getter
       _var = (@pointer + 56).as(Pointer(UInt32))
       _var.value
     end
 
     def break_removes_preceding=(value : UInt32)
-      # Property setter
       _var = (@pointer + 56).as(Pointer(UInt32)).value = value
       value
     end
 
     def reserved : UInt32
-      # Property getter
       _var = (@pointer + 60).as(Pointer(UInt32))
       _var.value
     end
 
     def reserved=(value : UInt32)
-      # Property setter
       _var = (@pointer + 60).as(Pointer(UInt32)).value = value
       value
     end

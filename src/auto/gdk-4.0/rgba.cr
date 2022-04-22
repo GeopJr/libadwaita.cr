@@ -12,7 +12,7 @@ module Gdk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGdk::RGBA))
@@ -33,50 +33,46 @@ module Gdk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGdk::RGBA)).zero?
+    end
+
     def red : Float32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Float32))
       _var.value
     end
 
     def red=(value : Float32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Float32)).value = value
       value
     end
 
     def green : Float32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Float32))
       _var.value
     end
 
     def green=(value : Float32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Float32)).value = value
       value
     end
 
     def blue : Float32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Float32))
       _var.value
     end
 
     def blue=(value : Float32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Float32)).value = value
       value
     end
 
     def alpha : Float32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Float32))
       _var.value
     end
 
     def alpha=(value : Float32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Float32)).value = value
       value
     end
@@ -90,12 +86,11 @@ module Gdk
       # gdk_rgba_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_rgba_copy(self)
 
       # Return value handling
+
       Gdk::RGBA.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -103,20 +98,17 @@ module Gdk
       # gdk_rgba_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_rgba_equal(self, p2)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # gdk_rgba_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_rgba_free(self)
@@ -128,12 +120,11 @@ module Gdk
       # gdk_rgba_hash: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_rgba_hash(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -141,12 +132,11 @@ module Gdk
       # gdk_rgba_is_clear: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_rgba_is_clear(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -154,12 +144,11 @@ module Gdk
       # gdk_rgba_is_opaque: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_rgba_is_opaque(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -167,12 +156,11 @@ module Gdk
       # gdk_rgba_parse: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_rgba_parse(self, spec)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -180,12 +168,11 @@ module Gdk
       # gdk_rgba_to_string: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_rgba_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 

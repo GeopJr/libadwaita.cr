@@ -88,12 +88,11 @@ module Gio
       # g_async_result_get_source_object: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_async_result_get_source_object(self)
 
       # Return value handling
+
       GObject::Object.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -101,12 +100,11 @@ module Gio
       # g_async_result_get_user_data: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_async_result_get_user_data(self)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
@@ -115,7 +113,7 @@ module Gio
       # @source_tag: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       source_tag = if source_tag.nil?
                      Pointer(Void).null
                    else
@@ -126,6 +124,7 @@ module Gio
       _retval = LibGio.g_async_result_is_tagged(self, source_tag)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -135,14 +134,14 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_async_result_legacy_propagate_error(self, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -150,6 +149,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class AsyncResult__Impl < GObject::Object
     include AsyncResult
 

@@ -6,8 +6,16 @@ module Gtk
   # The `GtkAlternativeTrigger` triggers when either of two trigger.
   #
   # This can be cascaded to combine more than two triggers.
+  @[GObject::GeneratedWrapper]
   class AlternativeTrigger < ShortcutTrigger
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::AlternativeTriggerClass), class_init,
+        sizeof(LibGtk::AlternativeTrigger), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -19,18 +27,22 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if first
+      if !first.nil?
         (_names.to_unsafe + _n).value = "first".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, first)
         _n += 1
       end
-      if second
+      if !second.nil?
         (_names.to_unsafe + _n).value = "second".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, second)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(AlternativeTrigger.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -68,46 +80,61 @@ module Gtk
       Gtk::ShortcutTrigger.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a `GtkShortcutTrigger` that will trigger whenever
+    # either of the two given triggers gets triggered.
+    #
+    # Note that nesting is allowed, so if you want more than two
+    # alternative, create a new alternative trigger for each option.
     def initialize(first : Gtk::ShortcutTrigger, second : Gtk::ShortcutTrigger)
       # gtk_alternative_trigger_new: (Constructor)
       # @first: (transfer full)
       # @second: (transfer full)
       # Returns: (transfer full)
 
-      # Handle parameters
-      LibGObject.g_object_ref(first)
-      LibGObject.g_object_ref(second)
+      # Generator::TransferFullArgPlan
+      LibGObject.g_object_ref_sink(first)
+      # Generator::TransferFullArgPlan
+      LibGObject.g_object_ref_sink(second)
 
       # C call
       _retval = LibGtk.gtk_alternative_trigger_new(first, second)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the first of the two alternative triggers that may
+    # trigger @self.
+    #
+    # `Gtk::AlternativeTrigger#second` will return
+    # the other one.
     def first : Gtk::ShortcutTrigger
       # gtk_alternative_trigger_get_first: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_alternative_trigger_get_first(self)
 
       # Return value handling
+
       Gtk::ShortcutTrigger.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the second of the two alternative triggers that may
+    # trigger @self.
+    #
+    # `Gtk::AlternativeTrigger#first` will return
+    # the other one.
     def second : Gtk::ShortcutTrigger
       # gtk_alternative_trigger_get_second: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_alternative_trigger_get_second(self)
 
       # Return value handling
+
       Gtk::ShortcutTrigger.new(_retval, GICrystal::Transfer::None)
     end
   end

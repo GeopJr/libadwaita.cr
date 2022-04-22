@@ -19,8 +19,8 @@ module Gtk
   # button in it).
   #
   # Although a `GtkListBox` must have only `GtkListBoxRow` children, you can
-  # add any kind of widget to it via [method@Gtk.ListBox.prepend],
-  # [method@Gtk.ListBox.append] and [method@Gtk.ListBox.insert] and a
+  # add any kind of widget to it via `Gtk::ListBox#prepend`,
+  # `Gtk::ListBox#append` and `Gtk::ListBox#insert` and a
   # `GtkListBoxRow` widget will automatically be inserted between the list
   # and the widget.
   #
@@ -33,7 +33,7 @@ module Gtk
   #
   # The `GtkListBox` implementation of the `GtkBuildable` interface supports
   # setting a child as the placeholder by specifying “placeholder” as the “type”
-  # attribute of a <child> element. See [method@Gtk.ListBox.set_placeholder]
+  # attribute of a <child> element. See `Gtk::ListBox#placeholder=`
   # for info.
   #
   # # CSS nodes
@@ -56,12 +56,20 @@ module Gtk
   #
   # `GtkListBox` uses the %GTK_ACCESSIBLE_ROLE_LIST role and `GtkListBoxRow` uses
   # the %GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
+  @[GObject::GeneratedWrapper]
   class ListBox < Widget
     include Accessible
     include Buildable
     include ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::ListBox), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -73,203 +81,208 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 39).new(LibGObject::Value.new)
       _n = 0
 
-      if accept_unpaired_release
+      if !accept_unpaired_release.nil?
         (_names.to_unsafe + _n).value = "accept-unpaired-release".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accept_unpaired_release)
         _n += 1
       end
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if activate_on_single_click
+      if !activate_on_single_click.nil?
         (_names.to_unsafe + _n).value = "activate-on-single-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, activate_on_single_click)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if selection_mode
+      if !selection_mode.nil?
         (_names.to_unsafe + _n).value = "selection-mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, selection_mode)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if show_separators
+      if !show_separators.nil?
         (_names.to_unsafe + _n).value = "show-separators".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_separators)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ListBox.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -319,7 +332,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "selection-mode", pointerof(value), Pointer(Void).null)
-      Gtk::SelectionMode.from_value(value)
+      Gtk::SelectionMode.new(value)
     end
 
     def show_separators=(value : Bool) : Bool
@@ -337,25 +350,27 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `GtkListBox` container.
     def initialize
       # gtk_list_box_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_list_box_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Append a widget to the list.
+    #
+    # If a sort function is set, the widget will
+    # actually be inserted at the calculated position.
     def append(child : Gtk::Widget) : Nil
       # gtk_list_box_append: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_append(self, child)
@@ -363,6 +378,21 @@ module Gtk
       # Return value handling
     end
 
+    # Binds @model to @box.
+    #
+    # If @box was already bound to a model, that previous binding is
+    # destroyed.
+    #
+    # The contents of @box are cleared and then filled with widgets that
+    # represent items from @model. @box is updated whenever @model changes.
+    # If @model is %NULL, @box is left empty.
+    #
+    # It is undefined to add or remove widgets directly (for example, with
+    # `Gtk::ListBox#insert`) while @box is bound to a model.
+    #
+    # Note that using a model is incompatible with the filtering and sorting
+    # functionality in `GtkListBox`. When using a model, filtering and sorting
+    # should be implemented by the model.
     def bind_model(model : Gio::ListModel?, create_widget_func : Pointer(Void)?, user_data : Pointer(Void)?, user_data_free_func : Pointer(Void)) : Nil
       # gtk_list_box_bind_model: (Method)
       # @model: (nullable)
@@ -370,17 +400,21 @@ module Gtk
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
                 model.to_unsafe
               end
+
+      # Generator::NullableArrayPlan
       create_widget_func = if create_widget_func.nil?
                              LibGtk::ListBoxCreateWidgetFunc.null
                            else
                              create_widget_func.to_unsafe
                            end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -393,11 +427,18 @@ module Gtk
       # Return value handling
     end
 
+    # Add a drag highlight to a row.
+    #
+    # This is a helper function for implementing DnD onto a `GtkListBox`.
+    # The passed in @row will be highlighted by setting the
+    # %GTK_STATE_FLAG_DROP_ACTIVE state and any previously highlighted
+    # row will be unhighlighted.
+    #
+    # The row will also be unhighlighted when the widget gets
+    # a drag leave event.
     def drag_highlight_row(row : Gtk::ListBoxRow) : Nil
       # gtk_list_box_drag_highlight_row: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_drag_highlight_row(self, row)
@@ -405,11 +446,11 @@ module Gtk
       # Return value handling
     end
 
+    # If a row has previously been highlighted via gtk_list_box_drag_highlight_row(),
+    # it will have the highlight removed.
     def drag_unhighlight_row : Nil
       # gtk_list_box_drag_unhighlight_row: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_drag_unhighlight_row(self)
@@ -417,115 +458,129 @@ module Gtk
       # Return value handling
     end
 
+    # Returns whether rows activate on single clicks.
     def activate_on_single_click : Bool
       # gtk_list_box_get_activate_on_single_click: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_list_box_get_activate_on_single_click(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the adjustment (if any) that the widget uses to
+    # for vertical scrolling.
     def adjustment : Gtk::Adjustment?
       # gtk_list_box_get_adjustment: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_list_box_get_adjustment(self)
 
       # Return value handling
+
       Gtk::Adjustment.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the n-th child in the list (not counting headers).
+    #
+    # If @index_ is negative or larger than the number of items in the
+    # list, %NULL is returned.
     def row_at_index(index_ : Int32) : Gtk::ListBoxRow?
       # gtk_list_box_get_row_at_index: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_list_box_get_row_at_index(self, index_)
 
       # Return value handling
+
       Gtk::ListBoxRow.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the row at the @y position.
     def row_at_y(y : Int32) : Gtk::ListBoxRow?
       # gtk_list_box_get_row_at_y: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_list_box_get_row_at_y(self, y)
 
       # Return value handling
+
       Gtk::ListBoxRow.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the selected row, or %NULL if no rows are selected.
+    #
+    # Note that the box may allow multiple selection, in which
+    # case you should use `Gtk::ListBox#selected_foreach` to
+    # find all selected rows.
     def selected_row : Gtk::ListBoxRow?
       # gtk_list_box_get_selected_row: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_list_box_get_selected_row(self)
 
       # Return value handling
+
       Gtk::ListBoxRow.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Creates a list of all selected children.
     def selected_rows : GLib::List
       # gtk_list_box_get_selected_rows: (Method)
       # Returns: (transfer container)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_list_box_get_selected_rows(self)
 
       # Return value handling
+
       GLib::List(Gtk::ListBoxRow).new(_retval, GICrystal::Transfer::Container)
     end
 
+    # Gets the selection mode of the listbox.
     def selection_mode : Gtk::SelectionMode
       # gtk_list_box_get_selection_mode: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_list_box_get_selection_mode(self)
 
       # Return value handling
-      Gtk::SelectionMode.from_value(_retval)
+
+      Gtk::SelectionMode.new(_retval)
     end
 
+    # Returns whether the list box should show separators
+    # between rows.
     def show_separators : Bool
       # gtk_list_box_get_show_separators: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_list_box_get_show_separators(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Insert the @child into the @box at @position.
+    #
+    # If a sort function is
+    # set, the widget will actually be inserted at the calculated position.
+    #
+    # If @position is -1, or larger than the total number of items in the
+    # @box, then the @child will be appended to the end.
     def insert(child : Gtk::Widget, position : Int32) : Nil
       # gtk_list_box_insert: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_insert(self, child, position)
@@ -533,11 +588,16 @@ module Gtk
       # Return value handling
     end
 
+    # Update the filtering for all rows.
+    #
+    # Call this when result
+    # of the filter function on the @box is changed due
+    # to an external factor. For instance, this would be used
+    # if the filter function just looked for a specific search
+    # string and the entry with the search string has changed.
     def invalidate_filter : Nil
       # gtk_list_box_invalidate_filter: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_invalidate_filter(self)
@@ -545,11 +605,14 @@ module Gtk
       # Return value handling
     end
 
+    # Update the separators for all rows.
+    #
+    # Call this when result
+    # of the header function on the @box is changed due
+    # to an external factor.
     def invalidate_headers : Nil
       # gtk_list_box_invalidate_headers: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_invalidate_headers(self)
@@ -557,11 +620,14 @@ module Gtk
       # Return value handling
     end
 
+    # Update the sorting for all rows.
+    #
+    # Call this when result
+    # of the sort function on the @box is changed due
+    # to an external factor.
     def invalidate_sort : Nil
       # gtk_list_box_invalidate_sort: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_invalidate_sort(self)
@@ -569,11 +635,13 @@ module Gtk
       # Return value handling
     end
 
+    # Prepend a widget to the list.
+    #
+    # If a sort function is set, the widget will
+    # actually be inserted at the calculated position.
     def prepend(child : Gtk::Widget) : Nil
       # gtk_list_box_prepend: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_prepend(self, child)
@@ -581,11 +649,10 @@ module Gtk
       # Return value handling
     end
 
+    # Removes a child from @box.
     def remove(child : Gtk::Widget) : Nil
       # gtk_list_box_remove: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_remove(self, child)
@@ -593,11 +660,10 @@ module Gtk
       # Return value handling
     end
 
+    # Select all children of @box, if the selection mode allows it.
     def select_all : Nil
       # gtk_list_box_select_all: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_select_all(self)
@@ -605,12 +671,13 @@ module Gtk
       # Return value handling
     end
 
+    # Make @row the currently selected row.
     def select_row(row : Gtk::ListBoxRow?) : Nil
       # gtk_list_box_select_row: (Method)
       # @row: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       row = if row.nil?
               Pointer(Void).null
             else
@@ -623,12 +690,15 @@ module Gtk
       # Return value handling
     end
 
+    # Calls a function for each selected child.
+    #
+    # Note that the selection cannot be modified from within this function.
     def selected_foreach(func : Pointer(Void), data : Pointer(Void)?) : Nil
       # gtk_list_box_selected_foreach: (Method)
       # @data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(Void).null
              else
@@ -641,11 +711,11 @@ module Gtk
       # Return value handling
     end
 
+    # If @single is %TRUE, rows will be activated when you click on them,
+    # otherwise you need to double-click.
     def activate_on_single_click=(single : Bool) : Nil
       # gtk_list_box_set_activate_on_single_click: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_set_activate_on_single_click(self, single)
@@ -653,12 +723,22 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the adjustment (if any) that the widget uses to
+    # for vertical scrolling.
+    #
+    # For instance, this is used to get the page size for
+    # PageUp/Down key handling.
+    #
+    # In the normal case when the @box is packed inside
+    # a `GtkScrolledWindow` the adjustment from that will
+    # be picked up automatically, so there is no need
+    # to manually do that.
     def adjustment=(adjustment : Gtk::Adjustment?) : Nil
       # gtk_list_box_set_adjustment: (Method)
       # @adjustment: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       adjustment = if adjustment.nil?
                      Pointer(Void).null
                    else
@@ -671,18 +751,33 @@ module Gtk
       # Return value handling
     end
 
+    # By setting a filter function on the @box one can decide dynamically which
+    # of the rows to show.
+    #
+    # For instance, to implement a search function on a list that
+    # filters the original list to only show the matching rows.
+    #
+    # The @filter_func will be called for each row after the call, and
+    # it will continue to be called each time a row changes (via
+    # `Gtk::ListBoxRow#changed`) or when `Gtk::ListBox#invalidate_filter`
+    # is called.
+    #
+    # Note that using a filter function is incompatible with using a model
+    # (see `Gtk::ListBox#bind_model`).
     def set_filter_func(filter_func : Pointer(Void)?, user_data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
       # gtk_list_box_set_filter_func: (Method)
       # @filter_func: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       filter_func = if filter_func.nil?
                       LibGtk::ListBoxFilterFunc.null
                     else
                       filter_func.to_unsafe
                     end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -695,18 +790,45 @@ module Gtk
       # Return value handling
     end
 
+    # Sets a header function.
+    #
+    # By setting a header function on the @box one can dynamically add headers
+    # in front of rows, depending on the contents of the row and its position
+    # in the list.
+    #
+    # For instance, one could use it to add headers in front of the first item
+    # of a new kind, in a list sorted by the kind.
+    #
+    # The @update_header can look at the current header widget using
+    # `Gtk::ListBoxRow#header` and either update the state of the widget
+    # as needed, or set a new one using `Gtk::ListBoxRow#header=`. If no
+    # header is needed, set the header to %NULL.
+    #
+    # Note that you may get many calls @update_header to this for a particular
+    # row when e.g. changing things that don’t affect the header. In this case
+    # it is important for performance to not blindly replace an existing header
+    # with an identical one.
+    #
+    # The @update_header function will be called for each row after the call,
+    # and it will continue to be called each time a row changes (via
+    # `Gtk::ListBoxRow#changed`) and when the row before changes (either
+    # by `Gtk::ListBoxRow#changed` on the previous row, or when the previous
+    # row becomes a different row). It is also called for all rows when
+    # `Gtk::ListBox#invalidate_headers` is called.
     def set_header_func(update_header : Pointer(Void)?, user_data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
       # gtk_list_box_set_header_func: (Method)
       # @update_header: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       update_header = if update_header.nil?
                         LibGtk::ListBoxUpdateHeaderFunc.null
                       else
                         update_header.to_unsafe
                       end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -719,12 +841,14 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the placeholder widget that is shown in the list when
+    # it doesn't display any visible children.
     def placeholder=(placeholder : Gtk::Widget?) : Nil
       # gtk_list_box_set_placeholder: (Method)
       # @placeholder: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       placeholder = if placeholder.nil?
                       Pointer(Void).null
                     else
@@ -737,11 +861,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets how selection works in the listbox.
     def selection_mode=(mode : Gtk::SelectionMode) : Nil
       # gtk_list_box_set_selection_mode: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_set_selection_mode(self, mode)
@@ -749,11 +872,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the list box should show separators
+    # between rows.
     def show_separators=(show_separators : Bool) : Nil
       # gtk_list_box_set_show_separators: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_set_show_separators(self, show_separators)
@@ -761,18 +884,32 @@ module Gtk
       # Return value handling
     end
 
+    # Sets a sort function.
+    #
+    # By setting a sort function on the @box one can dynamically reorder
+    # the rows of the list, based on the contents of the rows.
+    #
+    # The @sort_func will be called for each row after the call, and will
+    # continue to be called each time a row changes (via
+    # `Gtk::ListBoxRow#changed`) and when `Gtk::ListBox#invalidate_sort`
+    # is called.
+    #
+    # Note that using a sort function is incompatible with using a model
+    # (see `Gtk::ListBox#bind_model`).
     def set_sort_func(sort_func : Pointer(Void)?, user_data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
       # gtk_list_box_set_sort_func: (Method)
       # @sort_func: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       sort_func = if sort_func.nil?
                     LibGtk::ListBoxSortFunc.null
                   else
                     sort_func.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -785,11 +922,10 @@ module Gtk
       # Return value handling
     end
 
+    # Unselect all children of @box, if the selection mode allows it.
     def unselect_all : Nil
       # gtk_list_box_unselect_all: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_unselect_all(self)
@@ -797,11 +933,10 @@ module Gtk
       # Return value handling
     end
 
+    # Unselects a single row of @box, if the selection mode allows it.
     def unselect_row(row : Gtk::ListBoxRow) : Nil
       # gtk_list_box_unselect_row: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_list_box_unselect_row(self, row)
@@ -911,7 +1046,7 @@ module Gtk
       def connect(block : Proc(Gtk::MovementStep, Int32, Bool, Bool, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Int32, lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::MovementStep.from_value(lib_arg0)
+          arg0 = Gtk::MovementStep.new(lib_arg0)
           arg1 = lib_arg1
           arg2 = GICrystal.to_bool(lib_arg2)
           arg3 = GICrystal.to_bool(lib_arg3)
@@ -925,7 +1060,7 @@ module Gtk
       def connect_after(block : Proc(Gtk::MovementStep, Int32, Bool, Bool, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Int32, lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::MovementStep.from_value(lib_arg0)
+          arg0 = Gtk::MovementStep.new(lib_arg0)
           arg1 = lib_arg1
           arg2 = GICrystal.to_bool(lib_arg2)
           arg3 = GICrystal.to_bool(lib_arg3)
@@ -940,7 +1075,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Int32, lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
           sender = Gtk::ListBox.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::MovementStep.from_value(lib_arg0)
+          arg0 = Gtk::MovementStep.new(lib_arg0)
           arg1 = lib_arg1
           arg2 = GICrystal.to_bool(lib_arg2)
           arg3 = GICrystal.to_bool(lib_arg3)
@@ -955,7 +1090,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Int32, lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
           sender = Gtk::ListBox.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::MovementStep.from_value(lib_arg0)
+          arg0 = Gtk::MovementStep.new(lib_arg0)
           arg1 = lib_arg1
           arg2 = GICrystal.to_bool(lib_arg2)
           arg3 = GICrystal.to_bool(lib_arg3)
@@ -975,6 +1110,7 @@ module Gtk
       MoveCursorSignal.new(self)
     end
 
+    # Emitted when a row has been activated by the user.
     struct RowActivatedSignal
       @source : GObject::Object
       @detail : String?
@@ -1054,6 +1190,12 @@ module Gtk
       RowActivatedSignal.new(self)
     end
 
+    # Emitted when a new row is selected, or (with a %NULL @row)
+    # when the selection is cleared.
+    #
+    # When the @box is using %GTK_SELECTION_MULTIPLE, this signal will not
+    # give you the full picture of selection changes, and you should use
+    # the [signal@Gtk.ListBox::selected-rows-changed] signal instead.
     struct RowSelectedSignal
       @source : GObject::Object
       @detail : String?
@@ -1133,6 +1275,12 @@ module Gtk
       RowSelectedSignal.new(self)
     end
 
+    # Emitted to select all children of the box, if the selection
+    # mode permits it.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    #
+    # The default binding for this signal is <kbd>Ctrl</kbd>-<kbd>a</kbd>.
     struct SelectAllSignal
       @source : GObject::Object
       @detail : String?
@@ -1208,6 +1356,7 @@ module Gtk
       SelectAllSignal.new(self)
     end
 
+    # Emitted when the set of selected rows changes.
     struct SelectedRowsChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -1358,6 +1507,13 @@ module Gtk
       ToggleCursorRowSignal.new(self)
     end
 
+    # Emitted to unselect all children of the box, if the selection
+    # mode permits it.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    #
+    # The default binding for this signal is
+    # <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>.
     struct UnselectAllSignal
       @source : GObject::Object
       @detail : String?

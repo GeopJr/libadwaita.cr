@@ -30,6 +30,7 @@ module Adw
   # ## CSS nodes
   #
   # `AdwSqueezer` has a single CSS node with name `squeezer`.
+  @[GObject::GeneratedWrapper]
   class Squeezer < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Buildable
@@ -37,6 +38,13 @@ module Adw
     include Gtk::Orientable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::SqueezerClass), class_init,
+        sizeof(LibAdw::Squeezer), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -48,243 +56,248 @@ module Adw
       _values = StaticArray(LibGObject::Value, 47).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if allow_none
+      if !allow_none.nil?
         (_names.to_unsafe + _n).value = "allow-none".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allow_none)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if homogeneous
+      if !homogeneous.nil?
         (_names.to_unsafe + _n).value = "homogeneous".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, homogeneous)
         _n += 1
       end
-      if interpolate_size
+      if !interpolate_size.nil?
         (_names.to_unsafe + _n).value = "interpolate-size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, interpolate_size)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if pages
+      if !pages.nil?
         (_names.to_unsafe + _n).value = "pages".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pages)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if switch_threshold_policy
+      if !switch_threshold_policy.nil?
         (_names.to_unsafe + _n).value = "switch-threshold-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, switch_threshold_policy)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if transition_duration
+      if !transition_duration.nil?
         (_names.to_unsafe + _n).value = "transition-duration".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, transition_duration)
         _n += 1
       end
-      if transition_running
+      if !transition_running.nil?
         (_names.to_unsafe + _n).value = "transition-running".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, transition_running)
         _n += 1
       end
-      if transition_type
+      if !transition_type.nil?
         (_names.to_unsafe + _n).value = "transition-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, transition_type)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if visible_child
+      if !visible_child.nil?
         (_names.to_unsafe + _n).value = "visible-child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible_child)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
-      if xalign
+      if !xalign.nil?
         (_names.to_unsafe + _n).value = "xalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xalign)
         _n += 1
       end
-      if yalign
+      if !yalign.nil?
         (_names.to_unsafe + _n).value = "yalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, yalign)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Squeezer.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -357,7 +370,7 @@ module Adw
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "switch-threshold-policy", pointerof(value), Pointer(Void).null)
-      Adw::FoldThresholdPolicy.from_value(value)
+      Adw::FoldThresholdPolicy.new(value)
     end
 
     def transition_duration=(value : UInt32) : UInt32
@@ -395,7 +408,7 @@ module Adw
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "transition-type", pointerof(value), Pointer(Void).null)
-      Adw::SqueezerTransitionType.from_value(value)
+      Adw::SqueezerTransitionType.new(value)
     end
 
     def visible_child : Gtk::Widget?
@@ -436,194 +449,196 @@ module Adw
       value
     end
 
+    # Creates a new `AdwSqueezer`.
     def initialize
       # adw_squeezer_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Adds a child to @self.
     def add(child : Gtk::Widget) : Adw::SqueezerPage
       # adw_squeezer_add: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_add(self, child)
 
       # Return value handling
+
       Adw::SqueezerPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets whether to allow squeezing beyond the last child's minimum size.
     def allow_none : Bool
       # adw_squeezer_get_allow_none: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_allow_none(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether all children have the same size for the opposite orientation.
     def homogeneous : Bool
       # adw_squeezer_get_homogeneous: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_homogeneous(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self interpolates its size when changing the visible child.
     def interpolate_size : Bool
       # adw_squeezer_get_interpolate_size: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_interpolate_size(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the `#SqueezerPage` object for @child.
     def page(child : Gtk::Widget) : Adw::SqueezerPage
       # adw_squeezer_get_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_page(self, child)
 
       # Return value handling
+
       Adw::SqueezerPage.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns a `Gio#ListModel` that contains the pages of @self.
+    #
+    # This can be used to keep an up-to-date view. The model also implements
+    # `Gtk#SelectionModel` and can be used to track the visible page.
     def pages : Gtk::SelectionModel
       # adw_squeezer_get_pages: (Method | Getter)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_pages(self)
 
       # Return value handling
+
       Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the fold threshold policy for @self.
     def switch_threshold_policy : Adw::FoldThresholdPolicy
       # adw_squeezer_get_switch_threshold_policy: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_switch_threshold_policy(self)
 
       # Return value handling
-      Adw::FoldThresholdPolicy.from_value(_retval)
+
+      Adw::FoldThresholdPolicy.new(_retval)
     end
 
+    # Gets the transition animation duration for @self.
     def transition_duration : UInt32
       # adw_squeezer_get_transition_duration: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_transition_duration(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets whether a transition is currently running for @self.
     def transition_running : Bool
       # adw_squeezer_get_transition_running: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_transition_running(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the type of animation used for transitions between children in @self.
     def transition_type : Adw::SqueezerTransitionType
       # adw_squeezer_get_transition_type: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_transition_type(self)
 
       # Return value handling
-      Adw::SqueezerTransitionType.from_value(_retval)
+
+      Adw::SqueezerTransitionType.new(_retval)
     end
 
+    # Gets the currently visible child of @self.
     def visible_child : Gtk::Widget?
       # adw_squeezer_get_visible_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_visible_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the horizontal alignment, from 0 (start) to 1 (end).
     def xalign : Float32
       # adw_squeezer_get_xalign: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_xalign(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the vertical alignment, from 0 (top) to 1 (bottom).
     def yalign : Float32
       # adw_squeezer_get_yalign: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_get_yalign(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Removes a child widget from @self.
     def remove(child : Gtk::Widget) : Nil
       # adw_squeezer_remove: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_remove(self, child)
@@ -631,11 +646,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether to allow squeezing beyond the last child's minimum size.
     def allow_none=(allow_none : Bool) : Nil
       # adw_squeezer_set_allow_none: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_set_allow_none(self, allow_none)
@@ -643,11 +657,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether all children have the same size for the opposite orientation.
     def homogeneous=(homogeneous : Bool) : Nil
       # adw_squeezer_set_homogeneous: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_set_homogeneous(self, homogeneous)
@@ -655,11 +668,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self interpolates its size when changing the visible child.
     def interpolate_size=(interpolate_size : Bool) : Nil
       # adw_squeezer_set_interpolate_size: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_set_interpolate_size(self, interpolate_size)
@@ -667,11 +679,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the fold threshold policy for @self.
     def switch_threshold_policy=(policy : Adw::FoldThresholdPolicy) : Nil
       # adw_squeezer_set_switch_threshold_policy: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_set_switch_threshold_policy(self, policy)
@@ -679,11 +690,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the transition animation duration for @self.
     def transition_duration=(duration : UInt32) : Nil
       # adw_squeezer_set_transition_duration: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_set_transition_duration(self, duration)
@@ -691,11 +701,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the type of animation used for transitions between children in @self.
     def transition_type=(transition : Adw::SqueezerTransitionType) : Nil
       # adw_squeezer_set_transition_type: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_set_transition_type(self, transition)
@@ -703,11 +712,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the horizontal alignment, from 0 (start) to 1 (end).
     def xalign=(xalign : Float32) : Nil
       # adw_squeezer_set_xalign: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_set_xalign(self, xalign)
@@ -715,11 +723,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the vertical alignment, from 0 (top) to 1 (bottom).
     def yalign=(yalign : Float32) : Nil
       # adw_squeezer_set_yalign: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_set_yalign(self, yalign)

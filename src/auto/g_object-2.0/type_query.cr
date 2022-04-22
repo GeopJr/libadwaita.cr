@@ -6,7 +6,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::TypeQuery))
@@ -27,50 +27,51 @@ module GObject
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::TypeQuery)).zero?
+    end
+
     def type : UInt64
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt64))
       _var.value
     end
 
     def type=(value : UInt64)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt64)).value = value
       value
     end
 
-    def type_name : ::String
-      # Property getter
+    def type_name!
+      self.type_name.not_nil!
+    end
+
+    def type_name : ::String?
       _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def type_name=(value : ::String)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value
+    def type_name=(value : ::String?)
+      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
     def class_size : UInt32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(UInt32))
       _var.value
     end
 
     def class_size=(value : UInt32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(UInt32)).value = value
       value
     end
 
     def instance_size : UInt32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(UInt32))
       _var.value
     end
 
     def instance_size=(value : UInt32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(UInt32)).value = value
       value
     end

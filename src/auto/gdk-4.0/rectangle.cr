@@ -6,8 +6,8 @@ module Gdk
   # sets of pixels.
   #
   # The intersection of two rectangles can be computed with
-  # [method@Gdk.Rectangle.intersect]; to find the union of two rectangles use
-  # [method@Gdk.Rectangle.union].
+  # `Gdk::Rectangle#intersect`; to find the union of two rectangles use
+  # `Gdk::Rectangle#union`.
   #
   # The `cairo_region_t` type provided by Cairo is usually used for managing
   # non-rectangular clipping of graphical operations.
@@ -18,7 +18,7 @@ module Gdk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGdk::Rectangle))
@@ -39,50 +39,46 @@ module Gdk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGdk::Rectangle)).zero?
+    end
+
     def x : Int32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Int32))
       _var.value
     end
 
     def x=(value : Int32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Int32)).value = value
       value
     end
 
     def y : Int32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Int32))
       _var.value
     end
 
     def y=(value : Int32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Int32)).value = value
       value
     end
 
     def width : Int32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Int32))
       _var.value
     end
 
     def width=(value : Int32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Int32)).value = value
       value
     end
 
     def height : Int32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Int32))
       _var.value
     end
 
     def height=(value : Int32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Int32)).value = value
       value
     end
@@ -96,12 +92,11 @@ module Gdk
       # gdk_rectangle_contains_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_rectangle_contains_point(self, x, y)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -109,12 +104,11 @@ module Gdk
       # gdk_rectangle_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_rectangle_equal(self, rect2)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -123,14 +117,16 @@ module Gdk
       # @dest: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       dest = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       dest = Gdk::Rectangle.new
 
       # C call
       _retval = LibGdk.gdk_rectangle_intersect(self, src2, dest)
 
       # Return value handling
+
       dest
     end
 
@@ -139,13 +135,14 @@ module Gdk
       # @dest: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       dest = Gdk::Rectangle.new
 
       # C call
       LibGdk.gdk_rectangle_union(self, src2, dest)
 
       # Return value handling
+
       dest
     end
 

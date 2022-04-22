@@ -14,7 +14,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "authentication-mode", pointerof(value), Pointer(Void).null)
-      Gio::TlsAuthenticationMode.from_value(value)
+      Gio::TlsAuthenticationMode.new(value)
     end
 
     def new(base_socket : Gio::DatagramBased, certificate : Gio::TlsCertificate?) : Gio::DtlsServerConnection
@@ -24,7 +24,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       certificate = if certificate.nil?
                       Pointer(Void).null
                     else
@@ -36,7 +36,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DtlsServerConnection__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -44,6 +46,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class DtlsServerConnection__Impl < GObject::Object
     include DtlsServerConnection
 

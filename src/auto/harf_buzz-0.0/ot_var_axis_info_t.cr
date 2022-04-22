@@ -9,7 +9,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibHarfBuzz::OtVarAxisInfoT))
@@ -34,98 +34,87 @@ module HarfBuzz
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::OtVarAxisInfoT)).zero?
+    end
+
     def axis_index : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def axis_index=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def tag : UInt32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt32))
       _var.value
     end
 
     def tag=(value : UInt32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(UInt32)).value = value
       value
     end
 
     def name_id : UInt32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt32))
       _var.value
     end
 
     def name_id=(value : UInt32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(UInt32)).value = value
       value
     end
 
     def flags : HarfBuzz::OtVarAxisFlagsT
-      # Property getter
       _var = (@pointer + 12).as(Pointer(UInt32))
-      HarfBuzz::OtVarAxisFlagsT.from_value(_var.value)
+      HarfBuzz::OtVarAxisFlagsT.new(_var)
     end
 
     def flags=(value : HarfBuzz::OtVarAxisFlagsT)
-      # Property setter
-      _var = (@pointer + 12).as(Pointer(UInt32)).value = value.to_unsafe
+      _var = (@pointer + 12).as(Pointer(UInt32))
+      _var.copy_from(value.to_unsafe, sizeof(LibHarfBuzz::OtVarAxisInfoT))
       value
     end
 
     def min_value : Float32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Float32))
       _var.value
     end
 
     def min_value=(value : Float32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Float32)).value = value
       value
     end
 
     def default_value : Float32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(Float32))
       _var.value
     end
 
     def default_value=(value : Float32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(Float32)).value = value
       value
     end
 
     def max_value : Float32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(Float32))
       _var.value
     end
 
     def max_value=(value : Float32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(Float32)).value = value
       value
     end
 
     def reserved : UInt32
-      # Property getter
       _var = (@pointer + 28).as(Pointer(UInt32))
       _var.value
     end
 
     def reserved=(value : UInt32)
-      # Property setter
       _var = (@pointer + 28).as(Pointer(UInt32)).value = value
       value
     end

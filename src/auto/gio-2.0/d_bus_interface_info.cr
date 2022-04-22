@@ -4,7 +4,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGio::DBusInterfaceInfo))
@@ -27,75 +27,92 @@ module Gio
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::DBusInterfaceInfo)).zero?
+    end
+
     def ref_count : Int32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Int32))
       _var.value
     end
 
     def ref_count=(value : Int32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Int32)).value = value
       value
     end
 
-    def name : ::String
-      # Property getter
+    def name!
+      self.name.not_nil!
+    end
+
+    def name : ::String?
       _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def name=(value : ::String)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value
+    def name=(value : ::String?)
+      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def methods : Enumerable(Gio::DBusMethodInfo)
-      # Property getter
+    def methods!
+      self.methods.not_nil!
+    end
+
+    def methods : Enumerable(Gio::DBusMethodInfo)?
       _var = (@pointer + 16).as(Pointer(Pointer(Pointer(Void))))
+      return if _var.value.null?
       GICrystal.transfer_null_ended_array(_var.value, GICrystal::Transfer::None)
     end
 
-    def methods=(value : Enumerable(Gio::DBusMethodInfo))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Pointer(Void)))).value = value
+    def methods=(value : Enumerable(Gio::DBusMethodInfo)?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Pointer(Void)))).value = value.nil? ? Pointer(Pointer(Void)).null : value
       value
     end
 
-    def signals : Enumerable(Gio::DBusSignalInfo)
-      # Property getter
+    def signals!
+      self.signals.not_nil!
+    end
+
+    def signals : Enumerable(Gio::DBusSignalInfo)?
       _var = (@pointer + 24).as(Pointer(Pointer(Pointer(Void))))
+      return if _var.value.null?
       GICrystal.transfer_null_ended_array(_var.value, GICrystal::Transfer::None)
     end
 
-    def signals=(value : Enumerable(Gio::DBusSignalInfo))
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(Pointer(Pointer(Void)))).value = value
+    def signals=(value : Enumerable(Gio::DBusSignalInfo)?)
+      _var = (@pointer + 24).as(Pointer(Pointer(Pointer(Void)))).value = value.nil? ? Pointer(Pointer(Void)).null : value
       value
     end
 
-    def properties : Enumerable(Gio::DBusPropertyInfo)
-      # Property getter
+    def properties!
+      self.properties.not_nil!
+    end
+
+    def properties : Enumerable(Gio::DBusPropertyInfo)?
       _var = (@pointer + 32).as(Pointer(Pointer(Pointer(Void))))
+      return if _var.value.null?
       GICrystal.transfer_null_ended_array(_var.value, GICrystal::Transfer::None)
     end
 
-    def properties=(value : Enumerable(Gio::DBusPropertyInfo))
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(Pointer(Pointer(Void)))).value = value
+    def properties=(value : Enumerable(Gio::DBusPropertyInfo)?)
+      _var = (@pointer + 32).as(Pointer(Pointer(Pointer(Void)))).value = value.nil? ? Pointer(Pointer(Void)).null : value
       value
     end
 
-    def annotations : Enumerable(Gio::DBusAnnotationInfo)
-      # Property getter
+    def annotations!
+      self.annotations.not_nil!
+    end
+
+    def annotations : Enumerable(Gio::DBusAnnotationInfo)?
       _var = (@pointer + 40).as(Pointer(Pointer(Pointer(Void))))
+      return if _var.value.null?
       GICrystal.transfer_null_ended_array(_var.value, GICrystal::Transfer::None)
     end
 
-    def annotations=(value : Enumerable(Gio::DBusAnnotationInfo))
-      # Property setter
-      _var = (@pointer + 40).as(Pointer(Pointer(Pointer(Void)))).value = value
+    def annotations=(value : Enumerable(Gio::DBusAnnotationInfo)?)
+      _var = (@pointer + 40).as(Pointer(Pointer(Pointer(Void)))).value = value.nil? ? Pointer(Pointer(Void)).null : value
       value
     end
 
@@ -108,8 +125,6 @@ module Gio
       # g_dbus_interface_info_cache_build: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGio.g_dbus_interface_info_cache_build(self)
 
@@ -119,8 +134,6 @@ module Gio
     def cache_release : Nil
       # g_dbus_interface_info_cache_release: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dbus_interface_info_cache_release(self)
@@ -132,8 +145,6 @@ module Gio
       # g_dbus_interface_info_generate_xml: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGio.g_dbus_interface_info_generate_xml(self, indent, string_builder)
 
@@ -144,12 +155,11 @@ module Gio
       # g_dbus_interface_info_lookup_method: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_interface_info_lookup_method(self, name)
 
       # Return value handling
+
       Gio::DBusMethodInfo.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -157,12 +167,11 @@ module Gio
       # g_dbus_interface_info_lookup_property: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_interface_info_lookup_property(self, name)
 
       # Return value handling
+
       Gio::DBusPropertyInfo.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -170,12 +179,11 @@ module Gio
       # g_dbus_interface_info_lookup_signal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_interface_info_lookup_signal(self, name)
 
       # Return value handling
+
       Gio::DBusSignalInfo.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -183,20 +191,17 @@ module Gio
       # g_dbus_interface_info_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dbus_interface_info_ref(self)
 
       # Return value handling
+
       Gio::DBusInterfaceInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # g_dbus_interface_info_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dbus_interface_info_unref(self)

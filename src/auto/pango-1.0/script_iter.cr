@@ -5,7 +5,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(ScriptIter.g_type, pointer)
@@ -18,6 +18,10 @@ module Pango
       LibGObject.g_boxed_free(ScriptIter.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::ScriptIter)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibPango.pango_script_iter_get_type
@@ -27,20 +31,17 @@ module Pango
       # pango_script_iter_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_script_iter_new(text, length)
 
       # Return value handling
+
       @pointer = _retval
     end
 
     def free : Nil
       # pango_script_iter_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibPango.pango_script_iter_free(self)
@@ -55,9 +56,11 @@ module Pango
       # @script: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       start = Pointer(Pointer(LibC::Char)).null
+      # Generator::OutArgUsedInReturnPlan
       _end = Pointer(Pointer(LibC::Char)).null
+      # Generator::OutArgUsedInReturnPlan
       script = Pointer(Int32).null
 
       # C call
@@ -70,12 +73,11 @@ module Pango
       # pango_script_iter_next: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_script_iter_next(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 

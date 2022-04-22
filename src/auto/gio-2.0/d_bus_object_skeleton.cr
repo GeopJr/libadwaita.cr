@@ -7,10 +7,18 @@ module Gio
   # dynamic and change at runtime.
   #
   # This type is intended to be used with #GDBusObjectManager.
+  @[GObject::GeneratedWrapper]
   class DBusObjectSkeleton < GObject::Object
     include DBusObject
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::DBusObjectSkeletonClass), class_init,
+        sizeof(LibGio::DBusObjectSkeleton), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -22,13 +30,17 @@ module Gio
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if g_object_path
+      if !g_object_path.nil?
         (_names.to_unsafe + _n).value = "g-object-path".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_object_path)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DBusObjectSkeleton.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -51,24 +63,29 @@ module Gio
       ::String.new(value)
     end
 
+    # Creates a new #GDBusObjectSkeleton.
     def initialize(object_path : ::String)
       # g_dbus_object_skeleton_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_object_skeleton_new(object_path)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Adds @interface_ to @object.
+    #
+    # If @object already contains a #GDBusInterfaceSkeleton with the same
+    # interface name, it is removed before @interface_ is added.
+    #
+    # Note that @object takes its own reference on @interface_ and holds
+    # it until removed.
     def add_interface(interface_ : Gio::DBusInterfaceSkeleton) : Nil
       # g_dbus_object_skeleton_add_interface: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dbus_object_skeleton_add_interface(self, interface_)
@@ -76,11 +93,12 @@ module Gio
       # Return value handling
     end
 
+    # This method simply calls g_dbus_interface_skeleton_flush() on all
+    # interfaces belonging to @object. See that method for when flushing
+    # is useful.
     def flush : Nil
       # g_dbus_object_skeleton_flush: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dbus_object_skeleton_flush(self)
@@ -88,11 +106,10 @@ module Gio
       # Return value handling
     end
 
+    # Removes @interface_ from @object.
     def remove_interface(interface_ : Gio::DBusInterfaceSkeleton) : Nil
       # g_dbus_object_skeleton_remove_interface: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dbus_object_skeleton_remove_interface(self, interface_)
@@ -100,11 +117,13 @@ module Gio
       # Return value handling
     end
 
+    # Removes the #GDBusInterface with @interface_name from @object.
+    #
+    # If no D-Bus interface of the given interface exists, this function
+    # does nothing.
     def remove_interface_by_name(interface_name : ::String) : Nil
       # g_dbus_object_skeleton_remove_interface_by_name: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dbus_object_skeleton_remove_interface_by_name(self, interface_name)
@@ -112,11 +131,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the object path for @object.
     def object_path=(object_path : ::String) : Nil
       # g_dbus_object_skeleton_set_object_path: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dbus_object_skeleton_set_object_path(self, object_path)
@@ -124,6 +142,14 @@ module Gio
       # Return value handling
     end
 
+    # Emitted when a method is invoked by a remote caller and used to
+    # determine if the method call is authorized.
+    #
+    # This signal is like #GDBusInterfaceSkeleton's
+    # #GDBusInterfaceSkeleton::g-authorize-method signal,
+    # except that it is for the enclosing object.
+    #
+    # The default class handler just returns %TRUE.
     struct AuthorizeMethodSignal
       @source : GObject::Object
       @detail : String?
@@ -153,7 +179,8 @@ module Gio
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gio::DBusInterfaceSkeleton.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = Gio::DBusMethodInvocation.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -165,7 +192,8 @@ module Gio
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gio::DBusInterfaceSkeleton.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = Gio::DBusMethodInvocation.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,

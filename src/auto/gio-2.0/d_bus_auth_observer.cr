@@ -63,8 +63,16 @@ module Gio
   #   return authorized;
   # }
   # ]|
+  @[GObject::GeneratedWrapper]
   class DBusAuthObserver < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGio::DBusAuthObserver), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -76,38 +84,39 @@ module Gio
       LibGio.g_dbus_auth_observer_get_type
     end
 
+    # Creates a new #GDBusAuthObserver object.
     def initialize
       # g_dbus_auth_observer_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_auth_observer_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Emits the #GDBusAuthObserver::allow-mechanism signal on @observer.
     def allow_mechanism(mechanism : ::String) : Bool
       # g_dbus_auth_observer_allow_mechanism: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_auth_observer_allow_mechanism(self, mechanism)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Emits the #GDBusAuthObserver::authorize-authenticated-peer signal on @observer.
     def authorize_authenticated_peer(stream : Gio::IOStream, credentials : Gio::Credentials?) : Bool
       # g_dbus_auth_observer_authorize_authenticated_peer: (Method)
       # @credentials: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       credentials = if credentials.nil?
                       Pointer(Void).null
                     else
@@ -118,9 +127,11 @@ module Gio
       _retval = LibGio.g_dbus_auth_observer_authorize_authenticated_peer(self, stream, credentials)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Emitted to check if @mechanism is allowed to be used.
     struct AllowMechanismSignal
       @source : GObject::Object
       @detail : String?
@@ -149,7 +160,8 @@ module Gio
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
           arg0 = ::String.new(lib_arg0)
-          ::Box(Proc(::String, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(::String, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -160,7 +172,8 @@ module Gio
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
           arg0 = ::String.new(lib_arg0)
-          ::Box(Proc(::String, Bool)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(::String, Bool)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -200,6 +213,8 @@ module Gio
       AllowMechanismSignal.new(self)
     end
 
+    # Emitted to check if a peer that is successfully authenticated
+    # is authorized.
     struct AuthorizeAuthenticatedPeerSignal
       @source : GObject::Object
       @detail : String?
@@ -229,7 +244,8 @@ module Gio
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gio::IOStream.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = (lib_arg1.null? ? nil : Gio::Credentials.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -241,7 +257,8 @@ module Gio
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gio::IOStream.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = (lib_arg1.null? ? nil : Gio::Credentials.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,

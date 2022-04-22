@@ -21,12 +21,12 @@ module Adw
   #   <img src="flap-narrow.png" alt="flap-narrow">
   # </picture>
   #
-  # The `AdwFlap` widget can display its children like a [class@Gtk.Box] does or
-  # like a [class@Gtk.Overlay] does, according to the
+  # The `AdwFlap` widget can display its children like a `Gtk#Box` does or
+  # like a `Gtk#Overlay` does, according to the
   # [property@Flap:fold-policy] value.
   #
-  # `AdwFlap` has at most three children: [property@Flap:content],
-  # [property@Flap:flap] and [property@Flap:separator]. Content is the primary
+  # `AdwFlap` has at most three children: `Flap#content`,
+  # `Flap#flap` and `Flap#separator`. Content is the primary
   # child, flap is displayed next to it when unfolded, or overlays it when
   # folded. Flap can be shown or hidden by changing the
   # [property@Flap:reveal-flap] value, as well as via swipe gestures if
@@ -37,11 +37,11 @@ module Adw
   # the content and the flap when there's no shadow to separate them, depending
   # on the transition type.
   #
-  # [property@Flap:flap] is transparent by default; add the
+  # `Flap#flap` is transparent by default; add the
   # [`.background`](style-classes.html#background) style class to it if this is
   # unwanted.
   #
-  # If [property@Flap:modal] is set to `TRUE`, content becomes completely
+  # If `Flap#modal` is set to `TRUE`, content becomes completely
   # inaccessible when the flap is revealed while folded.
   #
   # The position of the flap and separator children relative to the content is
@@ -50,7 +50,7 @@ module Adw
   #
   # Folding the flap will automatically hide the flap widget, and unfolding it
   # will automatically reveal it. If this behavior is not desired, the
-  # [property@Flap:locked] property can be used to override it.
+  # `Flap#locked` property can be used to override it.
   #
   # Common use cases include sidebars, header bars that need to be able to
   # overlap the window content (for example, in fullscreen mode) and bottom
@@ -58,7 +58,7 @@ module Adw
   #
   # ## AdwFlap as GtkBuildable
   #
-  # The `AdwFlap` implementation of the [iface@Gtk.Buildable] interface supports
+  # The `AdwFlap` implementation of the `Gtk#Buildable` interface supports
   # setting the flap child by specifying “flap” as the “type” attribute of a
   # <child> element, and separator by specifying “separator”. Specifying
   # “content” child type or omitting it results in setting the content child.
@@ -67,6 +67,7 @@ module Adw
   #
   # `AdwFlap` has a single CSS node with name `flap`. The node will get the style
   # classes `.folded` when it is folded, and `.unfolded` when it's not.
+  @[GObject::GeneratedWrapper]
   class Flap < Gtk::Widget
     include Swipeable
     include Gtk::Accessible
@@ -75,6 +76,13 @@ module Adw
     include Gtk::Orientable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::FlapClass), class_init,
+        sizeof(LibAdw::Flap), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -86,268 +94,273 @@ module Adw
       _values = StaticArray(LibGObject::Value, 52).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if content
+      if !content.nil?
         (_names.to_unsafe + _n).value = "content".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, content)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if flap
+      if !flap.nil?
         (_names.to_unsafe + _n).value = "flap".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, flap)
         _n += 1
       end
-      if flap_position
+      if !flap_position.nil?
         (_names.to_unsafe + _n).value = "flap-position".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, flap_position)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if fold_duration
+      if !fold_duration.nil?
         (_names.to_unsafe + _n).value = "fold-duration".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, fold_duration)
         _n += 1
       end
-      if fold_policy
+      if !fold_policy.nil?
         (_names.to_unsafe + _n).value = "fold-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, fold_policy)
         _n += 1
       end
-      if fold_threshold_policy
+      if !fold_threshold_policy.nil?
         (_names.to_unsafe + _n).value = "fold-threshold-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, fold_threshold_policy)
         _n += 1
       end
-      if folded
+      if !folded.nil?
         (_names.to_unsafe + _n).value = "folded".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, folded)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if locked
+      if !locked.nil?
         (_names.to_unsafe + _n).value = "locked".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, locked)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if modal
+      if !modal.nil?
         (_names.to_unsafe + _n).value = "modal".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, modal)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if reveal_flap
+      if !reveal_flap.nil?
         (_names.to_unsafe + _n).value = "reveal-flap".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, reveal_flap)
         _n += 1
       end
-      if reveal_params
+      if !reveal_params.nil?
         (_names.to_unsafe + _n).value = "reveal-params".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, reveal_params)
         _n += 1
       end
-      if reveal_progress
+      if !reveal_progress.nil?
         (_names.to_unsafe + _n).value = "reveal-progress".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, reveal_progress)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if separator
+      if !separator.nil?
         (_names.to_unsafe + _n).value = "separator".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, separator)
         _n += 1
       end
-      if swipe_to_close
+      if !swipe_to_close.nil?
         (_names.to_unsafe + _n).value = "swipe-to-close".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, swipe_to_close)
         _n += 1
       end
-      if swipe_to_open
+      if !swipe_to_open.nil?
         (_names.to_unsafe + _n).value = "swipe-to-open".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, swipe_to_open)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if transition_type
+      if !transition_type.nil?
         (_names.to_unsafe + _n).value = "transition-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, transition_type)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Flap.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -397,7 +410,7 @@ module Adw
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "flap-position", pointerof(value), Pointer(Void).null)
-      Gtk::PackType.from_value(value)
+      Gtk::PackType.new(value)
     end
 
     def fold_duration=(value : UInt32) : UInt32
@@ -427,7 +440,7 @@ module Adw
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "fold-policy", pointerof(value), Pointer(Void).null)
-      Adw::FlapFoldPolicy.from_value(value)
+      Adw::FlapFoldPolicy.new(value)
     end
 
     def fold_threshold_policy=(value : Adw::FoldThresholdPolicy) : Adw::FoldThresholdPolicy
@@ -442,7 +455,7 @@ module Adw
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "fold-threshold-policy", pointerof(value), Pointer(Void).null)
-      Adw::FoldThresholdPolicy.from_value(value)
+      Adw::FoldThresholdPolicy.new(value)
     end
 
     def folded? : Bool
@@ -578,237 +591,238 @@ module Adw
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "transition-type", pointerof(value), Pointer(Void).null)
-      Adw::FlapTransitionType.from_value(value)
+      Adw::FlapTransitionType.new(value)
     end
 
+    # Creates a new `AdwFlap`.
     def initialize
       # adw_flap_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Gets the content widget for @self.
     def content : Gtk::Widget?
       # adw_flap_get_content: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_content(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the flap widget for @self.
     def flap : Gtk::Widget?
       # adw_flap_get_flap: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_flap(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the flap position for @self.
     def flap_position : Gtk::PackType
       # adw_flap_get_flap_position: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_flap_position(self)
 
       # Return value handling
-      Gtk::PackType.from_value(_retval)
+
+      Gtk::PackType.new(_retval)
     end
 
+    # Gets the duration that fold transitions in @self will take.
     def fold_duration : UInt32
       # adw_flap_get_fold_duration: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_fold_duration(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the fold policy for @self.
     def fold_policy : Adw::FlapFoldPolicy
       # adw_flap_get_fold_policy: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_fold_policy(self)
 
       # Return value handling
-      Adw::FlapFoldPolicy.from_value(_retval)
+
+      Adw::FlapFoldPolicy.new(_retval)
     end
 
+    # Gets the fold threshold policy for @self.
     def fold_threshold_policy : Adw::FoldThresholdPolicy
       # adw_flap_get_fold_threshold_policy: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_fold_threshold_policy(self)
 
       # Return value handling
-      Adw::FoldThresholdPolicy.from_value(_retval)
+
+      Adw::FoldThresholdPolicy.new(_retval)
     end
 
+    # Gets whether @self is currently folded.
     def folded : Bool
       # adw_flap_get_folded: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_folded(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self is locked.
     def locked : Bool
       # adw_flap_get_locked: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_locked(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self is modal.
     def modal : Bool
       # adw_flap_get_modal: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_modal(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether the flap widget is revealed for @self.
     def reveal_flap : Bool
       # adw_flap_get_reveal_flap: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_reveal_flap(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the reveal animation spring parameters for @self.
     def reveal_params : Adw::SpringParams
       # adw_flap_get_reveal_params: (Method | Getter)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_reveal_params(self)
 
       # Return value handling
+
       Adw::SpringParams.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the current reveal progress for @self.
     def reveal_progress : Float64
       # adw_flap_get_reveal_progress: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_reveal_progress(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the separator widget for @self.
     def separator : Gtk::Widget?
       # adw_flap_get_separator: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_separator(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets whether @self can be closed with a swipe gesture.
     def swipe_to_close : Bool
       # adw_flap_get_swipe_to_close: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_swipe_to_close(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self can be opened with a swipe gesture.
     def swipe_to_open : Bool
       # adw_flap_get_swipe_to_open: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_swipe_to_open(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the type of animation used for reveal and fold transitions in @self.
     def transition_type : Adw::FlapTransitionType
       # adw_flap_get_transition_type: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_flap_get_transition_type(self)
 
       # Return value handling
-      Adw::FlapTransitionType.from_value(_retval)
+
+      Adw::FlapTransitionType.new(_retval)
     end
 
+    # Sets the content widget for @self.
     def content=(content : Gtk::Widget?) : Nil
       # adw_flap_set_content: (Method | Setter)
       # @content: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       content = if content.nil?
                   Pointer(Void).null
                 else
@@ -821,12 +835,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the flap widget for @self.
     def flap=(flap : Gtk::Widget?) : Nil
       # adw_flap_set_flap: (Method | Setter)
       # @flap: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       flap = if flap.nil?
                Pointer(Void).null
              else
@@ -839,11 +854,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the flap position for @self.
     def flap_position=(position : Gtk::PackType) : Nil
       # adw_flap_set_flap_position: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_flap_position(self, position)
@@ -851,11 +865,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the duration that fold transitions in @self will take.
     def fold_duration=(duration : UInt32) : Nil
       # adw_flap_set_fold_duration: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_fold_duration(self, duration)
@@ -863,11 +876,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the fold policy for @self.
     def fold_policy=(policy : Adw::FlapFoldPolicy) : Nil
       # adw_flap_set_fold_policy: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_fold_policy(self, policy)
@@ -875,11 +887,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the fold threshold policy for @self.
     def fold_threshold_policy=(policy : Adw::FoldThresholdPolicy) : Nil
       # adw_flap_set_fold_threshold_policy: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_fold_threshold_policy(self, policy)
@@ -887,11 +898,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self is locked.
     def locked=(locked : Bool) : Nil
       # adw_flap_set_locked: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_locked(self, locked)
@@ -899,11 +909,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self is modal.
     def modal=(modal : Bool) : Nil
       # adw_flap_set_modal: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_modal(self, modal)
@@ -911,11 +920,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether the flap widget is revealed for @self.
     def reveal_flap=(reveal_flap : Bool) : Nil
       # adw_flap_set_reveal_flap: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_reveal_flap(self, reveal_flap)
@@ -923,11 +931,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the reveal animation spring parameters for @self.
     def reveal_params=(params : Adw::SpringParams) : Nil
       # adw_flap_set_reveal_params: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_reveal_params(self, params)
@@ -935,12 +942,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the separator widget for @self.
     def separator=(separator : Gtk::Widget?) : Nil
       # adw_flap_set_separator: (Method | Setter)
       # @separator: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       separator = if separator.nil?
                     Pointer(Void).null
                   else
@@ -953,11 +961,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self can be closed with a swipe gesture.
     def swipe_to_close=(swipe_to_close : Bool) : Nil
       # adw_flap_set_swipe_to_close: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_swipe_to_close(self, swipe_to_close)
@@ -965,11 +972,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self can be opened with a swipe gesture.
     def swipe_to_open=(swipe_to_open : Bool) : Nil
       # adw_flap_set_swipe_to_open: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_swipe_to_open(self, swipe_to_open)
@@ -977,11 +983,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the type of animation used for reveal and fold transitions in @self.
     def transition_type=(transition_type : Adw::FlapTransitionType) : Nil
       # adw_flap_set_transition_type: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_flap_set_transition_type(self, transition_type)

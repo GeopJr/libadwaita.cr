@@ -5,7 +5,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::TypeValueTable))
@@ -30,99 +30,103 @@ module GObject
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::TypeValueTable)).zero?
+    end
+
     def value_init : Pointer(Void)
-      # Property getter
       _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def value_init=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
 
     def value_free : Pointer(Void)
-      # Property getter
       _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def value_free=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
 
     def value_copy : Pointer(Void)
-      # Property getter
       _var = (@pointer + 16).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def value_copy=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
 
     def value_peek_pointer : Pointer(Void)
-      # Property getter
       _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def value_peek_pointer=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 24).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
 
-    def collect_format : ::String
-      # Property getter
+    def collect_format!
+      self.collect_format.not_nil!
+    end
+
+    def collect_format : ::String?
       _var = (@pointer + 32).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def collect_format=(value : ::String)
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(Pointer(LibC::Char))).value = value
+    def collect_format=(value : ::String?)
+      _var = (@pointer + 32).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
     def collect_value : Pointer(Void)
-      # Property getter
       _var = (@pointer + 40).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def collect_value=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 40).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 40).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
 
-    def lcopy_format : ::String
-      # Property getter
+    def lcopy_format!
+      self.lcopy_format.not_nil!
+    end
+
+    def lcopy_format : ::String?
       _var = (@pointer + 48).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def lcopy_format=(value : ::String)
-      # Property setter
-      _var = (@pointer + 48).as(Pointer(Pointer(LibC::Char))).value = value
+    def lcopy_format=(value : ::String?)
+      _var = (@pointer + 48).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
     def lcopy_value : Pointer(Void)
-      # Property getter
       _var = (@pointer + 56).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def lcopy_value=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 56).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 56).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
 

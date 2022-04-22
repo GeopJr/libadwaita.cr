@@ -1,28 +1,28 @@
 require "./animation"
 
 module Adw
-  # A spring-based [class@Animation].
+  # A spring-based `#Animation`.
   #
   # `AdwSpringAnimation` implements an animation driven by a physical model of a
-  # spring described by [struct@SpringParams], with a resting position in
+  # spring described by `#SpringParams`, with a resting position in
   # [property@SpringAnimation:value-to], stretched to
   # [property@SpringAnimation:value-from].
   #
   # Since the animation is physically simulated, spring animations don't have a
   # fixed duration. The animation will stop when the simulated spring comes to a
   # rest - when the amplitude of the oscillations becomes smaller than
-  # [property@SpringAnimation:epsilon], or immediately when it reaches
+  # `SpringAnimation#epsilon`, or immediately when it reaches
   # [property@SpringAnimation:value-to] if
-  # [property@SpringAnimation:clamp] is set to `TRUE`. The estimated duration can
+  # `SpringAnimation#clamp` is set to `TRUE`. The estimated duration can
   # be obtained with [property@SpringAnimation:estimated-duration].
   #
   # Due to the nature of spring-driven motion the animation can overshoot
   # [property@SpringAnimation:value-to] before coming to a rest. Whether the
   # animation will overshoot or not depends on the damping ratio of the spring.
-  # See [struct@SpringParams] for more information about specific damping ratio
+  # See `#SpringParams` for more information about specific damping ratio
   # values.
   #
-  # If [property@SpringAnimation:clamp] is `TRUE`, the animation will abruptly
+  # If `SpringAnimation#clamp` is `TRUE`, the animation will abruptly
   # end as soon as it reaches the final value, preventing overshooting.
   #
   # Animations can have an initial velocity value, set via
@@ -32,8 +32,16 @@ module Adw
   #
   # If the initial and final values are equal, and the initial velocity is not 0,
   # the animation value will bounce and return to its resting position.
+  @[GObject::GeneratedWrapper]
   class SpringAnimation < Animation
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::SpringAnimationClass), class_init,
+        sizeof(LibAdw::SpringAnimation), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -45,68 +53,72 @@ module Adw
       _values = StaticArray(LibGObject::Value, 12).new(LibGObject::Value.new)
       _n = 0
 
-      if clamp
+      if !clamp.nil?
         (_names.to_unsafe + _n).value = "clamp".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, clamp)
         _n += 1
       end
-      if epsilon
+      if !epsilon.nil?
         (_names.to_unsafe + _n).value = "epsilon".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, epsilon)
         _n += 1
       end
-      if estimated_duration
+      if !estimated_duration.nil?
         (_names.to_unsafe + _n).value = "estimated-duration".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, estimated_duration)
         _n += 1
       end
-      if initial_velocity
+      if !initial_velocity.nil?
         (_names.to_unsafe + _n).value = "initial-velocity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, initial_velocity)
         _n += 1
       end
-      if spring_params
+      if !spring_params.nil?
         (_names.to_unsafe + _n).value = "spring-params".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, spring_params)
         _n += 1
       end
-      if state
+      if !state.nil?
         (_names.to_unsafe + _n).value = "state".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, state)
         _n += 1
       end
-      if target
+      if !target.nil?
         (_names.to_unsafe + _n).value = "target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, target)
         _n += 1
       end
-      if value
+      if !value.nil?
         (_names.to_unsafe + _n).value = "value".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, value)
         _n += 1
       end
-      if value_from
+      if !value_from.nil?
         (_names.to_unsafe + _n).value = "value-from".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, value_from)
         _n += 1
       end
-      if value_to
+      if !value_to.nil?
         (_names.to_unsafe + _n).value = "value-to".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, value_to)
         _n += 1
       end
-      if velocity
+      if !velocity.nil?
         (_names.to_unsafe + _n).value = "velocity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, velocity)
         _n += 1
       end
-      if widget
+      if !widget.nil?
         (_names.to_unsafe + _n).value = "widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, widget)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(SpringAnimation.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -220,133 +232,136 @@ module Adw
       value
     end
 
+    # Creates a new `AdwSpringAnimation` on @widget.
+    #
+    # The animation will animate @target from @from to @to with the dynamics of a
+    # spring described by @spring_params.
     def initialize(widget : Gtk::Widget, from : Float64, to : Float64, spring_params : Adw::SpringParams, target : Adw::AnimationTarget)
       # adw_spring_animation_new: (Constructor)
       # @spring_params: (transfer full)
       # @target: (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-      LibGObject.g_object_ref(spring_params)
-      LibGObject.g_object_ref(target)
+      # Generator::TransferFullArgPlan
+      LibGObject.g_object_ref_sink(target)
 
       # C call
       _retval = LibAdw.adw_spring_animation_new(widget, from, to, spring_params, target)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Gets whether @self should be clamped.
     def clamp : Bool
       # adw_spring_animation_get_clamp: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_spring_animation_get_clamp(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the precision used to determine the duration of @self.
     def epsilon : Float64
       # adw_spring_animation_get_epsilon: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_spring_animation_get_epsilon(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the estimated duration of @self.
     def estimated_duration : UInt32
       # adw_spring_animation_get_estimated_duration: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_spring_animation_get_estimated_duration(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the initial velocity of @self.
     def initial_velocity : Float64
       # adw_spring_animation_get_initial_velocity: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_spring_animation_get_initial_velocity(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the physical parameters of the spring of @self.
     def spring_params : Adw::SpringParams
       # adw_spring_animation_get_spring_params: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_spring_animation_get_spring_params(self)
 
       # Return value handling
+
       Adw::SpringParams.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the value @self will animate from.
     def value_from : Float64
       # adw_spring_animation_get_value_from: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_spring_animation_get_value_from(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the value @self will animate to.
     def value_to : Float64
       # adw_spring_animation_get_value_to: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_spring_animation_get_value_to(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the current velocity of @self.
     def velocity : Float64
       # adw_spring_animation_get_velocity: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_spring_animation_get_velocity(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Sets whether @self should be clamped.
     def clamp=(clamp : Bool) : Nil
       # adw_spring_animation_set_clamp: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_spring_animation_set_clamp(self, clamp)
@@ -354,11 +369,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the precision used to determine the duration of @self.
     def epsilon=(epsilon : Float64) : Nil
       # adw_spring_animation_set_epsilon: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_spring_animation_set_epsilon(self, epsilon)
@@ -366,11 +380,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the initial velocity of @self.
     def initial_velocity=(velocity : Float64) : Nil
       # adw_spring_animation_set_initial_velocity: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_spring_animation_set_initial_velocity(self, velocity)
@@ -378,11 +391,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the physical parameters of the spring of @self.
     def spring_params=(spring_params : Adw::SpringParams) : Nil
       # adw_spring_animation_set_spring_params: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_spring_animation_set_spring_params(self, spring_params)
@@ -390,11 +402,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the value @self will animate from.
     def value_from=(value : Float64) : Nil
       # adw_spring_animation_set_value_from: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_spring_animation_set_value_from(self, value)
@@ -402,11 +413,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the value @self will animate to.
     def value_to=(value : Float64) : Nil
       # adw_spring_animation_set_value_to: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_spring_animation_set_value_to(self, value)

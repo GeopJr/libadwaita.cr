@@ -8,6 +8,9 @@ module Gtk
   # `GtkExpression`s to obtain data from the items in the model.
   #
   # Example:
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   #   <interface>
   #     <template class="GtkListItem">
@@ -24,8 +27,16 @@ module Gtk
   #     </template>
   #   </interface>
   # ```
+  @[GObject::GeneratedWrapper]
   class BuilderListItemFactory < ListItemFactory
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::BuilderListItemFactoryClass), class_init,
+        sizeof(LibGtk::BuilderListItemFactory), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -37,23 +48,27 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if bytes
+      if !bytes.nil?
         (_names.to_unsafe + _n).value = "bytes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, bytes)
         _n += 1
       end
-      if resource
+      if !resource.nil?
         (_names.to_unsafe + _n).value = "resource".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, resource)
         _n += 1
       end
-      if scope
+      if !scope.nil?
         (_names.to_unsafe + _n).value = "scope".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scope)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(BuilderListItemFactory.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -106,12 +121,14 @@ module Gtk
       Gtk::BuilderScope__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkBuilderListItemFactory` that instantiates widgets
+    # using @bytes as the data to pass to `GtkBuilder`.
     def self.new_from_bytes(scope : Gtk::BuilderScope?, bytes : GLib::Bytes) : self
       # gtk_builder_list_item_factory_new_from_bytes: (Constructor)
       # @scope: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       scope = if scope.nil?
                 Pointer(Void).null
               else
@@ -122,15 +139,18 @@ module Gtk
       _retval = LibGtk.gtk_builder_list_item_factory_new_from_bytes(scope, bytes)
 
       # Return value handling
+
       Gtk::BuilderListItemFactory.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a new `GtkBuilderListItemFactory` that instantiates widgets
+    # using data read from the given @resource_path to pass to `GtkBuilder`.
     def self.new_from_resource(scope : Gtk::BuilderScope?, resource_path : ::String) : self
       # gtk_builder_list_item_factory_new_from_resource: (Constructor)
       # @scope: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       scope = if scope.nil?
                 Pointer(Void).null
               else
@@ -141,45 +161,47 @@ module Gtk
       _retval = LibGtk.gtk_builder_list_item_factory_new_from_resource(scope, resource_path)
 
       # Return value handling
+
       Gtk::BuilderListItemFactory.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the data used as the `GtkBuilder` UI template for constructing
+    # listitems.
     def bytes : GLib::Bytes
       # gtk_builder_list_item_factory_get_bytes: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_builder_list_item_factory_get_bytes(self)
 
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::None)
     end
 
+    # If the data references a resource, gets the path of that resource.
     def resource : ::String?
       # gtk_builder_list_item_factory_get_resource: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_builder_list_item_factory_get_resource(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the scope used when constructing listitems.
     def scope : Gtk::BuilderScope?
       # gtk_builder_list_item_factory_get_scope: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_builder_list_item_factory_get_scope(self)
 
       # Return value handling
+
       Gtk::BuilderScope__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
   end

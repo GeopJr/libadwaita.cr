@@ -11,23 +11,26 @@ module Gtk
   # ![An example GtkInfoBar](info-bar.png)
   #
   # It is often temporarily shown at the top or bottom of a document.
-  # In contrast to [class@Gtk.Dialog], which has an action area at the
+  # In contrast to `Gtk#Dialog`, which has an action area at the
   # bottom, `GtkInfoBar` has an action area at the side.
   #
   # The API of `GtkInfoBar` is very similar to `GtkDialog`, allowing you
-  # to add buttons to the action area with [method@Gtk.InfoBar.add_button]
-  # or [ctor@Gtk.InfoBar.new_with_buttons]. The sensitivity of action widgets
-  # can be controlled with [method@Gtk.InfoBar.set_response_sensitive].
+  # to add buttons to the action area with `Gtk::InfoBar#add_button`
+  # or `Gtk::InfoBar#new_with_buttons`. The sensitivity of action widgets
+  # can be controlled with `Gtk::InfoBar#response_sensitive=`.
   #
   # To add widgets to the main content area of a `GtkInfoBar`, use
-  # [method@Gtk.InfoBar.add_child].
+  # `Gtk::InfoBar#add_child`.
   #
-  # Similar to [class@Gtk.MessageDialog], the contents of a `GtkInfoBar`
+  # Similar to `Gtk#MessageDialog`, the contents of a `GtkInfoBar`
   # can by classified as error message, warning, informational message, etc,
-  # by using [method@Gtk.InfoBar.set_message_type]. GTK may use the message
+  # by using `Gtk::InfoBar#message_type=`. GTK may use the message
   # type to determine how the message is displayed.
   #
   # A simple example for using a `GtkInfoBar`:
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GtkWidget *message_label;
   # GtkWidget *widget;
@@ -79,12 +82,20 @@ module Gtk
   # on the message type.
   # If the info bar shows a close button, that button will have the .close
   # style class applied.
+  @[GObject::GeneratedWrapper]
   class InfoBar < Widget
     include Accessible
     include Buildable
     include ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::InfoBar), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -96,198 +107,203 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 38).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if message_type
+      if !message_type.nil?
         (_names.to_unsafe + _n).value = "message-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, message_type)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if revealed
+      if !revealed.nil?
         (_names.to_unsafe + _n).value = "revealed".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, revealed)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if show_close_button
+      if !show_close_button.nil?
         (_names.to_unsafe + _n).value = "show-close-button".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_close_button)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(InfoBar.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -307,7 +323,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "message-type", pointerof(value), Pointer(Void).null)
-      Gtk::MessageType.from_value(value)
+      Gtk::MessageType.new(value)
     end
 
     def revealed=(value : Bool) : Bool
@@ -340,25 +356,29 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `GtkInfoBar` object.
     def initialize
       # gtk_info_bar_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_info_bar_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Add an activatable widget to the action area of a `GtkInfoBar`.
+    #
+    # This also connects a signal handler that will emit the
+    # `Gtk::InfoBar::#response` signal on the message area
+    # when the widget is activated. The widget is appended to the
+    # end of the message areas action area.
     def add_action_widget(child : Gtk::Widget, response_id : Int32) : Nil
       # gtk_info_bar_add_action_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_add_action_widget(self, child, response_id)
@@ -366,24 +386,28 @@ module Gtk
       # Return value handling
     end
 
+    # Adds a button with the given text.
+    #
+    # Clicking the button will emit the `Gtk::InfoBar::#response`
+    # signal with the given response_id. The button is appended to the
+    # end of the info bars's action area. The button widget is returned,
+    # but usually you don't need it.
     def add_button(button_text : ::String, response_id : Int32) : Gtk::Button
       # gtk_info_bar_add_button: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_info_bar_add_button(self, button_text, response_id)
 
       # Return value handling
+
       Gtk::Button.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Adds a widget to the content area of the info bar.
     def add_child(widget : Gtk::Widget) : Nil
       # gtk_info_bar_add_child: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_add_child(self, widget)
@@ -391,50 +415,52 @@ module Gtk
       # Return value handling
     end
 
+    # Returns the message type of the message area.
     def message_type : Gtk::MessageType
       # gtk_info_bar_get_message_type: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_info_bar_get_message_type(self)
 
       # Return value handling
-      Gtk::MessageType.from_value(_retval)
+
+      Gtk::MessageType.new(_retval)
     end
 
+    # Returns whether the info bar is currently revealed.
     def revealed : Bool
       # gtk_info_bar_get_revealed: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_info_bar_get_revealed(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the widget will display a standard close button.
     def show_close_button : Bool
       # gtk_info_bar_get_show_close_button: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_info_bar_get_show_close_button(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Removes a widget from the action area of @info_bar.
+    #
+    # The widget must have been put there by a call to
+    # `Gtk::InfoBar#add_action_widget` or `Gtk::InfoBar#add_button`.
     def remove_action_widget(widget : Gtk::Widget) : Nil
       # gtk_info_bar_remove_action_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_remove_action_widget(self, widget)
@@ -442,11 +468,10 @@ module Gtk
       # Return value handling
     end
 
+    # Removes a widget from the content area of the info bar.
     def remove_child(widget : Gtk::Widget) : Nil
       # gtk_info_bar_remove_child: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_remove_child(self, widget)
@@ -454,11 +479,10 @@ module Gtk
       # Return value handling
     end
 
+    # Emits the “response” signal with the given @response_id.
     def response(response_id : Int32) : Nil
       # gtk_info_bar_response: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_response(self, response_id)
@@ -466,11 +490,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the last widget in the info bar’s action area with
+    # the given response_id as the default widget for the dialog.
+    #
+    # Pressing “Enter” normally activates the default widget.
+    #
+    # Note that this function currently requires @info_bar to
+    # be added to a widget hierarchy.
     def default_response=(response_id : Int32) : Nil
       # gtk_info_bar_set_default_response: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_set_default_response(self, response_id)
@@ -478,11 +507,12 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the message type of the message area.
+    #
+    # GTK uses this type to determine how the message is displayed.
     def message_type=(message_type : Gtk::MessageType) : Nil
       # gtk_info_bar_set_message_type: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_set_message_type(self, message_type)
@@ -490,11 +520,14 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the sensitivity of action widgets for @response_id.
+    #
+    # Calls `gtk_widget_set_sensitive (widget, setting)` for each
+    # widget in the info bars’s action area with the given @response_id.
+    # A convenient way to sensitize/desensitize buttons.
     def set_response_sensitive(response_id : Int32, setting : Bool) : Nil
       # gtk_info_bar_set_response_sensitive: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_set_response_sensitive(self, response_id, setting)
@@ -502,11 +535,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether the `GtkInfoBar` is revealed.
+    #
+    # Changing this will make @info_bar reveal or conceal
+    # itself via a sliding transition.
+    #
+    # Note: this does not show or hide @info_bar in the
+    # `Gtk::Widget#visible` sense, so revealing has no effect
+    # if `Gtk::Widget#visible` is %FALSE.
     def revealed=(revealed : Bool) : Nil
       # gtk_info_bar_set_revealed: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_set_revealed(self, revealed)
@@ -514,11 +553,12 @@ module Gtk
       # Return value handling
     end
 
+    # If true, a standard close button is shown.
+    #
+    # When clicked it emits the response %GTK_RESPONSE_CLOSE.
     def show_close_button=(setting : Bool) : Nil
       # gtk_info_bar_set_show_close_button: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_info_bar_set_show_close_button(self, setting)
@@ -526,6 +566,11 @@ module Gtk
       # Return value handling
     end
 
+    # Gets emitted when the user uses a keybinding to dismiss the info bar.
+    #
+    # The ::close signal is a [keybinding signal](class.SignalAction.html).
+    #
+    # The default binding for this signal is the Escape key.
     struct CloseSignal
       @source : GObject::Object
       @detail : String?
@@ -601,6 +646,11 @@ module Gtk
       CloseSignal.new(self)
     end
 
+    # Emitted when an action widget is clicked.
+    #
+    # The signal is also emitted when the application programmer
+    # calls `Gtk::InfoBar#response`. The @response_id depends
+    # on which action widget was clicked.
     struct ResponseSignal
       @source : GObject::Object
       @detail : String?

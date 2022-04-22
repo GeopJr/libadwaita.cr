@@ -37,7 +37,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "validation-flags", pointerof(value), Pointer(Void).null)
-      Gio::TlsCertificateFlags.from_value(value)
+      Gio::TlsCertificateFlags.new(value)
     end
 
     def new(base_socket : Gio::DatagramBased, server_identity : Gio::SocketConnectable?) : Gio::DtlsClientConnection
@@ -47,7 +47,7 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       server_identity = if server_identity.nil?
                           Pointer(Void).null
                         else
@@ -59,7 +59,9 @@ module Gio
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::DtlsClientConnection__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -67,12 +69,11 @@ module Gio
       # g_dtls_client_connection_get_accepted_cas: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_client_connection_get_accepted_cas(self)
 
       # Return value handling
+
       GLib::List(Enumerable(UInt8)).new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -80,12 +81,11 @@ module Gio
       # g_dtls_client_connection_get_server_identity: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_client_connection_get_server_identity(self)
 
       # Return value handling
+
       Gio::SocketConnectable__Impl.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -93,20 +93,17 @@ module Gio
       # g_dtls_client_connection_get_validation_flags: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_dtls_client_connection_get_validation_flags(self)
 
       # Return value handling
-      Gio::TlsCertificateFlags.from_value(_retval)
+
+      Gio::TlsCertificateFlags.new(_retval)
     end
 
     def server_identity=(identity : Gio::SocketConnectable) : Nil
       # g_dtls_client_connection_set_server_identity: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_dtls_client_connection_set_server_identity(self, identity)
@@ -118,8 +115,6 @@ module Gio
       # g_dtls_client_connection_set_validation_flags: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGio.g_dtls_client_connection_set_validation_flags(self, flags)
 
@@ -130,6 +125,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class DtlsClientConnection__Impl < GObject::Object
     include DtlsClientConnection
 

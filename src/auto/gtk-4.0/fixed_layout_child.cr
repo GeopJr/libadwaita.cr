@@ -2,8 +2,16 @@ require "./layout_child"
 
 module Gtk
   # `GtkLayoutChild` subclass for children in a `GtkFixedLayout`.
+  @[GObject::GeneratedWrapper]
   class FixedLayoutChild < LayoutChild
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::FixedLayoutChildClass), class_init,
+        sizeof(LibGtk::FixedLayoutChild), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,23 +23,27 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if child_widget
+      if !child_widget.nil?
         (_names.to_unsafe + _n).value = "child-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child_widget)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if transform
+      if !transform.nil?
         (_names.to_unsafe + _n).value = "transform".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, transform)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(FixedLayoutChild.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -54,24 +66,23 @@ module Gtk
       Gsk::Transform.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Retrieves the transformation of the child.
     def transform : Gsk::Transform?
       # gtk_fixed_layout_child_get_transform: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_fixed_layout_child_get_transform(self)
 
       # Return value handling
+
       Gsk::Transform.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets the transformation of the child of a `GtkFixedLayout`.
     def transform=(transform : Gsk::Transform) : Nil
       # gtk_fixed_layout_child_set_transform: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_fixed_layout_child_set_transform(self, transform)

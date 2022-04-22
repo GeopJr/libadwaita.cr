@@ -7,7 +7,7 @@ module Gtk
   #
   # The `GtkBuildable` interface is implemented by all widgets and
   # many of the non-widget objects that are provided by GTK. The
-  # main user of this interface is [class@Gtk.Builder]. There should be
+  # main user of this interface is `Gtk#Builder`. There should be
   # very little need for applications to call any of these functions directly.
   #
   # An object only needs to implement this interface if it needs to extend the
@@ -17,12 +17,11 @@ module Gtk
       # gtk_buildable_get_buildable_id: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_buildable_get_buildable_id(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
@@ -30,6 +29,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Buildable__Impl < GObject::Object
     include Buildable
 

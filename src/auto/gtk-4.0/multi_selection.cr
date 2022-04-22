@@ -6,11 +6,19 @@ require "./selection_model"
 module Gtk
   # `GtkMultiSelection` is a `GtkSelectionModel` that allows selecting multiple
   # elements.
+  @[GObject::GeneratedWrapper]
   class MultiSelection < GObject::Object
     include Gio::ListModel
     include SelectionModel
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::MultiSelectionClass), class_init,
+        sizeof(LibGtk::MultiSelection), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -22,13 +30,17 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if model
+      if !model.nil?
         (_names.to_unsafe + _n).value = "model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, model)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(MultiSelection.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -51,45 +63,49 @@ module Gtk
       Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new selection to handle @model.
     def initialize(model : Gio::ListModel?)
       # gtk_multi_selection_new: (Constructor)
       # @model: (transfer full) (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
                 model.to_unsafe
               end
-      LibGObject.g_object_ref(model)
 
       # C call
       _retval = LibGtk.gtk_multi_selection_new(model)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Returns the underlying model of @self.
     def model : Gio::ListModel?
       # gtk_multi_selection_get_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_multi_selection_get_model(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets the model that @self should wrap.
+    #
+    # If @model is %NULL, @self will be empty.
     def model=(model : Gio::ListModel?) : Nil
       # gtk_multi_selection_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else

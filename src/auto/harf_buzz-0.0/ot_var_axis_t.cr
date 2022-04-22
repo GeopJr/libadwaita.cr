@@ -4,7 +4,7 @@ module HarfBuzz
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibHarfBuzz::OtVarAxisT))
@@ -26,62 +26,56 @@ module HarfBuzz
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibHarfBuzz::OtVarAxisT)).zero?
+    end
+
     def tag : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def tag=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def name_id : UInt32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt32))
       _var.value
     end
 
     def name_id=(value : UInt32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(UInt32)).value = value
       value
     end
 
     def min_value : Float32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Float32))
       _var.value
     end
 
     def min_value=(value : Float32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Float32)).value = value
       value
     end
 
     def default_value : Float32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Float32))
       _var.value
     end
 
     def default_value=(value : Float32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Float32)).value = value
       value
     end
 
     def max_value : Float32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Float32))
       _var.value
     end
 
     def max_value=(value : Float32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Float32)).value = value
       value
     end

@@ -73,8 +73,16 @@ module Gio
   #
   #     CLEANFILES += gschemas.compiled
   # ]|
+  @[GObject::GeneratedWrapper]
   class TestDBus < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGio::TestDBus), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -86,13 +94,17 @@ module Gio
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if flags
+      if !flags.nil?
         (_names.to_unsafe + _n).value = "flags".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, flags)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(TestDBus.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -112,27 +124,31 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
-      Gio::TestDBusFlags.from_value(value)
+      Gio::TestDBusFlags.new(value)
     end
 
+    # Create a new #GTestDBus object.
     def initialize(flags : Gio::TestDBusFlags)
       # g_test_dbus_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_test_dbus_new(flags)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Unset DISPLAY and DBUS_SESSION_BUS_ADDRESS env variables to ensure the test
+    # won't use user's session bus.
+    #
+    # This is useful for unit tests that want to verify behaviour when no session
+    # bus is running. It is not necessary to call this if unit test already calls
+    # g_test_dbus_up() before acquiring the session bus.
     def self.unset : Nil
       # g_test_dbus_unset: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_test_dbus_unset
@@ -140,11 +156,11 @@ module Gio
       # Return value handling
     end
 
+    # Add a path where dbus-daemon will look up .service files. This can't be
+    # called after g_test_dbus_up().
     def add_service_dir(path : ::String) : Nil
       # g_test_dbus_add_service_dir: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_test_dbus_add_service_dir(self, path)
@@ -152,11 +168,14 @@ module Gio
       # Return value handling
     end
 
+    # Stop the session bus started by g_test_dbus_up().
+    #
+    # This will wait for the singleton returned by g_bus_get() or g_bus_get_sync()
+    # to be destroyed. This is done to ensure that the next unit test won't get a
+    # leaked singleton from this test.
     def down : Nil
       # g_test_dbus_down: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_test_dbus_down(self)
@@ -164,37 +183,43 @@ module Gio
       # Return value handling
     end
 
+    # Get the address on which dbus-daemon is running. If g_test_dbus_up() has not
+    # been called yet, %NULL is returned. This can be used with
+    # g_dbus_connection_new_for_address().
     def bus_address : ::String?
       # g_test_dbus_get_bus_address: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_test_dbus_get_bus_address(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Get the flags of the #GTestDBus object.
     def flags : Gio::TestDBusFlags
       # g_test_dbus_get_flags: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_test_dbus_get_flags(self)
 
       # Return value handling
-      Gio::TestDBusFlags.from_value(_retval)
+
+      Gio::TestDBusFlags.new(_retval)
     end
 
+    # Stop the session bus started by g_test_dbus_up().
+    #
+    # Unlike g_test_dbus_down(), this won't verify the #GDBusConnection
+    # singleton returned by g_bus_get() or g_bus_get_sync() is destroyed. Unit
+    # tests wanting to verify behaviour after the session bus has been stopped
+    # can use this function but should still call g_test_dbus_down() when done.
     def stop : Nil
       # g_test_dbus_stop: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_test_dbus_stop(self)
@@ -202,11 +227,17 @@ module Gio
       # Return value handling
     end
 
+    # Start a dbus-daemon instance and set DBUS_SESSION_BUS_ADDRESS. After this
+    # call, it is safe for unit tests to start sending messages on the session bus.
+    #
+    # If this function is called from setup callback of g_test_add(),
+    # g_test_dbus_down() must be called in its teardown callback.
+    #
+    # If this function is called from unit test's main(), then g_test_dbus_down()
+    # must be called after g_test_run().
     def up : Nil
       # g_test_dbus_up: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_test_dbus_up(self)

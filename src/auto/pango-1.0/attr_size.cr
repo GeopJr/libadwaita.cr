@@ -5,7 +5,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::AttrSize))
@@ -25,38 +25,37 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::AttrSize)).zero?
+    end
+
     def attr : Pango::Attribute
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Pango::Attribute.new(_var.value, GICrystal::Transfer::None)
+      Pango::Attribute.new(_var, GICrystal::Transfer::None)
     end
 
     def attr=(value : Pango::Attribute)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibPango::AttrSize))
       value
     end
 
     def size : Int32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Int32))
       _var.value
     end
 
     def size=(value : Int32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Int32)).value = value
       value
     end
 
     def absolute : UInt32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(UInt32))
       _var.value
     end
 
     def absolute=(value : UInt32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(UInt32)).value = value
       value
     end
@@ -65,12 +64,11 @@ module Pango
       # pango_attr_size_new: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_size_new(size)
 
       # Return value handling
+
       Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -78,12 +76,11 @@ module Pango
       # pango_attr_size_new_absolute: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_size_new_absolute(size)
 
       # Return value handling
+
       Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
     end
 

@@ -5,7 +5,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::SignalInvocationHint))
@@ -25,39 +25,38 @@ module GObject
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::SignalInvocationHint)).zero?
+    end
+
     def signal_id : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def signal_id=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def detail : UInt32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt32))
       _var.value
     end
 
     def detail=(value : UInt32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(UInt32)).value = value
       value
     end
 
     def run_type : GObject::SignalFlags
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt32))
-      GObject::SignalFlags.from_value(_var.value)
+      GObject::SignalFlags.new(_var)
     end
 
     def run_type=(value : GObject::SignalFlags)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(UInt32)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(UInt32))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::SignalInvocationHint))
       value
     end
 

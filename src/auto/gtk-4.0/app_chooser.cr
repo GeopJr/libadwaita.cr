@@ -3,8 +3,8 @@ module Gtk
   # choose an application.
   #
   # The main objects that implement this interface are
-  # [class@Gtk.AppChooserWidget],
-  # [class@Gtk.AppChooserDialog] and [class@Gtk.AppChooserButton].
+  # `Gtk#AppChooserWidget`,
+  # `Gtk#AppChooserDialog` and `Gtk#AppChooserButton`.
   #
   # Applications are represented by GIO `GAppInfo` objects here.
   # GIO has a concept of recommended and fallback applications for a
@@ -17,7 +17,7 @@ module Gtk
   # recommended or fallback applications.
   #
   # To obtain the application that has been selected in a `GtkAppChooser`,
-  # use [method@Gtk.AppChooser.get_app_info].
+  # use `Gtk::AppChooser#app_info`.
   module AppChooser
     def content_type=(value : ::String) : ::String
       unsafe_value = value
@@ -38,12 +38,11 @@ module Gtk
       # gtk_app_chooser_get_app_info: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_app_chooser_get_app_info(self)
 
       # Return value handling
+
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -51,20 +50,17 @@ module Gtk
       # gtk_app_chooser_get_content_type: (Method | Getter)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_app_chooser_get_content_type(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
     def refresh : Nil
       # gtk_app_chooser_refresh: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_app_chooser_refresh(self)
@@ -76,6 +72,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class AppChooser__Impl < GObject::Object
     include AppChooser
 

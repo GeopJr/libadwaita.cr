@@ -28,9 +28,9 @@ module Gtk
   # action widgets are buttons. Depending on the platform, action widgets may
   # be presented in the header bar at the top of the window, or at the bottom
   # of the window. To add action widgets, create your `GtkDialog` using
-  # [ctor@Gtk.Dialog.new_with_buttons], or use
-  # [method@Gtk.Dialog.add_button], [method@Gtk.Dialog.add_buttons],
-  # or [method@Gtk.Dialog.add_action_widget].
+  # `Gtk::Dialog#new_with_buttons`, or use
+  # `Gtk::Dialog#add_button`, `Gtk::Dialog#add_buttons`,
+  # or `Gtk::Dialog#add_action_widget`.
   #
   # `GtkDialogs` uses some heuristics to decide whether to add a close
   # button to the window decorations. If any of the action buttons use
@@ -38,29 +38,32 @@ module Gtk
   # close button is omitted.
   #
   # Clicking a button that was added as an action widget will emit the
-  # [signal@Gtk.Dialog::response] signal with a response ID that you specified.
+  # `Gtk::Dialog::#response` signal with a response ID that you specified.
   # GTK will never assign a meaning to positive response IDs; these are
   # entirely user-defined. But for convenience, you can use the response
-  # IDs in the [enum@Gtk.ResponseType] enumeration (these all have values
+  # IDs in the `Gtk#ResponseType` enumeration (these all have values
   # less than zero). If a dialog receives a delete event, the
-  # [signal@Gtk.Dialog::response] signal will be emitted with the
+  # `Gtk::Dialog::#response` signal will be emitted with the
   # %GTK_RESPONSE_DELETE_EVENT response ID.
   #
-  # Dialogs are created with a call to [ctor@Gtk.Dialog.new] or
-  # [ctor@Gtk.Dialog.new_with_buttons]. The latter is recommended; it allows
+  # Dialogs are created with a call to `Gtk::Dialog.new` or
+  # `Gtk::Dialog#new_with_buttons`. The latter is recommended; it allows
   # you to set the dialog title, some convenient flags, and add buttons.
   #
   # A “modal” dialog (that is, one which freezes the rest of the application
-  # from user input), can be created by calling [method@Gtk.Window.set_modal]
-  # on the dialog. When using [ctor@Gtk.Dialog.new_with_buttons], you can also
+  # from user input), can be created by calling `Gtk::Window#modal=`
+  # on the dialog. When using `Gtk::Dialog#new_with_buttons`, you can also
   # pass the %GTK_DIALOG_MODAL flag to make a dialog modal.
   #
-  # For the simple dialog in the following example, a [class@Gtk.MessageDialog]
+  # For the simple dialog in the following example, a `Gtk#MessageDialog`
   # would save some effort. But you’d need to create the dialog contents manually
   # if you had more than a simple message in the dialog.
   #
   # An example for simple `GtkDialog` usage:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # // Function to open a dialog box with a message
   # void
@@ -114,6 +117,9 @@ module Gtk
   #
   # An example of a `GtkDialog` UI definition fragment:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   # <object class="GtkDialog" id="dialog1">
   #   <child type="action">
@@ -133,6 +139,7 @@ module Gtk
   # # Accessibility
   #
   # `GtkDialog` uses the %GTK_ACCESSIBLE_ROLE_DIALOG role.
+  @[GObject::GeneratedWrapper]
   class Dialog < Window
     include Accessible
     include Buildable
@@ -144,6 +151,13 @@ module Gtk
     @pointer : Pointer(Void)
 
     # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::DialogClass), class_init,
+        sizeof(LibGtk::Dialog), instance_init, 0)
+    end
+
+    # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
     end
@@ -153,308 +167,313 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 60).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if application
+      if !application.nil?
         (_names.to_unsafe + _n).value = "application".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, application)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if decorated
+      if !decorated.nil?
         (_names.to_unsafe + _n).value = "decorated".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, decorated)
         _n += 1
       end
-      if default_height
+      if !default_height.nil?
         (_names.to_unsafe + _n).value = "default-height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_height)
         _n += 1
       end
-      if default_widget
+      if !default_widget.nil?
         (_names.to_unsafe + _n).value = "default-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_widget)
         _n += 1
       end
-      if default_width
+      if !default_width.nil?
         (_names.to_unsafe + _n).value = "default-width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_width)
         _n += 1
       end
-      if deletable
+      if !deletable.nil?
         (_names.to_unsafe + _n).value = "deletable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, deletable)
         _n += 1
       end
-      if destroy_with_parent
+      if !destroy_with_parent.nil?
         (_names.to_unsafe + _n).value = "destroy-with-parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, destroy_with_parent)
         _n += 1
       end
-      if display
+      if !display.nil?
         (_names.to_unsafe + _n).value = "display".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, display)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focus_visible
+      if !focus_visible.nil?
         (_names.to_unsafe + _n).value = "focus-visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_visible)
         _n += 1
       end
-      if focus_widget
+      if !focus_widget.nil?
         (_names.to_unsafe + _n).value = "focus-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_widget)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if fullscreened
+      if !fullscreened.nil?
         (_names.to_unsafe + _n).value = "fullscreened".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, fullscreened)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if handle_menubar_accel
+      if !handle_menubar_accel.nil?
         (_names.to_unsafe + _n).value = "handle-menubar-accel".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, handle_menubar_accel)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if hide_on_close
+      if !hide_on_close.nil?
         (_names.to_unsafe + _n).value = "hide-on-close".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hide_on_close)
         _n += 1
       end
-      if icon_name
+      if !icon_name.nil?
         (_names.to_unsafe + _n).value = "icon-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon_name)
         _n += 1
       end
-      if is_active
+      if !is_active.nil?
         (_names.to_unsafe + _n).value = "is-active".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_active)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if maximized
+      if !maximized.nil?
         (_names.to_unsafe + _n).value = "maximized".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, maximized)
         _n += 1
       end
-      if mnemonics_visible
+      if !mnemonics_visible.nil?
         (_names.to_unsafe + _n).value = "mnemonics-visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mnemonics_visible)
         _n += 1
       end
-      if modal
+      if !modal.nil?
         (_names.to_unsafe + _n).value = "modal".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, modal)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if resizable
+      if !resizable.nil?
         (_names.to_unsafe + _n).value = "resizable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, resizable)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if startup_id
+      if !startup_id.nil?
         (_names.to_unsafe + _n).value = "startup-id".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, startup_id)
         _n += 1
       end
-      if title
+      if !title.nil?
         (_names.to_unsafe + _n).value = "title".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
-      if titlebar
+      if !titlebar.nil?
         (_names.to_unsafe + _n).value = "titlebar".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, titlebar)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if transient_for
+      if !transient_for.nil?
         (_names.to_unsafe + _n).value = "transient-for".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, transient_for)
         _n += 1
       end
-      if use_header_bar
+      if !use_header_bar.nil?
         (_names.to_unsafe + _n).value = "use-header-bar".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_header_bar)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Dialog.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -477,25 +496,36 @@ module Gtk
       value
     end
 
+    # Creates a new dialog box.
+    #
+    # Widgets should not be packed into the `GtkWindow`
+    # directly, but into the @content_area and @action_area,
+    # as described above.
     def initialize
       # gtk_dialog_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_dialog_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Adds an activatable widget to the action area of a `GtkDialog`.
+    #
+    # GTK connects a signal handler that will emit the
+    # `Gtk::Dialog::#response` signal on the dialog when the widget
+    # is activated. The widget is appended to the end of the dialog’s action
+    # area.
+    #
+    # If you want to add a non-activatable widget, simply pack it into
+    # the @action_area field of the `GtkDialog` struct.
     def add_action_widget(child : Gtk::Widget, response_id : Int32) : Nil
       # gtk_dialog_add_action_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_dialog_add_action_widget(self, child, response_id)
@@ -503,76 +533,87 @@ module Gtk
       # Return value handling
     end
 
+    # Adds a button with the given text.
+    #
+    # GTK arranges things so that clicking the button will emit the
+    # `Gtk::Dialog::#response` signal with the given @response_id.
+    # The button is appended to the end of the dialog’s action area.
+    # The button widget is returned, but usually you don’t need it.
     def add_button(button_text : ::String, response_id : Int32) : Gtk::Widget
       # gtk_dialog_add_button: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_dialog_add_button(self, button_text, response_id)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns the content area of @dialog.
     def content_area : Gtk::Box
       # gtk_dialog_get_content_area: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_dialog_get_content_area(self)
 
       # Return value handling
+
       Gtk::Box.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns the header bar of @dialog.
+    #
+    # Note that the headerbar is only used by the dialog if the
+    # [property@Gtk.Dialog:use-header-bar] property is %TRUE.
     def header_bar : Gtk::HeaderBar
       # gtk_dialog_get_header_bar: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_dialog_get_header_bar(self)
 
       # Return value handling
+
       Gtk::HeaderBar.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the response id of a widget in the action area
+    # of a dialog.
     def response_for_widget(widget : Gtk::Widget) : Int32
       # gtk_dialog_get_response_for_widget: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_dialog_get_response_for_widget(self, widget)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the widget button that uses the given response ID in the action area
+    # of a dialog.
     def widget_for_response(response_id : Int32) : Gtk::Widget?
       # gtk_dialog_get_widget_for_response: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_dialog_get_widget_for_response(self, response_id)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Emits the ::response signal with the given response ID.
+    #
+    # Used to indicate that the user has responded to the dialog in some way.
     def response(response_id : Int32) : Nil
       # gtk_dialog_response: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_dialog_response(self, response_id)
@@ -580,11 +621,12 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the default widget for the dialog based on the response ID.
+    #
+    # Pressing “Enter” normally activates the default widget.
     def default_response=(response_id : Int32) : Nil
       # gtk_dialog_set_default_response: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_dialog_set_default_response(self, response_id)
@@ -592,11 +634,13 @@ module Gtk
       # Return value handling
     end
 
+    # A convenient way to sensitize/desensitize dialog buttons.
+    #
+    # Calls `gtk_widget_set_sensitive (widget, @setting)`
+    # for each widget in the dialog’s action area with the given @response_id.
     def set_response_sensitive(response_id : Int32, setting : Bool) : Nil
       # gtk_dialog_set_response_sensitive: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_dialog_set_response_sensitive(self, response_id, setting)
@@ -604,6 +648,11 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when the user uses a keybinding to close the dialog.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    #
+    # The default binding for this signal is the Escape key.
     struct CloseSignal
       @source : GObject::Object
       @detail : String?
@@ -679,6 +728,12 @@ module Gtk
       CloseSignal.new(self)
     end
 
+    # Emitted when an action widget is clicked.
+    #
+    # The signal is also emitted when the dialog receives a
+    # delete event, and when `Gtk::Dialog#response` is called.
+    # On a delete event, the response ID is %GTK_RESPONSE_DELETE_EVENT.
+    # Otherwise, it depends on which action widget was clicked.
     struct ResponseSignal
       @source : GObject::Object
       @detail : String?

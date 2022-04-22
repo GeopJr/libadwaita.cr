@@ -5,11 +5,19 @@ module Gdk
   # associated with a `GdkDisplay`.
   #
   # `GdkDisplay` keeps a `GListModel` to enumerate and monitor
-  # monitors with [method@Gdk.Display.get_monitors]. You can use
-  # [method@Gdk.Display.get_monitor_at_surface] to find a particular
+  # monitors with `Gdk::Display#monitors`. You can use
+  # `Gdk::Display#monitor_at_surface` to find a particular
   # monitor.
+  @[GObject::GeneratedWrapper]
   class Monitor < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGdk::MonitorClass), class_init,
+        sizeof(LibGdk::Monitor), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -21,63 +29,67 @@ module Gdk
       _values = StaticArray(LibGObject::Value, 11).new(LibGObject::Value.new)
       _n = 0
 
-      if connector
+      if !connector.nil?
         (_names.to_unsafe + _n).value = "connector".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, connector)
         _n += 1
       end
-      if display
+      if !display.nil?
         (_names.to_unsafe + _n).value = "display".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, display)
         _n += 1
       end
-      if geometry
+      if !geometry.nil?
         (_names.to_unsafe + _n).value = "geometry".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, geometry)
         _n += 1
       end
-      if height_mm
+      if !height_mm.nil?
         (_names.to_unsafe + _n).value = "height-mm".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_mm)
         _n += 1
       end
-      if manufacturer
+      if !manufacturer.nil?
         (_names.to_unsafe + _n).value = "manufacturer".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, manufacturer)
         _n += 1
       end
-      if model
+      if !model.nil?
         (_names.to_unsafe + _n).value = "model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, model)
         _n += 1
       end
-      if refresh_rate
+      if !refresh_rate.nil?
         (_names.to_unsafe + _n).value = "refresh-rate".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, refresh_rate)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if subpixel_layout
+      if !subpixel_layout.nil?
         (_names.to_unsafe + _n).value = "subpixel-layout".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, subpixel_layout)
         _n += 1
       end
-      if valid
+      if !valid.nil?
         (_names.to_unsafe + _n).value = "valid".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valid)
         _n += 1
       end
-      if width_mm
+      if !width_mm.nil?
         (_names.to_unsafe + _n).value = "width-mm".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_mm)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Monitor.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -161,7 +173,7 @@ module Gdk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "subpixel-layout", pointerof(value), Pointer(Void).null)
-      Gdk::SubpixelLayout.from_value(value)
+      Gdk::SubpixelLayout.new(value)
     end
 
     def valid? : Bool
@@ -180,151 +192,180 @@ module Gdk
       value
     end
 
+    # Gets the name of the monitor's connector, if available.
     def connector : ::String?
       # gdk_monitor_get_connector: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_get_connector(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the display that this monitor belongs to.
     def display : Gdk::Display
       # gdk_monitor_get_display: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_get_display(self)
 
       # Return value handling
+
       Gdk::Display.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Retrieves the size and position of the monitor within the
+    # display coordinate space.
+    #
+    # The returned geometry is in  ”application pixels”, not in
+    # ”device pixels” (see `Gdk::Monitor#scale_factor`).
     def geometry : Gdk::Rectangle
       # gdk_monitor_get_geometry: (Method | Getter)
       # @geometry: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       geometry = Gdk::Rectangle.new
 
       # C call
       LibGdk.gdk_monitor_get_geometry(self, geometry)
 
       # Return value handling
+
       geometry
     end
 
+    # Gets the height in millimeters of the monitor.
     def height_mm : Int32
       # gdk_monitor_get_height_mm: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_get_height_mm(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the name or PNP ID of the monitor's manufacturer.
+    #
+    # Note that this value might also vary depending on actual
+    # display backend.
+    #
+    # The PNP ID registry is located at
+    # [https://uefi.org/pnp_id_list](https://uefi.org/pnp_id_list).
     def manufacturer : ::String?
       # gdk_monitor_get_manufacturer: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_get_manufacturer(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the string identifying the monitor model, if available.
     def model : ::String?
       # gdk_monitor_get_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_get_model(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the refresh rate of the monitor, if available.
+    #
+    # The value is in milli-Hertz, so a refresh rate of 60Hz
+    # is returned as 60000.
     def refresh_rate : Int32
       # gdk_monitor_get_refresh_rate: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_get_refresh_rate(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the internal scale factor that maps from monitor coordinates
+    # to device pixels.
+    #
+    # On traditional systems this is 1, but on very high density outputs
+    # it can be a higher value (often 2).
+    #
+    # This can be used if you want to create pixel based data for a
+    # particular monitor, but most of the time you’re drawing to a surface
+    # where it is better to use `Gdk::Surface#scale_factor` instead.
     def scale_factor : Int32
       # gdk_monitor_get_scale_factor: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_get_scale_factor(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets information about the layout of red, green and blue
+    # primaries for pixels.
     def subpixel_layout : Gdk::SubpixelLayout
       # gdk_monitor_get_subpixel_layout: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_get_subpixel_layout(self)
 
       # Return value handling
-      Gdk::SubpixelLayout.from_value(_retval)
+
+      Gdk::SubpixelLayout.new(_retval)
     end
 
+    # Gets the width in millimeters of the monitor.
     def width_mm : Int32
       # gdk_monitor_get_width_mm: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_get_width_mm(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns %TRUE if the @monitor object corresponds to a
+    # physical monitor.
+    #
+    # The @monitor becomes invalid when the physical monitor
+    # is unplugged or removed.
     def is_valid : Bool
       # gdk_monitor_is_valid: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdk.gdk_monitor_is_valid(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Emitted when the output represented by @monitor gets disconnected.
     struct InvalidateSignal
       @source : GObject::Object
       @detail : String?

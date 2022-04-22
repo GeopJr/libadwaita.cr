@@ -7,13 +7,21 @@ module Gtk
   # It also contains step and page increments, and a page size.
   #
   # Adjustments are used within several GTK widgets, including
-  # [class@Gtk.SpinButton], [class@Gtk.Viewport], [class@Gtk.Scrollbar]
-  # and [class@Gtk.Scale].
+  # `Gtk#SpinButton`, `Gtk#Viewport`, `Gtk#Scrollbar`
+  # and `Gtk#Scale`.
   #
   # The `GtkAdjustment` object does not update the value itself. Instead
   # it is left up to the owner of the `GtkAdjustment` to control the value.
+  @[GObject::GeneratedWrapper]
   class Adjustment < GObject::InitiallyUnowned
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::AdjustmentClass), class_init,
+        sizeof(LibGtk::Adjustment), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -25,38 +33,43 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 6).new(LibGObject::Value.new)
       _n = 0
 
-      if lower
+      if !lower.nil?
         (_names.to_unsafe + _n).value = "lower".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, lower)
         _n += 1
       end
-      if page_increment
+      if !page_increment.nil?
         (_names.to_unsafe + _n).value = "page-increment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, page_increment)
         _n += 1
       end
-      if page_size
+      if !page_size.nil?
         (_names.to_unsafe + _n).value = "page-size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, page_size)
         _n += 1
       end
-      if step_increment
+      if !step_increment.nil?
         (_names.to_unsafe + _n).value = "step-increment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, step_increment)
         _n += 1
       end
-      if upper
+      if !upper.nil?
         (_names.to_unsafe + _n).value = "upper".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, upper)
         _n += 1
       end
-      if value
+      if !value.nil?
         (_names.to_unsafe + _n).value = "value".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, value)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Adjustment.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -154,25 +167,32 @@ module Gtk
       value
     end
 
+    # Creates a new `GtkAdjustment`.
     def initialize(value : Float64, lower : Float64, upper : Float64, step_increment : Float64, page_increment : Float64, page_size : Float64)
       # gtk_adjustment_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_adjustment_new(value, lower, upper, step_increment, page_increment, page_size)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Updates the value property to ensure that the range
+    # between @lower and @upper is in the current page.
+    #
+    # The current page goes from `value` to `value` + `page-size`.
+    # If the range is larger than the page size, then only the
+    # start of it will be in the current page.
+    #
+    # A [signal@Gtk.Adjustment::value-changed] signal will be emitted
+    # if the value is changed.
     def clamp_page(lower : Float64, upper : Float64) : Nil
       # gtk_adjustment_clamp_page: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_adjustment_clamp_page(self, lower, upper)
@@ -180,11 +200,16 @@ module Gtk
       # Return value handling
     end
 
+    # Sets all properties of the adjustment at once.
+    #
+    # Use this function to avoid multiple emissions of the
+    # `Gtk::Adjustment::#changed` signal. See
+    # `Gtk::Adjustment#lower=` for an alternative
+    # way of compressing multiple emissions of
+    # `Gtk::Adjustment::#changed` into one.
     def configure(value : Float64, lower : Float64, upper : Float64, step_increment : Float64, page_increment : Float64, page_size : Float64) : Nil
       # gtk_adjustment_configure: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_adjustment_configure(self, value, lower, upper, step_increment, page_increment, page_size)
@@ -192,102 +217,113 @@ module Gtk
       # Return value handling
     end
 
+    # Retrieves the minimum value of the adjustment.
     def lower : Float64
       # gtk_adjustment_get_lower: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_adjustment_get_lower(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the smaller of step increment and page increment.
     def minimum_increment : Float64
       # gtk_adjustment_get_minimum_increment: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_adjustment_get_minimum_increment(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Retrieves the page increment of the adjustment.
     def page_increment : Float64
       # gtk_adjustment_get_page_increment: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_adjustment_get_page_increment(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Retrieves the page size of the adjustment.
     def page_size : Float64
       # gtk_adjustment_get_page_size: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_adjustment_get_page_size(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Retrieves the step increment of the adjustment.
     def step_increment : Float64
       # gtk_adjustment_get_step_increment: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_adjustment_get_step_increment(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Retrieves the maximum value of the adjustment.
     def upper : Float64
       # gtk_adjustment_get_upper: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_adjustment_get_upper(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the current value of the adjustment.
     def value : Float64
       # gtk_adjustment_get_value: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_adjustment_get_value(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Sets the minimum value of the adjustment.
+    #
+    # When setting multiple adjustment properties via their individual
+    # setters, multiple `Gtk::Adjustment::#changed` signals will
+    # be emitted. However, since the emission of the
+    # `Gtk::Adjustment::#changed` signal is tied to the emission
+    # of the ::notify signals of the changed properties, it’s possible
+    # to compress the `Gtk::Adjustment::#changed` signals into one
+    # by calling g_object_freeze_notify() and g_object_thaw_notify()
+    # around the calls to the individual setters.
+    #
+    # Alternatively, using a single g_object_set() for all the properties
+    # to change, or using `Gtk::Adjustment#configure` has the same effect.
     def lower=(lower : Float64) : Nil
       # gtk_adjustment_set_lower: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_adjustment_set_lower(self, lower)
@@ -295,11 +331,14 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the page increment of the adjustment.
+    #
+    # See `Gtk::Adjustment#lower=` about how to compress
+    # multiple emissions of the `Gtk::Adjustment::#changed`
+    # signal when setting multiple adjustment properties.
     def page_increment=(page_increment : Float64) : Nil
       # gtk_adjustment_set_page_increment: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_adjustment_set_page_increment(self, page_increment)
@@ -307,11 +346,14 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the page size of the adjustment.
+    #
+    # See `Gtk::Adjustment#lower=` about how to compress
+    # multiple emissions of the `Gtk::Adjustment::#changed`
+    # signal when setting multiple adjustment properties.
     def page_size=(page_size : Float64) : Nil
       # gtk_adjustment_set_page_size: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_adjustment_set_page_size(self, page_size)
@@ -319,11 +361,14 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the step increment of the adjustment.
+    #
+    # See `Gtk::Adjustment#lower=` about how to compress
+    # multiple emissions of the `Gtk::Adjustment::#changed`
+    # signal when setting multiple adjustment properties.
     def step_increment=(step_increment : Float64) : Nil
       # gtk_adjustment_set_step_increment: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_adjustment_set_step_increment(self, step_increment)
@@ -331,11 +376,17 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the maximum value of the adjustment.
+    #
+    # Note that values will be restricted by `upper - page-size`
+    # if the page-size property is nonzero.
+    #
+    # See `Gtk::Adjustment#lower=` about how to compress
+    # multiple emissions of the `Gtk::Adjustment::#changed`
+    # signal when setting multiple adjustment properties.
     def upper=(upper : Float64) : Nil
       # gtk_adjustment_set_upper: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_adjustment_set_upper(self, upper)
@@ -343,11 +394,18 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `GtkAdjustment` value.
+    #
+    # The value is clamped to lie between `Gtk::Adjustment#lower`
+    # and `Gtk::Adjustment#upper`.
+    #
+    # Note that for adjustments which are used in a `GtkScrollbar`,
+    # the effective range of allowed values goes from
+    # `Gtk::Adjustment#lower` to
+    # `Gtk::Adjustment#upper` - [property@Gtk.Adjustment:page-size].
     def value=(value : Float64) : Nil
       # gtk_adjustment_set_value: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_adjustment_set_value(self, value)
@@ -355,6 +413,11 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when one or more of the `GtkAdjustment` properties have been
+    # changed.
+    #
+    # Note that the `Gtk::Adjustment#value` property is
+    # covered by the [signal@Gtk.Adjustment::value-changed] signal.
     struct ChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -430,6 +493,7 @@ module Gtk
       ChangedSignal.new(self)
     end
 
+    # Emitted when the value has been changed.
     struct ValueChangedSignal
       @source : GObject::Object
       @detail : String?

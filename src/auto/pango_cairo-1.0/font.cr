@@ -9,12 +9,11 @@ module PangoCairo
       # pango_cairo_font_get_scaled_font: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibPangoCairo.pango_cairo_font_get_scaled_font(self)
 
       # Return value handling
+
       Cairo::ScaledFont.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -22,6 +21,7 @@ module PangoCairo
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Font__Impl < GObject::Object
     include Font
 

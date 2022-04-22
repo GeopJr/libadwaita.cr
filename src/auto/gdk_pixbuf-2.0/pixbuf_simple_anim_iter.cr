@@ -1,8 +1,16 @@
 require "./pixbuf_animation_iter"
 
 module GdkPixbuf
+  @[GObject::GeneratedWrapper]
   class PixbufSimpleAnimIter < PixbufAnimationIter
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGdkPixbuf::PixbufSimpleAnimIter), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)

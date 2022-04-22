@@ -5,7 +5,7 @@ module Pango
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibPango::AttrLanguage))
@@ -24,27 +24,33 @@ module Pango
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibPango::AttrLanguage)).zero?
+    end
+
     def attr : Pango::Attribute
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Pango::Attribute.new(_var.value, GICrystal::Transfer::None)
+      Pango::Attribute.new(_var, GICrystal::Transfer::None)
     end
 
     def attr=(value : Pango::Attribute)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibPango::AttrLanguage))
       value
     end
 
-    def value : Pango::Language
-      # Property getter
+    def value!
+      self.value.not_nil!
+    end
+
+    def value : Pango::Language?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       Pango::Language.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def value=(value : Pango::Language)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def value=(value : Pango::Language?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
@@ -52,12 +58,11 @@ module Pango
       # pango_attr_language_new: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibPango.pango_attr_language_new(language)
 
       # Return value handling
+
       Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
     end
 

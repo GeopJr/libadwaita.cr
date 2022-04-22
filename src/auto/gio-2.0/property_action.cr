@@ -53,10 +53,18 @@ module Gio
   # #GSettings.  If you want a #GAction to control a setting stored in
   # #GSettings, see g_settings_create_action() instead, and possibly
   # combine its use with g_settings_bind().
+  @[GObject::GeneratedWrapper]
   class PropertyAction < GObject::Object
     include Action
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGio::PropertyAction), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -68,48 +76,52 @@ module Gio
       _values = StaticArray(LibGObject::Value, 8).new(LibGObject::Value.new)
       _n = 0
 
-      if enabled
+      if !enabled.nil?
         (_names.to_unsafe + _n).value = "enabled".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, enabled)
         _n += 1
       end
-      if invert_boolean
+      if !invert_boolean.nil?
         (_names.to_unsafe + _n).value = "invert-boolean".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, invert_boolean)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if object
+      if !object.nil?
         (_names.to_unsafe + _n).value = "object".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, object)
         _n += 1
       end
-      if parameter_type
+      if !parameter_type.nil?
         (_names.to_unsafe + _n).value = "parameter-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parameter_type)
         _n += 1
       end
-      if property_name
+      if !property_name.nil?
         (_names.to_unsafe + _n).value = "property-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, property_name)
         _n += 1
       end
-      if state
+      if !state.nil?
         (_names.to_unsafe + _n).value = "state".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, state)
         _n += 1
       end
-      if state_type
+      if !state_type.nil?
         (_names.to_unsafe + _n).value = "state-type".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, state_type)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(PropertyAction.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -193,16 +205,23 @@ module Gio
       GLib::VariantType.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a #GAction corresponding to the value of property
+    # @property_name on @object.
+    #
+    # The property must be existent and readable and writable (and not
+    # construct-only).
+    #
+    # This function takes a reference on @object and doesn't release it
+    # until the action is destroyed.
     def initialize(name : ::String, object : GObject::Object, property_name : ::String)
       # g_property_action_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_property_action_new(name, object, property_name)
 
       # Return value handling
+
       @pointer = _retval
     end
   end

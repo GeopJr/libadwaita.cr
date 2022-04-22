@@ -20,9 +20,9 @@ module Gtk
   # or in a more touch-friendly sliding fashion.
   #
   # `GtkPopoverMenu` is meant to be used primarily with menu models,
-  # using [ctor@Gtk.PopoverMenu.new_from_model]. If you need to put
+  # using `Gtk::PopoverMenu#new_from_model`. If you need to put
   # other widgets such as a `GtkSpinButton` or a `GtkSwitch` into a popover,
-  # you can use [method@Gtk.PopoverMenu.add_child].
+  # you can use `Gtk::PopoverMenu#add_child`.
   #
   # For more dialog-like behavior, use a plain `GtkPopover`.
   #
@@ -36,6 +36,9 @@ module Gtk
   # or `<link name="section">`, you can use `<submenu>` or `<section>`
   # elements.
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   # <menu id='app-menu'>
   #   <section>
@@ -73,9 +76,9 @@ module Gtk
   #      whether a submenu is open
   # - "hidden-when": a string used to determine when the item will be hidden.
   #      Possible values include "action-disabled", "action-missing", "macos-menubar".
-  #      This is mainly useful for exported menus, see [method@Gtk.Application.set_menubar].
+  #      This is mainly useful for exported menus, see `Gtk::Application#menubar=`.
   # - "custom": a string used to match against the ID of a custom child added with
-  #      [method@Gtk.PopoverMenu.add_child], [method@Gtk.PopoverMenuBar.add_child],
+  #      `Gtk::PopoverMenu#add_child`, `Gtk::PopoverMenuBar#add_child`,
   #      or in the ui file with `<child type="ID">`.
   #
   # The following attributes are used when constructing sections:
@@ -95,9 +98,9 @@ module Gtk
   # - "icon": icon name to display
   #
   # Menu items will also show accelerators, which are usually associated
-  # with actions via [method@Gtk.Application.set_accels_for_action],
-  # [id@gtk_widget_class_add_binding_action] or
-  # [method@Gtk.ShortcutController.add_shortcut].
+  # with actions via `Gtk::Application#accels_for_action=`,
+  # `#gtk_widget_class_add_binding_action` or
+  # `Gtk::ShortcutController#add_shortcut`.
   #
   # # CSS Nodes
   #
@@ -112,6 +115,7 @@ module Gtk
   # %GTK_ACCESSIBLE_ROLE_MENU_ITEM_CHECKBOX or
   # %GTK_ACCESSIBLE_ROLE_MENU_ITEM_RADIO roles, depending on the
   # action they are connected to.
+  @[GObject::GeneratedWrapper]
   class PopoverMenu < Popover
     include Accessible
     include Buildable
@@ -120,6 +124,13 @@ module Gtk
     include ShortcutManager
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::PopoverMenu), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -131,233 +142,238 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 45).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if autohide
+      if !autohide.nil?
         (_names.to_unsafe + _n).value = "autohide".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, autohide)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if cascade_popdown
+      if !cascade_popdown.nil?
         (_names.to_unsafe + _n).value = "cascade-popdown".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cascade_popdown)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if default_widget
+      if !default_widget.nil?
         (_names.to_unsafe + _n).value = "default-widget".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, default_widget)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_arrow
+      if !has_arrow.nil?
         (_names.to_unsafe + _n).value = "has-arrow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_arrow)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if menu_model
+      if !menu_model.nil?
         (_names.to_unsafe + _n).value = "menu-model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, menu_model)
         _n += 1
       end
-      if mnemonics_visible
+      if !mnemonics_visible.nil?
         (_names.to_unsafe + _n).value = "mnemonics-visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mnemonics_visible)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if pointing_to
+      if !pointing_to.nil?
         (_names.to_unsafe + _n).value = "pointing-to".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pointing_to)
         _n += 1
       end
-      if position
+      if !position.nil?
         (_names.to_unsafe + _n).value = "position".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, position)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if visible_submenu
+      if !visible_submenu.nil?
         (_names.to_unsafe + _n).value = "visible-submenu".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible_submenu)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(PopoverMenu.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -395,12 +411,25 @@ module Gtk
       ::String.new(value)
     end
 
+    # Creates a `GtkPopoverMenu` and populates it according to @model.
+    #
+    # The created buttons are connected to actions found in the
+    # `GtkApplicationWindow` to which the popover belongs - typically
+    # by means of being attached to a widget that is contained within
+    # the `GtkApplicationWindow`s widget hierarchy.
+    #
+    # Actions can also be added using `Gtk::Widget#insert_action_group`
+    # on the menus attach widget or on any of its parent widgets.
+    #
+    # This function creates menus with sliding submenus.
+    # See `Gtk::PopoverMenu#new_from_model_full` for a way
+    # to control this.
     def self.new_from_model(model : Gio::MenuModel?) : self
       # gtk_popover_menu_new_from_model: (Constructor)
       # @model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
@@ -411,67 +440,88 @@ module Gtk
       _retval = LibGtk.gtk_popover_menu_new_from_model(model)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       Gtk::PopoverMenu.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a `GtkPopoverMenu` and populates it according to @model.
+    #
+    # The created buttons are connected to actions found in the
+    # action groups that are accessible from the parent widget.
+    # This includes the `GtkApplicationWindow` to which the popover
+    # belongs. Actions can also be added using `Gtk::Widget#insert_action_group`
+    # on the parent widget or on any of its parent widgets.
+    #
+    # The only flag that is supported currently is
+    # %GTK_POPOVER_MENU_NESTED, which makes GTK create traditional,
+    # nested submenus instead of the default sliding submenus.
     def self.new_from_model_full(model : Gio::MenuModel, flags : Gtk::PopoverMenuFlags) : self
       # gtk_popover_menu_new_from_model_full: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_menu_new_from_model_full(model, flags)
 
       # Return value handling
+
       Gtk::PopoverMenu.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Adds a custom widget to a generated menu.
+    #
+    # For this to work, the menu model of @popover must have
+    # an item with a `custom` attribute that matches @id.
     def add_child(child : Gtk::Widget, id : ::String) : Bool
       # gtk_popover_menu_add_child: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_menu_add_child(self, child, id)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns the menu model used to populate the popover.
     def menu_model : Gio::MenuModel?
       # gtk_popover_menu_get_menu_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_menu_get_menu_model(self)
 
       # Return value handling
+
       Gio::MenuModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Removes a widget that has previously been added with
+    # gtk_popover_menu_add_child().
     def remove_child(child : Gtk::Widget) : Bool
       # gtk_popover_menu_remove_child: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_popover_menu_remove_child(self, child)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets a new menu model on @popover.
+    #
+    # The existing contents of @popover are removed, and
+    # the @popover is populated with new contents according
+    # to @model.
     def menu_model=(model : Gio::MenuModel?) : Nil
       # gtk_popover_menu_set_menu_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else

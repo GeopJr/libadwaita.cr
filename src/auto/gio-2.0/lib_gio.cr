@@ -132,7 +132,6 @@ lib LibGio
   type DBusObject = Void
   type DBusObjectManager = Void
   type DatagramBased = Void
-  type DebugController = Void
   type DesktopAppInfoLookup = Void
   type Drive = Void
   type DtlsClientConnection = Void
@@ -172,21 +171,198 @@ lib LibGio
     padding : UInt64[3]
   end
 
+  struct ActionGroupInterface # 128 bytes long
+    g_iface : LibGObject::TypeInterface
+    has_action : -> Void
+    list_actions : -> Void
+    get_action_enabled : -> Void
+    get_action_parameter_type : -> Void
+    get_action_state_type : -> Void
+    get_action_state_hint : -> Void
+    get_action_state : -> Void
+    change_action_state : -> Void
+    activate_action : -> Void
+    action_added : -> Void
+    action_removed : -> Void
+    action_enabled_changed : -> Void
+    action_state_changed : -> Void
+    query_action : -> Void
+  end
+
+  struct ActionInterface # 80 bytes long
+    g_iface : LibGObject::TypeInterface
+    get_name : -> Void
+    get_parameter_type : -> Void
+    get_state_type : -> Void
+    get_state_hint : -> Void
+    get_enabled : -> Void
+    get_state : -> Void
+    change_state : -> Void
+    activate : -> Void
+  end
+
+  struct ActionMapInterface # 40 bytes long
+    g_iface : LibGObject::TypeInterface
+    lookup_action : -> Void
+    add_action : -> Void
+    remove_action : -> Void
+  end
+
+  struct AppInfoIface # 216 bytes long
+    g_iface : LibGObject::TypeInterface
+    dup : -> Void
+    equal : -> Void
+    get_id : -> Void
+    get_name : -> Void
+    get_description : -> Void
+    get_executable : -> Void
+    get_icon : -> Void
+    launch : -> Void
+    supports_uris : -> Void
+    supports_files : -> Void
+    launch_uris : -> Void
+    should_show : -> Void
+    set_as_default_for_type : -> Void
+    set_as_default_for_extension : -> Void
+    add_supports_type : -> Void
+    can_remove_supports_type : -> Void
+    remove_supports_type : -> Void
+    can_delete : -> Void
+    do_delete : -> Void
+    get_commandline : -> Void
+    get_display_name : -> Void
+    set_as_last_used_for_type : -> Void
+    get_supported_types : -> Void
+    launch_uris_async : -> Void
+    launch_uris_finish : -> Void
+  end
+
+  struct AppLaunchContextClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_display : -> Void
+    get_startup_notify_id : -> Void
+    launch_failed : -> Void
+    launched : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+  end
+
   type AppLaunchContextPrivate = Void # Struct with zero bytes
+
+  struct ApplicationClass # 312 bytes long
+    parent_class : LibGObject::ObjectClass
+    startup : -> Void
+    activate : -> Void
+    open : -> Void
+    command_line : -> Void
+    local_command_line : -> Void
+    before_emit : -> Void
+    after_emit : -> Void
+    add_platform_data : -> Void
+    quit_mainloop : -> Void
+    run_mainloop : -> Void
+    shutdown : -> Void
+    dbus_register : -> Void
+    dbus_unregister : -> Void
+    handle_local_options : -> Void
+    name_lost : -> Void
+    padding : Pointer(Void)[7]
+  end
+
+  struct ApplicationCommandLineClass # 248 bytes long
+    parent_class : LibGObject::ObjectClass
+    print_literal : -> Void
+    printerr_literal : -> Void
+    get_stdin : -> Void
+    padding : Pointer(Void)[11]
+  end
 
   type ApplicationCommandLinePrivate = Void # Struct with zero bytes
 
   type ApplicationPrivate = Void # Struct with zero bytes
 
+  struct AsyncInitableIface # 32 bytes long
+    g_iface : LibGObject::TypeInterface
+    init_async : -> Void
+    init_finish : -> Void
+  end
+
+  struct AsyncResultIface # 40 bytes long
+    g_iface : LibGObject::TypeInterface
+    get_user_data : -> Void
+    get_source_object : -> Void
+    is_tagged : -> Void
+  end
+
+  struct BufferedInputStreamClass # 336 bytes long
+    parent_class : LibGio::FilterInputStreamClass
+    fill : -> Void
+    fill_async : -> Void
+    fill_finish : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type BufferedInputStreamPrivate = Void # Struct with zero bytes
+
+  struct BufferedOutputStreamClass # 336 bytes long
+    parent_class : LibGio::FilterOutputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+  end
 
   type BufferedOutputStreamPrivate = Void # Struct with zero bytes
 
+  struct CancellableClass # 184 bytes long
+    parent_class : LibGObject::ObjectClass
+    cancelled : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type CancellablePrivate = Void # Struct with zero bytes
+
+  struct CharsetConverterClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct ConverterIface # 32 bytes long
+    g_iface : LibGObject::TypeInterface
+    convert : -> Void
+    reset : -> Void
+  end
+
+  struct ConverterInputStreamClass # 312 bytes long
+    parent_class : LibGio::FilterInputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
 
   type ConverterInputStreamPrivate = Void # Struct with zero bytes
 
+  struct ConverterOutputStreamClass # 360 bytes long
+    parent_class : LibGio::FilterOutputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type ConverterOutputStreamPrivate = Void # Struct with zero bytes
+
+  type CredentialsClass = Void # Struct with zero bytes
 
   struct DBusAnnotationInfo # 32 bytes long
     ref_count : Int32
@@ -207,6 +383,14 @@ lib LibGio
     dbus_error_name : Pointer(LibC::Char)
   end
 
+  struct DBusInterfaceIface # 48 bytes long
+    parent_iface : LibGObject::TypeInterface
+    get_info : -> Void
+    get_object : -> Void
+    set_object : -> Void
+    dup_object : -> Void
+  end
+
   struct DBusInterfaceInfo # 48 bytes long
     ref_count : Int32
     name : Pointer(LibC::Char)
@@ -214,6 +398,17 @@ lib LibGio
     signals : Pointer(Pointer(Void))
     properties : Pointer(Pointer(Void))
     annotations : Pointer(Pointer(Void))
+  end
+
+  struct DBusInterfaceSkeletonClass # 304 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_info : -> Void
+    get_vtable : Pointer(Void)
+    get_properties : -> Void
+    flush : -> Void
+    vfunc_padding : Pointer(Void)[8]
+    g_authorize_method : -> Void
+    signal_padding : Pointer(Void)[8]
   end
 
   type DBusInterfaceSkeletonPrivate = Void # Struct with zero bytes
@@ -241,11 +436,55 @@ lib LibGio
     annotations : Pointer(Pointer(Void))
   end
 
+  struct DBusObjectIface # 56 bytes long
+    parent_iface : LibGObject::TypeInterface
+    get_object_path : -> Void
+    get_interfaces : -> Void
+    get_interface : -> Void
+    interface_added : -> Void
+    interface_removed : -> Void
+  end
+
+  struct DBusObjectManagerClientClass # 216 bytes long
+    parent_class : LibGObject::ObjectClass
+    interface_proxy_signal : -> Void
+    interface_proxy_properties_changed : -> Void
+    padding : Pointer(Void)[8]
+  end
+
   type DBusObjectManagerClientPrivate = Void # Struct with zero bytes
+
+  struct DBusObjectManagerIface # 80 bytes long
+    parent_iface : LibGObject::TypeInterface
+    get_object_path : -> Void
+    get_objects : -> Void
+    get_object : -> Void
+    get_interface : -> Void
+    object_added : -> Void
+    object_removed : -> Void
+    interface_added : -> Void
+    interface_removed : -> Void
+  end
+
+  struct DBusObjectManagerServerClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    padding : Pointer(Void)[8]
+  end
 
   type DBusObjectManagerServerPrivate = Void # Struct with zero bytes
 
+  struct DBusObjectProxyClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    padding : Pointer(Void)[8]
+  end
+
   type DBusObjectProxyPrivate = Void # Struct with zero bytes
+
+  struct DBusObjectSkeletonClass # 208 bytes long
+    parent_class : LibGObject::ObjectClass
+    authorize_method : -> Void
+    padding : Pointer(Void)[8]
+  end
 
   type DBusObjectSkeletonPrivate = Void # Struct with zero bytes
 
@@ -255,6 +494,13 @@ lib LibGio
     signature : Pointer(LibC::Char)
     flags : UInt32
     annotations : Pointer(Pointer(Void))
+  end
+
+  struct DBusProxyClass # 408 bytes long
+    parent_class : LibGObject::ObjectClass
+    g_properties_changed : -> Void
+    g_signal : -> Void
+    padding : Pointer(Void)[32]
   end
 
   type DBusProxyPrivate = Void # Struct with zero bytes
@@ -273,9 +519,109 @@ lib LibGio
     padding : Pointer(Void)[8]
   end
 
+  struct DataInputStreamClass # 376 bytes long
+    parent_class : LibGio::BufferedInputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type DataInputStreamPrivate = Void # Struct with zero bytes
 
+  struct DataOutputStreamClass # 360 bytes long
+    parent_class : LibGio::FilterOutputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type DataOutputStreamPrivate = Void # Struct with zero bytes
+
+  struct DatagramBasedInterface # 56 bytes long
+    g_iface : LibGObject::TypeInterface
+    receive_messages : -> Void
+    send_messages : -> Void
+    create_source : -> Void
+    condition_check : -> Void
+    condition_wait : -> Void
+  end
+
+  struct DesktopAppInfoClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct DesktopAppInfoLookupIface # 24 bytes long
+    g_iface : LibGObject::TypeInterface
+    get_default_for_uri_scheme : -> Void
+  end
+
+  struct DriveIface # 272 bytes long
+    g_iface : LibGObject::TypeInterface
+    changed : -> Void
+    disconnected : -> Void
+    eject_button : -> Void
+    get_name : -> Void
+    get_icon : -> Void
+    has_volumes : -> Void
+    get_volumes : -> Void
+    is_media_removable : -> Void
+    has_media : -> Void
+    is_media_check_automatic : -> Void
+    can_eject : -> Void
+    can_poll_for_media : -> Void
+    eject : -> Void
+    eject_finish : -> Void
+    poll_for_media : -> Void
+    poll_for_media_finish : -> Void
+    get_identifier : -> Void
+    enumerate_identifiers : -> Void
+    get_start_stop_type : -> Void
+    can_start : -> Void
+    can_start_degraded : -> Void
+    start : -> Void
+    start_finish : -> Void
+    can_stop : -> Void
+    stop : -> Void
+    stop_finish : -> Void
+    stop_button : -> Void
+    eject_with_operation : -> Void
+    eject_with_operation_finish : -> Void
+    get_sort_key : -> Void
+    get_symbolic_icon : -> Void
+    is_removable : -> Void
+  end
+
+  struct DtlsClientConnectionInterface # 16 bytes long
+    g_iface : LibGObject::TypeInterface
+  end
+
+  struct DtlsConnectionInterface # 96 bytes long
+    g_iface : LibGObject::TypeInterface
+    accept_certificate : -> Void
+    handshake : -> Void
+    handshake_async : -> Void
+    handshake_finish : -> Void
+    shutdown : -> Void
+    shutdown_async : -> Void
+    shutdown_finish : -> Void
+    set_advertised_protocols : -> Void
+    get_negotiated_protocol : -> Void
+    get_binding_data : -> Void
+  end
+
+  struct DtlsServerConnectionInterface # 16 bytes long
+    g_iface : LibGObject::TypeInterface
+  end
+
+  type EmblemClass = Void # Struct with zero bytes
+
+  struct EmblemedIconClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
 
   type EmblemedIconPrivate = Void # Struct with zero bytes
 
@@ -292,19 +638,238 @@ lib LibGio
 
   type FileAttributeMatcher = Void # Struct with zero bytes
 
+  struct FileDescriptorBasedIface # 24 bytes long
+    g_iface : LibGObject::TypeInterface
+    get_fd : -> Void
+  end
+
+  struct FileEnumeratorClass # 240 bytes long
+    parent_class : LibGObject::ObjectClass
+    next_file : -> Void
+    close_fn : -> Void
+    next_files_async : -> Void
+    next_files_finish : -> Void
+    close_async : -> Void
+    close_finish : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+    _g_reserved7 : Pointer(Void)
+  end
+
   type FileEnumeratorPrivate = Void # Struct with zero bytes
+
+  struct FileIOStreamClass # 368 bytes long
+    parent_class : LibGio::IOStreamClass
+    tell : -> Void
+    can_seek : -> Void
+    seek : -> Void
+    can_truncate : -> Void
+    truncate_fn : -> Void
+    query_info : -> Void
+    query_info_async : -> Void
+    query_info_finish : -> Void
+    get_etag : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
 
   type FileIOStreamPrivate = Void # Struct with zero bytes
 
+  type FileIconClass = Void # Struct with zero bytes
+
+  struct FileIface # 840 bytes long
+    g_iface : LibGObject::TypeInterface
+    dup : -> Void
+    hash : -> Void
+    equal : -> Void
+    is_native : -> Void
+    has_uri_scheme : -> Void
+    get_uri_scheme : -> Void
+    get_basename : -> Void
+    get_path : -> Void
+    get_uri : -> Void
+    get_parse_name : -> Void
+    get_parent : -> Void
+    prefix_matches : -> Void
+    get_relative_path : -> Void
+    resolve_relative_path : -> Void
+    get_child_for_display_name : -> Void
+    enumerate_children : -> Void
+    enumerate_children_async : -> Void
+    enumerate_children_finish : -> Void
+    query_info : -> Void
+    query_info_async : -> Void
+    query_info_finish : -> Void
+    query_filesystem_info : -> Void
+    query_filesystem_info_async : -> Void
+    query_filesystem_info_finish : -> Void
+    find_enclosing_mount : -> Void
+    find_enclosing_mount_async : -> Void
+    find_enclosing_mount_finish : -> Void
+    set_display_name : -> Void
+    set_display_name_async : -> Void
+    set_display_name_finish : -> Void
+    query_settable_attributes : -> Void
+    _query_settable_attributes_async : Pointer(Void)
+    _query_settable_attributes_finish : Pointer(Void)
+    query_writable_namespaces : -> Void
+    _query_writable_namespaces_async : Pointer(Void)
+    _query_writable_namespaces_finish : Pointer(Void)
+    set_attribute : -> Void
+    set_attributes_from_info : -> Void
+    set_attributes_async : -> Void
+    set_attributes_finish : -> Void
+    read_fn : -> Void
+    read_async : -> Void
+    read_finish : -> Void
+    append_to : -> Void
+    append_to_async : -> Void
+    append_to_finish : -> Void
+    create : -> Void
+    create_async : -> Void
+    create_finish : -> Void
+    replace : -> Void
+    replace_async : -> Void
+    replace_finish : -> Void
+    delete_file : -> Void
+    delete_file_async : -> Void
+    delete_file_finish : -> Void
+    trash : -> Void
+    trash_async : -> Void
+    trash_finish : -> Void
+    make_directory : -> Void
+    make_directory_async : -> Void
+    make_directory_finish : -> Void
+    make_symbolic_link : -> Void
+    _make_symbolic_link_async : Pointer(Void)
+    _make_symbolic_link_finish : Pointer(Void)
+    copy : -> Void
+    copy_async : -> Void
+    copy_finish : -> Void
+    move : -> Void
+    _move_async : Pointer(Void)
+    _move_finish : Pointer(Void)
+    mount_mountable : -> Void
+    mount_mountable_finish : -> Void
+    unmount_mountable : -> Void
+    unmount_mountable_finish : -> Void
+    eject_mountable : -> Void
+    eject_mountable_finish : -> Void
+    mount_enclosing_volume : -> Void
+    mount_enclosing_volume_finish : -> Void
+    monitor_dir : -> Void
+    monitor_file : -> Void
+    open_readwrite : -> Void
+    open_readwrite_async : -> Void
+    open_readwrite_finish : -> Void
+    create_readwrite : -> Void
+    create_readwrite_async : -> Void
+    create_readwrite_finish : -> Void
+    replace_readwrite : -> Void
+    replace_readwrite_async : -> Void
+    replace_readwrite_finish : -> Void
+    start_mountable : -> Void
+    start_mountable_finish : -> Void
+    stop_mountable : -> Void
+    stop_mountable_finish : -> Void
+    supports_thread_contexts : LibC::Int
+    unmount_mountable_with_operation : -> Void
+    unmount_mountable_with_operation_finish : -> Void
+    eject_mountable_with_operation : -> Void
+    eject_mountable_with_operation_finish : -> Void
+    poll_mountable : -> Void
+    poll_mountable_finish : -> Void
+    measure_disk_usage : Pointer(Void)
+    measure_disk_usage_async : Pointer(Void)
+    measure_disk_usage_finish : -> Void
+  end
+
+  type FileInfoClass = Void # Struct with zero bytes
+
+  struct FileInputStreamClass # 336 bytes long
+    parent_class : LibGio::InputStreamClass
+    tell : -> Void
+    can_seek : -> Void
+    seek : -> Void
+    query_info : -> Void
+    query_info_async : -> Void
+    query_info_finish : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type FileInputStreamPrivate = Void # Struct with zero bytes
+
+  struct FileMonitorClass # 192 bytes long
+    parent_class : LibGObject::ObjectClass
+    changed : -> Void
+    cancel : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
 
   type FileMonitorPrivate = Void # Struct with zero bytes
 
+  struct FileOutputStreamClass # 408 bytes long
+    parent_class : LibGio::OutputStreamClass
+    tell : -> Void
+    can_seek : -> Void
+    seek : -> Void
+    can_truncate : -> Void
+    truncate_fn : -> Void
+    query_info : -> Void
+    query_info_async : -> Void
+    query_info_finish : -> Void
+    get_etag : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type FileOutputStreamPrivate = Void # Struct with zero bytes
+
+  struct FilenameCompleterClass # 168 bytes long
+    parent_class : LibGObject::ObjectClass
+    got_completion_data : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+  end
+
+  struct FilterInputStreamClass # 272 bytes long
+    parent_class : LibGio::InputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+  end
+
+  struct FilterOutputStreamClass # 320 bytes long
+    parent_class : LibGio::OutputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+  end
 
   type IOExtension = Void # Struct with zero bytes
 
   type IOExtensionPoint = Void # Struct with zero bytes
+
+  type IOModuleClass = Void # Struct with zero bytes
 
   type IOModuleScope = Void # Struct with zero bytes
 
@@ -312,13 +877,60 @@ lib LibGio
 
   type IOStreamAdapter = Void # Struct with zero bytes
 
+  struct IOStreamClass # 256 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_input_stream : -> Void
+    get_output_stream : -> Void
+    close_fn : -> Void
+    close_async : -> Void
+    close_finish : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+    _g_reserved7 : Pointer(Void)
+    _g_reserved8 : Pointer(Void)
+    _g_reserved9 : Pointer(Void)
+    _g_reserved10 : Pointer(Void)
+  end
+
   type IOStreamPrivate = Void # Struct with zero bytes
+
+  struct IconIface # 56 bytes long
+    g_iface : LibGObject::TypeInterface
+    hash : -> Void
+    equal : -> Void
+    to_tokens : Pointer(Void)
+    from_tokens : Pointer(Void)
+    serialize : -> Void
+  end
+
+  struct InetAddressClass # 152 bytes long
+    parent_class : LibGObject::ObjectClass
+    to_string : -> Void
+    to_bytes : -> Void
+  end
+
+  struct InetAddressMaskClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
 
   type InetAddressMaskPrivate = Void # Struct with zero bytes
 
   type InetAddressPrivate = Void # Struct with zero bytes
 
+  struct InetSocketAddressClass # 160 bytes long
+    parent_class : LibGio::SocketAddressClass
+  end
+
   type InetSocketAddressPrivate = Void # Struct with zero bytes
+
+  struct InitableIface # 24 bytes long
+    g_iface : LibGObject::TypeInterface
+    init : -> Void
+  end
 
   struct InputMessage # 56 bytes long
     address : Pointer(LibGio::SocketAddress)
@@ -330,6 +942,24 @@ lib LibGio
     num_control_messages : Pointer(UInt32)
   end
 
+  struct InputStreamClass # 248 bytes long
+    parent_class : LibGObject::ObjectClass
+    read_fn : -> Void
+    skip : -> Void
+    close_fn : -> Void
+    read_async : -> Void
+    read_finish : -> Void
+    skip_async : -> Void
+    skip_finish : -> Void
+    close_async : -> Void
+    close_finish : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type InputStreamPrivate = Void # Struct with zero bytes
 
   struct InputVector # 16 bytes long
@@ -337,21 +967,159 @@ lib LibGio
     size : UInt64
   end
 
+  struct ListModelInterface # 40 bytes long
+    g_iface : LibGObject::TypeInterface
+    get_item_type : -> Void
+    get_n_items : -> Void
+    get_item : -> Void
+  end
+
+  struct ListStoreClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct LoadableIconIface # 40 bytes long
+    g_iface : LibGObject::TypeInterface
+    load : -> Void
+    load_async : -> Void
+    load_finish : -> Void
+  end
+
+  struct MemoryInputStreamClass # 288 bytes long
+    parent_class : LibGio::InputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type MemoryInputStreamPrivate = Void # Struct with zero bytes
+
+  struct MemoryMonitorInterface # 24 bytes long
+    g_iface : LibGObject::TypeInterface
+    low_memory_warning : -> Void
+  end
+
+  struct MemoryOutputStreamClass # 336 bytes long
+    parent_class : LibGio::OutputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
 
   type MemoryOutputStreamPrivate = Void # Struct with zero bytes
 
+  struct MenuAttributeIterClass # 144 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_next : -> Void
+  end
+
   type MenuAttributeIterPrivate = Void # Struct with zero bytes
+
+  struct MenuLinkIterClass # 144 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_next : -> Void
+  end
 
   type MenuLinkIterPrivate = Void # Struct with zero bytes
 
+  struct MenuModelClass # 200 bytes long
+    parent_class : LibGObject::ObjectClass
+    is_mutable : -> Void
+    get_n_items : -> Void
+    get_item_attributes : -> Void
+    iterate_item_attributes : -> Void
+    get_item_attribute_value : -> Void
+    get_item_links : -> Void
+    iterate_item_links : -> Void
+    get_item_link : -> Void
+  end
+
   type MenuModelPrivate = Void # Struct with zero bytes
+
+  struct MountIface # 232 bytes long
+    g_iface : LibGObject::TypeInterface
+    changed : -> Void
+    unmounted : -> Void
+    get_root : -> Void
+    get_name : -> Void
+    get_icon : -> Void
+    get_uuid : -> Void
+    get_volume : -> Void
+    get_drive : -> Void
+    can_unmount : -> Void
+    can_eject : -> Void
+    unmount : -> Void
+    unmount_finish : -> Void
+    eject : -> Void
+    eject_finish : -> Void
+    remount : -> Void
+    remount_finish : -> Void
+    guess_content_type : -> Void
+    guess_content_type_finish : -> Void
+    guess_content_type_sync : -> Void
+    pre_unmount : -> Void
+    unmount_with_operation : -> Void
+    unmount_with_operation_finish : -> Void
+    eject_with_operation : -> Void
+    eject_with_operation_finish : -> Void
+    get_default_location : -> Void
+    get_sort_key : -> Void
+    get_symbolic_icon : -> Void
+  end
+
+  struct MountOperationClass # 256 bytes long
+    parent_class : LibGObject::ObjectClass
+    ask_password : -> Void
+    ask_question : -> Void
+    reply : -> Void
+    aborted : -> Void
+    show_processes : -> Void
+    show_unmount_progress : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+    _g_reserved7 : Pointer(Void)
+    _g_reserved8 : Pointer(Void)
+    _g_reserved9 : Pointer(Void)
+  end
 
   type MountOperationPrivate = Void # Struct with zero bytes
 
+  struct NativeSocketAddressClass # 160 bytes long
+    parent_class : LibGio::SocketAddressClass
+  end
+
   type NativeSocketAddressPrivate = Void # Struct with zero bytes
 
+  struct NativeVolumeMonitorClass # 344 bytes long
+    parent_class : LibGio::VolumeMonitorClass
+    get_mount_for_mount_path : Pointer(Void)
+  end
+
+  struct NetworkAddressClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
   type NetworkAddressPrivate = Void # Struct with zero bytes
+
+  struct NetworkMonitorInterface # 48 bytes long
+    g_iface : LibGObject::TypeInterface
+    network_changed : -> Void
+    can_reach : -> Void
+    can_reach_async : -> Void
+    can_reach_finish : -> Void
+  end
+
+  struct NetworkServiceClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
 
   type NetworkServicePrivate = Void # Struct with zero bytes
 
@@ -364,6 +1132,30 @@ lib LibGio
     num_control_messages : UInt32
   end
 
+  struct OutputStreamClass # 296 bytes long
+    parent_class : LibGObject::ObjectClass
+    write_fn : -> Void
+    splice : -> Void
+    flush : -> Void
+    close_fn : -> Void
+    write_async : -> Void
+    write_finish : -> Void
+    splice_async : -> Void
+    splice_finish : -> Void
+    flush_async : -> Void
+    flush_finish : -> Void
+    close_async : -> Void
+    close_finish : -> Void
+    writev_fn : -> Void
+    writev_async : -> Void
+    writev_finish : -> Void
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+    _g_reserved7 : Pointer(Void)
+    _g_reserved8 : Pointer(Void)
+  end
+
   type OutputStreamPrivate = Void # Struct with zero bytes
 
   struct OutputVector # 16 bytes long
@@ -371,17 +1163,139 @@ lib LibGio
     size : UInt64
   end
 
+  struct PermissionClass # 312 bytes long
+    parent_class : LibGObject::ObjectClass
+    acquire : -> Void
+    acquire_async : -> Void
+    acquire_finish : -> Void
+    release : -> Void
+    release_async : -> Void
+    release_finish : -> Void
+    reserved : Pointer(Void)[16]
+  end
+
   type PermissionPrivate = Void # Struct with zero bytes
+
+  struct PollableInputStreamInterface # 48 bytes long
+    g_iface : LibGObject::TypeInterface
+    can_poll : -> Void
+    is_readable : -> Void
+    create_source : -> Void
+    read_nonblocking : -> Void
+  end
+
+  struct PollableOutputStreamInterface # 56 bytes long
+    g_iface : LibGObject::TypeInterface
+    can_poll : -> Void
+    is_writable : -> Void
+    create_source : -> Void
+    write_nonblocking : -> Void
+    writev_nonblocking : -> Void
+  end
+
+  struct PowerProfileMonitorInterface # 16 bytes long
+    g_iface : LibGObject::TypeInterface
+  end
+
+  struct ProxyAddressClass # 160 bytes long
+    parent_class : LibGio::InetSocketAddressClass
+  end
+
+  struct ProxyAddressEnumeratorClass # 216 bytes long
+    parent_class : LibGio::SocketAddressEnumeratorClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+    _g_reserved7 : Pointer(Void)
+  end
 
   type ProxyAddressEnumeratorPrivate = Void # Struct with zero bytes
 
   type ProxyAddressPrivate = Void # Struct with zero bytes
 
+  struct ProxyInterface # 48 bytes long
+    g_iface : LibGObject::TypeInterface
+    connect : -> Void
+    connect_async : -> Void
+    connect_finish : -> Void
+    supports_hostname : -> Void
+  end
+
+  struct ProxyResolverInterface # 48 bytes long
+    g_iface : LibGObject::TypeInterface
+    is_supported : -> Void
+    lookup : -> Void
+    lookup_async : -> Void
+    lookup_finish : -> Void
+  end
+
+  struct RemoteActionGroupInterface # 32 bytes long
+    g_iface : LibGObject::TypeInterface
+    activate_action_full : -> Void
+    change_action_state_full : -> Void
+  end
+
+  struct ResolverClass # 264 bytes long
+    parent_class : LibGObject::ObjectClass
+    reload : -> Void
+    lookup_by_name : -> Void
+    lookup_by_name_async : -> Void
+    lookup_by_name_finish : -> Void
+    lookup_by_address : -> Void
+    lookup_by_address_async : -> Void
+    lookup_by_address_finish : -> Void
+    lookup_service : Pointer(Void)
+    lookup_service_async : -> Void
+    lookup_service_finish : -> Void
+    lookup_records : -> Void
+    lookup_records_async : -> Void
+    lookup_records_finish : -> Void
+    lookup_by_name_with_flags_async : -> Void
+    lookup_by_name_with_flags_finish : -> Void
+    lookup_by_name_with_flags : -> Void
+  end
+
   type ResolverPrivate = Void # Struct with zero bytes
 
   type Resource = Void # Struct with zero bytes
 
+  struct SeekableIface # 56 bytes long
+    g_iface : LibGObject::TypeInterface
+    tell : -> Void
+    can_seek : -> Void
+    seek : -> Void
+    can_truncate : -> Void
+    truncate_fn : -> Void
+  end
+
+  struct SettingsBackendClass # 400 bytes long
+    parent_class : LibGObject::ObjectClass
+    read : -> Void
+    get_writable : -> Void
+    write : -> Void
+    write_tree : -> Void
+    reset : -> Void
+    subscribe : -> Void
+    unsubscribe : -> Void
+    sync : -> Void
+    get_permission : Pointer(Void)
+    read_user_value : -> Void
+    padding : Pointer(Void)[23]
+  end
+
   type SettingsBackendPrivate = Void # Struct with zero bytes
+
+  struct SettingsClass # 328 bytes long
+    parent_class : LibGObject::ObjectClass
+    writable_changed : -> Void
+    changed : -> Void
+    writable_change_event : -> Void
+    change_event : -> Void
+    padding : Pointer(Void)[20]
+  end
 
   type SettingsPrivate = Void # Struct with zero bytes
 
@@ -391,19 +1305,125 @@ lib LibGio
 
   type SettingsSchemaSource = Void # Struct with zero bytes
 
+  struct SimpleActionGroupClass # 232 bytes long
+    parent_class : LibGObject::ObjectClass
+    padding : Pointer(Void)[12]
+  end
+
   type SimpleActionGroupPrivate = Void # Struct with zero bytes
+
+  type SimpleAsyncResultClass = Void # Struct with zero bytes
+
+  struct SimpleProxyResolverClass # 176 bytes long
+    parent_class : LibGObject::ObjectClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
 
   type SimpleProxyResolverPrivate = Void # Struct with zero bytes
 
+  struct SocketAddressClass # 160 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_family : -> Void
+    get_native_size : -> Void
+    to_native : -> Void
+  end
+
+  struct SocketAddressEnumeratorClass # 160 bytes long
+    parent_class : LibGObject::ObjectClass
+    _next : -> Void
+    next_async : -> Void
+    next_finish : -> Void
+  end
+
+  struct SocketClass # 216 bytes long
+    parent_class : LibGObject::ObjectClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+    _g_reserved7 : Pointer(Void)
+    _g_reserved8 : Pointer(Void)
+    _g_reserved9 : Pointer(Void)
+    _g_reserved10 : Pointer(Void)
+  end
+
+  struct SocketClientClass # 176 bytes long
+    parent_class : LibGObject::ObjectClass
+    event : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+  end
+
   type SocketClientPrivate = Void # Struct with zero bytes
+
+  struct SocketConnectableIface # 40 bytes long
+    g_iface : LibGObject::TypeInterface
+    enumerate : -> Void
+    proxy_enumerate : -> Void
+    to_string : -> Void
+  end
+
+  struct SocketConnectionClass # 304 bytes long
+    parent_class : LibGio::IOStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+  end
 
   type SocketConnectionPrivate = Void # Struct with zero bytes
 
+  struct SocketControlMessageClass # 216 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_size : -> Void
+    get_level : -> Void
+    get_type : -> Void
+    serialize : -> Void
+    deserialize : Pointer(Void)
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type SocketControlMessagePrivate = Void # Struct with zero bytes
+
+  struct SocketListenerClass # 192 bytes long
+    parent_class : LibGObject::ObjectClass
+    changed : -> Void
+    event : -> Void
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+  end
 
   type SocketListenerPrivate = Void # Struct with zero bytes
 
   type SocketPrivate = Void # Struct with zero bytes
+
+  struct SocketServiceClass # 248 bytes long
+    parent_class : LibGio::SocketListenerClass
+    incoming : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+  end
 
   type SocketServicePrivate = Void # Struct with zero bytes
 
@@ -417,39 +1437,274 @@ lib LibGio
     padding : Pointer(Void)
   end
 
+  type TaskClass = Void # Struct with zero bytes
+
+  struct TcpConnectionClass # 304 bytes long
+    parent_class : LibGio::SocketConnectionClass
+  end
+
   type TcpConnectionPrivate = Void # Struct with zero bytes
+
+  struct TcpWrapperConnectionClass # 304 bytes long
+    parent_class : LibGio::TcpConnectionClass
+  end
 
   type TcpWrapperConnectionPrivate = Void # Struct with zero bytes
 
+  type ThemedIconClass = Void # Struct with zero bytes
+
+  struct ThreadedSocketServiceClass # 296 bytes long
+    parent_class : LibGio::SocketServiceClass
+    run : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type ThreadedSocketServicePrivate = Void # Struct with zero bytes
+
+  struct TlsBackendInterface # 88 bytes long
+    g_iface : LibGObject::TypeInterface
+    supports_tls : -> Void
+    get_certificate_type : -> Void
+    get_client_connection_type : -> Void
+    get_server_connection_type : -> Void
+    get_file_database_type : -> Void
+    get_default_database : -> Void
+    supports_dtls : -> Void
+    get_dtls_client_connection_type : -> Void
+    get_dtls_server_connection_type : -> Void
+  end
+
+  struct TlsCertificateClass # 208 bytes long
+    parent_class : LibGObject::ObjectClass
+    verify : -> Void
+    padding : Pointer(Void)[8]
+  end
 
   type TlsCertificatePrivate = Void # Struct with zero bytes
 
+  struct TlsClientConnectionInterface # 24 bytes long
+    g_iface : LibGObject::TypeInterface
+    copy_session_state : -> Void
+  end
+
+  struct TlsConnectionClass # 352 bytes long
+    parent_class : LibGio::IOStreamClass
+    accept_certificate : -> Void
+    handshake : -> Void
+    handshake_async : -> Void
+    handshake_finish : -> Void
+    get_binding_data : -> Void
+    get_negotiated_protocol : -> Void
+    padding : Pointer(Void)[6]
+  end
+
   type TlsConnectionPrivate = Void # Struct with zero bytes
+
+  struct TlsDatabaseClass # 368 bytes long
+    parent_class : LibGObject::ObjectClass
+    verify_chain : -> Void
+    verify_chain_async : -> Void
+    verify_chain_finish : -> Void
+    create_certificate_handle : -> Void
+    lookup_certificate_for_handle : -> Void
+    lookup_certificate_for_handle_async : -> Void
+    lookup_certificate_for_handle_finish : -> Void
+    lookup_certificate_issuer : -> Void
+    lookup_certificate_issuer_async : -> Void
+    lookup_certificate_issuer_finish : -> Void
+    lookup_certificates_issued_by : -> Void
+    lookup_certificates_issued_by_async : -> Void
+    lookup_certificates_issued_by_finish : -> Void
+    padding : Pointer(Void)[16]
+  end
 
   type TlsDatabasePrivate = Void # Struct with zero bytes
 
+  struct TlsFileDatabaseInterface # 80 bytes long
+    g_iface : LibGObject::TypeInterface
+    padding : Pointer(Void)[8]
+  end
+
+  struct TlsInteractionClass # 352 bytes long
+    parent_class : LibGObject::ObjectClass
+    ask_password : -> Void
+    ask_password_async : -> Void
+    ask_password_finish : -> Void
+    request_certificate : -> Void
+    request_certificate_async : -> Void
+    request_certificate_finish : -> Void
+    padding : Pointer(Void)[21]
+  end
+
   type TlsInteractionPrivate = Void # Struct with zero bytes
+
+  struct TlsPasswordClass # 192 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_value : -> Void
+    set_value : -> Void
+    get_default_warning : -> Void
+    padding : Pointer(Void)[4]
+  end
 
   type TlsPasswordPrivate = Void # Struct with zero bytes
 
+  struct TlsServerConnectionInterface # 16 bytes long
+    g_iface : LibGObject::TypeInterface
+  end
+
+  struct UnixConnectionClass # 304 bytes long
+    parent_class : LibGio::SocketConnectionClass
+  end
+
   type UnixConnectionPrivate = Void # Struct with zero bytes
+
+  struct UnixCredentialsMessageClass # 232 bytes long
+    parent_class : LibGio::SocketControlMessageClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+  end
 
   type UnixCredentialsMessagePrivate = Void # Struct with zero bytes
 
+  struct UnixFDListClass # 176 bytes long
+    parent_class : LibGObject::ObjectClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
+
   type UnixFDListPrivate = Void # Struct with zero bytes
 
+  struct UnixFDMessageClass # 232 bytes long
+    parent_class : LibGio::SocketControlMessageClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+  end
+
   type UnixFDMessagePrivate = Void # Struct with zero bytes
+
+  struct UnixInputStreamClass # 288 bytes long
+    parent_class : LibGio::InputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
 
   type UnixInputStreamPrivate = Void # Struct with zero bytes
 
   type UnixMountEntry = Void # Struct with zero bytes
 
+  type UnixMountMonitorClass = Void # Struct with zero bytes
+
   type UnixMountPoint = Void # Struct with zero bytes
+
+  struct UnixOutputStreamClass # 336 bytes long
+    parent_class : LibGio::OutputStreamClass
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+  end
 
   type UnixOutputStreamPrivate = Void # Struct with zero bytes
 
+  struct UnixSocketAddressClass # 160 bytes long
+    parent_class : LibGio::SocketAddressClass
+  end
+
   type UnixSocketAddressPrivate = Void # Struct with zero bytes
+
+  struct VfsClass # 272 bytes long
+    parent_class : LibGObject::ObjectClass
+    is_active : -> Void
+    get_file_for_path : -> Void
+    get_file_for_uri : -> Void
+    get_supported_uri_schemes : -> Void
+    parse_name : -> Void
+    local_file_add_info : -> Void
+    add_writable_namespaces : -> Void
+    local_file_set_attributes : -> Void
+    local_file_removed : -> Void
+    local_file_moved : -> Void
+    deserialize_icon : Pointer(Void)
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+  end
+
+  struct VolumeIface # 184 bytes long
+    g_iface : LibGObject::TypeInterface
+    changed : -> Void
+    removed : -> Void
+    get_name : -> Void
+    get_icon : -> Void
+    get_uuid : -> Void
+    get_drive : -> Void
+    get_mount : -> Void
+    can_mount : -> Void
+    can_eject : -> Void
+    mount_fn : -> Void
+    mount_finish : -> Void
+    eject : -> Void
+    eject_finish : -> Void
+    get_identifier : -> Void
+    enumerate_identifiers : -> Void
+    should_automount : -> Void
+    get_activation_root : -> Void
+    eject_with_operation : -> Void
+    eject_with_operation_finish : -> Void
+    get_sort_key : -> Void
+    get_symbolic_icon : -> Void
+  end
+
+  struct VolumeMonitorClass # 336 bytes long
+    parent_class : LibGObject::ObjectClass
+    volume_added : -> Void
+    volume_removed : -> Void
+    volume_changed : -> Void
+    mount_added : -> Void
+    mount_removed : -> Void
+    mount_pre_unmount : -> Void
+    mount_changed : -> Void
+    drive_connected : -> Void
+    drive_disconnected : -> Void
+    drive_changed : -> Void
+    is_supported : -> Void
+    get_connected_drives : -> Void
+    get_volumes : -> Void
+    get_mounts : -> Void
+    get_volume_for_uuid : -> Void
+    get_mount_for_uuid : -> Void
+    adopt_orphan_mount : Pointer(Void)
+    drive_eject_button : -> Void
+    drive_stop_button : -> Void
+    _g_reserved1 : Pointer(Void)
+    _g_reserved2 : Pointer(Void)
+    _g_reserved3 : Pointer(Void)
+    _g_reserved4 : Pointer(Void)
+    _g_reserved5 : Pointer(Void)
+    _g_reserved6 : Pointer(Void)
+  end
+
+  struct ZlibCompressorClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
+
+  struct ZlibDecompressorClass # 136 bytes long
+    parent_class : LibGObject::ObjectClass
+  end
 
   # Unions
 
@@ -554,10 +1809,6 @@ lib LibGio
   struct DataOutputStream
     parent_instance : LibGio::FilterOutputStream
     priv : Pointer(LibGio::DataOutputStreamPrivate)
-  end
-
-  struct DebugControllerDBus
-    parent_instance : LibGObject::Object
   end
 
   type DesktopAppInfo = Void # Object struct with no fields
@@ -1435,12 +2686,6 @@ lib LibGio
   fun g_dbus_signal_info_ref(this : Void*) : Pointer(Void)
   fun g_dbus_signal_info_unref(this : Void*) : Void
   fun g_dbus_unescape_object_path(s : Pointer(LibC::Char)) : Pointer(UInt8)
-  fun g_debug_controller_dbus_get_type : UInt64
-  fun g_debug_controller_dbus_new(connection : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_debug_controller_dbus_stop(this : Void*) : Void
-  fun g_debug_controller_get_debug_enabled(this : Void*) : LibC::Int
-  fun g_debug_controller_get_type : UInt64
-  fun g_debug_controller_set_debug_enabled(this : Void*, debug_enabled : LibC::Int) : Void
   fun g_desktop_app_info_get_action_name(this : Void*, action_name : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun g_desktop_app_info_get_boolean(this : Void*, key : Pointer(LibC::Char)) : LibC::Int
   fun g_desktop_app_info_get_categories(this : Void*) : Pointer(LibC::Char)
@@ -1731,8 +2976,6 @@ lib LibGio
   fun g_file_mount_mountable(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
   fun g_file_mount_mountable_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_move(this : Void*, destination : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), progress_callback : FileProgressCallback, progress_callback_data : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_move_async(this : Void*, destination : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), progress_callback : FileProgressCallback, progress_callback_data : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
-  fun g_file_move_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_new_for_commandline_arg(arg : Pointer(LibC::Char)) : Pointer(Void)
   fun g_file_new_for_commandline_arg(arg : Pointer(LibC::Char)) : Pointer(Void)
   fun g_file_new_for_commandline_arg_and_cwd(arg : Pointer(LibC::Char), cwd : Pointer(LibC::Char)) : Pointer(Void)
@@ -1906,10 +3149,12 @@ lib LibGio
   fun g_io_extension_point_register(name : Pointer(LibC::Char)) : Pointer(Void)
   fun g_io_extension_point_set_required_type(this : Void*, type : UInt64) : Void
   fun g_io_module_get_type : UInt64
+  fun g_io_module_load(this : Void*) : Void
   fun g_io_module_new(filename : Pointer(LibC::Char)) : Pointer(Void)
   fun g_io_module_query : Pointer(Pointer(LibC::Char))
   fun g_io_module_scope_block(this : Void*, basename : Pointer(LibC::Char)) : Void
   fun g_io_module_scope_free(this : Void*) : Void
+  fun g_io_module_unload(this : Void*) : Void
   fun g_io_modules_load_all_in_directory(dirname : Pointer(LibC::Char)) : Pointer(LibGLib::List)
   fun g_io_modules_load_all_in_directory_with_scope(dirname : Pointer(LibC::Char), scope : Pointer(Void)) : Pointer(LibGLib::List)
   fun g_io_modules_scan_all_in_directory(dirname : Pointer(LibC::Char)) : Void
@@ -2637,11 +3882,9 @@ lib LibGio
   fun g_tls_certificate_is_same(this : Void*, cert_two : Pointer(Void)) : LibC::Int
   fun g_tls_certificate_list_new_from_file(file : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(LibGLib::List)
   fun g_tls_certificate_new_from_file(file : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
-  fun g_tls_certificate_new_from_file_with_password(file : Pointer(LibC::Char), password : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_certificate_new_from_files(cert_file : Pointer(LibC::Char), key_file : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_certificate_new_from_pem(data : Pointer(LibC::Char), length : Int64, error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_certificate_new_from_pkcs11_uris(pkcs11_uri : Pointer(LibC::Char), private_key_pkcs11_uri : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
-  fun g_tls_certificate_new_from_pkcs12(data : Pointer(UInt8), length : UInt64, password : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_certificate_verify(this : Void*, identity : Pointer(Void), trusted_ca : Pointer(Void)) : UInt32
   fun g_tls_channel_binding_error_quark : UInt32
   fun g_tls_client_connection_copy_session_state(this : Void*, source : Pointer(Void)) : Void

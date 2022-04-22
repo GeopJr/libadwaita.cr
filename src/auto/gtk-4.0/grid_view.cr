@@ -37,7 +37,7 @@ module Gtk
   # ```
   #
   # `GtkGridView` uses a single CSS node with name `gridview`. Each child uses
-  # a single CSS node with name `child`. If the [property@Gtk.ListItem:activatable]
+  # a single CSS node with name `child`. If the `Gtk::ListItem#activatable`
   # property is set, the corresponding row will have the `.activatable` style
   # class. For rubberband selection, a subnode with name `rubberband` is used.
   #
@@ -45,6 +45,7 @@ module Gtk
   #
   # `GtkGridView` uses the %GTK_ACCESSIBLE_ROLE_GRID role, and the items
   # use the %GTK_ACCESSIBLE_ROLE_GRID_CELL role.
+  @[GObject::GeneratedWrapper]
   class GridView < ListBase
     include Accessible
     include Buildable
@@ -53,6 +54,13 @@ module Gtk
     include Scrollable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::GridViewClass), class_init,
+        sizeof(LibGtk::GridView), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -64,238 +72,243 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 46).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if enable_rubberband
+      if !enable_rubberband.nil?
         (_names.to_unsafe + _n).value = "enable-rubberband".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, enable_rubberband)
         _n += 1
       end
-      if factory
+      if !factory.nil?
         (_names.to_unsafe + _n).value = "factory".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, factory)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if hadjustment
+      if !hadjustment.nil?
         (_names.to_unsafe + _n).value = "hadjustment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hadjustment)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if hscroll_policy
+      if !hscroll_policy.nil?
         (_names.to_unsafe + _n).value = "hscroll-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hscroll_policy)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if max_columns
+      if !max_columns.nil?
         (_names.to_unsafe + _n).value = "max-columns".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_columns)
         _n += 1
       end
-      if min_columns
+      if !min_columns.nil?
         (_names.to_unsafe + _n).value = "min-columns".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, min_columns)
         _n += 1
       end
-      if model
+      if !model.nil?
         (_names.to_unsafe + _n).value = "model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, model)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if single_click_activate
+      if !single_click_activate.nil?
         (_names.to_unsafe + _n).value = "single-click-activate".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, single_click_activate)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if vadjustment
+      if !vadjustment.nil?
         (_names.to_unsafe + _n).value = "vadjustment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vadjustment)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if vscroll_policy
+      if !vscroll_policy.nil?
         (_names.to_unsafe + _n).value = "vscroll-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vscroll_policy)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(GridView.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -393,117 +406,133 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `GtkGridView` that uses the given @factory for
+    # mapping items to widgets.
+    #
+    # The function takes ownership of the
+    # arguments, so you can write code like
+    #
+    #
+    # WARNING: **⚠️ The following code is in c ⚠️**
+    # ```c
+    # grid_view = gtk_grid_view_new (create_model (),
+    #   gtk_builder_list_item_factory_new_from_resource ("/resource.ui"));
+    # ```
     def initialize(model : Gtk::SelectionModel?, factory : Gtk::ListItemFactory?)
       # gtk_grid_view_new: (Constructor)
       # @model: (transfer full) (nullable)
       # @factory: (transfer full) (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
                 model.to_unsafe
               end
+
+      # Generator::NullableArrayPlan
       factory = if factory.nil?
                   Pointer(Void).null
                 else
                   factory.to_unsafe
                 end
-      LibGObject.g_object_ref(model)
-      LibGObject.g_object_ref(factory)
+
+      # Generator::TransferFullArgPlan
+      LibGObject.g_object_ref_sink(factory)
 
       # C call
       _retval = LibGtk.gtk_grid_view_new(model, factory)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Returns whether rows can be selected by dragging with the mouse.
     def enable_rubberband : Bool
       # gtk_grid_view_get_enable_rubberband: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_grid_view_get_enable_rubberband(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the factory that's currently used to populate list items.
     def factory : Gtk::ListItemFactory?
       # gtk_grid_view_get_factory: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_grid_view_get_factory(self)
 
       # Return value handling
+
       Gtk::ListItemFactory.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the maximum number of columns that the grid will use.
     def max_columns : UInt32
       # gtk_grid_view_get_max_columns: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_grid_view_get_max_columns(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the minimum number of columns that the grid will use.
     def min_columns : UInt32
       # gtk_grid_view_get_min_columns: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_grid_view_get_min_columns(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the model that's currently used to read the items displayed.
     def model : Gtk::SelectionModel?
       # gtk_grid_view_get_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_grid_view_get_model(self)
 
       # Return value handling
+
       Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns whether items will be activated on single click and
+    # selected on hover.
     def single_click_activate : Bool
       # gtk_grid_view_get_single_click_activate: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_grid_view_get_single_click_activate(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets whether selections can be changed by dragging with the mouse.
     def enable_rubberband=(enable_rubberband : Bool) : Nil
       # gtk_grid_view_set_enable_rubberband: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_grid_view_set_enable_rubberband(self, enable_rubberband)
@@ -511,12 +540,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the `GtkListItemFactory` to use for populating list items.
     def factory=(factory : Gtk::ListItemFactory?) : Nil
       # gtk_grid_view_set_factory: (Method | Setter)
       # @factory: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       factory = if factory.nil?
                   Pointer(Void).null
                 else
@@ -529,11 +559,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the maximum number of columns to use.
+    #
+    # This number must be at least 1.
+    #
+    # If @max_columns is smaller than the minimum set via
+    # `Gtk::GridView#min_columns=`, that value is used instead.
     def max_columns=(max_columns : UInt32) : Nil
       # gtk_grid_view_set_max_columns: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_grid_view_set_max_columns(self, max_columns)
@@ -541,11 +575,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the minimum number of columns to use.
+    #
+    # This number must be at least 1.
+    #
+    # If @min_columns is smaller than the minimum set via
+    # `Gtk::GridView#max_columns=`, that value is ignored.
     def min_columns=(min_columns : UInt32) : Nil
       # gtk_grid_view_set_min_columns: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_grid_view_set_min_columns(self, min_columns)
@@ -553,12 +591,15 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the imodel to use.
+    #
+    # This must be a `Gtk#SelectionModel`.
     def model=(model : Gtk::SelectionModel?) : Nil
       # gtk_grid_view_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
@@ -571,11 +612,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets whether items should be activated on single click and
+    # selected on hover.
     def single_click_activate=(single_click_activate : Bool) : Nil
       # gtk_grid_view_set_single_click_activate: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_grid_view_set_single_click_activate(self, single_click_activate)
@@ -583,6 +624,12 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when a cell has been activated by the user,
+    # usually via activating the GtkGridView|list.activate-item action.
+    #
+    # This allows for a convenient way to handle activation in a gridview.
+    # See `Gtk::ListItem#activatable` for details on how to use
+    # this signal.
     struct ActivateSignal
       @source : GObject::Object
       @detail : String?

@@ -27,7 +27,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(Bytes.g_type, pointer)
@@ -40,6 +40,10 @@ module GLib
       LibGObject.g_boxed_free(Bytes.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::Bytes)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGLib.g_bytes_get_type
@@ -50,8 +54,9 @@ module GLib
       # @data: (nullable) (array length=size element-type UInt8)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       size = data.try(&.size) || 0
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(UInt8).null
              else
@@ -62,6 +67,7 @@ module GLib
       _retval = LibGLib.g_bytes_new(data, size)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -74,8 +80,9 @@ module GLib
       # @data: (transfer full) (nullable) (array length=size element-type UInt8)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       size = data.try(&.size) || 0
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(UInt8).null
              else
@@ -86,6 +93,7 @@ module GLib
       _retval = LibGLib.g_bytes_new_take(data, size)
 
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -97,12 +105,11 @@ module GLib
       # g_bytes_compare: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_bytes_compare(self, bytes2)
 
       # Return value handling
+
       _retval
     end
 
@@ -110,12 +117,11 @@ module GLib
       # g_bytes_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_bytes_equal(self, bytes2)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -124,13 +130,14 @@ module GLib
       # @size: (out) (transfer full) (optional)
       # Returns: (transfer none) (array length=size element-type UInt8)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       size = 0_u64
 
       # C call
       _retval = LibGLib.g_bytes_get_data(self, pointerof(size))
 
       # Return value handling
+
       GICrystal.transfer_array(_retval, size, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -138,12 +145,11 @@ module GLib
       # g_bytes_get_region: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_bytes_get_region(self, element_size, offset, n_elements)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
@@ -151,12 +157,11 @@ module GLib
       # g_bytes_get_size: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_bytes_get_size(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -164,12 +169,11 @@ module GLib
       # g_bytes_hash: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_bytes_hash(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -177,12 +181,11 @@ module GLib
       # g_bytes_new_from_bytes: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_bytes_new_from_bytes(self, offset, length)
 
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -190,12 +193,11 @@ module GLib
       # g_bytes_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_bytes_ref(self)
 
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 

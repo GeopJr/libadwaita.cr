@@ -4,7 +4,7 @@ module Gtk
   # A `GtkListItemFactory` creates widgets for the items taken from a `GListModel`.
   #
   # This is one of the core concepts of handling list widgets such
-  # as [class@Gtk.ListView] or [class@Gtk.GridView].
+  # as `Gtk#ListView` or `Gtk#GridView`.
   #
   # The `GtkListItemFactory` is tasked with creating widgets for items
   # taken from the model when the views need them and updating them as
@@ -29,13 +29,13 @@ module Gtk
   # and hand it to your code to set up a widget for. This list item will provide
   # various properties with information about what item to display and provide
   # you with some opportunities to configure its behavior. See the
-  # [class@Gtk.ListItem] documentation for further details.
+  # `Gtk#ListItem` documentation for further details.
   #
   # Various implementations of `GtkListItemFactory` exist to allow you different
   # ways to provide those widgets. The most common implementations are
-  # [class@Gtk.BuilderListItemFactory] which takes a `GtkBuilder` .ui file
+  # `Gtk#BuilderListItemFactory` which takes a `GtkBuilder` .ui file
   # and then creates widgets and manages everything automatically from the
-  # information in that file and [class@Gtk.SignalListItemFactory] which allows
+  # information in that file and `Gtk#SignalListItemFactory` which allows
   # you to connect to signals with your own code and retain full control over
   # how the widgets are setup and managed.
   #
@@ -47,10 +47,18 @@ module Gtk
   #
   # Once you have chosen your factory and created it, you need to set it
   # on the view widget you want to use it with, such as via
-  # [method@Gtk.ListView.set_factory]. Reusing factories across different
+  # `Gtk::ListView#factory=`. Reusing factories across different
   # views is allowed, but very uncommon.
+  @[GObject::GeneratedWrapper]
   class ListItemFactory < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::ListItemFactoryClass), class_init,
+        sizeof(LibGtk::ListItemFactory), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)

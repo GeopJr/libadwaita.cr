@@ -9,11 +9,19 @@ module Gio
   #
   # As of GLib 2.34, #GMemoryOutputStream trivially implements
   # #GPollableOutputStream: it always polls as ready.
+  @[GObject::GeneratedWrapper]
   class MemoryOutputStream < OutputStream
     include PollableOutputStream
     include Seekable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::MemoryOutputStreamClass), class_init,
+        sizeof(LibGio::MemoryOutputStream), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -25,23 +33,27 @@ module Gio
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if data
+      if !data.nil?
         (_names.to_unsafe + _n).value = "data".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, data)
         _n += 1
       end
-      if data_size
+      if !data_size.nil?
         (_names.to_unsafe + _n).value = "data-size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, data_size)
         _n += 1
       end
-      if size
+      if !size.nil?
         (_names.to_unsafe + _n).value = "size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, size)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(MemoryOutputStream.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -87,81 +99,106 @@ module Gio
       value
     end
 
+    # Creates a new #GMemoryOutputStream, using g_realloc() and g_free()
+    # for memory allocation.
     def self.new_resizable : self
       # g_memory_output_stream_new_resizable: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_memory_output_stream_new_resizable
 
       # Return value handling
+
       Gio::MemoryOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets any loaded data from the @ostream.
+    #
+    # Note that the returned pointer may become invalid on the next
+    # write or truncate operation on the stream.
     def data : Pointer(Void)?
       # g_memory_output_stream_get_data: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_memory_output_stream_get_data(self)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
 
+    # Returns the number of bytes from the start up to including the last
+    # byte written in the stream that has not been truncated away.
     def data_size : UInt64
       # g_memory_output_stream_get_data_size: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_memory_output_stream_get_data_size(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the size of the currently allocated data area (available from
+    # g_memory_output_stream_get_data()).
+    #
+    # You probably don't want to use this function on resizable streams.
+    # See g_memory_output_stream_get_data_size() instead.  For resizable
+    # streams the size returned by this function is an implementation
+    # detail and may be change at any time in response to operations on the
+    # stream.
+    #
+    # If the stream is fixed-sized (ie: no realloc was passed to
+    # g_memory_output_stream_new()) then this is the maximum size of the
+    # stream and further writes will return %G_IO_ERROR_NO_SPACE.
+    #
+    # In any case, if you want the number of bytes currently written to the
+    # stream, use g_memory_output_stream_get_data_size().
     def size : UInt64
       # g_memory_output_stream_get_size: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_memory_output_stream_get_size(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns data from the @ostream as a #GBytes. @ostream must be
+    # closed before calling this function.
     def steal_as_bytes : GLib::Bytes
       # g_memory_output_stream_steal_as_bytes: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_memory_output_stream_steal_as_bytes(self)
 
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets any loaded data from the @ostream. Ownership of the data
+    # is transferred to the caller; when no longer needed it must be
+    # freed using the free function set in @ostream's
+    # #GMemoryOutputStream:destroy-function property.
+    #
+    # @ostream must be closed before calling this function.
     def steal_data : Pointer(Void)?
       # g_memory_output_stream_steal_data: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_memory_output_stream_steal_data(self)
 
       # Return value handling
+
       _retval unless _retval.null?
     end
   end

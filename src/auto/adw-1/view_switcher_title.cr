@@ -14,9 +14,9 @@ module Adw
   # </picture>
   #
   # A widget letting you switch between multiple views contained by a
-  # [class@ViewStack] via an [class@ViewSwitcher].
+  # `#ViewStack` via an `#ViewSwitcher`.
   #
-  # It is designed to be used as the title widget of a [class@HeaderBar], and
+  # It is designed to be used as the title widget of a `#HeaderBar`, and
   # will display the window's title when the window is too narrow to fit the view
   # switcher e.g. on mobile phones, or if there are less than two views.
   #
@@ -25,13 +25,16 @@ module Adw
   # `ADW_CENTERING_POLICY_STRICT`.
   #
   # `AdwViewSwitcherTitle` is intended to be used together with
-  # [class@ViewSwitcherBar].
+  # `#ViewSwitcherBar`.
   #
-  # A common use case is to bind the [property@ViewSwitcherBar:reveal] property
+  # A common use case is to bind the `ViewSwitcherBar#reveal` property
   # to [property@ViewSwitcherTitle:title-visible] to automatically reveal the
   # view switcher bar when the title label is displayed in place of the view
   # switcher, as follows:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in xml ⚠️**
   # ```xml
   # <object class="GtkWindow">
   #   <child type="titlebar">
@@ -66,12 +69,20 @@ module Adw
   # ## CSS nodes
   #
   # `AdwViewSwitcherTitle` has a single CSS node with name `viewswitchertitle`.
+  @[GObject::GeneratedWrapper]
   class ViewSwitcherTitle < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Buildable
     include Gtk::ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::ViewSwitcherTitleClass), class_init,
+        sizeof(LibAdw::ViewSwitcherTitle), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -83,208 +94,213 @@ module Adw
       _values = StaticArray(LibGObject::Value, 40).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if stack
+      if !stack.nil?
         (_names.to_unsafe + _n).value = "stack".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, stack)
         _n += 1
       end
-      if subtitle
+      if !subtitle.nil?
         (_names.to_unsafe + _n).value = "subtitle".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, subtitle)
         _n += 1
       end
-      if title
+      if !title.nil?
         (_names.to_unsafe + _n).value = "title".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
-      if title_visible
+      if !title_visible.nil?
         (_names.to_unsafe + _n).value = "title-visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title_visible)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if view_switcher_enabled
+      if !view_switcher_enabled.nil?
         (_names.to_unsafe + _n).value = "view-switcher-enabled".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, view_switcher_enabled)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ViewSwitcherTitle.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -360,91 +376,92 @@ module Adw
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `AdwViewSwitcherTitle`.
     def initialize
       # adw_view_switcher_title_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_switcher_title_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Gets the stack controlled by @self.
     def stack : Adw::ViewStack?
       # adw_view_switcher_title_get_stack: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_switcher_title_get_stack(self)
 
       # Return value handling
+
       Adw::ViewStack.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the subtitle of @self.
     def subtitle : ::String
       # adw_view_switcher_title_get_subtitle: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_switcher_title_get_subtitle(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets the title of @self.
     def title : ::String
       # adw_view_switcher_title_get_title: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_switcher_title_get_title(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets whether the title of @self is currently visible.
     def title_visible : Bool
       # adw_view_switcher_title_get_title_visible: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_switcher_title_get_title_visible(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self's view switcher is enabled.
     def view_switcher_enabled : Bool
       # adw_view_switcher_title_get_view_switcher_enabled: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_view_switcher_title_get_view_switcher_enabled(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets the stack controlled by @self.
     def stack=(stack : Adw::ViewStack?) : Nil
       # adw_view_switcher_title_set_stack: (Method | Setter)
       # @stack: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       stack = if stack.nil?
                 Pointer(Void).null
               else
@@ -457,11 +474,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the subtitle of @self.
     def subtitle=(subtitle : ::String) : Nil
       # adw_view_switcher_title_set_subtitle: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_view_switcher_title_set_subtitle(self, subtitle)
@@ -469,11 +485,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the title of @self.
     def title=(title : ::String) : Nil
       # adw_view_switcher_title_set_title: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_view_switcher_title_set_title(self, title)
@@ -481,11 +496,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self's view switcher is enabled.
     def view_switcher_enabled=(enabled : Bool) : Nil
       # adw_view_switcher_title_set_view_switcher_enabled: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_view_switcher_title_set_view_switcher_enabled(self, enabled)

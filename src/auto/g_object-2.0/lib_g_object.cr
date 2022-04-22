@@ -3,6 +3,22 @@
 lib LibGObject
   # Functions not declared by GObj Introspection
 
+  # Type register
+  fun g_type_register_static_simple(parent_type : UInt64,
+                                    type_name : LibC::Char*,
+                                    class_size : UInt32,
+                                    class_init : ClassInitFunc,
+                                    instance_size : UInt32,
+                                    instance_init : InstanceInitFunc,
+                                    flags : Int32) : UInt64
+
+  # Param spec ref/unref
+  fun g_param_spec_ref_sink(pspec : Void*)
+  fun g_param_spec_ref(pspec : Void*)
+  fun g_param_spec_unref(pspec : Void*)
+  # Old gobject introspection libs return this typo.
+  fun g_param_spec_uref = g_param_spec_unref(pspec : Void*)
+
   # Property related functions
   fun g_object_get(object : Pointer(Void), property_name : Pointer(LibC::Char), ...)
   fun g_object_set(object : Pointer(Void), property_name : Pointer(LibC::Char), ...)
@@ -16,6 +32,7 @@ lib LibGObject
                             data : Void*,
                             destroy_data : Void* -> Nil,
                             flags : UInt32) : UInt64
+  @[Raises]
   fun g_signal_emit_by_name(instance : Void*, detailed_signal : UInt8*, ...)
 
   # Null terminated strings GType, used by GValue
@@ -120,15 +137,55 @@ lib LibGObject
     value_nick : Pointer(LibC::Char)
   end
 
+  struct InitiallyUnownedClass # 136 bytes long
+    g_type_class : LibGObject::TypeClass
+    construct_properties : Pointer(LibGLib::SList)
+    constructor : Pointer(Void)
+    set_property : -> Void
+    get_property : -> Void
+    dispose : -> Void
+    finalize : -> Void
+    dispatch_properties_changed : -> Void
+    notify : -> Void
+    constructed : -> Void
+    flags : UInt64
+    pdummy : Pointer(Void)[6]
+  end
+
   struct InterfaceInfo # 24 bytes long
     interface_init : LibGObject::InterfaceInitFunc
     interface_finalize : LibGObject::InterfaceFinalizeFunc
     interface_data : Pointer(Void)
   end
 
+  struct ObjectClass # 136 bytes long
+    g_type_class : LibGObject::TypeClass
+    construct_properties : Pointer(LibGLib::SList)
+    constructor : Pointer(Void)
+    set_property : -> Void
+    get_property : -> Void
+    dispose : -> Void
+    finalize : -> Void
+    dispatch_properties_changed : -> Void
+    notify : -> Void
+    constructed : -> Void
+    flags : UInt64
+    pdummy : Pointer(Void)[6]
+  end
+
   struct ObjectConstructParam # 16 bytes long
     pspec : Pointer(LibGObject::ParamSpec)
     value : Pointer(LibGObject::Value)
+  end
+
+  struct ParamSpecClass # 80 bytes long
+    g_type_class : LibGObject::TypeClass
+    value_type : UInt64
+    finalize : -> Void
+    value_set_default : -> Void
+    value_validate : -> Void
+    values_cmp : -> Void
+    dummy : Pointer(Void)[4]
   end
 
   type ParamSpecPool = Void # Struct with zero bytes
@@ -195,6 +252,16 @@ lib LibGObject
     g_instance_type : UInt64
   end
 
+  struct TypeModuleClass # 184 bytes long
+    parent_class : LibGObject::ObjectClass
+    load : -> Void
+    unload : -> Void
+    reserved1 : -> Void
+    reserved2 : -> Void
+    reserved3 : -> Void
+    reserved4 : -> Void
+  end
+
   struct TypePluginClass # 48 bytes long
     base_iface : LibGObject::TypeInterface
     use_plugin : LibGObject::TypePluginUse
@@ -252,8 +319,6 @@ lib LibGObject
 
   # Objects
   type Binding = Void # Object struct with no fields
-
-  type BindingGroup = Void # Object struct with no fields
 
   struct InitiallyUnowned
     g_type_instance : LibGObject::TypeInstance
@@ -423,8 +488,6 @@ lib LibGObject
     padding : Pointer(Void)[4]
   end
 
-  type SignalGroup = Void # Object struct with no fields
-
   struct TypeModule
     parent_instance : LibGObject::Object
     use_count : UInt32
@@ -442,12 +505,6 @@ lib LibGObject
   fun g_binding_get_target(this : Void*) : Pointer(Void)
   fun g_binding_get_target_property(this : Void*) : Pointer(LibC::Char)
   fun g_binding_get_type : UInt64
-  fun g_binding_group_bind(this : Void*, source_property : Pointer(LibC::Char), target : Pointer(Void), target_property : Pointer(LibC::Char), flags : UInt32) : Void
-  fun g_binding_group_bind_with_closures(this : Void*, source_property : Pointer(LibC::Char), target : Pointer(Void), target_property : Pointer(LibC::Char), flags : UInt32, transform_to : Pointer(Void), transform_from : Pointer(Void)) : Void
-  fun g_binding_group_dup_source(this : Void*) : Pointer(Void)
-  fun g_binding_group_get_type : UInt64
-  fun g_binding_group_new : Pointer(Void)
-  fun g_binding_group_set_source(this : Void*, source : Pointer(Void)) : Void
   fun g_binding_unbind(this : Void*) : Void
   fun g_boxed_copy(boxed_type : UInt64, src_boxed : Pointer(Void)) : Pointer(Void)
   fun g_boxed_free(boxed_type : UInt64, boxed : Pointer(Void)) : Void
@@ -500,6 +557,7 @@ lib LibGObject
   fun g_clear_signal_handler(handler_id_ptr : Pointer(UInt64), instance : Pointer(Void)) : Void
   fun g_closure_get_type : UInt64
   fun g_closure_invalidate(this : Void*) : Void
+  @[Raises]
   fun g_closure_invoke(this : Void*, return_value : Pointer(Void), n_param_values : UInt32, param_values : Pointer(Void), invocation_hint : Pointer(Void)) : Void
   fun g_closure_new_object(sizeof_closure : UInt32, object : Pointer(Void)) : Pointer(Void)
   fun g_closure_new_simple(sizeof_closure : UInt32, data : Pointer(Void)) : Pointer(Void)
@@ -602,16 +660,9 @@ lib LibGObject
   fun g_signal_chain_from_overridden(instance_and_params : Pointer(Void), return_value : Pointer(Void)) : Void
   fun g_signal_connect_closure(instance : Pointer(Void), detailed_signal : Pointer(LibC::Char), closure : Pointer(Void), after : LibC::Int) : UInt64
   fun g_signal_connect_closure_by_id(instance : Pointer(Void), signal_id : UInt32, detail : UInt32, closure : Pointer(Void), after : LibC::Int) : UInt64
+  @[Raises]
   fun g_signal_emitv(instance_and_params : Pointer(Void), signal_id : UInt32, detail : UInt32, return_value : Pointer(Void)) : Void
   fun g_signal_get_invocation_hint(instance : Pointer(Void)) : Pointer(Void)
-  fun g_signal_group_block(this : Void*) : Void
-  fun g_signal_group_connect_data(this : Void*, detailed_signal : Pointer(LibC::Char), c_handler : Callback, data : Pointer(Void), notify : ClosureNotify, flags : UInt32) : Void
-  fun g_signal_group_connect_swapped(this : Void*, detailed_signal : Pointer(LibC::Char), c_handler : Callback, data : Pointer(Void)) : Void
-  fun g_signal_group_dup_target(this : Void*) : Pointer(Void)
-  fun g_signal_group_get_type : UInt64
-  fun g_signal_group_new(target_type : UInt64) : Pointer(Void)
-  fun g_signal_group_set_target(this : Void*, target : Pointer(Void)) : Void
-  fun g_signal_group_unblock(this : Void*) : Void
   fun g_signal_handler_block(instance : Pointer(Void), handler_id : UInt64) : Void
   fun g_signal_handler_disconnect(instance : Pointer(Void), handler_id : UInt64) : Void
   fun g_signal_handler_find(instance : Pointer(Void), mask : UInt32, signal_id : UInt32, detail : UInt32, closure : Pointer(Void), func : Pointer(Void), data : Pointer(Void)) : UInt64

@@ -1,5 +1,5 @@
 module Adw
-  # Physical parameters of a spring for [class@SpringAnimation].
+  # Physical parameters of a spring for `#SpringAnimation`.
   #
   # Any spring can be described by three parameters: mass, stiffness and damping.
   #
@@ -33,7 +33,7 @@ module Adw
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(SpringParams.g_type, pointer)
@@ -46,6 +46,10 @@ module Adw
       LibGObject.g_boxed_free(SpringParams.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibAdw::SpringParams)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibAdw.adw_spring_params_get_type
@@ -55,12 +59,11 @@ module Adw
       # adw_spring_params_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_spring_params_new(damping_ratio, mass, stiffness)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -68,12 +71,11 @@ module Adw
       # adw_spring_params_new_full: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_spring_params_new_full(damping, mass, stiffness)
 
       # Return value handling
+
       Adw::SpringParams.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -81,12 +83,11 @@ module Adw
       # adw_spring_params_get_damping: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_spring_params_get_damping(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -94,12 +95,11 @@ module Adw
       # adw_spring_params_get_damping_ratio: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_spring_params_get_damping_ratio(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -107,12 +107,11 @@ module Adw
       # adw_spring_params_get_mass: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_spring_params_get_mass(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -120,12 +119,11 @@ module Adw
       # adw_spring_params_get_stiffness: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_spring_params_get_stiffness(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -133,20 +131,17 @@ module Adw
       # adw_spring_params_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_spring_params_ref(self)
 
       # Return value handling
+
       Adw::SpringParams.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # adw_spring_params_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_spring_params_unref(self)

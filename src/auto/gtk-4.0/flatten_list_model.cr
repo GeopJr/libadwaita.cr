@@ -6,10 +6,18 @@ module Gtk
   #
   # `GtkFlattenListModel` takes a list model containing list models,
   #  and flattens it into a single model.
+  @[GObject::GeneratedWrapper]
   class FlattenListModel < GObject::Object
     include Gio::ListModel
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::FlattenListModelClass), class_init,
+        sizeof(LibGtk::FlattenListModel), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -21,13 +29,17 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if model
+      if !model.nil?
         (_names.to_unsafe + _n).value = "model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, model)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(FlattenListModel.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -50,58 +62,60 @@ module Gtk
       Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new `GtkFlattenListModel` that flattens @list.
     def initialize(model : Gio::ListModel?)
       # gtk_flatten_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else
                 model.to_unsafe
               end
-      LibGObject.g_object_ref(model)
 
       # C call
       _retval = LibGtk.gtk_flatten_list_model_new(model)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the model set via gtk_flatten_list_model_set_model().
     def model : Gio::ListModel?
       # gtk_flatten_list_model_get_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flatten_list_model_get_model(self)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Returns the model containing the item at the given position.
     def model_for_item(position : UInt32) : Gio::ListModel?
       # gtk_flatten_list_model_get_model_for_item: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_flatten_list_model_get_model_for_item(self, position)
 
       # Return value handling
+
       Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Sets a new model to be flattened.
     def model=(model : Gio::ListModel?) : Nil
       # gtk_flatten_list_model_set_model: (Method | Setter)
       # @model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       model = if model.nil?
                 Pointer(Void).null
               else

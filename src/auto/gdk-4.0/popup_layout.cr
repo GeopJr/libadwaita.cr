@@ -1,6 +1,6 @@
 module Gdk
   # The `GdkPopupLayout` struct contains information that is
-  # necessary position a [iface@Gdk.Popup] relative to its parent.
+  # necessary position a `Gdk#Popup` relative to its parent.
   #
   # The positioning requires a negotiation with the windowing system,
   # since it depends on external constraints, such as the position of
@@ -26,17 +26,17 @@ module Gdk
   #
   # Ultimatively, it is up to the windowing system to determine the position
   # and size of the popup. You can learn about the result by calling
-  # [method@Gdk.Popup.get_position_x], [method@Gdk.Popup.get_position_y],
-  # [method@Gdk.Popup.get_rect_anchor] and [method@Gdk.Popup.get_surface_anchor]
+  # `Gdk::Popup#position_x`, `Gdk::Popup#position_y`,
+  # `Gdk::Popup#rect_anchor` and `Gdk::Popup#surface_anchor`
   # after the popup has been presented. This can be used to adjust the rendering.
-  # For example, [class@Gtk.Popover] changes its arrow position accordingly.
+  # For example, `Gtk#Popover` changes its arrow position accordingly.
   # But you have to be careful avoid changing the size of the popover, or it
   # has to be presented again.
   class PopupLayout
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(PopupLayout.g_type, pointer)
@@ -49,6 +49,10 @@ module Gdk
       LibGObject.g_boxed_free(PopupLayout.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGdk::PopupLayout)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGdk.gdk_popup_layout_get_type
@@ -58,12 +62,11 @@ module Gdk
       # gdk_popup_layout_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_layout_new(anchor_rect, rect_anchor, surface_anchor)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -71,12 +74,11 @@ module Gdk
       # gdk_popup_layout_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_layout_copy(self)
 
       # Return value handling
+
       Gdk::PopupLayout.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -84,12 +86,11 @@ module Gdk
       # gdk_popup_layout_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_layout_equal(self, other)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -97,25 +98,23 @@ module Gdk
       # gdk_popup_layout_get_anchor_hints: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_layout_get_anchor_hints(self)
 
       # Return value handling
-      Gdk::AnchorHints.from_value(_retval)
+
+      Gdk::AnchorHints.new(_retval)
     end
 
     def anchor_rect : Gdk::Rectangle
       # gdk_popup_layout_get_anchor_rect: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_layout_get_anchor_rect(self)
 
       # Return value handling
+
       Gdk::Rectangle.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -124,8 +123,6 @@ module Gdk
       # @dx: (out) (transfer full)
       # @dy: (out) (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_popup_layout_get_offset(self, dx, dy)
@@ -137,13 +134,12 @@ module Gdk
       # gdk_popup_layout_get_rect_anchor: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_layout_get_rect_anchor(self)
 
       # Return value handling
-      Gdk::Gravity.from_value(_retval)
+
+      Gdk::Gravity.new(_retval)
     end
 
     def shadow_width(left : Int32, right : Int32, top : Int32, bottom : Int32) : Nil
@@ -153,8 +149,6 @@ module Gdk
       # @top: (out) (transfer full)
       # @bottom: (out) (transfer full)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_popup_layout_get_shadow_width(self, left, right, top, bottom)
@@ -166,33 +160,29 @@ module Gdk
       # gdk_popup_layout_get_surface_anchor: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_layout_get_surface_anchor(self)
 
       # Return value handling
-      Gdk::Gravity.from_value(_retval)
+
+      Gdk::Gravity.new(_retval)
     end
 
     def ref : Gdk::PopupLayout
       # gdk_popup_layout_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_popup_layout_ref(self)
 
       # Return value handling
+
       Gdk::PopupLayout.new(_retval, GICrystal::Transfer::Full)
     end
 
     def anchor_hints=(anchor_hints : Gdk::AnchorHints) : Nil
       # gdk_popup_layout_set_anchor_hints: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_popup_layout_set_anchor_hints(self, anchor_hints)
@@ -204,8 +194,6 @@ module Gdk
       # gdk_popup_layout_set_anchor_rect: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_popup_layout_set_anchor_rect(self, anchor_rect)
 
@@ -215,8 +203,6 @@ module Gdk
     def set_offset(dx : Int32, dy : Int32) : Nil
       # gdk_popup_layout_set_offset: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_popup_layout_set_offset(self, dx, dy)
@@ -228,8 +214,6 @@ module Gdk
       # gdk_popup_layout_set_rect_anchor: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_popup_layout_set_rect_anchor(self, anchor)
 
@@ -239,8 +223,6 @@ module Gdk
     def set_shadow_width(left : Int32, right : Int32, top : Int32, bottom : Int32) : Nil
       # gdk_popup_layout_set_shadow_width: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_popup_layout_set_shadow_width(self, left, right, top, bottom)
@@ -252,8 +234,6 @@ module Gdk
       # gdk_popup_layout_set_surface_anchor: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGdk.gdk_popup_layout_set_surface_anchor(self, anchor)
 
@@ -263,8 +243,6 @@ module Gdk
     def unref : Nil
       # gdk_popup_layout_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdk.gdk_popup_layout_unref(self)

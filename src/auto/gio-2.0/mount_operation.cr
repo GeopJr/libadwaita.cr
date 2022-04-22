@@ -22,8 +22,16 @@ module Gio
   # encrypting file containers, partitions or whole disks, typically used with Windows.
   # [VeraCrypt](https://www.veracrypt.fr/) is a maintained fork of TrueCrypt with various
   # improvements and auditing fixes.
+  @[GObject::GeneratedWrapper]
   class MountOperation < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::MountOperationClass), class_init,
+        sizeof(LibGio::MountOperation), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -35,53 +43,57 @@ module Gio
       _values = StaticArray(LibGObject::Value, 9).new(LibGObject::Value.new)
       _n = 0
 
-      if anonymous
+      if !anonymous.nil?
         (_names.to_unsafe + _n).value = "anonymous".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, anonymous)
         _n += 1
       end
-      if choice
+      if !choice.nil?
         (_names.to_unsafe + _n).value = "choice".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, choice)
         _n += 1
       end
-      if domain
+      if !domain.nil?
         (_names.to_unsafe + _n).value = "domain".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, domain)
         _n += 1
       end
-      if is_tcrypt_hidden_volume
+      if !is_tcrypt_hidden_volume.nil?
         (_names.to_unsafe + _n).value = "is-tcrypt-hidden-volume".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_tcrypt_hidden_volume)
         _n += 1
       end
-      if is_tcrypt_system_volume
+      if !is_tcrypt_system_volume.nil?
         (_names.to_unsafe + _n).value = "is-tcrypt-system-volume".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_tcrypt_system_volume)
         _n += 1
       end
-      if password
+      if !password.nil?
         (_names.to_unsafe + _n).value = "password".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, password)
         _n += 1
       end
-      if password_save
+      if !password_save.nil?
         (_names.to_unsafe + _n).value = "password-save".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, password_save)
         _n += 1
       end
-      if pim
+      if !pim.nil?
         (_names.to_unsafe + _n).value = "pim".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pim)
         _n += 1
       end
-      if username
+      if !username.nil?
         (_names.to_unsafe + _n).value = "username".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, username)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(MountOperation.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -191,7 +203,7 @@ module Gio
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "password-save", pointerof(value), Pointer(Void).null)
-      Gio::PasswordSave.from_value(value)
+      Gio::PasswordSave.new(value)
     end
 
     def pim=(value : UInt32) : UInt32
@@ -224,141 +236,143 @@ module Gio
       ::String.new(value)
     end
 
+    # Creates a new mount operation.
     def initialize
       # g_mount_operation_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Check to see whether the mount operation is being used
+    # for an anonymous user.
     def anonymous : Bool
       # g_mount_operation_get_anonymous: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_get_anonymous(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets a choice from the mount operation.
     def choice : Int32
       # g_mount_operation_get_choice: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_get_choice(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the domain of the mount operation.
     def domain : ::String?
       # g_mount_operation_get_domain: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_get_domain(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Check to see whether the mount operation is being used
+    # for a TCRYPT hidden volume.
     def is_tcrypt_hidden_volume : Bool
       # g_mount_operation_get_is_tcrypt_hidden_volume: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_get_is_tcrypt_hidden_volume(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Check to see whether the mount operation is being used
+    # for a TCRYPT system volume.
     def is_tcrypt_system_volume : Bool
       # g_mount_operation_get_is_tcrypt_system_volume: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_get_is_tcrypt_system_volume(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets a password from the mount operation.
     def password : ::String?
       # g_mount_operation_get_password: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_get_password(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the state of saving passwords for the mount operation.
     def password_save : Gio::PasswordSave
       # g_mount_operation_get_password_save: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_get_password_save(self)
 
       # Return value handling
-      Gio::PasswordSave.from_value(_retval)
+
+      Gio::PasswordSave.new(_retval)
     end
 
+    # Gets a PIM from the mount operation.
     def pim : UInt32
       # g_mount_operation_get_pim: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_get_pim(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Get the user name from the mount operation.
     def username : ::String?
       # g_mount_operation_get_username: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_mount_operation_get_username(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Emits the #GMountOperation::reply signal.
     def reply(result : Gio::MountOperationResult) : Nil
       # g_mount_operation_reply: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_mount_operation_reply(self, result)
@@ -366,11 +380,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the mount operation to use an anonymous user if @anonymous is %TRUE.
     def anonymous=(anonymous : Bool) : Nil
       # g_mount_operation_set_anonymous: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_mount_operation_set_anonymous(self, anonymous)
@@ -378,11 +391,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets a default choice for the mount operation.
     def choice=(choice : Int32) : Nil
       # g_mount_operation_set_choice: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_mount_operation_set_choice(self, choice)
@@ -390,12 +402,13 @@ module Gio
       # Return value handling
     end
 
+    # Sets the mount operation's domain.
     def domain=(domain : ::String?) : Nil
       # g_mount_operation_set_domain: (Method | Setter)
       # @domain: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       domain = if domain.nil?
                  Pointer(LibC::Char).null
                else
@@ -408,11 +421,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the mount operation to use a hidden volume if @hidden_volume is %TRUE.
     def is_tcrypt_hidden_volume=(hidden_volume : Bool) : Nil
       # g_mount_operation_set_is_tcrypt_hidden_volume: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_mount_operation_set_is_tcrypt_hidden_volume(self, hidden_volume)
@@ -420,11 +432,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the mount operation to use a system volume if @system_volume is %TRUE.
     def is_tcrypt_system_volume=(system_volume : Bool) : Nil
       # g_mount_operation_set_is_tcrypt_system_volume: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_mount_operation_set_is_tcrypt_system_volume(self, system_volume)
@@ -432,12 +443,13 @@ module Gio
       # Return value handling
     end
 
+    # Sets the mount operation's password to @password.
     def password=(password : ::String?) : Nil
       # g_mount_operation_set_password: (Method | Setter)
       # @password: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       password = if password.nil?
                    Pointer(LibC::Char).null
                  else
@@ -450,11 +462,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the state of saving passwords for the mount operation.
     def password_save=(save : Gio::PasswordSave) : Nil
       # g_mount_operation_set_password_save: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_mount_operation_set_password_save(self, save)
@@ -462,11 +473,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the mount operation's PIM to @pim.
     def pim=(pim : UInt32) : Nil
       # g_mount_operation_set_pim: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_mount_operation_set_pim(self, pim)
@@ -474,12 +484,13 @@ module Gio
       # Return value handling
     end
 
+    # Sets the user name within @op to @username.
     def username=(username : ::String?) : Nil
       # g_mount_operation_set_username: (Method | Setter)
       # @username: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       username = if username.nil?
                    Pointer(LibC::Char).null
                  else
@@ -492,6 +503,11 @@ module Gio
       # Return value handling
     end
 
+    # Emitted by the backend when e.g. a device becomes unavailable
+    # while a mount operation is in progress.
+    #
+    # Implementations of GMountOperation should handle this signal
+    # by dismissing open password dialogs.
     struct AbortedSignal
       @source : GObject::Object
       @detail : String?
@@ -567,6 +583,11 @@ module Gio
       AbortedSignal.new(self)
     end
 
+    # Emitted when a mount operation asks the user for a password.
+    #
+    # If the message contains a line break, the first line should be
+    # presented as a heading. For example, it may be used as the
+    # primary text in a #GtkMessageDialog.
     struct AskPasswordSignal
       @source : GObject::Object
       @detail : String?
@@ -597,7 +618,7 @@ module Gio
           arg0 = ::String.new(lib_arg0)
           arg1 = ::String.new(lib_arg1)
           arg2 = ::String.new(lib_arg2)
-          arg3 = Gio::AskPasswordFlags.from_value(lib_arg3)
+          arg3 = Gio::AskPasswordFlags.new(lib_arg3)
           ::Box(Proc(::String, ::String, ::String, Gio::AskPasswordFlags, Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
         }
 
@@ -611,7 +632,7 @@ module Gio
           arg0 = ::String.new(lib_arg0)
           arg1 = ::String.new(lib_arg1)
           arg2 = ::String.new(lib_arg2)
-          arg3 = Gio::AskPasswordFlags.from_value(lib_arg3)
+          arg3 = Gio::AskPasswordFlags.new(lib_arg3)
           ::Box(Proc(::String, ::String, ::String, Gio::AskPasswordFlags, Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
         }
 
@@ -626,7 +647,7 @@ module Gio
           arg0 = ::String.new(lib_arg0)
           arg1 = ::String.new(lib_arg1)
           arg2 = ::String.new(lib_arg2)
-          arg3 = Gio::AskPasswordFlags.from_value(lib_arg3)
+          arg3 = Gio::AskPasswordFlags.new(lib_arg3)
           ::Box(Proc(Gio::MountOperation, ::String, ::String, ::String, Gio::AskPasswordFlags, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
         }
 
@@ -641,7 +662,7 @@ module Gio
           arg0 = ::String.new(lib_arg0)
           arg1 = ::String.new(lib_arg1)
           arg2 = ::String.new(lib_arg2)
-          arg3 = Gio::AskPasswordFlags.from_value(lib_arg3)
+          arg3 = Gio::AskPasswordFlags.new(lib_arg3)
           ::Box(Proc(Gio::MountOperation, ::String, ::String, ::String, Gio::AskPasswordFlags, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
         }
 
@@ -658,6 +679,12 @@ module Gio
       AskPasswordSignal.new(self)
     end
 
+    # Emitted when asking the user a question and gives a list of
+    # choices for the user to choose from.
+    #
+    # If the message contains a line break, the first line should be
+    # presented as a heading. For example, it may be used as the
+    # primary text in a #GtkMessageDialog.
     struct AskQuestionSignal
       @source : GObject::Object
       @detail : String?
@@ -741,6 +768,7 @@ module Gio
       AskQuestionSignal.new(self)
     end
 
+    # Emitted when the user has replied to the mount operation.
     struct ReplySignal
       @source : GObject::Object
       @detail : String?
@@ -768,7 +796,7 @@ module Gio
       def connect(block : Proc(Gio::MountOperationResult, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gio::MountOperationResult.from_value(lib_arg0)
+          arg0 = Gio::MountOperationResult.new(lib_arg0)
           ::Box(Proc(Gio::MountOperationResult, Nil)).unbox(box).call(arg0)
         }
 
@@ -779,7 +807,7 @@ module Gio
       def connect_after(block : Proc(Gio::MountOperationResult, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gio::MountOperationResult.from_value(lib_arg0)
+          arg0 = Gio::MountOperationResult.new(lib_arg0)
           ::Box(Proc(Gio::MountOperationResult, Nil)).unbox(box).call(arg0)
         }
 
@@ -791,7 +819,7 @@ module Gio
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gio::MountOperation.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::MountOperationResult.from_value(lib_arg0)
+          arg0 = Gio::MountOperationResult.new(lib_arg0)
           ::Box(Proc(Gio::MountOperation, Gio::MountOperationResult, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -803,7 +831,7 @@ module Gio
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gio::MountOperation.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::MountOperationResult.from_value(lib_arg0)
+          arg0 = Gio::MountOperationResult.new(lib_arg0)
           ::Box(Proc(Gio::MountOperation, Gio::MountOperationResult, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -820,6 +848,18 @@ module Gio
       ReplySignal.new(self)
     end
 
+    # Emitted when one or more processes are blocking an operation
+    # e.g. unmounting/ejecting a #GMount or stopping a #GDrive.
+    #
+    # Note that this signal may be emitted several times to update the
+    # list of blocking processes as processes close files. The
+    # application should only respond with g_mount_operation_reply() to
+    # the latest signal (setting #GMountOperation:choice to the choice
+    # the user made).
+    #
+    # If the message contains a line break, the first line should be
+    # presented as a heading. For example, it may be used as the
+    # primary text in a #GtkMessageDialog.
     struct ShowProcessesSignal
       @source : GObject::Object
       @detail : String?
@@ -907,6 +947,22 @@ module Gio
       ShowProcessesSignal.new(self)
     end
 
+    # Emitted when an unmount operation has been busy for more than some time
+    # (typically 1.5 seconds).
+    #
+    # When unmounting or ejecting a volume, the kernel might need to flush
+    # pending data in its buffers to the volume stable storage, and this operation
+    # can take a considerable amount of time. This signal may be emitted several
+    # times as long as the unmount operation is outstanding, and then one
+    # last time when the operation is completed, with @bytes_left set to zero.
+    #
+    # Implementations of GMountOperation should handle this signal by
+    # showing an UI notification, and then dismiss it, or show another notification
+    # of completion, when @bytes_left reaches zero.
+    #
+    # If the message contains a line break, the first line should be
+    # presented as a heading. For example, it may be used as the
+    # primary text in a #GtkMessageDialog.
     struct ShowUnmountProgressSignal
       @source : GObject::Object
       @detail : String?

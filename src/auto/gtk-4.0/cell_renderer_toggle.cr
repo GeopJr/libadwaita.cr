@@ -7,8 +7,16 @@ module Gtk
   # button is drawn as a radio or a checkbutton, depending on the
   # `GtkCellRendererToggle:radio` property.
   # When activated, it emits the `GtkCellRendererToggle::toggled` signal.
+  @[GObject::GeneratedWrapper]
   class CellRendererToggle < CellRenderer
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::CellRendererToggle), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -20,103 +28,108 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 19).new(LibGObject::Value.new)
       _n = 0
 
-      if activatable
+      if !activatable.nil?
         (_names.to_unsafe + _n).value = "activatable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, activatable)
         _n += 1
       end
-      if active
+      if !active.nil?
         (_names.to_unsafe + _n).value = "active".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, active)
         _n += 1
       end
-      if cell_background
+      if !cell_background.nil?
         (_names.to_unsafe + _n).value = "cell-background".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background)
         _n += 1
       end
-      if cell_background_rgba
+      if !cell_background_rgba.nil?
         (_names.to_unsafe + _n).value = "cell-background-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background_rgba)
         _n += 1
       end
-      if cell_background_set
+      if !cell_background_set.nil?
         (_names.to_unsafe + _n).value = "cell-background-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cell_background_set)
         _n += 1
       end
-      if editing
+      if !editing.nil?
         (_names.to_unsafe + _n).value = "editing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editing)
         _n += 1
       end
-      if height
+      if !height.nil?
         (_names.to_unsafe + _n).value = "height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height)
         _n += 1
       end
-      if inconsistent
+      if !inconsistent.nil?
         (_names.to_unsafe + _n).value = "inconsistent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, inconsistent)
         _n += 1
       end
-      if is_expanded
+      if !is_expanded.nil?
         (_names.to_unsafe + _n).value = "is-expanded".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_expanded)
         _n += 1
       end
-      if is_expander
+      if !is_expander.nil?
         (_names.to_unsafe + _n).value = "is-expander".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_expander)
         _n += 1
       end
-      if mode
+      if !mode.nil?
         (_names.to_unsafe + _n).value = "mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, mode)
         _n += 1
       end
-      if radio
+      if !radio.nil?
         (_names.to_unsafe + _n).value = "radio".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, radio)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width
+      if !width.nil?
         (_names.to_unsafe + _n).value = "width".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width)
         _n += 1
       end
-      if xalign
+      if !xalign.nil?
         (_names.to_unsafe + _n).value = "xalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xalign)
         _n += 1
       end
-      if xpad
+      if !xpad.nil?
         (_names.to_unsafe + _n).value = "xpad".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xpad)
         _n += 1
       end
-      if yalign
+      if !yalign.nil?
         (_names.to_unsafe + _n).value = "yalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, yalign)
         _n += 1
       end
-      if ypad
+      if !ypad.nil?
         (_names.to_unsafe + _n).value = "ypad".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, ypad)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(CellRendererToggle.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -184,64 +197,71 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `GtkCellRendererToggle`. Adjust rendering
+    # parameters using object properties. Object properties can be set
+    # globally (with g_object_set()). Also, with `GtkTreeViewColumn`, you
+    # can bind a property to a value in a `GtkTreeModel`. For example, you
+    # can bind the “active” property on the cell renderer to a boolean value
+    # in the model, thus causing the check button to reflect the state of
+    # the model.
     def initialize
       # gtk_cell_renderer_toggle_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_toggle_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Returns whether the cell renderer is activatable. See
+    # gtk_cell_renderer_toggle_set_activatable().
     def activatable : Bool
       # gtk_cell_renderer_toggle_get_activatable: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_toggle_get_activatable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether the cell renderer is active. See
+    # gtk_cell_renderer_toggle_set_active().
     def active : Bool
       # gtk_cell_renderer_toggle_get_active: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_toggle_get_active(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Returns whether we’re rendering radio toggles rather than checkboxes.
     def radio : Bool
       # gtk_cell_renderer_toggle_get_radio: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_cell_renderer_toggle_get_radio(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Makes the cell renderer activatable.
     def activatable=(setting : Bool) : Nil
       # gtk_cell_renderer_toggle_set_activatable: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_toggle_set_activatable(self, setting)
@@ -249,11 +269,10 @@ module Gtk
       # Return value handling
     end
 
+    # Activates or deactivates a cell renderer.
     def active=(setting : Bool) : Nil
       # gtk_cell_renderer_toggle_set_active: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_toggle_set_active(self, setting)
@@ -261,11 +280,16 @@ module Gtk
       # Return value handling
     end
 
+    # If @radio is %TRUE, the cell renderer renders a radio toggle
+    # (i.e. a toggle in a group of mutually-exclusive toggles).
+    # If %FALSE, it renders a check toggle (a standalone boolean option).
+    # This can be set globally for the cell renderer, or changed just
+    # before rendering each cell in the model (for `GtkTreeView`, you set
+    # up a per-row setting using `GtkTreeViewColumn` to associate model
+    # columns with cell renderer properties).
     def radio=(radio : Bool) : Nil
       # gtk_cell_renderer_toggle_set_radio: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_cell_renderer_toggle_set_radio(self, radio)
@@ -273,6 +297,11 @@ module Gtk
       # Return value handling
     end
 
+    # The ::toggled signal is emitted when the cell is toggled.
+    #
+    # It is the responsibility of the application to update the model
+    # with the correct value to store at @path.  Often this is simply the
+    # opposite of the value currently stored at @path.
     struct ToggledSignal
       @source : GObject::Object
       @detail : String?

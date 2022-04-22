@@ -5,7 +5,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(MainContext.g_type, pointer)
@@ -18,6 +18,10 @@ module GLib
       LibGObject.g_boxed_free(MainContext.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::MainContext)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGLib.g_main_context_get_type
@@ -27,38 +31,23 @@ module GLib
       # g_main_context_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_new
 
       # Return value handling
+
       @pointer = _retval
-    end
-
-    def self.new_with_flags(flags : GLib::MainContextFlags) : self
-      # g_main_context_new_with_flags: (Constructor)
-      # Returns: (transfer full)
-
-      # Handle parameters
-
-      # C call
-      _retval = LibGLib.g_main_context_new_with_flags(flags)
-
-      # Return value handling
-      GLib::MainContext.new(_retval, GICrystal::Transfer::Full)
     end
 
     def acquire : Bool
       # g_main_context_acquire: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_acquire(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -67,22 +56,22 @@ module GLib
       # @fds: (array length=n_fds element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_fds = fds.size
+      # Generator::ArrayArgPlan
       fds = fds.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGLib.g_main_context_check(self, max_priority, fds, n_fds)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def dispatch : Nil
       # g_main_context_dispatch: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_main_context_dispatch(self)
@@ -95,7 +84,7 @@ module GLib
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -106,6 +95,7 @@ module GLib
       _retval = LibGLib.g_main_context_find_source_by_funcs_user_data(self, funcs, user_data)
 
       # Return value handling
+
       GLib::Source.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -113,12 +103,11 @@ module GLib
       # g_main_context_find_source_by_id: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_find_source_by_id(self, source_id)
 
       # Return value handling
+
       GLib::Source.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -127,7 +116,7 @@ module GLib
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -138,6 +127,7 @@ module GLib
       _retval = LibGLib.g_main_context_find_source_by_user_data(self, user_data)
 
       # Return value handling
+
       GLib::Source.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -147,12 +137,14 @@ module GLib
       # @notify: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(Void).null
              else
                data.to_unsafe
              end
+
+      # Generator::NullableArrayPlan
       notify = if notify.nil?
                  LibGLib::DestroyNotify.null
                else
@@ -169,12 +161,11 @@ module GLib
       # g_main_context_is_owner: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_is_owner(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -182,12 +173,11 @@ module GLib
       # g_main_context_iteration: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_iteration(self, may_block)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -195,20 +185,17 @@ module GLib
       # g_main_context_pending: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_pending(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def pop_thread_default : Nil
       # g_main_context_pop_thread_default: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_main_context_pop_thread_default(self)
@@ -221,21 +208,20 @@ module GLib
       # @priority: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       priority = Pointer(Int32).null
 
       # C call
       _retval = LibGLib.g_main_context_prepare(self, priority)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def push_thread_default : Nil
       # g_main_context_push_thread_default: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_main_context_push_thread_default(self)
@@ -249,14 +235,16 @@ module GLib
       # @fds: (out) (caller-allocates) (array length=n_fds element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_fds = fds.size
+      # Generator::ArrayArgPlan
       fds = fds.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGLib.g_main_context_query(self, max_priority, timeout_, fds, n_fds)
 
       # Return value handling
+
       _retval
     end
 
@@ -264,20 +252,17 @@ module GLib
       # g_main_context_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_ref(self)
 
       # Return value handling
+
       GLib::MainContext.new(_retval, GICrystal::Transfer::Full)
     end
 
     def release : Nil
       # g_main_context_release: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_main_context_release(self)
@@ -289,8 +274,6 @@ module GLib
       # g_main_context_unref: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGLib.g_main_context_unref(self)
 
@@ -301,20 +284,17 @@ module GLib
       # g_main_context_wait: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_wait(self, cond, mutex)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def wakeup : Nil
       # g_main_context_wakeup: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_main_context_wakeup(self)
@@ -326,12 +306,11 @@ module GLib
       # g_main_context_default: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_default
 
       # Return value handling
+
       GLib::MainContext.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -339,12 +318,11 @@ module GLib
       # g_main_context_get_thread_default: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_get_thread_default
 
       # Return value handling
+
       GLib::MainContext.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -352,12 +330,11 @@ module GLib
       # g_main_context_ref_thread_default: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_context_ref_thread_default
 
       # Return value handling
+
       GLib::MainContext.new(_retval, GICrystal::Transfer::Full)
     end
 

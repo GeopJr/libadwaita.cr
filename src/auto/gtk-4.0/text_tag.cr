@@ -8,10 +8,10 @@ module Gtk
   # which gives an overview of all the objects and data types
   # related to the text widget and how they work together.
   #
-  # Tags should be in the [class@Gtk.TextTagTable] for a given
+  # Tags should be in the `Gtk#TextTagTable` for a given
   # `GtkTextBuffer` before using them with that buffer.
   #
-  # [method@Gtk.TextBuffer.create_tag] is the best way to create tags.
+  # `Gtk::TextBuffer#create_tag` is the best way to create tags.
   # See “gtk4-demo” for numerous examples.
   #
   # For each property of `GtkTextTag`, there is a “set” property, e.g.
@@ -19,8 +19,16 @@ module Gtk
   # whether a property has been set or not.
   #
   # They are maintained by GTK and you should not set them independently.
+  @[GObject::GeneratedWrapper]
   class TextTag < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::TextTagClass), class_init,
+        sizeof(LibGtk::TextTag), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -32,453 +40,457 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 89).new(LibGObject::Value.new)
       _n = 0
 
-      if accumulative_margin
+      if !accumulative_margin.nil?
         (_names.to_unsafe + _n).value = "accumulative-margin".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accumulative_margin)
         _n += 1
       end
-      if allow_breaks
+      if !allow_breaks.nil?
         (_names.to_unsafe + _n).value = "allow-breaks".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allow_breaks)
         _n += 1
       end
-      if allow_breaks_set
+      if !allow_breaks_set.nil?
         (_names.to_unsafe + _n).value = "allow-breaks-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, allow_breaks_set)
         _n += 1
       end
-      if background
+      if !background.nil?
         (_names.to_unsafe + _n).value = "background".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, background)
         _n += 1
       end
-      if background_full_height
+      if !background_full_height.nil?
         (_names.to_unsafe + _n).value = "background-full-height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, background_full_height)
         _n += 1
       end
-      if background_full_height_set
+      if !background_full_height_set.nil?
         (_names.to_unsafe + _n).value = "background-full-height-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, background_full_height_set)
         _n += 1
       end
-      if background_rgba
+      if !background_rgba.nil?
         (_names.to_unsafe + _n).value = "background-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, background_rgba)
         _n += 1
       end
-      if background_set
+      if !background_set.nil?
         (_names.to_unsafe + _n).value = "background-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, background_set)
         _n += 1
       end
-      if direction
+      if !direction.nil?
         (_names.to_unsafe + _n).value = "direction".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, direction)
         _n += 1
       end
-      if editable
+      if !editable.nil?
         (_names.to_unsafe + _n).value = "editable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editable)
         _n += 1
       end
-      if editable_set
+      if !editable_set.nil?
         (_names.to_unsafe + _n).value = "editable-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editable_set)
         _n += 1
       end
-      if fallback
+      if !fallback.nil?
         (_names.to_unsafe + _n).value = "fallback".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, fallback)
         _n += 1
       end
-      if fallback_set
+      if !fallback_set.nil?
         (_names.to_unsafe + _n).value = "fallback-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, fallback_set)
         _n += 1
       end
-      if family
+      if !family.nil?
         (_names.to_unsafe + _n).value = "family".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, family)
         _n += 1
       end
-      if family_set
+      if !family_set.nil?
         (_names.to_unsafe + _n).value = "family-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, family_set)
         _n += 1
       end
-      if font
+      if !font.nil?
         (_names.to_unsafe + _n).value = "font".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, font)
         _n += 1
       end
-      if font_desc
+      if !font_desc.nil?
         (_names.to_unsafe + _n).value = "font-desc".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, font_desc)
         _n += 1
       end
-      if font_features
+      if !font_features.nil?
         (_names.to_unsafe + _n).value = "font-features".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, font_features)
         _n += 1
       end
-      if font_features_set
+      if !font_features_set.nil?
         (_names.to_unsafe + _n).value = "font-features-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, font_features_set)
         _n += 1
       end
-      if foreground
+      if !foreground.nil?
         (_names.to_unsafe + _n).value = "foreground".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, foreground)
         _n += 1
       end
-      if foreground_rgba
+      if !foreground_rgba.nil?
         (_names.to_unsafe + _n).value = "foreground-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, foreground_rgba)
         _n += 1
       end
-      if foreground_set
+      if !foreground_set.nil?
         (_names.to_unsafe + _n).value = "foreground-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, foreground_set)
         _n += 1
       end
-      if indent
+      if !indent.nil?
         (_names.to_unsafe + _n).value = "indent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, indent)
         _n += 1
       end
-      if indent_set
+      if !indent_set.nil?
         (_names.to_unsafe + _n).value = "indent-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, indent_set)
         _n += 1
       end
-      if insert_hyphens
+      if !insert_hyphens.nil?
         (_names.to_unsafe + _n).value = "insert-hyphens".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, insert_hyphens)
         _n += 1
       end
-      if insert_hyphens_set
+      if !insert_hyphens_set.nil?
         (_names.to_unsafe + _n).value = "insert-hyphens-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, insert_hyphens_set)
         _n += 1
       end
-      if invisible
+      if !invisible.nil?
         (_names.to_unsafe + _n).value = "invisible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, invisible)
         _n += 1
       end
-      if invisible_set
+      if !invisible_set.nil?
         (_names.to_unsafe + _n).value = "invisible-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, invisible_set)
         _n += 1
       end
-      if justification
+      if !justification.nil?
         (_names.to_unsafe + _n).value = "justification".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, justification)
         _n += 1
       end
-      if justification_set
+      if !justification_set.nil?
         (_names.to_unsafe + _n).value = "justification-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, justification_set)
         _n += 1
       end
-      if language
+      if !language.nil?
         (_names.to_unsafe + _n).value = "language".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, language)
         _n += 1
       end
-      if language_set
+      if !language_set.nil?
         (_names.to_unsafe + _n).value = "language-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, language_set)
         _n += 1
       end
-      if left_margin
+      if !left_margin.nil?
         (_names.to_unsafe + _n).value = "left-margin".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, left_margin)
         _n += 1
       end
-      if left_margin_set
+      if !left_margin_set.nil?
         (_names.to_unsafe + _n).value = "left-margin-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, left_margin_set)
         _n += 1
       end
-      if letter_spacing
+      if !letter_spacing.nil?
         (_names.to_unsafe + _n).value = "letter-spacing".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, letter_spacing)
         _n += 1
       end
-      if letter_spacing_set
+      if !letter_spacing_set.nil?
         (_names.to_unsafe + _n).value = "letter-spacing-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, letter_spacing_set)
         _n += 1
       end
-      if line_height
+      if !line_height.nil?
         (_names.to_unsafe + _n).value = "line-height".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, line_height)
         _n += 1
       end
-      if line_height_set
+      if !line_height_set.nil?
         (_names.to_unsafe + _n).value = "line-height-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, line_height_set)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if overline
+      if !overline.nil?
         (_names.to_unsafe + _n).value = "overline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overline)
         _n += 1
       end
-      if overline_rgba
+      if !overline_rgba.nil?
         (_names.to_unsafe + _n).value = "overline-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overline_rgba)
         _n += 1
       end
-      if overline_rgba_set
+      if !overline_rgba_set.nil?
         (_names.to_unsafe + _n).value = "overline-rgba-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overline_rgba_set)
         _n += 1
       end
-      if overline_set
+      if !overline_set.nil?
         (_names.to_unsafe + _n).value = "overline-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overline_set)
         _n += 1
       end
-      if paragraph_background
+      if !paragraph_background.nil?
         (_names.to_unsafe + _n).value = "paragraph-background".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, paragraph_background)
         _n += 1
       end
-      if paragraph_background_rgba
+      if !paragraph_background_rgba.nil?
         (_names.to_unsafe + _n).value = "paragraph-background-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, paragraph_background_rgba)
         _n += 1
       end
-      if paragraph_background_set
+      if !paragraph_background_set.nil?
         (_names.to_unsafe + _n).value = "paragraph-background-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, paragraph_background_set)
         _n += 1
       end
-      if pixels_above_lines
+      if !pixels_above_lines.nil?
         (_names.to_unsafe + _n).value = "pixels-above-lines".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pixels_above_lines)
         _n += 1
       end
-      if pixels_above_lines_set
+      if !pixels_above_lines_set.nil?
         (_names.to_unsafe + _n).value = "pixels-above-lines-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pixels_above_lines_set)
         _n += 1
       end
-      if pixels_below_lines
+      if !pixels_below_lines.nil?
         (_names.to_unsafe + _n).value = "pixels-below-lines".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pixels_below_lines)
         _n += 1
       end
-      if pixels_below_lines_set
+      if !pixels_below_lines_set.nil?
         (_names.to_unsafe + _n).value = "pixels-below-lines-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pixels_below_lines_set)
         _n += 1
       end
-      if pixels_inside_wrap
+      if !pixels_inside_wrap.nil?
         (_names.to_unsafe + _n).value = "pixels-inside-wrap".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pixels_inside_wrap)
         _n += 1
       end
-      if pixels_inside_wrap_set
+      if !pixels_inside_wrap_set.nil?
         (_names.to_unsafe + _n).value = "pixels-inside-wrap-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pixels_inside_wrap_set)
         _n += 1
       end
-      if right_margin
+      if !right_margin.nil?
         (_names.to_unsafe + _n).value = "right-margin".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, right_margin)
         _n += 1
       end
-      if right_margin_set
+      if !right_margin_set.nil?
         (_names.to_unsafe + _n).value = "right-margin-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, right_margin_set)
         _n += 1
       end
-      if rise
+      if !rise.nil?
         (_names.to_unsafe + _n).value = "rise".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, rise)
         _n += 1
       end
-      if rise_set
+      if !rise_set.nil?
         (_names.to_unsafe + _n).value = "rise-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, rise_set)
         _n += 1
       end
-      if scale
+      if !scale.nil?
         (_names.to_unsafe + _n).value = "scale".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale)
         _n += 1
       end
-      if scale_set
+      if !scale_set.nil?
         (_names.to_unsafe + _n).value = "scale-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_set)
         _n += 1
       end
-      if sentence
+      if !sentence.nil?
         (_names.to_unsafe + _n).value = "sentence".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sentence)
         _n += 1
       end
-      if sentence_set
+      if !sentence_set.nil?
         (_names.to_unsafe + _n).value = "sentence-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sentence_set)
         _n += 1
       end
-      if show_spaces
+      if !show_spaces.nil?
         (_names.to_unsafe + _n).value = "show-spaces".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_spaces)
         _n += 1
       end
-      if show_spaces_set
+      if !show_spaces_set.nil?
         (_names.to_unsafe + _n).value = "show-spaces-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, show_spaces_set)
         _n += 1
       end
-      if size
+      if !size.nil?
         (_names.to_unsafe + _n).value = "size".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, size)
         _n += 1
       end
-      if size_points
+      if !size_points.nil?
         (_names.to_unsafe + _n).value = "size-points".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, size_points)
         _n += 1
       end
-      if size_set
+      if !size_set.nil?
         (_names.to_unsafe + _n).value = "size-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, size_set)
         _n += 1
       end
-      if stretch
+      if !stretch.nil?
         (_names.to_unsafe + _n).value = "stretch".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, stretch)
         _n += 1
       end
-      if stretch_set
+      if !stretch_set.nil?
         (_names.to_unsafe + _n).value = "stretch-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, stretch_set)
         _n += 1
       end
-      if strikethrough
+      if !strikethrough.nil?
         (_names.to_unsafe + _n).value = "strikethrough".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, strikethrough)
         _n += 1
       end
-      if strikethrough_rgba
+      if !strikethrough_rgba.nil?
         (_names.to_unsafe + _n).value = "strikethrough-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, strikethrough_rgba)
         _n += 1
       end
-      if strikethrough_rgba_set
+      if !strikethrough_rgba_set.nil?
         (_names.to_unsafe + _n).value = "strikethrough-rgba-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, strikethrough_rgba_set)
         _n += 1
       end
-      if strikethrough_set
+      if !strikethrough_set.nil?
         (_names.to_unsafe + _n).value = "strikethrough-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, strikethrough_set)
         _n += 1
       end
-      if style
+      if !style.nil?
         (_names.to_unsafe + _n).value = "style".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, style)
         _n += 1
       end
-      if style_set
+      if !style_set.nil?
         (_names.to_unsafe + _n).value = "style-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, style_set)
         _n += 1
       end
-      if tabs
+      if !tabs.nil?
         (_names.to_unsafe + _n).value = "tabs".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tabs)
         _n += 1
       end
-      if tabs_set
+      if !tabs_set.nil?
         (_names.to_unsafe + _n).value = "tabs-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tabs_set)
         _n += 1
       end
-      if text_transform
+      if !text_transform.nil?
         (_names.to_unsafe + _n).value = "text-transform".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, text_transform)
         _n += 1
       end
-      if text_transform_set
+      if !text_transform_set.nil?
         (_names.to_unsafe + _n).value = "text-transform-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, text_transform_set)
         _n += 1
       end
-      if underline
+      if !underline.nil?
         (_names.to_unsafe + _n).value = "underline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, underline)
         _n += 1
       end
-      if underline_rgba
+      if !underline_rgba.nil?
         (_names.to_unsafe + _n).value = "underline-rgba".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, underline_rgba)
         _n += 1
       end
-      if underline_rgba_set
+      if !underline_rgba_set.nil?
         (_names.to_unsafe + _n).value = "underline-rgba-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, underline_rgba_set)
         _n += 1
       end
-      if underline_set
+      if !underline_set.nil?
         (_names.to_unsafe + _n).value = "underline-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, underline_set)
         _n += 1
       end
-      if variant
+      if !variant.nil?
         (_names.to_unsafe + _n).value = "variant".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, variant)
         _n += 1
       end
-      if variant_set
+      if !variant_set.nil?
         (_names.to_unsafe + _n).value = "variant-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, variant_set)
         _n += 1
       end
-      if weight
+      if !weight.nil?
         (_names.to_unsafe + _n).value = "weight".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, weight)
         _n += 1
       end
-      if weight_set
+      if !weight_set.nil?
         (_names.to_unsafe + _n).value = "weight-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, weight_set)
         _n += 1
       end
-      if word
+      if !word.nil?
         (_names.to_unsafe + _n).value = "word".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, word)
         _n += 1
       end
-      if word_set
+      if !word_set.nil?
         (_names.to_unsafe + _n).value = "word-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, word_set)
         _n += 1
       end
-      if wrap_mode
+      if !wrap_mode.nil?
         (_names.to_unsafe + _n).value = "wrap-mode".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, wrap_mode)
         _n += 1
       end
-      if wrap_mode_set
+      if !wrap_mode_set.nil?
         (_names.to_unsafe + _n).value = "wrap-mode-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, wrap_mode_set)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(TextTag.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -610,7 +622,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "direction", pointerof(value), Pointer(Void).null)
-      Gtk::TextDirection.from_value(value)
+      Gtk::TextDirection.new(value)
     end
 
     def editable=(value : Bool) : Bool
@@ -902,7 +914,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "justification", pointerof(value), Pointer(Void).null)
-      Gtk::Justification.from_value(value)
+      Gtk::Justification.new(value)
     end
 
     def justification_set=(value : Bool) : Bool
@@ -1067,7 +1079,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "overline", pointerof(value), Pointer(Void).null)
-      Pango::Overline.from_value(value)
+      Pango::Overline.new(value)
     end
 
     def overline_rgba=(value : Gdk::RGBA?) : Gdk::RGBA?
@@ -1374,7 +1386,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "show-spaces", pointerof(value), Pointer(Void).null)
-      Pango::ShowFlags.from_value(value)
+      Pango::ShowFlags.new(value)
     end
 
     def show_spaces_set=(value : Bool) : Bool
@@ -1449,7 +1461,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "stretch", pointerof(value), Pointer(Void).null)
-      Pango::Stretch.from_value(value)
+      Pango::Stretch.new(value)
     end
 
     def stretch_set=(value : Bool) : Bool
@@ -1539,7 +1551,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "style", pointerof(value), Pointer(Void).null)
-      Pango::Style.from_value(value)
+      Pango::Style.new(value)
     end
 
     def style_set=(value : Bool) : Bool
@@ -1599,7 +1611,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "text-transform", pointerof(value), Pointer(Void).null)
-      Pango::TextTransform.from_value(value)
+      Pango::TextTransform.new(value)
     end
 
     def text_transform_set=(value : Bool) : Bool
@@ -1629,7 +1641,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "underline", pointerof(value), Pointer(Void).null)
-      Pango::Underline.from_value(value)
+      Pango::Underline.new(value)
     end
 
     def underline_rgba=(value : Gdk::RGBA?) : Gdk::RGBA?
@@ -1689,7 +1701,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "variant", pointerof(value), Pointer(Void).null)
-      Pango::Variant.from_value(value)
+      Pango::Variant.new(value)
     end
 
     def variant_set=(value : Bool) : Bool
@@ -1779,7 +1791,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "wrap-mode", pointerof(value), Pointer(Void).null)
-      Gtk::WrapMode.from_value(value)
+      Gtk::WrapMode.new(value)
     end
 
     def wrap_mode_set=(value : Bool) : Bool
@@ -1797,12 +1809,13 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a `GtkTextTag`.
     def initialize(name : ::String?)
       # gtk_text_tag_new: (Constructor)
       # @name: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       name = if name.nil?
                Pointer(LibC::Char).null
              else
@@ -1813,14 +1826,18 @@ module Gtk
       _retval = LibGtk.gtk_text_tag_new(name)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Emits the [signal@Gtk.TextTagTable::tag-changed] signal on the
+    # `GtkTextTagTable` where the tag is included.
+    #
+    # The signal is already emitted when setting a `GtkTextTag` property.
+    # This function is useful for a `GtkTextTag` subclass.
     def changed(size_changed : Bool) : Nil
       # gtk_text_tag_changed: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_text_tag_changed(self, size_changed)
@@ -1828,24 +1845,36 @@ module Gtk
       # Return value handling
     end
 
+    # Get the tag priority.
     def priority : Int32
       # gtk_text_tag_get_priority: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_text_tag_get_priority(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Sets the priority of a `GtkTextTag`.
+    #
+    # Valid priorities start at 0 and go to one less than
+    # `Gtk::TextTagTable#size`. Each tag in a table
+    # has a unique priority; setting the priority of one tag shifts
+    # the priorities of all the other tags in the table to maintain
+    # a unique priority for each tag.
+    #
+    # Higher priority tags “win” if two tags both set the same text
+    # attribute. When adding a tag to a tag table, it will be assigned
+    # the highest priority in the table by default; so normally the
+    # precedence of a set of tags is the order in which they were added
+    # to the table, or created with `Gtk::TextBuffer#create_tag`,
+    # which adds the tag to the buffer’s table automatically.
     def priority=(priority : Int32) : Nil
       # gtk_text_tag_set_priority: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_text_tag_set_priority(self, priority)

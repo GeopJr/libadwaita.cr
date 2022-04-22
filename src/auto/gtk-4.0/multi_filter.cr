@@ -5,11 +5,19 @@ require "./buildable"
 
 module Gtk
   # `GtkMultiFilter` is the base class for filters that combine multiple filters.
+  @[GObject::GeneratedWrapper]
   class MultiFilter < Filter
     include Gio::ListModel
     include Buildable
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::MultiFilterClass), class_init,
+        sizeof(LibGtk::MultiFilter), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -21,13 +29,14 @@ module Gtk
       LibGtk.gtk_multi_filter_get_type
     end
 
+    # Adds a @filter to @self to use for matching.
     def append(filter : Gtk::Filter) : Nil
       # gtk_multi_filter_append: (Method)
       # @filter: (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-      LibGObject.g_object_ref(filter)
+      # Generator::TransferFullArgPlan
+      LibGObject.g_object_ref_sink(filter)
 
       # C call
       LibGtk.gtk_multi_filter_append(self, filter)
@@ -35,11 +44,14 @@ module Gtk
       # Return value handling
     end
 
+    # Removes the filter at the given @position from the list of filters used
+    # by @self.
+    #
+    # If @position is larger than the number of filters, nothing happens and
+    # the function returns.
     def remove(position : UInt32) : Nil
       # gtk_multi_filter_remove: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_multi_filter_remove(self, position)

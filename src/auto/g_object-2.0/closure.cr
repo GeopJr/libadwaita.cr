@@ -47,7 +47,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::Closure))
@@ -77,159 +77,148 @@ module GObject
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::Closure)).zero?
+    end
+
     def ref_count : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def ref_count=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
     def meta_marshal_nouse : UInt32
-      # Property getter
       _var = (@pointer + 4).as(Pointer(UInt32))
       _var.value
     end
 
     def meta_marshal_nouse=(value : UInt32)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(UInt32)).value = value
       value
     end
 
     def n_guards : UInt32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(UInt32))
       _var.value
     end
 
     def n_guards=(value : UInt32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(UInt32)).value = value
       value
     end
 
     def n_fnotifiers : UInt32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(UInt32))
       _var.value
     end
 
     def n_fnotifiers=(value : UInt32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(UInt32)).value = value
       value
     end
 
     def n_inotifiers : UInt32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(UInt32))
       _var.value
     end
 
     def n_inotifiers=(value : UInt32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(UInt32)).value = value
       value
     end
 
     def in_inotify : UInt32
-      # Property getter
       _var = (@pointer + 20).as(Pointer(UInt32))
       _var.value
     end
 
     def in_inotify=(value : UInt32)
-      # Property setter
       _var = (@pointer + 20).as(Pointer(UInt32)).value = value
       value
     end
 
     def floating : UInt32
-      # Property getter
       _var = (@pointer + 24).as(Pointer(UInt32))
       _var.value
     end
 
     def floating=(value : UInt32)
-      # Property setter
       _var = (@pointer + 24).as(Pointer(UInt32)).value = value
       value
     end
 
     def derivative_flag : UInt32
-      # Property getter
       _var = (@pointer + 28).as(Pointer(UInt32))
       _var.value
     end
 
     def derivative_flag=(value : UInt32)
-      # Property setter
       _var = (@pointer + 28).as(Pointer(UInt32)).value = value
       value
     end
 
     def in_marshal : UInt32
-      # Property getter
       _var = (@pointer + 32).as(Pointer(UInt32))
       _var.value
     end
 
     def in_marshal=(value : UInt32)
-      # Property setter
       _var = (@pointer + 32).as(Pointer(UInt32)).value = value
       value
     end
 
     def is_invalid : UInt32
-      # Property getter
       _var = (@pointer + 36).as(Pointer(UInt32))
       _var.value
     end
 
     def is_invalid=(value : UInt32)
-      # Property setter
       _var = (@pointer + 36).as(Pointer(UInt32)).value = value
       value
     end
 
     def marshal : Pointer(Void)
-      # Property getter
       _var = (@pointer + 40).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def marshal=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 40).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 40).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGObject::Closure))
       value
     end
 
-    def data : Pointer(Void)
-      # Property getter
+    def data!
+      self.data.not_nil!
+    end
+
+    def data : Pointer(Void)?
       _var = (@pointer + 48).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def data=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 48).as(Pointer(Pointer(Void))).value = value
+    def data=(value : Pointer(Void)?)
+      _var = (@pointer + 48).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
-    def notifiers : GObject::ClosureNotifyData
-      # Property getter
+    def notifiers!
+      self.notifiers.not_nil!
+    end
+
+    def notifiers : GObject::ClosureNotifyData?
       _var = (@pointer + 56).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GObject::ClosureNotifyData.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def notifiers=(value : GObject::ClosureNotifyData)
-      # Property setter
-      _var = (@pointer + 56).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def notifiers=(value : GObject::ClosureNotifyData?)
+      _var = (@pointer + 56).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
@@ -242,12 +231,11 @@ module GObject
       # g_closure_new_object: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGObject.g_closure_new_object(sizeof_closure, object)
 
       # Return value handling
+
       GObject::Closure.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -256,7 +244,7 @@ module GObject
       # @data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(Void).null
              else
@@ -267,14 +255,14 @@ module GObject
       _retval = LibGObject.g_closure_new_simple(sizeof_closure, data)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       GObject::Closure.new(_retval, GICrystal::Transfer::Full)
     end
 
     def invalidate : Nil
       # g_closure_invalidate: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGObject.g_closure_invalidate(self)
@@ -289,22 +277,27 @@ module GObject
       # @invocation_hint: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
-      n_param_values = param_values.size
+      # Generator::OutArgUsedInReturnPlan
       return_value = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
+      return_value = GObject::Value.new
+      # Generator::ArrayLengthArgPlan
+      n_param_values = param_values.size
+      # Generator::ArrayArgPlan
+      param_values = param_values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
+
+      # Generator::NullableArrayPlan
       invocation_hint = if invocation_hint.nil?
                           Pointer(Void).null
                         else
                           invocation_hint.to_unsafe
                         end
-      param_values = param_values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
-
-      return_value = GObject::Value.new
 
       # C call
       LibGObject.g_closure_invoke(self, return_value, n_param_values, param_values, invocation_hint)
 
       # Return value handling
+
       return_value
     end
 
@@ -312,20 +305,17 @@ module GObject
       # g_closure_ref: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGObject.g_closure_ref(self)
 
       # Return value handling
+
       GObject::Closure.new(_retval, GICrystal::Transfer::None)
     end
 
     def sink : Nil
       # g_closure_sink: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGObject.g_closure_sink(self)
@@ -336,8 +326,6 @@ module GObject
     def unref : Nil
       # g_closure_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGObject.g_closure_unref(self)

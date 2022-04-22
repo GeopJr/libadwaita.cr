@@ -31,6 +31,22 @@ lib LibGdkPixbuf
 
   # Structs
 
+  struct PixbufAnimationClass # 168 bytes long
+    parent_class : LibGObject::ObjectClass
+    is_static_image : -> Void
+    get_static_image : -> Void
+    get_size : -> Void
+    get_iter : -> Void
+  end
+
+  struct PixbufAnimationIterClass # 168 bytes long
+    parent_class : LibGObject::ObjectClass
+    get_delay_time : -> Void
+    get_pixbuf : -> Void
+    on_currently_loading_frame : -> Void
+    advance : -> Void
+  end
+
   struct PixbufFormat # 64 bytes long
     name : Pointer(LibC::Char)
     signature : Pointer(LibGdkPixbuf::PixbufModulePattern)
@@ -41,6 +57,14 @@ lib LibGdkPixbuf
     flags : UInt32
     disabled : LibC::Int
     license : Pointer(LibC::Char)
+  end
+
+  struct PixbufLoaderClass # 168 bytes long
+    parent_class : LibGObject::ObjectClass
+    size_prepared : -> Void
+    area_prepared : -> Void
+    area_updated : -> Void
+    closed : -> Void
   end
 
   struct PixbufModule # 136 bytes long
@@ -68,6 +92,8 @@ lib LibGdkPixbuf
     mask : Pointer(LibC::Char)
     relevance : Int32
   end
+
+  type PixbufSimpleAnimClass = Void # Struct with zero bytes
 
   # Unions
 

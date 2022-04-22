@@ -6,7 +6,7 @@ module Gtk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGtk::Border))
@@ -27,50 +27,46 @@ module Gtk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::Border)).zero?
+    end
+
     def left : Int16
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Int16))
       _var.value
     end
 
     def left=(value : Int16)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Int16)).value = value
       value
     end
 
     def right : Int16
-      # Property getter
       _var = (@pointer + 2).as(Pointer(Int16))
       _var.value
     end
 
     def right=(value : Int16)
-      # Property setter
       _var = (@pointer + 2).as(Pointer(Int16)).value = value
       value
     end
 
     def top : Int16
-      # Property getter
       _var = (@pointer + 4).as(Pointer(Int16))
       _var.value
     end
 
     def top=(value : Int16)
-      # Property setter
       _var = (@pointer + 4).as(Pointer(Int16)).value = value
       value
     end
 
     def bottom : Int16
-      # Property getter
       _var = (@pointer + 6).as(Pointer(Int16))
       _var.value
     end
 
     def bottom=(value : Int16)
-      # Property setter
       _var = (@pointer + 6).as(Pointer(Int16)).value = value
       value
     end
@@ -84,12 +80,11 @@ module Gtk
       # gtk_border_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_border_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -97,20 +92,17 @@ module Gtk
       # gtk_border_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_border_copy(self)
 
       # Return value handling
+
       Gtk::Border.new(_retval, GICrystal::Transfer::Full)
     end
 
     def free : Nil
       # gtk_border_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_border_free(self)

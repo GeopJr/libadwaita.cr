@@ -20,8 +20,16 @@ module Gio
   # Before GLib 2.72, `<gio/gunixcredentialsmessage.h>` belonged to the UNIX-specific
   # GIO interfaces, thus you had to use the `gio-unix-2.0.pc` pkg-config file
   # when using it. This is no longer necessary since GLib 2.72.
+  @[GObject::GeneratedWrapper]
   class UnixCredentialsMessage < SocketControlMessage
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::UnixCredentialsMessageClass), class_init,
+        sizeof(LibGio::UnixCredentialsMessage), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -33,13 +41,17 @@ module Gio
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if credentials
+      if !credentials.nil?
         (_names.to_unsafe + _n).value = "credentials".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, credentials)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(UnixCredentialsMessage.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -62,55 +74,55 @@ module Gio
       Gio::Credentials.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    # Creates a new #GUnixCredentialsMessage with credentials matching the current processes.
     def initialize
       # g_unix_credentials_message_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_unix_credentials_message_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Creates a new #GUnixCredentialsMessage holding @credentials.
     def self.new_with_credentials(credentials : Gio::Credentials) : self
       # g_unix_credentials_message_new_with_credentials: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_unix_credentials_message_new_with_credentials(credentials)
 
       # Return value handling
+
       Gio::UnixCredentialsMessage.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Checks if passing #GCredentials on a #GSocket is supported on this platform.
     def self.is_supported : Bool
       # g_unix_credentials_message_is_supported: (None)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_unix_credentials_message_is_supported
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the credentials stored in @message.
     def credentials : Gio::Credentials
       # g_unix_credentials_message_get_credentials: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_unix_credentials_message_get_credentials(self)
 
       # Return value handling
+
       Gio::Credentials.new(_retval, GICrystal::Transfer::None)
     end
   end

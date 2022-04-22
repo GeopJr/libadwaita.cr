@@ -1,12 +1,12 @@
 module Gtk
   # Represents a request of a screen object in a given orientation. These
   # are primarily used in container implementations when allocating a natural
-  # size for children calling. See [func@distribute_natural_allocation].
+  # size for children calling. See `#distribute_natural_allocation`.
   class RequestedSize
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGtk::RequestedSize))
@@ -26,38 +26,41 @@ module Gtk
     def finalize
     end
 
-    def data : Pointer(Void)
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::RequestedSize)).zero?
+    end
+
+    def data!
+      self.data.not_nil!
+    end
+
+    def data : Pointer(Void)?
       _var = (@pointer + 0).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def data=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value
+    def data=(value : Pointer(Void)?)
+      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
     def minimum_size : Int32
-      # Property getter
       _var = (@pointer + 8).as(Pointer(Int32))
       _var.value
     end
 
     def minimum_size=(value : Int32)
-      # Property setter
       _var = (@pointer + 8).as(Pointer(Int32)).value = value
       value
     end
 
     def natural_size : Int32
-      # Property getter
       _var = (@pointer + 12).as(Pointer(Int32))
       _var.value
     end
 
     def natural_size=(value : Int32)
-      # Property setter
       _var = (@pointer + 12).as(Pointer(Int32)).value = value
       value
     end

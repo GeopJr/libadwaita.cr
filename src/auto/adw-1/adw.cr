@@ -57,7 +57,7 @@ require "./window.cr"
 require "./window_title.cr"
 
 module Adw
-  # Indicates an [class@Animation] with an infinite duration.
+  # Indicates an `#Animation` with an infinite duration.
   #
   # This value is mostly used internally.
   DURATION_INFINITE = 4294967295_u32
@@ -83,11 +83,11 @@ module Adw
 
   # Enums
 
-  # Describes the possible states of an [class@Animation].
+  # Describes the possible states of an `#Animation`.
   #
-  # The state can be controlled with [method@Animation.play],
-  # [method@Animation.pause], [method@Animation.resume],
-  # [method@Animation.reset] and [method@Animation.skip].
+  # The state can be controlled with `Animation#play`,
+  # `Animation#pause`, `Animation#resume`,
+  # `Animation#reset` and `Animation#skip`.
   enum AnimationState : UInt32
     # The animation hasn't started yet.
     Idle = 0
@@ -99,7 +99,7 @@ module Adw
     Finished = 3
   end
 
-  # Describes title centering behavior of a [class@HeaderBar] widget.
+  # Describes title centering behavior of a `#HeaderBar` widget.
   enum CenteringPolicy : UInt32
     # Keep the title centered when possible
     Loose = 0
@@ -110,7 +110,7 @@ module Adw
   # Application color schemes for [property@StyleManager:color-scheme].
   enum ColorScheme : UInt32
     # Inherit the parent color-scheme. When set on the
-    #   `AdwStyleManager` returned by [func@StyleManager.get_default], it's
+    #   `AdwStyleManager` returned by `StyleManager#default`, it's
     #   equivalent to `ADW_COLOR_SCHEME_PREFER_LIGHT`.
     Default = 0
     # Always use light appearance.
@@ -126,7 +126,7 @@ module Adw
   end
 
   # Describes the available easing functions for use with
-  # [class@TimedAnimation].
+  # `#TimedAnimation`.
   #
   # New values may be added to this enumeration over time.
   enum Easing : UInt32
@@ -209,7 +209,7 @@ module Adw
     EaseInOutBounce = 30
   end
 
-  # Describes the possible folding behavior of a [class@Flap] widget.
+  # Describes the possible folding behavior of a `#Flap` widget.
   enum FlapFoldPolicy : UInt32
     # Disable folding, the flap cannot reach narrow
     #   sizes.
@@ -221,10 +221,10 @@ module Adw
     Auto = 2
   end
 
-  # Describes transitions types of a [class@Flap] widget.
+  # Describes transitions types of a `#Flap` widget.
   #
   # It determines the type of animation when transitioning between children in a
-  # [class@Flap] widget, as well as which areas can be swiped via
+  # `#Flap` widget, as well as which areas can be swiped via
   # [property@Flap:swipe-to-open] and [property@Flap:swipe-to-close].
   #
   # New values may be added to this enum over time.
@@ -241,7 +241,7 @@ module Adw
     Slide = 2
   end
 
-  # Determines when [class@Flap] and [class@Leaflet] will fold.
+  # Determines when `#Flap` and `#Leaflet` will fold.
   enum FoldThresholdPolicy : UInt32
     # Folding is based on the minimum size
     Minimum = 0
@@ -249,7 +249,7 @@ module Adw
     Natural = 1
   end
 
-  # Describes the possible transitions in a [class@Leaflet] widget.
+  # Describes the possible transitions in a `#Leaflet` widget.
   #
   # New values may be added to this enumeration over time.
   enum LeafletTransitionType : UInt32
@@ -269,7 +269,7 @@ module Adw
     Forward = 1
   end
 
-  # Describes the possible transitions in a [class@Squeezer] widget.
+  # Describes the possible transitions in a `#Squeezer` widget.
   enum SqueezerTransitionType : UInt32
     # No transition
     None = 0
@@ -277,7 +277,7 @@ module Adw
     Crossfade = 1
   end
 
-  # [class@Toast] behavior when another toast is already displayed.
+  # `#Toast` behavior when another toast is already displayed.
   enum ToastPriority : UInt32
     # the toast will be queued if another toast is
     #   already displayed.
@@ -287,7 +287,7 @@ module Adw
     High = 1
   end
 
-  # Describes the adaptive modes of [class@ViewSwitcher].
+  # Describes the adaptive modes of `#ViewSwitcher`.
   enum ViewSwitcherPolicy : UInt32
     # Force the narrow mode
     Narrow = 0
@@ -296,6 +296,100 @@ module Adw
   end
 
   # Flags
+
+  def self.easing_ease(self _self : Adw::Easing, value : Float64) : Float64
+    # adw_easing_ease: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibAdw.adw_easing_ease(_self, value)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.enable_animations(widget : Gtk::Widget) : Bool
+    # adw_get_enable_animations: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibAdw.adw_get_enable_animations(widget)
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.major_version : UInt32
+    # adw_get_major_version: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibAdw.adw_get_major_version
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.micro_version : UInt32
+    # adw_get_micro_version: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibAdw.adw_get_micro_version
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.minor_version : UInt32
+    # adw_get_minor_version: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibAdw.adw_get_minor_version
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.init : Nil
+    # adw_init: (None)
+    # Returns: (transfer none)
+
+    # C call
+    LibAdw.adw_init
+
+    # Return value handling
+  end
+
+  def self.is_initialized : Bool
+    # adw_is_initialized: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibAdw.adw_is_initialized
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
+  def self.lerp(a : Float64, b : Float64, t : Float64) : Float64
+    # adw_lerp: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibAdw.adw_lerp(a, b, t)
+
+    # Return value handling
+
+    _retval
+  end
 
   # Errors
 

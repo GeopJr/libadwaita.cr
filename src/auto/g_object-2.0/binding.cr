@@ -79,8 +79,16 @@ module GObject
   # binding, source, and target instances to drop.
   #
   # #GBinding is available since GObject 2.26
+  @[GObject::GeneratedWrapper]
   class Binding < Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGObject::Binding), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -92,33 +100,37 @@ module GObject
       _values = StaticArray(LibGObject::Value, 5).new(LibGObject::Value.new)
       _n = 0
 
-      if flags
+      if !flags.nil?
         (_names.to_unsafe + _n).value = "flags".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, flags)
         _n += 1
       end
-      if source
+      if !source.nil?
         (_names.to_unsafe + _n).value = "source".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, source)
         _n += 1
       end
-      if source_property
+      if !source_property.nil?
         (_names.to_unsafe + _n).value = "source-property".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, source_property)
         _n += 1
       end
-      if target
+      if !target.nil?
         (_names.to_unsafe + _n).value = "target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, target)
         _n += 1
       end
-      if target_property
+      if !target_property.nil?
         (_names.to_unsafe + _n).value = "target-property".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, target_property)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(Binding.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -138,7 +150,7 @@ module GObject
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "flags", pointerof(value), Pointer(Void).null)
-      GObject::BindingFlags.from_value(value)
+      GObject::BindingFlags.new(value)
     end
 
     def source=(value : GObject::Object?) : GObject::Object?
@@ -201,102 +213,137 @@ module GObject
       ::String.new(value)
     end
 
+    # Retrieves the #GObject instance used as the source of the binding.
+    #
+    # A #GBinding can outlive the source #GObject as the binding does not hold a
+    # strong reference to the source. If the source is destroyed before the
+    # binding then this function will return %NULL.
     def dup_source : GObject::Object?
       # g_binding_dup_source: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGObject.g_binding_dup_source(self)
 
       # Return value handling
+
       GObject::Object.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Retrieves the #GObject instance used as the target of the binding.
+    #
+    # A #GBinding can outlive the target #GObject as the binding does not hold a
+    # strong reference to the target. If the target is destroyed before the
+    # binding then this function will return %NULL.
     def dup_target : GObject::Object?
       # g_binding_dup_target: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGObject.g_binding_dup_target(self)
 
       # Return value handling
+
       GObject::Object.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Retrieves the flags passed when constructing the #GBinding.
     def flags : GObject::BindingFlags
       # g_binding_get_flags: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGObject.g_binding_get_flags(self)
 
       # Return value handling
-      GObject::BindingFlags.from_value(_retval)
+
+      GObject::BindingFlags.new(_retval)
     end
 
+    # Retrieves the #GObject instance used as the source of the binding.
+    #
+    # A #GBinding can outlive the source #GObject as the binding does not hold a
+    # strong reference to the source. If the source is destroyed before the
+    # binding then this function will return %NULL.
+    #
+    # Use g_binding_dup_source() if the source or binding are used from different
+    # threads as otherwise the pointer returned from this function might become
+    # invalid if the source is finalized from another thread in the meantime.
     def source : GObject::Object?
       # g_binding_get_source: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGObject.g_binding_get_source(self)
 
       # Return value handling
+
       GObject::Object.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Retrieves the name of the property of #GBinding:source used as the source
+    # of the binding.
     def source_property : ::String
       # g_binding_get_source_property: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGObject.g_binding_get_source_property(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Retrieves the #GObject instance used as the target of the binding.
+    #
+    # A #GBinding can outlive the target #GObject as the binding does not hold a
+    # strong reference to the target. If the target is destroyed before the
+    # binding then this function will return %NULL.
+    #
+    # Use g_binding_dup_target() if the target or binding are used from different
+    # threads as otherwise the pointer returned from this function might become
+    # invalid if the target is finalized from another thread in the meantime.
     def target : GObject::Object?
       # g_binding_get_target: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGObject.g_binding_get_target(self)
 
       # Return value handling
+
       GObject::Object.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Retrieves the name of the property of #GBinding:target used as the target
+    # of the binding.
     def target_property : ::String
       # g_binding_get_target_property: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGObject.g_binding_get_target_property(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Explicitly releases the binding between the source and the target
+    # property expressed by @binding.
+    #
+    # This function will release the reference that is being held on
+    # the @binding instance if the binding is still bound; if you want to hold on
+    # to the #GBinding instance after calling g_binding_unbind(), you will need
+    # to hold a reference to it.
+    #
+    # Note however that this function does not take ownership of @binding, it
+    # only unrefs the reference that was initially created by
+    # g_object_bind_property() and is owned by the binding.
     def unbind : Nil
       # g_binding_unbind: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGObject.g_binding_unbind(self)

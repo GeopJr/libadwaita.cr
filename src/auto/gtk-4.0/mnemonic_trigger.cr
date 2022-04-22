@@ -5,8 +5,16 @@ module Gtk
   #
   # Mnemonics require a *mnemonic modifier* (typically <kbd>Alt</kbd>) to be
   # pressed together with the mnemonic key.
+  @[GObject::GeneratedWrapper]
   class MnemonicTrigger < ShortcutTrigger
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::MnemonicTriggerClass), class_init,
+        sizeof(LibGtk::MnemonicTrigger), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -18,13 +26,17 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 1).new(LibGObject::Value.new)
       _n = 0
 
-      if keyval
+      if !keyval.nil?
         (_names.to_unsafe + _n).value = "keyval".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, keyval)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(MnemonicTrigger.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -47,29 +59,33 @@ module Gtk
       value
     end
 
+    # Creates a `GtkShortcutTrigger` that will trigger whenever the key with
+    # the given @keyval is pressed and mnemonics have been activated.
+    #
+    # Mnemonics are activated by calling code when a key event with the right
+    # modifiers is detected.
     def initialize(keyval : UInt32)
       # gtk_mnemonic_trigger_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_mnemonic_trigger_new(keyval)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the keyval that must be pressed to succeed triggering @self.
     def keyval : UInt32
       # gtk_mnemonic_trigger_get_keyval: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_mnemonic_trigger_get_keyval(self)
 
       # Return value handling
+
       _retval
     end
   end

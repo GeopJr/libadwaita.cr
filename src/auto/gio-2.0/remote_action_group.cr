@@ -26,14 +26,21 @@ module Gio
       # @parameter: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       parameter = if parameter.nil?
                     Pointer(Void).null
+                  elsif !parameter.is_a?(GLib::Variant)
+                    GLib::Variant.new(parameter).to_unsafe
                   else
                     parameter.to_unsafe
                   end
-      parameter = GLib::Variant.new(parameter) unless parameter.is_a?(GLib::Variant)
-      platform_data = GLib::Variant.new(platform_data) unless platform_data.is_a?(GLib::Variant)
+
+      # Generator::HandmadeArgPlan
+      platform_data = if !platform_data.is_a?(GLib::Variant)
+                        GLib::Variant.new(platform_data).to_unsafe
+                      else
+                        platform_data.to_unsafe
+                      end
 
       # C call
       LibGio.g_remote_action_group_activate_action_full(self, action_name, parameter, platform_data)
@@ -45,9 +52,19 @@ module Gio
       # g_remote_action_group_change_action_state_full: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
-      platform_data = GLib::Variant.new(platform_data) unless platform_data.is_a?(GLib::Variant)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GLib::Variant)
+                GLib::Variant.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
+
+      # Generator::HandmadeArgPlan
+      platform_data = if !platform_data.is_a?(GLib::Variant)
+                        GLib::Variant.new(platform_data).to_unsafe
+                      else
+                        platform_data.to_unsafe
+                      end
 
       # C call
       LibGio.g_remote_action_group_change_action_state_full(self, action_name, value, platform_data)
@@ -59,6 +76,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class RemoteActionGroup__Impl < GObject::Object
     include RemoteActionGroup
 

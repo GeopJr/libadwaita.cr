@@ -5,7 +5,7 @@ module Gtk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(RecentInfo.g_type, pointer)
@@ -16,6 +16,10 @@ module Gtk
 
     def finalize
       LibGObject.g_boxed_free(RecentInfo.g_type, self)
+    end
+
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::RecentInfo)).zero?
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -30,7 +34,7 @@ module Gtk
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       app_name = if app_name.nil?
                    Pointer(LibC::Char).null
                  else
@@ -42,7 +46,9 @@ module Gtk
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -50,12 +56,11 @@ module Gtk
       # gtk_recent_info_exists: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_exists(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -63,12 +68,11 @@ module Gtk
       # gtk_recent_info_get_added: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_added(self)
 
       # Return value handling
+
       GLib::DateTime.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -76,12 +80,11 @@ module Gtk
       # gtk_recent_info_get_age: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_age(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -92,12 +95,11 @@ module Gtk
       # @stamp: (out)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_application_info(self, app_name, app_exec, count, stamp)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -106,13 +108,14 @@ module Gtk
       # @length: (out) (transfer full) (optional)
       # Returns: (transfer full) (array length=length zero-terminated=1 element-type Utf8)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       length = 0_u64
 
       # C call
       _retval = LibGtk.gtk_recent_info_get_applications(self, pointerof(length))
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
@@ -120,12 +123,11 @@ module Gtk
       # gtk_recent_info_get_description: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_description(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -133,12 +135,11 @@ module Gtk
       # gtk_recent_info_get_display_name: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_display_name(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -146,12 +147,11 @@ module Gtk
       # gtk_recent_info_get_gicon: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_gicon(self)
 
       # Return value handling
+
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
@@ -160,13 +160,14 @@ module Gtk
       # @length: (out) (transfer full) (optional)
       # Returns: (transfer full) (array length=length zero-terminated=1 element-type Utf8)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       length = 0_u64
 
       # C call
       _retval = LibGtk.gtk_recent_info_get_groups(self, pointerof(length))
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
     end
 
@@ -174,12 +175,11 @@ module Gtk
       # gtk_recent_info_get_mime_type: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_mime_type(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -187,12 +187,11 @@ module Gtk
       # gtk_recent_info_get_modified: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_modified(self)
 
       # Return value handling
+
       GLib::DateTime.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -200,12 +199,11 @@ module Gtk
       # gtk_recent_info_get_private_hint: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_private_hint(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -213,12 +211,11 @@ module Gtk
       # gtk_recent_info_get_short_name: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_short_name(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -226,12 +223,11 @@ module Gtk
       # gtk_recent_info_get_uri: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_uri(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -239,12 +235,11 @@ module Gtk
       # gtk_recent_info_get_uri_display: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_uri_display(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval) unless _retval.null?
     end
 
@@ -252,12 +247,11 @@ module Gtk
       # gtk_recent_info_get_visited: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_visited(self)
 
       # Return value handling
+
       GLib::DateTime.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -265,12 +259,11 @@ module Gtk
       # gtk_recent_info_has_application: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_has_application(self, app_name)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -278,12 +271,11 @@ module Gtk
       # gtk_recent_info_has_group: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_has_group(self, group_name)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -291,12 +283,11 @@ module Gtk
       # gtk_recent_info_is_local: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_is_local(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -304,12 +295,11 @@ module Gtk
       # gtk_recent_info_last_application: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_last_application(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -317,12 +307,11 @@ module Gtk
       # gtk_recent_info_match: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_match(self, info_b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -330,20 +319,17 @@ module Gtk
       # gtk_recent_info_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_recent_info_ref(self)
 
       # Return value handling
+
       Gtk::RecentInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # gtk_recent_info_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_recent_info_unref(self)

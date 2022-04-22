@@ -6,7 +6,6 @@ require "./lib_g_object.cr"
 
 # Wrappers
 require "./binding.cr"
-require "./binding_group.cr"
 require "./c_closure.cr"
 require "./closure.cr"
 require "./closure_notify_data.cr"
@@ -34,7 +33,9 @@ require "./param_spec_object.cr"
 require "./param_spec_override.cr"
 require "./param_spec_param.cr"
 require "./param_spec_pointer.cr"
+require "./param_spec_pool.cr"
 require "./param_spec_string.cr"
+require "./param_spec_type_info.cr"
 require "./param_spec_u_char.cr"
 require "./param_spec_u_int.cr"
 require "./param_spec_u_int64.cr"
@@ -43,7 +44,6 @@ require "./param_spec_unichar.cr"
 require "./param_spec_value_array.cr"
 require "./param_spec_variant.cr"
 require "./parameter.cr"
-require "./signal_group.cr"
 require "./signal_invocation_hint.cr"
 require "./type_class.cr"
 require "./type_fundamental_info.cr"
@@ -199,5 +199,7 @@ module GObject
 end
 
 # Extra includes
+require "../../../lib/gi-crystal/src/bindings/g_object/param_spec.cr"
 require "../../../lib/gi-crystal/src/bindings/g_object/type.cr"
 require "../../../lib/gi-crystal/src/bindings/g_object/value.cr"
+require "../../../lib/gi-crystal/src/bindings/g_object/lib_gi_crystal.cr"

@@ -8,21 +8,20 @@ module Gtk
   # The obvious example of a `GtkRoot` is `GtkWindow`.
   #
   # To get the display to which a `GtkRoot` belongs, use
-  # [method@Gtk.Root.get_display].
+  # `Gtk::Root#display`.
   #
   # `GtkRoot` also maintains the location of keyboard focus inside its widget
-  # hierarchy, with [method@Gtk.Root.set_focus] and [method@Gtk.Root.get_focus].
+  # hierarchy, with `Gtk::Root#focus=` and `Gtk::Root#focus`.
   module Root
     def display : Gdk::Display
       # gtk_root_get_display: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_root_get_display(self)
 
       # Return value handling
+
       Gdk::Display.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -30,12 +29,11 @@ module Gtk
       # gtk_root_get_focus: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_root_get_focus(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -44,7 +42,7 @@ module Gtk
       # @focus: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       focus = if focus.nil?
                 Pointer(Void).null
               else
@@ -61,6 +59,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Root__Impl < GObject::Object
     include Root
 

@@ -18,8 +18,16 @@ module Gio
   # The reason for this is that changes to the list of installed
   # applications often come in groups (like during system updates) and
   # rescanning the list on every change is pointless and expensive.
+  @[GObject::GeneratedWrapper]
   class AppInfoMonitor < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGio::AppInfoMonitor), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -31,19 +39,29 @@ module Gio
       LibGio.g_app_info_monitor_get_type
     end
 
+    # Gets the #GAppInfoMonitor for the current thread-default main
+    # context.
+    #
+    # The #GAppInfoMonitor will emit a "changed" signal in the
+    # thread-default main context whenever the list of installed
+    # applications (as reported by g_app_info_get_all()) may have changed.
+    #
+    # You must only call g_object_unref() on the return value from under
+    # the same main context as you created it.
     def self.get : Gio::AppInfoMonitor
       # g_app_info_monitor_get: (None)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_app_info_monitor_get
 
       # Return value handling
+
       Gio::AppInfoMonitor.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Signal emitted when the app info database for changes (ie: newly installed
+    # or removed applications).
     struct ChangedSignal
       @source : GObject::Object
       @detail : String?

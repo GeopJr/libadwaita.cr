@@ -4,9 +4,9 @@ module Gtk
   #
   # Every accessible implementation has:
   #
-  #  - a “role”, represented by a value of the [enum@Gtk.AccessibleRole] enumeration
-  #  - an “attribute”, represented by a set of [enum@Gtk.AccessibleState],
-  #    [enum@Gtk.AccessibleProperty] and [enum@Gtk.AccessibleRelation] values
+  #  - a “role”, represented by a value of the `Gtk#AccessibleRole` enumeration
+  #  - an “attribute”, represented by a set of `Gtk#AccessibleState`,
+  #    `Gtk#AccessibleProperty` and `Gtk#AccessibleRelation` values
   #
   # The role cannot be changed after instantiating a `GtkAccessible`
   # implementation.
@@ -14,7 +14,7 @@ module Gtk
   # The attributes are updated every time a UI element's state changes in
   # a way that should be reflected by assistive technologies. For instance,
   # if a `GtkWidget` visibility changes, the %GTK_ACCESSIBLE_STATE_HIDDEN
-  # state will also change to reflect the [property@Gtk.Widget:visible] property.
+  # state will also change to reflect the `Gtk::Widget#visible` property.
   module Accessible
     def accessible_role=(value : Gtk::AccessibleRole) : Gtk::AccessibleRole
       unsafe_value = value
@@ -28,27 +28,24 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "accessible-role", pointerof(value), Pointer(Void).null)
-      Gtk::AccessibleRole.from_value(value)
+      Gtk::AccessibleRole.new(value)
     end
 
     def accessible_role : Gtk::AccessibleRole
       # gtk_accessible_get_accessible_role: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_accessible_get_accessible_role(self)
 
       # Return value handling
-      Gtk::AccessibleRole.from_value(_retval)
+
+      Gtk::AccessibleRole.new(_retval)
     end
 
     def reset_property(property : Gtk::AccessibleProperty) : Nil
       # gtk_accessible_reset_property: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_accessible_reset_property(self, property)
@@ -60,8 +57,6 @@ module Gtk
       # gtk_accessible_reset_relation: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_accessible_reset_relation(self, relation)
 
@@ -71,8 +66,6 @@ module Gtk
     def reset_state(state : Gtk::AccessibleState) : Nil
       # gtk_accessible_reset_state: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_accessible_reset_state(self, state)
@@ -86,11 +79,14 @@ module Gtk
       # @values: (array length=n_properties element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_properties = properties.size
-      n_properties = values.size
+      # Generator::ArrayArgPlan
       properties = properties.to_a.map(&.to_unsafe).to_unsafe
 
+      # Generator::ArrayLengthArgPlan
+      n_properties = values.size
+      # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
@@ -105,11 +101,14 @@ module Gtk
       # @values: (array length=n_relations element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_relations = relations.size
-      n_relations = values.size
+      # Generator::ArrayArgPlan
       relations = relations.to_a.map(&.to_unsafe).to_unsafe
 
+      # Generator::ArrayLengthArgPlan
+      n_relations = values.size
+      # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
@@ -124,11 +123,14 @@ module Gtk
       # @values: (array length=n_states element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_states = states.size
-      n_states = values.size
+      # Generator::ArrayArgPlan
       states = states.to_a.map(&.to_unsafe).to_unsafe
 
+      # Generator::ArrayLengthArgPlan
+      n_states = values.size
+      # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
@@ -141,6 +143,7 @@ module Gtk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Accessible__Impl < GObject::Object
     include Accessible
 

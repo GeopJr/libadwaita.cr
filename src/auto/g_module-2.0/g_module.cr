@@ -28,6 +28,62 @@ module GModule
     Mask  = 3
   end
 
+  def self.module_build_path(directory : ::String?, module_name : ::String) : ::String
+    # g_module_build_path: (None)
+    # @directory: (nullable)
+    # Returns: (transfer full)
+
+    # Generator::NullableArrayPlan
+    directory = if directory.nil?
+                  Pointer(LibC::Char).null
+                else
+                  directory.to_unsafe
+                end
+
+    # C call
+    _retval = LibGModule.g_module_build_path(directory, module_name)
+
+    # Return value handling
+
+    GICrystal.transfer_full(_retval)
+  end
+
+  def self.module_error : ::String
+    # g_module_error: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGModule.g_module_error
+
+    # Return value handling
+
+    ::String.new(_retval)
+  end
+
+  def self.module_error_quark : UInt32
+    # g_module_error_quark: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGModule.g_module_error_quark
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.module_supported : Bool
+    # g_module_supported: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibGModule.g_module_supported
+
+    # Return value handling
+
+    GICrystal.to_bool(_retval)
+  end
+
   # Errors
 
   # Errors returned by g_module_open_full().

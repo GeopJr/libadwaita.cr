@@ -23,7 +23,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGLib::SourceFuncs))
@@ -46,75 +46,77 @@ module GLib
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::SourceFuncs)).zero?
+    end
+
     def prepare : Pointer(Void)
-      # Property getter
       _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def prepare=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end
 
     def check : Pointer(Void)
-      # Property getter
       _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def check=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 8).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end
 
-    def dispatch : Pointer(Void)
-      # Property getter
+    def dispatch!
+      self.dispatch.not_nil!
+    end
+
+    def dispatch : Pointer(Void)?
       _var = (@pointer + 16).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       _var.value
     end
 
-    def dispatch=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value
+    def dispatch=(value : Pointer(Void)?)
+      _var = (@pointer + 16).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value
       value
     end
 
     def finalize : Pointer(Void)
-      # Property getter
       _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def finalize=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(-> Void)).value = value.to_unsafe
+      _var = (@pointer + 24).as(Pointer(-> Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end
 
     def closure_callback : Pointer(Void)
-      # Property getter
       _var = (@pointer + 32).as(Pointer(LibGLib::SourceFunc))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def closure_callback=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(LibGLib::SourceFunc)).value = value.to_unsafe
+      _var = (@pointer + 32).as(Pointer(LibGLib::SourceFunc))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end
 
     def closure_marshal : Pointer(Void)
-      # Property getter
       _var = (@pointer + 40).as(Pointer(LibGLib::SourceDummyMarshal))
-      Pointer(Void).new(_var.value, GICrystal::Transfer::None)
+      Pointer(Void).new(_var, GICrystal::Transfer::None)
     end
 
     def closure_marshal=(value : Pointer(Void))
-      # Property setter
-      _var = (@pointer + 40).as(Pointer(LibGLib::SourceDummyMarshal)).value = value.to_unsafe
+      _var = (@pointer + 40).as(Pointer(LibGLib::SourceDummyMarshal))
+      _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end
 

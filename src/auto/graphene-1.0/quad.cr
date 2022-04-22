@@ -7,7 +7,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Quad))
@@ -25,14 +25,16 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Quad)).zero?
+    end
+
     def points : Enumerable(Graphene::Point)
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void[4]))
       _var.value
     end
 
     def points=(value : Enumerable(Graphene::Point))
-      # Property setter
       _var = (@pointer + 0).as(Pointer(Void[4])).value = value
       value
     end
@@ -46,12 +48,11 @@ module Graphene
       # graphene_quad_alloc: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quad_alloc
 
       # Return value handling
+
       Graphene::Quad.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -60,13 +61,14 @@ module Graphene
       # @r: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       r = Graphene::Rect.new
 
       # C call
       LibGraphene.graphene_quad_bounds(self, r)
 
       # Return value handling
+
       r
     end
 
@@ -74,20 +76,17 @@ module Graphene
       # graphene_quad_contains: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quad_contains(self, p)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def free : Nil
       # graphene_quad_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_quad_free(self)
@@ -99,12 +98,11 @@ module Graphene
       # graphene_quad_get_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quad_get_point(self, index_)
 
       # Return value handling
+
       Graphene::Point.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -112,12 +110,11 @@ module Graphene
       # graphene_quad_init: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quad_init(self, p1, p2, p3, p4)
 
       # Return value handling
+
       Graphene::Quad.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -126,13 +123,14 @@ module Graphene
       # @points: (array fixed-size=4 element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayArgPlan
       points = points.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGraphene.graphene_quad_init_from_points(self, points)
 
       # Return value handling
+
       Graphene::Quad.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -144,12 +142,11 @@ module Graphene
       # graphene_quad_init_from_rect: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_quad_init_from_rect(self, r)
 
       # Return value handling
+
       Graphene::Quad.new(_retval, GICrystal::Transfer::None)
     end
 

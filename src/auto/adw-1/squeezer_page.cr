@@ -1,9 +1,17 @@
 require "../g_object-2.0/object"
 
 module Adw
-  # An auxiliary class used by [class@Squeezer].
+  # An auxiliary class used by `#Squeezer`.
+  @[GObject::GeneratedWrapper]
   class SqueezerPage < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::SqueezerPageClass), class_init,
+        sizeof(LibAdw::SqueezerPage), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,18 +23,22 @@ module Adw
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if enabled
+      if !enabled.nil?
         (_names.to_unsafe + _n).value = "enabled".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, enabled)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(SqueezerPage.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -64,37 +76,36 @@ module Adw
       GICrystal.to_bool(value)
     end
 
+    # Returns the squeezer child to which @self belongs.
     def child : Gtk::Widget
       # adw_squeezer_page_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_page_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets whether @self is enabled.
     def enabled : Bool
       # adw_squeezer_page_get_enabled: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_squeezer_page_get_enabled(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets whether @self is enabled.
     def enabled=(enabled : Bool) : Nil
       # adw_squeezer_page_set_enabled: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_squeezer_page_set_enabled(self, enabled)

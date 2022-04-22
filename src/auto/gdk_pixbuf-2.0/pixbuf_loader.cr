@@ -13,8 +13,8 @@ module GdkPixbuf
   # network connection, or when loading an extremely large file.
   #
   # To use `GdkPixbufLoader` to load an image, create a new instance,
-  # and call [method@GdkPixbuf.PixbufLoader.write] to send the data
-  # to it. When done, [method@GdkPixbuf.PixbufLoader.close] should be
+  # and call `GdkPixbuf::PixbufLoader#write` to send the data
+  # to it. When done, `GdkPixbuf::PixbufLoader#close` should be
   # called to end the stream and finalize everything.
   #
   # The loader will emit three important signals throughout the process:
@@ -22,11 +22,11 @@ module GdkPixbuf
   #  - [signal@GdkPixbuf.PixbufLoader::size-prepared] will be emitted as
   #    soon as the image has enough information to determine the size of
   #    the image to be used. If you want to scale the image while loading
-  #    it, you can call [method@GdkPixbuf.PixbufLoader.set_size] in
+  #    it, you can call `GdkPixbuf::PixbufLoader#size=` in
   #    response to this signal.
   #  - [signal@GdkPixbuf.PixbufLoader::area-prepared] will be emitted as
   #    soon as the pixbuf of the desired has been allocated. You can obtain
-  #    the `GdkPixbuf` instance by calling [method@GdkPixbuf.PixbufLoader.get_pixbuf].
+  #    the `GdkPixbuf` instance by calling `GdkPixbuf::PixbufLoader#pixbuf`.
   #    If you want to use it, simply acquire a reference to it. You can
   #    also call `gdk_pixbuf_loader_get_pixbuf()` later to get the same
   #    pixbuf.
@@ -41,13 +41,21 @@ module GdkPixbuf
   #
   # Loading an animation is almost as easy as loading an image. Once the
   # first [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been
-  # emitted, you can call [method@GdkPixbuf.PixbufLoader.get_animation] to
-  # get the [class@GdkPixbuf.PixbufAnimation] instance, and then call
-  # and [method@GdkPixbuf.PixbufAnimation.get_iter] to get a
-  # [class@GdkPixbuf.PixbufAnimationIter] to retrieve the pixbuf for the
+  # emitted, you can call `GdkPixbuf::PixbufLoader#animation` to
+  # get the `GdkPixbuf#PixbufAnimation` instance, and then call
+  # and `GdkPixbuf::PixbufAnimation#iter` to get a
+  # `GdkPixbuf#PixbufAnimationIter` to retrieve the pixbuf for the
   # desired time stamp.
+  @[GObject::GeneratedWrapper]
   class PixbufLoader < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGdkPixbuf::PixbufLoaderClass), class_init,
+        sizeof(LibGdkPixbuf::PixbufLoader), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -59,114 +67,186 @@ module GdkPixbuf
       LibGdkPixbuf.gdk_pixbuf_loader_get_type
     end
 
+    # Creates a new pixbuf loader object.
     def initialize
       # gdk_pixbuf_loader_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_loader_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Creates a new pixbuf loader object that always attempts to parse
+    # image data as if it were an image of MIME type @mime_type, instead of
+    # identifying the type automatically.
+    #
+    # This function is useful if you want an error if the image isn't the
+    # expected MIME type; for loading image formats that can't be reliably
+    # identified by looking at the data; or if the user manually forces a
+    # specific MIME type.
+    #
+    # The list of supported mime types depends on what image loaders
+    # are installed, but typically "image/png", "image/jpeg", "image/gif",
+    # "image/tiff" and "image/x-xpixmap" are among the supported mime types.
+    # To obtain the full list of supported mime types, call
+    # gdk_pixbuf_format_get_mime_types() on each of the #GdkPixbufFormat
+    # structs returned by gdk_pixbuf_get_formats().
     def self.new_with_mime_type(mime_type : ::String) : self
       # gdk_pixbuf_loader_new_with_mime_type: (Constructor | Throws)
       # Returns: (transfer full)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_loader_new_with_mime_type(mime_type, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GdkPixbuf::PixbufLoader.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a new pixbuf loader object that always attempts to parse
+    # image data as if it were an image of type @image_type, instead of
+    # identifying the type automatically.
+    #
+    # This function is useful if you want an error if the image isn't the
+    # expected type; for loading image formats that can't be reliably
+    # identified by looking at the data; or if the user manually forces
+    # a specific type.
+    #
+    # The list of supported image formats depends on what image loaders
+    # are installed, but typically "png", "jpeg", "gif", "tiff" and
+    # "xpm" are among the supported formats. To obtain the full list of
+    # supported image formats, call gdk_pixbuf_format_get_name() on each
+    # of the #GdkPixbufFormat structs returned by gdk_pixbuf_get_formats().
     def self.new_with_type(image_type : ::String) : self
       # gdk_pixbuf_loader_new_with_type: (Constructor | Throws)
       # Returns: (transfer full)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_loader_new_with_type(image_type, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GdkPixbuf::PixbufLoader.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Informs a pixbuf loader that no further writes with
+    # gdk_pixbuf_loader_write() will occur, so that it can free its
+    # internal loading structures.
+    #
+    # This function also tries to parse any data that hasn't yet been parsed;
+    # if the remaining data is partial or corrupt, an error will be returned.
+    #
+    # If `FALSE` is returned, `error` will be set to an error from the
+    # `GDK_PIXBUF_ERROR` or `G_FILE_ERROR` domains.
+    #
+    # If you're just cancelling a load rather than expecting it to be finished,
+    # passing `NULL` for `error` to ignore it is reasonable.
+    #
+    # Remember that this function does not release a reference on the loader, so
+    # you will need to explicitly release any reference you hold.
     def close : Bool
       # gdk_pixbuf_loader_close: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_loader_close(self, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Queries the #GdkPixbufAnimation that a pixbuf loader is currently creating.
+    #
+    # In general it only makes sense to call this function after the
+    # [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted by
+    # the loader.
+    #
+    # If the loader doesn't have enough bytes yet, and hasn't emitted the `area-prepared`
+    # signal, this function will return `NULL`.
     def animation : GdkPixbuf::PixbufAnimation?
       # gdk_pixbuf_loader_get_animation: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_loader_get_animation(self)
 
       # Return value handling
+
       GdkPixbuf::PixbufAnimation.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Obtains the available information about the format of the
+    # currently loading image file.
     def format : GdkPixbuf::PixbufFormat?
       # gdk_pixbuf_loader_get_format: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_loader_get_format(self)
 
       # Return value handling
+
       GdkPixbuf::PixbufFormat.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Queries the #GdkPixbuf that a pixbuf loader is currently creating.
+    #
+    # In general it only makes sense to call this function after the
+    # [signal@GdkPixbuf.PixbufLoader::area-prepared] signal has been
+    # emitted by the loader; this means that enough data has been read
+    # to know the size of the image that will be allocated.
+    #
+    # If the loader has not received enough data via gdk_pixbuf_loader_write(),
+    # then this function returns `NULL`.
+    #
+    # The returned pixbuf will be the same in all future calls to the loader,
+    # so if you want to keep using it, you should acquire a reference to it.
+    #
+    # Additionally, if the loader is an animation, it will return the "static
+    # image" of the animation (see gdk_pixbuf_animation_get_static_image()).
     def pixbuf : GdkPixbuf::Pixbuf?
       # gdk_pixbuf_loader_get_pixbuf: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_loader_get_pixbuf(self)
 
       # Return value handling
+
       GdkPixbuf::Pixbuf.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Causes the image to be scaled while it is loaded.
+    #
+    # The desired image size can be determined relative to the original
+    # size of the image by calling gdk_pixbuf_loader_set_size() from a
+    # signal handler for the ::size-prepared signal.
+    #
+    # Attempts to set the desired image size  are ignored after the
+    # emission of the ::size-prepared signal.
     def set_size(width : Int32, height : Int32) : Nil
       # gdk_pixbuf_loader_set_size: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGdkPixbuf.gdk_pixbuf_loader_set_size(self, width, height)
@@ -174,6 +254,7 @@ module GdkPixbuf
       # Return value handling
     end
 
+    # Parses the next `count` bytes in the given image buffer.
     def write(buf : Enumerable(UInt8)) : Bool
       # gdk_pixbuf_loader_write: (Method | Throws)
       # @buf: (array length=count element-type UInt8)
@@ -181,8 +262,9 @@ module GdkPixbuf
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       count = buf.size
+      # Generator::ArrayArgPlan
       buf = buf.to_a.to_unsafe
 
       # C call
@@ -190,7 +272,9 @@ module GdkPixbuf
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -198,23 +282,30 @@ module GdkPixbuf
       write(buf)
     end
 
+    # Parses the next contents of the given image buffer.
     def write_bytes(buffer : GLib::Bytes) : Bool
       # gdk_pixbuf_loader_write_bytes: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_loader_write_bytes(self, buffer, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # This signal is emitted when the pixbuf loader has allocated the
+    # pixbuf in the desired size.
+    #
+    # After this signal is emitted, applications can call
+    # gdk_pixbuf_loader_get_pixbuf() to fetch the partially-loaded
+    # pixbuf.
     struct AreaPreparedSignal
       @source : GObject::Object
       @detail : String?
@@ -290,6 +381,14 @@ module GdkPixbuf
       AreaPreparedSignal.new(self)
     end
 
+    # This signal is emitted when a significant area of the image being
+    # loaded has been updated.
+    #
+    # Normally it means that a complete scanline has been read in, but
+    # it could be a different area as well.
+    #
+    # Applications can use this signal to know when to repaint
+    # areas of an image that is being loaded.
     struct AreaUpdatedSignal
       @source : GObject::Object
       @detail : String?
@@ -381,6 +480,11 @@ module GdkPixbuf
       AreaUpdatedSignal.new(self)
     end
 
+    # This signal is emitted when gdk_pixbuf_loader_close() is called.
+    #
+    # It can be used by different parts of an application to receive
+    # notification when an image loader is closed by the code that
+    # drives it.
     struct ClosedSignal
       @source : GObject::Object
       @detail : String?
@@ -456,6 +560,13 @@ module GdkPixbuf
       ClosedSignal.new(self)
     end
 
+    # This signal is emitted when the pixbuf loader has been fed the
+    # initial amount of data that is required to figure out the size
+    # of the image that it will create.
+    #
+    # Applications can call gdk_pixbuf_loader_set_size() in response
+    # to this signal to set the desired size to which the image
+    # should be scaled.
     struct SizePreparedSignal
       @source : GObject::Object
       @detail : String?

@@ -10,7 +10,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(VariantBuilder.g_type, pointer)
@@ -23,6 +23,10 @@ module GLib
       LibGObject.g_boxed_free(VariantBuilder.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::VariantBuilder)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGLib.g_variant_builder_get_type
@@ -32,12 +36,11 @@ module GLib
       # g_variant_builder_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_builder_new(type)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -45,8 +48,12 @@ module GLib
       # g_variant_builder_add_value: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GLib::Variant)
+                GLib::Variant.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       LibGLib.g_variant_builder_add_value(self, value)
@@ -58,8 +65,6 @@ module GLib
       # g_variant_builder_close: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGLib.g_variant_builder_close(self)
 
@@ -70,20 +75,17 @@ module GLib
       # g_variant_builder_end: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_builder_end(self)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::None)
     end
 
     def open(type : GLib::VariantType) : Nil
       # g_variant_builder_open: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_variant_builder_open(self, type)
@@ -95,20 +97,17 @@ module GLib
       # g_variant_builder_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_variant_builder_ref(self)
 
       # Return value handling
+
       GLib::VariantBuilder.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # g_variant_builder_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_variant_builder_unref(self)

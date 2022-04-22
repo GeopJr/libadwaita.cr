@@ -5,7 +5,7 @@ module Graphene
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGraphene::Box))
@@ -24,27 +24,29 @@ module Graphene
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGraphene::Box)).zero?
+    end
+
     def min : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def min=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Box))
       value
     end
 
     def max : Graphene::Vec3
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Void))
-      Graphene::Vec3.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Vec3.new(_var, GICrystal::Transfer::None)
     end
 
     def max=(value : Graphene::Vec3)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 16).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGraphene::Box))
       value
     end
 
@@ -57,12 +59,11 @@ module Graphene
       # graphene_box_alloc: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_alloc
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -70,12 +71,11 @@ module Graphene
       # graphene_box_contains_box: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_contains_box(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -83,12 +83,11 @@ module Graphene
       # graphene_box_contains_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_contains_point(self, point)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -96,12 +95,11 @@ module Graphene
       # graphene_box_equal: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_equal(self, b)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -110,13 +108,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
 
       # C call
       LibGraphene.graphene_box_expand(self, point, res)
 
       # Return value handling
+
       res
     end
 
@@ -125,13 +124,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
 
       # C call
       LibGraphene.graphene_box_expand_scalar(self, scalar, res)
 
       # Return value handling
+
       res
     end
 
@@ -140,21 +140,20 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
 
       # C call
       LibGraphene.graphene_box_expand_vec3(self, vec, res)
 
       # Return value handling
+
       res
     end
 
     def free : Nil
       # graphene_box_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGraphene.graphene_box_free(self)
@@ -167,13 +166,14 @@ module Graphene
       # @sphere: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       sphere = Graphene::Sphere.new
 
       # C call
       LibGraphene.graphene_box_get_bounding_sphere(self, sphere)
 
       # Return value handling
+
       sphere
     end
 
@@ -182,13 +182,14 @@ module Graphene
       # @center: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       center = Graphene::Point3D.new
 
       # C call
       LibGraphene.graphene_box_get_center(self, center)
 
       # Return value handling
+
       center
     end
 
@@ -196,12 +197,11 @@ module Graphene
       # graphene_box_get_depth: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_get_depth(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -209,12 +209,11 @@ module Graphene
       # graphene_box_get_height: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_get_height(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -223,13 +222,14 @@ module Graphene
       # @max: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       max = Graphene::Point3D.new
 
       # C call
       LibGraphene.graphene_box_get_max(self, max)
 
       # Return value handling
+
       max
     end
 
@@ -238,13 +238,14 @@ module Graphene
       # @min: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       min = Graphene::Point3D.new
 
       # C call
       LibGraphene.graphene_box_get_min(self, min)
 
       # Return value handling
+
       min
     end
 
@@ -253,13 +254,14 @@ module Graphene
       # @size: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       size = Graphene::Vec3.new
 
       # C call
       LibGraphene.graphene_box_get_size(self, size)
 
       # Return value handling
+
       size
     end
 
@@ -268,7 +270,7 @@ module Graphene
       # @vertices: (out) (caller-allocates) (array fixed-size=8 element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayArgPlan
       vertices = vertices.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -285,12 +287,11 @@ module Graphene
       # graphene_box_get_width: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_get_width(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -300,12 +301,14 @@ module Graphene
       # @max: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       min = if min.nil?
               Pointer(Void).null
             else
               min.to_unsafe
             end
+
+      # Generator::NullableArrayPlan
       max = if max.nil?
               Pointer(Void).null
             else
@@ -316,6 +319,7 @@ module Graphene
       _retval = LibGraphene.graphene_box_init(self, min, max)
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -323,12 +327,11 @@ module Graphene
       # graphene_box_init_from_box: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_init_from_box(self, src)
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -337,14 +340,16 @@ module Graphene
       # @points: (array length=n_points element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_points = points.size
+      # Generator::ArrayArgPlan
       points = points.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGraphene.graphene_box_init_from_points(self, n_points, points)
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -358,12 +363,14 @@ module Graphene
       # @max: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       min = if min.nil?
               Pointer(Void).null
             else
               min.to_unsafe
             end
+
+      # Generator::NullableArrayPlan
       max = if max.nil?
               Pointer(Void).null
             else
@@ -374,6 +381,7 @@ module Graphene
       _retval = LibGraphene.graphene_box_init_from_vec3(self, min, max)
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -382,14 +390,16 @@ module Graphene
       # @vectors: (array length=n_vectors element-type Interface)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       n_vectors = vectors.size
+      # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       _retval = LibGraphene.graphene_box_init_from_vectors(self, n_vectors, vectors)
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -402,14 +412,16 @@ module Graphene
       # @res: (out) (caller-allocates) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       res = Pointer(Void).null
+      # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
 
       # C call
       _retval = LibGraphene.graphene_box_intersection(self, b, res)
 
       # Return value handling
+
       res
     end
 
@@ -418,13 +430,14 @@ module Graphene
       # @res: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
 
       # C call
       LibGraphene.graphene_box_union(self, b, res)
 
       # Return value handling
+
       res
     end
 
@@ -432,12 +445,11 @@ module Graphene
       # graphene_box_empty: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_empty
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -445,12 +457,11 @@ module Graphene
       # graphene_box_infinite: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_infinite
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -458,12 +469,11 @@ module Graphene
       # graphene_box_minus_one: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_minus_one
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -471,12 +481,11 @@ module Graphene
       # graphene_box_one: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_one
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -484,12 +493,11 @@ module Graphene
       # graphene_box_one_minus_one: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_one_minus_one
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -497,12 +505,11 @@ module Graphene
       # graphene_box_zero: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGraphene.graphene_box_zero
 
       # Return value handling
+
       Graphene::Box.new(_retval, GICrystal::Transfer::None)
     end
 

@@ -8,12 +8,11 @@ module Gio
       # g_pollable_input_stream_can_poll: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_pollable_input_stream_can_poll(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -22,7 +21,7 @@ module Gio
       # @cancellable: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -33,6 +32,7 @@ module Gio
       _retval = LibGio.g_pollable_input_stream_create_source(self, cancellable)
 
       # Return value handling
+
       GLib::Source.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -40,12 +40,11 @@ module Gio
       # g_pollable_input_stream_is_readable: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_pollable_input_stream_is_readable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -57,21 +56,26 @@ module Gio
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
+      # Generator::ArrayLengthArgPlan
       count = buffer.size
+      # Generator::ArrayArgPlan
+      buffer = buffer.to_a.to_unsafe
+
+      # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-      buffer = buffer.to_a.to_unsafe
 
       # C call
       _retval = LibGio.g_pollable_input_stream_read_nonblocking(self, buffer, count, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       _retval
     end
 
@@ -79,6 +83,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class PollableInputStream__Impl < GObject::Object
     include PollableInputStream
 

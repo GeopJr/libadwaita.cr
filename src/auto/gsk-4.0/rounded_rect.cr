@@ -2,7 +2,7 @@ module Gsk
   # A rectangular region with rounded corners.
   #
   # Application code should normalize rectangles using
-  # [method@Gsk.RoundedRect.normalize]; this function will ensure that
+  # `Gsk::RoundedRect#normalize`; this function will ensure that
   # the bounds of the rectangle are normalized and ensure that the corner
   # values are positive and the corners do not overlap.
   #
@@ -16,7 +16,7 @@ module Gsk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGsk::RoundedRect))
@@ -35,26 +35,27 @@ module Gsk
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGsk::RoundedRect)).zero?
+    end
+
     def bounds : Graphene::Rect
-      # Property getter
       _var = (@pointer + 0).as(Pointer(Void))
-      Graphene::Rect.new(_var.value, GICrystal::Transfer::None)
+      Graphene::Rect.new(_var, GICrystal::Transfer::None)
     end
 
     def bounds=(value : Graphene::Rect)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Void)).value = value.to_unsafe
+      _var = (@pointer + 0).as(Pointer(Void))
+      _var.copy_from(value.to_unsafe, sizeof(LibGsk::RoundedRect))
       value
     end
 
     def corner : Enumerable(Graphene::Size)
-      # Property getter
       _var = (@pointer + 16).as(Pointer(Void[4]))
       _var.value
     end
 
     def corner=(value : Enumerable(Graphene::Size))
-      # Property setter
       _var = (@pointer + 16).as(Pointer(Void[4])).value = value
       value
     end
@@ -63,12 +64,11 @@ module Gsk
       # gsk_rounded_rect_contains_point: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_contains_point(self, point)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -76,12 +76,11 @@ module Gsk
       # gsk_rounded_rect_contains_rect: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_contains_rect(self, rect)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -89,12 +88,11 @@ module Gsk
       # gsk_rounded_rect_init: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_init(self, bounds, top_left, top_right, bottom_right, bottom_left)
 
       # Return value handling
+
       Gsk::RoundedRect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -102,12 +100,11 @@ module Gsk
       # gsk_rounded_rect_init_copy: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_init_copy(self, src)
 
       # Return value handling
+
       Gsk::RoundedRect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -115,12 +112,11 @@ module Gsk
       # gsk_rounded_rect_init_from_rect: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_init_from_rect(self, bounds, radius)
 
       # Return value handling
+
       Gsk::RoundedRect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -128,12 +124,11 @@ module Gsk
       # gsk_rounded_rect_intersects_rect: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_intersects_rect(self, rect)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -141,12 +136,11 @@ module Gsk
       # gsk_rounded_rect_is_rectilinear: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_is_rectilinear(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -154,12 +148,11 @@ module Gsk
       # gsk_rounded_rect_normalize: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_normalize(self)
 
       # Return value handling
+
       Gsk::RoundedRect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -167,12 +160,11 @@ module Gsk
       # gsk_rounded_rect_offset: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_offset(self, dx, dy)
 
       # Return value handling
+
       Gsk::RoundedRect.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -180,12 +172,11 @@ module Gsk
       # gsk_rounded_rect_shrink: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGsk.gsk_rounded_rect_shrink(self, top, right, bottom, left)
 
       # Return value handling
+
       Gsk::RoundedRect.new(_retval, GICrystal::Transfer::None)
     end
 

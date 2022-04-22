@@ -5,12 +5,11 @@ module Gdk
       # gdk_drag_surface_present: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGdk.gdk_drag_surface_present(self, width, height)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -18,6 +17,7 @@ module Gdk
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class DragSurface__Impl < GObject::Object
     include DragSurface
 

@@ -17,8 +17,16 @@ module Gtk
   # be removed from the window group and drop their references on the window
   # group; when all window have been removed, the window group will be
   # freed.
+  @[GObject::GeneratedWrapper]
   class WindowGroup < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGtk::WindowGroupClass), class_init,
+        sizeof(LibGtk::WindowGroup), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -30,24 +38,26 @@ module Gtk
       LibGtk.gtk_window_group_get_type
     end
 
+    # Creates a new `GtkWindowGroup` object.
+    #
+    # Modality of windows only affects windows
+    # within the same `GtkWindowGroup`.
     def initialize
       # gtk_window_group_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_window_group_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Adds a window to a `GtkWindowGroup`.
     def add_window(window : Gtk::Window) : Nil
       # gtk_window_group_add_window: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_window_group_add_window(self, window)
@@ -55,24 +65,23 @@ module Gtk
       # Return value handling
     end
 
+    # Returns a list of the `GtkWindows` that belong to @window_group.
     def list_windows : GLib::List
       # gtk_window_group_list_windows: (Method)
       # Returns: (transfer container)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_window_group_list_windows(self)
 
       # Return value handling
+
       GLib::List(Gtk::Window).new(_retval, GICrystal::Transfer::Container)
     end
 
+    # Removes a window from a `GtkWindowGroup`.
     def remove_window(window : Gtk::Window) : Nil
       # gtk_window_group_remove_window: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_window_group_remove_window(self, window)

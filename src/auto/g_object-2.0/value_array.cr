@@ -4,7 +4,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::ValueArray))
@@ -24,38 +24,41 @@ module GObject
     def finalize
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::ValueArray)).zero?
+    end
+
     def n_values : UInt32
-      # Property getter
       _var = (@pointer + 0).as(Pointer(UInt32))
       _var.value
     end
 
     def n_values=(value : UInt32)
-      # Property setter
       _var = (@pointer + 0).as(Pointer(UInt32)).value = value
       value
     end
 
-    def values : GObject::Value
-      # Property getter
+    def values!
+      self.values.not_nil!
+    end
+
+    def values : GObject::Value?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GObject::Value.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def values=(value : GObject::Value)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def values=(value : GObject::Value?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
     def n_prealloced : UInt32
-      # Property getter
       _var = (@pointer + 16).as(Pointer(UInt32))
       _var.value
     end
 
     def n_prealloced=(value : UInt32)
-      # Property setter
       _var = (@pointer + 16).as(Pointer(UInt32)).value = value
       value
     end
@@ -69,12 +72,11 @@ module GObject
       # g_value_array_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGObject.g_value_array_new(n_prealloced)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -83,18 +85,20 @@ module GObject
       # @value: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       value = if value.nil?
                 Pointer(Void).null
+              elsif !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
               else
                 value.to_unsafe
               end
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
 
       # C call
       _retval = LibGObject.g_value_array_append(self, value)
 
       # Return value handling
+
       GObject::ValueArray.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -102,12 +106,11 @@ module GObject
       # g_value_array_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGObject.g_value_array_copy(self)
 
       # Return value handling
+
       GObject::ValueArray.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -115,12 +118,11 @@ module GObject
       # g_value_array_get_nth: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGObject.g_value_array_get_nth(self, index_)
 
       # Return value handling
+
       GObject::Value.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -129,18 +131,20 @@ module GObject
       # @value: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       value = if value.nil?
                 Pointer(Void).null
+              elsif !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
               else
                 value.to_unsafe
               end
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
 
       # C call
       _retval = LibGObject.g_value_array_insert(self, index_, value)
 
       # Return value handling
+
       GObject::ValueArray.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -149,18 +153,20 @@ module GObject
       # @value: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::HandmadeArgPlan
       value = if value.nil?
                 Pointer(Void).null
+              elsif !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
               else
                 value.to_unsafe
               end
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
 
       # C call
       _retval = LibGObject.g_value_array_prepend(self, value)
 
       # Return value handling
+
       GObject::ValueArray.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -168,12 +174,11 @@ module GObject
       # g_value_array_remove: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGObject.g_value_array_remove(self, index_)
 
       # Return value handling
+
       GObject::ValueArray.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -182,7 +187,7 @@ module GObject
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -193,6 +198,7 @@ module GObject
       _retval = LibGObject.g_value_array_sort_with_data(self, compare_func, user_data)
 
       # Return value handling
+
       GObject::ValueArray.new(_retval, GICrystal::Transfer::None)
     end
 

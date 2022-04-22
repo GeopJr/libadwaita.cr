@@ -1,8 +1,8 @@
 module Gtk
   # `GtkEditable` is an interface for text editing widgets.
   #
-  # Typical examples of editable widgets are [class@Gtk.Entry] and
-  # [class@Gtk.SpinButton]. It contains functions for generically manipulating
+  # Typical examples of editable widgets are `Gtk#Entry` and
+  # `Gtk#SpinButton`. It contains functions for generically manipulating
   # an editable widget, a large number of action signals used for key bindings,
   # and several signals that an application can connect to modify the behavior
   # of a widget.
@@ -13,6 +13,9 @@ module Gtk
   #
   # ## Forcing entry to uppercase.
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # #include <ctype.h>
   #
@@ -44,9 +47,12 @@ module Gtk
   # delegate the editable functionality to that text widget. `GtkEditable`
   # provides some utility functions to make this easy.
   #
-  # In your class_init function, call [func@Gtk.Editable.install_properties],
+  # In your class_init function, call `Gtk::Editable#install_properties`,
   # passing the first available property ID:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static void
   # my_class_init (MyClass *class)
@@ -61,6 +67,9 @@ module Gtk
   # In your interface_init function for the `GtkEditable` interface, provide
   # an implementation for the get_delegate vfunc that returns your text widget:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # GtkEditable *
   # get_editable_delegate (GtkEditable *editable)
@@ -80,8 +89,11 @@ module Gtk
   # vfunc returns.
   #
   # In your instance_init function, create your text widget, and then call
-  # [method@Gtk.Editable.init_delegate]:
+  # `Gtk::Editable#init_delegate`:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static void
   # my_widget_init (MyWidget *self)
@@ -93,9 +105,12 @@ module Gtk
   # }
   # ```
   #
-  # In your dispose function, call [method@Gtk.Editable.finish_delegate] before
+  # In your dispose function, call `Gtk::Editable#finish_delegate` before
   # destroying your text widget:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # static void
   # my_widget_dispose (GObject *object)
@@ -107,9 +122,12 @@ module Gtk
   # }
   # ```
   #
-  # Finally, use [func@Gtk.Editable.delegate_set_property] in your `set_property`
+  # Finally, use `Gtk::Editable#delegate_set_property` in your `set_property`
   # function (and similar for `get_property`), to set the editable properties:
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   #   ...
   #   if (gtk_editable_delegate_set_property (object, prop_id, value, pspec))
@@ -126,7 +144,7 @@ module Gtk
   # the delegate to the "wrapper" editable, as they would cause an infinite
   # recursion. If you wish to connect to the [signal@Gtk.Editable::insert-text]
   # and [signal@Gtk.Editable::delete-text] signals, you will need to connect
-  # to them on the delegate obtained via [method@Gtk.Editable.get_delegate].
+  # to them on the delegate obtained via `Gtk::Editable#delegate`.
   module Editable
     def cursor_position : Int32
       # Returns: None
@@ -238,13 +256,18 @@ module Gtk
       # gtk_editable_delegate_get_property: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGtk.gtk_editable_delegate_get_property(object, prop_id, value, pspec)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -252,13 +275,18 @@ module Gtk
       # gtk_editable_delegate_set_property: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-      value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+      # Generator::HandmadeArgPlan
+      value = if !value.is_a?(GObject::Value)
+                GObject::Value.new(value).to_unsafe
+              else
+                value.to_unsafe
+              end
 
       # C call
       _retval = LibGtk.gtk_editable_delegate_set_property(object, prop_id, value, pspec)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -266,20 +294,17 @@ module Gtk
       # gtk_editable_install_properties: (None)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_install_properties(object_class, first_prop)
 
       # Return value handling
+
       _retval
     end
 
     def delete_selection : Nil
       # gtk_editable_delete_selection: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_editable_delete_selection(self)
@@ -291,8 +316,6 @@ module Gtk
       # gtk_editable_delete_text: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_editable_delete_text(self, start_pos, end_pos)
 
@@ -302,8 +325,6 @@ module Gtk
     def finish_delegate : Nil
       # gtk_editable_finish_delegate: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_editable_finish_delegate(self)
@@ -315,12 +336,11 @@ module Gtk
       # gtk_editable_get_alignment: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_get_alignment(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -328,12 +348,11 @@ module Gtk
       # gtk_editable_get_chars: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_get_chars(self, start_pos, end_pos)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -341,12 +360,11 @@ module Gtk
       # gtk_editable_get_delegate: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_get_delegate(self)
 
       # Return value handling
+
       Gtk::Editable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
@@ -354,12 +372,11 @@ module Gtk
       # gtk_editable_get_editable: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_get_editable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -367,12 +384,11 @@ module Gtk
       # gtk_editable_get_enable_undo: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_get_enable_undo(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -380,12 +396,11 @@ module Gtk
       # gtk_editable_get_max_width_chars: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_get_max_width_chars(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -393,12 +408,11 @@ module Gtk
       # gtk_editable_get_position: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_get_position(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -408,14 +422,16 @@ module Gtk
       # @end_pos: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       start_pos = Pointer(Int32).null
+      # Generator::OutArgUsedInReturnPlan
       end_pos = Pointer(Int32).null
 
       # C call
       _retval = LibGtk.gtk_editable_get_selection_bounds(self, start_pos, end_pos)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -423,12 +439,11 @@ module Gtk
       # gtk_editable_get_text: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_get_text(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -436,20 +451,17 @@ module Gtk
       # gtk_editable_get_width_chars: (Method | Getter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_editable_get_width_chars(self)
 
       # Return value handling
+
       _retval
     end
 
     def init_delegate : Nil
       # gtk_editable_init_delegate: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_editable_init_delegate(self)
@@ -462,8 +474,6 @@ module Gtk
       # @position: (inout) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_editable_insert_text(self, text, length, position)
 
@@ -473,8 +483,6 @@ module Gtk
     def select_region(start_pos : Int32, end_pos : Int32) : Nil
       # gtk_editable_select_region: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_editable_select_region(self, start_pos, end_pos)
@@ -486,8 +494,6 @@ module Gtk
       # gtk_editable_set_alignment: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_editable_set_alignment(self, xalign)
 
@@ -497,8 +503,6 @@ module Gtk
     def editable=(is_editable : Bool) : Nil
       # gtk_editable_set_editable: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_editable_set_editable(self, is_editable)
@@ -510,8 +514,6 @@ module Gtk
       # gtk_editable_set_enable_undo: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_editable_set_enable_undo(self, enable_undo)
 
@@ -521,8 +523,6 @@ module Gtk
     def max_width_chars=(n_chars : Int32) : Nil
       # gtk_editable_set_max_width_chars: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_editable_set_max_width_chars(self, n_chars)
@@ -534,8 +534,6 @@ module Gtk
       # gtk_editable_set_position: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_editable_set_position(self, position)
 
@@ -545,8 +543,6 @@ module Gtk
     def text=(text : ::String) : Nil
       # gtk_editable_set_text: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_editable_set_text(self, text)
@@ -558,18 +554,262 @@ module Gtk
       # gtk_editable_set_width_chars: (Method | Setter)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_editable_set_width_chars(self, n_chars)
 
       # Return value handling
     end
 
+    struct ChangedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "changed::#{@detail}" : "changed"
+      end
+
+      def connect(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::Editable, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::Editable__Impl.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::Editable, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::Editable, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::Editable__Impl.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::Editable, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit : Nil
+        LibGObject.g_signal_emit_by_name(@source, "changed")
+      end
+    end
+
+    def changed_signal
+      ChangedSignal.new(self)
+    end
+
+    struct DeleteTextSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "delete-text::#{@detail}" : "delete-text"
+      end
+
+      def connect(&block : Proc(Int32, Int32, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Int32, Int32, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Int32, Int32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Int32, Int32, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Int32, Int32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Int32, Int32, Nil)).unbox(box).call(arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::Editable, Int32, Int32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
+          sender = Gtk::Editable__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Gtk::Editable, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::Editable, Int32, Int32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
+          sender = Gtk::Editable__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = lib_arg0
+          arg1 = lib_arg1
+          ::Box(Proc(Gtk::Editable, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(start_pos : Int32, end_pos : Int32) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "delete-text", start_pos, end_pos)
+      end
+    end
+
+    def delete_text_signal
+      DeleteTextSignal.new(self)
+    end
+
+    struct InsertTextSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "insert-text::#{@detail}" : "insert-text"
+      end
+
+      def connect(&block : Proc(::String, Int32, Int32, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(::String, Int32, Int32, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(::String, Int32, Int32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), lib_arg1 : Int32, lib_arg2 : Int32, box : Pointer(Void)) {
+          arg0 = ::String.new(lib_arg0)
+          arg1 = lib_arg1
+          arg2 = lib_arg2
+          ::Box(Proc(::String, Int32, Int32, Nil)).unbox(box).call(arg0, arg1, arg2)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(::String, Int32, Int32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), lib_arg1 : Int32, lib_arg2 : Int32, box : Pointer(Void)) {
+          arg0 = ::String.new(lib_arg0)
+          arg1 = lib_arg1
+          arg2 = lib_arg2
+          ::Box(Proc(::String, Int32, Int32, Nil)).unbox(box).call(arg0, arg1, arg2)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::Editable, ::String, Int32, Int32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), lib_arg1 : Int32, lib_arg2 : Int32, box : Pointer(Void)) {
+          sender = Gtk::Editable__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = ::String.new(lib_arg0)
+          arg1 = lib_arg1
+          arg2 = lib_arg2
+          ::Box(Proc(Gtk::Editable, ::String, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::Editable, ::String, Int32, Int32, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), lib_arg1 : Int32, lib_arg2 : Int32, box : Pointer(Void)) {
+          sender = Gtk::Editable__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = ::String.new(lib_arg0)
+          arg1 = lib_arg1
+          arg2 = lib_arg2
+          ::Box(Proc(Gtk::Editable, ::String, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(text : ::String, length : Int32, position : Int32) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "insert-text", text, length, position)
+      end
+    end
+
+    def insert_text_signal
+      InsertTextSignal.new(self)
+    end
+
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Editable__Impl < GObject::Object
     include Editable
 

@@ -24,7 +24,7 @@ module Gtk
   # given range.
   #
   # The main properties of a `GtkSpinButton` are through an adjustment.
-  # See the [class@Gtk.Adjustment] documentation for more details about
+  # See the `Gtk#Adjustment` documentation for more details about
   # an adjustment's properties.
   #
   # Note that `GtkSpinButton` will by default make its entry large enough
@@ -34,6 +34,9 @@ module Gtk
   #
   # ## Using a GtkSpinButton to get an integer
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # // Provides a function to retrieve an integer value from a GtkSpinButton
   # // and creates a spin button to model percentage values.
@@ -66,6 +69,9 @@ module Gtk
   #
   # ## Using a GtkSpinButton to get a floating point value
   #
+  #
+  #
+  # WARNING: **⚠️ The following code is in c ⚠️**
   # ```c
   # // Provides a function to retrieve a floating point value from a
   # // GtkSpinButton, and creates a high precision spin button.
@@ -124,6 +130,7 @@ module Gtk
   # # Accessiblity
   #
   # `GtkSpinButton` uses the %GTK_ACCESSIBLE_ROLE_SPIN_BUTTON role.
+  @[GObject::GeneratedWrapper]
   class SpinButton < Widget
     include Accessible
     include Buildable
@@ -135,6 +142,13 @@ module Gtk
     @pointer : Pointer(Void)
 
     # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGtk::SpinButton), instance_init, 0)
+    end
+
+    # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
     end
@@ -144,273 +158,278 @@ module Gtk
       _values = StaticArray(LibGObject::Value, 53).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if adjustment
+      if !adjustment.nil?
         (_names.to_unsafe + _n).value = "adjustment".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, adjustment)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if climb_rate
+      if !climb_rate.nil?
         (_names.to_unsafe + _n).value = "climb-rate".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, climb_rate)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if cursor_position
+      if !cursor_position.nil?
         (_names.to_unsafe + _n).value = "cursor-position".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor_position)
         _n += 1
       end
-      if digits
+      if !digits.nil?
         (_names.to_unsafe + _n).value = "digits".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, digits)
         _n += 1
       end
-      if editable
+      if !editable.nil?
         (_names.to_unsafe + _n).value = "editable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editable)
         _n += 1
       end
-      if editing_canceled
+      if !editing_canceled.nil?
         (_names.to_unsafe + _n).value = "editing-canceled".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, editing_canceled)
         _n += 1
       end
-      if enable_undo
+      if !enable_undo.nil?
         (_names.to_unsafe + _n).value = "enable-undo".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, enable_undo)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if max_width_chars
+      if !max_width_chars.nil?
         (_names.to_unsafe + _n).value = "max-width-chars".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_width_chars)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if numeric
+      if !numeric.nil?
         (_names.to_unsafe + _n).value = "numeric".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, numeric)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if orientation
+      if !orientation.nil?
         (_names.to_unsafe + _n).value = "orientation".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, orientation)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if selection_bound
+      if !selection_bound.nil?
         (_names.to_unsafe + _n).value = "selection-bound".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, selection_bound)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if snap_to_ticks
+      if !snap_to_ticks.nil?
         (_names.to_unsafe + _n).value = "snap-to-ticks".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, snap_to_ticks)
         _n += 1
       end
-      if text
+      if !text.nil?
         (_names.to_unsafe + _n).value = "text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, text)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if update_policy
+      if !update_policy.nil?
         (_names.to_unsafe + _n).value = "update-policy".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, update_policy)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if value
+      if !value.nil?
         (_names.to_unsafe + _n).value = "value".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, value)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_chars
+      if !width_chars.nil?
         (_names.to_unsafe + _n).value = "width-chars".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_chars)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
-      if wrap
+      if !wrap.nil?
         (_names.to_unsafe + _n).value = "wrap".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, wrap)
         _n += 1
       end
-      if xalign
+      if !xalign.nil?
         (_names.to_unsafe + _n).value = "xalign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, xalign)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(SpinButton.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -505,7 +524,7 @@ module Gtk
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "update-policy", pointerof(value), Pointer(Void).null)
-      Gtk::SpinButtonUpdatePolicy.from_value(value)
+      Gtk::SpinButtonUpdatePolicy.new(value)
     end
 
     def value=(value : Float64) : Float64
@@ -538,12 +557,13 @@ module Gtk
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `GtkSpinButton`.
     def initialize(adjustment : Gtk::Adjustment?, climb_rate : Float64, digits : UInt32)
       # gtk_spin_button_new: (Constructor)
       # @adjustment: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       adjustment = if adjustment.nil?
                      Pointer(Void).null
                    else
@@ -554,29 +574,47 @@ module Gtk
       _retval = LibGtk.gtk_spin_button_new(adjustment, climb_rate, digits)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Creates a new `GtkSpinButton` with the given properties.
+    #
+    # This is a convenience constructor that allows creation
+    # of a numeric `GtkSpinButton` without manually creating
+    # an adjustment. The value is initially set to the minimum
+    # value and a page increment of 10 * @step is the default.
+    # The precision of the spin button is equivalent to the
+    # precision of @step.
+    #
+    # Note that the way in which the precision is derived works
+    # best if @step is a power of ten. If the resulting precision
+    # is not suitable for your needs, use
+    # `Gtk::SpinButton#digits=` to correct it.
     def self.new_with_range(min : Float64, max : Float64, step : Float64) : self
       # gtk_spin_button_new_with_range: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_new_with_range(min, max, step)
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       Gtk::SpinButton.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Changes the properties of an existing spin button.
+    #
+    # The adjustment, climb rate, and number of decimal places
+    # are updated accordingly.
     def configure(adjustment : Gtk::Adjustment?, climb_rate : Float64, digits : UInt32) : Nil
       # gtk_spin_button_configure: (Method)
       # @adjustment: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       adjustment = if adjustment.nil?
                      Pointer(Void).null
                    else
@@ -589,53 +627,58 @@ module Gtk
       # Return value handling
     end
 
+    # Get the adjustment associated with a `GtkSpinButton`.
     def adjustment : Gtk::Adjustment
       # gtk_spin_button_get_adjustment: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_get_adjustment(self)
 
       # Return value handling
+
       Gtk::Adjustment.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns the acceleration rate for repeated changes.
     def climb_rate : Float64
       # gtk_spin_button_get_climb_rate: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_get_climb_rate(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Fetches the precision of @spin_button.
     def digits : UInt32
       # gtk_spin_button_get_digits: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_get_digits(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Gets the current step and page the increments
+    # used by @spin_button.
+    #
+    # See `Gtk::SpinButton#increments=`.
     def increments : Nil
       # gtk_spin_button_get_increments: (Method)
       # @step: (out) (transfer full) (optional)
       # @page: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       step = Pointer(Float64).null
+      # Generator::OutArgUsedInReturnPlan
       page = Pointer(Float64).null
 
       # C call
@@ -644,27 +687,31 @@ module Gtk
       # Return value handling
     end
 
+    # Returns whether non-numeric text can be typed into the spin button.
     def numeric : Bool
       # gtk_spin_button_get_numeric: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_get_numeric(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the range allowed for @spin_button.
+    #
+    # See `Gtk::SpinButton#range=`.
     def range : Nil
       # gtk_spin_button_get_range: (Method)
       # @min: (out) (transfer full) (optional)
       # @max: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       min = Pointer(Float64).null
+      # Generator::OutArgUsedInReturnPlan
       max = Pointer(Float64).null
 
       # C call
@@ -673,76 +720,79 @@ module Gtk
       # Return value handling
     end
 
+    # Returns whether the values are corrected to the nearest step.
     def snap_to_ticks : Bool
       # gtk_spin_button_get_snap_to_ticks: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_get_snap_to_ticks(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the update behavior of a spin button.
+    #
+    # See `Gtk::SpinButton#update_policy=`.
     def update_policy : Gtk::SpinButtonUpdatePolicy
       # gtk_spin_button_get_update_policy: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_get_update_policy(self)
 
       # Return value handling
-      Gtk::SpinButtonUpdatePolicy.from_value(_retval)
+
+      Gtk::SpinButtonUpdatePolicy.new(_retval)
     end
 
+    # Get the value in the @spin_button.
     def value : Float64
       # gtk_spin_button_get_value: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_get_value(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Get the value @spin_button represented as an integer.
     def value_as_int : Int32
       # gtk_spin_button_get_value_as_int: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_get_value_as_int(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Returns whether the spin button’s value wraps around to the
+    # opposite limit when the upper or lower limit of the range is
+    # exceeded.
     def wrap : Bool
       # gtk_spin_button_get_wrap: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGtk.gtk_spin_button_get_wrap(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Replaces the `GtkAdjustment` associated with @spin_button.
     def adjustment=(adjustment : Gtk::Adjustment) : Nil
       # gtk_spin_button_set_adjustment: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_adjustment(self, adjustment)
@@ -750,11 +800,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the acceleration rate for repeated changes when you
+    # hold down a button or key.
     def climb_rate=(climb_rate : Float64) : Nil
       # gtk_spin_button_set_climb_rate: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_climb_rate(self, climb_rate)
@@ -762,11 +812,12 @@ module Gtk
       # Return value handling
     end
 
+    # Set the precision to be displayed by @spin_button.
+    #
+    # Up to 20 digit precision is allowed.
     def digits=(digits : UInt32) : Nil
       # gtk_spin_button_set_digits: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_digits(self, digits)
@@ -774,11 +825,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the step and page increments for spin_button.
+    #
+    # This affects how quickly the value changes when
+    # the spin button’s arrows are activated.
     def set_increments(step : Float64, page : Float64) : Nil
       # gtk_spin_button_set_increments: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_increments(self, step, page)
@@ -786,11 +839,11 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the flag that determines if non-numeric text can be typed
+    # into the spin button.
     def numeric=(numeric : Bool) : Nil
       # gtk_spin_button_set_numeric: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_numeric(self, numeric)
@@ -798,11 +851,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the minimum and maximum allowable values for @spin_button.
+    #
+    # If the current value is outside this range, it will be adjusted
+    # to fit within the range, otherwise it will remain unchanged.
     def set_range(min : Float64, max : Float64) : Nil
       # gtk_spin_button_set_range: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_range(self, min, max)
@@ -810,11 +865,12 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the policy as to whether values are corrected to the
+    # nearest step increment when a spin button is activated after
+    # providing an invalid value.
     def snap_to_ticks=(snap_to_ticks : Bool) : Nil
       # gtk_spin_button_set_snap_to_ticks: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_snap_to_ticks(self, snap_to_ticks)
@@ -822,11 +878,13 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the update behavior of a spin button.
+    #
+    # This determines whether the spin button is always
+    # updated or only when a valid value is set.
     def update_policy=(policy : Gtk::SpinButtonUpdatePolicy) : Nil
       # gtk_spin_button_set_update_policy: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_update_policy(self, policy)
@@ -834,11 +892,10 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the value of @spin_button.
     def value=(value : Float64) : Nil
       # gtk_spin_button_set_value: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_value(self, value)
@@ -846,11 +903,12 @@ module Gtk
       # Return value handling
     end
 
+    # Sets the flag that determines if a spin button value wraps
+    # around to the opposite limit when the upper or lower limit
+    # of the range is exceeded.
     def wrap=(wrap : Bool) : Nil
       # gtk_spin_button_set_wrap: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_set_wrap(self, wrap)
@@ -858,11 +916,11 @@ module Gtk
       # Return value handling
     end
 
+    # Increment or decrement a spin button’s value in a specified
+    # direction by a specified amount.
     def spin(direction : Gtk::SpinType, increment : Float64) : Nil
       # gtk_spin_button_spin: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_spin(self, direction, increment)
@@ -870,11 +928,10 @@ module Gtk
       # Return value handling
     end
 
+    # Manually force an update of the spin button.
     def update : Nil
       # gtk_spin_button_update: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGtk.gtk_spin_button_update(self)
@@ -882,6 +939,15 @@ module Gtk
       # Return value handling
     end
 
+    # Emitted when the user initiates a value change.
+    #
+    # This is a [keybinding signal](class.SignalAction.html).
+    #
+    # Applications should not connect to it, but may emit it with
+    # g_signal_emit_by_name() if they need to control the cursor
+    # programmatically.
+    #
+    # The default bindings for this signal are Up/Down and PageUp/PageDown.
     struct ChangeValueSignal
       @source : GObject::Object
       @detail : String?
@@ -909,7 +975,7 @@ module Gtk
       def connect(block : Proc(Gtk::ScrollType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::ScrollType.from_value(lib_arg0)
+          arg0 = Gtk::ScrollType.new(lib_arg0)
           ::Box(Proc(Gtk::ScrollType, Nil)).unbox(box).call(arg0)
         }
 
@@ -920,7 +986,7 @@ module Gtk
       def connect_after(block : Proc(Gtk::ScrollType, Nil))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::ScrollType.from_value(lib_arg0)
+          arg0 = Gtk::ScrollType.new(lib_arg0)
           ::Box(Proc(Gtk::ScrollType, Nil)).unbox(box).call(arg0)
         }
 
@@ -932,7 +998,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::SpinButton.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::ScrollType.from_value(lib_arg0)
+          arg0 = Gtk::ScrollType.new(lib_arg0)
           ::Box(Proc(Gtk::SpinButton, Gtk::ScrollType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -944,7 +1010,7 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
           sender = Gtk::SpinButton.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::ScrollType.from_value(lib_arg0)
+          arg0 = Gtk::ScrollType.new(lib_arg0)
           ::Box(Proc(Gtk::SpinButton, Gtk::ScrollType, Nil)).unbox(box).call(sender, arg0)
         }
 
@@ -961,6 +1027,13 @@ module Gtk
       ChangeValueSignal.new(self)
     end
 
+    # Emitted to convert the users input into a double value.
+    #
+    # The signal handler is expected to use `Gtk::Editable#text`
+    # to retrieve the text of the spinbutton and set @new_value to the
+    # new value.
+    #
+    # The default conversion uses g_strtod().
     struct InputSignal
       @source : GObject::Object
       @detail : String?
@@ -989,7 +1062,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, box : Pointer(Void)) {
           arg0 = lib_arg0
-          ::Box(Proc(Float64, Int32)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Float64, Int32)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1000,7 +1074,8 @@ module Gtk
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, box : Pointer(Void)) {
           arg0 = lib_arg0
-          ::Box(Proc(Float64, Int32)).unbox(box).call(arg0).to_unsafe
+          _retval = ::Box(Proc(Float64, Int32)).unbox(box).call(arg0)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1040,6 +1115,30 @@ module Gtk
       InputSignal.new(self)
     end
 
+    # Emitted to tweak the formatting of the value for display.
+    #
+    #
+    #
+    # WARNING: **⚠️ The following code is in c ⚠️**
+    # ```c
+    # // show leading zeros
+    # static gboolean
+    # on_output (GtkSpinButton *spin,
+    #            gpointer       data)
+    # {
+    #    GtkAdjustment *adjustment;
+    #    char *text;
+    #    int value;
+    #
+    #    adjustment = gtk_spin_button_get_adjustment (spin);
+    #    value = (int)gtk_adjustment_get_value (adjustment);
+    #    text = g_strdup_printf ("%02d", value);
+    #    gtk_spin_button_set_text (spin, text):
+    #    g_free (text);
+    #
+    #    return TRUE;
+    # }
+    # ```
     struct OutputSignal
       @source : GObject::Object
       @detail : String?
@@ -1067,7 +1166,8 @@ module Gtk
       def connect(block : Proc(Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(box).call.to_unsafe
+          _retval = ::Box(Proc(Bool)).unbox(box).call
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1077,7 +1177,8 @@ module Gtk
       def connect_after(block : Proc(Bool))
         box = ::Box.box(block)
         slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(box).call.to_unsafe
+          _retval = ::Box(Proc(Bool)).unbox(box).call
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -1115,6 +1216,9 @@ module Gtk
       OutputSignal.new(self)
     end
 
+    # Emitted when the value is changed.
+    #
+    # Also see the `Gtk::SpinButton::#output` signal.
     struct ValueChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -1190,6 +1294,8 @@ module Gtk
       ValueChangedSignal.new(self)
     end
 
+    # Emitted right after the spinbutton wraps from its maximum
+    # to its minimum value or vice-versa.
     struct WrappedSignal
       @source : GObject::Object
       @detail : String?

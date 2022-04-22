@@ -5,7 +5,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(MainLoop.g_type, pointer)
@@ -18,6 +18,10 @@ module GLib
       LibGObject.g_boxed_free(MainLoop.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::MainLoop)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGLib.g_main_loop_get_type
@@ -28,7 +32,7 @@ module GLib
       # @context: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
                 else
@@ -39,6 +43,7 @@ module GLib
       _retval = LibGLib.g_main_loop_new(context, is_running)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -46,12 +51,11 @@ module GLib
       # g_main_loop_get_context: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_loop_get_context(self)
 
       # Return value handling
+
       GLib::MainContext.new(_retval, GICrystal::Transfer::None)
     end
 
@@ -59,20 +63,17 @@ module GLib
       # g_main_loop_is_running: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_loop_is_running(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
     def quit : Nil
       # g_main_loop_quit: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_main_loop_quit(self)
@@ -84,20 +85,17 @@ module GLib
       # g_main_loop_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_main_loop_ref(self)
 
       # Return value handling
+
       GLib::MainLoop.new(_retval, GICrystal::Transfer::Full)
     end
 
     def run : Nil
       # g_main_loop_run: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_main_loop_run(self)
@@ -108,8 +106,6 @@ module GLib
     def unref : Nil
       # g_main_loop_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_main_loop_unref(self)

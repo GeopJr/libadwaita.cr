@@ -10,12 +10,11 @@ module Gio
       # g_file_descriptor_based_get_fd: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_file_descriptor_based_get_fd(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -23,6 +22,7 @@ module Gio
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class FileDescriptorBased__Impl < GObject::Object
     include FileDescriptorBased
 

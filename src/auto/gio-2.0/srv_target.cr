@@ -17,7 +17,7 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(SrvTarget.g_type, pointer)
@@ -30,6 +30,10 @@ module Gio
       LibGObject.g_boxed_free(SrvTarget.g_type, self)
     end
 
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::SrvTarget)).zero?
+    end
+
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGio.g_srv_target_get_type
@@ -39,12 +43,11 @@ module Gio
       # g_srv_target_new: (Constructor)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_srv_target_new(hostname, port, priority, weight)
 
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -52,20 +55,17 @@ module Gio
       # g_srv_target_copy: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_srv_target_copy(self)
 
       # Return value handling
+
       Gio::SrvTarget.new(_retval, GICrystal::Transfer::Full)
     end
 
     def free : Nil
       # g_srv_target_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_srv_target_free(self)
@@ -77,12 +77,11 @@ module Gio
       # g_srv_target_get_hostname: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_srv_target_get_hostname(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
@@ -90,12 +89,11 @@ module Gio
       # g_srv_target_get_port: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_srv_target_get_port(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -103,12 +101,11 @@ module Gio
       # g_srv_target_get_priority: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_srv_target_get_priority(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -116,12 +113,11 @@ module Gio
       # g_srv_target_get_weight: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_srv_target_get_weight(self)
 
       # Return value handling
+
       _retval
     end
 

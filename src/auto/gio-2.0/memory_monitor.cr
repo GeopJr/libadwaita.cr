@@ -50,19 +50,98 @@ module Gio
       # g_memory_monitor_dup_default: (None)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_memory_monitor_dup_default
 
       # Return value handling
+
       Gio::MemoryMonitor__Impl.new(_retval, GICrystal::Transfer::Full)
+    end
+
+    struct LowMemoryWarningSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "low-memory-warning::#{@detail}" : "low-memory-warning"
+      end
+
+      def connect(&block : Proc(Gio::MemoryMonitorWarningLevel, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gio::MemoryMonitorWarningLevel, Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Gio::MemoryMonitorWarningLevel, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
+          arg0 = Gio::MemoryMonitorWarningLevel.new(lib_arg0)
+          ::Box(Proc(Gio::MemoryMonitorWarningLevel, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::MemoryMonitorWarningLevel, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
+          arg0 = Gio::MemoryMonitorWarningLevel.new(lib_arg0)
+          ::Box(Proc(Gio::MemoryMonitorWarningLevel, Nil)).unbox(box).call(arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
+          sender = Gio::MemoryMonitor__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::MemoryMonitorWarningLevel.new(lib_arg0)
+          ::Box(Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
+          sender = Gio::MemoryMonitor__Impl.new(lib_sender, GICrystal::Transfer::None)
+          arg0 = Gio::MemoryMonitorWarningLevel.new(lib_arg0)
+          ::Box(Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil)).unbox(box).call(sender, arg0)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(level : Gio::MemoryMonitorWarningLevel) : Nil
+        LibGObject.g_signal_emit_by_name(@source, "low-memory-warning", level)
+      end
+    end
+
+    def low_memory_warning_signal
+      LowMemoryWarningSignal.new(self)
     end
 
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class MemoryMonitor__Impl < GObject::Object
     include MemoryMonitor
 

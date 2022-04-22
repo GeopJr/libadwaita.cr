@@ -4,12 +4,16 @@ module Gio
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = pointer
     end
 
     def finalize
+    end
+
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::IOSchedulerJob)).zero?
     end
 
     def send_to_mainloop(func : Pointer(Void), user_data : Pointer(Void)?, notify : Pointer(Void)?) : Bool
@@ -18,12 +22,14 @@ module Gio
       # @notify: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       notify = if notify.nil?
                  LibGLib::DestroyNotify.null
                else
@@ -34,6 +40,7 @@ module Gio
       _retval = LibGio.g_io_scheduler_job_send_to_mainloop(self, func, user_data, notify)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -43,12 +50,14 @@ module Gio
       # @notify: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       notify = if notify.nil?
                  LibGLib::DestroyNotify.null
                else

@@ -5,7 +5,7 @@ module Gtk
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGtk::RecentData))
@@ -29,86 +29,106 @@ module Gtk
     def finalize
     end
 
-    def display_name : ::String
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::RecentData)).zero?
+    end
+
+    def display_name!
+      self.display_name.not_nil!
+    end
+
+    def display_name : ::String?
       _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def display_name=(value : ::String)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value
+    def display_name=(value : ::String?)
+      _var = (@pointer + 0).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def description : ::String
-      # Property getter
+    def description!
+      self.description.not_nil!
+    end
+
+    def description : ::String?
       _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def description=(value : ::String)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value
+    def description=(value : ::String?)
+      _var = (@pointer + 8).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def mime_type : ::String
-      # Property getter
+    def mime_type!
+      self.mime_type.not_nil!
+    end
+
+    def mime_type : ::String?
       _var = (@pointer + 16).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def mime_type=(value : ::String)
-      # Property setter
-      _var = (@pointer + 16).as(Pointer(Pointer(LibC::Char))).value = value
+    def mime_type=(value : ::String?)
+      _var = (@pointer + 16).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def app_name : ::String
-      # Property getter
+    def app_name!
+      self.app_name.not_nil!
+    end
+
+    def app_name : ::String?
       _var = (@pointer + 24).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def app_name=(value : ::String)
-      # Property setter
-      _var = (@pointer + 24).as(Pointer(Pointer(LibC::Char))).value = value
+    def app_name=(value : ::String?)
+      _var = (@pointer + 24).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def app_exec : ::String
-      # Property getter
+    def app_exec!
+      self.app_exec.not_nil!
+    end
+
+    def app_exec : ::String?
       _var = (@pointer + 32).as(Pointer(Pointer(LibC::Char)))
+      return if _var.value.null?
       ::String.new(_var.value)
     end
 
-    def app_exec=(value : ::String)
-      # Property setter
-      _var = (@pointer + 32).as(Pointer(Pointer(LibC::Char))).value = value
+    def app_exec=(value : ::String?)
+      _var = (@pointer + 32).as(Pointer(Pointer(LibC::Char))).value = value.nil? ? Pointer(LibC::Char).null : value.to_unsafe
       value
     end
 
-    def groups : Enumerable(::String)
-      # Property getter
+    def groups!
+      self.groups.not_nil!
+    end
+
+    def groups : Enumerable(::String)?
       _var = (@pointer + 40).as(Pointer(Pointer(Pointer(LibC::Char))))
+      return if _var.value.null?
       GICrystal.transfer_null_ended_array(_var.value, GICrystal::Transfer::None)
     end
 
-    def groups=(value : Enumerable(::String))
-      # Property setter
-      _var = (@pointer + 40).as(Pointer(Pointer(Pointer(LibC::Char)))).value = value
+    def groups=(value : Enumerable(::String)?)
+      _var = (@pointer + 40).as(Pointer(Pointer(Pointer(LibC::Char)))).value = value.nil? ? Pointer(Pointer(LibC::Char)).null : value
       value
     end
 
     def is_private : Bool
-      # Property getter
       _var = (@pointer + 48).as(Pointer(LibC::Int))
       GICrystal.to_bool(_var.value)
     end
 
     def is_private=(value : Bool)
-      # Property setter
       _var = (@pointer + 48).as(Pointer(LibC::Int)).value = value
       value
     end

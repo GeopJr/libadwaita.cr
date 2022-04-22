@@ -38,8 +38,16 @@ module Gio
   #
   # Since GLib 2.72, on Windows, the native credentials may contain the PID of a
   # process. This corresponds to %G_CREDENTIALS_TYPE_WIN32_PID.
+  @[GObject::GeneratedWrapper]
   class Credentials < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::CredentialsClass), class_init,
+        sizeof(LibGio::Credentials), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -51,75 +59,96 @@ module Gio
       LibGio.g_credentials_get_type
     end
 
+    # Creates a new #GCredentials object with credentials matching the
+    # the current process.
     def initialize
       # g_credentials_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_credentials_new
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Tries to get the UNIX process identifier from @credentials. This
+    # method is only available on UNIX platforms.
+    #
+    # This operation can fail if #GCredentials is not supported on the
+    # OS or if the native credentials type does not contain information
+    # about the UNIX process ID.
     def unix_pid : Int32
       # g_credentials_get_unix_pid: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_credentials_get_unix_pid(self, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       _retval
     end
 
+    # Tries to get the UNIX user identifier from @credentials. This
+    # method is only available on UNIX platforms.
+    #
+    # This operation can fail if #GCredentials is not supported on the
+    # OS or if the native credentials type does not contain information
+    # about the UNIX user.
     def unix_user : UInt32
       # g_credentials_get_unix_user: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_credentials_get_unix_user(self, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       _retval
     end
 
+    # Checks if @credentials and @other_credentials is the same user.
+    #
+    # This operation can fail if #GCredentials is not supported on the
+    # the OS.
     def is_same_user(other_credentials : Gio::Credentials) : Bool
       # g_credentials_is_same_user: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_credentials_is_same_user(self, other_credentials, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Copies the native credentials of type @native_type from @native
+    # into @credentials.
+    #
+    # It is a programming error (which will cause a warning to be
+    # logged) to use this method if there is no #GCredentials support for
+    # the OS or if @native_type isn't supported by the OS.
     def set_native(native_type : Gio::CredentialsType, native : Pointer(Void)) : Nil
       # g_credentials_set_native: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_credentials_set_native(self, native_type, native)
@@ -127,33 +156,42 @@ module Gio
       # Return value handling
     end
 
+    # Tries to set the UNIX user identifier on @credentials. This method
+    # is only available on UNIX platforms.
+    #
+    # This operation can fail if #GCredentials is not supported on the
+    # OS or if the native credentials type does not contain information
+    # about the UNIX user. It can also fail if the OS does not allow the
+    # use of "spoofed" credentials.
     def unix_user=(uid : UInt32) : Bool
       # g_credentials_set_unix_user: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_credentials_set_unix_user(self, uid, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Creates a human-readable textual representation of @credentials
+    # that can be used in logging and debug messages. The format of the
+    # returned string may change in future GLib release.
     def to_string : ::String
       # g_credentials_to_string: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_credentials_to_string(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
   end

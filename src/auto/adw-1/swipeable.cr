@@ -3,18 +3,17 @@ module Adw
   #
   # The `AdwSwipeable` interface is implemented by all swipeable widgets.
   #
-  # See [class@SwipeTracker] for details about implementing it.
+  # See `#SwipeTracker` for details about implementing it.
   module Swipeable
     def cancel_progress : Float64
       # adw_swipeable_get_cancel_progress: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_swipeable_get_cancel_progress(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -22,12 +21,11 @@ module Adw
       # adw_swipeable_get_distance: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_swipeable_get_distance(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -35,12 +33,11 @@ module Adw
       # adw_swipeable_get_progress: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibAdw.adw_swipeable_get_progress(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -49,13 +46,14 @@ module Adw
       # @n_snap_points: (out) (transfer full)
       # Returns: (transfer full) (array length=n_snap_points element-type Double)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       n_snap_points = 0
 
       # C call
       _retval = LibAdw.adw_swipeable_get_snap_points(self, pointerof(n_snap_points))
 
       # Return value handling
+
       GICrystal.transfer_array(_retval, n_snap_points, GICrystal::Transfer::Full)
     end
 
@@ -64,13 +62,14 @@ module Adw
       # @rect: (out) (caller-allocates)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
 
       # C call
       LibAdw.adw_swipeable_get_swipe_area(self, navigation_direction, is_drag, rect)
 
       # Return value handling
+
       rect
     end
 
@@ -78,6 +77,7 @@ module Adw
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class Swipeable__Impl < GObject::Object
     include Swipeable
 

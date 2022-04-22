@@ -2,8 +2,16 @@ require "./render_node"
 
 module Gsk
   # A render node drawing a set of glyphs.
+  @[GObject::GeneratedWrapper]
   class TextNode < RenderNode
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGObject::ObjectClass), class_init,
+        sizeof(LibGsk::TextNode), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,96 +23,101 @@ module Gsk
       LibGsk.gsk_text_node_get_type
     end
 
+    # Creates a render node that renders the given glyphs.
+    #
+    # Note that @color may not be used if the font contains
+    # color glyphs.
     def initialize(font : Pango::Font, glyphs : Pango::GlyphString, color : Gdk::RGBA, offset : Graphene::Point)
       # gsk_text_node_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_text_node_new(font, glyphs, color, offset)
 
       # Return value handling
+
       @pointer = _retval unless _retval.null?
     end
 
+    # Retrieves the color used by the text @node.
     def color : Gdk::RGBA
       # gsk_text_node_get_color: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_text_node_get_color(self)
 
       # Return value handling
+
       Gdk::RGBA.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Returns the font used by the text @node.
     def font : Pango::Font
       # gsk_text_node_get_font: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_text_node_get_font(self)
 
       # Return value handling
+
       Pango::Font.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Retrieves the glyph information in the @node.
     def glyphs : Enumerable(Pango::GlyphInfo)
       # gsk_text_node_get_glyphs: (Method)
       # @n_glyphs: (out) (transfer full) (optional)
       # Returns: (transfer none) (array length=n_glyphs element-type Interface)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       n_glyphs = 0_u32
 
       # C call
       _retval = LibGsk.gsk_text_node_get_glyphs(self, pointerof(n_glyphs))
 
       # Return value handling
+
       GICrystal.transfer_array(_retval, n_glyphs, GICrystal::Transfer::None)
     end
 
+    # Retrieves the number of glyphs in the text node.
     def num_glyphs : UInt32
       # gsk_text_node_get_num_glyphs: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_text_node_get_num_glyphs(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Retrieves the offset applied to the text.
     def offset : Graphene::Point
       # gsk_text_node_get_offset: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_text_node_get_offset(self)
 
       # Return value handling
+
       Graphene::Point.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Checks whether the text @node has color glyphs.
     def has_color_glyphs : Bool
       # gsk_text_node_has_color_glyphs: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGsk.gsk_text_node_has_color_glyphs(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
   end

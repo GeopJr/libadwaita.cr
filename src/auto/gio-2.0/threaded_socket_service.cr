@@ -16,8 +16,16 @@ module Gio
   #
   # As with #GSocketService, you may connect to #GThreadedSocketService::run,
   # or subclass and override the default handler.
+  @[GObject::GeneratedWrapper]
   class ThreadedSocketService < SocketService
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::ThreadedSocketServiceClass), class_init,
+        sizeof(LibGio::ThreadedSocketService), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -29,23 +37,27 @@ module Gio
       _values = StaticArray(LibGObject::Value, 3).new(LibGObject::Value.new)
       _n = 0
 
-      if active
+      if !active.nil?
         (_names.to_unsafe + _n).value = "active".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, active)
         _n += 1
       end
-      if listen_backlog
+      if !listen_backlog.nil?
         (_names.to_unsafe + _n).value = "listen-backlog".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, listen_backlog)
         _n += 1
       end
-      if max_threads
+      if !max_threads.nil?
         (_names.to_unsafe + _n).value = "max-threads".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, max_threads)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ThreadedSocketService.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -68,19 +80,24 @@ module Gio
       value
     end
 
+    # Creates a new #GThreadedSocketService with no listeners. Listeners
+    # must be added with one of the #GSocketListener "add" methods.
     def initialize(max_threads : Int32)
       # g_threaded_socket_service_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_threaded_socket_service_new(max_threads)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # The ::run signal is emitted in a worker thread in response to an
+    # incoming connection. This thread is dedicated to handling
+    # @connection and may perform blocking IO. The signal handler need
+    # not return until the connection is closed.
     struct RunSignal
       @source : GObject::Object
       @detail : String?
@@ -110,7 +127,8 @@ module Gio
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gio::SocketConnection.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = (lib_arg1.null? ? nil : GObject::Object.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Gio::SocketConnection, GObject::Object?, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gio::SocketConnection, GObject::Object?, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,
@@ -122,7 +140,8 @@ module Gio
         slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
           arg0 = Gio::SocketConnection.new(lib_arg0, GICrystal::Transfer::None)
           arg1 = (lib_arg1.null? ? nil : GObject::Object.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Gio::SocketConnection, GObject::Object?, Bool)).unbox(box).call(arg0, arg1).to_unsafe
+          _retval = ::Box(Proc(Gio::SocketConnection, GObject::Object?, Bool)).unbox(box).call(arg0, arg1)
+          _retval
         }
 
         LibGObject.g_signal_connect_data(@source, name, slot.pointer,

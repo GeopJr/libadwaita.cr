@@ -11,13 +11,11 @@ module Gtk
       # @order: (out) (transfer full)
       # Returns: (transfer none)
 
-      # Handle parameters
-      LibGObject.g_object_ref(order)
-
       # C call
       _retval = LibGtk.gtk_tree_sortable_get_sort_column_id(self, sort_column_id, order)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -25,12 +23,11 @@ module Gtk
       # gtk_tree_sortable_has_default_sort_func: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGtk.gtk_tree_sortable_has_default_sort_func(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
@@ -40,12 +37,14 @@ module Gtk
       # @destroy: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       destroy = if destroy.nil?
                   LibGLib::DestroyNotify.null
                 else
@@ -62,8 +61,6 @@ module Gtk
       # gtk_tree_sortable_set_sort_column_id: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_tree_sortable_set_sort_column_id(self, sort_column_id, order)
 
@@ -76,12 +73,14 @@ module Gtk
       # @destroy: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       destroy = if destroy.nil?
                   LibGLib::DestroyNotify.null
                 else
@@ -98,18 +97,92 @@ module Gtk
       # gtk_tree_sortable_sort_column_changed: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       LibGtk.gtk_tree_sortable_sort_column_changed(self)
 
       # Return value handling
     end
 
+    struct SortColumnChangedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "sort-column-changed::#{@detail}" : "sort-column-changed"
+      end
+
+      def connect(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Nil))
+        connect(block)
+      end
+
+      def connect(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(box).call
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(block : Proc(Gtk::TreeSortable, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeSortable__Impl.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeSortable, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(block : Proc(Gtk::TreeSortable, Nil))
+        box = ::Box.box(block)
+        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
+          sender = Gtk::TreeSortable__Impl.new(lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeSortable, Nil)).unbox(box).call(sender)
+        }
+
+        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
+          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit : Nil
+        LibGObject.g_signal_emit_by_name(@source, "sort-column-changed")
+      end
+    end
+
+    def sort_column_changed_signal
+      SortColumnChangedSignal.new(self)
+    end
+
     abstract def to_unsafe
   end
 
   # :nodoc:
+  @[GObject::GeneratedWrapper]
   class TreeSortable__Impl < GObject::Object
     include TreeSortable
 

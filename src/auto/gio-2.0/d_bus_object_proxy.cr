@@ -6,10 +6,18 @@ module Gio
   # with one or more D-Bus interfaces. Normally, you don't instantiate
   # a #GDBusObjectProxy yourself - typically #GDBusObjectManagerClient
   # is used to obtain it.
+  @[GObject::GeneratedWrapper]
   class DBusObjectProxy < GObject::Object
     include DBusObject
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::DBusObjectProxyClass), class_init,
+        sizeof(LibGio::DBusObjectProxy), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -21,18 +29,22 @@ module Gio
       _values = StaticArray(LibGObject::Value, 2).new(LibGObject::Value.new)
       _n = 0
 
-      if g_connection
+      if !g_connection.nil?
         (_names.to_unsafe + _n).value = "g-connection".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_connection)
         _n += 1
       end
-      if g_object_path
+      if !g_object_path.nil?
         (_names.to_unsafe + _n).value = "g-object-path".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, g_object_path)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(DBusObjectProxy.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -70,29 +82,30 @@ module Gio
       ::String.new(value)
     end
 
+    # Creates a new #GDBusObjectProxy for the given connection and
+    # object path.
     def initialize(connection : Gio::DBusConnection, object_path : ::String)
       # g_dbus_object_proxy_new: (Constructor)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_object_proxy_new(connection, object_path)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Gets the connection that @proxy is for.
     def connection : Gio::DBusConnection
       # g_dbus_object_proxy_get_connection: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_dbus_object_proxy_get_connection(self)
 
       # Return value handling
+
       Gio::DBusConnection.new(_retval, GICrystal::Transfer::None)
     end
   end

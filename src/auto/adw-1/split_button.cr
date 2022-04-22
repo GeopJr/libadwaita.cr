@@ -18,7 +18,7 @@ module Adw
   # `AdwSplitButton` is typically used to present a set of actions in a menu,
   # but allow access to one of them with a single click.
   #
-  # The API is very similar to [class@Gtk.Button] and [class@Gtk.MenuButton], see
+  # The API is very similar to `Gtk#Button` and `Gtk#MenuButton`, see
   # their documentation for details.
   #
   # ## CSS nodes
@@ -34,7 +34,7 @@ module Adw
   # ```
   #
   # `AdwSplitButton`'s CSS node is called `splitbutton`. It contains the css
-  # nodes: `button`, `separator`, `menubutton`. See [class@Gtk.MenuButton]
+  # nodes: `button`, `separator`, `menubutton`. See `Gtk#MenuButton`
   # documentation for the `menubutton` contents.
   #
   # The main CSS node will contain the `.image-button` or `.text-button` style
@@ -44,6 +44,7 @@ module Adw
   # ## Accessibility
   #
   # `AdwSplitButton` uses the `GTK_ACCESSIBLE_ROLE_GROUP` role.
+  @[GObject::GeneratedWrapper]
   class SplitButton < Gtk::Widget
     include Gtk::Accessible
     include Gtk::Actionable
@@ -51,6 +52,13 @@ module Adw
     include Gtk::ConstraintTarget
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::SplitButtonClass), class_init,
+        sizeof(LibAdw::SplitButton), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -62,228 +70,233 @@ module Adw
       _values = StaticArray(LibGObject::Value, 44).new(LibGObject::Value.new)
       _n = 0
 
-      if accessible_role
+      if !accessible_role.nil?
         (_names.to_unsafe + _n).value = "accessible-role".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, accessible_role)
         _n += 1
       end
-      if action_name
+      if !action_name.nil?
         (_names.to_unsafe + _n).value = "action-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, action_name)
         _n += 1
       end
-      if action_target
+      if !action_target.nil?
         (_names.to_unsafe + _n).value = "action-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, action_target)
         _n += 1
       end
-      if can_focus
+      if !can_focus.nil?
         (_names.to_unsafe + _n).value = "can-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_focus)
         _n += 1
       end
-      if can_target
+      if !can_target.nil?
         (_names.to_unsafe + _n).value = "can-target".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, can_target)
         _n += 1
       end
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if css_classes
+      if !css_classes.nil?
         (_names.to_unsafe + _n).value = "css-classes".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_classes)
         _n += 1
       end
-      if css_name
+      if !css_name.nil?
         (_names.to_unsafe + _n).value = "css-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, css_name)
         _n += 1
       end
-      if cursor
+      if !cursor.nil?
         (_names.to_unsafe + _n).value = "cursor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, cursor)
         _n += 1
       end
-      if direction
+      if !direction.nil?
         (_names.to_unsafe + _n).value = "direction".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, direction)
         _n += 1
       end
-      if focus_on_click
+      if !focus_on_click.nil?
         (_names.to_unsafe + _n).value = "focus-on-click".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focus_on_click)
         _n += 1
       end
-      if focusable
+      if !focusable.nil?
         (_names.to_unsafe + _n).value = "focusable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, focusable)
         _n += 1
       end
-      if halign
+      if !halign.nil?
         (_names.to_unsafe + _n).value = "halign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, halign)
         _n += 1
       end
-      if has_default
+      if !has_default.nil?
         (_names.to_unsafe + _n).value = "has-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_default)
         _n += 1
       end
-      if has_focus
+      if !has_focus.nil?
         (_names.to_unsafe + _n).value = "has-focus".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_focus)
         _n += 1
       end
-      if has_tooltip
+      if !has_tooltip.nil?
         (_names.to_unsafe + _n).value = "has-tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, has_tooltip)
         _n += 1
       end
-      if height_request
+      if !height_request.nil?
         (_names.to_unsafe + _n).value = "height-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, height_request)
         _n += 1
       end
-      if hexpand
+      if !hexpand.nil?
         (_names.to_unsafe + _n).value = "hexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand)
         _n += 1
       end
-      if hexpand_set
+      if !hexpand_set.nil?
         (_names.to_unsafe + _n).value = "hexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, hexpand_set)
         _n += 1
       end
-      if icon_name
+      if !icon_name.nil?
         (_names.to_unsafe + _n).value = "icon-name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon_name)
         _n += 1
       end
-      if label
+      if !label.nil?
         (_names.to_unsafe + _n).value = "label".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, label)
         _n += 1
       end
-      if layout_manager
+      if !layout_manager.nil?
         (_names.to_unsafe + _n).value = "layout-manager".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, layout_manager)
         _n += 1
       end
-      if margin_bottom
+      if !margin_bottom.nil?
         (_names.to_unsafe + _n).value = "margin-bottom".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_bottom)
         _n += 1
       end
-      if margin_end
+      if !margin_end.nil?
         (_names.to_unsafe + _n).value = "margin-end".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_end)
         _n += 1
       end
-      if margin_start
+      if !margin_start.nil?
         (_names.to_unsafe + _n).value = "margin-start".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_start)
         _n += 1
       end
-      if margin_top
+      if !margin_top.nil?
         (_names.to_unsafe + _n).value = "margin-top".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, margin_top)
         _n += 1
       end
-      if menu_model
+      if !menu_model.nil?
         (_names.to_unsafe + _n).value = "menu-model".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, menu_model)
         _n += 1
       end
-      if name
+      if !name.nil?
         (_names.to_unsafe + _n).value = "name".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, name)
         _n += 1
       end
-      if opacity
+      if !opacity.nil?
         (_names.to_unsafe + _n).value = "opacity".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, opacity)
         _n += 1
       end
-      if overflow
+      if !overflow.nil?
         (_names.to_unsafe + _n).value = "overflow".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, overflow)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if popover
+      if !popover.nil?
         (_names.to_unsafe + _n).value = "popover".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, popover)
         _n += 1
       end
-      if receives_default
+      if !receives_default.nil?
         (_names.to_unsafe + _n).value = "receives-default".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, receives_default)
         _n += 1
       end
-      if root
+      if !root.nil?
         (_names.to_unsafe + _n).value = "root".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, root)
         _n += 1
       end
-      if scale_factor
+      if !scale_factor.nil?
         (_names.to_unsafe + _n).value = "scale-factor".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, scale_factor)
         _n += 1
       end
-      if sensitive
+      if !sensitive.nil?
         (_names.to_unsafe + _n).value = "sensitive".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, sensitive)
         _n += 1
       end
-      if tooltip_markup
+      if !tooltip_markup.nil?
         (_names.to_unsafe + _n).value = "tooltip-markup".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_markup)
         _n += 1
       end
-      if tooltip_text
+      if !tooltip_text.nil?
         (_names.to_unsafe + _n).value = "tooltip-text".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip_text)
         _n += 1
       end
-      if use_underline
+      if !use_underline.nil?
         (_names.to_unsafe + _n).value = "use-underline".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, use_underline)
         _n += 1
       end
-      if valign
+      if !valign.nil?
         (_names.to_unsafe + _n).value = "valign".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, valign)
         _n += 1
       end
-      if vexpand
+      if !vexpand.nil?
         (_names.to_unsafe + _n).value = "vexpand".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand)
         _n += 1
       end
-      if vexpand_set
+      if !vexpand_set.nil?
         (_names.to_unsafe + _n).value = "vexpand-set".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, vexpand_set)
         _n += 1
       end
-      if visible
+      if !visible.nil?
         (_names.to_unsafe + _n).value = "visible".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, visible)
         _n += 1
       end
-      if width_request
+      if !width_request.nil?
         (_names.to_unsafe + _n).value = "width-request".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, width_request)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(SplitButton.g_type, _n, _names, _values)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -318,7 +331,7 @@ module Adw
 
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "direction", pointerof(value), Pointer(Void).null)
-      Gtk::ArrowType.from_value(value)
+      Gtk::ArrowType.new(value)
     end
 
     def icon_name=(value : ::String) : ::String
@@ -396,116 +409,118 @@ module Adw
       GICrystal.to_bool(value)
     end
 
+    # Creates a new `AdwSplitButton`.
     def initialize
       # adw_split_button_new: (Constructor)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_split_button_new
 
       # Return value handling
+      LibGObject.g_object_ref_sink(_retval)
+
       @pointer = _retval
-      LibGObject.g_object_ref(_retval)
     end
 
+    # Gets the child widget.
     def child : Gtk::Widget?
       # adw_split_button_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_split_button_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the direction in which the popup will be popped up.
     def direction : Gtk::ArrowType
       # adw_split_button_get_direction: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_split_button_get_direction(self)
 
       # Return value handling
-      Gtk::ArrowType.from_value(_retval)
+
+      Gtk::ArrowType.new(_retval)
     end
 
+    # Gets the name of the icon used to automatically populate the button.
+    #
+    # If the icon name has not been set with `SplitButton#icon_name=`
+    # the return value will be `NULL`.
     def icon_name : ::String?
       # adw_split_button_get_icon_name: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_split_button_get_icon_name(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the label for @self.
     def label : ::String?
       # adw_split_button_get_label: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_split_button_get_label(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Gets the menu model from which the popup will be created.
     def menu_model : Gio::MenuModel?
       # adw_split_button_get_menu_model: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_split_button_get_menu_model(self)
 
       # Return value handling
+
       Gio::MenuModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets the popover that will be popped up when the dropdown is clicked.
     def popover : Gtk::Popover?
       # adw_split_button_get_popover: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_split_button_get_popover(self)
 
       # Return value handling
+
       Gtk::Popover.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets whether an underline in the text indicates a mnemonic.
     def use_underline : Bool
       # adw_split_button_get_use_underline: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_split_button_get_use_underline(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Dismisses the menu.
     def popdown : Nil
       # adw_split_button_popdown: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_split_button_popdown(self)
@@ -513,11 +528,10 @@ module Adw
       # Return value handling
     end
 
+    # Pops up the menu.
     def popup : Nil
       # adw_split_button_popup: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_split_button_popup(self)
@@ -525,12 +539,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the child widget.
     def child=(child : Gtk::Widget?) : Nil
       # adw_split_button_set_child: (Method | Setter)
       # @child: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       child = if child.nil?
                 Pointer(Void).null
               else
@@ -543,11 +558,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the direction in which the popup will be popped up.
     def direction=(direction : Gtk::ArrowType) : Nil
       # adw_split_button_set_direction: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_split_button_set_direction(self, direction)
@@ -555,11 +569,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the name of the icon used to automatically populate the button.
     def icon_name=(icon_name : ::String) : Nil
       # adw_split_button_set_icon_name: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_split_button_set_icon_name(self, icon_name)
@@ -567,11 +580,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the label for @self.
     def label=(label : ::String) : Nil
       # adw_split_button_set_label: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_split_button_set_label(self, label)
@@ -579,12 +591,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the menu model from which the popup will be created.
     def menu_model=(menu_model : Gio::MenuModel?) : Nil
       # adw_split_button_set_menu_model: (Method | Setter)
       # @menu_model: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       menu_model = if menu_model.nil?
                      Pointer(Void).null
                    else
@@ -597,12 +610,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the popover that will be popped up when the dropdown is clicked.
     def popover=(popover : Gtk::Popover?) : Nil
       # adw_split_button_set_popover: (Method | Setter)
       # @popover: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       popover = if popover.nil?
                   Pointer(Void).null
                 else
@@ -615,11 +629,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether an underline in the text indicates a mnemonic.
     def use_underline=(use_underline : Bool) : Nil
       # adw_split_button_set_use_underline: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_split_button_set_use_underline(self, use_underline)
@@ -627,6 +640,10 @@ module Adw
       # Return value handling
     end
 
+    # Emitted to animate press then release.
+    #
+    # This is an action signal. Applications should never connect to this signal,
+    # but use the `SplitButton::#clicked` signal.
     struct ActivateSignal
       @source : GObject::Object
       @detail : String?
@@ -702,6 +719,7 @@ module Adw
       ActivateSignal.new(self)
     end
 
+    # Emitted when the button has been activated (pressed and released).
     struct ClickedSignal
       @source : GObject::Object
       @detail : String?

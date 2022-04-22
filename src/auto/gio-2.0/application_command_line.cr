@@ -161,8 +161,16 @@ module Gio
   #
   # The complete example can be found here:
   # [gapplication-example-cmdline3.c](https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline3.c)
+  @[GObject::GeneratedWrapper]
   class ApplicationCommandLine < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::ApplicationCommandLineClass), class_init,
+        sizeof(LibGio::ApplicationCommandLine), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -174,28 +182,32 @@ module Gio
       _values = StaticArray(LibGObject::Value, 4).new(LibGObject::Value.new)
       _n = 0
 
-      if arguments
+      if !arguments.nil?
         (_names.to_unsafe + _n).value = "arguments".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, arguments)
         _n += 1
       end
-      if is_remote
+      if !is_remote.nil?
         (_names.to_unsafe + _n).value = "is-remote".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, is_remote)
         _n += 1
       end
-      if options
+      if !options.nil?
         (_names.to_unsafe + _n).value = "options".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, options)
         _n += 1
       end
-      if platform_data
+      if !platform_data.nil?
         (_names.to_unsafe + _n).value = "platform-data".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, platform_data)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(ApplicationCommandLine.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -232,143 +244,235 @@ module Gio
       value
     end
 
+    # Creates a #GFile corresponding to a filename that was given as part
+    # of the invocation of @cmdline.
+    #
+    # This differs from g_file_new_for_commandline_arg() in that it
+    # resolves relative pathnames using the current working directory of
+    # the invoking process rather than the local process.
     def create_file_for_arg(arg : ::String) : Gio::File
       # g_application_command_line_create_file_for_arg: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_application_command_line_create_file_for_arg(self, arg)
 
       # Return value handling
+
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the list of arguments that was passed on the command line.
+    #
+    # The strings in the array may contain non-UTF-8 data on UNIX (such as
+    # filenames or arguments given in the system locale) but are always in
+    # UTF-8 on Windows.
+    #
+    # If you wish to use the return value with #GOptionContext, you must
+    # use g_option_context_parse_strv().
+    #
+    # The return value is %NULL-terminated and should be freed using
+    # g_strfreev().
     def arguments : Enumerable(::String)
       # g_application_command_line_get_arguments: (Method)
       # @argc: (out) (transfer full) (optional)
       # Returns: (transfer full) (array length=argc element-type Filename)
 
-      # Handle parameters
+      # Generator::OutArgUsedInReturnPlan
       argc = 0
 
       # C call
       _retval = LibGio.g_application_command_line_get_arguments(self, pointerof(argc))
 
       # Return value handling
+
       GICrystal.transfer_array(_retval, argc, GICrystal::Transfer::Full)
     end
 
+    # Gets the working directory of the command line invocation.
+    # The string may contain non-utf8 data.
+    #
+    # It is possible that the remote application did not send a working
+    # directory, so this may be %NULL.
+    #
+    # The return value should not be modified or freed and is valid for as
+    # long as @cmdline exists.
     def cwd : ::Path?
       # g_application_command_line_get_cwd: (Method)
       # Returns: (transfer none Filename)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_application_command_line_get_cwd(self)
 
       # Return value handling
+
       ::Path.new(::String.new(_retval)) unless _retval.null?
     end
 
+    # Gets the contents of the 'environ' variable of the command line
+    # invocation, as would be returned by g_get_environ(), ie as a
+    # %NULL-terminated list of strings in the form 'NAME=VALUE'.
+    # The strings may contain non-utf8 data.
+    #
+    # The remote application usually does not send an environment.  Use
+    # %G_APPLICATION_SEND_ENVIRONMENT to affect that.  Even with this flag
+    # set it is possible that the environment is still not available (due
+    # to invocation messages from other applications).
+    #
+    # The return value should not be modified or freed and is valid for as
+    # long as @cmdline exists.
+    #
+    # See g_application_command_line_getenv() if you are only interested
+    # in the value of a single environment variable.
     def environ : Enumerable(::String)
       # g_application_command_line_get_environ: (Method)
       # Returns: (transfer none) (array zero-terminated=1 element-type Filename)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_application_command_line_get_environ(self)
 
       # Return value handling
+
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the exit status of @cmdline.  See
+    # g_application_command_line_set_exit_status() for more information.
     def exit_status : Int32
       # g_application_command_line_get_exit_status: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_application_command_line_get_exit_status(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Determines if @cmdline represents a remote invocation.
     def is_remote : Bool
       # g_application_command_line_get_is_remote: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_application_command_line_get_is_remote(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the options there were passed to g_application_command_line().
+    #
+    # If you did not override local_command_line() then these are the same
+    # options that were parsed according to the #GOptionEntrys added to the
+    # application with g_application_add_main_option_entries() and possibly
+    # modified from your GApplication::handle-local-options handler.
+    #
+    # If no options were sent then an empty dictionary is returned so that
+    # you don't need to check for %NULL.
     def options_dict : GLib::VariantDict
       # g_application_command_line_get_options_dict: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_application_command_line_get_options_dict(self)
 
       # Return value handling
+
       GLib::VariantDict.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the platform data associated with the invocation of @cmdline.
+    #
+    # This is a #GVariant dictionary containing information about the
+    # context in which the invocation occurred.  It typically contains
+    # information like the current working directory and the startup
+    # notification ID.
+    #
+    # For local invocation, it will be %NULL.
     def platform_data : GLib::Variant?
       # g_application_command_line_get_platform_data: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_application_command_line_get_platform_data(self)
 
       # Return value handling
+
       GLib::Variant.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Gets the stdin of the invoking process.
+    #
+    # The #GInputStream can be used to read data passed to the standard
+    # input of the invoking process.
+    # This doesn't work on all platforms.  Presently, it is only available
+    # on UNIX when using a D-Bus daemon capable of passing file descriptors.
+    # If stdin is not available then %NULL will be returned.  In the
+    # future, support may be expanded to other platforms.
+    #
+    # You must only call this function once per commandline invocation.
     def stdin : Gio::InputStream?
       # g_application_command_line_get_stdin: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_application_command_line_get_stdin(self)
 
       # Return value handling
+
       Gio::InputStream.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Gets the value of a particular environment variable of the command
+    # line invocation, as would be returned by g_getenv().  The strings may
+    # contain non-utf8 data.
+    #
+    # The remote application usually does not send an environment.  Use
+    # %G_APPLICATION_SEND_ENVIRONMENT to affect that.  Even with this flag
+    # set it is possible that the environment is still not available (due
+    # to invocation messages from other applications).
+    #
+    # The return value should not be modified or freed and is valid for as
+    # long as @cmdline exists.
     def getenv(name : ::String) : ::String?
       # g_application_command_line_getenv: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_application_command_line_getenv(self, name)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Sets the exit status that will be used when the invoking process
+    # exits.
+    #
+    # The return value of the #GApplication::command-line signal is
+    # passed to this function when the handler returns.  This is the usual
+    # way of setting the exit status.
+    #
+    # In the event that you want the remote invocation to continue running
+    # and want to decide on the exit status in the future, you can use this
+    # call.  For the case of a remote invocation, the remote process will
+    # typically exit when the last reference is dropped on @cmdline.  The
+    # exit status of the remote process will be equal to the last value
+    # that was set with this function.
+    #
+    # In the case that the commandline invocation is local, the situation
+    # is slightly more complicated.  If the commandline invocation results
+    # in the mainloop running (ie: because the use-count of the application
+    # increased to a non-zero value) then the application is considered to
+    # have been 'successful' in a certain sense, and the exit status is
+    # always zero.  If the application use count is zero, though, the exit
+    # status of the local #GApplicationCommandLine is used.
     def exit_status=(exit_status : Int32) : Nil
       # g_application_command_line_set_exit_status: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_application_command_line_set_exit_status(self, exit_status)

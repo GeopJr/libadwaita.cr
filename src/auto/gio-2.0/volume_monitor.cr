@@ -12,8 +12,16 @@ module Gio
   #
   # In order to receive updates about volumes and mounts monitored through GVFS,
   # a main loop must be running.
+  @[GObject::GeneratedWrapper]
   class VolumeMonitor < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::VolumeMonitorClass), class_init,
+        sizeof(LibGio::VolumeMonitor), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -25,97 +33,134 @@ module Gio
       LibGio.g_volume_monitor_get_type
     end
 
+    # This function should be called by any #GVolumeMonitor
+    # implementation when a new #GMount object is created that is not
+    # associated with a #GVolume object. It must be called just before
+    # emitting the @mount_added signal.
+    #
+    # If the return value is not %NULL, the caller must associate the
+    # returned #GVolume object with the #GMount. This involves returning
+    # it in its g_mount_get_volume() implementation. The caller must
+    # also listen for the "removed" signal on the returned object
+    # and give up its reference when handling that signal
+    #
+    # Similarly, if implementing g_volume_monitor_adopt_orphan_mount(),
+    # the implementor must take a reference to @mount and return it in
+    # its g_volume_get_mount() implemented. Also, the implementor must
+    # listen for the "unmounted" signal on @mount and give up its
+    # reference upon handling that signal.
+    #
+    # There are two main use cases for this function.
+    #
+    # One is when implementing a user space file system driver that reads
+    # blocks of a block device that is already represented by the native
+    # volume monitor (for example a CD Audio file system driver). Such
+    # a driver will generate its own #GMount object that needs to be
+    # associated with the #GVolume object that represents the volume.
+    #
+    # The other is for implementing a #GVolumeMonitor whose sole purpose
+    # is to return #GVolume objects representing entries in the users
+    # "favorite servers" list or similar.
     def self.adopt_orphan_mount(mount : Gio::Mount) : Gio::Volume
       # g_volume_monitor_adopt_orphan_mount: (None)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_volume_monitor_adopt_orphan_mount(mount)
 
       # Return value handling
+
       Gio::Volume__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets the volume monitor used by gio.
     def self.get : Gio::VolumeMonitor
       # g_volume_monitor_get: (None)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_volume_monitor_get
 
       # Return value handling
+
       Gio::VolumeMonitor.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Gets a list of drives connected to the system.
+    #
+    # The returned list should be freed with g_list_free(), after
+    # its elements have been unreffed with g_object_unref().
     def connected_drives : GLib::List
       # g_volume_monitor_get_connected_drives: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_volume_monitor_get_connected_drives(self)
 
       # Return value handling
+
       GLib::List(Gio::Drive).new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Finds a #GMount object by its UUID (see g_mount_get_uuid())
     def mount_for_uuid(uuid : ::String) : Gio::Mount?
       # g_volume_monitor_get_mount_for_uuid: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_volume_monitor_get_mount_for_uuid(self, uuid)
 
       # Return value handling
+
       Gio::Mount__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Gets a list of the mounts on the system.
+    #
+    # The returned list should be freed with g_list_free(), after
+    # its elements have been unreffed with g_object_unref().
     def mounts : GLib::List
       # g_volume_monitor_get_mounts: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_volume_monitor_get_mounts(self)
 
       # Return value handling
+
       GLib::List(Gio::Mount).new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Finds a #GVolume object by its UUID (see g_volume_get_uuid())
     def volume_for_uuid(uuid : ::String) : Gio::Volume?
       # g_volume_monitor_get_volume_for_uuid: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_volume_monitor_get_volume_for_uuid(self, uuid)
 
       # Return value handling
+
       Gio::Volume__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
+    # Gets a list of the volumes on the system.
+    #
+    # The returned list should be freed with g_list_free(), after
+    # its elements have been unreffed with g_object_unref().
     def volumes : GLib::List
       # g_volume_monitor_get_volumes: (Method)
       # Returns: (transfer full)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_volume_monitor_get_volumes(self)
 
       # Return value handling
+
       GLib::List(Gio::Volume).new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Emitted when a drive changes.
     struct DriveChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -195,6 +240,7 @@ module Gio
       DriveChangedSignal.new(self)
     end
 
+    # Emitted when a drive is connected to the system.
     struct DriveConnectedSignal
       @source : GObject::Object
       @detail : String?
@@ -274,6 +320,7 @@ module Gio
       DriveConnectedSignal.new(self)
     end
 
+    # Emitted when a drive is disconnected from the system.
     struct DriveDisconnectedSignal
       @source : GObject::Object
       @detail : String?
@@ -353,6 +400,7 @@ module Gio
       DriveDisconnectedSignal.new(self)
     end
 
+    # Emitted when the eject button is pressed on @drive.
     struct DriveEjectButtonSignal
       @source : GObject::Object
       @detail : String?
@@ -432,6 +480,7 @@ module Gio
       DriveEjectButtonSignal.new(self)
     end
 
+    # Emitted when the stop button is pressed on @drive.
     struct DriveStopButtonSignal
       @source : GObject::Object
       @detail : String?
@@ -511,6 +560,7 @@ module Gio
       DriveStopButtonSignal.new(self)
     end
 
+    # Emitted when a mount is added.
     struct MountAddedSignal
       @source : GObject::Object
       @detail : String?
@@ -590,6 +640,7 @@ module Gio
       MountAddedSignal.new(self)
     end
 
+    # Emitted when a mount changes.
     struct MountChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -669,6 +720,10 @@ module Gio
       MountChangedSignal.new(self)
     end
 
+    # May be emitted when a mount is about to be removed.
+    #
+    # This signal depends on the backend and is only emitted if
+    # GIO was used to unmount.
     struct MountPreUnmountSignal
       @source : GObject::Object
       @detail : String?
@@ -748,6 +803,7 @@ module Gio
       MountPreUnmountSignal.new(self)
     end
 
+    # Emitted when a mount is removed.
     struct MountRemovedSignal
       @source : GObject::Object
       @detail : String?
@@ -827,6 +883,7 @@ module Gio
       MountRemovedSignal.new(self)
     end
 
+    # Emitted when a mountable volume is added to the system.
     struct VolumeAddedSignal
       @source : GObject::Object
       @detail : String?
@@ -906,6 +963,7 @@ module Gio
       VolumeAddedSignal.new(self)
     end
 
+    # Emitted when mountable volume is changed.
     struct VolumeChangedSignal
       @source : GObject::Object
       @detail : String?
@@ -985,6 +1043,7 @@ module Gio
       VolumeChangedSignal.new(self)
     end
 
+    # Emitted when a mountable volume is removed from the system.
     struct VolumeRemovedSignal
       @source : GObject::Object
       @detail : String?

@@ -167,10 +167,18 @@ module Gio
   #   return g_object_ref (cake);
   # }
   # ]|
+  @[GObject::GeneratedWrapper]
   class SimpleAsyncResult < GObject::Object
     include AsyncResult
 
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibGio::SimpleAsyncResultClass), class_init,
+        sizeof(LibGio::SimpleAsyncResult), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -182,6 +190,16 @@ module Gio
       LibGio.g_simple_async_result_get_type
     end
 
+    # Creates a #GSimpleAsyncResult.
+    #
+    # The common convention is to create the #GSimpleAsyncResult in the
+    # function that starts the asynchronous operation and use that same
+    # function as the @source_tag.
+    #
+    # If your operation supports cancellation with #GCancellable (which it
+    # probably should) then you should provide the user's cancellable to
+    # g_simple_async_result_set_check_cancellable() immediately after
+    # this function returns.
     def initialize(source_object : GObject::Object?, callback : Pointer(Void)?, user_data : Pointer(Void)?, source_tag : Pointer(Void)?)
       # g_simple_async_result_new: (Constructor)
       # @source_object: (nullable)
@@ -190,22 +208,28 @@ module Gio
       # @source_tag: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       source_object = if source_object.nil?
                         Pointer(Void).null
                       else
                         source_object.to_unsafe
                       end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
+
+      # Generator::NullableArrayPlan
       source_tag = if source_tag.nil?
                      Pointer(Void).null
                    else
@@ -216,9 +240,11 @@ module Gio
       _retval = LibGio.g_simple_async_result_new(source_object, callback, user_data, source_tag)
 
       # Return value handling
+
       @pointer = _retval
     end
 
+    # Creates a #GSimpleAsyncResult from an error condition.
     def self.new_from_error(source_object : GObject::Object?, callback : Pointer(Void)?, user_data : Pointer(Void)?, error : GLib::Error) : self
       # g_simple_async_result_new_from_error: (Constructor)
       # @source_object: (nullable)
@@ -226,17 +252,21 @@ module Gio
       # @user_data: (nullable)
       # Returns: (transfer full)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       source_object = if source_object.nil?
                         Pointer(Void).null
                       else
                         source_object.to_unsafe
                       end
+
+      # Generator::NullableArrayPlan
       callback = if callback.nil?
                    LibGio::AsyncReadyCallback.null
                  else
                    callback.to_unsafe
                  end
+
+      # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
@@ -247,21 +277,36 @@ module Gio
       _retval = LibGio.g_simple_async_result_new_from_error(source_object, callback, user_data, error)
 
       # Return value handling
+
       Gio::SimpleAsyncResult.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Ensures that the data passed to the _finish function of an async
+    # operation is consistent.  Three checks are performed.
+    #
+    # First, @result is checked to ensure that it is really a
+    # #GSimpleAsyncResult.  Second, @source is checked to ensure that it
+    # matches the source object of @result.  Third, @source_tag is
+    # checked to ensure that it is equal to the @source_tag argument given
+    # to g_simple_async_result_new() (which, by convention, is a pointer
+    # to the _async function corresponding to the _finish function from
+    # which this function is called).  (Alternatively, if either
+    # @source_tag or @result's source tag is %NULL, then the source tag
+    # check is skipped.)
     def self.is_valid(result : Gio::AsyncResult, source : GObject::Object?, source_tag : Pointer(Void)?) : Bool
       # g_simple_async_result_is_valid: (None)
       # @source: (nullable)
       # @source_tag: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       source = if source.nil?
                  Pointer(Void).null
                else
                  source.to_unsafe
                end
+
+      # Generator::NullableArrayPlan
       source_tag = if source_tag.nil?
                      Pointer(Void).null
                    else
@@ -272,14 +317,20 @@ module Gio
       _retval = LibGio.g_simple_async_result_is_valid(result, source, source_tag)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Completes an asynchronous I/O job immediately. Must be called in
+    # the thread where the asynchronous result was to be delivered, as it
+    # invokes the callback directly. If you are in a different thread use
+    # g_simple_async_result_complete_in_idle().
+    #
+    # Calling this function takes a reference to @simple for as long as
+    # is needed to complete the call.
     def complete : Nil
       # g_simple_async_result_complete: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_simple_async_result_complete(self)
@@ -287,11 +338,16 @@ module Gio
       # Return value handling
     end
 
+    # Completes an asynchronous function in an idle handler in the
+    # [thread-default main context][g-main-context-push-thread-default]
+    # of the thread that @simple was initially created in
+    # (and re-pushes that context around the invocation of the callback).
+    #
+    # Calling this function takes a reference to @simple for as long as
+    # is needed to complete the call.
     def complete_in_idle : Nil
       # g_simple_async_result_complete_in_idle: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_simple_async_result_complete_in_idle(self)
@@ -299,55 +355,76 @@ module Gio
       # Return value handling
     end
 
+    # Gets the operation result boolean from within the asynchronous result.
     def op_res_gboolean : Bool
       # g_simple_async_result_get_op_res_gboolean: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_simple_async_result_get_op_res_gboolean(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets a gssize from the asynchronous result.
     def op_res_gssize : Int64
       # g_simple_async_result_get_op_res_gssize: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibGio.g_simple_async_result_get_op_res_gssize(self)
 
       # Return value handling
+
       _retval
     end
 
+    # Propagates an error from within the simple asynchronous result to
+    # a given destination.
+    #
+    # If the #GCancellable given to a prior call to
+    # g_simple_async_result_set_check_cancellable() is cancelled then this
+    # function will return %TRUE with @dest set appropriately.
     def propagate_error : Bool
       # g_simple_async_result_propagate_error: (Method | Throws)
       # Returns: (transfer none)
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGio.g_simple_async_result_propagate_error(self, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Sets a #GCancellable to check before dispatching results.
+    #
+    # This function has one very specific purpose: the provided cancellable
+    # is checked at the time of g_simple_async_result_propagate_error() If
+    # it is cancelled, these functions will return an "Operation was
+    # cancelled" error (%G_IO_ERROR_CANCELLED).
+    #
+    # Implementors of cancellable asynchronous functions should use this in
+    # order to provide a guarantee to their callers that cancelling an
+    # async operation will reliably result in an error being returned for
+    # that operation (even if a positive result for the operation has
+    # already been sent as an idle to the main context to be dispatched).
+    #
+    # The checking described above is done regardless of any call to the
+    # unrelated g_simple_async_result_set_handle_cancellation() function.
     def check_cancellable=(check_cancellable : Gio::Cancellable?) : Nil
       # g_simple_async_result_set_check_cancellable: (Method)
       # @check_cancellable: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       check_cancellable = if check_cancellable.nil?
                             Pointer(Void).null
                           else
@@ -360,11 +437,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the result from a #GError.
     def from_error=(error : GLib::Error) : Nil
       # g_simple_async_result_set_from_error: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_simple_async_result_set_from_error(self, error)
@@ -372,11 +448,14 @@ module Gio
       # Return value handling
     end
 
+    # Sets whether to handle cancellation within the asynchronous operation.
+    #
+    # This function has nothing to do with
+    # g_simple_async_result_set_check_cancellable().  It only refers to the
+    # #GCancellable passed to g_simple_async_result_run_in_thread().
     def handle_cancellation=(handle_cancellation : Bool) : Nil
       # g_simple_async_result_set_handle_cancellation: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_simple_async_result_set_handle_cancellation(self, handle_cancellation)
@@ -384,11 +463,10 @@ module Gio
       # Return value handling
     end
 
+    # Sets the operation result to a boolean within the asynchronous result.
     def op_res_gboolean=(op_res : Bool) : Nil
       # g_simple_async_result_set_op_res_gboolean: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_simple_async_result_set_op_res_gboolean(self, op_res)
@@ -396,11 +474,11 @@ module Gio
       # Return value handling
     end
 
+    # Sets the operation result within the asynchronous result to
+    # the given @op_res.
     def op_res_gssize=(op_res : Int64) : Nil
       # g_simple_async_result_set_op_res_gssize: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGio.g_simple_async_result_set_op_res_gssize(self, op_res)

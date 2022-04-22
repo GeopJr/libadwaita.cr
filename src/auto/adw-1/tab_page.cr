@@ -1,9 +1,17 @@
 require "../g_object-2.0/object"
 
 module Adw
-  # An auxiliary class used by [class@TabView].
+  # An auxiliary class used by `#TabView`.
+  @[GObject::GeneratedWrapper]
   class TabPage < GObject::Object
     @pointer : Pointer(Void)
+
+    # :nodoc:
+    def self._register_derived_type(klass : Class, class_init, instance_init)
+      LibGObject.g_type_register_static_simple(g_type, klass.name,
+        sizeof(LibAdw::TabPageClass), class_init,
+        sizeof(LibAdw::TabPage), instance_init, 0)
+    end
 
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
@@ -15,63 +23,67 @@ module Adw
       _values = StaticArray(LibGObject::Value, 11).new(LibGObject::Value.new)
       _n = 0
 
-      if child
+      if !child.nil?
         (_names.to_unsafe + _n).value = "child".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, child)
         _n += 1
       end
-      if icon
+      if !icon.nil?
         (_names.to_unsafe + _n).value = "icon".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, icon)
         _n += 1
       end
-      if indicator_activatable
+      if !indicator_activatable.nil?
         (_names.to_unsafe + _n).value = "indicator-activatable".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, indicator_activatable)
         _n += 1
       end
-      if indicator_icon
+      if !indicator_icon.nil?
         (_names.to_unsafe + _n).value = "indicator-icon".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, indicator_icon)
         _n += 1
       end
-      if loading
+      if !loading.nil?
         (_names.to_unsafe + _n).value = "loading".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, loading)
         _n += 1
       end
-      if needs_attention
+      if !needs_attention.nil?
         (_names.to_unsafe + _n).value = "needs-attention".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, needs_attention)
         _n += 1
       end
-      if parent
+      if !parent.nil?
         (_names.to_unsafe + _n).value = "parent".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, parent)
         _n += 1
       end
-      if pinned
+      if !pinned.nil?
         (_names.to_unsafe + _n).value = "pinned".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pinned)
         _n += 1
       end
-      if selected
+      if !selected.nil?
         (_names.to_unsafe + _n).value = "selected".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, selected)
         _n += 1
       end
-      if title
+      if !title.nil?
         (_names.to_unsafe + _n).value = "title".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, title)
         _n += 1
       end
-      if tooltip
+      if !tooltip.nil?
         (_names.to_unsafe + _n).value = "tooltip".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, tooltip)
         _n += 1
       end
 
       @pointer = LibGObject.g_object_new_with_properties(TabPage.g_type, _n, _names, _values)
+
+      _n.times do |i|
+        LibGObject.g_value_unset(_values.to_unsafe + i)
+      end
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -230,155 +242,156 @@ module Adw
       ::String.new(value)
     end
 
+    # Gets the child of @self.
     def child : Gtk::Widget
       # adw_tab_page_get_child: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_child(self)
 
       # Return value handling
+
       Gtk::Widget.new(_retval, GICrystal::Transfer::None)
     end
 
+    # Gets the icon of @self.
     def icon : Gio::Icon?
       # adw_tab_page_get_icon: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_icon(self)
 
       # Return value handling
+
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets whether the indicator of @self is activatable.
     def indicator_activatable : Bool
       # adw_tab_page_get_indicator_activatable: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_indicator_activatable(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the indicator icon of @self.
     def indicator_icon : Gio::Icon?
       # adw_tab_page_get_indicator_icon: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_indicator_icon(self)
 
       # Return value handling
+
       Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets whether @self is loading.
     def loading : Bool
       # adw_tab_page_get_loading: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_loading(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self needs attention.
     def needs_attention : Bool
       # adw_tab_page_get_needs_attention: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_needs_attention(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the parent page of @self.
     def parent : Adw::TabPage?
       # adw_tab_page_get_parent: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_parent(self)
 
       # Return value handling
+
       Adw::TabPage.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
+    # Gets whether @self is pinned.
     def pinned : Bool
       # adw_tab_page_get_pinned: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_pinned(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets whether @self is selected.
     def selected : Bool
       # adw_tab_page_get_selected: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_selected(self)
 
       # Return value handling
+
       GICrystal.to_bool(_retval)
     end
 
+    # Gets the title of @self.
     def title : ::String
       # adw_tab_page_get_title: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_title(self)
 
       # Return value handling
+
       ::String.new(_retval)
     end
 
+    # Gets the tooltip of @self.
     def tooltip : ::String?
       # adw_tab_page_get_tooltip: (Method | Getter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       _retval = LibAdw.adw_tab_page_get_tooltip(self)
 
       # Return value handling
+
       ::String.new(_retval) unless _retval.null?
     end
 
+    # Sets the icon of @self.
     def icon=(icon : Gio::Icon?) : Nil
       # adw_tab_page_set_icon: (Method | Setter)
       # @icon: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       icon = if icon.nil?
                Pointer(Void).null
              else
@@ -391,11 +404,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether the indicator of @self is activatable.
     def indicator_activatable=(activatable : Bool) : Nil
       # adw_tab_page_set_indicator_activatable: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_page_set_indicator_activatable(self, activatable)
@@ -403,12 +415,13 @@ module Adw
       # Return value handling
     end
 
+    # Sets the indicator icon of @self.
     def indicator_icon=(indicator_icon : Gio::Icon?) : Nil
       # adw_tab_page_set_indicator_icon: (Method | Setter)
       # @indicator_icon: (nullable)
       # Returns: (transfer none)
 
-      # Handle parameters
+      # Generator::NullableArrayPlan
       indicator_icon = if indicator_icon.nil?
                          Pointer(Void).null
                        else
@@ -421,11 +434,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets wether @self is loading.
     def loading=(loading : Bool) : Nil
       # adw_tab_page_set_loading: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_page_set_loading(self, loading)
@@ -433,11 +445,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets whether @self needs attention.
     def needs_attention=(needs_attention : Bool) : Nil
       # adw_tab_page_set_needs_attention: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_page_set_needs_attention(self, needs_attention)
@@ -445,11 +456,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the title of @self.
     def title=(title : ::String) : Nil
       # adw_tab_page_set_title: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_page_set_title(self, title)
@@ -457,11 +467,10 @@ module Adw
       # Return value handling
     end
 
+    # Sets the tooltip of @self.
     def tooltip=(tooltip : ::String) : Nil
       # adw_tab_page_set_tooltip: (Method | Setter)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibAdw.adw_tab_page_set_tooltip(self, tooltip)

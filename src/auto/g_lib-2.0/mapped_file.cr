@@ -6,7 +6,7 @@ module GLib
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       @pointer = if transfer.none?
                    LibGObject.g_boxed_copy(MappedFile.g_type, pointer)
@@ -17,6 +17,10 @@ module GLib
 
     def finalize
       LibGObject.g_boxed_free(MappedFile.g_type, self)
+    end
+
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::MappedFile)).zero?
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -30,14 +34,14 @@ module GLib
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_mapped_file_new(filename, writable, pointerof(_error))
 
       # Error check
       GLib.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       @pointer = _retval
     end
 
@@ -47,22 +51,20 @@ module GLib
 
       _error = Pointer(LibGLib::Error).null
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_mapped_file_new_from_fd(fd, writable, pointerof(_error))
 
       # Error check
       GLib.raise_exception(_error) unless _error.null?
+
       # Return value handling
+
       GLib::MappedFile.new(_retval, GICrystal::Transfer::Full)
     end
 
     def free : Nil
       # g_mapped_file_free: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_mapped_file_free(self)
@@ -74,12 +76,11 @@ module GLib
       # g_mapped_file_get_bytes: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_mapped_file_get_bytes(self)
 
       # Return value handling
+
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
@@ -87,12 +88,11 @@ module GLib
       # g_mapped_file_get_contents: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_mapped_file_get_contents(self)
 
       # Return value handling
+
       GICrystal.transfer_full(_retval)
     end
 
@@ -100,12 +100,11 @@ module GLib
       # g_mapped_file_get_length: (Method)
       # Returns: (transfer none)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_mapped_file_get_length(self)
 
       # Return value handling
+
       _retval
     end
 
@@ -113,20 +112,17 @@ module GLib
       # g_mapped_file_ref: (Method)
       # Returns: (transfer full)
 
-      # Handle parameters
-
       # C call
       _retval = LibGLib.g_mapped_file_ref(self)
 
       # Return value handling
+
       GLib::MappedFile.new(_retval, GICrystal::Transfer::Full)
     end
 
     def unref : Nil
       # g_mapped_file_unref: (Method)
       # Returns: (transfer none)
-
-      # Handle parameters
 
       # C call
       LibGLib.g_mapped_file_unref(self)

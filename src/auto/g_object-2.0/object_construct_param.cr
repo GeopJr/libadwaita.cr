@@ -5,7 +5,7 @@ module GObject
     @pointer : Pointer(Void)
 
     def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-      raise ArgumentError.new if pointer.null?
+      raise ArgumentError.new("Tried to generate struct with a NULL pointer") if pointer.null?
 
       # Raw structs are always moved to Crystal memory.
       @pointer = Pointer(Void).malloc(sizeof(LibGObject::ObjectConstructParam))
@@ -24,27 +24,37 @@ module GObject
     def finalize
     end
 
-    def pspec : GObject::ParamSpec
-      # Property getter
+    def ==(other : self) : Bool
+      LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::ObjectConstructParam)).zero?
+    end
+
+    def pspec!
+      self.pspec.not_nil!
+    end
+
+    def pspec : GObject::ParamSpec?
       _var = (@pointer + 0).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GObject::ParamSpec.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def pspec=(value : GObject::ParamSpec)
-      # Property setter
-      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def pspec=(value : GObject::ParamSpec?)
+      _var = (@pointer + 0).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
-    def value : GObject::Value
-      # Property getter
+    def value!
+      self.value.not_nil!
+    end
+
+    def value : GObject::Value?
       _var = (@pointer + 8).as(Pointer(Pointer(Void)))
+      return if _var.value.null?
       GObject::Value.new(_var.value, GICrystal::Transfer::None)
     end
 
-    def value=(value : GObject::Value)
-      # Property setter
-      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.to_unsafe
+    def value=(value : GObject::Value?)
+      _var = (@pointer + 8).as(Pointer(Pointer(Void))).value = value.nil? ? Pointer(Void).null : value.to_unsafe
       value
     end
 
