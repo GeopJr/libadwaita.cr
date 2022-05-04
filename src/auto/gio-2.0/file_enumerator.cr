@@ -38,6 +38,17 @@ module Gio
         sizeof(LibGio::FileEnumerator), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -59,6 +70,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -110,7 +123,7 @@ module Gio
     # triggering the cancellable object from another thread. If the operation
     # was cancelled, the error %G_IO_ERROR_CANCELLED will be returned in
     # g_file_enumerator_close_finish().
-    def close_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def close_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_enumerator_close_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -123,14 +136,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -283,10 +288,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      out_info = Pointer(Pointer(Void)).null
-      # Generator::OutArgUsedInReturnPlan
-      out_child = Pointer(Pointer(Void)).null
-      # Generator::NullableArrayPlan
+      out_info = Pointer(Pointer(Void)).null  # Generator::OutArgUsedInReturnPlan
+      out_child = Pointer(Pointer(Void)).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -359,7 +362,7 @@ module Gio
     # Any outstanding i/o request with higher priority (lower numerical value) will
     # be executed before an outstanding request with lower priority. Default
     # priority is %G_PRIORITY_DEFAULT.
-    def next_files_async(num_files : Int32, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def next_files_async(num_files : Int32, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_enumerator_next_files_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -372,14 +375,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

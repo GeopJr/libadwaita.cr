@@ -236,25 +236,28 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def set_filter_func(filter : Pointer(Void)?, user_data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
+    def filter_func=(filter : Gtk::FontFilterFunc?) : Nil
       # gtk_font_chooser_set_filter_func: (Method)
       # @filter: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      filter = if filter.nil?
-                 LibGtk::FontFilterFunc.null
-               else
-                 filter.to_unsafe
-               end
-
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
+      # Generator::CallbackArgPlan
+      if filter
+        _box = ::Box.box(filter)
+        filter = ->(lib_family : Pointer(Void), lib_face : Pointer(Void), lib_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          family = Pango::FontFamily.new(lib_family, :none)
+          # Generator::GObjectArgPlan
+          face = Pango::FontFace.new(lib_face, :none)
+          data = lib_data
+          ::Box(Proc(Pango::FontFamily, Pango::FontFace, Bool)).unbox(data).call(family, face)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        filter = user_data = destroy = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_font_chooser_set_filter_func(self, filter, user_data, destroy)
@@ -364,50 +367,50 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
-          arg0 = ::String.new(lib_arg0)
-          ::Box(Proc(::String, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_fontname : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          fontname = lib_fontname
+          ::Box(Proc(::String, Nil)).unbox(_lib_box).call(fontname)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
-          arg0 = ::String.new(lib_arg0)
-          ::Box(Proc(::String, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_fontname : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          fontname = lib_fontname
+          ::Box(Proc(::String, Nil)).unbox(_lib_box).call(fontname)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::FontChooser, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
-          sender = Gtk::FontChooser__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = ::String.new(lib_arg0)
-          ::Box(Proc(Gtk::FontChooser, ::String, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gtk::FontChooser, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_fontname : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          _sender = Gtk::FontChooser__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          fontname = lib_fontname
+          ::Box(Proc(Gtk::FontChooser, ::String, Nil)).unbox(_lib_box).call(_sender, fontname)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::FontChooser, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
-          sender = Gtk::FontChooser__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = ::String.new(lib_arg0)
-          ::Box(Proc(Gtk::FontChooser, ::String, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gtk::FontChooser, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_fontname : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          _sender = Gtk::FontChooser__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          fontname = lib_fontname
+          ::Box(Proc(Gtk::FontChooser, ::String, Nil)).unbox(_lib_box).call(_sender, fontname)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(fontname : ::String) : Nil

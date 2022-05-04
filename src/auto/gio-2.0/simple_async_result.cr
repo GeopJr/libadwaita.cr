@@ -180,6 +180,17 @@ module Gio
         sizeof(LibGio::SimpleAsyncResult), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -200,7 +211,7 @@ module Gio
     # probably should) then you should provide the user's cancellable to
     # g_simple_async_result_set_check_cancellable() immediately after
     # this function returns.
-    def initialize(source_object : GObject::Object?, callback : Pointer(Void)?, user_data : Pointer(Void)?, source_tag : Pointer(Void)?)
+    def initialize(source_object : GObject::Object?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?, source_tag : Pointer(Void)?)
       # g_simple_async_result_new: (Constructor)
       # @source_object: (nullable)
       # @callback: (nullable)
@@ -214,21 +225,12 @@ module Gio
                       else
                         source_object.to_unsafe
                       end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
                   else
                     user_data.to_unsafe
                   end
-
       # Generator::NullableArrayPlan
       source_tag = if source_tag.nil?
                      Pointer(Void).null
@@ -242,10 +244,11 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Creates a #GSimpleAsyncResult from an error condition.
-    def self.new_from_error(source_object : GObject::Object?, callback : Pointer(Void)?, user_data : Pointer(Void)?, error : GLib::Error) : self
+    def self.new_from_error(source_object : GObject::Object?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?, error : GLib::Error) : self
       # g_simple_async_result_new_from_error: (Constructor)
       # @source_object: (nullable)
       # @callback: (nullable)
@@ -258,14 +261,6 @@ module Gio
                       else
                         source_object.to_unsafe
                       end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -305,7 +300,6 @@ module Gio
                else
                  source.to_unsafe
                end
-
       # Generator::NullableArrayPlan
       source_tag = if source_tag.nil?
                      Pointer(Void).null

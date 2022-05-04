@@ -118,10 +118,8 @@ module Gdk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      dest = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      dest = Pointer(Void).null # Generator::CallerAllocatesPlan
       dest = Gdk::Rectangle.new
-
       # C call
       _retval = LibGdk.gdk_rectangle_intersect(self, src2, dest)
 
@@ -137,7 +135,6 @@ module Gdk
 
       # Generator::CallerAllocatesPlan
       dest = Gdk::Rectangle.new
-
       # C call
       LibGdk.gdk_rectangle_union(self, src2, dest)
 

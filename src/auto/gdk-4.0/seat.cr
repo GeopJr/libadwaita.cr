@@ -14,6 +14,17 @@ module Gdk
         sizeof(LibGdk::Seat), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -35,6 +46,8 @@ module Gdk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -160,50 +173,54 @@ module Gdk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::Device, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::Device.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Device, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gdk::Device, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          device = Gdk::Device.new(lib_device, :none)
+          ::Box(Proc(Gdk::Device, Nil)).unbox(_lib_box).call(device)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::Device, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::Device.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Device, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gdk::Device, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          device = Gdk::Device.new(lib_device, :none)
+          ::Box(Proc(Gdk::Device, Nil)).unbox(_lib_box).call(device)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gdk::Seat, Gdk::Device, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gdk::Seat.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::Device.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gdk::Seat, Gdk::Device, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          device = Gdk::Device.new(lib_device, :none)
+          ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(_lib_box).call(_sender, device)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::Seat, Gdk::Device, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gdk::Seat.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::Device.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gdk::Seat, Gdk::Device, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          device = Gdk::Device.new(lib_device, :none)
+          ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(_lib_box).call(_sender, device)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(device : Gdk::Device) : Nil
@@ -240,50 +257,54 @@ module Gdk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::Device, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::Device.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Device, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gdk::Device, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          device = Gdk::Device.new(lib_device, :none)
+          ::Box(Proc(Gdk::Device, Nil)).unbox(_lib_box).call(device)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::Device, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::Device.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Device, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gdk::Device, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          device = Gdk::Device.new(lib_device, :none)
+          ::Box(Proc(Gdk::Device, Nil)).unbox(_lib_box).call(device)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gdk::Seat, Gdk::Device, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gdk::Seat.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::Device.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gdk::Seat, Gdk::Device, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          device = Gdk::Device.new(lib_device, :none)
+          ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(_lib_box).call(_sender, device)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::Seat, Gdk::Device, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gdk::Seat.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::Device.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gdk::Seat, Gdk::Device, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          device = Gdk::Device.new(lib_device, :none)
+          ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(_lib_box).call(_sender, device)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(device : Gdk::Device) : Nil
@@ -326,50 +347,54 @@ module Gdk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::DeviceTool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::DeviceTool.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gdk::DeviceTool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          tool = Gdk::DeviceTool.new(lib_tool, :none)
+          ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::DeviceTool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::DeviceTool.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gdk::DeviceTool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          tool = Gdk::DeviceTool.new(lib_tool, :none)
+          ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gdk::Seat, Gdk::DeviceTool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gdk::Seat.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::DeviceTool.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gdk::Seat, Gdk::DeviceTool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          tool = Gdk::DeviceTool.new(lib_tool, :none)
+          ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::Seat, Gdk::DeviceTool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gdk::Seat.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::DeviceTool.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gdk::Seat, Gdk::DeviceTool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          tool = Gdk::DeviceTool.new(lib_tool, :none)
+          ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(tool : Gdk::DeviceTool) : Nil
@@ -406,50 +431,54 @@ module Gdk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::DeviceTool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::DeviceTool.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gdk::DeviceTool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          tool = Gdk::DeviceTool.new(lib_tool, :none)
+          ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::DeviceTool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::DeviceTool.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gdk::DeviceTool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          tool = Gdk::DeviceTool.new(lib_tool, :none)
+          ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gdk::Seat, Gdk::DeviceTool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gdk::Seat.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::DeviceTool.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gdk::Seat, Gdk::DeviceTool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          tool = Gdk::DeviceTool.new(lib_tool, :none)
+          ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::Seat, Gdk::DeviceTool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gdk::Seat.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::DeviceTool.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gdk::Seat, Gdk::DeviceTool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          tool = Gdk::DeviceTool.new(lib_tool, :none)
+          ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(tool : Gdk::DeviceTool) : Nil

@@ -144,7 +144,7 @@ lib LibGsk
   fun gsk_border_node_get_outline(this : Void*) : Pointer(Void)
   fun gsk_border_node_get_type : UInt64
   fun gsk_border_node_get_widths(this : Void*) : Pointer(Float32[4])
-  fun gsk_border_node_new(outline : Pointer(Void), border_width : Pointer(Float32[4]), border_color : Pointer(Void[4])) : Pointer(Void)
+  fun gsk_border_node_new(outline : Pointer(Void), border_width : Pointer(Float32), border_color : Pointer(Void)) : Pointer(Void)
   fun gsk_broadway_renderer_get_type : UInt64
   fun gsk_broadway_renderer_new : Pointer(Void)
   fun gsk_cairo_node_get_draw_context(this : Void*) : Pointer(Void)
@@ -250,7 +250,7 @@ lib LibGsk
   fun gsk_radial_gradient_node_get_type : UInt64
   fun gsk_radial_gradient_node_get_vradius(this : Void*) : Float32
   fun gsk_radial_gradient_node_new(bounds : Pointer(Void), center : Pointer(Void), hradius : Float32, vradius : Float32, start : Float32, _end : Float32, color_stops : Pointer(Void), n_color_stops : UInt64) : Pointer(Void)
-  fun gsk_render_node_deserialize(bytes : Pointer(Void), error_func : ParseErrorFunc, user_data : Pointer(Void)) : Pointer(Void)
+  fun gsk_render_node_deserialize(bytes : Pointer(Void), error_func : Void*, user_data : Pointer(Void)) : Pointer(Void)
   fun gsk_render_node_draw(this : Void*, cr : Pointer(Void)) : Void
   fun gsk_render_node_get_bounds(this : Void*, bounds : Pointer(Void)) : Void
   fun gsk_render_node_get_node_type(this : Void*) : UInt32

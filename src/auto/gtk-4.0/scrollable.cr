@@ -96,7 +96,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       border = Gtk::Border.new
-
       # C call
       _retval = LibGtk.gtk_scrollable_get_border(self, border)
 

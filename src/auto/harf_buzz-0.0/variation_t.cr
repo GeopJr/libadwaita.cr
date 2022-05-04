@@ -56,8 +56,7 @@ module HarfBuzz
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      size = buf.size
-      # Generator::ArrayArgPlan
+      size = buf.size # Generator::ArrayArgPlan
       buf = buf.to_a.map(&.to_unsafe).to_unsafe
 
       # C call

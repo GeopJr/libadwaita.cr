@@ -20,7 +20,7 @@ module GObject
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(class_size : UInt16? = nil, base_init : Pointer(Void)? = nil, base_finalize : Pointer(Void)? = nil, class_init : Pointer(Void)? = nil, class_finalize : Pointer(Void)? = nil, class_data : Pointer(Void)? = nil, instance_size : UInt16? = nil, n_preallocs : UInt16? = nil, instance_init : Pointer(Void)? = nil, value_table : GObject::TypeValueTable? = nil)
+    def self.new(class_size : UInt16? = nil, base_init : GObject::BaseInitFunc? = nil, base_finalize : GObject::BaseFinalizeFunc? = nil, class_init : GObject::ClassInitFunc? = nil, class_finalize : GObject::ClassFinalizeFunc? = nil, class_data : Pointer(Void)? = nil, instance_size : UInt16? = nil, n_preallocs : UInt16? = nil, instance_init : GObject::InstanceInitFunc? = nil, value_table : GObject::TypeValueTable? = nil)
       _ptr = Pointer(Void).malloc(72)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.class_size = class_size unless class_size.nil?
@@ -53,46 +53,46 @@ module GObject
       value
     end
 
-    def base_init : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(LibGObject::BaseInitFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def base_init : GObject::BaseInitFunc
+      _var = (@pointer + 8).as(Pointer(Void*))
+      GObject::BaseInitFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def base_init=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(LibGObject::BaseInitFunc))
+    def base_init=(value : GObject::BaseInitFunc)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeInfo))
       value
     end
 
-    def base_finalize : Pointer(Void)
-      _var = (@pointer + 16).as(Pointer(LibGObject::BaseFinalizeFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def base_finalize : GObject::BaseFinalizeFunc
+      _var = (@pointer + 16).as(Pointer(Void*))
+      GObject::BaseFinalizeFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def base_finalize=(value : Pointer(Void))
-      _var = (@pointer + 16).as(Pointer(LibGObject::BaseFinalizeFunc))
+    def base_finalize=(value : GObject::BaseFinalizeFunc)
+      _var = (@pointer + 16).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeInfo))
       value
     end
 
-    def class_init : Pointer(Void)
-      _var = (@pointer + 24).as(Pointer(LibGObject::ClassInitFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def class_init : GObject::ClassInitFunc
+      _var = (@pointer + 24).as(Pointer(Void*))
+      GObject::ClassInitFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def class_init=(value : Pointer(Void))
-      _var = (@pointer + 24).as(Pointer(LibGObject::ClassInitFunc))
+    def class_init=(value : GObject::ClassInitFunc)
+      _var = (@pointer + 24).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeInfo))
       value
     end
 
-    def class_finalize : Pointer(Void)
-      _var = (@pointer + 32).as(Pointer(LibGObject::ClassFinalizeFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def class_finalize : GObject::ClassFinalizeFunc
+      _var = (@pointer + 32).as(Pointer(Void*))
+      GObject::ClassFinalizeFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def class_finalize=(value : Pointer(Void))
-      _var = (@pointer + 32).as(Pointer(LibGObject::ClassFinalizeFunc))
+    def class_finalize=(value : GObject::ClassFinalizeFunc)
+      _var = (@pointer + 32).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeInfo))
       value
     end
@@ -132,13 +132,13 @@ module GObject
       value
     end
 
-    def instance_init : Pointer(Void)
-      _var = (@pointer + 56).as(Pointer(LibGObject::InstanceInitFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def instance_init : GObject::InstanceInitFunc
+      _var = (@pointer + 56).as(Pointer(Void*))
+      GObject::InstanceInitFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def instance_init=(value : Pointer(Void))
-      _var = (@pointer + 56).as(Pointer(LibGObject::InstanceInitFunc))
+    def instance_init=(value : GObject::InstanceInitFunc)
+      _var = (@pointer + 56).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeInfo))
       value
     end

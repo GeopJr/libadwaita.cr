@@ -69,9 +69,181 @@ module HarfBuzz
   # See Unicode 6.1 for details on the maximum decomposition length.
   UNICODE_MAX_DECOMPOSITION_LEN = 19
   VERSION_MAJOR                 =  4
-  VERSION_MICRO                 =  0
+  VERSION_MICRO                 =  1
   VERSION_MINOR                 =  2
-  VERSION_STRING                = "4.2.0"
+  VERSION_STRING                = "4.2.1"
+
+  # Callbacks
+
+  # A callback method for #hb_buffer_t. The method gets called with the
+  # #hb_buffer_t it was set on, the #hb_font_t the buffer is shaped with and a
+  # message describing what step of the shaping process will be performed.
+  # Returning %false from this method will skip this shaping step and move to
+  # the next one.
+  alias BufferMessageFuncT = Proc(HarfBuzz::BufferT, HarfBuzz::FontT, ::String, Int32)
+
+  # A virtual method for destroy user-data callbacks.
+  alias DestroyFuncT = Proc(Nil)
+
+  # A virtual method for the #hb_draw_funcs_t to perform a "close-path" draw
+  # operation.
+  alias DrawClosePathFuncT = Proc(HarfBuzz::DrawFuncsT, Pointer(Void)?, HarfBuzz::DrawStateT, Nil)
+
+  # A virtual method for the #hb_draw_funcs_t to perform a "cubic-to" draw
+  # operation.
+  alias DrawCubicToFuncT = Proc(HarfBuzz::DrawFuncsT, Pointer(Void)?, HarfBuzz::DrawStateT, Float32, Float32, Float32, Float32, Float32, Float32, Nil)
+
+  # A virtual method for the #hb_draw_funcs_t to perform a "line-to" draw
+  # operation.
+  alias DrawLineToFuncT = Proc(HarfBuzz::DrawFuncsT, Pointer(Void)?, HarfBuzz::DrawStateT, Float32, Float32, Nil)
+
+  # A virtual method for the #hb_draw_funcs_t to perform a "move-to" draw
+  # operation.
+  alias DrawMoveToFuncT = Proc(HarfBuzz::DrawFuncsT, Pointer(Void)?, HarfBuzz::DrawStateT, Float32, Float32, Nil)
+
+  # A virtual method for the #hb_draw_funcs_t to perform a "quadratic-to" draw
+  # operation.
+  alias DrawQuadraticToFuncT = Proc(HarfBuzz::DrawFuncsT, Pointer(Void)?, HarfBuzz::DrawStateT, Float32, Float32, Float32, Float32, Nil)
+
+  # This method should retrieve the extents for a font.
+  alias FontGetFontExtentsFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, HarfBuzz::FontExtentsT, Int32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the advance for a specified glyph. The
+  # method must return an #hb_position_t.
+  alias FontGetGlyphAdvanceFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, Int32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the advances for a sequence of glyphs.
+  alias FontGetGlyphAdvancesFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, Pointer(UInt32), UInt32, Int32, UInt32, Nil)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the (X,Y) coordinates (in font units) for a
+  # specified contour point in a glyph. Each coordinate must be returned as
+  # an #hb_position_t output parameter.
+  alias FontGetGlyphContourPointFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, UInt32, Int32, Int32, Int32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the extents for a specified glyph. Extents must be
+  # returned in an #hb_glyph_extents output parameter.
+  alias FontGetGlyphExtentsFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, HarfBuzz::GlyphExtentsT, Int32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the glyph ID that corresponds to a glyph-name
+  # string.
+  alias FontGetGlyphFromNameFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, Enumerable(::String), Int32, UInt32, Int32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the glyph ID for a specified Unicode code point
+  # font, with an optional variation selector.
+  alias FontGetGlyphFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, UInt32, UInt32, Int32)
+
+  # This method should retrieve the kerning-adjustment value for a glyph-pair in
+  # the specified font, for horizontal text segments.
+  alias FontGetGlyphKerningFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, UInt32, Int32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the glyph name that corresponds to a
+  # glyph ID. The name should be returned in a string output parameter.
+  alias FontGetGlyphNameFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, Enumerable(::String), UInt32, Int32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the (X,Y) coordinates (in font units) of the
+  # origin for a glyph. Each coordinate must be returned in an #hb_position_t
+  # output parameter.
+  alias FontGetGlyphOriginFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, Int32, Int32, Int32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  alias FontGetGlyphShapeFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, HarfBuzz::DrawFuncsT, Pointer(Void)?, Nil)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the nominal glyph ID for a specified Unicode code
+  # point. Glyph IDs must be returned in a #hb_codepoint_t output parameter.
+  alias FontGetNominalGlyphFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, UInt32, Int32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the nominal glyph IDs for a sequence of
+  # Unicode code points. Glyph IDs must be returned in a #hb_codepoint_t
+  # output parameter.
+  alias FontGetNominalGlyphsFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, Pointer(UInt32), UInt32, UInt32, UInt32, UInt32)
+
+  # A virtual method for the #hb_font_funcs_t of an #hb_font_t object.
+  #
+  # This method should retrieve the glyph ID for a specified Unicode code point
+  # followed by a specified Variation Selector code point. Glyph IDs must be
+  # returned in a #hb_codepoint_t output parameter.
+  alias FontGetVariationGlyphFuncT = Proc(HarfBuzz::FontT, Pointer(Void)?, UInt32, UInt32, UInt32, Int32)
+
+  # Callback function for hb_face_create_for_tables().
+  alias ReferenceTableFuncT = Proc(HarfBuzz::FaceT, UInt32, HarfBuzz::BlobT)
+
+  # A virtual method for the #hb_unicode_funcs_t structure.
+  #
+  # This method should retrieve the Canonical Combining Class (ccc)
+  # property for a specified Unicode code point.
+  alias UnicodeCombiningClassFuncT = Proc(HarfBuzz::UnicodeFuncsT, UInt32, HarfBuzz::UnicodeCombiningClassT)
+
+  # A virtual method for the #hb_unicode_funcs_t structure.
+  #
+  # This method should compose a sequence of two input Unicode code
+  # points by canonical equivalence, returning the composed code
+  # point in a #hb_codepoint_t output parameter (if successful).
+  # The method must return an #hb_bool_t indicating the success
+  # of the composition.
+  alias UnicodeComposeFuncT = Proc(HarfBuzz::UnicodeFuncsT, UInt32, UInt32, UInt32, Int32)
+
+  # Fully decompose @u to its Unicode compatibility decomposition. The codepoints of the decomposition will be written to @decomposed.
+  # The complete length of the decomposition will be returned.
+  #
+  # If @u has no compatibility decomposition, zero should be returned.
+  #
+  # The Unicode standard guarantees that a buffer of length #HB_UNICODE_MAX_DECOMPOSITION_LEN codepoints will always be sufficient for any
+  # compatibility decomposition plus an terminating value of 0.  Consequently, @decompose must be allocated by the caller to be at least this length.  Implementations
+  # of this function type must ensure that they do not write past the provided array.
+  alias UnicodeDecomposeCompatibilityFuncT = Proc(HarfBuzz::UnicodeFuncsT, UInt32, Pointer(UInt32), UInt32)
+
+  # A virtual method for the #hb_unicode_funcs_t structure.
+  #
+  # This method should decompose an input Unicode code point,
+  # returning the two decomposed code points in #hb_codepoint_t
+  # output parameters (if successful). The method must return an
+  # #hb_bool_t indicating the success of the composition.
+  alias UnicodeDecomposeFuncT = Proc(HarfBuzz::UnicodeFuncsT, UInt32, UInt32, UInt32, Int32)
+
+  # A virtual method for the #hb_unicode_funcs_t structure.
+  alias UnicodeEastasianWidthFuncT = Proc(HarfBuzz::UnicodeFuncsT, UInt32, UInt32)
+
+  # A virtual method for the #hb_unicode_funcs_t structure.
+  #
+  # This method should retrieve the General Category property for
+  # a specified Unicode code point.
+  alias UnicodeGeneralCategoryFuncT = Proc(HarfBuzz::UnicodeFuncsT, UInt32, HarfBuzz::UnicodeGeneralCategoryT)
+
+  # A virtual method for the #hb_unicode_funcs_t structure.
+  #
+  # This method should retrieve the Bi-Directional Mirroring Glyph
+  # code point for a specified Unicode code point.
+  #
+  # <note>Note: If a code point does not have a specified
+  # Bi-Directional Mirroring Glyph defined, the method should
+  # return the original code point.</note>
+  alias UnicodeMirroringFuncT = Proc(HarfBuzz::UnicodeFuncsT, UInt32, UInt32)
+
+  # A virtual method for the #hb_unicode_funcs_t structure.
+  #
+  # This method should retrieve the Script property for a
+  # specified Unicode code point.
+  alias UnicodeScriptFuncT = Proc(HarfBuzz::UnicodeFuncsT, UInt32, HarfBuzz::ScriptT)
 
   # Base class for all errors in this module.
   class HarfBuzzError < RuntimeError
@@ -1688,17 +1860,12 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    selector_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    selector_count = selectors.size
-    # Generator::OutArgUsedInReturnPlan
-    selectors = Pointer(Pointer(Void)).null
-    # Generator::ArrayArgPlan
+    selector_count = Pointer(UInt32).null   # Generator::ArrayLengthArgPlan
+    selector_count = selectors.size         # Generator::OutArgUsedInReturnPlan
+    selectors = Pointer(Pointer(Void)).null # Generator::ArrayArgPlan
     selectors = selectors.to_a.map(&.to_unsafe).to_unsafe
-
     # Generator::OutArgUsedInReturnPlan
     default_index = Pointer(UInt32).null
-
     # C call
     _retval = LibHarfBuzz.hb_aat_layout_feature_type_get_selector_infos(face, feature_type, start_offset, selector_count, selectors, default_index)
 
@@ -1714,10 +1881,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    feature_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    feature_count = features.size
-    # Generator::ArrayArgPlan
+    feature_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    feature_count = features.size        # Generator::ArrayArgPlan
     features = features.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -1819,7 +1984,6 @@ module HarfBuzz
 
     # Generator::OutArgUsedInReturnPlan
     length = 0_u32
-
     # C call
     _retval = LibHarfBuzz.hb_blob_get_data(blob, pointerof(length))
 
@@ -1835,7 +1999,6 @@ module HarfBuzz
 
     # Generator::OutArgUsedInReturnPlan
     length = 0_u32
-
     # C call
     _retval = LibHarfBuzz.hb_blob_get_data_writable(blob, pointerof(length))
 
@@ -1906,8 +2069,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    text_length = text.size
-    # Generator::ArrayArgPlan
+    text_length = text.size # Generator::ArrayArgPlan
     text = text.to_a.to_unsafe
 
     # C call
@@ -1922,8 +2084,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    text_length = text.size
-    # Generator::ArrayArgPlan
+    text_length = text.size # Generator::ArrayArgPlan
     text = text.to_a.to_unsafe
 
     # C call
@@ -1938,8 +2099,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    text_length = text.size
-    # Generator::ArrayArgPlan
+    text_length = text.size # Generator::ArrayArgPlan
     text = text.to_a.to_unsafe
 
     # C call
@@ -1954,8 +2114,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    text_length = text.size
-    # Generator::ArrayArgPlan
+    text_length = text.size # Generator::ArrayArgPlan
     text = text.to_a.to_unsafe
 
     # C call
@@ -1970,8 +2129,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    text_length = text.size
-    # Generator::ArrayArgPlan
+    text_length = text.size # Generator::ArrayArgPlan
     text = text.to_a.to_unsafe
 
     # C call
@@ -2044,13 +2202,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    buf_len = buf.size
-    # Generator::ArrayArgPlan
+    buf_len = buf.size # Generator::ArrayArgPlan
     buf = buf.to_a.map(&.to_unsafe).to_unsafe
-
     # Generator::OutArgUsedInReturnPlan
-    end_ptr = Pointer(Pointer(LibC::Char)).null
-    # Generator::NullableArrayPlan
+    end_ptr = Pointer(Pointer(LibC::Char)).null # Generator::NullableArrayPlan
     font = if font.nil?
              Pointer(Void).null
            else
@@ -2072,13 +2227,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    buf_len = buf.size
-    # Generator::ArrayArgPlan
+    buf_len = buf.size # Generator::ArrayArgPlan
     buf = buf.to_a.map(&.to_unsafe).to_unsafe
-
     # Generator::OutArgUsedInReturnPlan
     end_ptr = Pointer(Pointer(LibC::Char)).null
-
     # C call
     _retval = LibHarfBuzz.hb_buffer_deserialize_unicode(buffer, buf, buf_len, end_ptr, format)
 
@@ -2166,7 +2318,6 @@ module HarfBuzz
 
     # Generator::OutArgUsedInReturnPlan
     length = 0_u32
-
     # C call
     _retval = LibHarfBuzz.hb_buffer_get_glyph_infos(buffer, pointerof(length))
 
@@ -2182,7 +2333,6 @@ module HarfBuzz
 
     # Generator::OutArgUsedInReturnPlan
     length = 0_u32
-
     # C call
     _retval = LibHarfBuzz.hb_buffer_get_glyph_positions(buffer, pointerof(length))
 
@@ -2270,7 +2420,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     props = HarfBuzz::SegmentPropertiesT.new
-
     # C call
     LibHarfBuzz.hb_buffer_get_segment_properties(buffer, props)
 
@@ -2384,13 +2533,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    buf_size = buf.size
-    # Generator::ArrayArgPlan
+    buf_size = buf.size # Generator::ArrayArgPlan
     buf = buf.to_a.to_unsafe
-
     # Generator::OutArgUsedInReturnPlan
-    buf_consumed = Pointer(UInt32).null
-    # Generator::NullableArrayPlan
+    buf_consumed = Pointer(UInt32).null # Generator::NullableArrayPlan
     font = if font.nil?
              Pointer(Void).null
            else
@@ -2411,8 +2557,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    len = str.size
-    # Generator::ArrayArgPlan
+    len = str.size # Generator::ArrayArgPlan
     str = str.to_a.to_unsafe
 
     # C call
@@ -2448,13 +2593,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    buf_size = buf.size
-    # Generator::ArrayArgPlan
+    buf_size = buf.size # Generator::ArrayArgPlan
     buf = buf.to_a.to_unsafe
-
     # Generator::OutArgUsedInReturnPlan
-    buf_consumed = Pointer(UInt32).null
-    # Generator::NullableArrayPlan
+    buf_consumed = Pointer(UInt32).null # Generator::NullableArrayPlan
     font = if font.nil?
              Pointer(Void).null
            else
@@ -2489,13 +2631,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    buf_size = buf.size
-    # Generator::ArrayArgPlan
+    buf_size = buf.size # Generator::ArrayArgPlan
     buf = buf.to_a.to_unsafe
-
     # Generator::OutArgUsedInReturnPlan
     buf_consumed = Pointer(UInt32).null
-
     # C call
     _retval = LibHarfBuzz.hb_buffer_serialize_unicode(buffer, start, _end, buf, buf_size, buf_consumed, format, flags)
 
@@ -2576,7 +2715,7 @@ module HarfBuzz
     _retval
   end
 
-  def self.buffer_set_message_func(buffer : HarfBuzz::BufferT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.buffer_set_message_func(buffer : HarfBuzz::BufferT, func : HarfBuzz::BufferMessageFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_buffer_set_message_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -2588,13 +2727,6 @@ module HarfBuzz
                 else
                   user_data.to_unsafe
                 end
-
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
 
     # C call
     LibHarfBuzz.hb_buffer_set_message_func(buffer, func, user_data, destroy)
@@ -2706,8 +2838,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    len = str.size
-    # Generator::ArrayArgPlan
+    len = str.size # Generator::ArrayArgPlan
     str = str.to_a.to_unsafe
 
     # C call
@@ -2804,7 +2935,7 @@ module HarfBuzz
     # Return value handling
   end
 
-  def self.draw_funcs_set_close_path_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.draw_funcs_set_close_path_func(dfuncs : HarfBuzz::DrawFuncsT, func : HarfBuzz::DrawClosePathFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_draw_funcs_set_close_path_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -2817,20 +2948,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_draw_funcs_set_close_path_func(dfuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.draw_funcs_set_cubic_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.draw_funcs_set_cubic_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : HarfBuzz::DrawCubicToFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_draw_funcs_set_cubic_to_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -2843,20 +2967,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_draw_funcs_set_cubic_to_func(dfuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.draw_funcs_set_line_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.draw_funcs_set_line_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : HarfBuzz::DrawLineToFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_draw_funcs_set_line_to_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -2869,20 +2986,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_draw_funcs_set_line_to_func(dfuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.draw_funcs_set_move_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.draw_funcs_set_move_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : HarfBuzz::DrawMoveToFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_draw_funcs_set_move_to_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -2895,20 +3005,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_draw_funcs_set_move_to_func(dfuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.draw_funcs_set_quadratic_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.draw_funcs_set_quadratic_to_func(dfuncs : HarfBuzz::DrawFuncsT, func : HarfBuzz::DrawQuadraticToFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_draw_funcs_set_quadratic_to_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -2920,13 +3023,6 @@ module HarfBuzz
                 else
                   user_data.to_unsafe
                 end
-
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
 
     # C call
     LibHarfBuzz.hb_draw_funcs_set_quadratic_to_func(dfuncs, func, user_data, destroy)
@@ -3066,7 +3162,7 @@ module HarfBuzz
     HarfBuzz::FaceT.new(_retval, GICrystal::Transfer::Full)
   end
 
-  def self.face_create_for_tables(reference_table_func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : HarfBuzz::FaceT
+  def self.face_create_for_tables(reference_table_func : HarfBuzz::ReferenceTableFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : HarfBuzz::FaceT
     # hb_face_create_for_tables: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3078,13 +3174,6 @@ module HarfBuzz
                 else
                   user_data.to_unsafe
                 end
-
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
 
     # C call
     _retval = LibHarfBuzz.hb_face_create_for_tables(reference_table_func, user_data, destroy)
@@ -3137,8 +3226,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    table_count = table_tags.size
-    # Generator::ArrayArgPlan
+    table_count = table_tags.size # Generator::ArrayArgPlan
     table_tags = table_tags.to_a.to_unsafe
 
     # C call
@@ -3244,13 +3332,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    len = str.size
-    # Generator::ArrayArgPlan
+    len = str.size # Generator::ArrayArgPlan
     str = str.to_a.to_unsafe
-
     # Generator::CallerAllocatesPlan
     feature = HarfBuzz::FeatureT.new
-
     # C call
     _retval = LibHarfBuzz.hb_feature_from_string(str, len, feature)
 
@@ -3270,8 +3355,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    size = buf.size
-    # Generator::ArrayArgPlan
+    size = buf.size # Generator::ArrayArgPlan
     buf = buf.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -3362,7 +3446,7 @@ module HarfBuzz
     # Return value handling
   end
 
-  def self.font_funcs_set_font_h_extents_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_font_h_extents_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetFontExtentsFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_font_h_extents_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3375,20 +3459,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_font_h_extents_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_font_v_extents_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_font_v_extents_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetFontExtentsFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_font_v_extents_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3401,20 +3478,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_font_v_extents_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_contour_point_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_contour_point_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphContourPointFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_contour_point_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3427,20 +3497,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_contour_point_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_extents_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_extents_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphExtentsFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_extents_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3453,20 +3516,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_extents_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_from_name_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_from_name_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphFromNameFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_from_name_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3479,20 +3535,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_from_name_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3505,20 +3554,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_h_advance_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_h_advance_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphAdvanceFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_h_advance_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3531,20 +3573,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_h_advance_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_h_advances_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_h_advances_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphAdvancesFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_h_advances_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3557,20 +3592,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_h_advances_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_h_kerning_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_h_kerning_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphKerningFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_h_kerning_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3583,20 +3611,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_h_kerning_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_h_origin_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_h_origin_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphOriginFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_h_origin_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3609,20 +3630,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_h_origin_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_name_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_name_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphNameFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_name_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3635,20 +3649,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_name_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_shape_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_shape_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphShapeFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_shape_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3661,20 +3668,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_shape_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_v_advance_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_v_advance_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphAdvanceFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_v_advance_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3687,20 +3687,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_v_advance_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_v_advances_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_v_advances_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphAdvancesFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_v_advances_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3713,20 +3706,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_v_advances_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_v_kerning_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_v_kerning_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphKerningFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_v_kerning_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3739,20 +3725,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_v_kerning_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_glyph_v_origin_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_glyph_v_origin_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetGlyphOriginFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_glyph_v_origin_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3765,20 +3744,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_glyph_v_origin_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_nominal_glyph_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_nominal_glyph_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetNominalGlyphFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_nominal_glyph_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3791,20 +3763,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_nominal_glyph_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_nominal_glyphs_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_nominal_glyphs_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetNominalGlyphsFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_nominal_glyphs_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3817,20 +3782,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_funcs_set_nominal_glyphs_func(ffuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_funcs_set_variation_glyph_func(ffuncs : HarfBuzz::FontFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_funcs_set_variation_glyph_func(ffuncs : HarfBuzz::FontFuncsT, func : HarfBuzz::FontGetVariationGlyphFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_funcs_set_variation_glyph_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -3842,13 +3800,6 @@ module HarfBuzz
                 else
                   user_data.to_unsafe
                 end
-
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
 
     # C call
     LibHarfBuzz.hb_font_funcs_set_variation_glyph_func(ffuncs, func, user_data, destroy)
@@ -3875,7 +3826,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     extents = HarfBuzz::FontExtentsT.new
-
     # C call
     LibHarfBuzz.hb_font_get_extents_for_direction(font, direction, extents)
 
@@ -3968,7 +3918,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     extents = HarfBuzz::GlyphExtentsT.new
-
     # C call
     _retval = LibHarfBuzz.hb_font_get_glyph_extents(font, glyph, extents)
 
@@ -3984,7 +3933,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     extents = HarfBuzz::GlyphExtentsT.new
-
     # C call
     _retval = LibHarfBuzz.hb_font_get_glyph_extents_for_origin(font, glyph, direction, extents)
 
@@ -4000,8 +3948,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    len = name.size
-    # Generator::ArrayArgPlan
+    len = name.size # Generator::ArrayArgPlan
     name = name.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -4080,8 +4027,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    size = name.size
-    # Generator::ArrayArgPlan
+    size = name.size # Generator::ArrayArgPlan
     name = name.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -4179,7 +4125,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     extents = HarfBuzz::FontExtentsT.new
-
     # C call
     _retval = LibHarfBuzz.hb_font_get_h_extents(font, extents)
 
@@ -4281,7 +4226,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     extents = HarfBuzz::FontExtentsT.new
-
     # C call
     _retval = LibHarfBuzz.hb_font_get_v_extents(font, extents)
 
@@ -4336,8 +4280,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    len = s.size
-    # Generator::ArrayArgPlan
+    len = s.size # Generator::ArrayArgPlan
     s = s.to_a.to_unsafe
 
     # C call
@@ -4355,8 +4298,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    size = s.size
-    # Generator::ArrayArgPlan
+    size = s.size # Generator::ArrayArgPlan
     s = s.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -4397,7 +4339,7 @@ module HarfBuzz
     # Return value handling
   end
 
-  def self.font_set_funcs(font : HarfBuzz::FontT, klass : HarfBuzz::FontFuncsT, font_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_set_funcs(font : HarfBuzz::FontT, klass : HarfBuzz::FontFuncsT, font_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_set_funcs: (None)
     # @font_data: (nullable)
     # @destroy: (nullable)
@@ -4410,20 +4352,13 @@ module HarfBuzz
                   font_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_font_set_funcs(font, klass, font_data, destroy)
 
     # Return value handling
   end
 
-  def self.font_set_funcs_data(font : HarfBuzz::FontT, font_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.font_set_funcs_data(font : HarfBuzz::FontT, font_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_font_set_funcs_data: (None)
     # @font_data: (nullable)
     # @destroy: (nullable)
@@ -4435,13 +4370,6 @@ module HarfBuzz
                 else
                   font_data.to_unsafe
                 end
-
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
 
     # C call
     LibHarfBuzz.hb_font_set_funcs_data(font, font_data, destroy)
@@ -4505,8 +4433,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    coords_length = coords.size
-    # Generator::ArrayArgPlan
+    coords_length = coords.size # Generator::ArrayArgPlan
     coords = coords.to_a.to_unsafe
 
     # C call
@@ -4521,8 +4448,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    coords_length = coords.size
-    # Generator::ArrayArgPlan
+    coords_length = coords.size # Generator::ArrayArgPlan
     coords = coords.to_a.to_unsafe
 
     # C call
@@ -4547,8 +4473,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    variations_length = variations.size
-    # Generator::ArrayArgPlan
+    variations_length = variations.size # Generator::ArrayArgPlan
     variations = variations.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -4687,8 +4612,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    len = str.size
-    # Generator::ArrayArgPlan
+    len = str.size # Generator::ArrayArgPlan
     str = str.to_a.to_unsafe
 
     # C call
@@ -4848,10 +4772,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    layer_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    layer_count = layers.try(&.size) || 0
-    # Generator::NullableArrayPlan
+    layer_count = Pointer(UInt32).null    # Generator::ArrayLengthArgPlan
+    layer_count = layers.try(&.size) || 0 # Generator::NullableArrayPlan
     layers = if layers.nil?
                Pointer(Void).null
              else
@@ -4957,10 +4879,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    color_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    color_count = colors.try(&.size) || 0
-    # Generator::NullableArrayPlan
+    color_count = Pointer(UInt32).null    # Generator::ArrayLengthArgPlan
+    color_count = colors.try(&.size) || 0 # Generator::NullableArrayPlan
     colors = if colors.nil?
                Pointer(UInt32).null
              else
@@ -5028,7 +4948,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     feature_indexes = HarfBuzz::SetT.new
-
     # C call
     LibHarfBuzz.hb_ot_layout_collect_features(face, table_tag, scripts, languages, features, feature_indexes)
 
@@ -5044,7 +4963,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     lookup_indexes = HarfBuzz::SetT.new
-
     # C call
     LibHarfBuzz.hb_ot_layout_collect_lookups(face, table_tag, scripts, languages, features, lookup_indexes)
 
@@ -5060,10 +4978,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    char_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    char_count = characters.size
-    # Generator::ArrayArgPlan
+    char_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    char_count = characters.size      # Generator::ArrayArgPlan
     characters = characters.to_a.to_unsafe
 
     # C call
@@ -5081,10 +4997,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    lookup_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    lookup_count = lookup_indexes.size
-    # Generator::ArrayArgPlan
+    lookup_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    lookup_count = lookup_indexes.size  # Generator::ArrayArgPlan
     lookup_indexes = lookup_indexes.to_a.to_unsafe
 
     # C call
@@ -5105,16 +5019,11 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    label_id = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
-    tooltip_id = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
-    sample_id = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
-    num_named_parameters = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
+    label_id = Pointer(UInt32).null             # Generator::OutArgUsedInReturnPlan
+    tooltip_id = Pointer(UInt32).null           # Generator::OutArgUsedInReturnPlan
+    sample_id = Pointer(UInt32).null            # Generator::OutArgUsedInReturnPlan
+    num_named_parameters = Pointer(UInt32).null # Generator::OutArgUsedInReturnPlan
     first_param_id = Pointer(UInt32).null
-
     # C call
     _retval = LibHarfBuzz.hb_ot_layout_feature_get_name_ids(face, table_tag, feature_index, label_id, tooltip_id, sample_id, num_named_parameters, first_param_id)
 
@@ -5130,10 +5039,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    lookup_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    lookup_count = lookup_indexes.size
-    # Generator::ArrayArgPlan
+    lookup_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    lookup_count = lookup_indexes.size  # Generator::ArrayArgPlan
     lookup_indexes = lookup_indexes.to_a.to_unsafe
 
     # C call
@@ -5151,10 +5058,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    point_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    point_count = point_array.size
-    # Generator::ArrayArgPlan
+    point_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    point_count = point_array.size     # Generator::ArrayArgPlan
     point_array = point_array.to_a.to_unsafe
 
     # C call
@@ -5215,7 +5120,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     glyphs = HarfBuzz::SetT.new
-
     # C call
     LibHarfBuzz.hb_ot_layout_get_glyphs_in_class(face, klass, glyphs)
 
@@ -5243,10 +5147,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    caret_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    caret_count = caret_array.size
-    # Generator::ArrayArgPlan
+    caret_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    caret_count = caret_array.size     # Generator::ArrayArgPlan
     caret_array = caret_array.to_a.to_unsafe
 
     # C call
@@ -5330,10 +5232,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    feature_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    feature_count = feature_indexes.size
-    # Generator::ArrayArgPlan
+    feature_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    feature_count = feature_indexes.size # Generator::ArrayArgPlan
     feature_indexes = feature_indexes.to_a.to_unsafe
 
     # C call
@@ -5351,10 +5251,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    feature_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    feature_count = feature_tags.size
-    # Generator::ArrayArgPlan
+    feature_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    feature_count = feature_tags.size    # Generator::ArrayArgPlan
     feature_tags = feature_tags.to_a.to_unsafe
 
     # C call
@@ -5401,14 +5299,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::CallerAllocatesPlan
-    glyphs_before = HarfBuzz::SetT.new
-    # Generator::CallerAllocatesPlan
-    glyphs_input = HarfBuzz::SetT.new
-    # Generator::CallerAllocatesPlan
-    glyphs_after = HarfBuzz::SetT.new
-    # Generator::CallerAllocatesPlan
+    glyphs_before = HarfBuzz::SetT.new # Generator::CallerAllocatesPlan
+    glyphs_input = HarfBuzz::SetT.new  # Generator::CallerAllocatesPlan
+    glyphs_after = HarfBuzz::SetT.new  # Generator::CallerAllocatesPlan
     glyphs_output = HarfBuzz::SetT.new
-
     # C call
     LibHarfBuzz.hb_ot_layout_lookup_collect_glyphs(face, table_tag, lookup_index, glyphs_before, glyphs_input, glyphs_after, glyphs_output)
 
@@ -5424,10 +5318,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    alternate_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    alternate_count = alternate_glyphs.size
-    # Generator::ArrayArgPlan
+    alternate_count = Pointer(UInt32).null  # Generator::ArrayLengthArgPlan
+    alternate_count = alternate_glyphs.size # Generator::ArrayArgPlan
     alternate_glyphs = alternate_glyphs.to_a.to_unsafe
 
     # C call
@@ -5445,7 +5337,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     glyphs = HarfBuzz::SetT.new
-
     # C call
     LibHarfBuzz.hb_ot_layout_lookup_substitute_closure(face, lookup_index, glyphs)
 
@@ -5473,7 +5364,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     glyphs = HarfBuzz::SetT.new
-
     # C call
     LibHarfBuzz.hb_ot_layout_lookups_substitute_closure(face, lookups, glyphs)
 
@@ -5501,10 +5391,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    language_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    language_count = language_tags.size
-    # Generator::ArrayArgPlan
+    language_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    language_count = language_tags.size   # Generator::ArrayArgPlan
     language_tags = language_tags.to_a.to_unsafe
 
     # C call
@@ -5575,10 +5463,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    feature_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    feature_count = feature_tags.size
-    # Generator::ArrayArgPlan
+    feature_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    feature_count = feature_tags.size    # Generator::ArrayArgPlan
     feature_tags = feature_tags.to_a.to_unsafe
 
     # C call
@@ -5608,10 +5494,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    script_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    script_count = script_tags.size
-    # Generator::ArrayArgPlan
+    script_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    script_count = script_tags.size     # Generator::ArrayArgPlan
     script_tags = script_tags.to_a.to_unsafe
 
     # C call
@@ -5629,10 +5513,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    script_index = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
+    script_index = Pointer(UInt32).null # Generator::OutArgUsedInReturnPlan
     chosen_script = Pointer(UInt32).null
-
     # C call
     _retval = LibHarfBuzz.hb_ot_layout_table_select_script(face, table_tag, script_count, script_tags, script_index, chosen_script)
 
@@ -5661,8 +5543,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    parts_count = parts.size
-    # Generator::ArrayArgPlan
+    parts_count = parts.size # Generator::ArrayArgPlan
     parts = parts.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -5704,10 +5585,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    entries_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    entries_count = kern_entries.size
-    # Generator::ArrayArgPlan
+    entries_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    entries_count = kern_entries.size    # Generator::ArrayArgPlan
     kern_entries = kern_entries.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -5737,8 +5616,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    variants_count = variants.size
-    # Generator::ArrayArgPlan
+    variants_count = variants.size # Generator::ArrayArgPlan
     variants = variants.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -5792,10 +5670,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    entries_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    entries_count = entries.size
-    # Generator::ArrayArgPlan
+    entries_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    entries_count = entries.size         # Generator::ArrayArgPlan
     entries = entries.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -5825,7 +5701,6 @@ module HarfBuzz
 
     # Generator::OutArgUsedInReturnPlan
     position = Pointer(Int32).null
-
     # C call
     _retval = LibHarfBuzz.hb_ot_metrics_get_position(font, metrics_tag, position)
 
@@ -5841,7 +5716,6 @@ module HarfBuzz
 
     # Generator::OutArgUsedInReturnPlan
     position = Pointer(Int32).null
-
     # C call
     LibHarfBuzz.hb_ot_metrics_get_position_with_fallback(font, metrics_tag, position)
 
@@ -5891,10 +5765,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    text_size = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    text_size = text.size
-    # Generator::ArrayArgPlan
+    text_size = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    text_size = text.size            # Generator::ArrayArgPlan
     text = text.to_a.to_unsafe
 
     # C call
@@ -5912,10 +5784,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    text_size = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    text_size = text.size
-    # Generator::ArrayArgPlan
+    text_size = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    text_size = text.size            # Generator::ArrayArgPlan
     text = text.to_a.to_unsafe
 
     # C call
@@ -5933,10 +5803,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    text_size = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    text_size = text.size
-    # Generator::ArrayArgPlan
+    text_size = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    text_size = text.size            # Generator::ArrayArgPlan
     text = text.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -5954,7 +5822,6 @@ module HarfBuzz
 
     # Generator::OutArgUsedInReturnPlan
     num_entries = 0_u32
-
     # C call
     _retval = LibHarfBuzz.hb_ot_name_list_names(face, pointerof(num_entries))
 
@@ -5970,13 +5837,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    num_features = features.size
-    # Generator::ArrayArgPlan
+    num_features = features.size # Generator::ArrayArgPlan
     features = features.to_a.map(&.to_unsafe).to_unsafe
-
     # Generator::CallerAllocatesPlan
     glyphs = HarfBuzz::SetT.new
-
     # C call
     LibHarfBuzz.hb_ot_shape_glyphs_closure(font, buffer, features, num_features, glyphs)
 
@@ -5992,7 +5856,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     lookup_indexes = HarfBuzz::SetT.new
-
     # C call
     LibHarfBuzz.hb_ot_shape_plan_collect_lookups(shape_plan, table_tag, lookup_indexes)
 
@@ -6056,14 +5919,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    script_count = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
-    script_tags = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
-    language_count = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
+    script_count = Pointer(UInt32).null   # Generator::OutArgUsedInReturnPlan
+    script_tags = Pointer(UInt32).null    # Generator::OutArgUsedInReturnPlan
+    language_count = Pointer(UInt32).null # Generator::OutArgUsedInReturnPlan
     language_tags = Pointer(UInt32).null
-
     # C call
     LibHarfBuzz.hb_ot_tags_from_script_and_language(script, language, script_count, script_tags, language_count, language_tags)
 
@@ -6077,12 +5936,9 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    script = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
-    language = Pointer(Pointer(Void)).null
-    # Generator::CallerAllocatesPlan
+    script = Pointer(UInt32).null          # Generator::OutArgUsedInReturnPlan
+    language = Pointer(Pointer(Void)).null # Generator::CallerAllocatesPlan
     language = HarfBuzz::LanguageT.new
-
     # C call
     LibHarfBuzz.hb_ot_tags_to_script_and_language(script_tag, language_tag, script, language)
 
@@ -6098,7 +5954,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     axis_info = HarfBuzz::OtVarAxisT.new
-
     # C call
     _retval = LibHarfBuzz.hb_ot_var_find_axis(face, axis_tag, axis_index, axis_info)
 
@@ -6114,7 +5969,6 @@ module HarfBuzz
 
     # Generator::CallerAllocatesPlan
     axis_info = HarfBuzz::OtVarAxisInfoT.new
-
     # C call
     _retval = LibHarfBuzz.hb_ot_var_find_axis_info(face, axis_tag, axis_info)
 
@@ -6130,10 +5984,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    axes_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    axes_count = axes_array.size
-    # Generator::ArrayArgPlan
+    axes_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    axes_count = axes_array.size      # Generator::ArrayArgPlan
     axes_array = axes_array.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -6163,10 +6015,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    axes_count = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    axes_count = axes_array.size
-    # Generator::ArrayArgPlan
+    axes_count = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    axes_count = axes_array.size      # Generator::ArrayArgPlan
     axes_array = axes_array.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -6208,10 +6058,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    coords_length = Pointer(UInt32).null
-    # Generator::ArrayLengthArgPlan
-    coords_length = coords.size
-    # Generator::ArrayArgPlan
+    coords_length = Pointer(UInt32).null # Generator::ArrayLengthArgPlan
+    coords_length = coords.size          # Generator::ArrayArgPlan
     coords = coords.to_a.to_unsafe
 
     # C call
@@ -6264,8 +6112,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    coords_length = coords.size
-    # Generator::ArrayArgPlan
+    coords_length = coords.size # Generator::ArrayArgPlan
     coords = coords.to_a.to_unsafe
 
     # C call
@@ -6292,8 +6139,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    len = str.size
-    # Generator::ArrayArgPlan
+    len = str.size # Generator::ArrayArgPlan
     str = str.to_a.to_unsafe
 
     # C call
@@ -6392,8 +6238,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    num_codepoints = sorted_codepoints.size
-    # Generator::ArrayArgPlan
+    num_codepoints = sorted_codepoints.size # Generator::ArrayArgPlan
     sorted_codepoints = sorted_codepoints.to_a.to_unsafe
 
     # C call
@@ -6603,8 +6448,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    size = _out.size
-    # Generator::ArrayArgPlan
+    size = _out.size # Generator::ArrayArgPlan
     _out = _out.to_a.to_unsafe
 
     # C call
@@ -6702,8 +6546,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    num_features = features.try(&.size) || 0
-    # Generator::NullableArrayPlan
+    num_features = features.try(&.size) || 0 # Generator::NullableArrayPlan
     features = if features.nil?
                  Pointer(Void).null
                else
@@ -6723,14 +6566,12 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    num_features = features.try(&.size) || 0
-    # Generator::NullableArrayPlan
+    num_features = features.try(&.size) || 0 # Generator::NullableArrayPlan
     features = if features.nil?
                  Pointer(Void).null
                else
                  features.to_a.map(&.to_unsafe).to_unsafe
                end
-
     # Generator::NullableArrayPlan
     shaper_list = if shaper_list.nil?
                     Pointer(Pointer(LibC::Char)).null
@@ -6765,10 +6606,8 @@ module HarfBuzz
     # Returns: (transfer full)
 
     # Generator::ArrayLengthArgPlan
-    num_user_features = user_features.size
-    # Generator::ArrayArgPlan
+    num_user_features = user_features.size # Generator::ArrayArgPlan
     user_features = user_features.to_a.map(&.to_unsafe).to_unsafe
-
     # Generator::ArrayArgPlan
     shaper_list = shaper_list.to_a.map(&.to_unsafe).to_unsafe
 
@@ -6788,15 +6627,11 @@ module HarfBuzz
     # Returns: (transfer full)
 
     # Generator::ArrayLengthArgPlan
-    num_user_features = user_features.size
-    # Generator::ArrayArgPlan
+    num_user_features = user_features.size # Generator::ArrayArgPlan
     user_features = user_features.to_a.map(&.to_unsafe).to_unsafe
-
     # Generator::ArrayLengthArgPlan
-    num_coords = coords.size
-    # Generator::ArrayArgPlan
+    num_coords = coords.size # Generator::ArrayArgPlan
     coords = coords.to_a.to_unsafe
-
     # Generator::ArrayArgPlan
     shaper_list = shaper_list.to_a.map(&.to_unsafe).to_unsafe
 
@@ -6815,10 +6650,8 @@ module HarfBuzz
     # Returns: (transfer full)
 
     # Generator::ArrayLengthArgPlan
-    num_user_features = user_features.size
-    # Generator::ArrayArgPlan
+    num_user_features = user_features.size # Generator::ArrayArgPlan
     user_features = user_features.to_a.map(&.to_unsafe).to_unsafe
-
     # Generator::ArrayArgPlan
     shaper_list = shaper_list.to_a.map(&.to_unsafe).to_unsafe
 
@@ -6838,15 +6671,11 @@ module HarfBuzz
     # Returns: (transfer full)
 
     # Generator::ArrayLengthArgPlan
-    num_user_features = user_features.size
-    # Generator::ArrayArgPlan
+    num_user_features = user_features.size # Generator::ArrayArgPlan
     user_features = user_features.to_a.map(&.to_unsafe).to_unsafe
-
     # Generator::ArrayLengthArgPlan
-    num_coords = coords.size
-    # Generator::ArrayArgPlan
+    num_coords = coords.size # Generator::ArrayArgPlan
     coords = coords.to_a.to_unsafe
-
     # Generator::ArrayArgPlan
     shaper_list = shaper_list.to_a.map(&.to_unsafe).to_unsafe
 
@@ -6864,8 +6693,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    num_features = features.size
-    # Generator::ArrayArgPlan
+    num_features = features.size # Generator::ArrayArgPlan
     features = features.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -6918,8 +6746,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    len = str.size
-    # Generator::ArrayArgPlan
+    len = str.size # Generator::ArrayArgPlan
     str = str.to_a.to_unsafe
 
     # C call
@@ -6940,6 +6767,8 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayArgPlan
+    raise ArgumentError.new("Enumerable of size < 4") if buf.size < 4
+
     buf = buf.to_a.to_unsafe
 
     # C call
@@ -7090,7 +6919,7 @@ module HarfBuzz
     # Return value handling
   end
 
-  def self.unicode_funcs_set_combining_class_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.unicode_funcs_set_combining_class_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : HarfBuzz::UnicodeCombiningClassFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_unicode_funcs_set_combining_class_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -7103,20 +6932,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_unicode_funcs_set_combining_class_func(ufuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.unicode_funcs_set_compose_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.unicode_funcs_set_compose_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : HarfBuzz::UnicodeComposeFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_unicode_funcs_set_compose_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -7129,20 +6951,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_unicode_funcs_set_compose_func(ufuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.unicode_funcs_set_decompose_compatibility_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.unicode_funcs_set_decompose_compatibility_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : HarfBuzz::UnicodeDecomposeCompatibilityFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_unicode_funcs_set_decompose_compatibility_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -7155,20 +6970,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_unicode_funcs_set_decompose_compatibility_func(ufuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.unicode_funcs_set_decompose_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.unicode_funcs_set_decompose_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : HarfBuzz::UnicodeDecomposeFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_unicode_funcs_set_decompose_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -7181,20 +6989,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_unicode_funcs_set_decompose_func(ufuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.unicode_funcs_set_eastasian_width_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.unicode_funcs_set_eastasian_width_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : HarfBuzz::UnicodeEastasianWidthFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_unicode_funcs_set_eastasian_width_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -7207,20 +7008,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_unicode_funcs_set_eastasian_width_func(ufuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.unicode_funcs_set_general_category_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.unicode_funcs_set_general_category_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : HarfBuzz::UnicodeGeneralCategoryFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_unicode_funcs_set_general_category_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -7233,20 +7027,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_unicode_funcs_set_general_category_func(ufuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.unicode_funcs_set_mirroring_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.unicode_funcs_set_mirroring_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : HarfBuzz::UnicodeMirroringFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_unicode_funcs_set_mirroring_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -7259,20 +7046,13 @@ module HarfBuzz
                   user_data.to_unsafe
                 end
 
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
-
     # C call
     LibHarfBuzz.hb_unicode_funcs_set_mirroring_func(ufuncs, func, user_data, destroy)
 
     # Return value handling
   end
 
-  def self.unicode_funcs_set_script_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+  def self.unicode_funcs_set_script_func(ufuncs : HarfBuzz::UnicodeFuncsT, func : HarfBuzz::UnicodeScriptFuncT, user_data : Pointer(Void)?, destroy : HarfBuzz::DestroyFuncT?) : Nil
     # hb_unicode_funcs_set_script_func: (None)
     # @user_data: (nullable)
     # @destroy: (nullable)
@@ -7284,13 +7064,6 @@ module HarfBuzz
                 else
                   user_data.to_unsafe
                 end
-
-    # Generator::NullableArrayPlan
-    destroy = if destroy.nil?
-                ->Void.null
-              else
-                destroy.to_unsafe
-              end
 
     # C call
     LibHarfBuzz.hb_unicode_funcs_set_script_func(ufuncs, func, user_data, destroy)
@@ -7341,13 +7114,10 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    len = str.size
-    # Generator::ArrayArgPlan
+    len = str.size # Generator::ArrayArgPlan
     str = str.to_a.to_unsafe
-
     # Generator::CallerAllocatesPlan
     variation = HarfBuzz::VariationT.new
-
     # C call
     _retval = LibHarfBuzz.hb_variation_from_string(str, len, variation)
 
@@ -7367,8 +7137,7 @@ module HarfBuzz
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    size = buf.size
-    # Generator::ArrayArgPlan
+    size = buf.size # Generator::ArrayArgPlan
     buf = buf.to_a.map(&.to_unsafe).to_unsafe
 
     # C call

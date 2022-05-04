@@ -63,7 +63,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       r = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_quad_bounds(self, r)
 
@@ -124,6 +123,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 4") if points.size < 4
+
       points = points.to_a.map(&.to_unsafe).to_unsafe
 
       # C call

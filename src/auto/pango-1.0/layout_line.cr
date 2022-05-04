@@ -118,14 +118,10 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      ink_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      ink_rect = Pango::Rectangle.new
-      # Generator::OutArgUsedInReturnPlan
-      logical_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      ink_rect = Pointer(Void).null     # Generator::CallerAllocatesPlan
+      ink_rect = Pango::Rectangle.new   # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
-
       # C call
       LibPango.pango_layout_line_get_extents(self, ink_rect, logical_rect)
 
@@ -141,7 +137,6 @@ module Pango
 
       # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
-
       # C call
       LibPango.pango_layout_line_get_height(self, height)
 
@@ -167,14 +162,10 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      ink_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      ink_rect = Pango::Rectangle.new
-      # Generator::OutArgUsedInReturnPlan
-      logical_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      ink_rect = Pointer(Void).null     # Generator::CallerAllocatesPlan
+      ink_rect = Pango::Rectangle.new   # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
-
       # C call
       LibPango.pango_layout_line_get_pixel_extents(self, ink_rect, logical_rect)
 
@@ -214,8 +205,7 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_ranges = ranges.size
-      # Generator::ArrayArgPlan
+      n_ranges = ranges.size # Generator::ArrayArgPlan
       ranges = ranges.to_a.to_unsafe
 
       # C call

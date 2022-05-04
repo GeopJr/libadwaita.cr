@@ -24,6 +24,17 @@ module Gio
         sizeof(LibGio::UnixConnection), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -60,6 +71,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -117,7 +130,7 @@ module Gio
     #
     # When the operation is finished, @callback will be called. You can then call
     # g_unix_connection_receive_credentials_finish() to get the result of the operation.
-    def receive_credentials_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def receive_credentials_async(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_unix_connection_receive_credentials_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -130,14 +143,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -253,7 +258,7 @@ module Gio
     #
     # When the operation is finished, @callback will be called. You can then call
     # g_unix_connection_send_credentials_finish() to get the result of the operation.
-    def send_credentials_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def send_credentials_async(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_unix_connection_send_credentials_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -266,14 +271,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

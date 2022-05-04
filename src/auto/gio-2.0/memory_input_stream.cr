@@ -23,6 +23,17 @@ module Gio
         sizeof(LibGio::MemoryInputStream), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -44,6 +55,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Creates a new #GMemoryInputStream with data from the given @bytes.
@@ -60,23 +72,15 @@ module Gio
     end
 
     # Creates a new #GMemoryInputStream with data in memory of a given size.
-    def self.new_from_data(data : Enumerable(UInt8), destroy : Pointer(Void)?) : self
+    def self.new_from_data(data : Enumerable(UInt8), destroy : GLib::DestroyNotify?) : self
       # g_memory_input_stream_new_from_data: (Constructor)
       # @data: (transfer full) (array length=len element-type UInt8)
       # @destroy: (nullable)
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      len = data.size
-      # Generator::ArrayArgPlan
+      len = data.size # Generator::ArrayArgPlan
       data = data.to_a.to_unsafe
-
-      # Generator::NullableArrayPlan
-      destroy = if destroy.nil?
-                  LibGLib::DestroyNotify.null
-                else
-                  destroy.to_unsafe
-                end
 
       # C call
       _retval = LibGio.g_memory_input_stream_new_from_data(data, len, destroy)
@@ -98,23 +102,15 @@ module Gio
     end
 
     # Appends @data to data that can be read from the input stream
-    def add_data(data : Enumerable(UInt8), destroy : Pointer(Void)?) : Nil
+    def add_data(data : Enumerable(UInt8), destroy : GLib::DestroyNotify?) : Nil
       # g_memory_input_stream_add_data: (Method)
       # @data: (transfer full) (array length=len element-type UInt8)
       # @destroy: (nullable)
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      len = data.size
-      # Generator::ArrayArgPlan
+      len = data.size # Generator::ArrayArgPlan
       data = data.to_a.to_unsafe
-
-      # Generator::NullableArrayPlan
-      destroy = if destroy.nil?
-                  LibGLib::DestroyNotify.null
-                else
-                  destroy.to_unsafe
-                end
 
       # C call
       LibGio.g_memory_input_stream_add_data(self, data, len, destroy)

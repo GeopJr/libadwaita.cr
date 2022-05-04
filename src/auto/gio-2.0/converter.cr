@@ -18,13 +18,10 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      inbuf_size = inbuf.size
-      # Generator::ArrayArgPlan
+      inbuf_size = inbuf.size # Generator::ArrayArgPlan
       inbuf = inbuf.to_a.to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      outbuf_size = outbuf.size
-      # Generator::ArrayArgPlan
+      outbuf_size = outbuf.size # Generator::ArrayArgPlan
       outbuf = outbuf.to_a.to_unsafe
 
       # C call

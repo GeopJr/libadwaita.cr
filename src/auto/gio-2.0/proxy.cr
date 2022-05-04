@@ -43,7 +43,7 @@ module Gio
       Gio::IOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def connect_async(connection : Gio::IOStream, proxy_address : Gio::ProxyAddress, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def connect_async(connection : Gio::IOStream, proxy_address : Gio::ProxyAddress, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_proxy_connect_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -56,14 +56,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

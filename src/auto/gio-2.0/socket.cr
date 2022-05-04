@@ -69,6 +69,17 @@ module Gio
         sizeof(LibGio::Socket), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -155,6 +166,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -386,6 +399,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Creates a new #GSocket from a native file descriptor
@@ -1121,7 +1135,6 @@ module Gio
                         else
                           source_specific.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       iface = if iface.nil?
                 Pointer(LibC::Char).null
@@ -1194,7 +1207,6 @@ module Gio
                         else
                           source_specific.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       iface = if iface.nil?
                 Pointer(LibC::Char).null
@@ -1271,10 +1283,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      size = buffer.size
-      # Generator::ArrayArgPlan
+      size = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -1311,12 +1321,9 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      address = Pointer(Pointer(Void)).null
-      # Generator::ArrayLengthArgPlan
-      size = buffer.size
-      # Generator::ArrayArgPlan
+      address = Pointer(Pointer(Void)).null # Generator::ArrayLengthArgPlan
+      size = buffer.size                    # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -1407,17 +1414,12 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      address = Pointer(Pointer(Void)).null
-      # Generator::ArrayLengthArgPlan
-      num_vectors = vectors.size
-      # Generator::ArrayArgPlan
+      address = Pointer(Pointer(Void)).null # Generator::ArrayLengthArgPlan
+      num_vectors = vectors.size            # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      num_messages = messages.try(&.size) || 0
-      # Generator::OutArgUsedInReturnPlan
-      messages = Pointer(Pointer(Pointer(Void))).null
-      # Generator::NullableArrayPlan
+      num_messages = messages.try(&.size) || 0        # Generator::OutArgUsedInReturnPlan
+      messages = Pointer(Pointer(Pointer(Void))).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1492,10 +1494,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      num_messages = messages.size
-      # Generator::ArrayArgPlan
+      num_messages = messages.size # Generator::ArrayArgPlan
       messages = messages.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -1527,10 +1527,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      size = buffer.size
-      # Generator::ArrayArgPlan
+      size = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -1572,10 +1570,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      size = buffer.size
-      # Generator::ArrayArgPlan
+      size = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -1652,21 +1648,16 @@ module Gio
                 else
                   address.to_unsafe
                 end
-
       # Generator::ArrayLengthArgPlan
-      num_vectors = vectors.size
-      # Generator::ArrayArgPlan
+      num_vectors = vectors.size # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      num_messages = messages.try(&.size) || 0
-      # Generator::NullableArrayPlan
+      num_messages = messages.try(&.size) || 0 # Generator::NullableArrayPlan
       messages = if messages.nil?
                    Pointer(Pointer(Void)).null
                  else
                    messages.to_a.map(&.to_unsafe).to_unsafe
                  end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -1709,24 +1700,18 @@ module Gio
                 else
                   address.to_unsafe
                 end
-
       # Generator::ArrayLengthArgPlan
-      num_vectors = vectors.size
-      # Generator::ArrayArgPlan
+      num_vectors = vectors.size # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      num_messages = messages.try(&.size) || 0
-      # Generator::NullableArrayPlan
+      num_messages = messages.try(&.size) || 0 # Generator::NullableArrayPlan
       messages = if messages.nil?
                    Pointer(Pointer(Void)).null
                  else
                    messages.to_a.map(&.to_unsafe).to_unsafe
                  end
-
       # Generator::OutArgUsedInReturnPlan
-      bytes_written = Pointer(UInt64).null
-      # Generator::NullableArrayPlan
+      bytes_written = Pointer(UInt64).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1787,10 +1772,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      num_messages = messages.size
-      # Generator::ArrayArgPlan
+      num_messages = messages.size # Generator::ArrayArgPlan
       messages = messages.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -1829,12 +1812,9 @@ module Gio
                 else
                   address.to_unsafe
                 end
-
       # Generator::ArrayLengthArgPlan
-      size = buffer.size
-      # Generator::ArrayArgPlan
+      size = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -1865,10 +1845,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      size = buffer.size
-      # Generator::ArrayArgPlan
+      size = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null

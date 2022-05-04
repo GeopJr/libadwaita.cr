@@ -67,16 +67,11 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::CallerAllocatesPlan
-      translate = Graphene::Vec3.new
-      # Generator::CallerAllocatesPlan
-      scale = Graphene::Vec3.new
-      # Generator::CallerAllocatesPlan
-      rotate = Graphene::Quaternion.new
-      # Generator::CallerAllocatesPlan
-      shear = Graphene::Vec3.new
-      # Generator::CallerAllocatesPlan
+      translate = Graphene::Vec3.new    # Generator::CallerAllocatesPlan
+      scale = Graphene::Vec3.new        # Generator::CallerAllocatesPlan
+      rotate = Graphene::Quaternion.new # Generator::CallerAllocatesPlan
+      shear = Graphene::Vec3.new        # Generator::CallerAllocatesPlan
       perspective = Graphene::Vec4.new
-
       # C call
       _retval = LibGraphene.graphene_matrix_decompose(self, translate, scale, rotate, shear, perspective)
 
@@ -138,7 +133,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
-
       # C call
       LibGraphene.graphene_matrix_get_row(self, index_, res)
 
@@ -249,6 +243,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 16") if v.size < 16
+
       v = v.to_a.to_unsafe
 
       # C call
@@ -402,7 +398,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
-
       # C call
       LibGraphene.graphene_matrix_interpolate(self, b, factor, res)
 
@@ -418,7 +413,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
-
       # C call
       _retval = LibGraphene.graphene_matrix_inverse(self, res)
 
@@ -482,7 +476,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
-
       # C call
       LibGraphene.graphene_matrix_multiply(self, b, res)
 
@@ -510,7 +503,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
-
       # C call
       LibGraphene.graphene_matrix_normalize(self, res)
 
@@ -526,7 +518,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
-
       # C call
       LibGraphene.graphene_matrix_perspective(self, depth, res)
 
@@ -552,7 +543,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point.new
-
       # C call
       LibGraphene.graphene_matrix_project_point(self, p, res)
 
@@ -568,7 +558,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Quad.new
-
       # C call
       LibGraphene.graphene_matrix_project_rect(self, r, res)
 
@@ -584,7 +573,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_matrix_project_rect_bounds(self, r, res)
 
@@ -717,6 +705,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 16") if v.size < 16
+
       v = v.to_a.to_unsafe
 
       # C call
@@ -736,7 +726,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_matrix_transform_bounds(self, r, res)
 
@@ -752,7 +741,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
-
       # C call
       LibGraphene.graphene_matrix_transform_box(self, b, res)
 
@@ -768,7 +756,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point.new
-
       # C call
       LibGraphene.graphene_matrix_transform_point(self, p, res)
 
@@ -784,7 +771,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_matrix_transform_point3d(self, p, res)
 
@@ -800,7 +786,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Ray.new
-
       # C call
       LibGraphene.graphene_matrix_transform_ray(self, r, res)
 
@@ -816,7 +801,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Quad.new
-
       # C call
       LibGraphene.graphene_matrix_transform_rect(self, r, res)
 
@@ -832,7 +816,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Sphere.new
-
       # C call
       LibGraphene.graphene_matrix_transform_sphere(self, s, res)
 
@@ -848,7 +831,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_matrix_transform_vec3(self, v, res)
 
@@ -864,7 +846,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
-
       # C call
       LibGraphene.graphene_matrix_transform_vec4(self, v, res)
 
@@ -890,7 +871,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
-
       # C call
       LibGraphene.graphene_matrix_transpose(self, res)
 
@@ -906,7 +886,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_matrix_unproject_point3d(self, modelview, point, res)
 
@@ -922,7 +901,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_matrix_untransform_bounds(self, r, bounds, res)
 
@@ -938,7 +916,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point.new
-
       # C call
       _retval = LibGraphene.graphene_matrix_untransform_point(self, p, bounds, res)
 

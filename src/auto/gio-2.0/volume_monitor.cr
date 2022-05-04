@@ -23,6 +23,17 @@ module Gio
         sizeof(LibGio::VolumeMonitor), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -185,50 +196,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(drive : Gio::Drive) : Nil
@@ -265,50 +280,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(drive : Gio::Drive) : Nil
@@ -345,50 +364,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(drive : Gio::Drive) : Nil
@@ -425,50 +448,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(drive : Gio::Drive) : Nil
@@ -505,50 +532,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Drive, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::Drive, Nil)).unbox(_lib_box).call(drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Drive__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Drive, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_drive : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          drive = Gio::Drive.new(lib_drive, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Drive, Nil)).unbox(_lib_box).call(_sender, drive)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(drive : Gio::Drive) : Nil
@@ -585,50 +616,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(_lib_box).call(_sender, mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(_lib_box).call(_sender, mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(mount : Gio::Mount) : Nil
@@ -665,50 +700,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(_lib_box).call(_sender, mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(_lib_box).call(_sender, mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(mount : Gio::Mount) : Nil
@@ -748,50 +787,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(_lib_box).call(_sender, mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(_lib_box).call(_sender, mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(mount : Gio::Mount) : Nil
@@ -828,50 +871,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(_lib_box).call(_sender, mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Mount__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mount : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          mount = Gio::Mount.new(lib_mount, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Mount, Nil)).unbox(_lib_box).call(_sender, mount)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(mount : Gio::Mount) : Nil
@@ -908,50 +955,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(_lib_box).call(_sender, volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(_lib_box).call(_sender, volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(volume : Gio::Volume) : Nil
@@ -988,50 +1039,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(_lib_box).call(_sender, volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(_lib_box).call(_sender, volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(volume : Gio::Volume) : Nil
@@ -1068,50 +1123,54 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Volume, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(_lib_box).call(_sender, volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::VolumeMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::Volume__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::VolumeMonitor, Gio::Volume, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_volume : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::VolumeMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          volume = Gio::Volume.new(lib_volume, :none)
+          ::Box(Proc(Gio::VolumeMonitor, Gio::Volume, Nil)).unbox(_lib_box).call(_sender, volume)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(volume : Gio::Volume) : Nil

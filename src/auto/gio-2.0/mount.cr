@@ -43,7 +43,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def eject(flags : Gio::MountUnmountFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def eject(flags : Gio::MountUnmountFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_mount_eject: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -56,14 +56,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -94,7 +86,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def eject_with_operation(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def eject_with_operation(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_mount_eject_with_operation: (Method)
       # @mount_operation: (nullable)
       # @cancellable: (nullable)
@@ -108,21 +100,12 @@ module Gio
                         else
                           mount_operation.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -261,7 +244,7 @@ module Gio
       Gio::Volume__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
-    def guess_content_type(force_rescan : Bool, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def guess_content_type(force_rescan : Bool, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_mount_guess_content_type: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -274,14 +257,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -349,7 +324,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def remount(flags : Gio::MountMountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def remount(flags : Gio::MountMountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_mount_remount: (Method)
       # @mount_operation: (nullable)
       # @cancellable: (nullable)
@@ -363,21 +338,12 @@ module Gio
                         else
                           mount_operation.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -418,7 +384,7 @@ module Gio
       # Return value handling
     end
 
-    def unmount(flags : Gio::MountUnmountFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def unmount(flags : Gio::MountUnmountFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_mount_unmount: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -431,14 +397,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -469,7 +427,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def unmount_with_operation(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def unmount_with_operation(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_mount_unmount_with_operation: (Method)
       # @mount_operation: (nullable)
       # @cancellable: (nullable)
@@ -483,21 +441,12 @@ module Gio
                         else
                           mount_operation.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -562,46 +511,46 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::Mount__Impl.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::Mount__Impl.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil
@@ -637,46 +586,46 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::Mount__Impl.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::Mount__Impl.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil
@@ -712,46 +661,46 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::Mount__Impl.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Mount, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::Mount__Impl.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Mount, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(Gio::Mount, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil

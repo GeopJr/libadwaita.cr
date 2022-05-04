@@ -13,7 +13,7 @@ module Pango
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(attr : Pango::Attribute? = nil, ink_rect : Pango::Rectangle? = nil, logical_rect : Pango::Rectangle? = nil, data : Pointer(Void)? = nil, copy_func : Pointer(Void)? = nil, destroy_func : Pointer(Void)? = nil)
+    def self.new(attr : Pango::Attribute? = nil, ink_rect : Pango::Rectangle? = nil, logical_rect : Pango::Rectangle? = nil, data : Pointer(Void)? = nil, copy_func : Pango::AttrDataCopyFunc? = nil, destroy_func : GLib::DestroyNotify? = nil)
       _ptr = Pointer(Void).malloc(72)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.attr = attr unless attr.nil?
@@ -80,24 +80,24 @@ module Pango
       value
     end
 
-    def copy_func : Pointer(Void)
-      _var = (@pointer + 56).as(Pointer(LibPango::AttrDataCopyFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def copy_func : Pango::AttrDataCopyFunc
+      _var = (@pointer + 56).as(Pointer(Void*))
+      Pango::AttrDataCopyFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def copy_func=(value : Pointer(Void))
-      _var = (@pointer + 56).as(Pointer(LibPango::AttrDataCopyFunc))
+    def copy_func=(value : Pango::AttrDataCopyFunc)
+      _var = (@pointer + 56).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibPango::AttrShape))
       value
     end
 
-    def destroy_func : Pointer(Void)
-      _var = (@pointer + 64).as(Pointer(LibGLib::DestroyNotify))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def destroy_func : GLib::DestroyNotify
+      _var = (@pointer + 64).as(Pointer(Void*))
+      GLib::DestroyNotify.new(_var, GICrystal::Transfer::None)
     end
 
-    def destroy_func=(value : Pointer(Void))
-      _var = (@pointer + 64).as(Pointer(LibGLib::DestroyNotify))
+    def destroy_func=(value : GLib::DestroyNotify)
+      _var = (@pointer + 64).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibPango::AttrShape))
       value
     end
@@ -114,7 +114,7 @@ module Pango
       Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def self.new_with_data(ink_rect : Pango::Rectangle, logical_rect : Pango::Rectangle, data : Pointer(Void)?, copy_func : Pointer(Void)?, destroy_func : Pointer(Void)?) : Pango::Attribute
+    def self.new_with_data(ink_rect : Pango::Rectangle, logical_rect : Pango::Rectangle, data : Pointer(Void)?, copy_func : Pango::AttrDataCopyFunc?, destroy_func : GLib::DestroyNotify?) : Pango::Attribute
       # pango_attr_shape_new_with_data: (None)
       # @data: (nullable)
       # @copy_func: (nullable)
@@ -127,20 +127,6 @@ module Pango
              else
                data.to_unsafe
              end
-
-      # Generator::NullableArrayPlan
-      copy_func = if copy_func.nil?
-                    LibPango::AttrDataCopyFunc.null
-                  else
-                    copy_func.to_unsafe
-                  end
-
-      # Generator::NullableArrayPlan
-      destroy_func = if destroy_func.nil?
-                       LibGLib::DestroyNotify.null
-                     else
-                       destroy_func.to_unsafe
-                     end
 
       # C call
       _retval = LibPango.pango_attr_shape_new_with_data(ink_rect, logical_rect, data, copy_func, destroy_func)

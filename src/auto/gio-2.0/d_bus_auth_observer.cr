@@ -74,6 +74,17 @@ module Gio
         sizeof(LibGio::DBusAuthObserver), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -95,6 +106,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Emits the #GDBusAuthObserver::allow-mechanism signal on @observer.
@@ -156,52 +168,50 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(::String, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
-          arg0 = ::String.new(lib_arg0)
-          _retval = ::Box(Proc(::String, Bool)).unbox(box).call(arg0)
-          _retval
-        }
+      def connect(handler : Proc(::String, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mechanism : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          mechanism = lib_mechanism
+          ::Box(Proc(::String, Bool)).unbox(_lib_box).call(mechanism)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(::String, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
-          arg0 = ::String.new(lib_arg0)
-          _retval = ::Box(Proc(::String, Bool)).unbox(box).call(arg0)
-          _retval
-        }
+      def connect_after(handler : Proc(::String, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mechanism : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          mechanism = lib_mechanism
+          ::Box(Proc(::String, Bool)).unbox(_lib_box).call(mechanism)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::DBusAuthObserver, ::String, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
-          sender = Gio::DBusAuthObserver.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = ::String.new(lib_arg0)
-          ::Box(Proc(Gio::DBusAuthObserver, ::String, Bool)).unbox(box).call(sender, arg0).to_unsafe
-        }
+      def connect(handler : Proc(Gio::DBusAuthObserver, ::String, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mechanism : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusAuthObserver.new(_lib_sender, GICrystal::Transfer::None)
+          mechanism = lib_mechanism
+          ::Box(Proc(Gio::DBusAuthObserver, ::String, Bool)).unbox(_lib_box).call(_sender, mechanism)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::DBusAuthObserver, ::String, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(LibC::Char), box : Pointer(Void)) {
-          sender = Gio::DBusAuthObserver.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = ::String.new(lib_arg0)
-          ::Box(Proc(Gio::DBusAuthObserver, ::String, Bool)).unbox(box).call(sender, arg0).to_unsafe
-        }
+      def connect_after(handler : Proc(Gio::DBusAuthObserver, ::String, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_mechanism : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusAuthObserver.new(_lib_sender, GICrystal::Transfer::None)
+          mechanism = lib_mechanism
+          ::Box(Proc(Gio::DBusAuthObserver, ::String, Bool)).unbox(_lib_box).call(_sender, mechanism)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(mechanism : ::String) : Nil
@@ -239,56 +249,70 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::IOStream, Gio::Credentials?, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::IOStream.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = (lib_arg1.null? ? nil : Gio::Credentials.new(lib_arg1, GICrystal::Transfer::None))
-          _retval = ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(box).call(arg0, arg1)
-          _retval
-        }
+      def connect(handler : Proc(Gio::IOStream, Gio::Credentials?, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_stream : Pointer(Void), lib_credentials : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          stream = Gio::IOStream.new(lib_stream, :none)
+          # Generator::NullableArrayPlan
+          credentials = (lib_credentials.null? ? nil : Gio::Credentials.new(lib_credentials, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          credentials = Gio::Credentials.new(lib_credentials, :none)
+          ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(_lib_box).call(stream, credentials)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::IOStream, Gio::Credentials?, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::IOStream.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = (lib_arg1.null? ? nil : Gio::Credentials.new(lib_arg1, GICrystal::Transfer::None))
-          _retval = ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(box).call(arg0, arg1)
-          _retval
-        }
+      def connect_after(handler : Proc(Gio::IOStream, Gio::Credentials?, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_stream : Pointer(Void), lib_credentials : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          stream = Gio::IOStream.new(lib_stream, :none)
+          # Generator::NullableArrayPlan
+          credentials = (lib_credentials.null? ? nil : Gio::Credentials.new(lib_credentials, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          credentials = Gio::Credentials.new(lib_credentials, :none)
+          ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(_lib_box).call(stream, credentials)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::DBusAuthObserver.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::IOStream.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = (lib_arg1.null? ? nil : Gio::Credentials.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
-        }
+      def connect(handler : Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_stream : Pointer(Void), lib_credentials : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusAuthObserver.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          stream = Gio::IOStream.new(lib_stream, :none)
+          # Generator::NullableArrayPlan
+          credentials = (lib_credentials.null? ? nil : Gio::Credentials.new(lib_credentials, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          credentials = Gio::Credentials.new(lib_credentials, :none)
+          ::Box(Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool)).unbox(_lib_box).call(_sender, stream, credentials)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::DBusAuthObserver.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::IOStream.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = (lib_arg1.null? ? nil : Gio::Credentials.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
-        }
+      def connect_after(handler : Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_stream : Pointer(Void), lib_credentials : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusAuthObserver.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          stream = Gio::IOStream.new(lib_stream, :none)
+          # Generator::NullableArrayPlan
+          credentials = (lib_credentials.null? ? nil : Gio::Credentials.new(lib_credentials, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          credentials = Gio::Credentials.new(lib_credentials, :none)
+          ::Box(Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool)).unbox(_lib_box).call(_sender, stream, credentials)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(stream : Gio::IOStream, credentials : Gio::Credentials?) : Nil

@@ -65,6 +65,7 @@ module Adw
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def self.new_full(damping : Float64, mass : Float64, stiffness : Float64) : self

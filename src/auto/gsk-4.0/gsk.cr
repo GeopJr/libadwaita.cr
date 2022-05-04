@@ -47,6 +47,12 @@ require "./transform_node.cr"
 require "./vulkan_renderer.cr"
 
 module Gsk
+  # Callbacks
+
+  # Type of callback that is called when an error occurs
+  # during node deserialization.
+  alias ParseErrorFunc = Proc(Gsk::ParseLocation, Gsk::ParseLocation, GLib::Error, Nil)
+
   # Base class for all errors in this module.
   class GskError < RuntimeError
     # :nodoc:
@@ -338,17 +344,14 @@ module Gsk
             else
               value.to_unsafe
             end
-
     # Generator::NullableArrayPlan
     node = if node.nil?
              Pointer(Void).null
            else
              node.to_unsafe
            end
-
     # Generator::TransferFullArgPlan
     LibGObject.gsk_render_node_ref(node)
-
     # C call
     LibGsk.gsk_value_take_render_node(value, node)
 

@@ -8,6 +8,21 @@ require "./lib_g_module.cr"
 require "./module.cr"
 
 module GModule
+  # Callbacks
+
+  # Specifies the type of the module initialization function.
+  # If a module contains a function named g_module_check_init() it is called
+  # automatically when the module is loaded. It is passed the #GModule structure
+  # and should return %NULL on success or a string describing the initialization
+  # error.
+  alias ModuleCheckInit = Proc(::String)
+
+  # Specifies the type of the module function called when it is unloaded.
+  # If a module contains a function named g_module_unload() it is called
+  # automatically when the module is unloaded.
+  # It is passed the #GModule structure.
+  alias ModuleUnload = Proc(Nil)
+
   # Base class for all errors in this module.
   class GModuleError < RuntimeError
     # :nodoc:

@@ -15,6 +15,17 @@ module Gio
         sizeof(LibGio::Cancellable), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -43,6 +54,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Gets the top cancellable from the stack.
@@ -102,25 +114,23 @@ module Gio
     # @callback is invoked.  This lifts a restriction in place for
     # earlier GLib versions which now makes it easier to write cleanup
     # code that unconditionally invokes e.g. g_cancellable_cancel().
-    def connect(callback : Pointer(Void), data : Pointer(Void)?, data_destroy_func : Pointer(Void)?) : UInt64
+    def connect(callback : GObject::Callback) : UInt64
       # g_cancellable_connect: (Method)
       # @data: (nullable)
       # @data_destroy_func: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      data = if data.nil?
-               Pointer(Void).null
-             else
-               data.to_unsafe
-             end
-
-      # Generator::NullableArrayPlan
-      data_destroy_func = if data_destroy_func.nil?
-                            LibGLib::DestroyNotify.null
-                          else
-                            data_destroy_func.to_unsafe
-                          end
+      # Generator::CallbackArgPlan
+      if callback
+        _box = ::Box.box(callback)
+        callback = ->{
+          ::Box(Proc(Nil)).unbox(Pointer(Void).null).call
+        }.pointer
+        data = GICrystal::ClosureDataManager.register(_box)
+        data_destroy_func = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        callback = data = data_destroy_func = Pointer(Void).null
+      end
 
       # C call
       _retval = LibGio.g_cancellable_connect(self, callback, data, data_destroy_func)
@@ -407,46 +417,46 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::Cancellable, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::Cancellable.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Cancellable, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(Gio::Cancellable, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::Cancellable.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Cancellable, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::Cancellable, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::Cancellable.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::Cancellable, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(Gio::Cancellable, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::Cancellable.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gio::Cancellable, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil

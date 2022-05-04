@@ -23,7 +23,7 @@ lib LibPangoCairo
   fun pango_cairo_context_get_resolution(context : Pointer(Void)) : Float64
   fun pango_cairo_context_set_font_options(context : Pointer(Void), options : Pointer(Void)) : Void
   fun pango_cairo_context_set_resolution(context : Pointer(Void), dpi : Float64) : Void
-  fun pango_cairo_context_set_shape_renderer(context : Pointer(Void), func : ShapeRendererFunc, data : Pointer(Void), dnotify : LibGLib::DestroyNotify) : Void
+  fun pango_cairo_context_set_shape_renderer(context : Pointer(Void), func : Void*, data : Pointer(Void), dnotify : Void*) : Void
   fun pango_cairo_create_context(cr : Pointer(Void)) : Pointer(Void)
   fun pango_cairo_create_layout(cr : Pointer(Void)) : Pointer(Void)
   fun pango_cairo_error_underline_path(cr : Pointer(Void), x : Float64, y : Float64, width : Float64, height : Float64) : Void

@@ -31,7 +31,7 @@ module GLib
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(prepare : Pointer(Void)? = nil, check : Pointer(Void)? = nil, dispatch : Pointer(Void)? = nil, finalize : Pointer(Void)? = nil, closure_callback : Pointer(Void)? = nil, closure_marshal : Pointer(Void)? = nil)
+    def self.new(prepare : GLib::Prepare? = nil, check : GLib::Check? = nil, dispatch : Pointer(Void)? = nil, finalize : GLib::Finalize? = nil, closure_callback : GLib::SourceFunc? = nil, closure_marshal : GLib::SourceDummyMarshal? = nil)
       _ptr = Pointer(Void).malloc(48)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.prepare = prepare unless prepare.nil?
@@ -50,24 +50,24 @@ module GLib
       LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::SourceFuncs)).zero?
     end
 
-    def prepare : Pointer(Void)
-      _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def prepare : GLib::Prepare
+      _var = (@pointer + 0).as(Pointer(Void*))
+      GLib::Prepare.new(_var, GICrystal::Transfer::None)
     end
 
-    def prepare=(value : Pointer(Void))
-      _var = (@pointer + 0).as(Pointer(-> Void))
+    def prepare=(value : GLib::Prepare)
+      _var = (@pointer + 0).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end
 
-    def check : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def check : GLib::Check
+      _var = (@pointer + 8).as(Pointer(Void*))
+      GLib::Check.new(_var, GICrystal::Transfer::None)
     end
 
-    def check=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(-> Void))
+    def check=(value : GLib::Check)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end
@@ -87,35 +87,35 @@ module GLib
       value
     end
 
-    def finalize : Pointer(Void)
-      _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def finalize : GLib::Finalize
+      _var = (@pointer + 24).as(Pointer(Void*))
+      GLib::Finalize.new(_var, GICrystal::Transfer::None)
     end
 
-    def finalize=(value : Pointer(Void))
-      _var = (@pointer + 24).as(Pointer(-> Void))
+    def finalize=(value : GLib::Finalize)
+      _var = (@pointer + 24).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end
 
-    def closure_callback : Pointer(Void)
-      _var = (@pointer + 32).as(Pointer(LibGLib::SourceFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def closure_callback : GLib::SourceFunc
+      _var = (@pointer + 32).as(Pointer(Void*))
+      GLib::SourceFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def closure_callback=(value : Pointer(Void))
-      _var = (@pointer + 32).as(Pointer(LibGLib::SourceFunc))
+    def closure_callback=(value : GLib::SourceFunc)
+      _var = (@pointer + 32).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end
 
-    def closure_marshal : Pointer(Void)
-      _var = (@pointer + 40).as(Pointer(LibGLib::SourceDummyMarshal))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def closure_marshal : GLib::SourceDummyMarshal
+      _var = (@pointer + 40).as(Pointer(Void*))
+      GLib::SourceDummyMarshal.new(_var, GICrystal::Transfer::None)
     end
 
-    def closure_marshal=(value : Pointer(Void))
-      _var = (@pointer + 40).as(Pointer(LibGLib::SourceDummyMarshal))
+    def closure_marshal=(value : GLib::SourceDummyMarshal)
+      _var = (@pointer + 40).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceFuncs))
       value
     end

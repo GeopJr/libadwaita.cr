@@ -78,6 +78,7 @@ module GObject
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def append(value : _?) : GObject::ValueArray
@@ -182,7 +183,7 @@ module GObject
       GObject::ValueArray.new(_retval, GICrystal::Transfer::None)
     end
 
-    def sort(compare_func : Pointer(Void), user_data : Pointer(Void)?) : GObject::ValueArray
+    def sort(compare_func : GLib::CompareDataFunc, user_data : Pointer(Void)?) : GObject::ValueArray
       # g_value_array_sort_with_data: (Method)
       # @user_data: (nullable)
       # Returns: (transfer none)

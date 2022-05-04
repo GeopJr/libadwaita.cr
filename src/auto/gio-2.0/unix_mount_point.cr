@@ -200,7 +200,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       time_read = Pointer(UInt64).null
-
       # C call
       _retval = LibGio.g_unix_mount_point_at(mount_path, time_read)
 

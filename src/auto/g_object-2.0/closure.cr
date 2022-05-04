@@ -55,7 +55,7 @@ module GObject
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(ref_count : UInt32? = nil, meta_marshal_nouse : UInt32? = nil, n_guards : UInt32? = nil, n_fnotifiers : UInt32? = nil, n_inotifiers : UInt32? = nil, in_inotify : UInt32? = nil, floating : UInt32? = nil, derivative_flag : UInt32? = nil, in_marshal : UInt32? = nil, is_invalid : UInt32? = nil, marshal : Pointer(Void)? = nil, data : Pointer(Void)? = nil, notifiers : GObject::ClosureNotifyData? = nil)
+    def self.new(ref_count : UInt32? = nil, meta_marshal_nouse : UInt32? = nil, n_guards : UInt32? = nil, n_fnotifiers : UInt32? = nil, n_inotifiers : UInt32? = nil, in_inotify : UInt32? = nil, floating : UInt32? = nil, derivative_flag : UInt32? = nil, in_marshal : UInt32? = nil, is_invalid : UInt32? = nil, marshal : GObject::Marshal? = nil, data : Pointer(Void)? = nil, notifiers : GObject::ClosureNotifyData? = nil)
       _ptr = Pointer(Void).malloc(64)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.ref_count = ref_count unless ref_count.nil?
@@ -181,13 +181,13 @@ module GObject
       value
     end
 
-    def marshal : Pointer(Void)
-      _var = (@pointer + 40).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def marshal : GObject::Marshal
+      _var = (@pointer + 40).as(Pointer(Void*))
+      GObject::Marshal.new(_var, GICrystal::Transfer::None)
     end
 
-    def marshal=(value : Pointer(Void))
-      _var = (@pointer + 40).as(Pointer(-> Void))
+    def marshal=(value : GObject::Marshal)
+      _var = (@pointer + 40).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::Closure))
       value
     end
@@ -278,14 +278,10 @@ module GObject
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      return_value = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      return_value = GObject::Value.new
-      # Generator::ArrayLengthArgPlan
-      n_param_values = param_values.size
-      # Generator::ArrayArgPlan
+      return_value = Pointer(Void).null  # Generator::CallerAllocatesPlan
+      return_value = GObject::Value.new  # Generator::ArrayLengthArgPlan
+      n_param_values = param_values.size # Generator::ArrayArgPlan
       param_values = param_values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
-
       # Generator::NullableArrayPlan
       invocation_hint = if invocation_hint.nil?
                           Pointer(Void).null

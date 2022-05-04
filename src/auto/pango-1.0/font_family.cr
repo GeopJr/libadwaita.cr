@@ -17,6 +17,17 @@ module Pango
         sizeof(LibPango::FontFamily), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -125,10 +136,8 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_faces = faces.size
-      # Generator::OutArgUsedInReturnPlan
-      faces = Pointer(Pointer(Pointer(Void))).null
-      # Generator::ArrayArgPlan
+      n_faces = faces.size                         # Generator::OutArgUsedInReturnPlan
+      faces = Pointer(Pointer(Pointer(Void))).null # Generator::ArrayArgPlan
       faces = faces.to_a.map(&.to_unsafe).to_unsafe
 
       # C call

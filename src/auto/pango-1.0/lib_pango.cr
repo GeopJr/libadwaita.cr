@@ -55,9 +55,9 @@ lib LibPango
 
   struct AttrClass # 32 bytes long
     type : UInt32
-    copy : -> Void
-    destroy : -> Void
-    equal : -> Void
+    copy : Void*
+    destroy : Void*
+    equal : Void*
   end
 
   struct AttrColor # 24 bytes long
@@ -99,8 +99,8 @@ lib LibPango
     ink_rect : LibPango::Rectangle
     logical_rect : LibPango::Rectangle
     data : Pointer(Void)
-    copy_func : LibPango::AttrDataCopyFunc
-    destroy_func : LibGLib::DestroyNotify
+    copy_func : Void*
+    destroy_func : Void*
   end
 
   struct AttrSize # 24 bytes long
@@ -130,48 +130,48 @@ lib LibPango
 
   struct FontClass # 200 bytes long
     parent_class : LibGObject::ObjectClass
-    describe : -> Void
-    get_coverage : -> Void
-    get_glyph_extents : -> Void
-    get_metrics : -> Void
-    get_font_map : -> Void
-    describe_absolute : -> Void
-    get_features : -> Void
-    create_hb_font : -> Void
+    describe : Void*
+    get_coverage : Void*
+    get_glyph_extents : Void*
+    get_metrics : Void*
+    get_font_map : Void*
+    describe_absolute : Void*
+    get_features : Void*
+    create_hb_font : Void*
   end
 
   type FontDescription = Void # Struct with zero bytes
 
   struct FontFaceClass # 192 bytes long
     parent_class : LibGObject::ObjectClass
-    get_face_name : -> Void
-    describe : -> Void
-    list_sizes : -> Void
-    is_synthesized : -> Void
-    get_family : -> Void
+    get_face_name : Void*
+    describe : Void*
+    list_sizes : Void*
+    is_synthesized : Void*
+    get_family : Void*
     _pango_reserved3 : Pointer(Void)
     _pango_reserved4 : Pointer(Void)
   end
 
   struct FontFamilyClass # 184 bytes long
     parent_class : LibGObject::ObjectClass
-    list_faces : -> Void
-    get_name : -> Void
-    is_monospace : -> Void
-    is_variable : -> Void
-    get_face : -> Void
+    list_faces : Void*
+    get_name : Void*
+    is_monospace : Void*
+    is_variable : Void*
+    get_face : Void*
     _pango_reserved2 : Pointer(Void)
   end
 
   struct FontMapClass # 200 bytes long
     parent_class : LibGObject::ObjectClass
-    load_font : -> Void
-    list_families : -> Void
-    load_fontset : -> Void
+    load_font : Void*
+    list_families : Void*
+    load_fontset : Void*
     shape_engine_type : Pointer(LibC::Char)
-    get_serial : -> Void
-    changed : -> Void
-    get_family : -> Void
+    get_serial : Void*
+    changed : Void*
+    get_family : Void*
     get_face : Pointer(Void)
   end
 
@@ -190,10 +190,10 @@ lib LibPango
 
   struct FontsetClass # 200 bytes long
     parent_class : LibGObject::ObjectClass
-    get_font : -> Void
-    get_metrics : -> Void
-    get_language : -> Void
-    foreach : -> Void
+    get_font : Void*
+    get_metrics : Void*
+    get_language : Void*
+    foreach : Void*
     _pango_reserved1 : Pointer(Void)
     _pango_reserved2 : Pointer(Void)
     _pango_reserved3 : Pointer(Void)
@@ -304,17 +304,17 @@ lib LibPango
 
   struct RendererClass # 248 bytes long
     parent_class : LibGObject::ObjectClass
-    draw_glyphs : -> Void
-    draw_rectangle : -> Void
-    draw_error_underline : -> Void
-    draw_shape : -> Void
-    draw_trapezoid : -> Void
-    draw_glyph : -> Void
-    part_changed : -> Void
-    _begin : -> Void
-    _end : -> Void
-    prepare_run : -> Void
-    draw_glyph_item : -> Void
+    draw_glyphs : Void*
+    draw_rectangle : Void*
+    draw_error_underline : Void*
+    draw_shape : Void*
+    draw_trapezoid : Void*
+    draw_glyph : Void*
+    part_changed : Void*
+    _begin : Void*
+    _end : Void*
+    prepare_run : Void*
+    draw_glyph_item : Void*
     _pango_reserved2 : Pointer(Void)
     _pango_reserved3 : Pointer(Void)
     _pango_reserved4 : Pointer(Void)
@@ -400,7 +400,7 @@ lib LibPango
   fun pango_attr_list_change(this : Void*, attr : Pointer(Void)) : Void
   fun pango_attr_list_copy(this : Void*) : Pointer(Void)
   fun pango_attr_list_equal(this : Void*, other_list : Pointer(Void)) : LibC::Int
-  fun pango_attr_list_filter(this : Void*, func : AttrFilterFunc, data : Pointer(Void)) : Pointer(Void)
+  fun pango_attr_list_filter(this : Void*, func : Void*, data : Pointer(Void)) : Pointer(Void)
   fun pango_attr_list_from_string(text : Pointer(LibC::Char)) : Pointer(Void)
   fun pango_attr_list_from_string(text : Pointer(LibC::Char)) : Pointer(Void)
   fun pango_attr_list_get_attributes(this : Void*) : Pointer(LibGLib::SList)
@@ -421,8 +421,8 @@ lib LibPango
   fun pango_attr_sentence_new : Pointer(Void)
   fun pango_attr_shape_new(ink_rect : Pointer(Void), logical_rect : Pointer(Void)) : Pointer(Void)
   fun pango_attr_shape_new(ink_rect : Pointer(Void), logical_rect : Pointer(Void)) : Pointer(Void)
-  fun pango_attr_shape_new_with_data(ink_rect : Pointer(Void), logical_rect : Pointer(Void), data : Pointer(Void), copy_func : AttrDataCopyFunc, destroy_func : LibGLib::DestroyNotify) : Pointer(Void)
-  fun pango_attr_shape_new_with_data(ink_rect : Pointer(Void), logical_rect : Pointer(Void), data : Pointer(Void), copy_func : AttrDataCopyFunc, destroy_func : LibGLib::DestroyNotify) : Pointer(Void)
+  fun pango_attr_shape_new_with_data(ink_rect : Pointer(Void), logical_rect : Pointer(Void), data : Pointer(Void), copy_func : Void*, destroy_func : Void*) : Pointer(Void)
+  fun pango_attr_shape_new_with_data(ink_rect : Pointer(Void), logical_rect : Pointer(Void), data : Pointer(Void), copy_func : Void*, destroy_func : Void*) : Pointer(Void)
   fun pango_attr_show_new(flags : UInt32) : Pointer(Void)
   fun pango_attr_size_new(size : Int32) : Pointer(Void)
   fun pango_attr_size_new(size : Int32) : Pointer(Void)
@@ -583,7 +583,7 @@ lib LibPango
   fun pango_font_metrics_ref(this : Void*) : Pointer(Void)
   fun pango_font_metrics_unref(this : Void*) : Void
   fun pango_font_serialize(this : Void*) : Pointer(Void)
-  fun pango_fontset_foreach(this : Void*, func : FontsetForeachFunc, data : Pointer(Void)) : Void
+  fun pango_fontset_foreach(this : Void*, func : Void*, data : Pointer(Void)) : Void
   fun pango_fontset_get_font(this : Void*, wc : UInt32) : Pointer(Void)
   fun pango_fontset_get_metrics(this : Void*) : Pointer(Void)
   fun pango_fontset_get_type : UInt64

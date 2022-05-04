@@ -27,7 +27,7 @@ lib LibAdw
 
   struct ActionRowClass # 552 bytes long
     parent_class : LibAdw::PreferencesRowClass
-    activate : -> Void
+    activate : Void*
     padding : Pointer(Void)[4]
   end
 
@@ -167,11 +167,11 @@ lib LibAdw
 
   struct SwipeableInterface # 88 bytes long
     parent : LibGObject::TypeInterface
-    get_distance : -> Void
-    get_snap_points : -> Void
-    get_progress : -> Void
-    get_cancel_progress : -> Void
-    get_swipe_area : -> Void
+    get_distance : Void*
+    get_snap_points : Void*
+    get_progress : Void*
+    get_cancel_progress : Void*
+    get_swipe_area : Void*
     padding : Pointer(Void)[4]
   end
 
@@ -409,7 +409,7 @@ lib LibAdw
   fun adw_button_content_set_label(this : Void*, label : Pointer(LibC::Char)) : Void
   fun adw_button_content_set_use_underline(this : Void*, use_underline : LibC::Int) : Void
   fun adw_callback_animation_target_get_type : UInt64
-  fun adw_callback_animation_target_new(callback : AnimationTargetFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Pointer(Void)
+  fun adw_callback_animation_target_new(callback : Void*, user_data : Pointer(Void), destroy : Void*) : Pointer(Void)
   fun adw_carousel_append(this : Void*, child : Pointer(Void)) : Void
   fun adw_carousel_get_allow_long_swipes(this : Void*) : LibC::Int
   fun adw_carousel_get_allow_mouse_drag(this : Void*) : LibC::Int

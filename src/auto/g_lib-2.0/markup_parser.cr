@@ -18,7 +18,7 @@ module GLib
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(start_element : Pointer(Void)? = nil, end_element : Pointer(Void)? = nil, text : Pointer(Void)? = nil, passthrough : Pointer(Void)? = nil, error : Pointer(Void)? = nil)
+    def self.new(start_element : GLib::StartElement? = nil, end_element : GLib::EndElement? = nil, text : GLib::Text? = nil, passthrough : GLib::Passthrough? = nil, error : GLib::Error? = nil)
       _ptr = Pointer(Void).malloc(40)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.start_element = start_element unless start_element.nil?
@@ -36,57 +36,57 @@ module GLib
       LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::MarkupParser)).zero?
     end
 
-    def start_element : Pointer(Void)
-      _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def start_element : GLib::StartElement
+      _var = (@pointer + 0).as(Pointer(Void*))
+      GLib::StartElement.new(_var, GICrystal::Transfer::None)
     end
 
-    def start_element=(value : Pointer(Void))
-      _var = (@pointer + 0).as(Pointer(-> Void))
+    def start_element=(value : GLib::StartElement)
+      _var = (@pointer + 0).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end
 
-    def end_element : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def end_element : GLib::EndElement
+      _var = (@pointer + 8).as(Pointer(Void*))
+      GLib::EndElement.new(_var, GICrystal::Transfer::None)
     end
 
-    def end_element=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(-> Void))
+    def end_element=(value : GLib::EndElement)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end
 
-    def text : Pointer(Void)
-      _var = (@pointer + 16).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def text : GLib::Text
+      _var = (@pointer + 16).as(Pointer(Void*))
+      GLib::Text.new(_var, GICrystal::Transfer::None)
     end
 
-    def text=(value : Pointer(Void))
-      _var = (@pointer + 16).as(Pointer(-> Void))
+    def text=(value : GLib::Text)
+      _var = (@pointer + 16).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end
 
-    def passthrough : Pointer(Void)
-      _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def passthrough : GLib::Passthrough
+      _var = (@pointer + 24).as(Pointer(Void*))
+      GLib::Passthrough.new(_var, GICrystal::Transfer::None)
     end
 
-    def passthrough=(value : Pointer(Void))
-      _var = (@pointer + 24).as(Pointer(-> Void))
+    def passthrough=(value : GLib::Passthrough)
+      _var = (@pointer + 24).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end
 
-    def error : Pointer(Void)
-      _var = (@pointer + 32).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def error : GLib::Error
+      _var = (@pointer + 32).as(Pointer(Void*))
+      GLib::Error.new(_var, GICrystal::Transfer::None)
     end
 
-    def error=(value : Pointer(Void))
-      _var = (@pointer + 32).as(Pointer(-> Void))
+    def error=(value : GLib::Error)
+      _var = (@pointer + 32).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::MarkupParser))
       value
     end

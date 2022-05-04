@@ -26,10 +26,8 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_entries = entries.size
-      # Generator::ArrayArgPlan
+      n_entries = entries.size # Generator::ArrayArgPlan
       entries = entries.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

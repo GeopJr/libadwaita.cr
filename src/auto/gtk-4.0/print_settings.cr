@@ -24,6 +24,17 @@ module Gtk
         sizeof(LibGtk::PrintSettings), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -45,6 +56,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Reads the print settings from @file_name.
@@ -138,7 +150,7 @@ module Gtk
     end
 
     # Calls @func for each key-value pair of @settings.
-    def foreach(func : Pointer(Void), user_data : Pointer(Void)?) : Nil
+    def foreach(func : Gtk::PrintSettingsFunc, user_data : Pointer(Void)?) : Nil
       # gtk_print_settings_foreach: (Method)
       # @user_data: (nullable)
       # Returns: (transfer none)
@@ -413,7 +425,6 @@ module Gtk
 
       # Generator::OutArgUsedInReturnPlan
       num_ranges = 0
-
       # C call
       _retval = LibGtk.gtk_print_settings_get_page_ranges(self, pointerof(num_ranges))
 
@@ -860,24 +871,19 @@ module Gtk
     end
 
     # Sets the value of %GTK_PRINT_SETTINGS_PAGE_RANGES.
-    def set_page_ranges(page_ranges : Enumerable(Gtk::PageRange)) : Nil
+    def page_ranges=(page_ranges : Enumerable(Gtk::PageRange)) : Nil
       # gtk_print_settings_set_page_ranges: (Method)
       # @page_ranges: (array length=num_ranges element-type Interface)
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      num_ranges = page_ranges.size
-      # Generator::ArrayArgPlan
+      num_ranges = page_ranges.size # Generator::ArrayArgPlan
       page_ranges = page_ranges.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       LibGtk.gtk_print_settings_set_page_ranges(self, page_ranges, num_ranges)
 
       # Return value handling
-    end
-
-    def set_page_ranges(*page_ranges : Gtk::PageRange)
-      set_page_ranges(page_ranges)
     end
 
     # Sets the value of %GTK_PRINT_SETTINGS_PAGE_SET.

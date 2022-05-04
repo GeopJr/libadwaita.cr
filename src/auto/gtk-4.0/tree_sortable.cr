@@ -31,25 +31,30 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def set_default_sort_func(sort_func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    def default_sort_func=(sort_func : Gtk::TreeIterCompareFunc) : Nil
       # gtk_tree_sortable_set_default_sort_func: (Method)
       # @user_data: (nullable)
       # @destroy: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # Generator::NullableArrayPlan
-      destroy = if destroy.nil?
-                  LibGLib::DestroyNotify.null
-                else
-                  destroy.to_unsafe
-                end
+      # Generator::CallbackArgPlan
+      if sort_func
+        _box = ::Box.box(sort_func)
+        sort_func = ->(lib_model : Pointer(Void), lib_a : Pointer(Void), lib_b : Pointer(Void), lib_user_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          model = Gtk::TreeModel.new(lib_model, :none)
+          # Generator::GObjectArgPlan
+          a = Gtk::TreeIter.new(lib_a, :none)
+          # Generator::GObjectArgPlan
+          b = Gtk::TreeIter.new(lib_b, :none)
+          user_data = lib_user_data
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Gtk::TreeIter, Int32)).unbox(user_data).call(model, a, b)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        sort_func = user_data = destroy = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_tree_sortable_set_default_sort_func(self, sort_func, user_data, destroy)
@@ -67,25 +72,30 @@ module Gtk
       # Return value handling
     end
 
-    def set_sort_func(sort_column_id : Int32, sort_func : Pointer(Void), user_data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    def set_sort_func(sort_column_id : Int32, sort_func : Gtk::TreeIterCompareFunc) : Nil
       # gtk_tree_sortable_set_sort_func: (Method)
       # @user_data: (nullable)
       # @destroy: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # Generator::NullableArrayPlan
-      destroy = if destroy.nil?
-                  LibGLib::DestroyNotify.null
-                else
-                  destroy.to_unsafe
-                end
+      # Generator::CallbackArgPlan
+      if sort_func
+        _box = ::Box.box(sort_func)
+        sort_func = ->(lib_model : Pointer(Void), lib_a : Pointer(Void), lib_b : Pointer(Void), lib_user_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          model = Gtk::TreeModel.new(lib_model, :none)
+          # Generator::GObjectArgPlan
+          a = Gtk::TreeIter.new(lib_a, :none)
+          # Generator::GObjectArgPlan
+          b = Gtk::TreeIter.new(lib_b, :none)
+          user_data = lib_user_data
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Gtk::TreeIter, Int32)).unbox(user_data).call(model, a, b)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        sort_func = user_data = destroy = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_tree_sortable_set_sort_func(self, sort_column_id, sort_func, user_data, destroy)
@@ -127,46 +137,46 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::TreeSortable, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::TreeSortable__Impl.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeSortable, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(Gtk::TreeSortable, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::TreeSortable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeSortable, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::TreeSortable, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::TreeSortable__Impl.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeSortable, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(Gtk::TreeSortable, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::TreeSortable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeSortable, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil

@@ -13,6 +13,17 @@ module Gtk
         sizeof(LibGtk::PropertyExpression), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -44,16 +55,15 @@ module Gtk
                    else
                      expression.to_unsafe
                    end
-
       # Generator::TransferFullArgPlan
       LibGObject.gtk_expression_ref(expression)
-
       # C call
       _retval = LibGtk.gtk_property_expression_new(this_type, expression, property_name)
 
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Creates an expression that looks up a property.
@@ -75,10 +85,8 @@ module Gtk
                    else
                      expression.to_unsafe
                    end
-
       # Generator::TransferFullArgPlan
       LibGObject.gtk_expression_ref(expression)
-
       # C call
       _retval = LibGtk.gtk_property_expression_new_for_pspec(expression, pspec)
 

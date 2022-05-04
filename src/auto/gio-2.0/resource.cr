@@ -224,10 +224,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      size = Pointer(UInt64).null
-      # Generator::OutArgUsedInReturnPlan
+      size = Pointer(UInt64).null # Generator::OutArgUsedInReturnPlan
       flags = Pointer(UInt32).null
-
       # C call
       _retval = LibGio.g_resource_get_info(self, path, lookup_flags, size, flags, pointerof(_error))
 

@@ -63,8 +63,7 @@ module Gdk
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      n_mime_types = mime_types.try(&.size) || 0
-      # Generator::NullableArrayPlan
+      n_mime_types = mime_types.try(&.size) || 0 # Generator::NullableArrayPlan
       mime_types = if mime_types.nil?
                      Pointer(Pointer(LibC::Char)).null
                    else
@@ -77,6 +76,7 @@ module Gdk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def initialize(*mime_types : ::String)
@@ -126,7 +126,6 @@ module Gdk
 
       # Generator::OutArgUsedInReturnPlan
       n_gtypes = 0_u64
-
       # C call
       _retval = LibGdk.gdk_content_formats_get_gtypes(self, pointerof(n_gtypes))
 
@@ -142,7 +141,6 @@ module Gdk
 
       # Generator::OutArgUsedInReturnPlan
       n_mime_types = 0_u64
-
       # C call
       _retval = LibGdk.gdk_content_formats_get_mime_types(self, pointerof(n_mime_types))
 

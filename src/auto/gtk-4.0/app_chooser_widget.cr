@@ -47,6 +47,17 @@ module Gtk
         sizeof(LibGtk::AppChooserWidget), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -274,6 +285,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -384,6 +397,7 @@ module Gtk
       LibGObject.g_object_ref_sink(_retval)
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the text that is shown if there are not applications
@@ -571,50 +585,54 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gio::AppInfo, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::AppInfo, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::AppInfo, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          application = Gio::AppInfo.new(lib_application, :none)
+          ::Box(Proc(Gio::AppInfo, Nil)).unbox(_lib_box).call(application)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::AppInfo, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::AppInfo, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::AppInfo, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          application = Gio::AppInfo.new(lib_application, :none)
+          ::Box(Proc(Gio::AppInfo, Nil)).unbox(_lib_box).call(application)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::AppChooserWidget.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::AppChooserWidget.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          application = Gio::AppInfo.new(lib_application, :none)
+          ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(_lib_box).call(_sender, application)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::AppChooserWidget.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::AppChooserWidget.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          application = Gio::AppInfo.new(lib_application, :none)
+          ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(_lib_box).call(_sender, application)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(application : Gio::AppInfo) : Nil
@@ -651,50 +669,54 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gio::AppInfo, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::AppInfo, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gio::AppInfo, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          application = Gio::AppInfo.new(lib_application, :none)
+          ::Box(Proc(Gio::AppInfo, Nil)).unbox(_lib_box).call(application)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::AppInfo, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::AppInfo, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gio::AppInfo, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          application = Gio::AppInfo.new(lib_application, :none)
+          ::Box(Proc(Gio::AppInfo, Nil)).unbox(_lib_box).call(application)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::AppChooserWidget.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::AppChooserWidget.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          application = Gio::AppInfo.new(lib_application, :none)
+          ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(_lib_box).call(_sender, application)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::AppChooserWidget.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::AppInfo__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::AppChooserWidget.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          application = Gio::AppInfo.new(lib_application, :none)
+          ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(_lib_box).call(_sender, application)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(application : Gio::AppInfo) : Nil

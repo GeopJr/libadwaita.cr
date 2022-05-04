@@ -52,14 +52,14 @@ lib LibGdk
 
   struct ContentProviderClass # 264 bytes long
     parent_class : LibGObject::ObjectClass
-    content_changed : -> Void
-    attach_clipboard : -> Void
-    detach_clipboard : -> Void
-    ref_formats : -> Void
-    ref_storable_formats : -> Void
-    write_mime_type_async : -> Void
-    write_mime_type_finish : -> Void
-    get_value : -> Void
+    content_changed : Void*
+    attach_clipboard : Void*
+    detach_clipboard : Void*
+    ref_formats : Void*
+    ref_storable_formats : Void*
+    write_mime_type_async : Void*
+    write_mime_type_finish : Void*
+    get_value : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -91,12 +91,12 @@ lib LibGdk
 
   struct PaintableInterface # 64 bytes long
     g_iface : LibGObject::TypeInterface
-    snapshot : -> Void
-    get_current_image : -> Void
-    get_flags : -> Void
-    get_intrinsic_width : -> Void
-    get_intrinsic_height : -> Void
-    get_intrinsic_aspect_ratio : -> Void
+    snapshot : Void*
+    get_current_image : Void*
+    get_flags : Void*
+    get_intrinsic_width : Void*
+    get_intrinsic_height : Void*
+    get_intrinsic_aspect_ratio : Void*
   end
 
   type PopupInterface = Void # Struct with zero bytes
@@ -240,19 +240,19 @@ lib LibGdk
   fun gdk_clipboard_get_formats(this : Void*) : Pointer(Void)
   fun gdk_clipboard_get_type : UInt64
   fun gdk_clipboard_is_local(this : Void*) : LibC::Int
-  fun gdk_clipboard_read_async(this : Void*, mime_types : Pointer(Pointer(LibC::Char)), io_priority : Int32, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_clipboard_read_async(this : Void*, mime_types : Pointer(Pointer(LibC::Char)), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_clipboard_read_finish(this : Void*, result : Pointer(Void), out_mime_type : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : Pointer(Void)
-  fun gdk_clipboard_read_text_async(this : Void*, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_clipboard_read_text_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_clipboard_read_text_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(LibC::Char)
-  fun gdk_clipboard_read_texture_async(this : Void*, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_clipboard_read_texture_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_clipboard_read_texture_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun gdk_clipboard_read_value_async(this : Void*, type : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_clipboard_read_value_async(this : Void*, type : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_clipboard_read_value_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_clipboard_set_content(this : Void*, provider : Pointer(Void)) : LibC::Int
   fun gdk_clipboard_set_value(this : Void*, value : Pointer(Void)) : Void
-  fun gdk_clipboard_store_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_clipboard_store_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_clipboard_store_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun gdk_content_deserialize_async(stream : Pointer(Void), mime_type : Pointer(LibC::Char), type : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_content_deserialize_async(stream : Pointer(Void), mime_type : Pointer(LibC::Char), type : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_content_deserialize_finish(result : Pointer(Void), value : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun gdk_content_deserializer_get_cancellable(this : Void*) : Pointer(Void)
   fun gdk_content_deserializer_get_gtype(this : Void*) : UInt64
@@ -265,7 +265,7 @@ lib LibGdk
   fun gdk_content_deserializer_get_value(this : Void*) : Pointer(Void)
   fun gdk_content_deserializer_return_error(this : Void*, error : Pointer(Void)) : Void
   fun gdk_content_deserializer_return_success(this : Void*) : Void
-  fun gdk_content_deserializer_set_task_data(this : Void*, data : Pointer(Void), notify : LibGLib::DestroyNotify) : Void
+  fun gdk_content_deserializer_set_task_data(this : Void*, data : Pointer(Void), notify : Void*) : Void
   fun gdk_content_formats_builder_add_formats(this : Void*, formats : Pointer(Void)) : Void
   fun gdk_content_formats_builder_add_gtype(this : Void*, type : UInt64) : Void
   fun gdk_content_formats_builder_add_mime_type(this : Void*, mime_type : Pointer(LibC::Char)) : Void
@@ -303,11 +303,11 @@ lib LibGdk
   fun gdk_content_provider_new_union(providers : Pointer(Pointer(Void)), n_providers : UInt64) : Pointer(Void)
   fun gdk_content_provider_ref_formats(this : Void*) : Pointer(Void)
   fun gdk_content_provider_ref_storable_formats(this : Void*) : Pointer(Void)
-  fun gdk_content_provider_write_mime_type_async(this : Void*, mime_type : Pointer(LibC::Char), stream : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_content_provider_write_mime_type_async(this : Void*, mime_type : Pointer(LibC::Char), stream : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_content_provider_write_mime_type_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun gdk_content_register_deserializer(mime_type : Pointer(LibC::Char), type : UInt64, deserialize : ContentDeserializeFunc, data : Pointer(Void), notify : LibGLib::DestroyNotify) : Void
-  fun gdk_content_register_serializer(type : UInt64, mime_type : Pointer(LibC::Char), serialize : ContentSerializeFunc, data : Pointer(Void), notify : LibGLib::DestroyNotify) : Void
-  fun gdk_content_serialize_async(stream : Pointer(Void), mime_type : Pointer(LibC::Char), value : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_content_register_deserializer(mime_type : Pointer(LibC::Char), type : UInt64, deserialize : Void*, data : Pointer(Void), notify : Void*) : Void
+  fun gdk_content_register_serializer(type : UInt64, mime_type : Pointer(LibC::Char), serialize : Void*, data : Pointer(Void), notify : Void*) : Void
+  fun gdk_content_serialize_async(stream : Pointer(Void), mime_type : Pointer(LibC::Char), value : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_content_serialize_finish(result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun gdk_content_serializer_get_cancellable(this : Void*) : Pointer(Void)
   fun gdk_content_serializer_get_gtype(this : Void*) : UInt64
@@ -320,7 +320,7 @@ lib LibGdk
   fun gdk_content_serializer_get_value(this : Void*) : Pointer(Void)
   fun gdk_content_serializer_return_error(this : Void*, error : Pointer(Void)) : Void
   fun gdk_content_serializer_return_success(this : Void*) : Void
-  fun gdk_content_serializer_set_task_data(this : Void*, data : Pointer(Void), notify : LibGLib::DestroyNotify) : Void
+  fun gdk_content_serializer_set_task_data(this : Void*, data : Pointer(Void), notify : Void*) : Void
   fun gdk_crossing_event_get_detail(this : Void*) : UInt32
   fun gdk_crossing_event_get_focus(this : Void*) : LibC::Int
   fun gdk_crossing_event_get_mode(this : Void*) : UInt32
@@ -429,9 +429,9 @@ lib LibGdk
   fun gdk_drop_get_formats(this : Void*) : Pointer(Void)
   fun gdk_drop_get_surface(this : Void*) : Pointer(Void)
   fun gdk_drop_get_type : UInt64
-  fun gdk_drop_read_async(this : Void*, mime_types : Pointer(Pointer(LibC::Char)), io_priority : Int32, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_drop_read_async(this : Void*, mime_types : Pointer(Pointer(LibC::Char)), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_drop_read_finish(this : Void*, result : Pointer(Void), out_mime_type : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : Pointer(Void)
-  fun gdk_drop_read_value_async(this : Void*, type : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_drop_read_value_async(this : Void*, type : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_drop_read_value_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_drop_status(this : Void*, actions : UInt32, preferred : UInt32) : Void
   fun gdk_event_get_axes(this : Void*, axes : Pointer(Pointer(Float64)), n_axes : Pointer(UInt32)) : LibC::Int
@@ -507,7 +507,7 @@ lib LibGdk
   fun gdk_gl_context_set_use_es(this : Void*, use_es : Int32) : Void
   fun gdk_gl_error_quark : UInt32
   fun gdk_gl_texture_get_type : UInt64
-  fun gdk_gl_texture_new(context : Pointer(Void), id : UInt32, width : Int32, height : Int32, destroy : LibGLib::DestroyNotify, data : Pointer(Void)) : Pointer(Void)
+  fun gdk_gl_texture_new(context : Pointer(Void), id : UInt32, width : Int32, height : Int32, destroy : Void*, data : Pointer(Void)) : Pointer(Void)
   fun gdk_gl_texture_release(this : Void*) : Void
   fun gdk_grab_broken_event_get_grab_surface(this : Void*) : Pointer(Void)
   fun gdk_grab_broken_event_get_implicit(this : Void*) : LibC::Int

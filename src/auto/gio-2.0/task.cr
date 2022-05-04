@@ -514,6 +514,17 @@ module Gio
         sizeof(LibGio::Task), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -535,6 +546,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -566,7 +579,7 @@ module Gio
     # other objects that the task depends on have been destroyed. If you
     # do not want this behavior, you can use
     # g_task_set_check_cancellable() to change it.
-    def initialize(source_object : GObject::Object?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, callback_data : Pointer(Void)?)
+    def initialize(source_object : GObject::Object?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, callback_data : Pointer(Void)?)
       # g_task_new: (Constructor)
       # @source_object: (nullable)
       # @cancellable: (nullable)
@@ -580,21 +593,12 @@ module Gio
                       else
                         source_object.to_unsafe
                       end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       callback_data = if callback_data.nil?
                         Pointer(Void).null
@@ -608,6 +612,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Checks that @result is a #GTask, and that @source_object is its
@@ -641,7 +646,7 @@ module Gio
     # wrapper method, and deal with it appropriately if so.
     #
     # See also g_task_report_new_error().
-    def self.report_error(source_object : GObject::Object?, callback : Pointer(Void)?, callback_data : Pointer(Void)?, source_tag : Pointer(Void)?, error : GLib::Error) : Nil
+    def self.report_error(source_object : GObject::Object?, callback : Gio::AsyncReadyCallback?, callback_data : Pointer(Void)?, source_tag : Pointer(Void)?, error : GLib::Error) : Nil
       # g_task_report_error: (None)
       # @source_object: (nullable)
       # @callback: (nullable)
@@ -656,21 +661,12 @@ module Gio
                       else
                         source_object.to_unsafe
                       end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       callback_data = if callback_data.nil?
                         Pointer(Void).null
                       else
                         callback_data.to_unsafe
                       end
-
       # Generator::NullableArrayPlan
       source_tag = if source_tag.nil?
                      Pointer(Void).null
@@ -930,7 +926,6 @@ module Gio
 
       # Generator::CallerAllocatesPlan
       value = GObject::Value.new
-
       # C call
       _retval = LibGio.g_task_propagate_value(self, value, pointerof(_error))
 
@@ -1024,7 +1019,7 @@ module Gio
     # g_task_return_pointer(), you cannot assume that @result is still
     # valid after calling this, unless you are still holding another
     # reference on it.
-    def return_pointer(result : Pointer(Void)?, result_destroy : Pointer(Void)?) : Nil
+    def return_pointer(result : Pointer(Void)?, result_destroy : GLib::DestroyNotify?) : Nil
       # g_task_return_pointer: (Method)
       # @result: (transfer full) (nullable)
       # @result_destroy: (nullable)
@@ -1036,13 +1031,6 @@ module Gio
                else
                  result.to_unsafe
                end
-
-      # Generator::NullableArrayPlan
-      result_destroy = if result_destroy.nil?
-                         LibGLib::DestroyNotify.null
-                       else
-                         result_destroy.to_unsafe
-                       end
 
       # C call
       LibGio.g_task_return_pointer(self, result, result_destroy)
@@ -1090,7 +1078,7 @@ module Gio
     # do this. If you have a very large number of tasks to run (several tens of
     # tasks), but don't want them to all run at once, you should only queue a
     # limited number of them (around ten) at a time.
-    def run_in_thread(task_func : Pointer(Void)) : Nil
+    def run_in_thread(task_func : Gio::TaskThreadFunc) : Nil
       # g_task_run_in_thread: (Method)
       # Returns: (transfer none)
 
@@ -1116,7 +1104,7 @@ module Gio
     # always do this. If you have a very large number of tasks to run,
     # but don't want them to all run at once, you should only queue a
     # limited number of them at a time.
-    def run_in_thread_sync(task_func : Pointer(Void)) : Nil
+    def run_in_thread_sync(task_func : Gio::TaskThreadFunc) : Nil
       # g_task_run_in_thread_sync: (Method)
       # Returns: (transfer none)
 
@@ -1266,7 +1254,7 @@ module Gio
     end
 
     # Sets @task's task data (freeing the existing task data, if any).
-    def set_task_data(task_data : Pointer(Void)?, task_data_destroy : Pointer(Void)?) : Nil
+    def set_task_data(task_data : Pointer(Void)?, task_data_destroy : GLib::DestroyNotify?) : Nil
       # g_task_set_task_data: (Method)
       # @task_data: (nullable)
       # @task_data_destroy: (nullable)
@@ -1278,13 +1266,6 @@ module Gio
                   else
                     task_data.to_unsafe
                   end
-
-      # Generator::NullableArrayPlan
-      task_data_destroy = if task_data_destroy.nil?
-                            LibGLib::DestroyNotify.null
-                          else
-                            task_data_destroy.to_unsafe
-                          end
 
       # C call
       LibGio.g_task_set_task_data(self, task_data, task_data_destroy)

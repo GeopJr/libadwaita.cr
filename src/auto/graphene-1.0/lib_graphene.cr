@@ -133,7 +133,7 @@ lib LibGraphene
   fun graphene_box_get_min(this : Void*, min : Pointer(Void)) : Void
   fun graphene_box_get_size(this : Void*, size : Pointer(Void)) : Void
   fun graphene_box_get_type : UInt64
-  fun graphene_box_get_vertices(this : Void*, vertices : Pointer(Pointer(Void[8]))) : Void
+  fun graphene_box_get_vertices(this : Void*, vertices : Pointer(Pointer(Void))) : Void
   fun graphene_box_get_width(this : Void*) : Float32
   fun graphene_box_infinite : Pointer(Void)
   fun graphene_box_infinite : Pointer(Void)
@@ -178,7 +178,7 @@ lib LibGraphene
   fun graphene_frustum_contains_point(this : Void*, point : Pointer(Void)) : LibC::Int
   fun graphene_frustum_equal(this : Void*, b : Pointer(Void)) : LibC::Int
   fun graphene_frustum_free(this : Void*) : Void
-  fun graphene_frustum_get_planes(this : Void*, planes : Pointer(Pointer(Void[6]))) : Void
+  fun graphene_frustum_get_planes(this : Void*, planes : Pointer(Pointer(Void))) : Void
   fun graphene_frustum_get_type : UInt64
   fun graphene_frustum_init(this : Void*, p0 : Pointer(Void), p1 : Pointer(Void), p2 : Pointer(Void), p3 : Pointer(Void), p4 : Pointer(Void), p5 : Pointer(Void)) : Pointer(Void)
   fun graphene_frustum_init_from_frustum(this : Void*, src : Pointer(Void)) : Pointer(Void)
@@ -201,7 +201,7 @@ lib LibGraphene
   fun graphene_matrix_get_z_scale(this : Void*) : Float32
   fun graphene_matrix_get_z_translation(this : Void*) : Float32
   fun graphene_matrix_init_from_2d(this : Void*, xx : Float64, yx : Float64, xy : Float64, yy : Float64, x_0 : Float64, y_0 : Float64) : Pointer(Void)
-  fun graphene_matrix_init_from_float(this : Void*, v : Pointer(Float32[16])) : Pointer(Void)
+  fun graphene_matrix_init_from_float(this : Void*, v : Pointer(Float32)) : Pointer(Void)
   fun graphene_matrix_init_from_matrix(this : Void*, src : Pointer(Void)) : Pointer(Void)
   fun graphene_matrix_init_from_vec4(this : Void*, v0 : Pointer(Void), v1 : Pointer(Void), v2 : Pointer(Void), v3 : Pointer(Void)) : Pointer(Void)
   fun graphene_matrix_init_frustum(this : Void*, left : Float32, right : Float32, bottom : Float32, top : Float32, z_near : Float32, z_far : Float32) : Pointer(Void)
@@ -238,7 +238,7 @@ lib LibGraphene
   fun graphene_matrix_skew_xz(this : Void*, factor : Float32) : Void
   fun graphene_matrix_skew_yz(this : Void*, factor : Float32) : Void
   fun graphene_matrix_to_2d(this : Void*, xx : Pointer(Float64), yx : Pointer(Float64), xy : Pointer(Float64), yy : Pointer(Float64), x_0 : Pointer(Float64), y_0 : Pointer(Float64)) : LibC::Int
-  fun graphene_matrix_to_float(this : Void*, v : Pointer(Pointer(Float32[16]))) : Void
+  fun graphene_matrix_to_float(this : Void*, v : Pointer(Pointer(Float32))) : Void
   fun graphene_matrix_transform_bounds(this : Void*, r : Pointer(Void), res : Pointer(Void)) : Void
   fun graphene_matrix_transform_box(this : Void*, b : Pointer(Void), res : Pointer(Void)) : Void
   fun graphene_matrix_transform_point(this : Void*, p : Pointer(Void), res : Pointer(Void)) : Void
@@ -307,7 +307,7 @@ lib LibGraphene
   fun graphene_quad_get_point(this : Void*, index_ : UInt32) : Pointer(Void)
   fun graphene_quad_get_type : UInt64
   fun graphene_quad_init(this : Void*, p1 : Pointer(Void), p2 : Pointer(Void), p3 : Pointer(Void), p4 : Pointer(Void)) : Pointer(Void)
-  fun graphene_quad_init_from_points(this : Void*, points : Pointer(Void[4])) : Pointer(Void)
+  fun graphene_quad_init_from_points(this : Void*, points : Pointer(Void)) : Pointer(Void)
   fun graphene_quad_init_from_rect(this : Void*, r : Pointer(Void)) : Pointer(Void)
   fun graphene_quaternion_add(this : Void*, b : Pointer(Void), res : Pointer(Void)) : Void
   fun graphene_quaternion_alloc : Pointer(Void)
@@ -368,7 +368,7 @@ lib LibGraphene
   fun graphene_rect_get_top_left(this : Void*, p : Pointer(Void)) : Void
   fun graphene_rect_get_top_right(this : Void*, p : Pointer(Void)) : Void
   fun graphene_rect_get_type : UInt64
-  fun graphene_rect_get_vertices(this : Void*, vertices : Pointer(Pointer(Void[4]))) : Void
+  fun graphene_rect_get_vertices(this : Void*, vertices : Pointer(Pointer(Void))) : Void
   fun graphene_rect_get_width(this : Void*) : Float32
   fun graphene_rect_get_x(this : Void*) : Float32
   fun graphene_rect_get_y(this : Void*) : Float32
@@ -427,7 +427,7 @@ lib LibGraphene
   fun graphene_triangle_get_type : UInt64
   fun graphene_triangle_get_uv(this : Void*, p : Pointer(Void), uv_a : Pointer(Void), uv_b : Pointer(Void), uv_c : Pointer(Void), res : Pointer(Void)) : LibC::Int
   fun graphene_triangle_get_vertices(this : Void*, a : Pointer(Void), b : Pointer(Void), c : Pointer(Void)) : Void
-  fun graphene_triangle_init_from_float(this : Void*, a : Pointer(Float32[3]), b : Pointer(Float32[3]), c : Pointer(Float32[3])) : Pointer(Void)
+  fun graphene_triangle_init_from_float(this : Void*, a : Pointer(Float32), b : Pointer(Float32), c : Pointer(Float32)) : Pointer(Void)
   fun graphene_triangle_init_from_point3d(this : Void*, a : Pointer(Void), b : Pointer(Void), c : Pointer(Void)) : Pointer(Void)
   fun graphene_triangle_init_from_vec3(this : Void*, a : Pointer(Void), b : Pointer(Void), c : Pointer(Void)) : Pointer(Void)
   fun graphene_vec2_add(this : Void*, b : Pointer(Void), res : Pointer(Void)) : Void
@@ -440,7 +440,7 @@ lib LibGraphene
   fun graphene_vec2_get_x(this : Void*) : Float32
   fun graphene_vec2_get_y(this : Void*) : Float32
   fun graphene_vec2_init(this : Void*, x : Float32, y : Float32) : Pointer(Void)
-  fun graphene_vec2_init_from_float(this : Void*, src : Pointer(Float32[2])) : Pointer(Void)
+  fun graphene_vec2_init_from_float(this : Void*, src : Pointer(Float32)) : Pointer(Void)
   fun graphene_vec2_init_from_vec2(this : Void*, src : Pointer(Void)) : Pointer(Void)
   fun graphene_vec2_interpolate(this : Void*, v2 : Pointer(Void), factor : Float64, res : Pointer(Void)) : Void
   fun graphene_vec2_length(this : Void*) : Float32
@@ -454,7 +454,7 @@ lib LibGraphene
   fun graphene_vec2_one : Pointer(Void)
   fun graphene_vec2_scale(this : Void*, factor : Float32, res : Pointer(Void)) : Void
   fun graphene_vec2_subtract(this : Void*, b : Pointer(Void), res : Pointer(Void)) : Void
-  fun graphene_vec2_to_float(this : Void*, dest : Pointer(Pointer(Float32[2]))) : Void
+  fun graphene_vec2_to_float(this : Void*, dest : Pointer(Pointer(Float32))) : Void
   fun graphene_vec2_x_axis : Pointer(Void)
   fun graphene_vec2_x_axis : Pointer(Void)
   fun graphene_vec2_y_axis : Pointer(Void)
@@ -478,7 +478,7 @@ lib LibGraphene
   fun graphene_vec3_get_y(this : Void*) : Float32
   fun graphene_vec3_get_z(this : Void*) : Float32
   fun graphene_vec3_init(this : Void*, x : Float32, y : Float32, z : Float32) : Pointer(Void)
-  fun graphene_vec3_init_from_float(this : Void*, src : Pointer(Float32[3])) : Pointer(Void)
+  fun graphene_vec3_init_from_float(this : Void*, src : Pointer(Float32)) : Pointer(Void)
   fun graphene_vec3_init_from_vec3(this : Void*, src : Pointer(Void)) : Pointer(Void)
   fun graphene_vec3_interpolate(this : Void*, v2 : Pointer(Void), factor : Float64, res : Pointer(Void)) : Void
   fun graphene_vec3_length(this : Void*) : Float32
@@ -492,7 +492,7 @@ lib LibGraphene
   fun graphene_vec3_one : Pointer(Void)
   fun graphene_vec3_scale(this : Void*, factor : Float32, res : Pointer(Void)) : Void
   fun graphene_vec3_subtract(this : Void*, b : Pointer(Void), res : Pointer(Void)) : Void
-  fun graphene_vec3_to_float(this : Void*, dest : Pointer(Pointer(Float32[3]))) : Void
+  fun graphene_vec3_to_float(this : Void*, dest : Pointer(Pointer(Float32))) : Void
   fun graphene_vec3_x_axis : Pointer(Void)
   fun graphene_vec3_x_axis : Pointer(Void)
   fun graphene_vec3_y_axis : Pointer(Void)
@@ -515,7 +515,7 @@ lib LibGraphene
   fun graphene_vec4_get_y(this : Void*) : Float32
   fun graphene_vec4_get_z(this : Void*) : Float32
   fun graphene_vec4_init(this : Void*, x : Float32, y : Float32, z : Float32, w : Float32) : Pointer(Void)
-  fun graphene_vec4_init_from_float(this : Void*, src : Pointer(Float32[4])) : Pointer(Void)
+  fun graphene_vec4_init_from_float(this : Void*, src : Pointer(Float32)) : Pointer(Void)
   fun graphene_vec4_init_from_vec2(this : Void*, src : Pointer(Void), z : Float32, w : Float32) : Pointer(Void)
   fun graphene_vec4_init_from_vec3(this : Void*, src : Pointer(Void), w : Float32) : Pointer(Void)
   fun graphene_vec4_init_from_vec4(this : Void*, src : Pointer(Void)) : Pointer(Void)
@@ -531,7 +531,7 @@ lib LibGraphene
   fun graphene_vec4_one : Pointer(Void)
   fun graphene_vec4_scale(this : Void*, factor : Float32, res : Pointer(Void)) : Void
   fun graphene_vec4_subtract(this : Void*, b : Pointer(Void), res : Pointer(Void)) : Void
-  fun graphene_vec4_to_float(this : Void*, dest : Pointer(Pointer(Float32[4]))) : Void
+  fun graphene_vec4_to_float(this : Void*, dest : Pointer(Pointer(Float32))) : Void
   fun graphene_vec4_w_axis : Pointer(Void)
   fun graphene_vec4_w_axis : Pointer(Void)
   fun graphene_vec4_x_axis : Pointer(Void)

@@ -52,7 +52,7 @@ module Gio
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(method_call : Pointer(Void)? = nil, get_property : Pointer(Void)? = nil, set_property : Pointer(Void)? = nil, padding : Enumerable(Pointer(Void))? = nil)
+    def self.new(method_call : Gio::DBusInterfaceMethodCallFunc? = nil, get_property : Gio::DBusInterfaceGetPropertyFunc? = nil, set_property : Gio::DBusInterfaceSetPropertyFunc? = nil, padding : Enumerable(Pointer(Void))? = nil)
       _ptr = Pointer(Void).malloc(88)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.method_call = method_call unless method_call.nil?
@@ -69,35 +69,35 @@ module Gio
       LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::DBusInterfaceVTable)).zero?
     end
 
-    def method_call : Pointer(Void)
-      _var = (@pointer + 0).as(Pointer(LibGio::DBusInterfaceMethodCallFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def method_call : Gio::DBusInterfaceMethodCallFunc
+      _var = (@pointer + 0).as(Pointer(Void*))
+      Gio::DBusInterfaceMethodCallFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def method_call=(value : Pointer(Void))
-      _var = (@pointer + 0).as(Pointer(LibGio::DBusInterfaceMethodCallFunc))
+    def method_call=(value : Gio::DBusInterfaceMethodCallFunc)
+      _var = (@pointer + 0).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusInterfaceVTable))
       value
     end
 
-    def get_property : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(LibGio::DBusInterfaceGetPropertyFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def get_property : Gio::DBusInterfaceGetPropertyFunc
+      _var = (@pointer + 8).as(Pointer(Void*))
+      Gio::DBusInterfaceGetPropertyFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def get_property=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(LibGio::DBusInterfaceGetPropertyFunc))
+    def get_property=(value : Gio::DBusInterfaceGetPropertyFunc)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusInterfaceVTable))
       value
     end
 
-    def set_property : Pointer(Void)
-      _var = (@pointer + 16).as(Pointer(LibGio::DBusInterfaceSetPropertyFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def set_property : Gio::DBusInterfaceSetPropertyFunc
+      _var = (@pointer + 16).as(Pointer(Void*))
+      Gio::DBusInterfaceSetPropertyFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def set_property=(value : Pointer(Void))
-      _var = (@pointer + 16).as(Pointer(LibGio::DBusInterfaceSetPropertyFunc))
+    def set_property=(value : Gio::DBusInterfaceSetPropertyFunc)
+      _var = (@pointer + 16).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusInterfaceVTable))
       value
     end

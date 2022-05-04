@@ -80,13 +80,10 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_properties = properties.size
-      # Generator::ArrayArgPlan
+      n_properties = properties.size # Generator::ArrayArgPlan
       properties = properties.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      n_properties = values.size
-      # Generator::ArrayArgPlan
+      n_properties = values.size # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
@@ -102,13 +99,10 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_relations = relations.size
-      # Generator::ArrayArgPlan
+      n_relations = relations.size # Generator::ArrayArgPlan
       relations = relations.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      n_relations = values.size
-      # Generator::ArrayArgPlan
+      n_relations = values.size # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
@@ -124,13 +118,10 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_states = states.size
-      # Generator::ArrayArgPlan
+      n_states = states.size # Generator::ArrayArgPlan
       states = states.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      n_states = values.size
-      # Generator::ArrayArgPlan
+      n_states = values.size # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call

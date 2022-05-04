@@ -34,7 +34,6 @@ module Gio
                   else
                     parameter.to_unsafe
                   end
-
       # Generator::HandmadeArgPlan
       platform_data = if !platform_data.is_a?(GLib::Variant)
                         GLib::Variant.new(platform_data).to_unsafe
@@ -58,7 +57,6 @@ module Gio
               else
                 value.to_unsafe
               end
-
       # Generator::HandmadeArgPlan
       platform_data = if !platform_data.is_a?(GLib::Variant)
                         GLib::Variant.new(platform_data).to_unsafe

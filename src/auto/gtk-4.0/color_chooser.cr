@@ -44,8 +44,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_colors = colors.try(&.size) || 0
-      # Generator::NullableArrayPlan
+      n_colors = colors.try(&.size) || 0 # Generator::NullableArrayPlan
       colors = if colors.nil?
                  Pointer(Void).null
                else
@@ -65,7 +64,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       color = Gdk::RGBA.new
-
       # C call
       LibGtk.gtk_color_chooser_get_rgba(self, color)
 
@@ -130,50 +128,54 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::RGBA, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::RGBA.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::RGBA, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gdk::RGBA, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          color = Gdk::RGBA.new(lib_color, :none)
+          ::Box(Proc(Gdk::RGBA, Nil)).unbox(_lib_box).call(color)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::RGBA, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gdk::RGBA.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gdk::RGBA, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gdk::RGBA, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          color = Gdk::RGBA.new(lib_color, :none)
+          ::Box(Proc(Gdk::RGBA, Nil)).unbox(_lib_box).call(color)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::ColorChooser__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::RGBA.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::ColorChooser__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          color = Gdk::RGBA.new(lib_color, :none)
+          ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(_lib_box).call(_sender, color)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::ColorChooser__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gdk::RGBA.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::ColorChooser__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          color = Gdk::RGBA.new(lib_color, :none)
+          ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(_lib_box).call(_sender, color)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(color : Gdk::RGBA) : Nil

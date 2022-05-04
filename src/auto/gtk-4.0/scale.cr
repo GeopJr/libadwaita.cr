@@ -104,6 +104,17 @@ module Gtk
         sizeof(LibGtk::Scale), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -351,6 +362,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -438,6 +451,7 @@ module Gtk
       LibGObject.g_object_ref_sink(_retval)
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Creates a new scale widget with a range from @min to @max.
@@ -573,10 +587,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      x = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      x = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       y = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_scale_get_layout_offsets(self, x, y)
 
@@ -638,33 +650,28 @@ module Gtk
     # If #NULL is passed as @func, the value will be displayed on
     # its own, rounded according to the value of the
     # `GtkScale#digits` property.
-    def set_format_value_func(func : Pointer(Void)?, user_data : Pointer(Void)?, destroy_notify : Pointer(Void)?) : Nil
+    def format_value_func=(func : Gtk::ScaleFormatValueFunc?) : Nil
       # gtk_scale_set_format_value_func: (Method)
       # @func: (nullable)
       # @user_data: (nullable)
       # @destroy_notify: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      func = if func.nil?
-               LibGtk::ScaleFormatValueFunc.null
-             else
-               func.to_unsafe
-             end
-
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # Generator::NullableArrayPlan
-      destroy_notify = if destroy_notify.nil?
-                         LibGLib::DestroyNotify.null
-                       else
-                         destroy_notify.to_unsafe
-                       end
+      # Generator::CallbackArgPlan
+      if func
+        _box = ::Box.box(func)
+        func = ->(lib_scale : Pointer(Void), lib_value : Float64, lib_user_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          scale = Gtk::Scale.new(lib_scale, :none)
+          value = lib_value
+          user_data = lib_user_data
+          ::Box(Proc(Gtk::Scale, Float64, ::String)).unbox(user_data).call(scale, value)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        destroy_notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        func = user_data = destroy_notify = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_scale_set_format_value_func(self, func, user_data, destroy_notify)

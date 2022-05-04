@@ -105,7 +105,6 @@ module Pango
 
       # Generator::OutArgUsedInReturnPlan
       alpha = Pointer(UInt16).null
-
       # C call
       _retval = LibPango.pango_color_parse_with_alpha(self, alpha, spec)
 

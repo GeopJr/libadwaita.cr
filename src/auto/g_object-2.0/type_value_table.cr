@@ -13,7 +13,7 @@ module GObject
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(value_init : Pointer(Void)? = nil, value_free : Pointer(Void)? = nil, value_copy : Pointer(Void)? = nil, value_peek_pointer : Pointer(Void)? = nil, collect_format : ::String? = nil, collect_value : Pointer(Void)? = nil, lcopy_format : ::String? = nil, lcopy_value : Pointer(Void)? = nil)
+    def self.new(value_init : GObject::ValueInit? = nil, value_free : GObject::ValueFree? = nil, value_copy : GObject::ValueCopy? = nil, value_peek_pointer : GObject::ValuePeekPointer? = nil, collect_format : ::String? = nil, collect_value : GObject::CollectValue? = nil, lcopy_format : ::String? = nil, lcopy_value : GObject::LcopyValue? = nil)
       _ptr = Pointer(Void).malloc(64)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.value_init = value_init unless value_init.nil?
@@ -34,46 +34,46 @@ module GObject
       LibC.memcmp(self, other.to_unsafe, sizeof(LibGObject::TypeValueTable)).zero?
     end
 
-    def value_init : Pointer(Void)
-      _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def value_init : GObject::ValueInit
+      _var = (@pointer + 0).as(Pointer(Void*))
+      GObject::ValueInit.new(_var, GICrystal::Transfer::None)
     end
 
-    def value_init=(value : Pointer(Void))
-      _var = (@pointer + 0).as(Pointer(-> Void))
+    def value_init=(value : GObject::ValueInit)
+      _var = (@pointer + 0).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
 
-    def value_free : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def value_free : GObject::ValueFree
+      _var = (@pointer + 8).as(Pointer(Void*))
+      GObject::ValueFree.new(_var, GICrystal::Transfer::None)
     end
 
-    def value_free=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(-> Void))
+    def value_free=(value : GObject::ValueFree)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
 
-    def value_copy : Pointer(Void)
-      _var = (@pointer + 16).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def value_copy : GObject::ValueCopy
+      _var = (@pointer + 16).as(Pointer(Void*))
+      GObject::ValueCopy.new(_var, GICrystal::Transfer::None)
     end
 
-    def value_copy=(value : Pointer(Void))
-      _var = (@pointer + 16).as(Pointer(-> Void))
+    def value_copy=(value : GObject::ValueCopy)
+      _var = (@pointer + 16).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
 
-    def value_peek_pointer : Pointer(Void)
-      _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def value_peek_pointer : GObject::ValuePeekPointer
+      _var = (@pointer + 24).as(Pointer(Void*))
+      GObject::ValuePeekPointer.new(_var, GICrystal::Transfer::None)
     end
 
-    def value_peek_pointer=(value : Pointer(Void))
-      _var = (@pointer + 24).as(Pointer(-> Void))
+    def value_peek_pointer=(value : GObject::ValuePeekPointer)
+      _var = (@pointer + 24).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
@@ -93,13 +93,13 @@ module GObject
       value
     end
 
-    def collect_value : Pointer(Void)
-      _var = (@pointer + 40).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def collect_value : GObject::CollectValue
+      _var = (@pointer + 40).as(Pointer(Void*))
+      GObject::CollectValue.new(_var, GICrystal::Transfer::None)
     end
 
-    def collect_value=(value : Pointer(Void))
-      _var = (@pointer + 40).as(Pointer(-> Void))
+    def collect_value=(value : GObject::CollectValue)
+      _var = (@pointer + 40).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end
@@ -119,13 +119,13 @@ module GObject
       value
     end
 
-    def lcopy_value : Pointer(Void)
-      _var = (@pointer + 56).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def lcopy_value : GObject::LcopyValue
+      _var = (@pointer + 56).as(Pointer(Void*))
+      GObject::LcopyValue.new(_var, GICrystal::Transfer::None)
     end
 
-    def lcopy_value=(value : Pointer(Void))
-      _var = (@pointer + 56).as(Pointer(-> Void))
+    def lcopy_value=(value : GObject::LcopyValue)
+      _var = (@pointer + 56).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::TypeValueTable))
       value
     end

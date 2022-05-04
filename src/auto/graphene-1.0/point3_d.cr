@@ -82,7 +82,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_point3d_cross(self, b, res)
 
@@ -97,10 +96,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      delta = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      delta = Pointer(Void).null # Generator::CallerAllocatesPlan
       delta = Graphene::Vec3.new
-
       # C call
       _retval = LibGraphene.graphene_point3d_distance(self, b, delta)
 
@@ -186,7 +183,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_point3d_interpolate(self, b, factor, res)
 
@@ -226,7 +222,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_point3d_normalize(self, res)
 
@@ -242,7 +237,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_point3d_normalize_viewport(self, viewport, z_near, z_far, res)
 
@@ -258,7 +252,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_point3d_scale(self, factor, res)
 
@@ -274,7 +267,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       v = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_point3d_to_vec3(self, v)
 

@@ -199,18 +199,18 @@ lib LibGtk
 
   struct ActionableInterface # 48 bytes long
     g_iface : LibGObject::TypeInterface
-    get_action_name : -> Void
-    set_action_name : -> Void
-    get_action_target_value : -> Void
-    set_action_target_value : -> Void
+    get_action_name : Void*
+    set_action_name : Void*
+    get_action_target_value : Void*
+    set_action_target_value : Void*
   end
 
   type ActivateActionClass = Void # Struct with zero bytes
 
   struct AdjustmentClass # 184 bytes long
     parent_class : LibGObject::InitiallyUnownedClass
-    changed : -> Void
-    value_changed : -> Void
+    changed : Void*
+    value_changed : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -223,8 +223,8 @@ lib LibGtk
 
   struct ApplicationClass # 392 bytes long
     parent_class : LibGio::ApplicationClass
-    window_added : -> Void
-    window_removed : -> Void
+    window_added : Void*
+    window_removed : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -269,25 +269,25 @@ lib LibGtk
 
   struct BuildableIface # 96 bytes long
     g_iface : LibGObject::TypeInterface
-    set_id : -> Void
-    get_id : -> Void
-    add_child : -> Void
-    set_buildable_property : -> Void
+    set_id : Void*
+    get_id : Void*
+    add_child : Void*
+    set_buildable_property : Void*
     construct_child : Pointer(Void)
-    custom_tag_start : -> Void
-    custom_tag_end : -> Void
-    custom_finished : -> Void
-    parser_finished : -> Void
-    get_internal_child : -> Void
+    custom_tag_start : Void*
+    custom_tag_end : Void*
+    custom_finished : Void*
+    parser_finished : Void*
+    get_internal_child : Void*
   end
 
   type BuildableParseContext = Void # Struct with zero bytes
 
   struct BuildableParser # 64 bytes long
-    start_element : -> Void
-    end_element : -> Void
-    text : -> Void
-    error : -> Void
+    start_element : Void*
+    end_element : Void*
+    text : Void*
+    error : Void*
     padding : Pointer(Void)[4]
   end
 
@@ -301,15 +301,15 @@ lib LibGtk
 
   struct BuilderScopeInterface # 40 bytes long
     g_iface : LibGObject::TypeInterface
-    get_type_from_name : -> Void
-    get_type_from_function : -> Void
-    create_closure : -> Void
+    get_type_from_name : Void*
+    get_type_from_function : Void*
+    create_closure : Void*
   end
 
   struct ButtonClass # 488 bytes long
     parent_class : LibGtk::WidgetClass
-    clicked : -> Void
-    activate : -> Void
+    clicked : Void*
+    activate : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -319,34 +319,34 @@ lib LibGtk
 
   struct CellAreaClass # 352 bytes long
     parent_class : LibGObject::InitiallyUnownedClass
-    add : -> Void
-    remove : -> Void
-    foreach : -> Void
-    foreach_alloc : -> Void
-    event : -> Void
-    snapshot : -> Void
-    apply_attributes : -> Void
-    create_context : -> Void
-    copy_context : -> Void
-    get_request_mode : -> Void
-    get_preferred_width : -> Void
-    get_preferred_height_for_width : -> Void
-    get_preferred_height : -> Void
-    get_preferred_width_for_height : -> Void
-    set_cell_property : -> Void
-    get_cell_property : -> Void
-    focus : -> Void
-    is_activatable : -> Void
-    activate : -> Void
+    add : Void*
+    remove : Void*
+    foreach : Void*
+    foreach_alloc : Void*
+    event : Void*
+    snapshot : Void*
+    apply_attributes : Void*
+    create_context : Void*
+    copy_context : Void*
+    get_request_mode : Void*
+    get_preferred_width : Void*
+    get_preferred_height_for_width : Void*
+    get_preferred_height : Void*
+    get_preferred_width_for_height : Void*
+    set_cell_property : Void*
+    get_cell_property : Void*
+    focus : Void*
+    is_activatable : Void*
+    activate : Void*
     padding : Pointer(Void)[8]
   end
 
   struct CellAreaContextClass # 232 bytes long
     parent_class : LibGObject::ObjectClass
-    allocate : -> Void
-    reset : -> Void
-    get_preferred_height_for_width : -> Void
-    get_preferred_width_for_height : -> Void
+    allocate : Void*
+    reset : Void*
+    get_preferred_height_for_width : Void*
+    get_preferred_width_for_height : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -354,37 +354,37 @@ lib LibGtk
 
   struct CellEditableIface # 40 bytes long
     g_iface : LibGObject::TypeInterface
-    editing_done : -> Void
-    remove_widget : -> Void
-    start_editing : -> Void
+    editing_done : Void*
+    remove_widget : Void*
+    start_editing : Void*
   end
 
   struct CellLayoutIface # 88 bytes long
     g_iface : LibGObject::TypeInterface
-    pack_start : -> Void
-    pack_end : -> Void
-    clear : -> Void
-    add_attribute : -> Void
-    set_cell_data_func : -> Void
-    clear_attributes : -> Void
-    reorder : -> Void
-    get_cells : -> Void
-    get_area : -> Void
+    pack_start : Void*
+    pack_end : Void*
+    clear : Void*
+    add_attribute : Void*
+    set_cell_data_func : Void*
+    clear_attributes : Void*
+    reorder : Void*
+    get_cells : Void*
+    get_area : Void*
   end
 
   struct CellRendererClass # 288 bytes long
     parent_class : LibGObject::InitiallyUnownedClass
-    get_request_mode : -> Void
-    get_preferred_width : -> Void
-    get_preferred_height_for_width : -> Void
-    get_preferred_height : -> Void
-    get_preferred_width_for_height : -> Void
-    get_aligned_area : -> Void
-    snapshot : -> Void
-    activate : -> Void
-    start_editing : -> Void
-    editing_canceled : -> Void
-    editing_started : -> Void
+    get_request_mode : Void*
+    get_preferred_width : Void*
+    get_preferred_height_for_width : Void*
+    get_preferred_height : Void*
+    get_preferred_width_for_height : Void*
+    get_aligned_area : Void*
+    snapshot : Void*
+    activate : Void*
+    start_editing : Void*
+    editing_canceled : Void*
+    editing_started : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -394,7 +394,7 @@ lib LibGtk
 
   struct CellRendererTextClass # 360 bytes long
     parent_class : LibGtk::CellRendererClass
-    edited : -> Void
+    edited : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -406,17 +406,17 @@ lib LibGtk
 
   struct CheckButtonClass # 480 bytes long
     parent_class : LibGtk::WidgetClass
-    toggled : -> Void
-    activate : -> Void
+    toggled : Void*
+    activate : Void*
     padding : Pointer(Void)[7]
   end
 
   struct ColorChooserInterface # 144 bytes long
     base_interface : LibGObject::TypeInterface
-    get_rgba : -> Void
-    set_rgba : -> Void
-    add_palette : -> Void
-    color_activated : -> Void
+    get_rgba : Void*
+    set_rgba : Void*
+    add_palette : Void*
+    color_activated : Void*
     padding : Pointer(Void)[12]
   end
 
@@ -426,9 +426,9 @@ lib LibGtk
 
   struct ComboBoxClass # 488 bytes long
     parent_class : LibGtk::WidgetClass
-    changed : -> Void
-    format_entry_text : -> Void
-    activate : -> Void
+    changed : Void*
+    format_entry_text : Void*
+    activate : Void*
     padding : Pointer(Void)[7]
   end
 
@@ -480,8 +480,8 @@ lib LibGtk
 
   struct DialogClass # 592 bytes long
     parent_class : LibGtk::WindowClass
-    response : -> Void
-    close : -> Void
+    response : Void*
+    close : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -497,7 +497,7 @@ lib LibGtk
 
   struct DrawingAreaClass # 480 bytes long
     parent_class : LibGtk::WidgetClass
-    resize : -> Void
+    resize : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -513,15 +513,15 @@ lib LibGtk
 
   struct EditableInterface # 88 bytes long
     base_iface : LibGObject::TypeInterface
-    insert_text : -> Void
-    delete_text : -> Void
-    changed : -> Void
-    get_text : -> Void
-    do_insert_text : -> Void
-    do_delete_text : -> Void
-    get_selection_bounds : -> Void
-    set_selection_bounds : -> Void
-    get_delegate : -> Void
+    insert_text : Void*
+    delete_text : Void*
+    changed : Void*
+    get_text : Void*
+    do_insert_text : Void*
+    do_delete_text : Void*
+    get_selection_bounds : Void*
+    set_selection_bounds : Void*
+    get_delegate : Void*
   end
 
   struct EditableLabelClass # 408 bytes long
@@ -532,12 +532,12 @@ lib LibGtk
 
   struct EntryBufferClass # 248 bytes long
     parent_class : LibGObject::ObjectClass
-    inserted_text : -> Void
-    deleted_text : -> Void
-    get_text : -> Void
-    get_length : -> Void
-    insert_text : -> Void
-    delete_text : -> Void
+    inserted_text : Void*
+    deleted_text : Void*
+    get_text : Void*
+    get_length : Void*
+    insert_text : Void*
+    delete_text : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -550,7 +550,7 @@ lib LibGtk
 
   struct EntryClass # 480 bytes long
     parent_class : LibGtk::WidgetClass
-    activate : -> Void
+    activate : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -576,8 +576,8 @@ lib LibGtk
 
   struct FilterClass # 216 bytes long
     parent_class : LibGObject::ObjectClass
-    match : -> Void
-    get_strictness : -> Void
+    match : Void*
+    get_strictness : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -611,32 +611,32 @@ lib LibGtk
 
   struct FlowBoxChildClass # 480 bytes long
     parent_class : LibGtk::WidgetClass
-    activate : -> Void
+    activate : Void*
     padding : Pointer(Void)[8]
   end
 
   struct FontChooserIface # 152 bytes long
     base_iface : LibGObject::TypeInterface
-    get_font_family : -> Void
-    get_font_face : -> Void
-    get_font_size : -> Void
-    set_filter_func : -> Void
-    font_activated : -> Void
-    set_font_map : -> Void
-    get_font_map : -> Void
+    get_font_family : Void*
+    get_font_face : Void*
+    get_font_size : Void*
+    set_filter_func : Void*
+    font_activated : Void*
+    set_font_map : Void*
+    get_font_map : Void*
     padding : Pointer(Void)[10]
   end
 
   struct FrameClass # 480 bytes long
     parent_class : LibGtk::WidgetClass
-    compute_child_allocation : -> Void
+    compute_child_allocation : Void*
     padding : Pointer(Void)[8]
   end
 
   struct GLAreaClass # 496 bytes long
     parent_class : LibGtk::WidgetClass
-    render : -> Void
-    resize : -> Void
+    render : Void*
+    resize : Void*
     create_context : Pointer(Void)
     _padding : Pointer(Void)[8]
   end
@@ -678,24 +678,24 @@ lib LibGtk
 
   struct IMContextClass # 320 bytes long
     parent_class : LibGObject::ObjectClass
-    preedit_start : -> Void
-    preedit_end : -> Void
-    preedit_changed : -> Void
-    commit : -> Void
-    retrieve_surrounding : -> Void
-    delete_surrounding : -> Void
-    set_client_widget : -> Void
-    get_preedit_string : -> Void
-    filter_keypress : -> Void
-    focus_in : -> Void
-    focus_out : -> Void
-    reset : -> Void
-    set_cursor_location : -> Void
-    set_use_preedit : -> Void
-    set_surrounding : -> Void
-    get_surrounding : -> Void
-    set_surrounding_with_selection : -> Void
-    get_surrounding_with_selection : -> Void
+    preedit_start : Void*
+    preedit_end : Void*
+    preedit_changed : Void*
+    commit : Void*
+    retrieve_surrounding : Void*
+    delete_surrounding : Void*
+    set_client_widget : Void*
+    get_preedit_string : Void*
+    filter_keypress : Void*
+    focus_in : Void*
+    focus_out : Void*
+    reset : Void*
+    set_cursor_location : Void*
+    set_use_preedit : Void*
+    set_surrounding : Void*
+    get_surrounding : Void*
+    set_surrounding_with_selection : Void*
+    get_surrounding_with_selection : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -727,13 +727,13 @@ lib LibGtk
 
   struct LayoutManagerClass # 320 bytes long
     parent_class : LibGObject::ObjectClass
-    get_request_mode : -> Void
-    measure : -> Void
-    allocate : -> Void
+    get_request_mode : Void*
+    measure : Void*
+    allocate : Void*
     layout_child_type : UInt64
-    create_layout_child : -> Void
-    root : -> Void
-    unroot : -> Void
+    create_layout_child : Void*
+    root : Void*
+    unroot : Void*
     _padding : Pointer(Void)[16]
   end
 
@@ -741,7 +741,7 @@ lib LibGtk
 
   struct ListBoxRowClass # 480 bytes long
     parent_class : LibGtk::WidgetClass
-    activate : -> Void
+    activate : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -768,8 +768,8 @@ lib LibGtk
 
   struct MediaFileClass # 296 bytes long
     parent_class : LibGtk::MediaStreamClass
-    open : -> Void
-    close : -> Void
+    open : Void*
+    close : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -778,12 +778,12 @@ lib LibGtk
 
   struct MediaStreamClass # 248 bytes long
     parent_class : LibGObject::ObjectClass
-    play : -> Void
-    pause : -> Void
-    seek : -> Void
-    update_audio : -> Void
-    realize : -> Void
-    unrealize : -> Void
+    play : Void*
+    pause : Void*
+    seek : Void*
+    update_audio : Void*
+    realize : Void*
+    unrealize : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -824,9 +824,9 @@ lib LibGtk
 
   struct NativeDialogClass # 192 bytes long
     parent_class : LibGObject::ObjectClass
-    response : -> Void
-    show : -> Void
-    hide : -> Void
+    response : Void*
+    show : Void*
+    hide : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -888,8 +888,8 @@ lib LibGtk
 
   struct PopoverClass # 488 bytes long
     parent_class : LibGtk::WidgetClass
-    closed : -> Void
-    activate_default : -> Void
+    closed : Void*
+    activate_default : Void*
     reserved : Pointer(Void)[8]
   end
 
@@ -897,27 +897,27 @@ lib LibGtk
 
   struct PrintOperationClass # 288 bytes long
     parent_class : LibGObject::ObjectClass
-    done : -> Void
-    begin_print : -> Void
-    paginate : -> Void
-    request_page_setup : -> Void
-    draw_page : -> Void
-    end_print : -> Void
-    status_changed : -> Void
+    done : Void*
+    begin_print : Void*
+    paginate : Void*
+    request_page_setup : Void*
+    draw_page : Void*
+    end_print : Void*
+    status_changed : Void*
     create_custom_widget : Pointer(Void)
-    custom_widget_apply : -> Void
-    preview : -> Void
-    update_custom_widget : -> Void
+    custom_widget_apply : Void*
+    preview : Void*
+    update_custom_widget : Void*
     padding : Pointer(Void)[8]
   end
 
   struct PrintOperationPreviewIface # 120 bytes long
     g_iface : LibGObject::TypeInterface
-    ready : -> Void
-    got_page_size : -> Void
-    render_page : -> Void
-    is_selected : -> Void
-    end_preview : -> Void
+    ready : Void*
+    got_page_size : Void*
+    render_page : Void*
+    is_selected : Void*
+    end_preview : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -932,11 +932,11 @@ lib LibGtk
 
   struct RangeClass # 512 bytes long
     parent_class : LibGtk::WidgetClass
-    value_changed : -> Void
-    adjust_bounds : -> Void
-    move_slider : -> Void
-    get_range_border : -> Void
-    change_value : -> Void
+    value_changed : Void*
+    adjust_bounds : Void*
+    move_slider : Void*
+    get_range_border : Void*
+    change_value : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -954,7 +954,7 @@ lib LibGtk
 
   struct RecentManagerClass # 176 bytes long
     parent_class : LibGObject::ObjectClass
-    changed : -> Void
+    changed : Void*
     _gtk_recent1 : Pointer(Void)
     _gtk_recent2 : Pointer(Void)
     _gtk_recent3 : Pointer(Void)
@@ -978,19 +978,19 @@ lib LibGtk
 
   struct ScaleButtonClass # 480 bytes long
     parent_class : LibGtk::WidgetClass
-    value_changed : -> Void
+    value_changed : Void*
     padding : Pointer(Void)[8]
   end
 
   struct ScaleClass # 584 bytes long
     parent_class : LibGtk::RangeClass
-    get_layout_offsets : -> Void
+    get_layout_offsets : Void*
     padding : Pointer(Void)[8]
   end
 
   struct ScrollableInterface # 24 bytes long
     base_iface : LibGObject::TypeInterface
-    get_border : -> Void
+    get_border : Void*
   end
 
   struct SelectionFilterModelClass # 136 bytes long
@@ -999,15 +999,15 @@ lib LibGtk
 
   struct SelectionModelInterface # 88 bytes long
     g_iface : LibGObject::TypeInterface
-    is_selected : -> Void
-    get_selection_in_range : -> Void
-    select_item : -> Void
-    unselect_item : -> Void
-    select_range : -> Void
-    unselect_range : -> Void
-    select_all : -> Void
-    unselect_all : -> Void
-    set_selection : -> Void
+    is_selected : Void*
+    get_selection_in_range : Void*
+    select_item : Void*
+    unselect_item : Void*
+    select_range : Void*
+    unselect_range : Void*
+    select_all : Void*
+    unselect_all : Void*
+    set_selection : Void*
   end
 
   type ShortcutActionClass = Void # Struct with zero bytes
@@ -1022,8 +1022,8 @@ lib LibGtk
 
   struct ShortcutManagerInterface # 32 bytes long
     g_iface : LibGObject::TypeInterface
-    add_controller : -> Void
-    remove_controller : -> Void
+    add_controller : Void*
+    remove_controller : Void*
   end
 
   type ShortcutTriggerClass = Void # Struct with zero bytes
@@ -1054,8 +1054,8 @@ lib LibGtk
 
   struct SorterClass # 216 bytes long
     parent_class : LibGObject::ObjectClass
-    compare : -> Void
-    get_order : -> Void
+    compare : Void*
+    get_order : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -1084,7 +1084,7 @@ lib LibGtk
 
   struct StyleContextClass # 176 bytes long
     parent_class : LibGObject::ObjectClass
-    changed : -> Void
+    changed : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -1093,26 +1093,26 @@ lib LibGtk
 
   struct SymbolicPaintableInterface # 24 bytes long
     g_iface : LibGObject::TypeInterface
-    snapshot_symbolic : -> Void
+    snapshot_symbolic : Void*
   end
 
   struct TextBufferClass # 288 bytes long
     parent_class : LibGObject::ObjectClass
-    insert_text : -> Void
-    insert_paintable : -> Void
-    insert_child_anchor : -> Void
-    delete_range : -> Void
-    changed : -> Void
-    modified_changed : -> Void
-    mark_set : -> Void
-    mark_deleted : -> Void
-    apply_tag : -> Void
-    remove_tag : -> Void
-    begin_user_action : -> Void
-    end_user_action : -> Void
-    paste_done : -> Void
-    undo : -> Void
-    redo : -> Void
+    insert_text : Void*
+    insert_paintable : Void*
+    insert_child_anchor : Void*
+    delete_range : Void*
+    changed : Void*
+    modified_changed : Void*
+    mark_set : Void*
+    mark_deleted : Void*
+    apply_tag : Void*
+    remove_tag : Void*
+    begin_user_action : Void*
+    end_user_action : Void*
+    paste_done : Void*
+    undo : Void*
+    redo : Void*
     _gtk_reserved1 : Pointer(Void)
     _gtk_reserved2 : Pointer(Void)
     _gtk_reserved3 : Pointer(Void)
@@ -1160,19 +1160,19 @@ lib LibGtk
 
   struct TextViewClass # 576 bytes long
     parent_class : LibGtk::WidgetClass
-    move_cursor : -> Void
-    set_anchor : -> Void
-    insert_at_cursor : -> Void
-    delete_from_cursor : -> Void
-    backspace : -> Void
-    cut_clipboard : -> Void
-    copy_clipboard : -> Void
-    paste_clipboard : -> Void
-    toggle_overwrite : -> Void
+    move_cursor : Void*
+    set_anchor : Void*
+    insert_at_cursor : Void*
+    delete_from_cursor : Void*
+    backspace : Void*
+    cut_clipboard : Void*
+    copy_clipboard : Void*
+    paste_clipboard : Void*
+    toggle_overwrite : Void*
     create_buffer : Pointer(Void)
-    snapshot_layer : -> Void
-    extend_selection : -> Void
-    insert_emoji : -> Void
+    snapshot_layer : Void*
+    extend_selection : Void*
+    insert_emoji : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -1180,21 +1180,21 @@ lib LibGtk
 
   struct ToggleButtonClass # 560 bytes long
     parent_class : LibGtk::ButtonClass
-    toggled : -> Void
+    toggled : Void*
     padding : Pointer(Void)[8]
   end
 
   struct TreeDragDestIface # 32 bytes long
     g_iface : LibGObject::TypeInterface
-    drag_data_received : -> Void
-    row_drop_possible : -> Void
+    drag_data_received : Void*
+    row_drop_possible : Void*
   end
 
   struct TreeDragSourceIface # 40 bytes long
     g_iface : LibGObject::TypeInterface
-    row_draggable : -> Void
-    drag_data_get : -> Void
-    drag_data_delete : -> Void
+    row_draggable : Void*
+    drag_data_get : Void*
+    drag_data_delete : Void*
   end
 
   struct TreeExpanderClass # 408 bytes long
@@ -1222,8 +1222,8 @@ lib LibGtk
 
   struct TreeModelFilterClass # 216 bytes long
     parent_class : LibGObject::ObjectClass
-    visible : -> Void
-    modify : -> Void
+    visible : Void*
+    modify : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -1231,26 +1231,26 @@ lib LibGtk
 
   struct TreeModelIface # 176 bytes long
     g_iface : LibGObject::TypeInterface
-    row_changed : -> Void
-    row_inserted : -> Void
-    row_has_child_toggled : -> Void
-    row_deleted : -> Void
-    rows_reordered : -> Void
-    get_flags : -> Void
-    get_n_columns : -> Void
-    get_column_type : -> Void
-    get_iter : -> Void
-    get_path : -> Void
-    get_value : -> Void
-    iter_next : -> Void
-    iter_previous : -> Void
-    iter_children : -> Void
-    iter_has_child : -> Void
-    iter_n_children : -> Void
-    iter_nth_child : -> Void
-    iter_parent : -> Void
-    ref_node : -> Void
-    unref_node : -> Void
+    row_changed : Void*
+    row_inserted : Void*
+    row_has_child_toggled : Void*
+    row_deleted : Void*
+    rows_reordered : Void*
+    get_flags : Void*
+    get_n_columns : Void*
+    get_column_type : Void*
+    get_iter : Void*
+    get_path : Void*
+    get_value : Void*
+    iter_next : Void*
+    iter_previous : Void*
+    iter_children : Void*
+    iter_has_child : Void*
+    iter_n_children : Void*
+    iter_nth_child : Void*
+    iter_parent : Void*
+    ref_node : Void*
+    unref_node : Void*
   end
 
   struct TreeModelSortClass # 200 bytes long
@@ -1266,12 +1266,12 @@ lib LibGtk
 
   struct TreeSortableIface # 64 bytes long
     g_iface : LibGObject::TypeInterface
-    sort_column_changed : -> Void
-    get_sort_column_id : -> Void
-    set_sort_column_id : -> Void
-    set_sort_func : -> Void
-    set_default_sort_func : -> Void
-    has_default_sort_func : -> Void
+    sort_column_changed : Void*
+    get_sort_column_id : Void*
+    set_sort_column_id : Void*
+    set_sort_func : Void*
+    set_default_sort_func : Void*
+    has_default_sort_func : Void*
   end
 
   struct TreeStoreClass # 200 bytes long
@@ -1283,21 +1283,21 @@ lib LibGtk
 
   struct TreeViewClass # 656 bytes long
     parent_class : LibGtk::WidgetClass
-    row_activated : -> Void
-    test_expand_row : -> Void
-    test_collapse_row : -> Void
-    row_expanded : -> Void
-    row_collapsed : -> Void
-    columns_changed : -> Void
-    cursor_changed : -> Void
-    move_cursor : -> Void
-    select_all : -> Void
-    unselect_all : -> Void
-    select_cursor_row : -> Void
-    toggle_cursor_row : -> Void
-    expand_collapse_cursor_row : -> Void
-    select_cursor_parent : -> Void
-    start_interactive_search : -> Void
+    row_activated : Void*
+    test_expand_row : Void*
+    test_collapse_row : Void*
+    row_expanded : Void*
+    row_collapsed : Void*
+    columns_changed : Void*
+    cursor_changed : Void*
+    move_cursor : Void*
+    select_all : Void*
+    unselect_all : Void*
+    select_cursor_row : Void*
+    toggle_cursor_row : Void*
+    expand_collapse_cursor_row : Void*
+    select_cursor_parent : Void*
+    start_interactive_search : Void*
     _reserved : Pointer(Void)[16]
   end
 
@@ -1307,31 +1307,31 @@ lib LibGtk
 
   struct WidgetClass # 408 bytes long
     parent_class : LibGObject::InitiallyUnownedClass
-    show : -> Void
-    hide : -> Void
-    map : -> Void
-    unmap : -> Void
-    realize : -> Void
-    unrealize : -> Void
-    root : -> Void
-    unroot : -> Void
-    size_allocate : -> Void
-    state_flags_changed : -> Void
-    direction_changed : -> Void
-    get_request_mode : -> Void
-    measure : -> Void
-    mnemonic_activate : -> Void
-    grab_focus : -> Void
-    focus : -> Void
-    set_focus_child : -> Void
-    move_focus : -> Void
-    keynav_failed : -> Void
-    query_tooltip : -> Void
-    compute_expand : -> Void
-    css_changed : -> Void
-    system_setting_changed : -> Void
-    snapshot : -> Void
-    contains : -> Void
+    show : Void*
+    hide : Void*
+    map : Void*
+    unmap : Void*
+    realize : Void*
+    unrealize : Void*
+    root : Void*
+    unroot : Void*
+    size_allocate : Void*
+    state_flags_changed : Void*
+    direction_changed : Void*
+    get_request_mode : Void*
+    measure : Void*
+    mnemonic_activate : Void*
+    grab_focus : Void*
+    focus : Void*
+    set_focus_child : Void*
+    move_focus : Void*
+    keynav_failed : Void*
+    query_tooltip : Void*
+    compute_expand : Void*
+    css_changed : Void*
+    system_setting_changed : Void*
+    snapshot : Void*
+    contains : Void*
     priv : Pointer(LibGtk::WidgetClassPrivate)
     padding : Pointer(Void)[8]
   end
@@ -1346,11 +1346,11 @@ lib LibGtk
 
   struct WindowClass # 512 bytes long
     parent_class : LibGtk::WidgetClass
-    activate_focus : -> Void
-    activate_default : -> Void
-    keys_changed : -> Void
-    enable_debugging : -> Void
-    close_request : -> Void
+    activate_focus : Void*
+    activate_default : Void*
+    keys_changed : Void*
+    enable_debugging : Void*
+    close_request : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -2201,7 +2201,7 @@ lib LibGtk
   fun gtk_assistant_remove_action_widget(this : Void*, child : Pointer(Void)) : Void
   fun gtk_assistant_remove_page(this : Void*, page_num : Int32) : Void
   fun gtk_assistant_set_current_page(this : Void*, page_num : Int32) : Void
-  fun gtk_assistant_set_forward_page_func(this : Void*, page_func : AssistantPageFunc, data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_assistant_set_forward_page_func(this : Void*, page_func : Void*, data : Pointer(Void), destroy : Void*) : Void
   fun gtk_assistant_set_page_complete(this : Void*, page : Pointer(Void), complete : LibC::Int) : Void
   fun gtk_assistant_set_page_title(this : Void*, page : Pointer(Void), title : Pointer(LibC::Char)) : Void
   fun gtk_assistant_set_page_type(this : Void*, page : Pointer(Void), type : UInt32) : Void
@@ -2306,7 +2306,7 @@ lib LibGtk
   fun gtk_builder_add_objects_from_resource(this : Void*, resource_path : Pointer(LibC::Char), object_ids : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
   fun gtk_builder_add_objects_from_string(this : Void*, buffer : Pointer(LibC::Char), length : Int64, object_ids : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
   fun gtk_builder_create_closure(this : Void*, function_name : Pointer(LibC::Char), flags : UInt32, object : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun gtk_builder_cscope_add_callback_symbol(this : Void*, callback_name : Pointer(LibC::Char), callback_symbol : LibGObject::Callback) : Void
+  fun gtk_builder_cscope_add_callback_symbol(this : Void*, callback_name : Pointer(LibC::Char), callback_symbol : Void*) : Void
   fun gtk_builder_cscope_get_type : UInt64
   fun gtk_builder_cscope_new : Pointer(Void)
   fun gtk_builder_error_quark : UInt32
@@ -2365,9 +2365,9 @@ lib LibGtk
   fun gtk_calendar_set_show_week_numbers(this : Void*, value : LibC::Int) : Void
   fun gtk_calendar_unmark_day(this : Void*, day : UInt32) : Void
   fun gtk_callback_action_get_type : UInt64
-  fun gtk_callback_action_new(callback : ShortcutFunc, data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Pointer(Void)
+  fun gtk_callback_action_new(callback : Void*, data : Pointer(Void), destroy : Void*) : Pointer(Void)
   fun gtk_cclosure_expression_get_type : UInt64
-  fun gtk_cclosure_expression_new(value_type : UInt64, marshal : LibGObject::ClosureMarshal, n_params : UInt32, params : Pointer(Pointer(Void)), callback_func : LibGObject::Callback, user_data : Pointer(Void), user_destroy : LibGObject::ClosureNotify) : Pointer(Void)
+  fun gtk_cclosure_expression_new(value_type : UInt64, marshal : Void*, n_params : UInt32, params : Pointer(Pointer(Void)), callback_func : Void*, user_data : Pointer(Void), user_destroy : Void*) : Pointer(Void)
   fun gtk_cell_area_activate(this : Void*, context : Pointer(Void), widget : Pointer(Void), cell_area : Pointer(Void), flags : UInt32, edit_only : LibC::Int) : LibC::Int
   fun gtk_cell_area_activate_cell(this : Void*, widget : Pointer(Void), renderer : Pointer(Void), event : Pointer(Void), cell_area : Pointer(Void), flags : UInt32) : LibC::Int
   fun gtk_cell_area_add(this : Void*, renderer : Pointer(Void)) : Void
@@ -2402,8 +2402,8 @@ lib LibGtk
   fun gtk_cell_area_create_context(this : Void*) : Pointer(Void)
   fun gtk_cell_area_event(this : Void*, context : Pointer(Void), widget : Pointer(Void), event : Pointer(Void), cell_area : Pointer(Void), flags : UInt32) : Int32
   fun gtk_cell_area_focus(this : Void*, direction : UInt32) : LibC::Int
-  fun gtk_cell_area_foreach(this : Void*, callback : CellCallback, callback_data : Pointer(Void)) : Void
-  fun gtk_cell_area_foreach_alloc(this : Void*, context : Pointer(Void), widget : Pointer(Void), cell_area : Pointer(Void), background_area : Pointer(Void), callback : CellAllocCallback, callback_data : Pointer(Void)) : Void
+  fun gtk_cell_area_foreach(this : Void*, callback : Void*, callback_data : Pointer(Void)) : Void
+  fun gtk_cell_area_foreach_alloc(this : Void*, context : Pointer(Void), widget : Pointer(Void), cell_area : Pointer(Void), background_area : Pointer(Void), callback : Void*, callback_data : Pointer(Void)) : Void
   fun gtk_cell_area_get_cell_allocation(this : Void*, context : Pointer(Void), widget : Pointer(Void), renderer : Pointer(Void), cell_area : Pointer(Void), allocation : Pointer(Void)) : Void
   fun gtk_cell_area_get_cell_at_position(this : Void*, context : Pointer(Void), widget : Pointer(Void), cell_area : Pointer(Void), x : Int32, y : Int32, alloc_area : Pointer(Void)) : Pointer(Void)
   fun gtk_cell_area_get_current_path_string(this : Void*) : Pointer(LibC::Char)
@@ -2441,7 +2441,7 @@ lib LibGtk
   fun gtk_cell_layout_pack_end(this : Void*, cell : Pointer(Void), expand : LibC::Int) : Void
   fun gtk_cell_layout_pack_start(this : Void*, cell : Pointer(Void), expand : LibC::Int) : Void
   fun gtk_cell_layout_reorder(this : Void*, cell : Pointer(Void), position : Int32) : Void
-  fun gtk_cell_layout_set_cell_data_func(this : Void*, cell : Pointer(Void), func : CellLayoutDataFunc, func_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_cell_layout_set_cell_data_func(this : Void*, cell : Pointer(Void), func : Void*, func_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_cell_renderer_accel_get_type : UInt64
   fun gtk_cell_renderer_accel_new : Pointer(Void)
   fun gtk_cell_renderer_activate(this : Void*, event : Pointer(Void), widget : Pointer(Void), path : Pointer(LibC::Char), background_area : Pointer(Void), cell_area : Pointer(Void), flags : UInt32) : LibC::Int
@@ -2628,7 +2628,7 @@ lib LibGtk
   fun gtk_combo_box_set_id_column(this : Void*, id_column : Int32) : Void
   fun gtk_combo_box_set_model(this : Void*, model : Pointer(Void)) : Void
   fun gtk_combo_box_set_popup_fixed_width(this : Void*, fixed : LibC::Int) : Void
-  fun gtk_combo_box_set_row_separator_func(this : Void*, func : TreeViewRowSeparatorFunc, data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_combo_box_set_row_separator_func(this : Void*, func : Void*, data : Pointer(Void), destroy : Void*) : Void
   fun gtk_combo_box_text_append(this : Void*, id : Pointer(LibC::Char), text : Pointer(LibC::Char)) : Void
   fun gtk_combo_box_text_append_text(this : Void*, text : Pointer(LibC::Char)) : Void
   fun gtk_combo_box_text_get_active_text(this : Void*) : Pointer(LibC::Char)
@@ -2704,13 +2704,13 @@ lib LibGtk
   fun gtk_css_section_to_string(this : Void*) : Pointer(LibC::Char)
   fun gtk_css_section_unref(this : Void*) : Void
   fun gtk_custom_filter_get_type : UInt64
-  fun gtk_custom_filter_new(match_func : CustomFilterFunc, user_data : Pointer(Void), user_destroy : LibGLib::DestroyNotify) : Pointer(Void)
-  fun gtk_custom_filter_set_filter_func(this : Void*, match_func : CustomFilterFunc, user_data : Pointer(Void), user_destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_custom_filter_new(match_func : Void*, user_data : Pointer(Void), user_destroy : Void*) : Pointer(Void)
+  fun gtk_custom_filter_set_filter_func(this : Void*, match_func : Void*, user_data : Pointer(Void), user_destroy : Void*) : Void
   fun gtk_custom_layout_get_type : UInt64
-  fun gtk_custom_layout_new(request_mode : CustomRequestModeFunc, measure : CustomMeasureFunc, allocate : CustomAllocateFunc) : Pointer(Void)
+  fun gtk_custom_layout_new(request_mode : Void*, measure : Void*, allocate : Void*) : Pointer(Void)
   fun gtk_custom_sorter_get_type : UInt64
-  fun gtk_custom_sorter_new(sort_func : LibGLib::CompareDataFunc, user_data : Pointer(Void), user_destroy : LibGLib::DestroyNotify) : Pointer(Void)
-  fun gtk_custom_sorter_set_sort_func(this : Void*, sort_func : LibGLib::CompareDataFunc, user_data : Pointer(Void), user_destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_custom_sorter_new(sort_func : Void*, user_data : Pointer(Void), user_destroy : Void*) : Pointer(Void)
+  fun gtk_custom_sorter_set_sort_func(this : Void*, sort_func : Void*, user_data : Pointer(Void), user_destroy : Void*) : Void
   fun gtk_dialog_add_action_widget(this : Void*, child : Pointer(Void), response_id : Int32) : Void
   fun gtk_dialog_add_button(this : Void*, button_text : Pointer(LibC::Char), response_id : Int32) : Pointer(Void)
   fun gtk_dialog_get_content_area(this : Void*) : Pointer(Void)
@@ -2758,7 +2758,7 @@ lib LibGtk
   fun gtk_drawing_area_new : Pointer(Void)
   fun gtk_drawing_area_set_content_height(this : Void*, height : Int32) : Void
   fun gtk_drawing_area_set_content_width(this : Void*, width : Int32) : Void
-  fun gtk_drawing_area_set_draw_func(this : Void*, draw_func : DrawingAreaDrawFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_drawing_area_set_draw_func(this : Void*, draw_func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_drop_controller_motion_contains_pointer(this : Void*) : LibC::Int
   fun gtk_drop_controller_motion_get_drop(this : Void*) : Pointer(Void)
   fun gtk_drop_controller_motion_get_type : UInt64
@@ -2869,7 +2869,7 @@ lib LibGtk
   fun gtk_entry_completion_new_with_area(area : Pointer(Void)) : Pointer(Void)
   fun gtk_entry_completion_set_inline_completion(this : Void*, inline_completion : LibC::Int) : Void
   fun gtk_entry_completion_set_inline_selection(this : Void*, inline_selection : LibC::Int) : Void
-  fun gtk_entry_completion_set_match_func(this : Void*, func : EntryCompletionMatchFunc, func_data : Pointer(Void), func_notify : LibGLib::DestroyNotify) : Void
+  fun gtk_entry_completion_set_match_func(this : Void*, func : Void*, func_data : Pointer(Void), func_notify : Void*) : Void
   fun gtk_entry_completion_set_minimum_key_length(this : Void*, length : Int32) : Void
   fun gtk_entry_completion_set_model(this : Void*, model : Pointer(Void)) : Void
   fun gtk_entry_completion_set_popup_completion(this : Void*, popup_completion : LibC::Int) : Void
@@ -2937,7 +2937,7 @@ lib LibGtk
   fun gtk_entry_set_tabs(this : Void*, tabs : Pointer(Void)) : Void
   fun gtk_entry_set_visibility(this : Void*, visible : LibC::Int) : Void
   fun gtk_entry_unset_invisible_char(this : Void*) : Void
-  fun gtk_enumerate_printers(func : PrinterFunc, data : Pointer(Void), destroy : LibGLib::DestroyNotify, wait : LibC::Int) : Void
+  fun gtk_enumerate_printers(func : Void*, data : Pointer(Void), destroy : Void*, wait : LibC::Int) : Void
   fun gtk_event_controller_focus_contains_focus(this : Void*) : LibC::Int
   fun gtk_event_controller_focus_get_type : UInt64
   fun gtk_event_controller_focus_is_focus(this : Void*) : LibC::Int
@@ -2997,7 +2997,7 @@ lib LibGtk
   fun gtk_expression_is_static(this : Void*) : LibC::Int
   fun gtk_expression_ref(this : Void*) : Pointer(Void)
   fun gtk_expression_unref(this : Void*) : Void
-  fun gtk_expression_watch(this : Void*, this_ : Pointer(Void), notify : ExpressionNotify, user_data : Pointer(Void), user_destroy : LibGLib::DestroyNotify) : Pointer(Void)
+  fun gtk_expression_watch(this : Void*, this_ : Pointer(Void), notify : Void*, user_data : Pointer(Void), user_destroy : Void*) : Pointer(Void)
   fun gtk_expression_watch_evaluate(this : Void*, value : Pointer(Void)) : LibC::Int
   fun gtk_expression_watch_get_type : UInt64
   fun gtk_expression_watch_ref(this : Void*) : Pointer(Void)
@@ -3082,7 +3082,7 @@ lib LibGtk
   fun gtk_flatten_list_model_new(model : Pointer(Void)) : Pointer(Void)
   fun gtk_flatten_list_model_set_model(this : Void*, model : Pointer(Void)) : Void
   fun gtk_flow_box_append(this : Void*, child : Pointer(Void)) : Void
-  fun gtk_flow_box_bind_model(this : Void*, model : Pointer(Void), create_widget_func : FlowBoxCreateWidgetFunc, user_data : Pointer(Void), user_data_free_func : LibGLib::DestroyNotify) : Void
+  fun gtk_flow_box_bind_model(this : Void*, model : Pointer(Void), create_widget_func : Void*, user_data : Pointer(Void), user_data_free_func : Void*) : Void
   fun gtk_flow_box_child_changed(this : Void*) : Void
   fun gtk_flow_box_child_get_child(this : Void*) : Pointer(Void)
   fun gtk_flow_box_child_get_index(this : Void*) : Int32
@@ -3109,17 +3109,17 @@ lib LibGtk
   fun gtk_flow_box_remove(this : Void*, widget : Pointer(Void)) : Void
   fun gtk_flow_box_select_all(this : Void*) : Void
   fun gtk_flow_box_select_child(this : Void*, child : Pointer(Void)) : Void
-  fun gtk_flow_box_selected_foreach(this : Void*, func : FlowBoxForeachFunc, data : Pointer(Void)) : Void
+  fun gtk_flow_box_selected_foreach(this : Void*, func : Void*, data : Pointer(Void)) : Void
   fun gtk_flow_box_set_activate_on_single_click(this : Void*, single : LibC::Int) : Void
   fun gtk_flow_box_set_column_spacing(this : Void*, spacing : UInt32) : Void
-  fun gtk_flow_box_set_filter_func(this : Void*, filter_func : FlowBoxFilterFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_flow_box_set_filter_func(this : Void*, filter_func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_flow_box_set_hadjustment(this : Void*, adjustment : Pointer(Void)) : Void
   fun gtk_flow_box_set_homogeneous(this : Void*, homogeneous : LibC::Int) : Void
   fun gtk_flow_box_set_max_children_per_line(this : Void*, n_children : UInt32) : Void
   fun gtk_flow_box_set_min_children_per_line(this : Void*, n_children : UInt32) : Void
   fun gtk_flow_box_set_row_spacing(this : Void*, spacing : UInt32) : Void
   fun gtk_flow_box_set_selection_mode(this : Void*, mode : UInt32) : Void
-  fun gtk_flow_box_set_sort_func(this : Void*, sort_func : FlowBoxSortFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_flow_box_set_sort_func(this : Void*, sort_func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_flow_box_set_vadjustment(this : Void*, adjustment : Pointer(Void)) : Void
   fun gtk_flow_box_unselect_all(this : Void*) : Void
   fun gtk_flow_box_unselect_child(this : Void*, child : Pointer(Void)) : Void
@@ -3148,7 +3148,7 @@ lib LibGtk
   fun gtk_font_chooser_get_preview_text(this : Void*) : Pointer(LibC::Char)
   fun gtk_font_chooser_get_show_preview_entry(this : Void*) : LibC::Int
   fun gtk_font_chooser_get_type : UInt64
-  fun gtk_font_chooser_set_filter_func(this : Void*, filter : FontFilterFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_font_chooser_set_filter_func(this : Void*, filter : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_font_chooser_set_font(this : Void*, fontname : Pointer(LibC::Char)) : Void
   fun gtk_font_chooser_set_font_desc(this : Void*, font_desc : Pointer(Void)) : Void
   fun gtk_font_chooser_set_font_map(this : Void*, fontmap : Pointer(Void)) : Void
@@ -3386,7 +3386,7 @@ lib LibGtk
   fun gtk_icon_view_scroll_to_path(this : Void*, path : Pointer(Void), use_align : LibC::Int, row_align : Float32, col_align : Float32) : Void
   fun gtk_icon_view_select_all(this : Void*) : Void
   fun gtk_icon_view_select_path(this : Void*, path : Pointer(Void)) : Void
-  fun gtk_icon_view_selected_foreach(this : Void*, func : IconViewForeachFunc, data : Pointer(Void)) : Void
+  fun gtk_icon_view_selected_foreach(this : Void*, func : Void*, data : Pointer(Void)) : Void
   fun gtk_icon_view_set_activate_on_single_click(this : Void*, single : LibC::Int) : Void
   fun gtk_icon_view_set_column_spacing(this : Void*, column_spacing : Int32) : Void
   fun gtk_icon_view_set_columns(this : Void*, columns : Int32) : Void
@@ -3564,7 +3564,7 @@ lib LibGtk
   fun gtk_link_button_set_visited(this : Void*, visited : LibC::Int) : Void
   fun gtk_list_base_get_type : UInt64
   fun gtk_list_box_append(this : Void*, child : Pointer(Void)) : Void
-  fun gtk_list_box_bind_model(this : Void*, model : Pointer(Void), create_widget_func : ListBoxCreateWidgetFunc, user_data : Pointer(Void), user_data_free_func : LibGLib::DestroyNotify) : Void
+  fun gtk_list_box_bind_model(this : Void*, model : Pointer(Void), create_widget_func : Void*, user_data : Pointer(Void), user_data_free_func : Void*) : Void
   fun gtk_list_box_drag_highlight_row(this : Void*, row : Pointer(Void)) : Void
   fun gtk_list_box_drag_unhighlight_row(this : Void*) : Void
   fun gtk_list_box_get_activate_on_single_click(this : Void*) : LibC::Int
@@ -3598,15 +3598,15 @@ lib LibGtk
   fun gtk_list_box_row_set_selectable(this : Void*, selectable : LibC::Int) : Void
   fun gtk_list_box_select_all(this : Void*) : Void
   fun gtk_list_box_select_row(this : Void*, row : Pointer(Void)) : Void
-  fun gtk_list_box_selected_foreach(this : Void*, func : ListBoxForeachFunc, data : Pointer(Void)) : Void
+  fun gtk_list_box_selected_foreach(this : Void*, func : Void*, data : Pointer(Void)) : Void
   fun gtk_list_box_set_activate_on_single_click(this : Void*, single : LibC::Int) : Void
   fun gtk_list_box_set_adjustment(this : Void*, adjustment : Pointer(Void)) : Void
-  fun gtk_list_box_set_filter_func(this : Void*, filter_func : ListBoxFilterFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
-  fun gtk_list_box_set_header_func(this : Void*, update_header : ListBoxUpdateHeaderFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_list_box_set_filter_func(this : Void*, filter_func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun gtk_list_box_set_header_func(this : Void*, update_header : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_list_box_set_placeholder(this : Void*, placeholder : Pointer(Void)) : Void
   fun gtk_list_box_set_selection_mode(this : Void*, mode : UInt32) : Void
   fun gtk_list_box_set_show_separators(this : Void*, show_separators : LibC::Int) : Void
-  fun gtk_list_box_set_sort_func(this : Void*, sort_func : ListBoxSortFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_list_box_set_sort_func(this : Void*, sort_func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_list_box_unselect_all(this : Void*) : Void
   fun gtk_list_box_unselect_row(this : Void*, row : Pointer(Void)) : Void
   fun gtk_list_item_factory_get_type : UInt64
@@ -3657,8 +3657,8 @@ lib LibGtk
   fun gtk_map_list_model_get_model(this : Void*) : Pointer(Void)
   fun gtk_map_list_model_get_type : UInt64
   fun gtk_map_list_model_has_map(this : Void*) : LibC::Int
-  fun gtk_map_list_model_new(model : Pointer(Void), map_func : MapListModelMapFunc, user_data : Pointer(Void), user_destroy : LibGLib::DestroyNotify) : Pointer(Void)
-  fun gtk_map_list_model_set_map_func(this : Void*, map_func : MapListModelMapFunc, user_data : Pointer(Void), user_destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_map_list_model_new(model : Pointer(Void), map_func : Void*, user_data : Pointer(Void), user_destroy : Void*) : Pointer(Void)
+  fun gtk_map_list_model_set_map_func(this : Void*, map_func : Void*, user_data : Pointer(Void), user_destroy : Void*) : Void
   fun gtk_map_list_model_set_model(this : Void*, model : Pointer(Void)) : Void
   fun gtk_media_controls_get_media_stream(this : Void*) : Pointer(Void)
   fun gtk_media_controls_get_type : UInt64
@@ -3723,7 +3723,7 @@ lib LibGtk
   fun gtk_menu_button_popup(this : Void*) : Void
   fun gtk_menu_button_set_always_show_arrow(this : Void*, always_show_arrow : LibC::Int) : Void
   fun gtk_menu_button_set_child(this : Void*, child : Pointer(Void)) : Void
-  fun gtk_menu_button_set_create_popup_func(this : Void*, func : MenuButtonCreatePopupFunc, user_data : Pointer(Void), destroy_notify : LibGLib::DestroyNotify) : Void
+  fun gtk_menu_button_set_create_popup_func(this : Void*, func : Void*, user_data : Pointer(Void), destroy_notify : Void*) : Void
   fun gtk_menu_button_set_direction(this : Void*, direction : UInt32) : Void
   fun gtk_menu_button_set_has_frame(this : Void*, has_frame : LibC::Int) : Void
   fun gtk_menu_button_set_icon_name(this : Void*, icon_name : Pointer(LibC::Char)) : Void
@@ -4046,7 +4046,7 @@ lib LibGtk
   fun gtk_print_job_get_track_print_status(this : Void*) : LibC::Int
   fun gtk_print_job_get_type : UInt64
   fun gtk_print_job_new(title : Pointer(LibC::Char), printer : Pointer(Void), settings : Pointer(Void), page_setup : Pointer(Void)) : Pointer(Void)
-  fun gtk_print_job_send(this : Void*, callback : PrintJobCompleteFunc, user_data : Pointer(Void), dnotify : LibGLib::DestroyNotify) : Void
+  fun gtk_print_job_send(this : Void*, callback : Void*, user_data : Pointer(Void), dnotify : Void*) : Void
   fun gtk_print_job_set_collate(this : Void*, collate : LibC::Int) : Void
   fun gtk_print_job_set_n_up(this : Void*, n_up : UInt32) : Void
   fun gtk_print_job_set_n_up_layout(this : Void*, layout : UInt32) : Void
@@ -4096,9 +4096,9 @@ lib LibGtk
   fun gtk_print_operation_set_unit(this : Void*, unit : UInt32) : Void
   fun gtk_print_operation_set_use_full_page(this : Void*, full_page : LibC::Int) : Void
   fun gtk_print_run_page_setup_dialog(parent : Pointer(Void), page_setup : Pointer(Void), settings : Pointer(Void)) : Pointer(Void)
-  fun gtk_print_run_page_setup_dialog_async(parent : Pointer(Void), page_setup : Pointer(Void), settings : Pointer(Void), done_cb : PageSetupDoneFunc, data : Pointer(Void)) : Void
+  fun gtk_print_run_page_setup_dialog_async(parent : Pointer(Void), page_setup : Pointer(Void), settings : Pointer(Void), done_cb : Void*, data : Pointer(Void)) : Void
   fun gtk_print_settings_copy(this : Void*) : Pointer(Void)
-  fun gtk_print_settings_foreach(this : Void*, func : PrintSettingsFunc, user_data : Pointer(Void)) : Void
+  fun gtk_print_settings_foreach(this : Void*, func : Void*, user_data : Pointer(Void)) : Void
   fun gtk_print_settings_get(this : Void*, key : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun gtk_print_settings_get_bool(this : Void*, key : Pointer(LibC::Char)) : LibC::Int
   fun gtk_print_settings_get_collate(this : Void*) : LibC::Int
@@ -4352,7 +4352,7 @@ lib LibGtk
   fun gtk_scale_new_with_range(orientation : UInt32, min : Float64, max : Float64, step : Float64) : Pointer(Void)
   fun gtk_scale_set_digits(this : Void*, digits : Int32) : Void
   fun gtk_scale_set_draw_value(this : Void*, draw_value : LibC::Int) : Void
-  fun gtk_scale_set_format_value_func(this : Void*, func : ScaleFormatValueFunc, user_data : Pointer(Void), destroy_notify : LibGLib::DestroyNotify) : Void
+  fun gtk_scale_set_format_value_func(this : Void*, func : Void*, user_data : Pointer(Void), destroy_notify : Void*) : Void
   fun gtk_scale_set_has_origin(this : Void*, has_origin : LibC::Int) : Void
   fun gtk_scale_set_value_pos(this : Void*, pos : UInt32) : Void
   fun gtk_scrollable_get_border(this : Void*, border : Pointer(Void)) : LibC::Int
@@ -4484,7 +4484,7 @@ lib LibGtk
   fun gtk_shortcuts_shortcut_get_type : UInt64
   fun gtk_shortcuts_window_get_type : UInt64
   fun gtk_show_uri(parent : Pointer(Void), uri : Pointer(LibC::Char), timestamp : UInt32) : Void
-  fun gtk_show_uri_full(parent : Pointer(Void), uri : Pointer(LibC::Char), timestamp : UInt32, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gtk_show_uri_full(parent : Pointer(Void), uri : Pointer(LibC::Char), timestamp : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gtk_show_uri_full_finish(parent : Pointer(Void), result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun gtk_signal_action_get_signal_name(this : Void*) : Pointer(LibC::Char)
   fun gtk_signal_action_get_type : UInt64
@@ -4517,7 +4517,7 @@ lib LibGtk
   fun gtk_slice_list_model_set_model(this : Void*, model : Pointer(Void)) : Void
   fun gtk_slice_list_model_set_offset(this : Void*, offset : UInt32) : Void
   fun gtk_slice_list_model_set_size(this : Void*, size : UInt32) : Void
-  fun gtk_snapshot_append_border(this : Void*, outline : Pointer(Void), border_width : Pointer(Float32[4]), border_color : Pointer(Void[4])) : Void
+  fun gtk_snapshot_append_border(this : Void*, outline : Pointer(Void), border_width : Pointer(Float32), border_color : Pointer(Void)) : Void
   fun gtk_snapshot_append_cairo(this : Void*, bounds : Pointer(Void)) : Pointer(Void)
   fun gtk_snapshot_append_color(this : Void*, color : Pointer(Void), bounds : Pointer(Void)) : Void
   fun gtk_snapshot_append_conic_gradient(this : Void*, bounds : Pointer(Void), center : Pointer(Void), rotation : Float32, stops : Pointer(Void), n_stops : UInt64) : Void
@@ -4825,7 +4825,7 @@ lib LibGtk
   fun gtk_text_iter_backward_chars(this : Void*, count : Int32) : LibC::Int
   fun gtk_text_iter_backward_cursor_position(this : Void*) : LibC::Int
   fun gtk_text_iter_backward_cursor_positions(this : Void*, count : Int32) : LibC::Int
-  fun gtk_text_iter_backward_find_char(this : Void*, pred : TextCharPredicate, user_data : Pointer(Void), limit : Pointer(Void)) : LibC::Int
+  fun gtk_text_iter_backward_find_char(this : Void*, pred : Void*, user_data : Pointer(Void), limit : Pointer(Void)) : LibC::Int
   fun gtk_text_iter_backward_line(this : Void*) : LibC::Int
   fun gtk_text_iter_backward_lines(this : Void*, count : Int32) : LibC::Int
   fun gtk_text_iter_backward_search(this : Void*, str : Pointer(LibC::Char), flags : UInt32, match_start : Pointer(Void), match_end : Pointer(Void), limit : Pointer(Void)) : LibC::Int
@@ -4853,7 +4853,7 @@ lib LibGtk
   fun gtk_text_iter_forward_chars(this : Void*, count : Int32) : LibC::Int
   fun gtk_text_iter_forward_cursor_position(this : Void*) : LibC::Int
   fun gtk_text_iter_forward_cursor_positions(this : Void*, count : Int32) : LibC::Int
-  fun gtk_text_iter_forward_find_char(this : Void*, pred : TextCharPredicate, user_data : Pointer(Void), limit : Pointer(Void)) : LibC::Int
+  fun gtk_text_iter_forward_find_char(this : Void*, pred : Void*, user_data : Pointer(Void), limit : Pointer(Void)) : LibC::Int
   fun gtk_text_iter_forward_line(this : Void*) : LibC::Int
   fun gtk_text_iter_forward_lines(this : Void*, count : Int32) : LibC::Int
   fun gtk_text_iter_forward_search(this : Void*, str : Pointer(LibC::Char), flags : UInt32, match_start : Pointer(Void), match_end : Pointer(Void), limit : Pointer(Void)) : LibC::Int
@@ -4942,7 +4942,7 @@ lib LibGtk
   fun gtk_text_tag_new(name : Pointer(LibC::Char)) : Pointer(Void)
   fun gtk_text_tag_set_priority(this : Void*, priority : Int32) : Void
   fun gtk_text_tag_table_add(this : Void*, tag : Pointer(Void)) : LibC::Int
-  fun gtk_text_tag_table_foreach(this : Void*, func : TextTagTableForeach, data : Pointer(Void)) : Void
+  fun gtk_text_tag_table_foreach(this : Void*, func : Void*, data : Pointer(Void)) : Void
   fun gtk_text_tag_table_get_size(this : Void*) : Int32
   fun gtk_text_tag_table_get_type : UInt64
   fun gtk_text_tag_table_lookup(this : Void*, name : Pointer(LibC::Char)) : Pointer(Void)
@@ -5066,7 +5066,7 @@ lib LibGtk
   fun gtk_tree_list_model_get_passthrough(this : Void*) : LibC::Int
   fun gtk_tree_list_model_get_row(this : Void*, position : UInt32) : Pointer(Void)
   fun gtk_tree_list_model_get_type : UInt64
-  fun gtk_tree_list_model_new(root : Pointer(Void), passthrough : LibC::Int, autoexpand : LibC::Int, create_func : TreeListModelCreateModelFunc, user_data : Pointer(Void), user_destroy : LibGLib::DestroyNotify) : Pointer(Void)
+  fun gtk_tree_list_model_new(root : Pointer(Void), passthrough : LibC::Int, autoexpand : LibC::Int, create_func : Void*, user_data : Pointer(Void), user_destroy : Void*) : Pointer(Void)
   fun gtk_tree_list_model_set_autoexpand(this : Void*, autoexpand : LibC::Int) : Void
   fun gtk_tree_list_row_get_child_row(this : Void*, position : UInt32) : Pointer(Void)
   fun gtk_tree_list_row_get_children(this : Void*) : Pointer(Void)
@@ -5091,10 +5091,10 @@ lib LibGtk
   fun gtk_tree_model_filter_get_type : UInt64
   fun gtk_tree_model_filter_new(this : Void*, root : Pointer(Void)) : Pointer(Void)
   fun gtk_tree_model_filter_refilter(this : Void*) : Void
-  fun gtk_tree_model_filter_set_modify_func(this : Void*, n_columns : Int32, types : Pointer(UInt64), func : TreeModelFilterModifyFunc, data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_tree_model_filter_set_modify_func(this : Void*, n_columns : Int32, types : Pointer(UInt64), func : Void*, data : Pointer(Void), destroy : Void*) : Void
   fun gtk_tree_model_filter_set_visible_column(this : Void*, column : Int32) : Void
-  fun gtk_tree_model_filter_set_visible_func(this : Void*, func : TreeModelFilterVisibleFunc, data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
-  fun gtk_tree_model_foreach(this : Void*, func : TreeModelForeachFunc, user_data : Pointer(Void)) : Void
+  fun gtk_tree_model_filter_set_visible_func(this : Void*, func : Void*, data : Pointer(Void), destroy : Void*) : Void
+  fun gtk_tree_model_foreach(this : Void*, func : Void*, user_data : Pointer(Void)) : Void
   fun gtk_tree_model_get_column_type(this : Void*, index_ : Int32) : UInt64
   fun gtk_tree_model_get_flags(this : Void*) : UInt32
   fun gtk_tree_model_get_iter(this : Void*, iter : Pointer(Void), path : Pointer(Void)) : LibC::Int
@@ -5172,9 +5172,9 @@ lib LibGtk
   fun gtk_tree_selection_select_iter(this : Void*, iter : Pointer(Void)) : Void
   fun gtk_tree_selection_select_path(this : Void*, path : Pointer(Void)) : Void
   fun gtk_tree_selection_select_range(this : Void*, start_path : Pointer(Void), end_path : Pointer(Void)) : Void
-  fun gtk_tree_selection_selected_foreach(this : Void*, func : TreeSelectionForeachFunc, data : Pointer(Void)) : Void
+  fun gtk_tree_selection_selected_foreach(this : Void*, func : Void*, data : Pointer(Void)) : Void
   fun gtk_tree_selection_set_mode(this : Void*, type : UInt32) : Void
-  fun gtk_tree_selection_set_select_function(this : Void*, func : TreeSelectionFunc, data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_tree_selection_set_select_function(this : Void*, func : Void*, data : Pointer(Void), destroy : Void*) : Void
   fun gtk_tree_selection_unselect_all(this : Void*) : Void
   fun gtk_tree_selection_unselect_iter(this : Void*, iter : Pointer(Void)) : Void
   fun gtk_tree_selection_unselect_path(this : Void*, path : Pointer(Void)) : Void
@@ -5182,9 +5182,9 @@ lib LibGtk
   fun gtk_tree_sortable_get_sort_column_id(this : Void*, sort_column_id : Pointer(Int32), order : Pointer(UInt32)) : LibC::Int
   fun gtk_tree_sortable_get_type : UInt64
   fun gtk_tree_sortable_has_default_sort_func(this : Void*) : LibC::Int
-  fun gtk_tree_sortable_set_default_sort_func(this : Void*, sort_func : TreeIterCompareFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_tree_sortable_set_default_sort_func(this : Void*, sort_func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_tree_sortable_set_sort_column_id(this : Void*, sort_column_id : Int32, order : UInt32) : Void
-  fun gtk_tree_sortable_set_sort_func(this : Void*, sort_column_id : Int32, sort_func : TreeIterCompareFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_tree_sortable_set_sort_func(this : Void*, sort_column_id : Int32, sort_func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_tree_sortable_sort_column_changed(this : Void*) : Void
   fun gtk_tree_store_append(this : Void*, iter : Pointer(Void), parent : Pointer(Void)) : Void
   fun gtk_tree_store_clear(this : Void*) : Void
@@ -5244,7 +5244,7 @@ lib LibGtk
   fun gtk_tree_view_column_pack_start(this : Void*, cell : Pointer(Void), expand : LibC::Int) : Void
   fun gtk_tree_view_column_queue_resize(this : Void*) : Void
   fun gtk_tree_view_column_set_alignment(this : Void*, xalign : Float32) : Void
-  fun gtk_tree_view_column_set_cell_data_func(this : Void*, cell_renderer : Pointer(Void), func : TreeCellDataFunc, func_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_tree_view_column_set_cell_data_func(this : Void*, cell_renderer : Pointer(Void), func : Void*, func_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_tree_view_column_set_clickable(this : Void*, clickable : LibC::Int) : Void
   fun gtk_tree_view_column_set_expand(this : Void*, expand : LibC::Int) : Void
   fun gtk_tree_view_column_set_fixed_width(this : Void*, fixed_width : Int32) : Void
@@ -5306,10 +5306,10 @@ lib LibGtk
   fun gtk_tree_view_get_visible_range(this : Void*, start_path : Pointer(Pointer(Void)), end_path : Pointer(Pointer(Void))) : LibC::Int
   fun gtk_tree_view_get_visible_rect(this : Void*, visible_rect : Pointer(Void)) : Void
   fun gtk_tree_view_insert_column(this : Void*, column : Pointer(Void), position : Int32) : Int32
-  fun gtk_tree_view_insert_column_with_data_func(this : Void*, position : Int32, title : Pointer(LibC::Char), cell : Pointer(Void), func : TreeCellDataFunc, data : Pointer(Void), dnotify : LibGLib::DestroyNotify) : Int32
+  fun gtk_tree_view_insert_column_with_data_func(this : Void*, position : Int32, title : Pointer(LibC::Char), cell : Pointer(Void), func : Void*, data : Pointer(Void), dnotify : Void*) : Int32
   fun gtk_tree_view_is_blank_at_pos(this : Void*, x : Int32, y : Int32, path : Pointer(Pointer(Void)), column : Pointer(Pointer(Void)), cell_x : Pointer(Int32), cell_y : Pointer(Int32)) : LibC::Int
   fun gtk_tree_view_is_rubber_banding_active(this : Void*) : LibC::Int
-  fun gtk_tree_view_map_expanded_rows(this : Void*, func : TreeViewMappingFunc, data : Pointer(Void)) : Void
+  fun gtk_tree_view_map_expanded_rows(this : Void*, func : Void*, data : Pointer(Void)) : Void
   fun gtk_tree_view_move_column_after(this : Void*, column : Pointer(Void), base_column : Pointer(Void)) : Void
   fun gtk_tree_view_new : Pointer(Void)
   fun gtk_tree_view_new_with_model(model : Pointer(Void)) : Pointer(Void)
@@ -5319,7 +5319,7 @@ lib LibGtk
   fun gtk_tree_view_scroll_to_cell(this : Void*, path : Pointer(Void), column : Pointer(Void), use_align : LibC::Int, row_align : Float32, col_align : Float32) : Void
   fun gtk_tree_view_scroll_to_point(this : Void*, tree_x : Int32, tree_y : Int32) : Void
   fun gtk_tree_view_set_activate_on_single_click(this : Void*, single : LibC::Int) : Void
-  fun gtk_tree_view_set_column_drag_function(this : Void*, func : TreeViewColumnDropFunc, user_data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_tree_view_set_column_drag_function(this : Void*, func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun gtk_tree_view_set_cursor(this : Void*, path : Pointer(Void), focus_column : Pointer(Void), start_editing : LibC::Int) : Void
   fun gtk_tree_view_set_cursor_on_cell(this : Void*, path : Pointer(Void), focus_column : Pointer(Void), focus_cell : Pointer(Void), start_editing : LibC::Int) : Void
   fun gtk_tree_view_set_drag_dest_row(this : Void*, path : Pointer(Void), pos : UInt32) : Void
@@ -5335,11 +5335,11 @@ lib LibGtk
   fun gtk_tree_view_set_level_indentation(this : Void*, indentation : Int32) : Void
   fun gtk_tree_view_set_model(this : Void*, model : Pointer(Void)) : Void
   fun gtk_tree_view_set_reorderable(this : Void*, reorderable : LibC::Int) : Void
-  fun gtk_tree_view_set_row_separator_func(this : Void*, func : TreeViewRowSeparatorFunc, data : Pointer(Void), destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_tree_view_set_row_separator_func(this : Void*, func : Void*, data : Pointer(Void), destroy : Void*) : Void
   fun gtk_tree_view_set_rubber_banding(this : Void*, enable : LibC::Int) : Void
   fun gtk_tree_view_set_search_column(this : Void*, column : Int32) : Void
   fun gtk_tree_view_set_search_entry(this : Void*, entry : Pointer(Void)) : Void
-  fun gtk_tree_view_set_search_equal_func(this : Void*, search_equal_func : TreeViewSearchEqualFunc, search_user_data : Pointer(Void), search_destroy : LibGLib::DestroyNotify) : Void
+  fun gtk_tree_view_set_search_equal_func(this : Void*, search_equal_func : Void*, search_user_data : Pointer(Void), search_destroy : Void*) : Void
   fun gtk_tree_view_set_show_expanders(this : Void*, enabled : LibC::Int) : Void
   fun gtk_tree_view_set_tooltip_cell(this : Void*, tooltip : Pointer(Void), path : Pointer(Void), column : Pointer(Void), cell : Pointer(Void)) : Void
   fun gtk_tree_view_set_tooltip_column(this : Void*, column : Int32) : Void
@@ -5381,17 +5381,17 @@ lib LibGtk
   fun gtk_widget_add_controller(this : Void*, controller : Pointer(Void)) : Void
   fun gtk_widget_add_css_class(this : Void*, css_class : Pointer(LibC::Char)) : Void
   fun gtk_widget_add_mnemonic_label(this : Void*, label : Pointer(Void)) : Void
-  fun gtk_widget_add_tick_callback(this : Void*, callback : TickCallback, user_data : Pointer(Void), notify : LibGLib::DestroyNotify) : UInt32
+  fun gtk_widget_add_tick_callback(this : Void*, callback : Void*, user_data : Pointer(Void), notify : Void*) : UInt32
   fun gtk_widget_allocate(this : Void*, width : Int32, height : Int32, baseline : Int32, transform : Pointer(Void)) : Void
   fun gtk_widget_child_focus(this : Void*, direction : UInt32) : LibC::Int
   fun gtk_widget_class_add_shortcut(this : Void*, shortcut : Pointer(Void)) : Void
-  fun gtk_widget_class_bind_template_callback_full(this : Void*, callback_name : Pointer(LibC::Char), callback_symbol : LibGObject::Callback) : Void
+  fun gtk_widget_class_bind_template_callback_full(this : Void*, callback_name : Pointer(LibC::Char), callback_symbol : Void*) : Void
   fun gtk_widget_class_bind_template_child_full(this : Void*, name : Pointer(LibC::Char), internal_child : LibC::Int, struct_offset : Int64) : Void
   fun gtk_widget_class_get_accessible_role(this : Void*) : UInt32
   fun gtk_widget_class_get_activate_signal(this : Void*) : UInt32
   fun gtk_widget_class_get_css_name(this : Void*) : Pointer(LibC::Char)
   fun gtk_widget_class_get_layout_manager_type(this : Void*) : UInt64
-  fun gtk_widget_class_install_action(this : Void*, action_name : Pointer(LibC::Char), parameter_type : Pointer(LibC::Char), activate : WidgetActionActivateFunc) : Void
+  fun gtk_widget_class_install_action(this : Void*, action_name : Pointer(LibC::Char), parameter_type : Pointer(LibC::Char), activate : Void*) : Void
   fun gtk_widget_class_install_property_action(this : Void*, action_name : Pointer(LibC::Char), property_name : Pointer(LibC::Char)) : Void
   fun gtk_widget_class_query_action(this : Void*, index_ : UInt32, owner : Pointer(UInt64), action_name : Pointer(Pointer(LibC::Char)), parameter_type : Pointer(Pointer(Void)), property_name : Pointer(Pointer(LibC::Char))) : LibC::Int
   fun gtk_widget_class_set_accessible_role(this : Void*, accessible_role : UInt32) : Void

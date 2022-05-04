@@ -17,6 +17,17 @@ module Gio
         sizeof(LibGio::DataInputStream), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -58,6 +69,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -106,6 +119,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Gets the byte order for the data input stream.
@@ -271,8 +285,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      length = Pointer(UInt64).null
-      # Generator::NullableArrayPlan
+      length = Pointer(UInt64).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -296,7 +309,7 @@ module Gio
     # When the operation is finished, @callback will be called. You
     # can then call g_data_input_stream_read_line_finish() to get
     # the result of the operation.
-    def read_line_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def read_line_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_data_input_stream_read_line_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -309,14 +322,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -343,7 +348,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       length = Pointer(UInt64).null
-
       # C call
       _retval = LibGio.g_data_input_stream_read_line_finish(self, result, length, pointerof(_error))
 
@@ -366,7 +370,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       length = Pointer(UInt64).null
-
       # C call
       _retval = LibGio.g_data_input_stream_read_line_finish_utf8(self, result, length, pointerof(_error))
 
@@ -392,8 +395,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      length = Pointer(UInt64).null
-      # Generator::NullableArrayPlan
+      length = Pointer(UInt64).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -526,8 +528,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      length = Pointer(UInt64).null
-      # Generator::NullableArrayPlan
+      length = Pointer(UInt64).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -560,7 +561,7 @@ module Gio
     # inconsistent with g_data_input_stream_read_until().  Both functions
     # will be marked as deprecated in a future release.  Use
     # g_data_input_stream_read_upto_async() instead.
-    def read_until_async(stop_chars : ::String, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def read_until_async(stop_chars : ::String, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_data_input_stream_read_until_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -573,14 +574,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -605,7 +598,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       length = Pointer(UInt64).null
-
       # C call
       _retval = LibGio.g_data_input_stream_read_until_finish(self, result, length, pointerof(_error))
 
@@ -638,8 +630,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      length = Pointer(UInt64).null
-      # Generator::NullableArrayPlan
+      length = Pointer(UInt64).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -671,7 +662,7 @@ module Gio
     # When the operation is finished, @callback will be called. You
     # can then call g_data_input_stream_read_upto_finish() to get
     # the result of the operation.
-    def read_upto_async(stop_chars : ::String, stop_chars_len : Int64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def read_upto_async(stop_chars : ::String, stop_chars_len : Int64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_data_input_stream_read_upto_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -684,14 +675,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -722,7 +705,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       length = Pointer(UInt64).null
-
       # C call
       _retval = LibGio.g_data_input_stream_read_upto_finish(self, result, length, pointerof(_error))
 

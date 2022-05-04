@@ -16,9 +16,6 @@ module GObject
       {% unless @type.annotation(GObject::GeneratedWrapper) %}
       # GType for the new created type
       @@_g_type : UInt64 = 0
-      # Memory offset of `LibGICrystal::ObjectPrivate` inside the struct used for object instances, so
-      # we can restore a `LibGICrystal::ObjectPrivate` pointer from a `GObject` pointer.
-      @@_private_offset : Int32 = 0
 
       def self.g_type : UInt64
         if LibGLib.g_once_init_enter(pointerof(@@_g_type)) != 0
@@ -26,7 +23,6 @@ module GObject
             ->_class_init(Pointer(LibGObject::TypeClass), Pointer(Void)),
             ->_instance_init(Pointer(LibGObject::TypeInstance), Pointer(LibGObject::TypeClass)))
 
-          @@_private_offset = LibGObject.g_type_add_instance_private(g_type, sizeof(LibGICrystal::ObjectPrivate))
           LibGLib.g_once_init_leave(pointerof(@@_g_type), g_type)
         end
 
@@ -35,67 +31,44 @@ module GObject
 
       # :nodoc:
       def self._class_init(klass : Pointer(LibGObject::TypeClass), user_data : Pointer(Void)) : Nil
-        # At class initialization (from GObject point of view) we need to calculate the private offset, so we
-        # can later restore `LibGICrystal::ObjectPrivate` from `GObject` pointers.
-        LibGObject.g_type_class_adjust_private_offset(klass, pointerof(@@_private_offset)) if @@_private_offset != 0
       end
 
       # :nodoc:
       def self._instance_init(instance : Pointer(LibGObject::TypeInstance), type : Pointer(LibGObject::TypeClass)) : Nil
-        private_obj = _private_object(instance.as(Pointer(Void)))
-        private_obj.value.gc_collected = 0
-        private_obj.value.crystal_instance_address = 0_u64
       end
 
-      # :nodoc:
-      def self._private_object(instance : Pointer(Void)) : Pointer(LibGICrystal::ObjectPrivate)
-        # Retore our beloved `LibGICrystal::ObjectPrivate` from a `GObject` pointer.
-        (instance + @@_private_offset).as(Pointer(LibGICrystal::ObjectPrivate))
-      end
-
-      def self.new
+      def self.new : self
         instance = {{ @type.id }}.allocate
         gobj_ptr = LibGObject.g_object_newv({{ @type.id }}.g_type, 0, Pointer(Void).null)
         LibGObject.g_object_ref_sink(gobj_ptr) if LibGObject.g_object_is_floating(gobj_ptr) == 1
 
-        private_obj = {{ @type.id }}._private_object(gobj_ptr)
-        private_obj.value.crystal_instance_address = instance.object_id
-
+        LibGObject.g_object_set_qdata(gobj_ptr, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
         instance.initialize(gobj_ptr, :full)
         GC.add_finalizer(instance)
         instance
       end
 
-      def initialize(pointer : Pointer(Void), transfer : GICrystal::Transfer)
-        super
-      end
+      def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+        instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+        return instance.as(self) if instance
 
-      def finalize
-        self.class._private_object(@pointer).value.gc_collected = 1
-        super
+        instance = {{ @type }}.allocate
+        LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+        instance.initialize(pointer, transfer)
+        GC.add_finalizer(instance)
+        instance
       end
 
       # Cast a `GObject::Object` to this type, returns nil if cast can't be made.
       def self.cast?(obj : GObject::Object) : self?
         return if LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
 
-        private_obj = {{ @type.id }}._private_object(obj.to_unsafe)
-
         # If the object was collected by Crystal GC but still alive in C world we can't bring
         # the crystal object form the dead.
-        raise GICrystal::ObjectCollectedError.new if private_obj.value.gc_collected != 0
+        gc_collected = LibGObject.g_object_get_qdata(obj, GICrystal::GC_COLLECTED_QDATA_KEY).address
+        raise GICrystal::ObjectCollectedError.new if gc_collected != 0
 
-        instance_address = private_obj.value.crystal_instance_address
-        return Pointer({{ @type.id }}).new(instance_address).as({{ @type.id }}) unless instance_address.zero?
-
-        # If the object was born in C world, crystal instance address still NULL
-        # So we create a Crystal instance for it and annotate the crystal instance address
-        # And if there's a float ref we sink it!
-        LibGObject.g_object_ref_sink(obj) if LibGObject.g_object_is_floating(obj) == 1
-
-        new_instance = {{ @type.id }}.new(obj.to_unsafe, :none)
-        private_obj.value.crystal_instance_address = new_instance.object_id
-        new_instance
+        new(obj.to_unsafe, :none)
       end
       {% end %}
     end
@@ -107,9 +80,20 @@ module GObject
         sizeof(LibGObject::Object), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
-      LibGObject.g_object_ref_sink(self) unless transfer.full?
+      LibGObject.g_object_ref_sink(self) if transfer.none? || LibGObject.g_object_is_floating(self) == 1
     end
 
     # Called by the garbage collector. Decreases the reference count of object.
@@ -118,6 +102,8 @@ module GObject
       {% if flag?(:debugmemory) %}
         LibC.printf("~%s at %p - ref count: %d\n", self.class.name.to_unsafe, self, ref_count)
       {% end %}
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).null)
+      LibGObject.g_object_set_qdata(self, GICrystal::GC_COLLECTED_QDATA_KEY, Pointer(Void).new(0x1))
       LibGObject.g_object_unref(self)
     end
 
@@ -156,8 +142,7 @@ module GObject
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      n_parameters = parameters.size
-      # Generator::ArrayArgPlan
+      n_parameters = parameters.size # Generator::ArrayArgPlan
       parameters = parameters.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -216,7 +201,6 @@ module GObject
 
       # Generator::OutArgUsedInReturnPlan
       n_properties_p = 0_u32
-
       # C call
       _retval = LibGObject.g_object_interface_list_properties(g_iface, pointerof(n_properties_p))
 
@@ -395,13 +379,10 @@ module GObject
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_properties = names.size
-      # Generator::ArrayArgPlan
+      n_properties = names.size # Generator::ArrayArgPlan
       names = names.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      n_properties = values.size
-      # Generator::ArrayArgPlan
+      n_properties = values.size # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
@@ -686,50 +667,54 @@ module GObject
         connect(block)
       end
 
-      def connect(block : Proc(GObject::ParamSpec, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = GObject::ParamSpec.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(GObject::ParamSpec, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(GObject::ParamSpec, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          pspec = GObject::ParamSpec.new(lib_pspec, :none)
+          ::Box(Proc(GObject::ParamSpec, Nil)).unbox(_lib_box).call(pspec)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(GObject::ParamSpec, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = GObject::ParamSpec.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(GObject::ParamSpec, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(GObject::ParamSpec, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          pspec = GObject::ParamSpec.new(lib_pspec, :none)
+          ::Box(Proc(GObject::ParamSpec, Nil)).unbox(_lib_box).call(pspec)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(GObject::Object, GObject::ParamSpec, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = GObject::Object.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = GObject::ParamSpec.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(GObject::Object, GObject::ParamSpec, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(GObject::Object, GObject::ParamSpec, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = GObject::Object.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          pspec = GObject::ParamSpec.new(lib_pspec, :none)
+          ::Box(Proc(GObject::Object, GObject::ParamSpec, Nil)).unbox(_lib_box).call(_sender, pspec)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(GObject::Object, GObject::ParamSpec, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = GObject::Object.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = GObject::ParamSpec.new(lib_arg0, GICrystal::Transfer::None)
-          ::Box(Proc(GObject::Object, GObject::ParamSpec, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(GObject::Object, GObject::ParamSpec, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = GObject::Object.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          pspec = GObject::ParamSpec.new(lib_pspec, :none)
+          ::Box(Proc(GObject::Object, GObject::ParamSpec, Nil)).unbox(_lib_box).call(_sender, pspec)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(pspec : GObject::ParamSpec) : Nil

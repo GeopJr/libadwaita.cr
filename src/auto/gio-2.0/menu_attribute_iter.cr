@@ -14,6 +14,17 @@ module Gio
         sizeof(LibGio::MenuAttributeIter), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -62,10 +73,8 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      out_name = Pointer(Pointer(LibC::Char)).null
-      # Generator::OutArgUsedInReturnPlan
+      out_name = Pointer(Pointer(LibC::Char)).null # Generator::OutArgUsedInReturnPlan
       value = Pointer(Pointer(Void)).null
-
       # C call
       _retval = LibGio.g_menu_attribute_iter_get_next(self, out_name, value)
 

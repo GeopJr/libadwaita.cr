@@ -71,10 +71,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      d_x = Pointer(Float32).null
-      # Generator::OutArgUsedInReturnPlan
+      d_x = Pointer(Float32).null # Generator::OutArgUsedInReturnPlan
       d_y = Pointer(Float32).null
-
       # C call
       _retval = LibGraphene.graphene_point_distance(self, b, d_x, d_y)
 
@@ -148,7 +146,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point.new
-
       # C call
       LibGraphene.graphene_point_interpolate(self, b, factor, res)
 
@@ -176,7 +173,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       v = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_point_to_vec2(self, v)
 

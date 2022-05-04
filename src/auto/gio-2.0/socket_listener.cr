@@ -26,6 +26,17 @@ module Gio
         sizeof(LibGio::SocketListener), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -47,6 +58,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -82,6 +95,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Blocks waiting for a client to connect to any of the sockets added
@@ -104,8 +118,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      source_object = Pointer(Pointer(Void)).null
-      # Generator::NullableArrayPlan
+      source_object = Pointer(Pointer(Void)).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -128,7 +141,7 @@ module Gio
     # When the operation is finished @callback will be
     # called. You can then call g_socket_listener_accept_finish()
     # to get the result of the operation.
-    def accept_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def accept_async(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_socket_listener_accept_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -141,14 +154,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -172,7 +177,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       source_object = Pointer(Pointer(Void)).null
-
       # C call
       _retval = LibGio.g_socket_listener_accept_finish(self, result, source_object, pointerof(_error))
 
@@ -207,8 +211,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      source_object = Pointer(Pointer(Void)).null
-      # Generator::NullableArrayPlan
+      source_object = Pointer(Pointer(Void)).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -231,7 +234,7 @@ module Gio
     # When the operation is finished @callback will be
     # called. You can then call g_socket_listener_accept_socket_finish()
     # to get the result of the operation.
-    def accept_socket_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def accept_socket_async(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_socket_listener_accept_socket_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -244,14 +247,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -275,7 +270,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       source_object = Pointer(Pointer(Void)).null
-
       # C call
       _retval = LibGio.g_socket_listener_accept_socket_finish(self, result, source_object, pointerof(_error))
 
@@ -324,10 +318,8 @@ module Gio
                       else
                         source_object.to_unsafe
                       end
-
       # Generator::OutArgUsedInReturnPlan
       effective_address = Pointer(Pointer(Void)).null
-
       # C call
       _retval = LibGio.g_socket_listener_add_address(self, address, type, protocol, source_object, effective_address, pointerof(_error))
 
@@ -503,54 +495,62 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::SocketListenerEvent, Gio::Socket, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::SocketListenerEvent.new(lib_arg0)
-          arg1 = Gio::Socket.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect(handler : Proc(Gio::SocketListenerEvent, Gio::Socket, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_socket : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          event = Gio::SocketListenerEvent.new(lib_event, :none)
+          # Generator::GObjectArgPlan
+          socket = Gio::Socket.new(lib_socket, :none)
+          ::Box(Proc(Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(_lib_box).call(event, socket)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::SocketListenerEvent, Gio::Socket, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::SocketListenerEvent.new(lib_arg0)
-          arg1 = Gio::Socket.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gio::SocketListenerEvent, Gio::Socket, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_socket : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          event = Gio::SocketListenerEvent.new(lib_event, :none)
+          # Generator::GObjectArgPlan
+          socket = Gio::Socket.new(lib_socket, :none)
+          ::Box(Proc(Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(_lib_box).call(event, socket)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::SocketListener.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::SocketListenerEvent.new(lib_arg0)
-          arg1 = Gio::Socket.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect(handler : Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_socket : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::SocketListener.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          event = Gio::SocketListenerEvent.new(lib_event, :none)
+          # Generator::GObjectArgPlan
+          socket = Gio::Socket.new(lib_socket, :none)
+          ::Box(Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(_lib_box).call(_sender, event, socket)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::SocketListener.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::SocketListenerEvent.new(lib_arg0)
-          arg1 = Gio::Socket.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_socket : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::SocketListener.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          event = Gio::SocketListenerEvent.new(lib_event, :none)
+          # Generator::GObjectArgPlan
+          socket = Gio::Socket.new(lib_socket, :none)
+          ::Box(Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(_lib_box).call(_sender, event, socket)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(event : Gio::SocketListenerEvent, socket : Gio::Socket) : Nil

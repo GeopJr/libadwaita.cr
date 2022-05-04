@@ -172,6 +172,17 @@ module Gtk
         sizeof(LibGtk::ListStore), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -195,8 +206,7 @@ module Gtk
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      n_columns = types.size
-      # Generator::ArrayArgPlan
+      n_columns = types.size # Generator::ArrayArgPlan
       types = types.to_a.to_unsafe
 
       # C call
@@ -205,6 +215,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def initialize(*types : UInt64)
@@ -221,7 +232,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
-
       # C call
       LibGtk.gtk_list_store_append(self, iter)
 
@@ -253,7 +263,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
-
       # C call
       LibGtk.gtk_list_store_insert(self, iter, position)
 
@@ -273,8 +282,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::CallerAllocatesPlan
-      iter = Gtk::TreeIter.new
-      # Generator::NullableArrayPlan
+      iter = Gtk::TreeIter.new # Generator::NullableArrayPlan
       sibling = if sibling.nil?
                   Pointer(Void).null
                 else
@@ -300,8 +308,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::CallerAllocatesPlan
-      iter = Gtk::TreeIter.new
-      # Generator::NullableArrayPlan
+      iter = Gtk::TreeIter.new # Generator::NullableArrayPlan
       sibling = if sibling.nil?
                   Pointer(Void).null
                 else
@@ -355,17 +362,12 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      iter = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      iter = Gtk::TreeIter.new
-      # Generator::ArrayLengthArgPlan
-      n_values = columns.size
-      # Generator::ArrayArgPlan
+      iter = Pointer(Void).null # Generator::CallerAllocatesPlan
+      iter = Gtk::TreeIter.new  # Generator::ArrayLengthArgPlan
+      n_values = columns.size   # Generator::ArrayArgPlan
       columns = columns.to_a.to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      n_values = values.size
-      # Generator::ArrayArgPlan
+      n_values = values.size # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
@@ -444,7 +446,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
-
       # C call
       LibGtk.gtk_list_store_prepend(self, iter)
 
@@ -492,24 +493,19 @@ module Gtk
     # and should only be used when constructing a new `GtkListStore`.  It will not
     # function after a row has been added, or a method on the `GtkTreeModel`
     # interface is called.
-    def set_column_types(types : Enumerable(UInt64)) : Nil
+    def column_types=(types : Enumerable(UInt64)) : Nil
       # gtk_list_store_set_column_types: (Method)
       # @types: (array length=n_columns element-type Gtype)
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_columns = types.size
-      # Generator::ArrayArgPlan
+      n_columns = types.size # Generator::ArrayArgPlan
       types = types.to_a.to_unsafe
 
       # C call
       LibGtk.gtk_list_store_set_column_types(self, n_columns, types)
 
       # Return value handling
-    end
-
-    def set_column_types(*types : UInt64)
-      set_column_types(types)
     end
 
     # Sets the data in the cell specified by @iter and @column.
@@ -548,13 +544,10 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_values = columns.size
-      # Generator::ArrayArgPlan
+      n_values = columns.size # Generator::ArrayArgPlan
       columns = columns.to_a.to_unsafe
-
       # Generator::ArrayLengthArgPlan
-      n_values = values.size
-      # Generator::ArrayArgPlan
+      n_values = values.size # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call

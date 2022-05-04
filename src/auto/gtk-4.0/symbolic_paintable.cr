@@ -18,8 +18,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_colors = colors.size
-      # Generator::ArrayArgPlan
+      n_colors = colors.size # Generator::ArrayArgPlan
       colors = colors.to_a.map(&.to_unsafe).to_unsafe
 
       # C call

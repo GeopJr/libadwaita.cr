@@ -98,6 +98,7 @@ module Pango
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def copy : Pango::GlyphString?
@@ -119,14 +120,10 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      ink_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      ink_rect = Pango::Rectangle.new
-      # Generator::OutArgUsedInReturnPlan
-      logical_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      ink_rect = Pointer(Void).null     # Generator::CallerAllocatesPlan
+      ink_rect = Pango::Rectangle.new   # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
-
       # C call
       LibPango.pango_glyph_string_extents(self, font, ink_rect, logical_rect)
 
@@ -142,14 +139,10 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      ink_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      ink_rect = Pango::Rectangle.new
-      # Generator::OutArgUsedInReturnPlan
-      logical_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      ink_rect = Pointer(Void).null     # Generator::CallerAllocatesPlan
+      ink_rect = Pango::Rectangle.new   # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
-
       # C call
       LibPango.pango_glyph_string_extents_range(self, start, _end, font, ink_rect, logical_rect)
 

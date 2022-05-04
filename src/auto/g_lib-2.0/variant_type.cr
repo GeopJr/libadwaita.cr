@@ -182,6 +182,7 @@ module GLib
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def self.new_array(element : GLib::VariantType) : self
@@ -226,8 +227,7 @@ module GLib
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      length = items.size
-      # Generator::ArrayArgPlan
+      length = items.size # Generator::ArrayArgPlan
       items = items.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -540,10 +540,8 @@ module GLib
               else
                 limit.to_unsafe
               end
-
       # Generator::OutArgUsedInReturnPlan
       endptr = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGLib.g_variant_type_string_scan(string, limit, endptr)
 

@@ -125,6 +125,17 @@ module Gio
         sizeof(LibGio::MenuModel), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -313,58 +324,58 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Int32, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, lib_arg2 : Int32, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          ::Box(Proc(Int32, Int32, Int32, Nil)).unbox(box).call(arg0, arg1, arg2)
-        }
+      def connect(handler : Proc(Int32, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_position : Int32, lib_removed : Int32, lib_added : Int32, _lib_box : Pointer(Void)) {
+          position = lib_position
+          removed = lib_removed
+          added = lib_added
+          ::Box(Proc(Int32, Int32, Int32, Nil)).unbox(_lib_box).call(position, removed, added)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Int32, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, lib_arg2 : Int32, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          ::Box(Proc(Int32, Int32, Int32, Nil)).unbox(box).call(arg0, arg1, arg2)
-        }
+      def connect_after(handler : Proc(Int32, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_position : Int32, lib_removed : Int32, lib_added : Int32, _lib_box : Pointer(Void)) {
+          position = lib_position
+          removed = lib_removed
+          added = lib_added
+          ::Box(Proc(Int32, Int32, Int32, Nil)).unbox(_lib_box).call(position, removed, added)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::MenuModel, Int32, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, lib_arg2 : Int32, box : Pointer(Void)) {
-          sender = Gio::MenuModel.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          ::Box(Proc(Gio::MenuModel, Int32, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
-        }
+      def connect(handler : Proc(Gio::MenuModel, Int32, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_position : Int32, lib_removed : Int32, lib_added : Int32, _lib_box : Pointer(Void)) {
+          _sender = Gio::MenuModel.new(_lib_sender, GICrystal::Transfer::None)
+          position = lib_position
+          removed = lib_removed
+          added = lib_added
+          ::Box(Proc(Gio::MenuModel, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, position, removed, added)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::MenuModel, Int32, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, lib_arg2 : Int32, box : Pointer(Void)) {
-          sender = Gio::MenuModel.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          ::Box(Proc(Gio::MenuModel, Int32, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
-        }
+      def connect_after(handler : Proc(Gio::MenuModel, Int32, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_position : Int32, lib_removed : Int32, lib_added : Int32, _lib_box : Pointer(Void)) {
+          _sender = Gio::MenuModel.new(_lib_sender, GICrystal::Transfer::None)
+          position = lib_position
+          removed = lib_removed
+          added = lib_added
+          ::Box(Proc(Gio::MenuModel, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, position, removed, added)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(position : Int32, removed : Int32, added : Int32) : Nil

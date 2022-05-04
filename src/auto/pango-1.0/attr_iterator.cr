@@ -85,10 +85,8 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      language = Pointer(Pointer(Void)).null
-      # Generator::OutArgUsedInReturnPlan
+      language = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       extra_attrs = Pointer(Pointer(LibGLib::SList)).null
-
       # C call
       LibPango.pango_attr_iterator_get_font(self, desc, language, extra_attrs)
 

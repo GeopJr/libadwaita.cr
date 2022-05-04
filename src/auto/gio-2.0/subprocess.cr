@@ -72,6 +72,17 @@ module Gio
         sizeof(LibGio::Subprocess), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -98,6 +109,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -145,6 +158,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Communicate with the subprocess until it terminates, and all input
@@ -204,19 +218,15 @@ module Gio
                   else
                     stdin_buf.to_unsafe
                   end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
       # Generator::OutArgUsedInReturnPlan
-      stdout_buf = Pointer(Pointer(Void)).null
-      # Generator::OutArgUsedInReturnPlan
+      stdout_buf = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       stderr_buf = Pointer(Pointer(Void)).null
-
       # C call
       _retval = LibGio.g_subprocess_communicate(self, stdin_buf, cancellable, stdout_buf, stderr_buf, pointerof(_error))
 
@@ -230,7 +240,7 @@ module Gio
 
     # Asynchronous version of g_subprocess_communicate().  Complete
     # invocation with g_subprocess_communicate_finish().
-    def communicate_async(stdin_buf : GLib::Bytes?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def communicate_async(stdin_buf : GLib::Bytes?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_subprocess_communicate_async: (Method)
       # @stdin_buf: (nullable)
       # @cancellable: (nullable)
@@ -244,21 +254,12 @@ module Gio
                   else
                     stdin_buf.to_unsafe
                   end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -282,10 +283,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      stdout_buf = Pointer(Pointer(Void)).null
-      # Generator::OutArgUsedInReturnPlan
+      stdout_buf = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       stderr_buf = Pointer(Pointer(Void)).null
-
       # C call
       _retval = LibGio.g_subprocess_communicate_finish(self, result, stdout_buf, stderr_buf, pointerof(_error))
 
@@ -318,19 +317,15 @@ module Gio
                   else
                     stdin_buf.to_unsafe
                   end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
       # Generator::OutArgUsedInReturnPlan
-      stdout_buf = Pointer(Pointer(LibC::Char)).null
-      # Generator::OutArgUsedInReturnPlan
+      stdout_buf = Pointer(Pointer(LibC::Char)).null # Generator::OutArgUsedInReturnPlan
       stderr_buf = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGio.g_subprocess_communicate_utf8(self, stdin_buf, cancellable, stdout_buf, stderr_buf, pointerof(_error))
 
@@ -344,7 +339,7 @@ module Gio
 
     # Asynchronous version of g_subprocess_communicate_utf8().  Complete
     # invocation with g_subprocess_communicate_utf8_finish().
-    def communicate_utf8_async(stdin_buf : ::String?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def communicate_utf8_async(stdin_buf : ::String?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_subprocess_communicate_utf8_async: (Method)
       # @stdin_buf: (nullable)
       # @cancellable: (nullable)
@@ -358,21 +353,12 @@ module Gio
                   else
                     stdin_buf.to_unsafe
                   end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -396,10 +382,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      stdout_buf = Pointer(Pointer(LibC::Char)).null
-      # Generator::OutArgUsedInReturnPlan
+      stdout_buf = Pointer(Pointer(LibC::Char)).null # Generator::OutArgUsedInReturnPlan
       stderr_buf = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGio.g_subprocess_communicate_utf8_finish(self, result, stdout_buf, stderr_buf, pointerof(_error))
 
@@ -667,7 +651,7 @@ module Gio
     # Wait for the subprocess to terminate.
     #
     # This is the asynchronous version of g_subprocess_wait().
-    def wait_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def wait_async(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_subprocess_wait_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -680,14 +664,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -730,7 +706,7 @@ module Gio
     # Combines g_subprocess_wait_async() with g_spawn_check_wait_status().
     #
     # This is the asynchronous version of g_subprocess_wait_check().
-    def wait_check_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def wait_check_async(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_subprocess_wait_check_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -743,14 +719,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

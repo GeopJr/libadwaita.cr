@@ -155,9 +155,20 @@ module Gtk
         sizeof(LibGtk::Expression), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_param_spec_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_param_spec_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
-      LibGObject.gtk_expression_ref(self) unless transfer.full?
+      LibGObject.gtk_expression_ref(self) if transfer.none?
     end
 
     # Called by the garbage collector. Decreases the reference count of object.
@@ -166,6 +177,8 @@ module Gtk
       {% if flag?(:debugmemory) %}
         LibC.printf("~%s at %p - ref count: %d\n", self.class.name.to_unsafe, self, ref_count)
       {% end %}
+      LibGObject.g_param_spec_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).null)
+      LibGObject.g_param_spec_set_qdata(self, GICrystal::GC_COLLECTED_QDATA_KEY, Pointer(Void).new(0x1))
       LibGObject.gtk_expression_unref(self)
     end
 
@@ -247,7 +260,6 @@ module Gtk
               else
                 this_.to_unsafe
               end
-
       # Generator::HandmadeArgPlan
       value = if !value.is_a?(GObject::Value)
                 GObject::Value.new(value).to_unsafe
@@ -333,7 +345,7 @@ module Gtk
     # GTK cannot guarantee that the evaluation did indeed change when the @notify
     # gets invoked, but it guarantees the opposite: When it did in fact change,
     # the @notify will be invoked.
-    def watch(this_ : GObject::Object?, notify : Pointer(Void), user_data : Pointer(Void)?, user_destroy : Pointer(Void)) : Gtk::ExpressionWatch
+    def watch(this_ : GObject::Object?, notify : Gtk::ExpressionNotify) : Gtk::ExpressionWatch
       # gtk_expression_watch: (Method)
       # @this_: (nullable)
       # @user_data: (nullable)
@@ -345,13 +357,18 @@ module Gtk
               else
                 this_.to_unsafe
               end
-
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
+      # Generator::CallbackArgPlan
+      if notify
+        _box = ::Box.box(notify)
+        notify = ->(lib_user_data : Pointer(Void)) {
+          user_data = lib_user_data
+          ::Box(Proc(Nil)).unbox(user_data).call
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        notify = user_data = user_destroy = Pointer(Void).null
+      end
 
       # C call
       _retval = LibGtk.gtk_expression_watch(self, this_, notify, user_data, user_destroy)

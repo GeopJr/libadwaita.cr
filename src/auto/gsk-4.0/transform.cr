@@ -44,6 +44,7 @@ module Gsk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def equal(second : Gsk::Transform?) : Bool
@@ -250,7 +251,6 @@ module Gsk
 
       # Generator::CallerAllocatesPlan
       out_matrix = Graphene::Matrix.new
-
       # C call
       LibGsk.gsk_transform_to_matrix(self, out_matrix)
 
@@ -310,7 +310,6 @@ module Gsk
 
       # Generator::CallerAllocatesPlan
       out_rect = Graphene::Rect.new
-
       # C call
       LibGsk.gsk_transform_transform_bounds(self, rect, out_rect)
 
@@ -326,7 +325,6 @@ module Gsk
 
       # Generator::CallerAllocatesPlan
       out_point = Graphene::Point.new
-
       # C call
       LibGsk.gsk_transform_transform_point(self, point, out_point)
 

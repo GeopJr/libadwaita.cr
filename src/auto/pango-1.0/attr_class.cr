@@ -16,7 +16,7 @@ module Pango
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(type : Pango::AttrType? = nil, copy : Pointer(Void)? = nil, destroy : Pointer(Void)? = nil, equal : Pointer(Void)? = nil)
+    def self.new(type : Pango::AttrType? = nil, copy : Pango::Copy? = nil, destroy : Pango::Destroy? = nil, equal : Pango::Equal? = nil)
       _ptr = Pointer(Void).malloc(32)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.type = type unless type.nil?
@@ -44,35 +44,35 @@ module Pango
       value
     end
 
-    def copy : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def copy : Pango::Copy
+      _var = (@pointer + 8).as(Pointer(Void*))
+      Pango::Copy.new(_var, GICrystal::Transfer::None)
     end
 
-    def copy=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(-> Void))
+    def copy=(value : Pango::Copy)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibPango::AttrClass))
       value
     end
 
-    def destroy : Pointer(Void)
-      _var = (@pointer + 16).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def destroy : Pango::Destroy
+      _var = (@pointer + 16).as(Pointer(Void*))
+      Pango::Destroy.new(_var, GICrystal::Transfer::None)
     end
 
-    def destroy=(value : Pointer(Void))
-      _var = (@pointer + 16).as(Pointer(-> Void))
+    def destroy=(value : Pango::Destroy)
+      _var = (@pointer + 16).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibPango::AttrClass))
       value
     end
 
-    def equal : Pointer(Void)
-      _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def equal : Pango::Equal
+      _var = (@pointer + 24).as(Pointer(Void*))
+      Pango::Equal.new(_var, GICrystal::Transfer::None)
     end
 
-    def equal=(value : Pointer(Void))
-      _var = (@pointer + 24).as(Pointer(-> Void))
+    def equal=(value : Pango::Equal)
+      _var = (@pointer + 24).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibPango::AttrClass))
       value
     end

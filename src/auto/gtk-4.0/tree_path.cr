@@ -36,6 +36,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def self.new_first : self
@@ -56,8 +57,7 @@ module Gtk
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      length = indices.size
-      # Generator::ArrayArgPlan
+      length = indices.size # Generator::ArrayArgPlan
       indices = indices.to_a.to_unsafe
 
       # C call
@@ -157,7 +157,6 @@ module Gtk
 
       # Generator::OutArgUsedInReturnPlan
       depth = 0
-
       # C call
       _retval = LibGtk.gtk_tree_path_get_indices_with_depth(self, pointerof(depth))
 

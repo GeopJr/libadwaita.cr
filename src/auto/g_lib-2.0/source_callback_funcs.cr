@@ -13,7 +13,7 @@ module GLib
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(ref : Pointer(Void)? = nil, unref : Pointer(Void)? = nil, get : Pointer(Void)? = nil)
+    def self.new(ref : GLib::Ref? = nil, unref : GLib::Unref? = nil, get : Pointer(Void)? = nil)
       _ptr = Pointer(Void).malloc(24)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.ref = ref unless ref.nil?
@@ -29,24 +29,24 @@ module GLib
       LibC.memcmp(self, other.to_unsafe, sizeof(LibGLib::SourceCallbackFuncs)).zero?
     end
 
-    def ref : Pointer(Void)
-      _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def ref : GLib::Ref
+      _var = (@pointer + 0).as(Pointer(Void*))
+      GLib::Ref.new(_var, GICrystal::Transfer::None)
     end
 
-    def ref=(value : Pointer(Void))
-      _var = (@pointer + 0).as(Pointer(-> Void))
+    def ref=(value : GLib::Ref)
+      _var = (@pointer + 0).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceCallbackFuncs))
       value
     end
 
-    def unref : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def unref : GLib::Unref
+      _var = (@pointer + 8).as(Pointer(Void*))
+      GLib::Unref.new(_var, GICrystal::Transfer::None)
     end
 
-    def unref=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(-> Void))
+    def unref=(value : GLib::Unref)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGLib::SourceCallbackFuncs))
       value
     end

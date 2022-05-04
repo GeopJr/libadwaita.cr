@@ -11,7 +11,7 @@ module GObject
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(data : Pointer(Void)? = nil, notify : Pointer(Void)? = nil)
+    def self.new(data : Pointer(Void)? = nil, notify : GObject::ClosureNotify? = nil)
       _ptr = Pointer(Void).malloc(16)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.data = data unless data.nil?
@@ -41,13 +41,13 @@ module GObject
       value
     end
 
-    def notify : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(LibGObject::ClosureNotify))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def notify : GObject::ClosureNotify
+      _var = (@pointer + 8).as(Pointer(Void*))
+      GObject::ClosureNotify.new(_var, GICrystal::Transfer::None)
     end
 
-    def notify=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(LibGObject::ClosureNotify))
+    def notify=(value : GObject::ClosureNotify)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::ClosureNotifyData))
       value
     end

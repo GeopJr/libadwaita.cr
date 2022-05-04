@@ -41,6 +41,17 @@ module Gio
         sizeof(LibGio::FileInfo), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -62,6 +73,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Clears the status information from @info.
@@ -170,12 +182,9 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      type = Pointer(UInt32).null
-      # Generator::OutArgUsedInReturnPlan
-      value_pp = Pointer(Pointer(Void)).null
-      # Generator::OutArgUsedInReturnPlan
+      type = Pointer(UInt32).null            # Generator::OutArgUsedInReturnPlan
+      value_pp = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       status = Pointer(UInt32).null
-
       # C call
       _retval = LibGio.g_file_info_get_attribute_data(self, attribute, type, value_pp, status)
 
@@ -491,7 +500,6 @@ module Gio
 
       # Generator::CallerAllocatesPlan
       result = GLib::TimeVal.new
-
       # C call
       LibGio.g_file_info_get_modification_time(self, result)
 

@@ -57,10 +57,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null

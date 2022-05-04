@@ -12,7 +12,7 @@ module Gio
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(enumerate : Pointer(Void)? = nil, introspect : Pointer(Void)? = nil, dispatch : Pointer(Void)? = nil, padding : Enumerable(Pointer(Void))? = nil)
+    def self.new(enumerate : Gio::DBusSubtreeEnumerateFunc? = nil, introspect : Gio::DBusSubtreeIntrospectFunc? = nil, dispatch : Gio::DBusSubtreeDispatchFunc? = nil, padding : Enumerable(Pointer(Void))? = nil)
       _ptr = Pointer(Void).malloc(88)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.enumerate = enumerate unless enumerate.nil?
@@ -29,35 +29,35 @@ module Gio
       LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::DBusSubtreeVTable)).zero?
     end
 
-    def enumerate : Pointer(Void)
-      _var = (@pointer + 0).as(Pointer(LibGio::DBusSubtreeEnumerateFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def enumerate : Gio::DBusSubtreeEnumerateFunc
+      _var = (@pointer + 0).as(Pointer(Void*))
+      Gio::DBusSubtreeEnumerateFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def enumerate=(value : Pointer(Void))
-      _var = (@pointer + 0).as(Pointer(LibGio::DBusSubtreeEnumerateFunc))
+    def enumerate=(value : Gio::DBusSubtreeEnumerateFunc)
+      _var = (@pointer + 0).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusSubtreeVTable))
       value
     end
 
-    def introspect : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(LibGio::DBusSubtreeIntrospectFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def introspect : Gio::DBusSubtreeIntrospectFunc
+      _var = (@pointer + 8).as(Pointer(Void*))
+      Gio::DBusSubtreeIntrospectFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def introspect=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(LibGio::DBusSubtreeIntrospectFunc))
+    def introspect=(value : Gio::DBusSubtreeIntrospectFunc)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusSubtreeVTable))
       value
     end
 
-    def dispatch : Pointer(Void)
-      _var = (@pointer + 16).as(Pointer(LibGio::DBusSubtreeDispatchFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def dispatch : Gio::DBusSubtreeDispatchFunc
+      _var = (@pointer + 16).as(Pointer(Void*))
+      Gio::DBusSubtreeDispatchFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def dispatch=(value : Pointer(Void))
-      _var = (@pointer + 16).as(Pointer(LibGio::DBusSubtreeDispatchFunc))
+    def dispatch=(value : Gio::DBusSubtreeDispatchFunc)
+      _var = (@pointer + 16).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGio::DBusSubtreeVTable))
       value
     end

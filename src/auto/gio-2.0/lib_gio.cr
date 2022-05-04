@@ -164,85 +164,85 @@ lib LibGio
 
   struct ActionEntry # 64 bytes long
     name : Pointer(LibC::Char)
-    activate : -> Void
+    activate : Void*
     parameter_type : Pointer(LibC::Char)
     state : Pointer(LibC::Char)
-    change_state : -> Void
+    change_state : Void*
     padding : UInt64[3]
   end
 
   struct ActionGroupInterface # 128 bytes long
     g_iface : LibGObject::TypeInterface
-    has_action : -> Void
-    list_actions : -> Void
-    get_action_enabled : -> Void
-    get_action_parameter_type : -> Void
-    get_action_state_type : -> Void
-    get_action_state_hint : -> Void
-    get_action_state : -> Void
-    change_action_state : -> Void
-    activate_action : -> Void
-    action_added : -> Void
-    action_removed : -> Void
-    action_enabled_changed : -> Void
-    action_state_changed : -> Void
-    query_action : -> Void
+    has_action : Void*
+    list_actions : Void*
+    get_action_enabled : Void*
+    get_action_parameter_type : Void*
+    get_action_state_type : Void*
+    get_action_state_hint : Void*
+    get_action_state : Void*
+    change_action_state : Void*
+    activate_action : Void*
+    action_added : Void*
+    action_removed : Void*
+    action_enabled_changed : Void*
+    action_state_changed : Void*
+    query_action : Void*
   end
 
   struct ActionInterface # 80 bytes long
     g_iface : LibGObject::TypeInterface
-    get_name : -> Void
-    get_parameter_type : -> Void
-    get_state_type : -> Void
-    get_state_hint : -> Void
-    get_enabled : -> Void
-    get_state : -> Void
-    change_state : -> Void
-    activate : -> Void
+    get_name : Void*
+    get_parameter_type : Void*
+    get_state_type : Void*
+    get_state_hint : Void*
+    get_enabled : Void*
+    get_state : Void*
+    change_state : Void*
+    activate : Void*
   end
 
   struct ActionMapInterface # 40 bytes long
     g_iface : LibGObject::TypeInterface
-    lookup_action : -> Void
-    add_action : -> Void
-    remove_action : -> Void
+    lookup_action : Void*
+    add_action : Void*
+    remove_action : Void*
   end
 
   struct AppInfoIface # 216 bytes long
     g_iface : LibGObject::TypeInterface
-    dup : -> Void
-    equal : -> Void
-    get_id : -> Void
-    get_name : -> Void
-    get_description : -> Void
-    get_executable : -> Void
-    get_icon : -> Void
-    launch : -> Void
-    supports_uris : -> Void
-    supports_files : -> Void
-    launch_uris : -> Void
-    should_show : -> Void
-    set_as_default_for_type : -> Void
-    set_as_default_for_extension : -> Void
-    add_supports_type : -> Void
-    can_remove_supports_type : -> Void
-    remove_supports_type : -> Void
-    can_delete : -> Void
-    do_delete : -> Void
-    get_commandline : -> Void
-    get_display_name : -> Void
-    set_as_last_used_for_type : -> Void
-    get_supported_types : -> Void
-    launch_uris_async : -> Void
-    launch_uris_finish : -> Void
+    dup : Void*
+    equal : Void*
+    get_id : Void*
+    get_name : Void*
+    get_description : Void*
+    get_executable : Void*
+    get_icon : Void*
+    launch : Void*
+    supports_uris : Void*
+    supports_files : Void*
+    launch_uris : Void*
+    should_show : Void*
+    set_as_default_for_type : Void*
+    set_as_default_for_extension : Void*
+    add_supports_type : Void*
+    can_remove_supports_type : Void*
+    remove_supports_type : Void*
+    can_delete : Void*
+    do_delete : Void*
+    get_commandline : Void*
+    get_display_name : Void*
+    set_as_last_used_for_type : Void*
+    get_supported_types : Void*
+    launch_uris_async : Void*
+    launch_uris_finish : Void*
   end
 
   struct AppLaunchContextClass # 200 bytes long
     parent_class : LibGObject::ObjectClass
-    get_display : -> Void
-    get_startup_notify_id : -> Void
-    launch_failed : -> Void
-    launched : -> Void
+    get_display : Void*
+    get_startup_notify_id : Void*
+    launch_failed : Void*
+    launched : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -253,29 +253,29 @@ lib LibGio
 
   struct ApplicationClass # 312 bytes long
     parent_class : LibGObject::ObjectClass
-    startup : -> Void
-    activate : -> Void
-    open : -> Void
-    command_line : -> Void
-    local_command_line : -> Void
-    before_emit : -> Void
-    after_emit : -> Void
-    add_platform_data : -> Void
-    quit_mainloop : -> Void
-    run_mainloop : -> Void
-    shutdown : -> Void
-    dbus_register : -> Void
-    dbus_unregister : -> Void
-    handle_local_options : -> Void
-    name_lost : -> Void
+    startup : Void*
+    activate : Void*
+    open : Void*
+    command_line : Void*
+    local_command_line : Void*
+    before_emit : Void*
+    after_emit : Void*
+    add_platform_data : Void*
+    quit_mainloop : Void*
+    run_mainloop : Void*
+    shutdown : Void*
+    dbus_register : Void*
+    dbus_unregister : Void*
+    handle_local_options : Void*
+    name_lost : Void*
     padding : Pointer(Void)[7]
   end
 
   struct ApplicationCommandLineClass # 248 bytes long
     parent_class : LibGObject::ObjectClass
-    print_literal : -> Void
-    printerr_literal : -> Void
-    get_stdin : -> Void
+    print_literal : Void*
+    printerr_literal : Void*
+    get_stdin : Void*
     padding : Pointer(Void)[11]
   end
 
@@ -285,22 +285,22 @@ lib LibGio
 
   struct AsyncInitableIface # 32 bytes long
     g_iface : LibGObject::TypeInterface
-    init_async : -> Void
-    init_finish : -> Void
+    init_async : Void*
+    init_finish : Void*
   end
 
   struct AsyncResultIface # 40 bytes long
     g_iface : LibGObject::TypeInterface
-    get_user_data : -> Void
-    get_source_object : -> Void
-    is_tagged : -> Void
+    get_user_data : Void*
+    get_source_object : Void*
+    is_tagged : Void*
   end
 
   struct BufferedInputStreamClass # 336 bytes long
     parent_class : LibGio::FilterInputStreamClass
-    fill : -> Void
-    fill_async : -> Void
-    fill_finish : -> Void
+    fill : Void*
+    fill_async : Void*
+    fill_finish : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -320,7 +320,7 @@ lib LibGio
 
   struct CancellableClass # 184 bytes long
     parent_class : LibGObject::ObjectClass
-    cancelled : -> Void
+    cancelled : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -336,8 +336,8 @@ lib LibGio
 
   struct ConverterIface # 32 bytes long
     g_iface : LibGObject::TypeInterface
-    convert : -> Void
-    reset : -> Void
+    convert : Void*
+    reset : Void*
   end
 
   struct ConverterInputStreamClass # 312 bytes long
@@ -385,10 +385,10 @@ lib LibGio
 
   struct DBusInterfaceIface # 48 bytes long
     parent_iface : LibGObject::TypeInterface
-    get_info : -> Void
-    get_object : -> Void
-    set_object : -> Void
-    dup_object : -> Void
+    get_info : Void*
+    get_object : Void*
+    set_object : Void*
+    dup_object : Void*
   end
 
   struct DBusInterfaceInfo # 48 bytes long
@@ -402,21 +402,21 @@ lib LibGio
 
   struct DBusInterfaceSkeletonClass # 304 bytes long
     parent_class : LibGObject::ObjectClass
-    get_info : -> Void
+    get_info : Void*
     get_vtable : Pointer(Void)
-    get_properties : -> Void
-    flush : -> Void
+    get_properties : Void*
+    flush : Void*
     vfunc_padding : Pointer(Void)[8]
-    g_authorize_method : -> Void
+    g_authorize_method : Void*
     signal_padding : Pointer(Void)[8]
   end
 
   type DBusInterfaceSkeletonPrivate = Void # Struct with zero bytes
 
   struct DBusInterfaceVTable # 88 bytes long
-    method_call : LibGio::DBusInterfaceMethodCallFunc
-    get_property : LibGio::DBusInterfaceGetPropertyFunc
-    set_property : LibGio::DBusInterfaceSetPropertyFunc
+    method_call : Void*
+    get_property : Void*
+    set_property : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -438,17 +438,17 @@ lib LibGio
 
   struct DBusObjectIface # 56 bytes long
     parent_iface : LibGObject::TypeInterface
-    get_object_path : -> Void
-    get_interfaces : -> Void
-    get_interface : -> Void
-    interface_added : -> Void
-    interface_removed : -> Void
+    get_object_path : Void*
+    get_interfaces : Void*
+    get_interface : Void*
+    interface_added : Void*
+    interface_removed : Void*
   end
 
   struct DBusObjectManagerClientClass # 216 bytes long
     parent_class : LibGObject::ObjectClass
-    interface_proxy_signal : -> Void
-    interface_proxy_properties_changed : -> Void
+    interface_proxy_signal : Void*
+    interface_proxy_properties_changed : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -456,14 +456,14 @@ lib LibGio
 
   struct DBusObjectManagerIface # 80 bytes long
     parent_iface : LibGObject::TypeInterface
-    get_object_path : -> Void
-    get_objects : -> Void
-    get_object : -> Void
-    get_interface : -> Void
-    object_added : -> Void
-    object_removed : -> Void
-    interface_added : -> Void
-    interface_removed : -> Void
+    get_object_path : Void*
+    get_objects : Void*
+    get_object : Void*
+    get_interface : Void*
+    object_added : Void*
+    object_removed : Void*
+    interface_added : Void*
+    interface_removed : Void*
   end
 
   struct DBusObjectManagerServerClass # 200 bytes long
@@ -482,7 +482,7 @@ lib LibGio
 
   struct DBusObjectSkeletonClass # 208 bytes long
     parent_class : LibGObject::ObjectClass
-    authorize_method : -> Void
+    authorize_method : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -498,8 +498,8 @@ lib LibGio
 
   struct DBusProxyClass # 408 bytes long
     parent_class : LibGObject::ObjectClass
-    g_properties_changed : -> Void
-    g_signal : -> Void
+    g_properties_changed : Void*
+    g_signal : Void*
     padding : Pointer(Void)[32]
   end
 
@@ -513,9 +513,9 @@ lib LibGio
   end
 
   struct DBusSubtreeVTable # 88 bytes long
-    enumerate : LibGio::DBusSubtreeEnumerateFunc
-    introspect : LibGio::DBusSubtreeIntrospectFunc
-    dispatch : LibGio::DBusSubtreeDispatchFunc
+    enumerate : Void*
+    introspect : Void*
+    dispatch : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -543,11 +543,11 @@ lib LibGio
 
   struct DatagramBasedInterface # 56 bytes long
     g_iface : LibGObject::TypeInterface
-    receive_messages : -> Void
-    send_messages : -> Void
-    create_source : -> Void
-    condition_check : -> Void
-    condition_wait : -> Void
+    receive_messages : Void*
+    send_messages : Void*
+    create_source : Void*
+    condition_check : Void*
+    condition_wait : Void*
   end
 
   struct DesktopAppInfoClass # 136 bytes long
@@ -556,43 +556,43 @@ lib LibGio
 
   struct DesktopAppInfoLookupIface # 24 bytes long
     g_iface : LibGObject::TypeInterface
-    get_default_for_uri_scheme : -> Void
+    get_default_for_uri_scheme : Void*
   end
 
   struct DriveIface # 272 bytes long
     g_iface : LibGObject::TypeInterface
-    changed : -> Void
-    disconnected : -> Void
-    eject_button : -> Void
-    get_name : -> Void
-    get_icon : -> Void
-    has_volumes : -> Void
-    get_volumes : -> Void
-    is_media_removable : -> Void
-    has_media : -> Void
-    is_media_check_automatic : -> Void
-    can_eject : -> Void
-    can_poll_for_media : -> Void
-    eject : -> Void
-    eject_finish : -> Void
-    poll_for_media : -> Void
-    poll_for_media_finish : -> Void
-    get_identifier : -> Void
-    enumerate_identifiers : -> Void
-    get_start_stop_type : -> Void
-    can_start : -> Void
-    can_start_degraded : -> Void
-    start : -> Void
-    start_finish : -> Void
-    can_stop : -> Void
-    stop : -> Void
-    stop_finish : -> Void
-    stop_button : -> Void
-    eject_with_operation : -> Void
-    eject_with_operation_finish : -> Void
-    get_sort_key : -> Void
-    get_symbolic_icon : -> Void
-    is_removable : -> Void
+    changed : Void*
+    disconnected : Void*
+    eject_button : Void*
+    get_name : Void*
+    get_icon : Void*
+    has_volumes : Void*
+    get_volumes : Void*
+    is_media_removable : Void*
+    has_media : Void*
+    is_media_check_automatic : Void*
+    can_eject : Void*
+    can_poll_for_media : Void*
+    eject : Void*
+    eject_finish : Void*
+    poll_for_media : Void*
+    poll_for_media_finish : Void*
+    get_identifier : Void*
+    enumerate_identifiers : Void*
+    get_start_stop_type : Void*
+    can_start : Void*
+    can_start_degraded : Void*
+    start : Void*
+    start_finish : Void*
+    can_stop : Void*
+    stop : Void*
+    stop_finish : Void*
+    stop_button : Void*
+    eject_with_operation : Void*
+    eject_with_operation_finish : Void*
+    get_sort_key : Void*
+    get_symbolic_icon : Void*
+    is_removable : Void*
   end
 
   struct DtlsClientConnectionInterface # 16 bytes long
@@ -601,16 +601,16 @@ lib LibGio
 
   struct DtlsConnectionInterface # 96 bytes long
     g_iface : LibGObject::TypeInterface
-    accept_certificate : -> Void
-    handshake : -> Void
-    handshake_async : -> Void
-    handshake_finish : -> Void
-    shutdown : -> Void
-    shutdown_async : -> Void
-    shutdown_finish : -> Void
-    set_advertised_protocols : -> Void
-    get_negotiated_protocol : -> Void
-    get_binding_data : -> Void
+    accept_certificate : Void*
+    handshake : Void*
+    handshake_async : Void*
+    handshake_finish : Void*
+    shutdown : Void*
+    shutdown_async : Void*
+    shutdown_finish : Void*
+    set_advertised_protocols : Void*
+    get_negotiated_protocol : Void*
+    get_binding_data : Void*
   end
 
   struct DtlsServerConnectionInterface # 16 bytes long
@@ -640,17 +640,17 @@ lib LibGio
 
   struct FileDescriptorBasedIface # 24 bytes long
     g_iface : LibGObject::TypeInterface
-    get_fd : -> Void
+    get_fd : Void*
   end
 
   struct FileEnumeratorClass # 240 bytes long
     parent_class : LibGObject::ObjectClass
-    next_file : -> Void
-    close_fn : -> Void
-    next_files_async : -> Void
-    next_files_finish : -> Void
-    close_async : -> Void
-    close_finish : -> Void
+    next_file : Void*
+    close_fn : Void*
+    next_files_async : Void*
+    next_files_finish : Void*
+    close_async : Void*
+    close_finish : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -664,15 +664,15 @@ lib LibGio
 
   struct FileIOStreamClass # 368 bytes long
     parent_class : LibGio::IOStreamClass
-    tell : -> Void
-    can_seek : -> Void
-    seek : -> Void
-    can_truncate : -> Void
-    truncate_fn : -> Void
-    query_info : -> Void
-    query_info_async : -> Void
-    query_info_finish : -> Void
-    get_etag : -> Void
+    tell : Void*
+    can_seek : Void*
+    seek : Void*
+    can_truncate : Void*
+    truncate_fn : Void*
+    query_info : Void*
+    query_info_async : Void*
+    query_info_finish : Void*
+    get_etag : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -686,121 +686,121 @@ lib LibGio
 
   struct FileIface # 840 bytes long
     g_iface : LibGObject::TypeInterface
-    dup : -> Void
-    hash : -> Void
-    equal : -> Void
-    is_native : -> Void
-    has_uri_scheme : -> Void
-    get_uri_scheme : -> Void
-    get_basename : -> Void
-    get_path : -> Void
-    get_uri : -> Void
-    get_parse_name : -> Void
-    get_parent : -> Void
-    prefix_matches : -> Void
-    get_relative_path : -> Void
-    resolve_relative_path : -> Void
-    get_child_for_display_name : -> Void
-    enumerate_children : -> Void
-    enumerate_children_async : -> Void
-    enumerate_children_finish : -> Void
-    query_info : -> Void
-    query_info_async : -> Void
-    query_info_finish : -> Void
-    query_filesystem_info : -> Void
-    query_filesystem_info_async : -> Void
-    query_filesystem_info_finish : -> Void
-    find_enclosing_mount : -> Void
-    find_enclosing_mount_async : -> Void
-    find_enclosing_mount_finish : -> Void
-    set_display_name : -> Void
-    set_display_name_async : -> Void
-    set_display_name_finish : -> Void
-    query_settable_attributes : -> Void
+    dup : Void*
+    hash : Void*
+    equal : Void*
+    is_native : Void*
+    has_uri_scheme : Void*
+    get_uri_scheme : Void*
+    get_basename : Void*
+    get_path : Void*
+    get_uri : Void*
+    get_parse_name : Void*
+    get_parent : Void*
+    prefix_matches : Void*
+    get_relative_path : Void*
+    resolve_relative_path : Void*
+    get_child_for_display_name : Void*
+    enumerate_children : Void*
+    enumerate_children_async : Void*
+    enumerate_children_finish : Void*
+    query_info : Void*
+    query_info_async : Void*
+    query_info_finish : Void*
+    query_filesystem_info : Void*
+    query_filesystem_info_async : Void*
+    query_filesystem_info_finish : Void*
+    find_enclosing_mount : Void*
+    find_enclosing_mount_async : Void*
+    find_enclosing_mount_finish : Void*
+    set_display_name : Void*
+    set_display_name_async : Void*
+    set_display_name_finish : Void*
+    query_settable_attributes : Void*
     _query_settable_attributes_async : Pointer(Void)
     _query_settable_attributes_finish : Pointer(Void)
-    query_writable_namespaces : -> Void
+    query_writable_namespaces : Void*
     _query_writable_namespaces_async : Pointer(Void)
     _query_writable_namespaces_finish : Pointer(Void)
-    set_attribute : -> Void
-    set_attributes_from_info : -> Void
-    set_attributes_async : -> Void
-    set_attributes_finish : -> Void
-    read_fn : -> Void
-    read_async : -> Void
-    read_finish : -> Void
-    append_to : -> Void
-    append_to_async : -> Void
-    append_to_finish : -> Void
-    create : -> Void
-    create_async : -> Void
-    create_finish : -> Void
-    replace : -> Void
-    replace_async : -> Void
-    replace_finish : -> Void
-    delete_file : -> Void
-    delete_file_async : -> Void
-    delete_file_finish : -> Void
-    trash : -> Void
-    trash_async : -> Void
-    trash_finish : -> Void
-    make_directory : -> Void
-    make_directory_async : -> Void
-    make_directory_finish : -> Void
-    make_symbolic_link : -> Void
+    set_attribute : Void*
+    set_attributes_from_info : Void*
+    set_attributes_async : Void*
+    set_attributes_finish : Void*
+    read_fn : Void*
+    read_async : Void*
+    read_finish : Void*
+    append_to : Void*
+    append_to_async : Void*
+    append_to_finish : Void*
+    create : Void*
+    create_async : Void*
+    create_finish : Void*
+    replace : Void*
+    replace_async : Void*
+    replace_finish : Void*
+    delete_file : Void*
+    delete_file_async : Void*
+    delete_file_finish : Void*
+    trash : Void*
+    trash_async : Void*
+    trash_finish : Void*
+    make_directory : Void*
+    make_directory_async : Void*
+    make_directory_finish : Void*
+    make_symbolic_link : Void*
     _make_symbolic_link_async : Pointer(Void)
     _make_symbolic_link_finish : Pointer(Void)
-    copy : -> Void
-    copy_async : -> Void
-    copy_finish : -> Void
-    move : -> Void
+    copy : Void*
+    copy_async : Void*
+    copy_finish : Void*
+    move : Void*
     _move_async : Pointer(Void)
     _move_finish : Pointer(Void)
-    mount_mountable : -> Void
-    mount_mountable_finish : -> Void
-    unmount_mountable : -> Void
-    unmount_mountable_finish : -> Void
-    eject_mountable : -> Void
-    eject_mountable_finish : -> Void
-    mount_enclosing_volume : -> Void
-    mount_enclosing_volume_finish : -> Void
-    monitor_dir : -> Void
-    monitor_file : -> Void
-    open_readwrite : -> Void
-    open_readwrite_async : -> Void
-    open_readwrite_finish : -> Void
-    create_readwrite : -> Void
-    create_readwrite_async : -> Void
-    create_readwrite_finish : -> Void
-    replace_readwrite : -> Void
-    replace_readwrite_async : -> Void
-    replace_readwrite_finish : -> Void
-    start_mountable : -> Void
-    start_mountable_finish : -> Void
-    stop_mountable : -> Void
-    stop_mountable_finish : -> Void
+    mount_mountable : Void*
+    mount_mountable_finish : Void*
+    unmount_mountable : Void*
+    unmount_mountable_finish : Void*
+    eject_mountable : Void*
+    eject_mountable_finish : Void*
+    mount_enclosing_volume : Void*
+    mount_enclosing_volume_finish : Void*
+    monitor_dir : Void*
+    monitor_file : Void*
+    open_readwrite : Void*
+    open_readwrite_async : Void*
+    open_readwrite_finish : Void*
+    create_readwrite : Void*
+    create_readwrite_async : Void*
+    create_readwrite_finish : Void*
+    replace_readwrite : Void*
+    replace_readwrite_async : Void*
+    replace_readwrite_finish : Void*
+    start_mountable : Void*
+    start_mountable_finish : Void*
+    stop_mountable : Void*
+    stop_mountable_finish : Void*
     supports_thread_contexts : LibC::Int
-    unmount_mountable_with_operation : -> Void
-    unmount_mountable_with_operation_finish : -> Void
-    eject_mountable_with_operation : -> Void
-    eject_mountable_with_operation_finish : -> Void
-    poll_mountable : -> Void
-    poll_mountable_finish : -> Void
+    unmount_mountable_with_operation : Void*
+    unmount_mountable_with_operation_finish : Void*
+    eject_mountable_with_operation : Void*
+    eject_mountable_with_operation_finish : Void*
+    poll_mountable : Void*
+    poll_mountable_finish : Void*
     measure_disk_usage : Pointer(Void)
     measure_disk_usage_async : Pointer(Void)
-    measure_disk_usage_finish : -> Void
+    measure_disk_usage_finish : Void*
   end
 
   type FileInfoClass = Void # Struct with zero bytes
 
   struct FileInputStreamClass # 336 bytes long
     parent_class : LibGio::InputStreamClass
-    tell : -> Void
-    can_seek : -> Void
-    seek : -> Void
-    query_info : -> Void
-    query_info_async : -> Void
-    query_info_finish : -> Void
+    tell : Void*
+    can_seek : Void*
+    seek : Void*
+    query_info : Void*
+    query_info_async : Void*
+    query_info_finish : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -812,8 +812,8 @@ lib LibGio
 
   struct FileMonitorClass # 192 bytes long
     parent_class : LibGObject::ObjectClass
-    changed : -> Void
-    cancel : -> Void
+    changed : Void*
+    cancel : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -825,15 +825,15 @@ lib LibGio
 
   struct FileOutputStreamClass # 408 bytes long
     parent_class : LibGio::OutputStreamClass
-    tell : -> Void
-    can_seek : -> Void
-    seek : -> Void
-    can_truncate : -> Void
-    truncate_fn : -> Void
-    query_info : -> Void
-    query_info_async : -> Void
-    query_info_finish : -> Void
-    get_etag : -> Void
+    tell : Void*
+    can_seek : Void*
+    seek : Void*
+    can_truncate : Void*
+    truncate_fn : Void*
+    query_info : Void*
+    query_info_async : Void*
+    query_info_finish : Void*
+    get_etag : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -845,7 +845,7 @@ lib LibGio
 
   struct FilenameCompleterClass # 168 bytes long
     parent_class : LibGObject::ObjectClass
-    got_completion_data : -> Void
+    got_completion_data : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -879,11 +879,11 @@ lib LibGio
 
   struct IOStreamClass # 256 bytes long
     parent_class : LibGObject::ObjectClass
-    get_input_stream : -> Void
-    get_output_stream : -> Void
-    close_fn : -> Void
-    close_async : -> Void
-    close_finish : -> Void
+    get_input_stream : Void*
+    get_output_stream : Void*
+    close_fn : Void*
+    close_async : Void*
+    close_finish : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -900,17 +900,17 @@ lib LibGio
 
   struct IconIface # 56 bytes long
     g_iface : LibGObject::TypeInterface
-    hash : -> Void
-    equal : -> Void
+    hash : Void*
+    equal : Void*
     to_tokens : Pointer(Void)
     from_tokens : Pointer(Void)
-    serialize : -> Void
+    serialize : Void*
   end
 
   struct InetAddressClass # 152 bytes long
     parent_class : LibGObject::ObjectClass
-    to_string : -> Void
-    to_bytes : -> Void
+    to_string : Void*
+    to_bytes : Void*
   end
 
   struct InetAddressMaskClass # 136 bytes long
@@ -929,7 +929,7 @@ lib LibGio
 
   struct InitableIface # 24 bytes long
     g_iface : LibGObject::TypeInterface
-    init : -> Void
+    init : Void*
   end
 
   struct InputMessage # 56 bytes long
@@ -944,15 +944,15 @@ lib LibGio
 
   struct InputStreamClass # 248 bytes long
     parent_class : LibGObject::ObjectClass
-    read_fn : -> Void
-    skip : -> Void
-    close_fn : -> Void
-    read_async : -> Void
-    read_finish : -> Void
-    skip_async : -> Void
-    skip_finish : -> Void
-    close_async : -> Void
-    close_finish : -> Void
+    read_fn : Void*
+    skip : Void*
+    close_fn : Void*
+    read_async : Void*
+    read_finish : Void*
+    skip_async : Void*
+    skip_finish : Void*
+    close_async : Void*
+    close_finish : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -969,9 +969,9 @@ lib LibGio
 
   struct ListModelInterface # 40 bytes long
     g_iface : LibGObject::TypeInterface
-    get_item_type : -> Void
-    get_n_items : -> Void
-    get_item : -> Void
+    get_item_type : Void*
+    get_n_items : Void*
+    get_item : Void*
   end
 
   struct ListStoreClass # 136 bytes long
@@ -980,9 +980,9 @@ lib LibGio
 
   struct LoadableIconIface # 40 bytes long
     g_iface : LibGObject::TypeInterface
-    load : -> Void
-    load_async : -> Void
-    load_finish : -> Void
+    load : Void*
+    load_async : Void*
+    load_finish : Void*
   end
 
   struct MemoryInputStreamClass # 288 bytes long
@@ -998,7 +998,7 @@ lib LibGio
 
   struct MemoryMonitorInterface # 24 bytes long
     g_iface : LibGObject::TypeInterface
-    low_memory_warning : -> Void
+    low_memory_warning : Void*
   end
 
   struct MemoryOutputStreamClass # 336 bytes long
@@ -1014,71 +1014,71 @@ lib LibGio
 
   struct MenuAttributeIterClass # 144 bytes long
     parent_class : LibGObject::ObjectClass
-    get_next : -> Void
+    get_next : Void*
   end
 
   type MenuAttributeIterPrivate = Void # Struct with zero bytes
 
   struct MenuLinkIterClass # 144 bytes long
     parent_class : LibGObject::ObjectClass
-    get_next : -> Void
+    get_next : Void*
   end
 
   type MenuLinkIterPrivate = Void # Struct with zero bytes
 
   struct MenuModelClass # 200 bytes long
     parent_class : LibGObject::ObjectClass
-    is_mutable : -> Void
-    get_n_items : -> Void
-    get_item_attributes : -> Void
-    iterate_item_attributes : -> Void
-    get_item_attribute_value : -> Void
-    get_item_links : -> Void
-    iterate_item_links : -> Void
-    get_item_link : -> Void
+    is_mutable : Void*
+    get_n_items : Void*
+    get_item_attributes : Void*
+    iterate_item_attributes : Void*
+    get_item_attribute_value : Void*
+    get_item_links : Void*
+    iterate_item_links : Void*
+    get_item_link : Void*
   end
 
   type MenuModelPrivate = Void # Struct with zero bytes
 
   struct MountIface # 232 bytes long
     g_iface : LibGObject::TypeInterface
-    changed : -> Void
-    unmounted : -> Void
-    get_root : -> Void
-    get_name : -> Void
-    get_icon : -> Void
-    get_uuid : -> Void
-    get_volume : -> Void
-    get_drive : -> Void
-    can_unmount : -> Void
-    can_eject : -> Void
-    unmount : -> Void
-    unmount_finish : -> Void
-    eject : -> Void
-    eject_finish : -> Void
-    remount : -> Void
-    remount_finish : -> Void
-    guess_content_type : -> Void
-    guess_content_type_finish : -> Void
-    guess_content_type_sync : -> Void
-    pre_unmount : -> Void
-    unmount_with_operation : -> Void
-    unmount_with_operation_finish : -> Void
-    eject_with_operation : -> Void
-    eject_with_operation_finish : -> Void
-    get_default_location : -> Void
-    get_sort_key : -> Void
-    get_symbolic_icon : -> Void
+    changed : Void*
+    unmounted : Void*
+    get_root : Void*
+    get_name : Void*
+    get_icon : Void*
+    get_uuid : Void*
+    get_volume : Void*
+    get_drive : Void*
+    can_unmount : Void*
+    can_eject : Void*
+    unmount : Void*
+    unmount_finish : Void*
+    eject : Void*
+    eject_finish : Void*
+    remount : Void*
+    remount_finish : Void*
+    guess_content_type : Void*
+    guess_content_type_finish : Void*
+    guess_content_type_sync : Void*
+    pre_unmount : Void*
+    unmount_with_operation : Void*
+    unmount_with_operation_finish : Void*
+    eject_with_operation : Void*
+    eject_with_operation_finish : Void*
+    get_default_location : Void*
+    get_sort_key : Void*
+    get_symbolic_icon : Void*
   end
 
   struct MountOperationClass # 256 bytes long
     parent_class : LibGObject::ObjectClass
-    ask_password : -> Void
-    ask_question : -> Void
-    reply : -> Void
-    aborted : -> Void
-    show_processes : -> Void
-    show_unmount_progress : -> Void
+    ask_password : Void*
+    ask_question : Void*
+    reply : Void*
+    aborted : Void*
+    show_processes : Void*
+    show_unmount_progress : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -1111,10 +1111,10 @@ lib LibGio
 
   struct NetworkMonitorInterface # 48 bytes long
     g_iface : LibGObject::TypeInterface
-    network_changed : -> Void
-    can_reach : -> Void
-    can_reach_async : -> Void
-    can_reach_finish : -> Void
+    network_changed : Void*
+    can_reach : Void*
+    can_reach_async : Void*
+    can_reach_finish : Void*
   end
 
   struct NetworkServiceClass # 136 bytes long
@@ -1134,21 +1134,21 @@ lib LibGio
 
   struct OutputStreamClass # 296 bytes long
     parent_class : LibGObject::ObjectClass
-    write_fn : -> Void
-    splice : -> Void
-    flush : -> Void
-    close_fn : -> Void
-    write_async : -> Void
-    write_finish : -> Void
-    splice_async : -> Void
-    splice_finish : -> Void
-    flush_async : -> Void
-    flush_finish : -> Void
-    close_async : -> Void
-    close_finish : -> Void
-    writev_fn : -> Void
-    writev_async : -> Void
-    writev_finish : -> Void
+    write_fn : Void*
+    splice : Void*
+    flush : Void*
+    close_fn : Void*
+    write_async : Void*
+    write_finish : Void*
+    splice_async : Void*
+    splice_finish : Void*
+    flush_async : Void*
+    flush_finish : Void*
+    close_async : Void*
+    close_finish : Void*
+    writev_fn : Void*
+    writev_async : Void*
+    writev_finish : Void*
     _g_reserved4 : Pointer(Void)
     _g_reserved5 : Pointer(Void)
     _g_reserved6 : Pointer(Void)
@@ -1165,12 +1165,12 @@ lib LibGio
 
   struct PermissionClass # 312 bytes long
     parent_class : LibGObject::ObjectClass
-    acquire : -> Void
-    acquire_async : -> Void
-    acquire_finish : -> Void
-    release : -> Void
-    release_async : -> Void
-    release_finish : -> Void
+    acquire : Void*
+    acquire_async : Void*
+    acquire_finish : Void*
+    release : Void*
+    release_async : Void*
+    release_finish : Void*
     reserved : Pointer(Void)[16]
   end
 
@@ -1178,19 +1178,19 @@ lib LibGio
 
   struct PollableInputStreamInterface # 48 bytes long
     g_iface : LibGObject::TypeInterface
-    can_poll : -> Void
-    is_readable : -> Void
-    create_source : -> Void
-    read_nonblocking : -> Void
+    can_poll : Void*
+    is_readable : Void*
+    create_source : Void*
+    read_nonblocking : Void*
   end
 
   struct PollableOutputStreamInterface # 56 bytes long
     g_iface : LibGObject::TypeInterface
-    can_poll : -> Void
-    is_writable : -> Void
-    create_source : -> Void
-    write_nonblocking : -> Void
-    writev_nonblocking : -> Void
+    can_poll : Void*
+    is_writable : Void*
+    create_source : Void*
+    write_nonblocking : Void*
+    writev_nonblocking : Void*
   end
 
   struct PowerProfileMonitorInterface # 16 bytes long
@@ -1218,44 +1218,44 @@ lib LibGio
 
   struct ProxyInterface # 48 bytes long
     g_iface : LibGObject::TypeInterface
-    connect : -> Void
-    connect_async : -> Void
-    connect_finish : -> Void
-    supports_hostname : -> Void
+    connect : Void*
+    connect_async : Void*
+    connect_finish : Void*
+    supports_hostname : Void*
   end
 
   struct ProxyResolverInterface # 48 bytes long
     g_iface : LibGObject::TypeInterface
-    is_supported : -> Void
-    lookup : -> Void
-    lookup_async : -> Void
-    lookup_finish : -> Void
+    is_supported : Void*
+    lookup : Void*
+    lookup_async : Void*
+    lookup_finish : Void*
   end
 
   struct RemoteActionGroupInterface # 32 bytes long
     g_iface : LibGObject::TypeInterface
-    activate_action_full : -> Void
-    change_action_state_full : -> Void
+    activate_action_full : Void*
+    change_action_state_full : Void*
   end
 
   struct ResolverClass # 264 bytes long
     parent_class : LibGObject::ObjectClass
-    reload : -> Void
-    lookup_by_name : -> Void
-    lookup_by_name_async : -> Void
-    lookup_by_name_finish : -> Void
-    lookup_by_address : -> Void
-    lookup_by_address_async : -> Void
-    lookup_by_address_finish : -> Void
+    reload : Void*
+    lookup_by_name : Void*
+    lookup_by_name_async : Void*
+    lookup_by_name_finish : Void*
+    lookup_by_address : Void*
+    lookup_by_address_async : Void*
+    lookup_by_address_finish : Void*
     lookup_service : Pointer(Void)
-    lookup_service_async : -> Void
-    lookup_service_finish : -> Void
-    lookup_records : -> Void
-    lookup_records_async : -> Void
-    lookup_records_finish : -> Void
-    lookup_by_name_with_flags_async : -> Void
-    lookup_by_name_with_flags_finish : -> Void
-    lookup_by_name_with_flags : -> Void
+    lookup_service_async : Void*
+    lookup_service_finish : Void*
+    lookup_records : Void*
+    lookup_records_async : Void*
+    lookup_records_finish : Void*
+    lookup_by_name_with_flags_async : Void*
+    lookup_by_name_with_flags_finish : Void*
+    lookup_by_name_with_flags : Void*
   end
 
   type ResolverPrivate = Void # Struct with zero bytes
@@ -1264,25 +1264,25 @@ lib LibGio
 
   struct SeekableIface # 56 bytes long
     g_iface : LibGObject::TypeInterface
-    tell : -> Void
-    can_seek : -> Void
-    seek : -> Void
-    can_truncate : -> Void
-    truncate_fn : -> Void
+    tell : Void*
+    can_seek : Void*
+    seek : Void*
+    can_truncate : Void*
+    truncate_fn : Void*
   end
 
   struct SettingsBackendClass # 400 bytes long
     parent_class : LibGObject::ObjectClass
-    read : -> Void
-    get_writable : -> Void
-    write : -> Void
-    write_tree : -> Void
-    reset : -> Void
-    subscribe : -> Void
-    unsubscribe : -> Void
-    sync : -> Void
+    read : Void*
+    get_writable : Void*
+    write : Void*
+    write_tree : Void*
+    reset : Void*
+    subscribe : Void*
+    unsubscribe : Void*
+    sync : Void*
     get_permission : Pointer(Void)
-    read_user_value : -> Void
+    read_user_value : Void*
     padding : Pointer(Void)[23]
   end
 
@@ -1290,10 +1290,10 @@ lib LibGio
 
   struct SettingsClass # 328 bytes long
     parent_class : LibGObject::ObjectClass
-    writable_changed : -> Void
-    changed : -> Void
-    writable_change_event : -> Void
-    change_event : -> Void
+    writable_changed : Void*
+    changed : Void*
+    writable_change_event : Void*
+    change_event : Void*
     padding : Pointer(Void)[20]
   end
 
@@ -1327,16 +1327,16 @@ lib LibGio
 
   struct SocketAddressClass # 160 bytes long
     parent_class : LibGObject::ObjectClass
-    get_family : -> Void
-    get_native_size : -> Void
-    to_native : -> Void
+    get_family : Void*
+    get_native_size : Void*
+    to_native : Void*
   end
 
   struct SocketAddressEnumeratorClass # 160 bytes long
     parent_class : LibGObject::ObjectClass
-    _next : -> Void
-    next_async : -> Void
-    next_finish : -> Void
+    _next : Void*
+    next_async : Void*
+    next_finish : Void*
   end
 
   struct SocketClass # 216 bytes long
@@ -1355,7 +1355,7 @@ lib LibGio
 
   struct SocketClientClass # 176 bytes long
     parent_class : LibGObject::ObjectClass
-    event : -> Void
+    event : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -1366,9 +1366,9 @@ lib LibGio
 
   struct SocketConnectableIface # 40 bytes long
     g_iface : LibGObject::TypeInterface
-    enumerate : -> Void
-    proxy_enumerate : -> Void
-    to_string : -> Void
+    enumerate : Void*
+    proxy_enumerate : Void*
+    to_string : Void*
   end
 
   struct SocketConnectionClass # 304 bytes long
@@ -1385,10 +1385,10 @@ lib LibGio
 
   struct SocketControlMessageClass # 216 bytes long
     parent_class : LibGObject::ObjectClass
-    get_size : -> Void
-    get_level : -> Void
-    get_type : -> Void
-    serialize : -> Void
+    get_size : Void*
+    get_level : Void*
+    get_type : Void*
+    serialize : Void*
     deserialize : Pointer(Void)
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
@@ -1401,8 +1401,8 @@ lib LibGio
 
   struct SocketListenerClass # 192 bytes long
     parent_class : LibGObject::ObjectClass
-    changed : -> Void
-    event : -> Void
+    changed : Void*
+    event : Void*
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
     _g_reserved4 : Pointer(Void)
@@ -1416,7 +1416,7 @@ lib LibGio
 
   struct SocketServiceClass # 248 bytes long
     parent_class : LibGio::SocketListenerClass
-    incoming : -> Void
+    incoming : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -1455,7 +1455,7 @@ lib LibGio
 
   struct ThreadedSocketServiceClass # 296 bytes long
     parent_class : LibGio::SocketServiceClass
-    run : -> Void
+    run : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -1467,20 +1467,20 @@ lib LibGio
 
   struct TlsBackendInterface # 88 bytes long
     g_iface : LibGObject::TypeInterface
-    supports_tls : -> Void
-    get_certificate_type : -> Void
-    get_client_connection_type : -> Void
-    get_server_connection_type : -> Void
-    get_file_database_type : -> Void
-    get_default_database : -> Void
-    supports_dtls : -> Void
-    get_dtls_client_connection_type : -> Void
-    get_dtls_server_connection_type : -> Void
+    supports_tls : Void*
+    get_certificate_type : Void*
+    get_client_connection_type : Void*
+    get_server_connection_type : Void*
+    get_file_database_type : Void*
+    get_default_database : Void*
+    supports_dtls : Void*
+    get_dtls_client_connection_type : Void*
+    get_dtls_server_connection_type : Void*
   end
 
   struct TlsCertificateClass # 208 bytes long
     parent_class : LibGObject::ObjectClass
-    verify : -> Void
+    verify : Void*
     padding : Pointer(Void)[8]
   end
 
@@ -1488,17 +1488,17 @@ lib LibGio
 
   struct TlsClientConnectionInterface # 24 bytes long
     g_iface : LibGObject::TypeInterface
-    copy_session_state : -> Void
+    copy_session_state : Void*
   end
 
   struct TlsConnectionClass # 352 bytes long
     parent_class : LibGio::IOStreamClass
-    accept_certificate : -> Void
-    handshake : -> Void
-    handshake_async : -> Void
-    handshake_finish : -> Void
-    get_binding_data : -> Void
-    get_negotiated_protocol : -> Void
+    accept_certificate : Void*
+    handshake : Void*
+    handshake_async : Void*
+    handshake_finish : Void*
+    get_binding_data : Void*
+    get_negotiated_protocol : Void*
     padding : Pointer(Void)[6]
   end
 
@@ -1506,19 +1506,19 @@ lib LibGio
 
   struct TlsDatabaseClass # 368 bytes long
     parent_class : LibGObject::ObjectClass
-    verify_chain : -> Void
-    verify_chain_async : -> Void
-    verify_chain_finish : -> Void
-    create_certificate_handle : -> Void
-    lookup_certificate_for_handle : -> Void
-    lookup_certificate_for_handle_async : -> Void
-    lookup_certificate_for_handle_finish : -> Void
-    lookup_certificate_issuer : -> Void
-    lookup_certificate_issuer_async : -> Void
-    lookup_certificate_issuer_finish : -> Void
-    lookup_certificates_issued_by : -> Void
-    lookup_certificates_issued_by_async : -> Void
-    lookup_certificates_issued_by_finish : -> Void
+    verify_chain : Void*
+    verify_chain_async : Void*
+    verify_chain_finish : Void*
+    create_certificate_handle : Void*
+    lookup_certificate_for_handle : Void*
+    lookup_certificate_for_handle_async : Void*
+    lookup_certificate_for_handle_finish : Void*
+    lookup_certificate_issuer : Void*
+    lookup_certificate_issuer_async : Void*
+    lookup_certificate_issuer_finish : Void*
+    lookup_certificates_issued_by : Void*
+    lookup_certificates_issued_by_async : Void*
+    lookup_certificates_issued_by_finish : Void*
     padding : Pointer(Void)[16]
   end
 
@@ -1531,12 +1531,12 @@ lib LibGio
 
   struct TlsInteractionClass # 352 bytes long
     parent_class : LibGObject::ObjectClass
-    ask_password : -> Void
-    ask_password_async : -> Void
-    ask_password_finish : -> Void
-    request_certificate : -> Void
-    request_certificate_async : -> Void
-    request_certificate_finish : -> Void
+    ask_password : Void*
+    ask_password_async : Void*
+    ask_password_finish : Void*
+    request_certificate : Void*
+    request_certificate_async : Void*
+    request_certificate_finish : Void*
     padding : Pointer(Void)[21]
   end
 
@@ -1544,9 +1544,9 @@ lib LibGio
 
   struct TlsPasswordClass # 192 bytes long
     parent_class : LibGObject::ObjectClass
-    get_value : -> Void
-    set_value : -> Void
-    get_default_warning : -> Void
+    get_value : Void*
+    set_value : Void*
+    get_default_warning : Void*
     padding : Pointer(Void)[4]
   end
 
@@ -1625,16 +1625,16 @@ lib LibGio
 
   struct VfsClass # 272 bytes long
     parent_class : LibGObject::ObjectClass
-    is_active : -> Void
-    get_file_for_path : -> Void
-    get_file_for_uri : -> Void
-    get_supported_uri_schemes : -> Void
-    parse_name : -> Void
-    local_file_add_info : -> Void
-    add_writable_namespaces : -> Void
-    local_file_set_attributes : -> Void
-    local_file_removed : -> Void
-    local_file_moved : -> Void
+    is_active : Void*
+    get_file_for_path : Void*
+    get_file_for_uri : Void*
+    get_supported_uri_schemes : Void*
+    parse_name : Void*
+    local_file_add_info : Void*
+    add_writable_namespaces : Void*
+    local_file_set_attributes : Void*
+    local_file_removed : Void*
+    local_file_moved : Void*
     deserialize_icon : Pointer(Void)
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
@@ -1646,50 +1646,50 @@ lib LibGio
 
   struct VolumeIface # 184 bytes long
     g_iface : LibGObject::TypeInterface
-    changed : -> Void
-    removed : -> Void
-    get_name : -> Void
-    get_icon : -> Void
-    get_uuid : -> Void
-    get_drive : -> Void
-    get_mount : -> Void
-    can_mount : -> Void
-    can_eject : -> Void
-    mount_fn : -> Void
-    mount_finish : -> Void
-    eject : -> Void
-    eject_finish : -> Void
-    get_identifier : -> Void
-    enumerate_identifiers : -> Void
-    should_automount : -> Void
-    get_activation_root : -> Void
-    eject_with_operation : -> Void
-    eject_with_operation_finish : -> Void
-    get_sort_key : -> Void
-    get_symbolic_icon : -> Void
+    changed : Void*
+    removed : Void*
+    get_name : Void*
+    get_icon : Void*
+    get_uuid : Void*
+    get_drive : Void*
+    get_mount : Void*
+    can_mount : Void*
+    can_eject : Void*
+    mount_fn : Void*
+    mount_finish : Void*
+    eject : Void*
+    eject_finish : Void*
+    get_identifier : Void*
+    enumerate_identifiers : Void*
+    should_automount : Void*
+    get_activation_root : Void*
+    eject_with_operation : Void*
+    eject_with_operation_finish : Void*
+    get_sort_key : Void*
+    get_symbolic_icon : Void*
   end
 
   struct VolumeMonitorClass # 336 bytes long
     parent_class : LibGObject::ObjectClass
-    volume_added : -> Void
-    volume_removed : -> Void
-    volume_changed : -> Void
-    mount_added : -> Void
-    mount_removed : -> Void
-    mount_pre_unmount : -> Void
-    mount_changed : -> Void
-    drive_connected : -> Void
-    drive_disconnected : -> Void
-    drive_changed : -> Void
-    is_supported : -> Void
-    get_connected_drives : -> Void
-    get_volumes : -> Void
-    get_mounts : -> Void
-    get_volume_for_uuid : -> Void
-    get_mount_for_uuid : -> Void
+    volume_added : Void*
+    volume_removed : Void*
+    volume_changed : Void*
+    mount_added : Void*
+    mount_removed : Void*
+    mount_pre_unmount : Void*
+    mount_changed : Void*
+    drive_connected : Void*
+    drive_disconnected : Void*
+    drive_changed : Void*
+    is_supported : Void*
+    get_connected_drives : Void*
+    get_volumes : Void*
+    get_mounts : Void*
+    get_volume_for_uuid : Void*
+    get_mount_for_uuid : Void*
     adopt_orphan_mount : Pointer(Void)
-    drive_eject_button : -> Void
-    drive_stop_button : -> Void
+    drive_eject_button : Void*
+    drive_stop_button : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
@@ -2206,12 +2206,12 @@ lib LibGio
   fun g_app_info_launch(this : Void*, files : Pointer(LibGLib::List), context : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_app_info_launch_default_for_uri(uri : Pointer(LibC::Char), context : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_app_info_launch_default_for_uri(uri : Pointer(LibC::Char), context : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_app_info_launch_default_for_uri_async(uri : Pointer(LibC::Char), context : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
-  fun g_app_info_launch_default_for_uri_async(uri : Pointer(LibC::Char), context : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_app_info_launch_default_for_uri_async(uri : Pointer(LibC::Char), context : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
+  fun g_app_info_launch_default_for_uri_async(uri : Pointer(LibC::Char), context : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_app_info_launch_default_for_uri_finish(result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_app_info_launch_default_for_uri_finish(result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_app_info_launch_uris(this : Void*, uris : Pointer(LibGLib::List), context : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_app_info_launch_uris_async(this : Void*, uris : Pointer(LibGLib::List), context : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_app_info_launch_uris_async(this : Void*, uris : Pointer(LibGLib::List), context : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_app_info_launch_uris_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_app_info_monitor_get : Pointer(Void)
   fun g_app_info_monitor_get_type : UInt64
@@ -2283,18 +2283,18 @@ lib LibGio
   fun g_application_unmark_busy(this : Void*) : Void
   fun g_application_withdraw_notification(this : Void*, id : Pointer(LibC::Char)) : Void
   fun g_async_initable_get_type : UInt64
-  fun g_async_initable_init_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_async_initable_init_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_async_initable_init_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_async_initable_new_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_async_initable_newv_async(object_type : UInt64, n_parameters : UInt32, parameters : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
-  fun g_async_initable_newv_async(object_type : UInt64, n_parameters : UInt32, parameters : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_async_initable_newv_async(object_type : UInt64, n_parameters : UInt32, parameters : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
+  fun g_async_initable_newv_async(object_type : UInt64, n_parameters : UInt32, parameters : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_async_result_get_source_object(this : Void*) : Pointer(Void)
   fun g_async_result_get_type : UInt64
   fun g_async_result_get_user_data(this : Void*) : Pointer(Void)
   fun g_async_result_is_tagged(this : Void*, source_tag : Pointer(Void)) : LibC::Int
   fun g_async_result_legacy_propagate_error(this : Void*, error : LibGLib::Error**) : LibC::Int
   fun g_buffered_input_stream_fill(this : Void*, count : Int64, cancellable : Pointer(Void), error : LibGLib::Error**) : Int64
-  fun g_buffered_input_stream_fill_async(this : Void*, count : Int64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_buffered_input_stream_fill_async(this : Void*, count : Int64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_buffered_input_stream_fill_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Int64
   fun g_buffered_input_stream_get_available(this : Void*) : UInt64
   fun g_buffered_input_stream_get_buffer_size(this : Void*) : UInt64
@@ -2312,7 +2312,7 @@ lib LibGio
   fun g_buffered_output_stream_new_sized(base_stream : Pointer(Void), size : UInt64) : Pointer(Void)
   fun g_buffered_output_stream_set_auto_grow(this : Void*, auto_grow : LibC::Int) : Void
   fun g_buffered_output_stream_set_buffer_size(this : Void*, size : UInt64) : Void
-  fun g_bus_get(bus_type : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_bus_get(bus_type : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_bus_get_finish(res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_bus_get_sync(bus_type : Int32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_bus_own_name_on_connection_with_closures(connection : Pointer(Void), name : Pointer(LibC::Char), flags : UInt32, name_acquired_closure : Pointer(Void), name_lost_closure : Pointer(Void)) : UInt32
@@ -2325,7 +2325,7 @@ lib LibGio
   fun g_bytes_icon_get_type : UInt64
   fun g_bytes_icon_new(bytes : Pointer(Void)) : Pointer(Void)
   fun g_cancellable_cancel(this : Void*) : Void
-  fun g_cancellable_connect(this : Void*, callback : LibGObject::Callback, data : Pointer(Void), data_destroy_func : LibGLib::DestroyNotify) : UInt64
+  fun g_cancellable_connect(this : Void*, callback : Void*, data : Pointer(Void), data_destroy_func : Void*) : UInt64
   fun g_cancellable_disconnect(this : Void*, handler_id : UInt64) : Void
   fun g_cancellable_get_current : Pointer(Void)
   fun g_cancellable_get_fd(this : Void*) : Int32
@@ -2386,7 +2386,7 @@ lib LibGio
   fun g_data_input_stream_read_int32(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Int32
   fun g_data_input_stream_read_int64(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Int64
   fun g_data_input_stream_read_line(this : Void*, length : Pointer(UInt64), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(UInt8)
-  fun g_data_input_stream_read_line_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_data_input_stream_read_line_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_data_input_stream_read_line_finish(this : Void*, result : Pointer(Void), length : Pointer(UInt64), error : LibGLib::Error**) : Pointer(UInt8)
   fun g_data_input_stream_read_line_finish_utf8(this : Void*, result : Pointer(Void), length : Pointer(UInt64), error : LibGLib::Error**) : Pointer(LibC::Char)
   fun g_data_input_stream_read_line_utf8(this : Void*, length : Pointer(UInt64), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibC::Char)
@@ -2394,10 +2394,10 @@ lib LibGio
   fun g_data_input_stream_read_uint32(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : UInt32
   fun g_data_input_stream_read_uint64(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : UInt64
   fun g_data_input_stream_read_until(this : Void*, stop_chars : Pointer(LibC::Char), length : Pointer(UInt64), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibC::Char)
-  fun g_data_input_stream_read_until_async(this : Void*, stop_chars : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_data_input_stream_read_until_async(this : Void*, stop_chars : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_data_input_stream_read_until_finish(this : Void*, result : Pointer(Void), length : Pointer(UInt64), error : LibGLib::Error**) : Pointer(LibC::Char)
   fun g_data_input_stream_read_upto(this : Void*, stop_chars : Pointer(LibC::Char), stop_chars_len : Int64, length : Pointer(UInt64), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibC::Char)
-  fun g_data_input_stream_read_upto_async(this : Void*, stop_chars : Pointer(LibC::Char), stop_chars_len : Int64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_data_input_stream_read_upto_async(this : Void*, stop_chars : Pointer(LibC::Char), stop_chars_len : Int64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_data_input_stream_read_upto_finish(this : Void*, result : Pointer(Void), length : Pointer(UInt64), error : LibGLib::Error**) : Pointer(LibC::Char)
   fun g_data_input_stream_set_byte_order(this : Void*, order : UInt32) : Void
   fun g_data_input_stream_set_newline_type(this : Void*, type : UInt32) : Void
@@ -2423,7 +2423,7 @@ lib LibGio
   fun g_dbus_action_group_get_type : UInt64
   fun g_dbus_address_escape_value(string : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun g_dbus_address_get_for_bus_sync(bus_type : Int32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibC::Char)
-  fun g_dbus_address_get_stream(address : Pointer(LibC::Char), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_address_get_stream(address : Pointer(LibC::Char), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_address_get_stream_finish(res : Pointer(Void), out_guid : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_address_get_stream_sync(address : Pointer(LibC::Char), out_guid : Pointer(Pointer(LibC::Char)), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_annotation_info_get_type : UInt64
@@ -2438,20 +2438,20 @@ lib LibGio
   fun g_dbus_auth_observer_authorize_authenticated_peer(this : Void*, stream : Pointer(Void), credentials : Pointer(Void)) : LibC::Int
   fun g_dbus_auth_observer_get_type : UInt64
   fun g_dbus_auth_observer_new : Pointer(Void)
-  fun g_dbus_connection_add_filter(this : Void*, filter_function : DBusMessageFilterFunction, user_data : Pointer(Void), user_data_free_func : LibGLib::DestroyNotify) : UInt32
-  fun g_dbus_connection_call(this : Void*, bus_name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), method_name : Pointer(LibC::Char), parameters : Pointer(Void), reply_type : Pointer(Void), flags : UInt32, timeout_msec : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_connection_add_filter(this : Void*, filter_function : Void*, user_data : Pointer(Void), user_data_free_func : Void*) : UInt32
+  fun g_dbus_connection_call(this : Void*, bus_name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), method_name : Pointer(LibC::Char), parameters : Pointer(Void), reply_type : Pointer(Void), flags : UInt32, timeout_msec : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_connection_call_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_connection_call_sync(this : Void*, bus_name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), method_name : Pointer(LibC::Char), parameters : Pointer(Void), reply_type : Pointer(Void), flags : UInt32, timeout_msec : Int32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_dbus_connection_call_with_unix_fd_list(this : Void*, bus_name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), method_name : Pointer(LibC::Char), parameters : Pointer(Void), reply_type : Pointer(Void), flags : UInt32, timeout_msec : Int32, fd_list : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_connection_call_with_unix_fd_list(this : Void*, bus_name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), method_name : Pointer(LibC::Char), parameters : Pointer(Void), reply_type : Pointer(Void), flags : UInt32, timeout_msec : Int32, fd_list : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_connection_call_with_unix_fd_list_finish(this : Void*, out_fd_list : Pointer(Pointer(Void)), res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_connection_call_with_unix_fd_list_sync(this : Void*, bus_name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), method_name : Pointer(LibC::Char), parameters : Pointer(Void), reply_type : Pointer(Void), flags : UInt32, timeout_msec : Int32, fd_list : Pointer(Void), out_fd_list : Pointer(Pointer(Void)), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_dbus_connection_close(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_connection_close(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_connection_close_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_dbus_connection_close_sync(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_dbus_connection_emit_signal(this : Void*, destination_bus_name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), signal_name : Pointer(LibC::Char), parameters : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_dbus_connection_export_action_group(this : Void*, object_path : Pointer(LibC::Char), action_group : Pointer(Void), error : LibGLib::Error**) : UInt32
   fun g_dbus_connection_export_menu_model(this : Void*, object_path : Pointer(LibC::Char), menu : Pointer(Void), error : LibGLib::Error**) : UInt32
-  fun g_dbus_connection_flush(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_connection_flush(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_connection_flush_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_dbus_connection_flush_sync(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_dbus_connection_get_capabilities(this : Void*) : UInt32
@@ -2464,21 +2464,21 @@ lib LibGio
   fun g_dbus_connection_get_type : UInt64
   fun g_dbus_connection_get_unique_name(this : Void*) : Pointer(LibC::Char)
   fun g_dbus_connection_is_closed(this : Void*) : LibC::Int
-  fun g_dbus_connection_new(stream : Pointer(Void), guid : Pointer(LibC::Char), flags : UInt32, observer : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_connection_new(stream : Pointer(Void), guid : Pointer(LibC::Char), flags : UInt32, observer : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_connection_new_finish(res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_dbus_connection_new_for_address(address : Pointer(LibC::Char), flags : UInt32, observer : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_connection_new_for_address(address : Pointer(LibC::Char), flags : UInt32, observer : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_connection_new_for_address_finish(res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_connection_new_for_address_sync(address : Pointer(LibC::Char), flags : UInt32, observer : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_connection_new_sync(stream : Pointer(Void), guid : Pointer(LibC::Char), flags : UInt32, observer : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_connection_register_object_with_closures(this : Void*, object_path : Pointer(LibC::Char), interface_info : Pointer(Void), method_call_closure : Pointer(Void), get_property_closure : Pointer(Void), set_property_closure : Pointer(Void), error : LibGLib::Error**) : UInt32
-  fun g_dbus_connection_register_subtree(this : Void*, object_path : Pointer(LibC::Char), vtable : Pointer(Void), flags : UInt32, user_data : Pointer(Void), user_data_free_func : LibGLib::DestroyNotify, error : LibGLib::Error**) : UInt32
+  fun g_dbus_connection_register_subtree(this : Void*, object_path : Pointer(LibC::Char), vtable : Pointer(Void), flags : UInt32, user_data : Pointer(Void), user_data_free_func : Void*, error : LibGLib::Error**) : UInt32
   fun g_dbus_connection_remove_filter(this : Void*, filter_id : UInt32) : Void
   fun g_dbus_connection_send_message(this : Void*, message : Pointer(Void), flags : UInt32, out_serial : Pointer(UInt32), error : LibGLib::Error**) : LibC::Int
-  fun g_dbus_connection_send_message_with_reply(this : Void*, message : Pointer(Void), flags : UInt32, timeout_msec : Int32, out_serial : Pointer(UInt32), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_connection_send_message_with_reply(this : Void*, message : Pointer(Void), flags : UInt32, timeout_msec : Int32, out_serial : Pointer(UInt32), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_connection_send_message_with_reply_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_connection_send_message_with_reply_sync(this : Void*, message : Pointer(Void), flags : UInt32, timeout_msec : Int32, out_serial : Pointer(UInt32), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_connection_set_exit_on_close(this : Void*, exit_on_close : LibC::Int) : Void
-  fun g_dbus_connection_signal_subscribe(this : Void*, sender : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), member : Pointer(LibC::Char), object_path : Pointer(LibC::Char), arg0 : Pointer(LibC::Char), flags : UInt32, callback : DBusSignalCallback, user_data : Pointer(Void), user_data_free_func : LibGLib::DestroyNotify) : UInt32
+  fun g_dbus_connection_signal_subscribe(this : Void*, sender : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), member : Pointer(LibC::Char), object_path : Pointer(LibC::Char), arg0 : Pointer(LibC::Char), flags : UInt32, callback : Void*, user_data : Pointer(Void), user_data_free_func : Void*) : UInt32
   fun g_dbus_connection_signal_unsubscribe(this : Void*, subscription_id : UInt32) : Void
   fun g_dbus_connection_start_message_processing(this : Void*) : Void
   fun g_dbus_connection_unexport_action_group(this : Void*, export_id : UInt32) : Void
@@ -2616,12 +2616,12 @@ lib LibGio
   fun g_dbus_object_manager_client_get_name(this : Void*) : Pointer(LibC::Char)
   fun g_dbus_object_manager_client_get_name_owner(this : Void*) : Pointer(LibC::Char)
   fun g_dbus_object_manager_client_get_type : UInt64
-  fun g_dbus_object_manager_client_new(connection : Pointer(Void), flags : UInt32, name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), get_proxy_type_func : DBusProxyTypeFunc, get_proxy_type_user_data : Pointer(Void), get_proxy_type_destroy_notify : LibGLib::DestroyNotify, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_object_manager_client_new(connection : Pointer(Void), flags : UInt32, name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), get_proxy_type_func : Void*, get_proxy_type_user_data : Pointer(Void), get_proxy_type_destroy_notify : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_object_manager_client_new_finish(res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_dbus_object_manager_client_new_for_bus(bus_type : Int32, flags : UInt32, name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), get_proxy_type_func : DBusProxyTypeFunc, get_proxy_type_user_data : Pointer(Void), get_proxy_type_destroy_notify : LibGLib::DestroyNotify, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_object_manager_client_new_for_bus(bus_type : Int32, flags : UInt32, name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), get_proxy_type_func : Void*, get_proxy_type_user_data : Pointer(Void), get_proxy_type_destroy_notify : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_object_manager_client_new_for_bus_finish(res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_dbus_object_manager_client_new_for_bus_sync(bus_type : Int32, flags : UInt32, name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), get_proxy_type_func : DBusProxyTypeFunc, get_proxy_type_user_data : Pointer(Void), get_proxy_type_destroy_notify : LibGLib::DestroyNotify, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_dbus_object_manager_client_new_sync(connection : Pointer(Void), flags : UInt32, name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), get_proxy_type_func : DBusProxyTypeFunc, get_proxy_type_user_data : Pointer(Void), get_proxy_type_destroy_notify : LibGLib::DestroyNotify, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
+  fun g_dbus_object_manager_client_new_for_bus_sync(bus_type : Int32, flags : UInt32, name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), get_proxy_type_func : Void*, get_proxy_type_user_data : Pointer(Void), get_proxy_type_destroy_notify : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
+  fun g_dbus_object_manager_client_new_sync(connection : Pointer(Void), flags : UInt32, name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), get_proxy_type_func : Void*, get_proxy_type_user_data : Pointer(Void), get_proxy_type_destroy_notify : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_object_manager_get_interface(this : Void*, object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char)) : Pointer(Void)
   fun g_dbus_object_manager_get_object(this : Void*, object_path : Pointer(LibC::Char)) : Pointer(Void)
   fun g_dbus_object_manager_get_object_path(this : Void*) : Pointer(LibC::Char)
@@ -2648,10 +2648,10 @@ lib LibGio
   fun g_dbus_property_info_get_type : UInt64
   fun g_dbus_property_info_ref(this : Void*) : Pointer(Void)
   fun g_dbus_property_info_unref(this : Void*) : Void
-  fun g_dbus_proxy_call(this : Void*, method_name : Pointer(LibC::Char), parameters : Pointer(Void), flags : UInt32, timeout_msec : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_proxy_call(this : Void*, method_name : Pointer(LibC::Char), parameters : Pointer(Void), flags : UInt32, timeout_msec : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_proxy_call_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_proxy_call_sync(this : Void*, method_name : Pointer(LibC::Char), parameters : Pointer(Void), flags : UInt32, timeout_msec : Int32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_dbus_proxy_call_with_unix_fd_list(this : Void*, method_name : Pointer(LibC::Char), parameters : Pointer(Void), flags : UInt32, timeout_msec : Int32, fd_list : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_proxy_call_with_unix_fd_list(this : Void*, method_name : Pointer(LibC::Char), parameters : Pointer(Void), flags : UInt32, timeout_msec : Int32, fd_list : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_proxy_call_with_unix_fd_list_finish(this : Void*, out_fd_list : Pointer(Pointer(Void)), res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_proxy_call_with_unix_fd_list_sync(this : Void*, method_name : Pointer(LibC::Char), parameters : Pointer(Void), flags : UInt32, timeout_msec : Int32, fd_list : Pointer(Void), out_fd_list : Pointer(Pointer(Void)), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_proxy_get_cached_property(this : Void*, property_name : Pointer(LibC::Char)) : Pointer(Void)
@@ -2665,9 +2665,9 @@ lib LibGio
   fun g_dbus_proxy_get_name_owner(this : Void*) : Pointer(LibC::Char)
   fun g_dbus_proxy_get_object_path(this : Void*) : Pointer(LibC::Char)
   fun g_dbus_proxy_get_type : UInt64
-  fun g_dbus_proxy_new(connection : Pointer(Void), flags : UInt32, info : Pointer(Void), name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_proxy_new(connection : Pointer(Void), flags : UInt32, info : Pointer(Void), name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_proxy_new_finish(res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_dbus_proxy_new_for_bus(bus_type : Int32, flags : UInt32, info : Pointer(Void), name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dbus_proxy_new_for_bus(bus_type : Int32, flags : UInt32, info : Pointer(Void), name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dbus_proxy_new_for_bus_finish(res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_proxy_new_for_bus_sync(bus_type : Int32, flags : UInt32, info : Pointer(Void), name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_dbus_proxy_new_sync(connection : Pointer(Void), flags : UInt32, info : Pointer(Void), name : Pointer(LibC::Char), object_path : Pointer(LibC::Char), interface_name : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
@@ -2703,8 +2703,8 @@ lib LibGio
   fun g_desktop_app_info_get_type : UInt64
   fun g_desktop_app_info_has_key(this : Void*, key : Pointer(LibC::Char)) : LibC::Int
   fun g_desktop_app_info_launch_action(this : Void*, action_name : Pointer(LibC::Char), launch_context : Pointer(Void)) : Void
-  fun g_desktop_app_info_launch_uris_as_manager(this : Void*, uris : Pointer(LibGLib::List), launch_context : Pointer(Void), spawn_flags : UInt32, user_setup : LibGLib::SpawnChildSetupFunc, user_setup_data : Pointer(Void), pid_callback : DesktopAppLaunchCallback, pid_callback_data : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_desktop_app_info_launch_uris_as_manager_with_fds(this : Void*, uris : Pointer(LibGLib::List), launch_context : Pointer(Void), spawn_flags : UInt32, user_setup : LibGLib::SpawnChildSetupFunc, user_setup_data : Pointer(Void), pid_callback : DesktopAppLaunchCallback, pid_callback_data : Pointer(Void), stdin_fd : Int32, stdout_fd : Int32, stderr_fd : Int32, error : LibGLib::Error**) : LibC::Int
+  fun g_desktop_app_info_launch_uris_as_manager(this : Void*, uris : Pointer(LibGLib::List), launch_context : Pointer(Void), spawn_flags : UInt32, user_setup : Void*, user_setup_data : Pointer(Void), pid_callback : Void*, pid_callback_data : Pointer(Void), error : LibGLib::Error**) : LibC::Int
+  fun g_desktop_app_info_launch_uris_as_manager_with_fds(this : Void*, uris : Pointer(LibGLib::List), launch_context : Pointer(Void), spawn_flags : UInt32, user_setup : Void*, user_setup_data : Pointer(Void), pid_callback : Void*, pid_callback_data : Pointer(Void), stdin_fd : Int32, stdout_fd : Int32, stderr_fd : Int32, error : LibGLib::Error**) : LibC::Int
   fun g_desktop_app_info_list_actions(this : Void*) : Pointer(Pointer(LibC::Char))
   fun g_desktop_app_info_lookup_get_default_for_uri_scheme(this : Void*, uri_scheme : Pointer(LibC::Char)) : Pointer(Void)
   fun g_desktop_app_info_lookup_get_type : UInt64
@@ -2718,9 +2718,9 @@ lib LibGio
   fun g_drive_can_start(this : Void*) : LibC::Int
   fun g_drive_can_start_degraded(this : Void*) : LibC::Int
   fun g_drive_can_stop(this : Void*) : LibC::Int
-  fun g_drive_eject(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_drive_eject(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_drive_eject_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_drive_eject_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_drive_eject_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_drive_eject_with_operation_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_drive_enumerate_identifiers(this : Void*) : Pointer(Pointer(LibC::Char))
   fun g_drive_get_icon(this : Void*) : Pointer(Void)
@@ -2736,11 +2736,11 @@ lib LibGio
   fun g_drive_is_media_check_automatic(this : Void*) : LibC::Int
   fun g_drive_is_media_removable(this : Void*) : LibC::Int
   fun g_drive_is_removable(this : Void*) : LibC::Int
-  fun g_drive_poll_for_media(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_drive_poll_for_media(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_drive_poll_for_media_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_drive_start(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_drive_start(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_drive_start_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_drive_stop(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_drive_stop(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_drive_stop_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_dtls_client_connection_get_accepted_cas(this : Void*) : Pointer(LibGLib::List)
   fun g_dtls_client_connection_get_server_identity(this : Void*) : Pointer(Void)
@@ -2751,7 +2751,7 @@ lib LibGio
   fun g_dtls_client_connection_set_server_identity(this : Void*, identity : Pointer(Void)) : Void
   fun g_dtls_client_connection_set_validation_flags(this : Void*, flags : UInt32) : Void
   fun g_dtls_connection_close(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_dtls_connection_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dtls_connection_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dtls_connection_close_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_dtls_connection_emit_accept_certificate(this : Void*, peer_cert : Pointer(Void), errors : UInt32) : LibC::Int
   fun g_dtls_connection_get_certificate(this : Void*) : Pointer(Void)
@@ -2767,7 +2767,7 @@ lib LibGio
   fun g_dtls_connection_get_require_close_notify(this : Void*) : LibC::Int
   fun g_dtls_connection_get_type : UInt64
   fun g_dtls_connection_handshake(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_dtls_connection_handshake_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dtls_connection_handshake_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dtls_connection_handshake_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_dtls_connection_set_advertised_protocols(this : Void*, protocols : Pointer(Pointer(LibC::Char))) : Void
   fun g_dtls_connection_set_certificate(this : Void*, certificate : Pointer(Void)) : Void
@@ -2776,7 +2776,7 @@ lib LibGio
   fun g_dtls_connection_set_rehandshake_mode(this : Void*, mode : UInt32) : Void
   fun g_dtls_connection_set_require_close_notify(this : Void*, require_close_notify : LibC::Int) : Void
   fun g_dtls_connection_shutdown(this : Void*, shutdown_read : LibC::Int, shutdown_write : LibC::Int, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_dtls_connection_shutdown_async(this : Void*, shutdown_read : LibC::Int, shutdown_write : LibC::Int, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_dtls_connection_shutdown_async(this : Void*, shutdown_read : LibC::Int, shutdown_write : LibC::Int, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_dtls_connection_shutdown_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_dtls_server_connection_get_type : UInt64
   fun g_dtls_server_connection_new(base_socket : Pointer(Void), certificate : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
@@ -2793,7 +2793,7 @@ lib LibGio
   fun g_emblemed_icon_get_type : UInt64
   fun g_emblemed_icon_new(icon : Pointer(Void), emblem : Pointer(Void)) : Pointer(Void)
   fun g_file_append_to(this : Void*, flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_append_to_async(this : Void*, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_append_to_async(this : Void*, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_append_to_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_attribute_info_list_add(this : Void*, name : Pointer(LibC::Char), type : UInt32, flags : UInt32) : Void
   fun g_file_attribute_info_list_dup(this : Void*) : Pointer(Void)
@@ -2813,31 +2813,31 @@ lib LibGio
   fun g_file_attribute_matcher_to_string(this : Void*) : Pointer(LibC::Char)
   fun g_file_attribute_matcher_unref(this : Void*) : Void
   fun g_file_build_attribute_list_for_copy(this : Void*, flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibC::Char)
-  fun g_file_copy(this : Void*, destination : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), progress_callback : FileProgressCallback, progress_callback_data : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_copy_async(this : Void*, destination : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), progress_callback : FileProgressCallback, progress_callback_data : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_copy(this : Void*, destination : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), progress_callback : Void*, progress_callback_data : Pointer(Void), error : LibGLib::Error**) : LibC::Int
+  fun g_file_copy_async(this : Void*, destination : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), progress_callback : Void*, progress_callback_data : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_copy_attributes(this : Void*, destination : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_copy_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_create(this : Void*, flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_create_async(this : Void*, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_create_async(this : Void*, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_create_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_create_readwrite(this : Void*, flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_create_readwrite_async(this : Void*, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_create_readwrite_async(this : Void*, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_create_readwrite_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_delete(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_delete_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_delete_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_delete_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_descriptor_based_get_fd(this : Void*) : Int32
   fun g_file_descriptor_based_get_type : UInt64
   fun g_file_dup(this : Void*) : Pointer(Void)
-  fun g_file_eject_mountable(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_eject_mountable(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_eject_mountable_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_eject_mountable_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_eject_mountable_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_eject_mountable_with_operation_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_enumerate_children(this : Void*, attributes : Pointer(LibC::Char), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_enumerate_children_async(this : Void*, attributes : Pointer(LibC::Char), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_enumerate_children_async(this : Void*, attributes : Pointer(LibC::Char), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_enumerate_children_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_enumerator_close(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_enumerator_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_enumerator_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_enumerator_close_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_enumerator_get_child(this : Void*, info : Pointer(Void)) : Pointer(Void)
   fun g_file_enumerator_get_container(this : Void*) : Pointer(Void)
@@ -2846,12 +2846,12 @@ lib LibGio
   fun g_file_enumerator_is_closed(this : Void*) : LibC::Int
   fun g_file_enumerator_iterate(this : Void*, out_info : Pointer(Pointer(Void)), out_child : Pointer(Pointer(Void)), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_enumerator_next_file(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_enumerator_next_files_async(this : Void*, num_files : Int32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_enumerator_next_files_async(this : Void*, num_files : Int32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_enumerator_next_files_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
   fun g_file_enumerator_set_pending(this : Void*, pending : LibC::Int) : Void
   fun g_file_equal(this : Void*, file2 : Pointer(Void)) : LibC::Int
   fun g_file_find_enclosing_mount(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_find_enclosing_mount_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_find_enclosing_mount_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_find_enclosing_mount_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_get_basename(this : Void*) : Pointer(LibC::Char)
   fun g_file_get_child(this : Void*, name : Pointer(LibC::Char)) : Pointer(Void)
@@ -2942,23 +2942,23 @@ lib LibGio
   fun g_file_info_unset_attribute_mask(this : Void*) : Void
   fun g_file_input_stream_get_type : UInt64
   fun g_file_input_stream_query_info(this : Void*, attributes : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_input_stream_query_info_async(this : Void*, attributes : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_input_stream_query_info_async(this : Void*, attributes : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_input_stream_query_info_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_io_stream_get_etag(this : Void*) : Pointer(LibC::Char)
   fun g_file_io_stream_get_type : UInt64
   fun g_file_io_stream_query_info(this : Void*, attributes : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_io_stream_query_info_async(this : Void*, attributes : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_io_stream_query_info_async(this : Void*, attributes : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_io_stream_query_info_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_is_native(this : Void*) : LibC::Int
   fun g_file_load_bytes(this : Void*, cancellable : Pointer(Void), etag_out : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_load_bytes_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_load_bytes_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_load_bytes_finish(this : Void*, result : Pointer(Void), etag_out : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_load_contents(this : Void*, cancellable : Pointer(Void), contents : Pointer(Pointer(UInt8)), length : Pointer(UInt64), etag_out : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
-  fun g_file_load_contents_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_load_contents_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_load_contents_finish(this : Void*, res : Pointer(Void), contents : Pointer(Pointer(UInt8)), length : Pointer(UInt64), etag_out : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
   fun g_file_load_partial_contents_finish(this : Void*, res : Pointer(Void), contents : Pointer(Pointer(UInt8)), length : Pointer(UInt64), etag_out : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
   fun g_file_make_directory(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_make_directory_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_make_directory_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_make_directory_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_make_directory_with_parents(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_make_symbolic_link(this : Void*, symlink_value : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
@@ -2971,11 +2971,11 @@ lib LibGio
   fun g_file_monitor_get_type : UInt64
   fun g_file_monitor_is_cancelled(this : Void*) : LibC::Int
   fun g_file_monitor_set_rate_limit(this : Void*, limit_msecs : Int32) : Void
-  fun g_file_mount_enclosing_volume(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_mount_enclosing_volume(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_mount_enclosing_volume_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_mount_mountable(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_mount_mountable(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_mount_mountable_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_move(this : Void*, destination : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), progress_callback : FileProgressCallback, progress_callback_data : Pointer(Void), error : LibGLib::Error**) : LibC::Int
+  fun g_file_move(this : Void*, destination : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), progress_callback : Void*, progress_callback_data : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_new_for_commandline_arg(arg : Pointer(LibC::Char)) : Pointer(Void)
   fun g_file_new_for_commandline_arg(arg : Pointer(LibC::Char)) : Pointer(Void)
   fun g_file_new_for_commandline_arg_and_cwd(arg : Pointer(LibC::Char), cwd : Pointer(LibC::Char)) : Pointer(Void)
@@ -2987,43 +2987,43 @@ lib LibGio
   fun g_file_new_tmp(tmpl : Pointer(LibC::Char), iostream : Pointer(Pointer(Void)), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_new_tmp(tmpl : Pointer(LibC::Char), iostream : Pointer(Pointer(Void)), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_open_readwrite(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_open_readwrite_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_open_readwrite_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_open_readwrite_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_output_stream_get_etag(this : Void*) : Pointer(LibC::Char)
   fun g_file_output_stream_get_type : UInt64
   fun g_file_output_stream_query_info(this : Void*, attributes : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_output_stream_query_info_async(this : Void*, attributes : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_output_stream_query_info_async(this : Void*, attributes : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_output_stream_query_info_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_parse_name(parse_name : Pointer(LibC::Char)) : Pointer(Void)
   fun g_file_parse_name(parse_name : Pointer(LibC::Char)) : Pointer(Void)
   fun g_file_peek_path(this : Void*) : Pointer(LibC::Char)
-  fun g_file_poll_mountable(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_poll_mountable(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_poll_mountable_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_query_default_handler(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_query_default_handler_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_query_default_handler_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_query_default_handler_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_query_exists(this : Void*, cancellable : Pointer(Void)) : LibC::Int
   fun g_file_query_file_type(this : Void*, flags : UInt32, cancellable : Pointer(Void)) : UInt32
   fun g_file_query_filesystem_info(this : Void*, attributes : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_query_filesystem_info_async(this : Void*, attributes : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_query_filesystem_info_async(this : Void*, attributes : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_query_filesystem_info_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_query_info(this : Void*, attributes : Pointer(LibC::Char), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_query_info_async(this : Void*, attributes : Pointer(LibC::Char), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_query_info_async(this : Void*, attributes : Pointer(LibC::Char), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_query_info_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_query_settable_attributes(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_query_writable_namespaces(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_read(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_read_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_read_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_read_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_replace(this : Void*, etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_replace_async(this : Void*, etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_replace_async(this : Void*, etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_replace_contents(this : Void*, contents : Pointer(UInt8), length : UInt64, etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, new_etag : Pointer(Pointer(LibC::Char)), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_replace_contents_async(this : Void*, contents : Pointer(UInt8), length : UInt64, etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
-  fun g_file_replace_contents_bytes_async(this : Void*, contents : Pointer(Void), etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_replace_contents_async(this : Void*, contents : Pointer(UInt8), length : UInt64, etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
+  fun g_file_replace_contents_bytes_async(this : Void*, contents : Pointer(Void), etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_replace_contents_finish(this : Void*, res : Pointer(Void), new_etag : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
   fun g_file_replace_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_replace_readwrite(this : Void*, etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_replace_readwrite_async(this : Void*, etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_replace_readwrite_async(this : Void*, etag : Pointer(LibC::Char), make_backup : LibC::Int, flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_replace_readwrite_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_resolve_relative_path(this : Void*, relative_path : Pointer(LibC::Char)) : Pointer(Void)
   fun g_file_set_attribute(this : Void*, attribute : Pointer(LibC::Char), type : UInt32, value_p : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
@@ -3033,23 +3033,23 @@ lib LibGio
   fun g_file_set_attribute_string(this : Void*, attribute : Pointer(LibC::Char), value : Pointer(LibC::Char), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_set_attribute_uint32(this : Void*, attribute : Pointer(LibC::Char), value : UInt32, flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_set_attribute_uint64(this : Void*, attribute : Pointer(LibC::Char), value : UInt64, flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_set_attributes_async(this : Void*, info : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_set_attributes_async(this : Void*, info : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_set_attributes_finish(this : Void*, result : Pointer(Void), info : Pointer(Pointer(Void)), error : LibGLib::Error**) : LibC::Int
   fun g_file_set_attributes_from_info(this : Void*, info : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_set_display_name(this : Void*, display_name : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_set_display_name_async(this : Void*, display_name : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_set_display_name_async(this : Void*, display_name : Pointer(LibC::Char), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_set_display_name_finish(this : Void*, res : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_file_start_mountable(this : Void*, flags : UInt32, start_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_start_mountable(this : Void*, flags : UInt32, start_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_start_mountable_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_stop_mountable(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_stop_mountable(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_stop_mountable_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_supports_thread_contexts(this : Void*) : LibC::Int
   fun g_file_trash(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_trash_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_trash_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_trash_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_unmount_mountable(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_unmount_mountable(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_unmount_mountable_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_file_unmount_mountable_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_file_unmount_mountable_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_unmount_mountable_with_operation_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_filename_completer_get_completion_suffix(this : Void*, initial_text : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun g_filename_completer_get_completions(this : Void*, initial_text : Pointer(LibC::Char)) : Pointer(Pointer(LibC::Char))
@@ -3115,23 +3115,23 @@ lib LibGio
   fun g_initable_newv(object_type : UInt64, n_parameters : UInt32, parameters : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_input_stream_clear_pending(this : Void*) : Void
   fun g_input_stream_close(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_input_stream_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_input_stream_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_input_stream_close_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_input_stream_get_type : UInt64
   fun g_input_stream_has_pending(this : Void*) : LibC::Int
   fun g_input_stream_is_closed(this : Void*) : LibC::Int
   fun g_input_stream_read(this : Void*, buffer : Pointer(Pointer(UInt8)), count : UInt64, cancellable : Pointer(Void), error : LibGLib::Error**) : Int64
   fun g_input_stream_read_all(this : Void*, buffer : Pointer(Pointer(UInt8)), count : UInt64, bytes_read : Pointer(UInt64), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_input_stream_read_all_async(this : Void*, buffer : Pointer(Pointer(UInt8)), count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_input_stream_read_all_async(this : Void*, buffer : Pointer(Pointer(UInt8)), count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_input_stream_read_all_finish(this : Void*, result : Pointer(Void), bytes_read : Pointer(UInt64), error : LibGLib::Error**) : LibC::Int
-  fun g_input_stream_read_async(this : Void*, buffer : Pointer(Pointer(UInt8)), count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_input_stream_read_async(this : Void*, buffer : Pointer(Pointer(UInt8)), count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_input_stream_read_bytes(this : Void*, count : UInt64, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_input_stream_read_bytes_async(this : Void*, count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_input_stream_read_bytes_async(this : Void*, count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_input_stream_read_bytes_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_input_stream_read_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Int64
   fun g_input_stream_set_pending(this : Void*, error : LibGLib::Error**) : LibC::Int
   fun g_input_stream_skip(this : Void*, count : UInt64, cancellable : Pointer(Void), error : LibGLib::Error**) : Int64
-  fun g_input_stream_skip_async(this : Void*, count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_input_stream_skip_async(this : Void*, count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_input_stream_skip_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Int64
   fun g_io_error_from_errno(err_no : Int32) : UInt32
   fun g_io_error_quark : UInt32
@@ -3160,12 +3160,12 @@ lib LibGio
   fun g_io_modules_scan_all_in_directory(dirname : Pointer(LibC::Char)) : Void
   fun g_io_modules_scan_all_in_directory_with_scope(dirname : Pointer(LibC::Char), scope : Pointer(Void)) : Void
   fun g_io_scheduler_cancel_all_jobs : Void
-  fun g_io_scheduler_job_send_to_mainloop(this : Void*, func : LibGLib::SourceFunc, user_data : Pointer(Void), notify : LibGLib::DestroyNotify) : LibC::Int
-  fun g_io_scheduler_job_send_to_mainloop_async(this : Void*, func : LibGLib::SourceFunc, user_data : Pointer(Void), notify : LibGLib::DestroyNotify) : Void
-  fun g_io_scheduler_push_job(job_func : IOSchedulerJobFunc, user_data : Pointer(Void), notify : LibGLib::DestroyNotify, io_priority : Int32, cancellable : Pointer(Void)) : Void
+  fun g_io_scheduler_job_send_to_mainloop(this : Void*, func : Void*, user_data : Pointer(Void), notify : Void*) : LibC::Int
+  fun g_io_scheduler_job_send_to_mainloop_async(this : Void*, func : Void*, user_data : Pointer(Void), notify : Void*) : Void
+  fun g_io_scheduler_push_job(job_func : Void*, user_data : Pointer(Void), notify : Void*, io_priority : Int32, cancellable : Pointer(Void)) : Void
   fun g_io_stream_clear_pending(this : Void*) : Void
   fun g_io_stream_close(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_io_stream_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_io_stream_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_io_stream_close_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_io_stream_get_input_stream(this : Void*) : Pointer(Void)
   fun g_io_stream_get_output_stream(this : Void*) : Pointer(Void)
@@ -3173,7 +3173,7 @@ lib LibGio
   fun g_io_stream_has_pending(this : Void*) : LibC::Int
   fun g_io_stream_is_closed(this : Void*) : LibC::Int
   fun g_io_stream_set_pending(this : Void*, error : LibGLib::Error**) : LibC::Int
-  fun g_io_stream_splice_async(this : Void*, stream2 : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_io_stream_splice_async(this : Void*, stream2 : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_io_stream_splice_finish(result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_keyfile_settings_backend_new(filename : Pointer(LibC::Char), root_path : Pointer(LibC::Char), root_group : Pointer(LibC::Char)) : Pointer(Void)
   fun g_list_model_get_item_type(this : Void*) : UInt64
@@ -3183,25 +3183,25 @@ lib LibGio
   fun g_list_model_items_changed(this : Void*, position : UInt32, removed : UInt32, added : UInt32) : Void
   fun g_list_store_append(this : Void*, item : Pointer(Void)) : Void
   fun g_list_store_find(this : Void*, item : Pointer(Void), position : Pointer(UInt32)) : LibC::Int
-  fun g_list_store_find_with_equal_func(this : Void*, item : Pointer(Void), equal_func : LibGLib::EqualFunc, position : Pointer(UInt32)) : LibC::Int
+  fun g_list_store_find_with_equal_func(this : Void*, item : Pointer(Void), equal_func : Void*, position : Pointer(UInt32)) : LibC::Int
   fun g_list_store_get_type : UInt64
   fun g_list_store_insert(this : Void*, position : UInt32, item : Pointer(Void)) : Void
-  fun g_list_store_insert_sorted(this : Void*, item : Pointer(Void), compare_func : LibGLib::CompareDataFunc, user_data : Pointer(Void)) : UInt32
+  fun g_list_store_insert_sorted(this : Void*, item : Pointer(Void), compare_func : Void*, user_data : Pointer(Void)) : UInt32
   fun g_list_store_new(item_type : UInt64) : Pointer(Void)
   fun g_list_store_remove(this : Void*, position : UInt32) : Void
   fun g_list_store_remove_all(this : Void*) : Void
-  fun g_list_store_sort(this : Void*, compare_func : LibGLib::CompareDataFunc, user_data : Pointer(Void)) : Void
+  fun g_list_store_sort(this : Void*, compare_func : Void*, user_data : Pointer(Void)) : Void
   fun g_list_store_splice(this : Void*, position : UInt32, n_removals : UInt32, additions : Pointer(Void), n_additions : UInt32) : Void
   fun g_loadable_icon_get_type : UInt64
   fun g_loadable_icon_load(this : Void*, size : Int32, type : Pointer(Pointer(LibC::Char)), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_loadable_icon_load_async(this : Void*, size : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_loadable_icon_load_async(this : Void*, size : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_loadable_icon_load_finish(this : Void*, res : Pointer(Void), type : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : Pointer(Void)
   fun g_memory_input_stream_add_bytes(this : Void*, bytes : Pointer(Void)) : Void
-  fun g_memory_input_stream_add_data(this : Void*, data : Pointer(UInt8), len : Int64, destroy : LibGLib::DestroyNotify) : Void
+  fun g_memory_input_stream_add_data(this : Void*, data : Pointer(UInt8), len : Int64, destroy : Void*) : Void
   fun g_memory_input_stream_get_type : UInt64
   fun g_memory_input_stream_new : Pointer(Void)
   fun g_memory_input_stream_new_from_bytes(bytes : Pointer(Void)) : Pointer(Void)
-  fun g_memory_input_stream_new_from_data(data : Pointer(UInt8), len : Int64, destroy : LibGLib::DestroyNotify) : Pointer(Void)
+  fun g_memory_input_stream_new_from_data(data : Pointer(UInt8), len : Int64, destroy : Void*) : Pointer(Void)
   fun g_memory_monitor_dup_default : Pointer(Void)
   fun g_memory_monitor_dup_default : Pointer(Void)
   fun g_memory_monitor_get_type : UInt64
@@ -3265,9 +3265,9 @@ lib LibGio
   fun g_menu_remove_all(this : Void*) : Void
   fun g_mount_can_eject(this : Void*) : LibC::Int
   fun g_mount_can_unmount(this : Void*) : LibC::Int
-  fun g_mount_eject(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_mount_eject(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_mount_eject_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_mount_eject_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_mount_eject_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_mount_eject_with_operation_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_mount_get_default_location(this : Void*) : Pointer(Void)
   fun g_mount_get_drive(this : Void*) : Pointer(Void)
@@ -3279,7 +3279,7 @@ lib LibGio
   fun g_mount_get_type : UInt64
   fun g_mount_get_uuid(this : Void*) : Pointer(LibC::Char)
   fun g_mount_get_volume(this : Void*) : Pointer(Void)
-  fun g_mount_guess_content_type(this : Void*, force_rescan : LibC::Int, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_mount_guess_content_type(this : Void*, force_rescan : LibC::Int, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_mount_guess_content_type_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Pointer(LibC::Char))
   fun g_mount_guess_content_type_sync(this : Void*, force_rescan : LibC::Int, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Pointer(LibC::Char))
   fun g_mount_is_shadowed(this : Void*) : LibC::Int
@@ -3304,12 +3304,12 @@ lib LibGio
   fun g_mount_operation_set_password_save(this : Void*, save : UInt32) : Void
   fun g_mount_operation_set_pim(this : Void*, pim : UInt32) : Void
   fun g_mount_operation_set_username(this : Void*, username : Pointer(LibC::Char)) : Void
-  fun g_mount_remount(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_mount_remount(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_mount_remount_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_mount_shadow(this : Void*) : Void
-  fun g_mount_unmount(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_mount_unmount(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_mount_unmount_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_mount_unmount_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_mount_unmount_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_mount_unmount_with_operation_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_mount_unshadow(this : Void*) : Void
   fun g_native_socket_address_get_type : UInt64
@@ -3324,7 +3324,7 @@ lib LibGio
   fun g_network_address_parse(host_and_port : Pointer(LibC::Char), default_port : UInt16, error : LibGLib::Error**) : Pointer(Void)
   fun g_network_address_parse_uri(uri : Pointer(LibC::Char), default_port : UInt16, error : LibGLib::Error**) : Pointer(Void)
   fun g_network_monitor_can_reach(this : Void*, connectable : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_network_monitor_can_reach_async(this : Void*, connectable : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_network_monitor_can_reach_async(this : Void*, connectable : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_network_monitor_can_reach_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_network_monitor_get_connectivity(this : Void*) : UInt32
   fun g_network_monitor_get_default : Pointer(Void)
@@ -3355,10 +3355,10 @@ lib LibGio
   fun g_null_settings_backend_new : Pointer(Void)
   fun g_output_stream_clear_pending(this : Void*) : Void
   fun g_output_stream_close(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_output_stream_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_output_stream_close_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_output_stream_close_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_output_stream_flush(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_output_stream_flush_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_output_stream_flush_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_output_stream_flush_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_output_stream_get_type : UInt64
   fun g_output_stream_has_pending(this : Void*) : LibC::Int
@@ -3366,25 +3366,25 @@ lib LibGio
   fun g_output_stream_is_closing(this : Void*) : LibC::Int
   fun g_output_stream_set_pending(this : Void*, error : LibGLib::Error**) : LibC::Int
   fun g_output_stream_splice(this : Void*, source : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Int64
-  fun g_output_stream_splice_async(this : Void*, source : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_output_stream_splice_async(this : Void*, source : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_output_stream_splice_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Int64
   fun g_output_stream_write(this : Void*, buffer : Pointer(UInt8), count : UInt64, cancellable : Pointer(Void), error : LibGLib::Error**) : Int64
   fun g_output_stream_write_all(this : Void*, buffer : Pointer(UInt8), count : UInt64, bytes_written : Pointer(UInt64), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_output_stream_write_all_async(this : Void*, buffer : Pointer(UInt8), count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_output_stream_write_all_async(this : Void*, buffer : Pointer(UInt8), count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_output_stream_write_all_finish(this : Void*, result : Pointer(Void), bytes_written : Pointer(UInt64), error : LibGLib::Error**) : LibC::Int
-  fun g_output_stream_write_async(this : Void*, buffer : Pointer(UInt8), count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_output_stream_write_async(this : Void*, buffer : Pointer(UInt8), count : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_output_stream_write_bytes(this : Void*, bytes : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Int64
-  fun g_output_stream_write_bytes_async(this : Void*, bytes : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_output_stream_write_bytes_async(this : Void*, bytes : Pointer(Void), io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_output_stream_write_bytes_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Int64
   fun g_output_stream_write_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Int64
   fun g_output_stream_writev(this : Void*, vectors : Pointer(Void), n_vectors : UInt64, bytes_written : Pointer(UInt64), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_output_stream_writev_all(this : Void*, vectors : Pointer(Void), n_vectors : UInt64, bytes_written : Pointer(UInt64), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_output_stream_writev_all_async(this : Void*, vectors : Pointer(Void), n_vectors : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_output_stream_writev_all_async(this : Void*, vectors : Pointer(Void), n_vectors : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_output_stream_writev_all_finish(this : Void*, result : Pointer(Void), bytes_written : Pointer(UInt64), error : LibGLib::Error**) : LibC::Int
-  fun g_output_stream_writev_async(this : Void*, vectors : Pointer(Void), n_vectors : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_output_stream_writev_async(this : Void*, vectors : Pointer(Void), n_vectors : UInt64, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_output_stream_writev_finish(this : Void*, result : Pointer(Void), bytes_written : Pointer(UInt64), error : LibGLib::Error**) : LibC::Int
   fun g_permission_acquire(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_permission_acquire_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_permission_acquire_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_permission_acquire_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_permission_get_allowed(this : Void*) : LibC::Int
   fun g_permission_get_can_acquire(this : Void*) : LibC::Int
@@ -3392,7 +3392,7 @@ lib LibGio
   fun g_permission_get_type : UInt64
   fun g_permission_impl_update(this : Void*, allowed : LibC::Int, can_acquire : LibC::Int, can_release : LibC::Int) : Void
   fun g_permission_release(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_permission_release_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_permission_release_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_permission_release_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_pollable_input_stream_can_poll(this : Void*) : LibC::Int
   fun g_pollable_input_stream_create_source(this : Void*, cancellable : Pointer(Void)) : Pointer(Void)
@@ -3427,7 +3427,7 @@ lib LibGio
   fun g_proxy_address_get_username(this : Void*) : Pointer(LibC::Char)
   fun g_proxy_address_new(inetaddr : Pointer(Void), port : UInt16, protocol : Pointer(LibC::Char), dest_hostname : Pointer(LibC::Char), dest_port : UInt16, username : Pointer(LibC::Char), password : Pointer(LibC::Char)) : Pointer(Void)
   fun g_proxy_connect(this : Void*, connection : Pointer(Void), proxy_address : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_proxy_connect_async(this : Void*, connection : Pointer(Void), proxy_address : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_proxy_connect_async(this : Void*, connection : Pointer(Void), proxy_address : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_proxy_connect_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_proxy_get_default_for_protocol(protocol : Pointer(LibC::Char)) : Pointer(Void)
   fun g_proxy_get_default_for_protocol(protocol : Pointer(LibC::Char)) : Pointer(Void)
@@ -3437,7 +3437,7 @@ lib LibGio
   fun g_proxy_resolver_get_type : UInt64
   fun g_proxy_resolver_is_supported(this : Void*) : LibC::Int
   fun g_proxy_resolver_lookup(this : Void*, uri : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Pointer(LibC::Char))
-  fun g_proxy_resolver_lookup_async(this : Void*, uri : Pointer(LibC::Char), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_proxy_resolver_lookup_async(this : Void*, uri : Pointer(LibC::Char), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_proxy_resolver_lookup_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Pointer(LibC::Char))
   fun g_proxy_supports_hostname(this : Void*) : LibC::Int
   fun g_remote_action_group_activate_action_full(this : Void*, action_name : Pointer(LibC::Char), parameter : Pointer(Void), platform_data : Pointer(Void)) : Void
@@ -3447,19 +3447,19 @@ lib LibGio
   fun g_resolver_get_default : Pointer(Void)
   fun g_resolver_get_type : UInt64
   fun g_resolver_lookup_by_address(this : Void*, address : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibC::Char)
-  fun g_resolver_lookup_by_address_async(this : Void*, address : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_resolver_lookup_by_address_async(this : Void*, address : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_resolver_lookup_by_address_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(LibC::Char)
   fun g_resolver_lookup_by_name(this : Void*, hostname : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
-  fun g_resolver_lookup_by_name_async(this : Void*, hostname : Pointer(LibC::Char), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_resolver_lookup_by_name_async(this : Void*, hostname : Pointer(LibC::Char), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_resolver_lookup_by_name_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
   fun g_resolver_lookup_by_name_with_flags(this : Void*, hostname : Pointer(LibC::Char), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
-  fun g_resolver_lookup_by_name_with_flags_async(this : Void*, hostname : Pointer(LibC::Char), flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_resolver_lookup_by_name_with_flags_async(this : Void*, hostname : Pointer(LibC::Char), flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_resolver_lookup_by_name_with_flags_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
   fun g_resolver_lookup_records(this : Void*, rrname : Pointer(LibC::Char), record_type : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
-  fun g_resolver_lookup_records_async(this : Void*, rrname : Pointer(LibC::Char), record_type : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_resolver_lookup_records_async(this : Void*, rrname : Pointer(LibC::Char), record_type : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_resolver_lookup_records_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
   fun g_resolver_lookup_service(this : Void*, service : Pointer(LibC::Char), protocol : Pointer(LibC::Char), domain : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
-  fun g_resolver_lookup_service_async(this : Void*, service : Pointer(LibC::Char), protocol : Pointer(LibC::Char), domain : Pointer(LibC::Char), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_resolver_lookup_service_async(this : Void*, service : Pointer(LibC::Char), protocol : Pointer(LibC::Char), domain : Pointer(LibC::Char), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_resolver_lookup_service_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
   fun g_resolver_set_default(this : Void*) : Void
   fun g_resource_enumerate_children(this : Void*, path : Pointer(LibC::Char), lookup_flags : UInt32, error : LibGLib::Error**) : Pointer(Pointer(LibC::Char))
@@ -3510,7 +3510,7 @@ lib LibGio
   fun g_settings_get_has_unapplied(this : Void*) : LibC::Int
   fun g_settings_get_int(this : Void*, key : Pointer(LibC::Char)) : Int32
   fun g_settings_get_int64(this : Void*, key : Pointer(LibC::Char)) : Int64
-  fun g_settings_get_mapped(this : Void*, key : Pointer(LibC::Char), mapping : SettingsGetMapping, user_data : Pointer(Void)) : Pointer(Void)
+  fun g_settings_get_mapped(this : Void*, key : Pointer(LibC::Char), mapping : Void*, user_data : Pointer(Void)) : Pointer(Void)
   fun g_settings_get_range(this : Void*, key : Pointer(LibC::Char)) : Pointer(Void)
   fun g_settings_get_string(this : Void*, key : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun g_settings_get_strv(this : Void*, key : Pointer(LibC::Char)) : Pointer(Pointer(LibC::Char))
@@ -3584,15 +3584,15 @@ lib LibGio
   fun g_simple_action_set_enabled(this : Void*, enabled : LibC::Int) : Void
   fun g_simple_action_set_state(this : Void*, value : Pointer(Void)) : Void
   fun g_simple_action_set_state_hint(this : Void*, state_hint : Pointer(Void)) : Void
-  fun g_simple_async_report_gerror_in_idle(object : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void), error : Pointer(Void)) : Void
+  fun g_simple_async_report_gerror_in_idle(object : Pointer(Void), callback : Void*, user_data : Pointer(Void), error : Pointer(Void)) : Void
   fun g_simple_async_result_complete(this : Void*) : Void
   fun g_simple_async_result_complete_in_idle(this : Void*) : Void
   fun g_simple_async_result_get_op_res_gboolean(this : Void*) : LibC::Int
   fun g_simple_async_result_get_op_res_gssize(this : Void*) : Int64
   fun g_simple_async_result_get_type : UInt64
   fun g_simple_async_result_is_valid(result : Pointer(Void), source : Pointer(Void), source_tag : Pointer(Void)) : LibC::Int
-  fun g_simple_async_result_new(source_object : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void), source_tag : Pointer(Void)) : Pointer(Void)
-  fun g_simple_async_result_new_from_error(source_object : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void), error : Pointer(Void)) : Pointer(Void)
+  fun g_simple_async_result_new(source_object : Pointer(Void), callback : Void*, user_data : Pointer(Void), source_tag : Pointer(Void)) : Pointer(Void)
+  fun g_simple_async_result_new_from_error(source_object : Pointer(Void), callback : Void*, user_data : Pointer(Void), error : Pointer(Void)) : Pointer(Void)
   fun g_simple_async_result_propagate_error(this : Void*, error : LibGLib::Error**) : LibC::Int
   fun g_simple_async_result_set_check_cancellable(this : Void*, check_cancellable : Pointer(Void)) : Void
   fun g_simple_async_result_set_from_error(this : Void*, error : Pointer(Void)) : Void
@@ -3611,7 +3611,7 @@ lib LibGio
   fun g_socket_accept(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_socket_address_enumerator_get_type : UInt64
   fun g_socket_address_enumerator_next(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_socket_address_enumerator_next_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_socket_address_enumerator_next_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_socket_address_enumerator_next_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_socket_address_get_family(this : Void*) : UInt32
   fun g_socket_address_get_native_size(this : Void*) : Int64
@@ -3622,16 +3622,16 @@ lib LibGio
   fun g_socket_check_connect_result(this : Void*, error : LibGLib::Error**) : LibC::Int
   fun g_socket_client_add_application_proxy(this : Void*, protocol : Pointer(LibC::Char)) : Void
   fun g_socket_client_connect(this : Void*, connectable : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_socket_client_connect_async(this : Void*, connectable : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_socket_client_connect_async(this : Void*, connectable : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_socket_client_connect_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_socket_client_connect_to_host(this : Void*, host_and_port : Pointer(LibC::Char), default_port : UInt16, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_socket_client_connect_to_host_async(this : Void*, host_and_port : Pointer(LibC::Char), default_port : UInt16, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_socket_client_connect_to_host_async(this : Void*, host_and_port : Pointer(LibC::Char), default_port : UInt16, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_socket_client_connect_to_host_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_socket_client_connect_to_service(this : Void*, domain : Pointer(LibC::Char), service : Pointer(LibC::Char), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_socket_client_connect_to_service_async(this : Void*, domain : Pointer(LibC::Char), service : Pointer(LibC::Char), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_socket_client_connect_to_service_async(this : Void*, domain : Pointer(LibC::Char), service : Pointer(LibC::Char), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_socket_client_connect_to_service_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_socket_client_connect_to_uri(this : Void*, uri : Pointer(LibC::Char), default_port : UInt16, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_socket_client_connect_to_uri_async(this : Void*, uri : Pointer(LibC::Char), default_port : UInt16, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_socket_client_connect_to_uri_async(this : Void*, uri : Pointer(LibC::Char), default_port : UInt16, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_socket_client_connect_to_uri_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_socket_client_get_enable_proxy(this : Void*) : LibC::Int
   fun g_socket_client_get_family(this : Void*) : UInt32
@@ -3663,7 +3663,7 @@ lib LibGio
   fun g_socket_connectable_proxy_enumerate(this : Void*) : Pointer(Void)
   fun g_socket_connectable_to_string(this : Void*) : Pointer(LibC::Char)
   fun g_socket_connection_connect(this : Void*, address : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_socket_connection_connect_async(this : Void*, address : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_socket_connection_connect_async(this : Void*, address : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_socket_connection_connect_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_socket_connection_factory_create_connection(this : Void*) : Pointer(Void)
   fun g_socket_connection_factory_lookup_type(family : UInt32, type : UInt32, protocol_id : Int32) : UInt64
@@ -3705,10 +3705,10 @@ lib LibGio
   fun g_socket_leave_multicast_group_ssm(this : Void*, group : Pointer(Void), source_specific : Pointer(Void), iface : Pointer(LibC::Char), error : LibGLib::Error**) : LibC::Int
   fun g_socket_listen(this : Void*, error : LibGLib::Error**) : LibC::Int
   fun g_socket_listener_accept(this : Void*, source_object : Pointer(Pointer(Void)), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_socket_listener_accept_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_socket_listener_accept_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_socket_listener_accept_finish(this : Void*, result : Pointer(Void), source_object : Pointer(Pointer(Void)), error : LibGLib::Error**) : Pointer(Void)
   fun g_socket_listener_accept_socket(this : Void*, source_object : Pointer(Pointer(Void)), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_socket_listener_accept_socket_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_socket_listener_accept_socket_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_socket_listener_accept_socket_finish(this : Void*, result : Pointer(Void), source_object : Pointer(Pointer(Void)), error : LibGLib::Error**) : Pointer(Void)
   fun g_socket_listener_add_address(this : Void*, address : Pointer(Void), type : UInt32, protocol : Int32, source_object : Pointer(Void), effective_address : Pointer(Pointer(Void)), error : LibGLib::Error**) : LibC::Int
   fun g_socket_listener_add_any_inet_port(this : Void*, source_object : Pointer(Void), error : LibGLib::Error**) : UInt16
@@ -3759,10 +3759,10 @@ lib LibGio
   fun g_static_resource_get_resource(this : Void*) : Pointer(Void)
   fun g_static_resource_init(this : Void*) : Void
   fun g_subprocess_communicate(this : Void*, stdin_buf : Pointer(Void), cancellable : Pointer(Void), stdout_buf : Pointer(Pointer(Void)), stderr_buf : Pointer(Pointer(Void)), error : LibGLib::Error**) : LibC::Int
-  fun g_subprocess_communicate_async(this : Void*, stdin_buf : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_subprocess_communicate_async(this : Void*, stdin_buf : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_subprocess_communicate_finish(this : Void*, result : Pointer(Void), stdout_buf : Pointer(Pointer(Void)), stderr_buf : Pointer(Pointer(Void)), error : LibGLib::Error**) : LibC::Int
   fun g_subprocess_communicate_utf8(this : Void*, stdin_buf : Pointer(LibC::Char), cancellable : Pointer(Void), stdout_buf : Pointer(Pointer(LibC::Char)), stderr_buf : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
-  fun g_subprocess_communicate_utf8_async(this : Void*, stdin_buf : Pointer(LibC::Char), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_subprocess_communicate_utf8_async(this : Void*, stdin_buf : Pointer(LibC::Char), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_subprocess_communicate_utf8_finish(this : Void*, result : Pointer(Void), stdout_buf : Pointer(Pointer(LibC::Char)), stderr_buf : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
   fun g_subprocess_force_exit(this : Void*) : Void
   fun g_subprocess_get_exit_status(this : Void*) : Int32
@@ -3796,9 +3796,9 @@ lib LibGio
   fun g_subprocess_newv(argv : Pointer(Pointer(LibC::Char)), flags : UInt32, error : LibGLib::Error**) : Pointer(Void)
   fun g_subprocess_send_signal(this : Void*, signal_num : Int32) : Void
   fun g_subprocess_wait(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_subprocess_wait_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_subprocess_wait_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_subprocess_wait_check(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_subprocess_wait_check_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_subprocess_wait_check_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_subprocess_wait_check_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_subprocess_wait_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_task_get_cancellable(this : Void*) : Pointer(Void)
@@ -3814,26 +3814,26 @@ lib LibGio
   fun g_task_get_type : UInt64
   fun g_task_had_error(this : Void*) : LibC::Int
   fun g_task_is_valid(result : Pointer(Void), source_object : Pointer(Void)) : LibC::Int
-  fun g_task_new(source_object : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, callback_data : Pointer(Void)) : Pointer(Void)
+  fun g_task_new(source_object : Pointer(Void), cancellable : Pointer(Void), callback : Void*, callback_data : Pointer(Void)) : Pointer(Void)
   fun g_task_propagate_boolean(this : Void*, error : LibGLib::Error**) : LibC::Int
   fun g_task_propagate_int(this : Void*, error : LibGLib::Error**) : Int64
   fun g_task_propagate_pointer(this : Void*, error : LibGLib::Error**) : Pointer(Void)
   fun g_task_propagate_value(this : Void*, value : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_task_report_error(source_object : Pointer(Void), callback : AsyncReadyCallback, callback_data : Pointer(Void), source_tag : Pointer(Void), error : Pointer(Void)) : Void
+  fun g_task_report_error(source_object : Pointer(Void), callback : Void*, callback_data : Pointer(Void), source_tag : Pointer(Void), error : Pointer(Void)) : Void
   fun g_task_return_boolean(this : Void*, result : LibC::Int) : Void
   fun g_task_return_error(this : Void*, error : Pointer(Void)) : Void
   fun g_task_return_error_if_cancelled(this : Void*) : LibC::Int
   fun g_task_return_int(this : Void*, result : Int64) : Void
-  fun g_task_return_pointer(this : Void*, result : Pointer(Void), result_destroy : LibGLib::DestroyNotify) : Void
+  fun g_task_return_pointer(this : Void*, result : Pointer(Void), result_destroy : Void*) : Void
   fun g_task_return_value(this : Void*, result : Pointer(Void)) : Void
-  fun g_task_run_in_thread(this : Void*, task_func : TaskThreadFunc) : Void
-  fun g_task_run_in_thread_sync(this : Void*, task_func : TaskThreadFunc) : Void
+  fun g_task_run_in_thread(this : Void*, task_func : Void*) : Void
+  fun g_task_run_in_thread_sync(this : Void*, task_func : Void*) : Void
   fun g_task_set_check_cancellable(this : Void*, check_cancellable : LibC::Int) : Void
   fun g_task_set_name(this : Void*, name : Pointer(LibC::Char)) : Void
   fun g_task_set_priority(this : Void*, priority : Int32) : Void
   fun g_task_set_return_on_cancel(this : Void*, return_on_cancel : LibC::Int) : LibC::Int
   fun g_task_set_source_tag(this : Void*, source_tag : Pointer(Void)) : Void
-  fun g_task_set_task_data(this : Void*, task_data : Pointer(Void), task_data_destroy : LibGLib::DestroyNotify) : Void
+  fun g_task_set_task_data(this : Void*, task_data : Pointer(Void), task_data_destroy : Void*) : Void
   fun g_tcp_connection_get_graceful_disconnect(this : Void*) : LibC::Int
   fun g_tcp_connection_get_type : UInt64
   fun g_tcp_connection_set_graceful_disconnect(this : Void*, graceful_disconnect : LibC::Int) : Void
@@ -3913,7 +3913,7 @@ lib LibGio
   fun g_tls_connection_get_type : UInt64
   fun g_tls_connection_get_use_system_certdb(this : Void*) : LibC::Int
   fun g_tls_connection_handshake(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_tls_connection_handshake_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_tls_connection_handshake_async(this : Void*, io_priority : Int32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_tls_connection_handshake_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_tls_connection_set_advertised_protocols(this : Void*, protocols : Pointer(Pointer(LibC::Char))) : Void
   fun g_tls_connection_set_certificate(this : Void*, certificate : Pointer(Void)) : Void
@@ -3925,29 +3925,29 @@ lib LibGio
   fun g_tls_database_create_certificate_handle(this : Void*, certificate : Pointer(Void)) : Pointer(LibC::Char)
   fun g_tls_database_get_type : UInt64
   fun g_tls_database_lookup_certificate_for_handle(this : Void*, handle : Pointer(LibC::Char), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_tls_database_lookup_certificate_for_handle_async(this : Void*, handle : Pointer(LibC::Char), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_tls_database_lookup_certificate_for_handle_async(this : Void*, handle : Pointer(LibC::Char), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_tls_database_lookup_certificate_for_handle_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_database_lookup_certificate_issuer(this : Void*, certificate : Pointer(Void), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_tls_database_lookup_certificate_issuer_async(this : Void*, certificate : Pointer(Void), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_tls_database_lookup_certificate_issuer_async(this : Void*, certificate : Pointer(Void), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_tls_database_lookup_certificate_issuer_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_database_lookup_certificates_issued_by(this : Void*, issuer_raw_dn : Pointer(UInt8), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
-  fun g_tls_database_lookup_certificates_issued_by_async(this : Void*, issuer_raw_dn : Pointer(UInt8), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_tls_database_lookup_certificates_issued_by_async(this : Void*, issuer_raw_dn : Pointer(UInt8), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_tls_database_lookup_certificates_issued_by_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(LibGLib::List)
   fun g_tls_database_verify_chain(this : Void*, chain : Pointer(Void), purpose : Pointer(LibC::Char), identity : Pointer(Void), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : UInt32
-  fun g_tls_database_verify_chain_async(this : Void*, chain : Pointer(Void), purpose : Pointer(LibC::Char), identity : Pointer(Void), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_tls_database_verify_chain_async(this : Void*, chain : Pointer(Void), purpose : Pointer(LibC::Char), identity : Pointer(Void), interaction : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_tls_database_verify_chain_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : UInt32
   fun g_tls_error_quark : UInt32
   fun g_tls_file_database_get_type : UInt64
   fun g_tls_file_database_new(anchors : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_file_database_new(anchors : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_interaction_ask_password(this : Void*, password : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : UInt32
-  fun g_tls_interaction_ask_password_async(this : Void*, password : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_tls_interaction_ask_password_async(this : Void*, password : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_tls_interaction_ask_password_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : UInt32
   fun g_tls_interaction_get_type : UInt64
   fun g_tls_interaction_invoke_ask_password(this : Void*, password : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : UInt32
   fun g_tls_interaction_invoke_request_certificate(this : Void*, connection : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : UInt32
   fun g_tls_interaction_request_certificate(this : Void*, connection : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), error : LibGLib::Error**) : UInt32
-  fun g_tls_interaction_request_certificate_async(this : Void*, connection : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_tls_interaction_request_certificate_async(this : Void*, connection : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_tls_interaction_request_certificate_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : UInt32
   fun g_tls_password_get_description(this : Void*) : Pointer(LibC::Char)
   fun g_tls_password_get_flags(this : Void*) : UInt32
@@ -3958,18 +3958,18 @@ lib LibGio
   fun g_tls_password_set_description(this : Void*, description : Pointer(LibC::Char)) : Void
   fun g_tls_password_set_flags(this : Void*, flags : UInt32) : Void
   fun g_tls_password_set_value(this : Void*, value : Pointer(UInt8), length : Int64) : Void
-  fun g_tls_password_set_value_full(this : Void*, value : Pointer(UInt8), length : Int64, destroy : LibGLib::DestroyNotify) : Void
+  fun g_tls_password_set_value_full(this : Void*, value : Pointer(UInt8), length : Int64, destroy : Void*) : Void
   fun g_tls_password_set_warning(this : Void*, warning : Pointer(LibC::Char)) : Void
   fun g_tls_server_connection_get_type : UInt64
   fun g_tls_server_connection_new(base_io_stream : Pointer(Void), certificate : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_server_connection_new(base_io_stream : Pointer(Void), certificate : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_unix_connection_get_type : UInt64
   fun g_unix_connection_receive_credentials(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun g_unix_connection_receive_credentials_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_unix_connection_receive_credentials_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_unix_connection_receive_credentials_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_unix_connection_receive_fd(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : Int32
   fun g_unix_connection_send_credentials(this : Void*, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_unix_connection_send_credentials_async(this : Void*, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_unix_connection_send_credentials_async(this : Void*, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_unix_connection_send_credentials_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_unix_connection_send_fd(this : Void*, fd : Int32, cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_unix_credentials_message_get_credentials(this : Void*) : Pointer(Void)
@@ -4064,13 +4064,13 @@ lib LibGio
   fun g_vfs_get_type : UInt64
   fun g_vfs_is_active(this : Void*) : LibC::Int
   fun g_vfs_parse_name(this : Void*, parse_name : Pointer(LibC::Char)) : Pointer(Void)
-  fun g_vfs_register_uri_scheme(this : Void*, scheme : Pointer(LibC::Char), uri_func : VfsFileLookupFunc, uri_data : Pointer(Void), uri_destroy : LibGLib::DestroyNotify, parse_name_func : VfsFileLookupFunc, parse_name_data : Pointer(Void), parse_name_destroy : LibGLib::DestroyNotify) : LibC::Int
+  fun g_vfs_register_uri_scheme(this : Void*, scheme : Pointer(LibC::Char), uri_func : Void*, uri_data : Pointer(Void), uri_destroy : Void*, parse_name_func : Void*, parse_name_data : Pointer(Void), parse_name_destroy : Void*) : LibC::Int
   fun g_vfs_unregister_uri_scheme(this : Void*, scheme : Pointer(LibC::Char)) : LibC::Int
   fun g_volume_can_eject(this : Void*) : LibC::Int
   fun g_volume_can_mount(this : Void*) : LibC::Int
-  fun g_volume_eject(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_volume_eject(this : Void*, flags : UInt32, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_volume_eject_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun g_volume_eject_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_volume_eject_with_operation(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_volume_eject_with_operation_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_volume_enumerate_identifiers(this : Void*) : Pointer(Pointer(LibC::Char))
   fun g_volume_get_activation_root(this : Void*) : Pointer(Void)
@@ -4091,7 +4091,7 @@ lib LibGio
   fun g_volume_monitor_get_type : UInt64
   fun g_volume_monitor_get_volume_for_uuid(this : Void*, uuid : Pointer(LibC::Char)) : Pointer(Void)
   fun g_volume_monitor_get_volumes(this : Void*) : Pointer(LibGLib::List)
-  fun g_volume_mount(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun g_volume_mount(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_volume_mount_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_volume_should_automount(this : Void*) : LibC::Int
   fun g_zlib_compressor_get_file_info(this : Void*) : Pointer(Void)

@@ -3,6 +3,10 @@
 lib LibGObject
   # Functions not declared by GObj Introspection
 
+  # We use this function to store the Crystal wrapper pointer in GObjects,
+  # So we can re-use the Crystal objects saving some memory allocations.
+  fun g_object_set_qdata(object : Void*, quark : UInt32, data : Void*)
+
   # Type register
   fun g_type_register_static_simple(parent_type : UInt64,
                                     type_name : LibC::Char*,
@@ -100,14 +104,14 @@ lib LibGObject
     derivative_flag : UInt32
     in_marshal : UInt32
     is_invalid : UInt32
-    marshal : -> Void
+    marshal : Void*
     data : Pointer(Void)
     notifiers : Pointer(LibGObject::ClosureNotifyData)
   end
 
   struct ClosureNotifyData # 16 bytes long
     data : Pointer(Void)
-    notify : LibGObject::ClosureNotify
+    notify : Void*
   end
 
   struct EnumClass # 32 bytes long
@@ -141,20 +145,20 @@ lib LibGObject
     g_type_class : LibGObject::TypeClass
     construct_properties : Pointer(LibGLib::SList)
     constructor : Pointer(Void)
-    set_property : -> Void
-    get_property : -> Void
-    dispose : -> Void
-    finalize : -> Void
-    dispatch_properties_changed : -> Void
-    notify : -> Void
-    constructed : -> Void
+    set_property : Void*
+    get_property : Void*
+    dispose : Void*
+    finalize : Void*
+    dispatch_properties_changed : Void*
+    notify : Void*
+    constructed : Void*
     flags : UInt64
     pdummy : Pointer(Void)[6]
   end
 
   struct InterfaceInfo # 24 bytes long
-    interface_init : LibGObject::InterfaceInitFunc
-    interface_finalize : LibGObject::InterfaceFinalizeFunc
+    interface_init : Void*
+    interface_finalize : Void*
     interface_data : Pointer(Void)
   end
 
@@ -162,13 +166,13 @@ lib LibGObject
     g_type_class : LibGObject::TypeClass
     construct_properties : Pointer(LibGLib::SList)
     constructor : Pointer(Void)
-    set_property : -> Void
-    get_property : -> Void
-    dispose : -> Void
-    finalize : -> Void
-    dispatch_properties_changed : -> Void
-    notify : -> Void
-    constructed : -> Void
+    set_property : Void*
+    get_property : Void*
+    dispose : Void*
+    finalize : Void*
+    dispatch_properties_changed : Void*
+    notify : Void*
+    constructed : Void*
     flags : UInt64
     pdummy : Pointer(Void)[6]
   end
@@ -181,10 +185,10 @@ lib LibGObject
   struct ParamSpecClass # 80 bytes long
     g_type_class : LibGObject::TypeClass
     value_type : UInt64
-    finalize : -> Void
-    value_set_default : -> Void
-    value_validate : -> Void
-    values_cmp : -> Void
+    finalize : Void*
+    value_set_default : Void*
+    value_validate : Void*
+    values_cmp : Void*
     dummy : Pointer(Void)[4]
   end
 
@@ -193,12 +197,12 @@ lib LibGObject
   struct ParamSpecTypeInfo # 56 bytes long
     instance_size : UInt16
     n_preallocs : UInt16
-    instance_init : -> Void
+    instance_init : Void*
     value_type : UInt64
-    finalize : -> Void
-    value_set_default : -> Void
-    value_validate : -> Void
-    values_cmp : -> Void
+    finalize : Void*
+    value_set_default : Void*
+    value_validate : Void*
+    values_cmp : Void*
   end
 
   struct Parameter # 32 bytes long
@@ -232,14 +236,14 @@ lib LibGObject
 
   struct TypeInfo # 72 bytes long
     class_size : UInt16
-    base_init : LibGObject::BaseInitFunc
-    base_finalize : LibGObject::BaseFinalizeFunc
-    class_init : LibGObject::ClassInitFunc
-    class_finalize : LibGObject::ClassFinalizeFunc
+    base_init : Void*
+    base_finalize : Void*
+    class_init : Void*
+    class_finalize : Void*
     class_data : Pointer(Void)
     instance_size : UInt16
     n_preallocs : UInt16
-    instance_init : LibGObject::InstanceInitFunc
+    instance_init : Void*
     value_table : Pointer(LibGObject::TypeValueTable)
   end
 
@@ -254,20 +258,20 @@ lib LibGObject
 
   struct TypeModuleClass # 184 bytes long
     parent_class : LibGObject::ObjectClass
-    load : -> Void
-    unload : -> Void
-    reserved1 : -> Void
-    reserved2 : -> Void
-    reserved3 : -> Void
-    reserved4 : -> Void
+    load : Void*
+    unload : Void*
+    reserved1 : Void*
+    reserved2 : Void*
+    reserved3 : Void*
+    reserved4 : Void*
   end
 
   struct TypePluginClass # 48 bytes long
     base_iface : LibGObject::TypeInterface
-    use_plugin : LibGObject::TypePluginUse
-    unuse_plugin : LibGObject::TypePluginUnuse
-    complete_type_info : LibGObject::TypePluginCompleteTypeInfo
-    complete_interface_info : LibGObject::TypePluginCompleteInterfaceInfo
+    use_plugin : Void*
+    unuse_plugin : Void*
+    complete_type_info : Void*
+    complete_interface_info : Void*
   end
 
   struct TypeQuery # 24 bytes long
@@ -278,14 +282,14 @@ lib LibGObject
   end
 
   struct TypeValueTable # 64 bytes long
-    value_init : -> Void
-    value_free : -> Void
-    value_copy : -> Void
-    value_peek_pointer : -> Void
+    value_init : Void*
+    value_free : Void*
+    value_copy : Void*
+    value_peek_pointer : Void*
     collect_format : Pointer(LibC::Char)
-    collect_value : -> Void
+    collect_value : Void*
     lcopy_format : Pointer(LibC::Char)
-    lcopy_value : -> Void
+    lcopy_value : Void*
   end
 
   struct Value # 24 bytes long
@@ -656,7 +660,7 @@ lib LibGObject
   fun g_pointer_type_register_static(name : Pointer(LibC::Char)) : UInt64
   fun g_signal_accumulator_first_wins(ihint : Pointer(Void), return_accu : Pointer(Void), handler_return : Pointer(Void), dummy : Pointer(Void)) : LibC::Int
   fun g_signal_accumulator_true_handled(ihint : Pointer(Void), return_accu : Pointer(Void), handler_return : Pointer(Void), dummy : Pointer(Void)) : LibC::Int
-  fun g_signal_add_emission_hook(signal_id : UInt32, detail : UInt32, hook_func : SignalEmissionHook, hook_data : Pointer(Void), data_destroy : LibGLib::DestroyNotify) : UInt64
+  fun g_signal_add_emission_hook(signal_id : UInt32, detail : UInt32, hook_func : Void*, hook_data : Pointer(Void), data_destroy : Void*) : UInt64
   fun g_signal_chain_from_overridden(instance_and_params : Pointer(Void), return_value : Pointer(Void)) : Void
   fun g_signal_connect_closure(instance : Pointer(Void), detailed_signal : Pointer(LibC::Char), closure : Pointer(Void), after : LibC::Int) : UInt64
   fun g_signal_connect_closure_by_id(instance : Pointer(Void), signal_id : UInt32, detail : UInt32, closure : Pointer(Void), after : LibC::Int) : UInt64
@@ -774,7 +778,7 @@ lib LibGObject
   fun g_value_array_new(n_prealloced : UInt32) : Pointer(Void)
   fun g_value_array_prepend(this : Void*, value : Pointer(Void)) : Pointer(Void)
   fun g_value_array_remove(this : Void*, index_ : UInt32) : Pointer(Void)
-  fun g_value_array_sort_with_data(this : Void*, compare_func : LibGLib::CompareDataFunc, user_data : Pointer(Void)) : Pointer(Void)
+  fun g_value_array_sort_with_data(this : Void*, compare_func : Void*, user_data : Pointer(Void)) : Pointer(Void)
   fun g_value_copy(this : Void*, dest_value : Pointer(Void)) : Void
   fun g_value_dup_object(this : Void*) : Pointer(Void)
   fun g_value_dup_string(this : Void*) : Pointer(LibC::Char)

@@ -21,6 +21,17 @@ module Gio
         sizeof(LibGio::DesktopAppInfo), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -42,6 +53,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -84,7 +97,8 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval unless _retval.null?
+      @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id)) unless _retval.null?
     end
 
     # Creates a new #GDesktopAppInfo.
@@ -375,7 +389,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       length = 0_u64
-
       # C call
       _retval = LibGio.g_desktop_app_info_get_string_list(self, key, pointerof(length))
 
@@ -446,7 +459,7 @@ module Gio
     # If application launching occurs via some other mechanism (eg: D-Bus
     # activation) then @spawn_flags, @user_setup, @user_setup_data,
     # @pid_callback and @pid_callback_data are ignored.
-    def launch_uris_as_manager(uris : GLib::List, launch_context : Gio::AppLaunchContext?, spawn_flags : GLib::SpawnFlags, user_setup : Pointer(Void)?, user_setup_data : Pointer(Void)?, pid_callback : Pointer(Void)?, pid_callback_data : Pointer(Void)?) : Bool
+    def launch_uris_as_manager(uris : GLib::List, launch_context : Gio::AppLaunchContext?, spawn_flags : GLib::SpawnFlags, user_setup : GLib::SpawnChildSetupFunc?, user_setup_data : Pointer(Void)?, pid_callback : Gio::DesktopAppLaunchCallback?, pid_callback_data : Pointer(Void)?) : Bool
       # g_desktop_app_info_launch_uris_as_manager: (Method | Throws)
       # @launch_context: (nullable)
       # @user_setup: (nullable)
@@ -463,28 +476,12 @@ module Gio
                        else
                          launch_context.to_unsafe
                        end
-
-      # Generator::NullableArrayPlan
-      user_setup = if user_setup.nil?
-                     LibGLib::SpawnChildSetupFunc.null
-                   else
-                     user_setup.to_unsafe
-                   end
-
       # Generator::NullableArrayPlan
       user_setup_data = if user_setup_data.nil?
                           Pointer(Void).null
                         else
                           user_setup_data.to_unsafe
                         end
-
-      # Generator::NullableArrayPlan
-      pid_callback = if pid_callback.nil?
-                       LibGio::DesktopAppLaunchCallback.null
-                     else
-                       pid_callback.to_unsafe
-                     end
-
       # Generator::NullableArrayPlan
       pid_callback_data = if pid_callback_data.nil?
                             Pointer(Void).null
@@ -509,7 +506,7 @@ module Gio
     #
     # If application launching occurs via some non-spawn mechanism (e.g. D-Bus
     # activation) then @stdin_fd, @stdout_fd and @stderr_fd are ignored.
-    def launch_uris_as_manager_with_fds(uris : GLib::List, launch_context : Gio::AppLaunchContext?, spawn_flags : GLib::SpawnFlags, user_setup : Pointer(Void)?, user_setup_data : Pointer(Void)?, pid_callback : Pointer(Void)?, pid_callback_data : Pointer(Void)?, stdin_fd : Int32, stdout_fd : Int32, stderr_fd : Int32) : Bool
+    def launch_uris_as_manager_with_fds(uris : GLib::List, launch_context : Gio::AppLaunchContext?, spawn_flags : GLib::SpawnFlags, user_setup : GLib::SpawnChildSetupFunc?, user_setup_data : Pointer(Void)?, pid_callback : Gio::DesktopAppLaunchCallback?, pid_callback_data : Pointer(Void)?, stdin_fd : Int32, stdout_fd : Int32, stderr_fd : Int32) : Bool
       # g_desktop_app_info_launch_uris_as_manager_with_fds: (Method | Throws)
       # @launch_context: (nullable)
       # @user_setup: (nullable)
@@ -526,28 +523,12 @@ module Gio
                        else
                          launch_context.to_unsafe
                        end
-
-      # Generator::NullableArrayPlan
-      user_setup = if user_setup.nil?
-                     LibGLib::SpawnChildSetupFunc.null
-                   else
-                     user_setup.to_unsafe
-                   end
-
       # Generator::NullableArrayPlan
       user_setup_data = if user_setup_data.nil?
                           Pointer(Void).null
                         else
                           user_setup_data.to_unsafe
                         end
-
-      # Generator::NullableArrayPlan
-      pid_callback = if pid_callback.nil?
-                       LibGio::DesktopAppLaunchCallback.null
-                     else
-                       pid_callback.to_unsafe
-                     end
-
       # Generator::NullableArrayPlan
       pid_callback_data = if pid_callback_data.nil?
                             Pointer(Void).null

@@ -21,6 +21,17 @@ module Gio
         sizeof(LibGio::TlsDatabase), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -77,7 +88,6 @@ module Gio
                     else
                       interaction.to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -98,7 +108,7 @@ module Gio
 
     # Asynchronously look up a certificate by its handle in the database. See
     # g_tls_database_lookup_certificate_for_handle() for more information.
-    def lookup_certificate_for_handle_async(handle : ::String, interaction : Gio::TlsInteraction?, flags : Gio::TlsDatabaseLookupFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def lookup_certificate_for_handle_async(handle : ::String, interaction : Gio::TlsInteraction?, flags : Gio::TlsDatabaseLookupFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_tls_database_lookup_certificate_for_handle_async: (Method)
       # @interaction: (nullable)
       # @cancellable: (nullable)
@@ -112,21 +122,12 @@ module Gio
                     else
                       interaction.to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -196,7 +197,6 @@ module Gio
                     else
                       interaction.to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -217,7 +217,7 @@ module Gio
 
     # Asynchronously look up the issuer of @certificate in the database. See
     # g_tls_database_lookup_certificate_issuer() for more information.
-    def lookup_certificate_issuer_async(certificate : Gio::TlsCertificate, interaction : Gio::TlsInteraction?, flags : Gio::TlsDatabaseLookupFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def lookup_certificate_issuer_async(certificate : Gio::TlsCertificate, interaction : Gio::TlsInteraction?, flags : Gio::TlsDatabaseLookupFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_tls_database_lookup_certificate_issuer_async: (Method)
       # @interaction: (nullable)
       # @cancellable: (nullable)
@@ -231,21 +231,12 @@ module Gio
                     else
                       interaction.to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -293,14 +284,12 @@ module Gio
 
       # Generator::ArrayArgPlan
       issuer_raw_dn = issuer_raw_dn.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       interaction = if interaction.nil?
                       Pointer(Void).null
                     else
                       interaction.to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -325,7 +314,7 @@ module Gio
     # The database may choose to hold a reference to the issuer byte array for the duration
     # of of this asynchronous operation. The byte array should not be modified during
     # this time.
-    def lookup_certificates_issued_by_async(issuer_raw_dn : Enumerable(UInt8), interaction : Gio::TlsInteraction?, flags : Gio::TlsDatabaseLookupFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def lookup_certificates_issued_by_async(issuer_raw_dn : Enumerable(UInt8), interaction : Gio::TlsInteraction?, flags : Gio::TlsDatabaseLookupFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_tls_database_lookup_certificates_issued_by_async: (Method)
       # @issuer_raw_dn: (array element-type UInt8)
       # @interaction: (nullable)
@@ -336,28 +325,18 @@ module Gio
 
       # Generator::ArrayArgPlan
       issuer_raw_dn = issuer_raw_dn.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       interaction = if interaction.nil?
                       Pointer(Void).null
                     else
                       interaction.to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -465,14 +444,12 @@ module Gio
                  else
                    identity.to_unsafe
                  end
-
       # Generator::NullableArrayPlan
       interaction = if interaction.nil?
                       Pointer(Void).null
                     else
                       interaction.to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -494,7 +471,7 @@ module Gio
     # Asynchronously determines the validity of a certificate chain after
     # looking up and adding any missing certificates to the chain. See
     # g_tls_database_verify_chain() for more information.
-    def verify_chain_async(chain : Gio::TlsCertificate, purpose : ::String, identity : Gio::SocketConnectable?, interaction : Gio::TlsInteraction?, flags : Gio::TlsDatabaseVerifyFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def verify_chain_async(chain : Gio::TlsCertificate, purpose : ::String, identity : Gio::SocketConnectable?, interaction : Gio::TlsInteraction?, flags : Gio::TlsDatabaseVerifyFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_tls_database_verify_chain_async: (Method)
       # @identity: (nullable)
       # @interaction: (nullable)
@@ -509,28 +486,18 @@ module Gio
                  else
                    identity.to_unsafe
                  end
-
       # Generator::NullableArrayPlan
       interaction = if interaction.nil?
                       Pointer(Void).null
                     else
                       interaction.to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

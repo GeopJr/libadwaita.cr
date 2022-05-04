@@ -155,10 +155,8 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      xscale = Pointer(Float64).null
-      # Generator::OutArgUsedInReturnPlan
+      xscale = Pointer(Float64).null # Generator::OutArgUsedInReturnPlan
       yscale = Pointer(Float64).null
-
       # C call
       LibPango.pango_matrix_get_font_scale_factors(self, xscale, yscale)
 
@@ -216,7 +214,6 @@ module Pango
 
       # Generator::OutArgUsedInReturnPlan
       rect = Pointer(Void).null
-
       # C call
       LibPango.pango_matrix_transform_pixel_rectangle(self, rect)
 
@@ -242,7 +239,6 @@ module Pango
 
       # Generator::OutArgUsedInReturnPlan
       rect = Pointer(Void).null
-
       # C call
       LibPango.pango_matrix_transform_rectangle(self, rect)
 

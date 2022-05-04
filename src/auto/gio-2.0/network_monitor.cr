@@ -67,7 +67,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def can_reach_async(connectable : Gio::SocketConnectable, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def can_reach_async(connectable : Gio::SocketConnectable, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_network_monitor_can_reach_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -80,14 +80,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -178,50 +170,50 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Bool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
-          arg0 = GICrystal.to_bool(lib_arg0)
-          ::Box(Proc(Bool, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Bool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_network_available : LibC::Int, _lib_box : Pointer(Void)) {
+          network_available = lib_network_available
+          ::Box(Proc(Bool, Nil)).unbox(_lib_box).call(network_available)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Bool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
-          arg0 = GICrystal.to_bool(lib_arg0)
-          ::Box(Proc(Bool, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Bool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_network_available : LibC::Int, _lib_box : Pointer(Void)) {
+          network_available = lib_network_available
+          ::Box(Proc(Bool, Nil)).unbox(_lib_box).call(network_available)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::NetworkMonitor, Bool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
-          sender = Gio::NetworkMonitor__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = GICrystal.to_bool(lib_arg0)
-          ::Box(Proc(Gio::NetworkMonitor, Bool, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gio::NetworkMonitor, Bool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_network_available : LibC::Int, _lib_box : Pointer(Void)) {
+          _sender = Gio::NetworkMonitor__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          network_available = lib_network_available
+          ::Box(Proc(Gio::NetworkMonitor, Bool, Nil)).unbox(_lib_box).call(_sender, network_available)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::NetworkMonitor, Bool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, box : Pointer(Void)) {
-          sender = Gio::NetworkMonitor__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = GICrystal.to_bool(lib_arg0)
-          ::Box(Proc(Gio::NetworkMonitor, Bool, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gio::NetworkMonitor, Bool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_network_available : LibC::Int, _lib_box : Pointer(Void)) {
+          _sender = Gio::NetworkMonitor__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          network_available = lib_network_available
+          ::Box(Proc(Gio::NetworkMonitor, Bool, Nil)).unbox(_lib_box).call(_sender, network_available)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(network_available : Bool) : Nil

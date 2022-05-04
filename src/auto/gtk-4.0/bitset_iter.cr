@@ -77,7 +77,6 @@ module Gtk
 
       # Generator::OutArgUsedInReturnPlan
       value = Pointer(UInt32).null
-
       # C call
       _retval = LibGtk.gtk_bitset_iter_next(self, value)
 
@@ -93,7 +92,6 @@ module Gtk
 
       # Generator::OutArgUsedInReturnPlan
       value = Pointer(UInt32).null
-
       # C call
       _retval = LibGtk.gtk_bitset_iter_previous(self, value)
 
@@ -109,10 +107,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::CallerAllocatesPlan
-      iter = Gtk::BitsetIter.new
-      # Generator::OutArgUsedInReturnPlan
+      iter = Gtk::BitsetIter.new # Generator::OutArgUsedInReturnPlan
       value = Pointer(UInt32).null
-
       # C call
       _retval = LibGtk.gtk_bitset_iter_init_at(iter, set, target, value)
 
@@ -128,10 +124,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::CallerAllocatesPlan
-      iter = Gtk::BitsetIter.new
-      # Generator::OutArgUsedInReturnPlan
+      iter = Gtk::BitsetIter.new # Generator::OutArgUsedInReturnPlan
       value = Pointer(UInt32).null
-
       # C call
       _retval = LibGtk.gtk_bitset_iter_init_first(iter, set, value)
 
@@ -147,10 +141,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::CallerAllocatesPlan
-      iter = Gtk::BitsetIter.new
-      # Generator::OutArgUsedInReturnPlan
+      iter = Gtk::BitsetIter.new # Generator::OutArgUsedInReturnPlan
       value = Pointer(UInt32).null
-
       # C call
       _retval = LibGtk.gtk_bitset_iter_init_last(iter, set, value)
 

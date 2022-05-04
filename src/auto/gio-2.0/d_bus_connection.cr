@@ -67,6 +67,17 @@ module Gio
         sizeof(LibGio::DBusConnection), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -128,6 +139,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -300,7 +313,6 @@ module Gio
                  else
                    observer.to_unsafe
                  end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -349,14 +361,12 @@ module Gio
              else
                guid.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       observer = if observer.nil?
                    Pointer(Void).null
                  else
                    observer.to_unsafe
                  end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -395,7 +405,7 @@ module Gio
     # This is an asynchronous failable constructor. See
     # g_dbus_connection_new_sync() for the synchronous
     # version.
-    def self.new(stream : Gio::IOStream, guid : ::String?, flags : Gio::DBusConnectionFlags, observer : Gio::DBusAuthObserver?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def self.new(stream : Gio::IOStream, guid : ::String?, flags : Gio::DBusConnectionFlags, observer : Gio::DBusAuthObserver?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dbus_connection_new: (None)
       # @guid: (nullable)
       # @observer: (nullable)
@@ -410,28 +420,18 @@ module Gio
              else
                guid.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       observer = if observer.nil?
                    Pointer(Void).null
                  else
                    observer.to_unsafe
                  end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -467,7 +467,7 @@ module Gio
     # This is an asynchronous failable constructor. See
     # g_dbus_connection_new_for_address_sync() for the synchronous
     # version.
-    def self.new_for_address(address : ::String, flags : Gio::DBusConnectionFlags, observer : Gio::DBusAuthObserver?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def self.new_for_address(address : ::String, flags : Gio::DBusConnectionFlags, observer : Gio::DBusAuthObserver?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dbus_connection_new_for_address: (None)
       # @observer: (nullable)
       # @cancellable: (nullable)
@@ -481,21 +481,12 @@ module Gio
                  else
                    observer.to_unsafe
                  end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -536,17 +527,29 @@ module Gio
     # needed. (It is not guaranteed to be called synchronously when the
     # filter is removed, and may be called after @connection has been
     # destroyed.)
-    def add_filter(filter_function : Pointer(Void), user_data : Pointer(Void)?, user_data_free_func : Pointer(Void)) : UInt32
+    def add_filter(filter_function : Gio::DBusMessageFilterFunction) : UInt32
       # g_dbus_connection_add_filter: (Method)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
+      # Generator::CallbackArgPlan
+      if filter_function
+        _box = ::Box.box(filter_function)
+        filter_function = ->(lib_connection : Pointer(Void), lib_message : Pointer(Void), lib_incoming : LibC::Int, lib_user_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          connection = Gio::DBusConnection.new(lib_connection, :none)
+          # Generator::TransferFullArgPlan
+          # Generator::GObjectArgPlan
+          message = Gio::DBusMessage.new(lib_message, :none)
+          incoming = lib_incoming
+          user_data = lib_user_data
+          ::Box(Proc(Gio::DBusConnection, Gio::DBusMessage, Bool, Gio::DBusMessage)).unbox(user_data).call(connection, message, incoming)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        user_data_free_func = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        filter_function = user_data = user_data_free_func = Pointer(Void).null
+      end
 
       # C call
       _retval = LibGio.g_dbus_connection_add_filter(self, filter_function, user_data, user_data_free_func)
@@ -601,7 +604,7 @@ module Gio
     #
     # If @callback is %NULL then the D-Bus method call message will be sent with
     # the %G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
-    def call(bus_name : ::String?, object_path : ::String, interface_name : ::String, method_name : ::String, parameters : _?, reply_type : GLib::VariantType?, flags : Gio::DBusCallFlags, timeout_msec : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def call(bus_name : ::String?, object_path : ::String, interface_name : ::String, method_name : ::String, parameters : _?, reply_type : GLib::VariantType?, flags : Gio::DBusCallFlags, timeout_msec : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dbus_connection_call: (Method)
       # @bus_name: (nullable)
       # @parameters: (nullable)
@@ -617,7 +620,6 @@ module Gio
                  else
                    bus_name.to_unsafe
                  end
-
       # Generator::HandmadeArgPlan
       parameters = if parameters.nil?
                      Pointer(Void).null
@@ -626,28 +628,18 @@ module Gio
                    else
                      parameters.to_unsafe
                    end
-
       # Generator::NullableArrayPlan
       reply_type = if reply_type.nil?
                      Pointer(Void).null
                    else
                      reply_type.to_unsafe
                    end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -731,7 +723,6 @@ module Gio
                  else
                    bus_name.to_unsafe
                  end
-
       # Generator::HandmadeArgPlan
       parameters = if parameters.nil?
                      Pointer(Void).null
@@ -740,14 +731,12 @@ module Gio
                    else
                      parameters.to_unsafe
                    end
-
       # Generator::NullableArrayPlan
       reply_type = if reply_type.nil?
                      Pointer(Void).null
                    else
                      reply_type.to_unsafe
                    end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -781,7 +770,7 @@ module Gio
     # value of type %G_VARIANT_TYPE_HANDLE in the body of the message.
     #
     # This method is only available on UNIX.
-    def call_with_unix_fd_list(bus_name : ::String?, object_path : ::String, interface_name : ::String, method_name : ::String, parameters : _?, reply_type : GLib::VariantType?, flags : Gio::DBusCallFlags, timeout_msec : Int32, fd_list : Gio::UnixFDList?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def call_with_unix_fd_list(bus_name : ::String?, object_path : ::String, interface_name : ::String, method_name : ::String, parameters : _?, reply_type : GLib::VariantType?, flags : Gio::DBusCallFlags, timeout_msec : Int32, fd_list : Gio::UnixFDList?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dbus_connection_call_with_unix_fd_list: (Method)
       # @bus_name: (nullable)
       # @parameters: (nullable)
@@ -798,7 +787,6 @@ module Gio
                  else
                    bus_name.to_unsafe
                  end
-
       # Generator::HandmadeArgPlan
       parameters = if parameters.nil?
                      Pointer(Void).null
@@ -807,35 +795,24 @@ module Gio
                    else
                      parameters.to_unsafe
                    end
-
       # Generator::NullableArrayPlan
       reply_type = if reply_type.nil?
                      Pointer(Void).null
                    else
                      reply_type.to_unsafe
                    end
-
       # Generator::NullableArrayPlan
       fd_list = if fd_list.nil?
                   Pointer(Void).null
                 else
                   fd_list.to_unsafe
                 end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -870,7 +847,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       out_fd_list = Pointer(Pointer(Void)).null
-
       # C call
       _retval = LibGio.g_dbus_connection_call_with_unix_fd_list_finish(self, out_fd_list, res, pointerof(_error))
 
@@ -905,7 +881,6 @@ module Gio
                  else
                    bus_name.to_unsafe
                  end
-
       # Generator::HandmadeArgPlan
       parameters = if parameters.nil?
                      Pointer(Void).null
@@ -914,24 +889,20 @@ module Gio
                    else
                      parameters.to_unsafe
                    end
-
       # Generator::NullableArrayPlan
       reply_type = if reply_type.nil?
                      Pointer(Void).null
                    else
                      reply_type.to_unsafe
                    end
-
       # Generator::NullableArrayPlan
       fd_list = if fd_list.nil?
                   Pointer(Void).null
                 else
                   fd_list.to_unsafe
                 end
-
       # Generator::OutArgUsedInReturnPlan
-      out_fd_list = Pointer(Pointer(Void)).null
-      # Generator::NullableArrayPlan
+      out_fd_list = Pointer(Pointer(Void)).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -973,7 +944,7 @@ module Gio
     # then call g_dbus_connection_close_finish() to get the result of the
     # operation. See g_dbus_connection_close_sync() for the synchronous
     # version.
-    def close(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def close(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dbus_connection_close: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -986,14 +957,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1075,7 +1038,6 @@ module Gio
                              else
                                destination_bus_name.to_unsafe
                              end
-
       # Generator::HandmadeArgPlan
       parameters = if parameters.nil?
                      Pointer(Void).null
@@ -1177,7 +1139,7 @@ module Gio
     # then call g_dbus_connection_flush_finish() to get the result of the
     # operation. See g_dbus_connection_flush_sync() for the synchronous
     # version.
-    def flush(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def flush(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dbus_connection_flush: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -1190,14 +1152,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1449,14 +1403,12 @@ module Gio
                             else
                               method_call_closure.to_unsafe
                             end
-
       # Generator::NullableArrayPlan
       get_property_closure = if get_property_closure.nil?
                                Pointer(Void).null
                              else
                                get_property_closure.to_unsafe
                              end
-
       # Generator::NullableArrayPlan
       set_property_closure = if set_property_closure.nil?
                                Pointer(Void).null
@@ -1509,7 +1461,7 @@ module Gio
     #
     # See this [server][gdbus-subtree-server] for an example of how to use
     # this method.
-    def register_subtree(object_path : ::String, vtable : Gio::DBusSubtreeVTable, flags : Gio::DBusSubtreeFlags, user_data : Pointer(Void)?, user_data_free_func : Pointer(Void)) : UInt32
+    def register_subtree(object_path : ::String, vtable : Gio::DBusSubtreeVTable, flags : Gio::DBusSubtreeFlags, user_data : Pointer(Void)?, user_data_free_func : GLib::DestroyNotify) : UInt32
       # g_dbus_connection_register_subtree: (Method | Throws)
       # @user_data: (nullable)
       # Returns: (transfer none)
@@ -1582,7 +1534,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       out_serial = Pointer(UInt32).null
-
       # C call
       _retval = LibGio.g_dbus_connection_send_message(self, message, flags, out_serial, pointerof(_error))
 
@@ -1623,7 +1574,7 @@ module Gio
     # See this [server][gdbus-server] and [client][gdbus-unix-fd-client]
     # for an example of how to use this low-level API to send and receive
     # UNIX file descriptors.
-    def send_message_with_reply(message : Gio::DBusMessage, flags : Gio::DBusSendMessageFlags, timeout_msec : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def send_message_with_reply(message : Gio::DBusMessage, flags : Gio::DBusSendMessageFlags, timeout_msec : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dbus_connection_send_message_with_reply: (Method)
       # @out_serial: (out) (transfer full) (optional)
       # @cancellable: (nullable)
@@ -1632,21 +1583,12 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      out_serial = Pointer(UInt32).null
-      # Generator::NullableArrayPlan
+      out_serial = Pointer(UInt32).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1726,8 +1668,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      out_serial = Pointer(UInt32).null
-      # Generator::NullableArrayPlan
+      out_serial = Pointer(UInt32).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -1814,7 +1755,7 @@ module Gio
     # to never be zero.
     #
     # This function can never fail.
-    def signal_subscribe(sender : ::String?, interface_name : ::String?, member : ::String?, object_path : ::String?, arg0 : ::String?, flags : Gio::DBusSignalFlags, callback : Pointer(Void), user_data : Pointer(Void)?, user_data_free_func : Pointer(Void)?) : UInt32
+    def signal_subscribe(sender : ::String?, interface_name : ::String?, member : ::String?, object_path : ::String?, arg0 : ::String?, flags : Gio::DBusSignalFlags, callback : Gio::DBusSignalCallback) : UInt32
       # g_dbus_connection_signal_subscribe: (Method)
       # @sender: (nullable)
       # @interface_name: (nullable)
@@ -1831,48 +1772,53 @@ module Gio
                else
                  sender.to_unsafe
                end
-
       # Generator::NullableArrayPlan
       interface_name = if interface_name.nil?
                          Pointer(LibC::Char).null
                        else
                          interface_name.to_unsafe
                        end
-
       # Generator::NullableArrayPlan
       member = if member.nil?
                  Pointer(LibC::Char).null
                else
                  member.to_unsafe
                end
-
       # Generator::NullableArrayPlan
       object_path = if object_path.nil?
                       Pointer(LibC::Char).null
                     else
                       object_path.to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       arg0 = if arg0.nil?
                Pointer(LibC::Char).null
              else
                arg0.to_unsafe
              end
-
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # Generator::NullableArrayPlan
-      user_data_free_func = if user_data_free_func.nil?
-                              LibGLib::DestroyNotify.null
-                            else
-                              user_data_free_func.to_unsafe
-                            end
+      # Generator::CallbackArgPlan
+      if callback
+        _box = ::Box.box(callback)
+        callback = ->(lib_connection : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_object_path : Pointer(LibC::Char), lib_interface_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), lib_user_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          connection = Gio::DBusConnection.new(lib_connection, :none)
+          # Generator::NullableArrayPlan
+          sender_name = (lib_sender_name.null? ? nil : ::String.new(lib_sender_name))
+          object_path = lib_object_path
+          interface_name = lib_interface_name
+          signal_name = lib_signal_name
+          # Generator::HandmadeArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          # Generator::GObjectArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          user_data = lib_user_data
+          ::Box(Proc(Gio::DBusConnection, ::String?, ::String, ::String, ::String, GLib::Variant, Nil)).unbox(user_data).call(connection, sender_name, object_path, interface_name, signal_name, parameters)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        user_data_free_func = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        callback = user_data = user_data_free_func = Pointer(Void).null
+      end
 
       # C call
       _retval = LibGio.g_dbus_connection_signal_subscribe(self, sender, interface_name, member, object_path, arg0, flags, callback, user_data, user_data_free_func)
@@ -2016,54 +1962,58 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Bool, GLib::Error?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = GICrystal.to_bool(lib_arg0)
-          arg1 = (lib_arg1.null? ? nil : GLib::Error.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Bool, GLib::Error?, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect(handler : Proc(Bool, GLib::Error?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_remote_peer_vanished : LibC::Int, lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
+          remote_peer_vanished = lib_remote_peer_vanished
+          # Generator::NullableArrayPlan
+          error = (lib_error.null? ? nil : GLib::Error.new(lib_error, GICrystal::Transfer::None))
+          ::Box(Proc(Bool, GLib::Error?, Nil)).unbox(_lib_box).call(remote_peer_vanished, error)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Bool, GLib::Error?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = GICrystal.to_bool(lib_arg0)
-          arg1 = (lib_arg1.null? ? nil : GLib::Error.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Bool, GLib::Error?, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect_after(handler : Proc(Bool, GLib::Error?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_remote_peer_vanished : LibC::Int, lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
+          remote_peer_vanished = lib_remote_peer_vanished
+          # Generator::NullableArrayPlan
+          error = (lib_error.null? ? nil : GLib::Error.new(lib_error, GICrystal::Transfer::None))
+          ::Box(Proc(Bool, GLib::Error?, Nil)).unbox(_lib_box).call(remote_peer_vanished, error)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::DBusConnection.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = GICrystal.to_bool(lib_arg0)
-          arg1 = (lib_arg1.null? ? nil : GLib::Error.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect(handler : Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_remote_peer_vanished : LibC::Int, lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusConnection.new(_lib_sender, GICrystal::Transfer::None)
+          remote_peer_vanished = lib_remote_peer_vanished
+          # Generator::NullableArrayPlan
+          error = (lib_error.null? ? nil : GLib::Error.new(lib_error, GICrystal::Transfer::None))
+          ::Box(Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil)).unbox(_lib_box).call(_sender, remote_peer_vanished, error)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : LibC::Int, lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::DBusConnection.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = GICrystal.to_bool(lib_arg0)
-          arg1 = (lib_arg1.null? ? nil : GLib::Error.new(lib_arg1, GICrystal::Transfer::None))
-          ::Box(Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_remote_peer_vanished : LibC::Int, lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusConnection.new(_lib_sender, GICrystal::Transfer::None)
+          remote_peer_vanished = lib_remote_peer_vanished
+          # Generator::NullableArrayPlan
+          error = (lib_error.null? ? nil : GLib::Error.new(lib_error, GICrystal::Transfer::None))
+          ::Box(Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil)).unbox(_lib_box).call(_sender, remote_peer_vanished, error)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(remote_peer_vanished : Bool, error : GLib::Error?) : Nil

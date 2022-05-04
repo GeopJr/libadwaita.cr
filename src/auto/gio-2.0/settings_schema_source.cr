@@ -59,7 +59,6 @@ module Gio
 
       # Generator::ArrayArgPlan
       non_relocatable = non_relocatable.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::ArrayArgPlan
       relocatable = relocatable.to_a.map(&.to_unsafe).to_unsafe
 

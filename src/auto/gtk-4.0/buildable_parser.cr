@@ -12,7 +12,7 @@ module Gtk
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(start_element : Pointer(Void)? = nil, end_element : Pointer(Void)? = nil, text : Pointer(Void)? = nil, error : Pointer(Void)? = nil, padding : Enumerable(Pointer(Void))? = nil)
+    def self.new(start_element : Gtk::StartElement? = nil, end_element : Gtk::EndElement? = nil, text : Gtk::Text? = nil, error : Gtk::Error? = nil, padding : Enumerable(Pointer(Void))? = nil)
       _ptr = Pointer(Void).malloc(64)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.start_element = start_element unless start_element.nil?
@@ -30,46 +30,46 @@ module Gtk
       LibC.memcmp(self, other.to_unsafe, sizeof(LibGtk::BuildableParser)).zero?
     end
 
-    def start_element : Pointer(Void)
-      _var = (@pointer + 0).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def start_element : Gtk::StartElement
+      _var = (@pointer + 0).as(Pointer(Void*))
+      Gtk::StartElement.new(_var, GICrystal::Transfer::None)
     end
 
-    def start_element=(value : Pointer(Void))
-      _var = (@pointer + 0).as(Pointer(-> Void))
+    def start_element=(value : Gtk::StartElement)
+      _var = (@pointer + 0).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGtk::BuildableParser))
       value
     end
 
-    def end_element : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def end_element : Gtk::EndElement
+      _var = (@pointer + 8).as(Pointer(Void*))
+      Gtk::EndElement.new(_var, GICrystal::Transfer::None)
     end
 
-    def end_element=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(-> Void))
+    def end_element=(value : Gtk::EndElement)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGtk::BuildableParser))
       value
     end
 
-    def text : Pointer(Void)
-      _var = (@pointer + 16).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def text : Gtk::Text
+      _var = (@pointer + 16).as(Pointer(Void*))
+      Gtk::Text.new(_var, GICrystal::Transfer::None)
     end
 
-    def text=(value : Pointer(Void))
-      _var = (@pointer + 16).as(Pointer(-> Void))
+    def text=(value : Gtk::Text)
+      _var = (@pointer + 16).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGtk::BuildableParser))
       value
     end
 
-    def error : Pointer(Void)
-      _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def error : Gtk::Error
+      _var = (@pointer + 24).as(Pointer(Void*))
+      Gtk::Error.new(_var, GICrystal::Transfer::None)
     end
 
-    def error=(value : Pointer(Void))
-      _var = (@pointer + 24).as(Pointer(-> Void))
+    def error=(value : Gtk::Error)
+      _var = (@pointer + 24).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGtk::BuildableParser))
       value
     end

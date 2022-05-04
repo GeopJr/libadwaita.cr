@@ -13,6 +13,17 @@ module Gsk
         sizeof(LibGsk::RepeatingRadialGradientNode), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -34,8 +45,7 @@ module Gsk
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      n_color_stops = color_stops.size
-      # Generator::ArrayArgPlan
+      n_color_stops = color_stops.size # Generator::ArrayArgPlan
       color_stops = color_stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -44,6 +54,7 @@ module Gsk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
   end
 end

@@ -110,7 +110,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
-
       # C call
       LibGraphene.graphene_box_expand(self, point, res)
 
@@ -126,7 +125,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
-
       # C call
       LibGraphene.graphene_box_expand_scalar(self, scalar, res)
 
@@ -142,7 +140,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
-
       # C call
       LibGraphene.graphene_box_expand_vec3(self, vec, res)
 
@@ -168,7 +165,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       sphere = Graphene::Sphere.new
-
       # C call
       LibGraphene.graphene_box_get_bounding_sphere(self, sphere)
 
@@ -184,7 +180,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       center = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_box_get_center(self, center)
 
@@ -224,7 +219,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       max = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_box_get_max(self, max)
 
@@ -240,7 +234,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       min = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_box_get_min(self, min)
 
@@ -256,7 +249,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       size = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_box_get_size(self, size)
 
@@ -271,6 +263,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 8") if vertices.size < 8
+
       vertices = vertices.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -307,7 +301,6 @@ module Graphene
             else
               min.to_unsafe
             end
-
       # Generator::NullableArrayPlan
       max = if max.nil?
               Pointer(Void).null
@@ -341,8 +334,7 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_points = points.size
-      # Generator::ArrayArgPlan
+      n_points = points.size # Generator::ArrayArgPlan
       points = points.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -369,7 +361,6 @@ module Graphene
             else
               min.to_unsafe
             end
-
       # Generator::NullableArrayPlan
       max = if max.nil?
               Pointer(Void).null
@@ -391,8 +382,7 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_vectors = vectors.size
-      # Generator::ArrayArgPlan
+      n_vectors = vectors.size # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -413,10 +403,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      res = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      res = Pointer(Void).null # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
-
       # C call
       _retval = LibGraphene.graphene_box_intersection(self, b, res)
 
@@ -432,7 +420,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
-
       # C call
       LibGraphene.graphene_box_union(self, b, res)
 

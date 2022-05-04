@@ -96,6 +96,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 6") if planes.size < 6
+
       planes = planes.to_a.map(&.to_unsafe).to_unsafe
 
       # C call

@@ -24,6 +24,17 @@ module Gtk
         sizeof(LibGtk::Snapshot), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -45,6 +56,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Appends a stroked border rectangle inside the given @outline.
@@ -57,9 +69,12 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
-      border_width = border_width.to_a.to_unsafe
+      raise ArgumentError.new("Enumerable of size < 4") if border_width.size < 4
 
+      border_width = border_width.to_a.to_unsafe
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 4") if border_color.size < 4
+
       border_color = border_color.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -105,8 +120,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_stops = stops.size
-      # Generator::ArrayArgPlan
+      n_stops = stops.size # Generator::ArrayArgPlan
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -143,8 +157,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_stops = stops.size
-      # Generator::ArrayArgPlan
+      n_stops = stops.size # Generator::ArrayArgPlan
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -186,8 +199,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_stops = stops.size
-      # Generator::ArrayArgPlan
+      n_stops = stops.size # Generator::ArrayArgPlan
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -203,8 +215,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_stops = stops.size
-      # Generator::ArrayArgPlan
+      n_stops = stops.size # Generator::ArrayArgPlan
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -220,8 +231,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_stops = stops.size
-      # Generator::ArrayArgPlan
+      n_stops = stops.size # Generator::ArrayArgPlan
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -463,8 +473,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_shadows = shadow.size
-      # Generator::ArrayArgPlan
+      n_shadows = shadow.size # Generator::ArrayArgPlan
       shadow = shadow.to_a.map(&.to_unsafe).to_unsafe
 
       # C call

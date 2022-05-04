@@ -20,6 +20,17 @@ module Pango
         sizeof(LibPango::Context), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -51,6 +62,7 @@ module Pango
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Forces a change in the context, which will cause any `PangoLayout`
@@ -211,7 +223,6 @@ module Pango
              else
                desc.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       language = if language.nil?
                    Pointer(Void).null
@@ -273,8 +284,7 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_families = families.size
-      # Generator::ArrayArgPlan
+      n_families = families.size # Generator::ArrayArgPlan
       families = families.to_a.map(&.to_unsafe).to_unsafe
 
       # C call

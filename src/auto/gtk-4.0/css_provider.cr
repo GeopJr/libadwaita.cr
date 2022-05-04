@@ -44,6 +44,17 @@ module Gtk
         sizeof(LibGtk::CssProvider), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -65,6 +76,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Loads @data into @css_provider.
@@ -76,8 +88,7 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      length = data.size
-      # Generator::ArrayArgPlan
+      length = data.size # Generator::ArrayArgPlan
       data = data.to_a.to_unsafe
 
       # C call
@@ -209,54 +220,58 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gtk::CssSection, GLib::Error, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gtk::CssSection.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = GLib::Error.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::CssSection, GLib::Error, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect(handler : Proc(Gtk::CssSection, GLib::Error, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          section = Gtk::CssSection.new(lib_section, :none)
+          error = lib_error
+          ::Box(Proc(Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(section, error)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::CssSection, GLib::Error, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gtk::CssSection.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = GLib::Error.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::CssSection, GLib::Error, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gtk::CssSection, GLib::Error, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          section = Gtk::CssSection.new(lib_section, :none)
+          error = lib_error
+          ::Box(Proc(Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(section, error)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::CssProvider.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::CssSection.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = GLib::Error.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect(handler : Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::CssProvider.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          section = Gtk::CssSection.new(lib_section, :none)
+          error = lib_error
+          ::Box(Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(_sender, section, error)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::CssProvider.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::CssSection.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = GLib::Error.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::CssProvider.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          section = Gtk::CssSection.new(lib_section, :none)
+          error = lib_error
+          ::Box(Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(_sender, section, error)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(section : Gtk::CssSection, error : GLib::Error) : Nil

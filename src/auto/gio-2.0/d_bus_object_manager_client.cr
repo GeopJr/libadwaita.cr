@@ -96,6 +96,17 @@ module Gio
         sizeof(LibGio::DBusObjectManagerClient), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -157,6 +168,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -326,7 +339,7 @@ module Gio
     # This is a synchronous failable constructor - the calling thread is
     # blocked until a reply is received. See g_dbus_object_manager_client_new_for_bus()
     # for the asynchronous version.
-    def self.new_for_bus_sync(bus_type : Gio::BusType, flags : Gio::DBusObjectManagerClientFlags, name : ::String, object_path : ::String, get_proxy_type_func : Pointer(Void)?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : Pointer(Void)?, cancellable : Gio::Cancellable?) : self
+    def self.new_for_bus_sync(bus_type : Gio::BusType, flags : Gio::DBusObjectManagerClientFlags, name : ::String, object_path : ::String, get_proxy_type_func : Gio::DBusProxyTypeFunc?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : GLib::DestroyNotify?, cancellable : Gio::Cancellable?) : self
       # g_dbus_object_manager_client_new_for_bus_sync: (Constructor | Throws)
       # @get_proxy_type_func: (nullable)
       # @get_proxy_type_user_data: (nullable)
@@ -337,26 +350,11 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::NullableArrayPlan
-      get_proxy_type_func = if get_proxy_type_func.nil?
-                              LibGio::DBusProxyTypeFunc.null
-                            else
-                              get_proxy_type_func.to_unsafe
-                            end
-
-      # Generator::NullableArrayPlan
       get_proxy_type_user_data = if get_proxy_type_user_data.nil?
                                    Pointer(Void).null
                                  else
                                    get_proxy_type_user_data.to_unsafe
                                  end
-
-      # Generator::NullableArrayPlan
-      get_proxy_type_destroy_notify = if get_proxy_type_destroy_notify.nil?
-                                        LibGLib::DestroyNotify.null
-                                      else
-                                        get_proxy_type_destroy_notify.to_unsafe
-                                      end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -380,7 +378,7 @@ module Gio
     # This is a synchronous failable constructor - the calling thread is
     # blocked until a reply is received. See g_dbus_object_manager_client_new()
     # for the asynchronous version.
-    def self.new_sync(connection : Gio::DBusConnection, flags : Gio::DBusObjectManagerClientFlags, name : ::String?, object_path : ::String, get_proxy_type_func : Pointer(Void)?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : Pointer(Void)?, cancellable : Gio::Cancellable?) : self
+    def self.new_sync(connection : Gio::DBusConnection, flags : Gio::DBusObjectManagerClientFlags, name : ::String?, object_path : ::String, get_proxy_type_func : Gio::DBusProxyTypeFunc?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : GLib::DestroyNotify?, cancellable : Gio::Cancellable?) : self
       # g_dbus_object_manager_client_new_sync: (Constructor | Throws)
       # @name: (nullable)
       # @get_proxy_type_func: (nullable)
@@ -397,28 +395,12 @@ module Gio
              else
                name.to_unsafe
              end
-
-      # Generator::NullableArrayPlan
-      get_proxy_type_func = if get_proxy_type_func.nil?
-                              LibGio::DBusProxyTypeFunc.null
-                            else
-                              get_proxy_type_func.to_unsafe
-                            end
-
       # Generator::NullableArrayPlan
       get_proxy_type_user_data = if get_proxy_type_user_data.nil?
                                    Pointer(Void).null
                                  else
                                    get_proxy_type_user_data.to_unsafe
                                  end
-
-      # Generator::NullableArrayPlan
-      get_proxy_type_destroy_notify = if get_proxy_type_destroy_notify.nil?
-                                        LibGLib::DestroyNotify.null
-                                      else
-                                        get_proxy_type_destroy_notify.to_unsafe
-                                      end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -445,7 +427,7 @@ module Gio
     # of the thread you are calling this method from. You can
     # then call g_dbus_object_manager_client_new_finish() to get the result. See
     # g_dbus_object_manager_client_new_sync() for the synchronous version.
-    def self.new(connection : Gio::DBusConnection, flags : Gio::DBusObjectManagerClientFlags, name : ::String, object_path : ::String, get_proxy_type_func : Pointer(Void)?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : Pointer(Void)?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def self.new(connection : Gio::DBusConnection, flags : Gio::DBusObjectManagerClientFlags, name : ::String, object_path : ::String, get_proxy_type_func : Gio::DBusProxyTypeFunc?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : GLib::DestroyNotify?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dbus_object_manager_client_new: (None)
       # @get_proxy_type_func: (nullable)
       # @get_proxy_type_user_data: (nullable)
@@ -456,40 +438,17 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::NullableArrayPlan
-      get_proxy_type_func = if get_proxy_type_func.nil?
-                              LibGio::DBusProxyTypeFunc.null
-                            else
-                              get_proxy_type_func.to_unsafe
-                            end
-
-      # Generator::NullableArrayPlan
       get_proxy_type_user_data = if get_proxy_type_user_data.nil?
                                    Pointer(Void).null
                                  else
                                    get_proxy_type_user_data.to_unsafe
                                  end
-
-      # Generator::NullableArrayPlan
-      get_proxy_type_destroy_notify = if get_proxy_type_destroy_notify.nil?
-                                        LibGLib::DestroyNotify.null
-                                      else
-                                        get_proxy_type_destroy_notify.to_unsafe
-                                      end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -512,7 +471,7 @@ module Gio
     # of the thread you are calling this method from. You can
     # then call g_dbus_object_manager_client_new_for_bus_finish() to get the result. See
     # g_dbus_object_manager_client_new_for_bus_sync() for the synchronous version.
-    def self.new_for_bus(bus_type : Gio::BusType, flags : Gio::DBusObjectManagerClientFlags, name : ::String, object_path : ::String, get_proxy_type_func : Pointer(Void)?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : Pointer(Void)?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def self.new_for_bus(bus_type : Gio::BusType, flags : Gio::DBusObjectManagerClientFlags, name : ::String, object_path : ::String, get_proxy_type_func : Gio::DBusProxyTypeFunc?, get_proxy_type_user_data : Pointer(Void)?, get_proxy_type_destroy_notify : GLib::DestroyNotify?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dbus_object_manager_client_new_for_bus: (None)
       # @get_proxy_type_func: (nullable)
       # @get_proxy_type_user_data: (nullable)
@@ -523,40 +482,17 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::NullableArrayPlan
-      get_proxy_type_func = if get_proxy_type_func.nil?
-                              LibGio::DBusProxyTypeFunc.null
-                            else
-                              get_proxy_type_func.to_unsafe
-                            end
-
-      # Generator::NullableArrayPlan
       get_proxy_type_user_data = if get_proxy_type_user_data.nil?
                                    Pointer(Void).null
                                  else
                                    get_proxy_type_user_data.to_unsafe
                                  end
-
-      # Generator::NullableArrayPlan
-      get_proxy_type_destroy_notify = if get_proxy_type_destroy_notify.nil?
-                                        LibGLib::DestroyNotify.null
-                                      else
-                                        get_proxy_type_destroy_notify.to_unsafe
-                                      end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -661,62 +597,82 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(Void), lib_arg3 : Pointer(Pointer(LibC::Char)), box : Pointer(Void)) {
-          arg0 = Gio::DBusObjectProxy.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::DBusProxy.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = GLib::Variant.new(lib_arg2, GICrystal::Transfer::None)
-          arg3 = GICrystal.transfer_null_ended_array(lib_arg3, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
-        }
+      def connect(handler : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
+          # Generator::GObjectArgPlan
+          interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
+          # Generator::HandmadeArgPlan
+          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
+          # Generator::GObjectArgPlan
+          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
+          # Generator::ArrayArgPlan
+          ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(object_proxy, interface_proxy, changed_properties, invalidated_properties)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(Void), lib_arg3 : Pointer(Pointer(LibC::Char)), box : Pointer(Void)) {
-          arg0 = Gio::DBusObjectProxy.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::DBusProxy.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = GLib::Variant.new(lib_arg2, GICrystal::Transfer::None)
-          arg3 = GICrystal.transfer_null_ended_array(lib_arg3, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
-        }
+      def connect_after(handler : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
+          # Generator::GObjectArgPlan
+          interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
+          # Generator::HandmadeArgPlan
+          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
+          # Generator::GObjectArgPlan
+          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
+          # Generator::ArrayArgPlan
+          ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(object_proxy, interface_proxy, changed_properties, invalidated_properties)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(Void), lib_arg3 : Pointer(Pointer(LibC::Char)), box : Pointer(Void)) {
-          sender = Gio::DBusObjectManagerClient.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::DBusObjectProxy.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::DBusProxy.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = GLib::Variant.new(lib_arg2, GICrystal::Transfer::None)
-          arg3 = GICrystal.transfer_null_ended_array(lib_arg3, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
-        }
+      def connect(handler : Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusObjectManagerClient.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
+          # Generator::GObjectArgPlan
+          interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
+          # Generator::HandmadeArgPlan
+          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
+          # Generator::GObjectArgPlan
+          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
+          # Generator::ArrayArgPlan
+          ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, object_proxy, interface_proxy, changed_properties, invalidated_properties)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(Void), lib_arg3 : Pointer(Pointer(LibC::Char)), box : Pointer(Void)) {
-          sender = Gio::DBusObjectManagerClient.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::DBusObjectProxy.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::DBusProxy.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = GLib::Variant.new(lib_arg2, GICrystal::Transfer::None)
-          arg3 = GICrystal.transfer_null_ended_array(lib_arg3, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
-        }
+      def connect_after(handler : Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusObjectManagerClient.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
+          # Generator::GObjectArgPlan
+          interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
+          # Generator::HandmadeArgPlan
+          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
+          # Generator::GObjectArgPlan
+          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
+          # Generator::ArrayArgPlan
+          ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, object_proxy, interface_proxy, changed_properties, invalidated_properties)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(object_proxy : Gio::DBusObjectProxy, interface_proxy : Gio::DBusProxy, changed_properties : _, invalidated_properties : Enumerable(::String)) : Nil
@@ -761,66 +717,86 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(LibC::Char), lib_arg3 : Pointer(LibC::Char), lib_arg4 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::DBusObjectProxy.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::DBusProxy.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = ::String.new(lib_arg2)
-          arg3 = ::String.new(lib_arg3)
-          arg4 = GLib::Variant.new(lib_arg4, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(box).call(arg0, arg1, arg2, arg3, arg4)
-        }
+      def connect(handler : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
+          # Generator::GObjectArgPlan
+          interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
+          sender_name = lib_sender_name
+          signal_name = lib_signal_name
+          # Generator::HandmadeArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          # Generator::GObjectArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(object_proxy, interface_proxy, sender_name, signal_name, parameters)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(LibC::Char), lib_arg3 : Pointer(LibC::Char), lib_arg4 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gio::DBusObjectProxy.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::DBusProxy.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = ::String.new(lib_arg2)
-          arg3 = ::String.new(lib_arg3)
-          arg4 = GLib::Variant.new(lib_arg4, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(box).call(arg0, arg1, arg2, arg3, arg4)
-        }
+      def connect_after(handler : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
+          # Generator::GObjectArgPlan
+          interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
+          sender_name = lib_sender_name
+          signal_name = lib_signal_name
+          # Generator::HandmadeArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          # Generator::GObjectArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(object_proxy, interface_proxy, sender_name, signal_name, parameters)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(LibC::Char), lib_arg3 : Pointer(LibC::Char), lib_arg4 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::DBusObjectManagerClient.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::DBusObjectProxy.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::DBusProxy.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = ::String.new(lib_arg2)
-          arg3 = ::String.new(lib_arg3)
-          arg4 = GLib::Variant.new(lib_arg4, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3, arg4)
-        }
+      def connect(handler : Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusObjectManagerClient.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
+          # Generator::GObjectArgPlan
+          interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
+          sender_name = lib_sender_name
+          signal_name = lib_signal_name
+          # Generator::HandmadeArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          # Generator::GObjectArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, object_proxy, interface_proxy, sender_name, signal_name, parameters)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(LibC::Char), lib_arg3 : Pointer(LibC::Char), lib_arg4 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gio::DBusObjectManagerClient.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::DBusObjectProxy.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::DBusProxy.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = ::String.new(lib_arg2)
-          arg3 = ::String.new(lib_arg3)
-          arg4 = GLib::Variant.new(lib_arg4, GICrystal::Transfer::None)
-          ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3, arg4)
-        }
+      def connect_after(handler : Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::DBusObjectManagerClient.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
+          # Generator::GObjectArgPlan
+          interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
+          sender_name = lib_sender_name
+          signal_name = lib_signal_name
+          # Generator::HandmadeArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          # Generator::GObjectArgPlan
+          parameters = GLib::Variant.new(lib_parameters, :none)
+          ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, object_proxy, interface_proxy, sender_name, signal_name, parameters)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(object_proxy : Gio::DBusObjectProxy, interface_proxy : Gio::DBusProxy, sender_name : ::String, signal_name : ::String, parameters : _) : Nil

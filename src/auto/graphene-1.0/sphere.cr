@@ -118,7 +118,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       box = Graphene::Box.new
-
       # C call
       LibGraphene.graphene_sphere_get_bounding_box(self, box)
 
@@ -134,7 +133,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       center = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_sphere_get_center(self, center)
 
@@ -182,10 +180,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_points = points.size
-      # Generator::ArrayArgPlan
+      n_points = points.size # Generator::ArrayArgPlan
       points = points.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       center = if center.nil?
                  Pointer(Void).null
@@ -208,10 +204,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_vectors = vectors.size
-      # Generator::ArrayArgPlan
+      n_vectors = vectors.size # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       center = if center.nil?
                  Pointer(Void).null
@@ -246,7 +240,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Sphere.new
-
       # C call
       LibGraphene.graphene_sphere_translate(self, point, res)
 

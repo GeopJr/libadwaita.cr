@@ -498,6 +498,245 @@ module GLib
   WIN32_MSG_HANDLE     = 19981206
   macro__has_attribute___noreturn__ = 0
 
+  # Callbacks
+
+  # Prototype of a #GChildWatchSource callback, called when a child
+  # process has exited.
+  #
+  # To interpret @wait_status, see the documentation
+  # for g_spawn_check_wait_status(). In particular,
+  # on Unix platforms, note that it is usually not equal
+  # to the integer passed to `exit()` or returned from `main()`.
+  alias ChildWatchFunc = Proc(Int32, Int32, Nil)
+
+  # Specifies the type of function passed to g_clear_handle_id().
+  # The implementation is expected to free the resource identified
+  # by @handle_id; for instance, if @handle_id is a #GSource ID,
+  # g_source_remove() can be used.
+  alias ClearHandleFunc = Proc(Nil)
+
+  # Specifies the type of a comparison function used to compare two
+  # values.  The function should return a negative integer if the first
+  # value comes before the second, 0 if they are equal, or a positive
+  # integer if the first value comes after the second.
+  alias CompareDataFunc = Proc(Pointer(Void)?, Pointer(Void)?, Int32)
+
+  # Specifies the type of a comparison function used to compare two
+  # values.  The function should return a negative integer if the first
+  # value comes before the second, 0 if they are equal, or a positive
+  # integer if the first value comes after the second.
+  alias CompareFunc = Proc(Pointer(Void)?, Int32)
+
+  # A function of this signature is used to copy the node data
+  # when doing a deep-copy of a tree.
+  alias CopyFunc = Proc(Pointer(Void), Pointer(Void))
+
+  # Specifies the type of function passed to g_dataset_foreach(). It is
+  # called with each #GQuark id and associated data element, together
+  # with the @user_data parameter supplied to g_dataset_foreach().
+  alias DataForeachFunc = Proc(UInt32, Pointer(Void)?, Nil)
+
+  # Specifies the type of function which is called when a data element
+  # is destroyed. It is passed the pointer to the data element and
+  # should free any memory and resources allocated for it.
+  alias DestroyNotify = Proc(Nil)
+
+  # The type of functions that are used to 'duplicate' an object.
+  # What this means depends on the context, it could just be
+  # incrementing the reference count, if @data is a ref-counted
+  # object.
+  alias DuplicateFunc = Proc(Pointer(Void)?, Pointer(Void))
+
+  # Specifies the type of a function used to test two values for
+  # equality. The function should return %TRUE if both values are equal
+  # and %FALSE otherwise.
+  alias EqualFunc = Proc(Pointer(Void)?, Bool)
+
+  # Specifies the type of function which is called when an extended
+  # error instance is freed. It is passed the error pointer about to be
+  # freed, and should free the error's private data fields.
+  #
+  # Normally, it is better to use G_DEFINE_EXTENDED_ERROR(), as it
+  # already takes care of getting the private data from @error.
+  alias ErrorClearFunc = Proc(Nil)
+
+  # Specifies the type of function which is called when an extended
+  # error instance is copied. It is passed the pointer to the
+  # destination error and source error, and should copy only the fields
+  # of the private data from @src_error to @dest_error.
+  #
+  # Normally, it is better to use G_DEFINE_EXTENDED_ERROR(), as it
+  # already takes care of getting the private data from @src_error and
+  # @dest_error.
+  alias ErrorCopyFunc = Proc(GLib::Error, Nil)
+
+  # Specifies the type of function which is called just after an
+  # extended error instance is created and its fields filled. It should
+  # only initialize the fields in the private data, which can be
+  # received with the generated `*_get_private()` function.
+  #
+  # Normally, it is better to use G_DEFINE_EXTENDED_ERROR(), as it
+  # already takes care of getting the private data from @error.
+  alias ErrorInitFunc = Proc(Nil)
+
+  # Declares a type of function which takes an arbitrary
+  # data pointer argument and has no return value. It is
+  # not currently used in GLib or GTK+.
+  alias FreeFunc = Proc(Nil)
+
+  # Specifies the type of functions passed to g_list_foreach() and
+  # g_slist_foreach().
+  alias Func = Proc(Pointer(Void)?, Nil)
+
+  # Specifies the type of the function passed to g_hash_table_foreach().
+  # It is called with each key/value pair, together with the @user_data
+  # parameter which is passed to g_hash_table_foreach().
+  alias HFunc = Proc(Pointer(Void)?, Pointer(Void)?, Nil)
+
+  # Specifies the type of the function passed to
+  # g_hash_table_foreach_remove(). It is called with each key/value
+  # pair, together with the @user_data parameter passed to
+  # g_hash_table_foreach_remove(). It should return %TRUE if the
+  # key/value pair should be removed from the #GHashTable.
+  alias HRFunc = Proc(Pointer(Void)?, Pointer(Void)?, Bool)
+
+  # Specifies the type of the hash function which is passed to
+  # g_hash_table_new() when a #GHashTable is created.
+  #
+  # The function is passed a key and should return a #guint hash value.
+  # The functions g_direct_hash(), g_int_hash() and g_str_hash() provide
+  # hash functions which can be used when the key is a #gpointer, #gint*,
+  # and #gchar* respectively.
+  #
+  # g_direct_hash() is also the appropriate hash function for keys
+  # of the form `GINT_TO_POINTER (n)` (or similar macros).
+  #
+  # A good hash functions should produce
+  # hash values that are evenly distributed over a fairly large range.
+  # The modulus is taken with the hash table size (a prime number) to
+  # find the 'bucket' to place each key into. The function should also
+  # be very fast, since it is called for each key lookup.
+  #
+  # Note that the hash functions provided by GLib have these qualities,
+  # but are not particularly robust against manufactured keys that
+  # cause hash collisions. Therefore, you should consider choosing
+  # a more secure hash function when using a GHashTable with keys
+  # that originate in untrusted data (such as HTTP requests).
+  # Using g_str_hash() in that situation might make your application
+  # vulnerable to
+  # [Algorithmic Complexity Attacks](https://lwn.net/Articles/474912/).
+  #
+  # The key to choosing a good hash is unpredictability.  Even
+  # cryptographic hashes are very easy to find collisions for when the
+  # remainder is taken modulo a somewhat predictable prime number.  There
+  # must be an element of randomness that an attacker is unable to guess.
+  alias HashFunc = Proc(UInt32)
+
+  # Defines the type of a hook function that can be invoked
+  # by g_hook_list_invoke_check().
+  alias HookCheckFunc = Proc(Bool)
+
+  # The type of function to be passed as callback for %G_OPTION_ARG_CALLBACK
+  # options.
+  alias OptionArgFunc = Proc(::String, ::String, Bool)
+
+  # Specifies the type of the print handler functions.
+  # These are called with the complete formatted string to output.
+  alias PrintFunc = Proc(Nil)
+
+  # Dispose function for @source. See g_source_set_dispose_function() for
+  # details.
+  alias SourceDisposeFunc = Proc(Nil)
+
+  # This is just a placeholder for #GClosureMarshal,
+  # which cannot be used here for dependency reasons.
+  alias SourceDummyMarshal = Proc(Nil)
+
+  # Specifies the type of function passed to g_timeout_add(),
+  # g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
+  #
+  # When calling g_source_set_callback(), you may need to cast a function of a
+  # different type to this type. Use G_SOURCE_FUNC() to avoid warnings about
+  # incompatible function types.
+  alias SourceFunc = Proc(Bool)
+
+  # Specifies the type of the setup function passed to g_spawn_async(),
+  # g_spawn_sync() and g_spawn_async_with_pipes(), which can, in very
+  # limited ways, be used to affect the child's execution.
+  #
+  # On POSIX platforms, the function is called in the child after GLib
+  # has performed all the setup it plans to perform, but before calling
+  # exec(). Actions taken in this function will only affect the child,
+  # not the parent.
+  #
+  # On Windows, the function is called in the parent. Its usefulness on
+  # Windows is thus questionable. In many cases executing the child setup
+  # function in the parent can have ill effects, and you should be very
+  # careful when porting software to Windows that uses child setup
+  # functions.
+  #
+  # However, even on POSIX, you are extremely limited in what you can
+  # safely do from a #GSpawnChildSetupFunc, because any mutexes that were
+  # held by other threads in the parent process at the time of the fork()
+  # will still be locked in the child process, and they will never be
+  # unlocked (since the threads that held them don't exist in the child).
+  # POSIX allows only async-signal-safe functions (see signal(7)) to be
+  # called in the child between fork() and exec(), which drastically limits
+  # the usefulness of child setup functions.
+  #
+  # In particular, it is not safe to call any function which may
+  # call malloc(), which includes POSIX functions such as setenv().
+  # If you need to set up the child environment differently from
+  # the parent, you should use g_get_environ(), g_environ_setenv(),
+  # and g_environ_unsetenv(), and then pass the complete environment
+  # list to the `g_spawn...` function.
+  alias SpawnChildSetupFunc = Proc(Nil)
+
+  # The type used for test case functions that take an extra pointer
+  # argument.
+  alias TestDataFunc = Proc(Nil)
+
+  # The type used for functions that operate on test fixtures.  This is
+  # used for the fixture setup and teardown functions as well as for the
+  # testcases themselves.
+  #
+  # @user_data is a pointer to the data that was given when registering
+  # the test case.
+  #
+  # @fixture will be a pointer to the area of memory allocated by the
+  # test framework, of the size requested.  If the requested size was
+  # zero then @fixture will be equal to @user_data.
+  alias TestFixtureFunc = Proc(Pointer(Void), Nil)
+
+  # The type used for test case functions.
+  alias TestFunc = Proc(Nil)
+
+  # Specifies the prototype of fatal log handler functions.
+  alias TestLogFatalFunc = Proc(::String, GLib::LogLevelFlags, ::String, Bool)
+
+  # Specifies the type of the @func functions passed to g_thread_new()
+  # or g_thread_try_new().
+  alias ThreadFunc = Proc(Pointer(Void))
+
+  # The type of functions which are used to translate user-visible
+  # strings, for <option>--help</option> output.
+  alias TranslateFunc = Proc(::String, ::String)
+
+  # Specifies the type of function passed to g_tree_traverse(). It is
+  # passed the key and value of each node, together with the @user_data
+  # parameter passed to g_tree_traverse(). If the function returns
+  # %TRUE, the traversal is stopped.
+  alias TraverseFunc = Proc(Pointer(Void)?, Pointer(Void)?, Bool)
+
+  # The type of functions to be called when a UNIX fd watch source
+  # triggers.
+  alias UnixFDSourceFunc = Proc(Int32, GLib::IOCondition, Bool)
+
+  # Declares a type of function which takes no arguments
+  # and has no return value. It is used to specify the type
+  # function passed to g_atexit().
+  alias VoidFunc = Proc(Nil)
+
   # Base class for all errors in this module.
   class GLibError < RuntimeError
     # :nodoc:
@@ -2155,14 +2394,12 @@ module GLib
            else
              type.to_unsafe
            end
-
     # Generator::NullableArrayPlan
     limit = if limit.nil?
               Pointer(LibC::Char).null
             else
               limit.to_unsafe
             end
-
     # Generator::NullableArrayPlan
     endptr = if endptr.nil?
                Pointer(LibC::Char).null
@@ -2265,10 +2502,8 @@ module GLib
             else
               limit.to_unsafe
             end
-
     # Generator::OutArgUsedInReturnPlan
     endptr = Pointer(Pointer(LibC::Char)).null
-
     # C call
     _retval = LibGLib.g_variant_type_string_scan(string, limit, endptr)
 

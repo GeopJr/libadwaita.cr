@@ -64,7 +64,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_add(self, b, res)
 
@@ -80,7 +79,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_cross(self, b, res)
 
@@ -96,7 +94,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_divide(self, b, res)
 
@@ -158,7 +155,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec3_get_xy(self, res)
 
@@ -174,7 +170,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_get_xy0(self, res)
 
@@ -190,7 +185,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
-
       # C call
       LibGraphene.graphene_vec3_get_xyz0(self, res)
 
@@ -206,7 +200,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
-
       # C call
       LibGraphene.graphene_vec3_get_xyz1(self, res)
 
@@ -222,7 +215,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
-
       # C call
       LibGraphene.graphene_vec3_get_xyzw(self, w, res)
 
@@ -273,6 +265,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 3") if src.size < 3
+
       src = src.to_a.to_unsafe
 
       # C call
@@ -306,7 +300,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_interpolate(self, v2, factor, res)
 
@@ -334,7 +327,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_max(self, b, res)
 
@@ -350,7 +342,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_min(self, b, res)
 
@@ -366,7 +357,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_multiply(self, b, res)
 
@@ -394,7 +384,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_negate(self, res)
 
@@ -410,7 +399,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_normalize(self, res)
 
@@ -426,7 +414,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_scale(self, factor, res)
 
@@ -442,7 +429,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_vec3_subtract(self, b, res)
 
@@ -457,6 +443,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 3") if dest.size < 3
+
       dest = dest.to_a.to_unsafe
 
       # C call

@@ -16,9 +16,20 @@ module Gdk
         sizeof(LibGdk::Event), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_param_spec_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_param_spec_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
-      LibGObject.gdk_event_ref(self) unless transfer.full?
+      LibGObject.gdk_event_ref(self) if transfer.none?
     end
 
     # Called by the garbage collector. Decreases the reference count of object.
@@ -27,6 +38,8 @@ module Gdk
       {% if flag?(:debugmemory) %}
         LibC.printf("~%s at %p - ref count: %d\n", self.class.name.to_unsafe, self, ref_count)
       {% end %}
+      LibGObject.g_param_spec_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).null)
+      LibGObject.g_param_spec_set_qdata(self, GICrystal::GC_COLLECTED_QDATA_KEY, Pointer(Void).new(0x1))
       LibGObject.gdk_event_unref(self)
     end
 
@@ -122,8 +135,7 @@ module Gdk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_axes = axes.size
-      # Generator::ArrayArgPlan
+      n_axes = axes.size # Generator::ArrayArgPlan
       axes = axes.to_a.to_unsafe
 
       # C call
@@ -249,7 +261,6 @@ module Gdk
 
       # Generator::OutArgUsedInReturnPlan
       out_n_coords = 0_u32
-
       # C call
       _retval = LibGdk.gdk_event_get_history(self, pointerof(out_n_coords))
 

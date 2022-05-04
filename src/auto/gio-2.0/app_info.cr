@@ -170,7 +170,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def self.launch_default_for_uri_async(uri : ::String, context : Gio::AppLaunchContext?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def self.launch_default_for_uri_async(uri : ::String, context : Gio::AppLaunchContext?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_app_info_launch_default_for_uri_async: (None)
       # @context: (nullable)
       # @cancellable: (nullable)
@@ -184,21 +184,12 @@ module Gio
                 else
                   context.to_unsafe
                 end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -426,7 +417,6 @@ module Gio
               else
                 files.to_unsafe
               end
-
       # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
@@ -459,7 +449,6 @@ module Gio
              else
                uris.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
@@ -478,7 +467,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def launch_uris_async(uris : GLib::List?, context : Gio::AppLaunchContext?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def launch_uris_async(uris : GLib::List?, context : Gio::AppLaunchContext?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_app_info_launch_uris_async: (Method)
       # @uris: (nullable)
       # @context: (nullable)
@@ -493,28 +482,18 @@ module Gio
              else
                uris.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       context = if context.nil?
                   Pointer(Void).null
                 else
                   context.to_unsafe
                 end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

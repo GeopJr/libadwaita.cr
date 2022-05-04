@@ -13,6 +13,17 @@ module Gio
         sizeof(LibGio::Vfs), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -140,7 +151,7 @@ module Gio
     #
     # It's an error to call this function twice with the same scheme. To unregister
     # a custom URI scheme, use g_vfs_unregister_uri_scheme().
-    def register_uri_scheme(scheme : ::String, uri_func : Pointer(Void)?, uri_data : Pointer(Void)?, uri_destroy : Pointer(Void)?, parse_name_func : Pointer(Void)?, parse_name_data : Pointer(Void)?, parse_name_destroy : Pointer(Void)?) : Bool
+    def register_uri_scheme(scheme : ::String, uri_func : Gio::VfsFileLookupFunc?, uri_data : Pointer(Void)?, uri_destroy : GLib::DestroyNotify?, parse_name_func : Gio::VfsFileLookupFunc?) : Bool
       # g_vfs_register_uri_scheme: (Method)
       # @uri_func: (nullable)
       # @uri_data: (nullable)
@@ -151,46 +162,26 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::NullableArrayPlan
-      uri_func = if uri_func.nil?
-                   LibGio::VfsFileLookupFunc.null
-                 else
-                   uri_func.to_unsafe
-                 end
-
-      # Generator::NullableArrayPlan
       uri_data = if uri_data.nil?
                    Pointer(Void).null
                  else
                    uri_data.to_unsafe
                  end
-
-      # Generator::NullableArrayPlan
-      uri_destroy = if uri_destroy.nil?
-                      LibGLib::DestroyNotify.null
-                    else
-                      uri_destroy.to_unsafe
-                    end
-
-      # Generator::NullableArrayPlan
-      parse_name_func = if parse_name_func.nil?
-                          LibGio::VfsFileLookupFunc.null
-                        else
-                          parse_name_func.to_unsafe
-                        end
-
-      # Generator::NullableArrayPlan
-      parse_name_data = if parse_name_data.nil?
-                          Pointer(Void).null
-                        else
-                          parse_name_data.to_unsafe
-                        end
-
-      # Generator::NullableArrayPlan
-      parse_name_destroy = if parse_name_destroy.nil?
-                             LibGLib::DestroyNotify.null
-                           else
-                             parse_name_destroy.to_unsafe
-                           end
+      # Generator::CallbackArgPlan
+      if parse_name_func
+        _box = ::Box.box(parse_name_func)
+        parse_name_func = ->(lib_vfs : Pointer(Void), lib_identifier : Pointer(LibC::Char), lib_user_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          vfs = Gio::Vfs.new(lib_vfs, :none)
+          identifier = lib_identifier
+          user_data = lib_user_data
+          ::Box(Proc(Gio::Vfs, ::String, Gio::File)).unbox(user_data).call(vfs, identifier)
+        }.pointer
+        parse_name_data = GICrystal::ClosureDataManager.register(_box)
+        parse_name_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        parse_name_func = parse_name_data = parse_name_destroy = Pointer(Void).null
+      end
 
       # C call
       _retval = LibGio.g_vfs_register_uri_scheme(self, scheme, uri_func, uri_data, uri_destroy, parse_name_func, parse_name_data, parse_name_destroy)

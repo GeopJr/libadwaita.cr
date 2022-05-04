@@ -298,7 +298,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Euler.new
-
       # C call
       LibGraphene.graphene_euler_reorder(self, order, res)
 
@@ -314,7 +313,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
-
       # C call
       LibGraphene.graphene_euler_to_matrix(self, res)
 
@@ -330,7 +328,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
-
       # C call
       LibGraphene.graphene_euler_to_quaternion(self, res)
 
@@ -346,7 +343,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_euler_to_vec3(self, res)
 

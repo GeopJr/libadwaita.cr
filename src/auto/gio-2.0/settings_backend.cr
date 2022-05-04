@@ -36,6 +36,17 @@ module Gio
         sizeof(LibGio::SettingsBackend), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -62,10 +73,8 @@ module Gio
 
       # Generator::ArrayArgPlan
       keys = keys.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::OutArgUsedInReturnPlan
-      values = Pointer(Pointer(Pointer(Void))).null
-      # Generator::ArrayArgPlan
+      values = Pointer(Pointer(Pointer(Void))).null # Generator::ArrayArgPlan
       values = values.to_a.map { |_i| GLib::Variant.new(_i).to_unsafe }.to_unsafe
 
       # C call
@@ -181,7 +190,6 @@ module Gio
 
       # Generator::ArrayArgPlan
       items = items.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       origin_tag = if origin_tag.nil?
                      Pointer(Void).null

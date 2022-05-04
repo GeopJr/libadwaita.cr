@@ -110,7 +110,6 @@ module Gtk
 
       # Generator::OutArgUsedInReturnPlan
       length = 0_u64
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_applications(self, pointerof(length))
 
@@ -162,7 +161,6 @@ module Gtk
 
       # Generator::OutArgUsedInReturnPlan
       length = 0_u64
-
       # C call
       _retval = LibGtk.gtk_recent_info_get_groups(self, pointerof(length))
 

@@ -50,6 +50,17 @@ module Pango
         sizeof(LibPango::Layout), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -72,6 +83,7 @@ module Pango
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def deserialize(context : Pango::Context, bytes : GLib::Bytes, flags : Pango::LayoutDeserializeFlags) : Pango::Layout?
@@ -196,14 +208,10 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      strong_pos = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      strong_pos = Pango::Rectangle.new
-      # Generator::OutArgUsedInReturnPlan
-      weak_pos = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      strong_pos = Pointer(Void).null   # Generator::CallerAllocatesPlan
+      strong_pos = Pango::Rectangle.new # Generator::OutArgUsedInReturnPlan
+      weak_pos = Pointer(Void).null     # Generator::CallerAllocatesPlan
       weak_pos = Pango::Rectangle.new
-
       # C call
       LibPango.pango_layout_get_caret_pos(self, index_, strong_pos, weak_pos)
 
@@ -273,14 +281,10 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      strong_pos = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      strong_pos = Pango::Rectangle.new
-      # Generator::OutArgUsedInReturnPlan
-      weak_pos = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      strong_pos = Pointer(Void).null   # Generator::CallerAllocatesPlan
+      strong_pos = Pango::Rectangle.new # Generator::OutArgUsedInReturnPlan
+      weak_pos = Pointer(Void).null     # Generator::CallerAllocatesPlan
       weak_pos = Pango::Rectangle.new
-
       # C call
       LibPango.pango_layout_get_cursor_pos(self, index_, strong_pos, weak_pos)
 
@@ -337,14 +341,10 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      ink_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      ink_rect = Pango::Rectangle.new
-      # Generator::OutArgUsedInReturnPlan
-      logical_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      ink_rect = Pointer(Void).null     # Generator::CallerAllocatesPlan
+      ink_rect = Pango::Rectangle.new   # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
-
       # C call
       LibPango.pango_layout_get_extents(self, ink_rect, logical_rect)
 
@@ -540,8 +540,7 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_attrs = attrs.size
-      # Generator::ArrayArgPlan
+      n_attrs = attrs.size # Generator::ArrayArgPlan
       attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -572,7 +571,6 @@ module Pango
 
       # Generator::OutArgUsedInReturnPlan
       n_attrs = 0
-
       # C call
       _retval = LibPango.pango_layout_get_log_attrs_readonly(self, pointerof(n_attrs))
 
@@ -594,14 +592,10 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      ink_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      ink_rect = Pango::Rectangle.new
-      # Generator::OutArgUsedInReturnPlan
-      logical_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      ink_rect = Pointer(Void).null     # Generator::CallerAllocatesPlan
+      ink_rect = Pango::Rectangle.new   # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
-
       # C call
       LibPango.pango_layout_get_pixel_extents(self, ink_rect, logical_rect)
 
@@ -623,10 +617,8 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      width = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
-
       # C call
       LibPango.pango_layout_get_pixel_size(self, width, height)
 
@@ -683,10 +675,8 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      width = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
-
       # C call
       LibPango.pango_layout_get_size(self, width, height)
 
@@ -796,10 +786,8 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      line = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      line = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       x_pos = Pointer(Int32).null
-
       # C call
       LibPango.pango_layout_index_to_line_x(self, index_, trailing, line, x_pos)
 
@@ -820,7 +808,6 @@ module Pango
 
       # Generator::CallerAllocatesPlan
       pos = Pango::Rectangle.new
-
       # C call
       LibPango.pango_layout_index_to_pos(self, index_, pos)
 
@@ -1182,10 +1169,8 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      accel_char = Pointer(UInt32).null
-      # Generator::CallerAllocatesPlan
+      accel_char = Pointer(UInt32).null # Generator::CallerAllocatesPlan
       accel_char = UInt32.new
-
       # C call
       LibPango.pango_layout_set_markup_with_accel(self, markup, length, accel_marker, accel_char)
 

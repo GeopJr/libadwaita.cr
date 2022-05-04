@@ -57,6 +57,17 @@ module GdkPixbuf
         sizeof(LibGdkPixbuf::PixbufLoader), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -78,6 +89,7 @@ module GdkPixbuf
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Creates a new pixbuf loader object that always attempts to parse
@@ -263,8 +275,7 @@ module GdkPixbuf
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      count = buf.size
-      # Generator::ArrayArgPlan
+      count = buf.size # Generator::ArrayArgPlan
       buf = buf.to_a.to_unsafe
 
       # C call
@@ -330,46 +341,46 @@ module GdkPixbuf
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(GdkPixbuf::PixbufLoader, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = GdkPixbuf::PixbufLoader.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(GdkPixbuf::PixbufLoader, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = GdkPixbuf::PixbufLoader.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(GdkPixbuf::PixbufLoader, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil
@@ -413,62 +424,62 @@ module GdkPixbuf
         connect(block)
       end
 
-      def connect(block : Proc(Int32, Int32, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, lib_arg2 : Int32, lib_arg3 : Int32, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          arg3 = lib_arg3
-          ::Box(Proc(Int32, Int32, Int32, Int32, Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
-        }
+      def connect(handler : Proc(Int32, Int32, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_x : Int32, lib_y : Int32, lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
+          x = lib_x
+          y = lib_y
+          width = lib_width
+          height = lib_height
+          ::Box(Proc(Int32, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(x, y, width, height)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Int32, Int32, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, lib_arg2 : Int32, lib_arg3 : Int32, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          arg3 = lib_arg3
-          ::Box(Proc(Int32, Int32, Int32, Int32, Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
-        }
+      def connect_after(handler : Proc(Int32, Int32, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_x : Int32, lib_y : Int32, lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
+          x = lib_x
+          y = lib_y
+          width = lib_width
+          height = lib_height
+          ::Box(Proc(Int32, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(x, y, width, height)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, lib_arg2 : Int32, lib_arg3 : Int32, box : Pointer(Void)) {
-          sender = GdkPixbuf::PixbufLoader.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          arg3 = lib_arg3
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
-        }
+      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_x : Int32, lib_y : Int32, lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
+          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
+          x = lib_x
+          y = lib_y
+          width = lib_width
+          height = lib_height
+          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, x, y, width, height)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, lib_arg2 : Int32, lib_arg3 : Int32, box : Pointer(Void)) {
-          sender = GdkPixbuf::PixbufLoader.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          arg3 = lib_arg3
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
-        }
+      def connect_after(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_x : Int32, lib_y : Int32, lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
+          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
+          x = lib_x
+          y = lib_y
+          width = lib_width
+          height = lib_height
+          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, x, y, width, height)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(x : Int32, y : Int32, width : Int32, height : Int32) : Nil
@@ -509,46 +520,46 @@ module GdkPixbuf
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(GdkPixbuf::PixbufLoader, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = GdkPixbuf::PixbufLoader.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(GdkPixbuf::PixbufLoader, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = GdkPixbuf::PixbufLoader.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(GdkPixbuf::PixbufLoader, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil
@@ -591,54 +602,54 @@ module GdkPixbuf
         connect(block)
       end
 
-      def connect(block : Proc(Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Int32, Int32, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect(handler : Proc(Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
+          width = lib_width
+          height = lib_height
+          ::Box(Proc(Int32, Int32, Nil)).unbox(_lib_box).call(width, height)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Int32, Int32, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect_after(handler : Proc(Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
+          width = lib_width
+          height = lib_height
+          ::Box(Proc(Int32, Int32, Nil)).unbox(_lib_box).call(width, height)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
-          sender = GdkPixbuf::PixbufLoader.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
+          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
+          width = lib_width
+          height = lib_height
+          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, width, height)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Int32, lib_arg1 : Int32, box : Pointer(Void)) {
-          sender = GdkPixbuf::PixbufLoader.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect_after(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
+          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
+          width = lib_width
+          height = lib_height
+          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, width, height)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(width : Int32, height : Int32) : Nil

@@ -24,6 +24,17 @@ module Gtk
         sizeof(LibGtk::CellAreaContext), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -65,6 +76,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -151,10 +164,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      width = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_context_get_allocation(self, width, height)
 
@@ -195,10 +206,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      minimum_height = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      minimum_height = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_context_get_preferred_height(self, minimum_height, natural_height)
 
@@ -217,10 +226,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      minimum_height = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      minimum_height = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_context_get_preferred_height_for_width(self, width, minimum_height, natural_height)
 
@@ -239,10 +246,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      minimum_width = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      minimum_width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_context_get_preferred_width(self, minimum_width, natural_width)
 
@@ -261,10 +266,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      minimum_width = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      minimum_width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_context_get_preferred_width_for_height(self, height, minimum_width, natural_width)
 

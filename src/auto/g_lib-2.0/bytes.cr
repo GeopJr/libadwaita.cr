@@ -55,8 +55,7 @@ module GLib
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      size = data.try(&.size) || 0
-      # Generator::NullableArrayPlan
+      size = data.try(&.size) || 0 # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(UInt8).null
              else
@@ -69,6 +68,7 @@ module GLib
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def initialize(*data : UInt8)
@@ -81,8 +81,7 @@ module GLib
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      size = data.try(&.size) || 0
-      # Generator::NullableArrayPlan
+      size = data.try(&.size) || 0 # Generator::NullableArrayPlan
       data = if data.nil?
                Pointer(UInt8).null
              else
@@ -132,7 +131,6 @@ module GLib
 
       # Generator::OutArgUsedInReturnPlan
       size = 0_u64
-
       # C call
       _retval = LibGLib.g_bytes_get_data(self, pointerof(size))
 

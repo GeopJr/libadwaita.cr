@@ -37,6 +37,7 @@ module GLib
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def acquire : Bool
@@ -57,8 +58,7 @@ module GLib
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_fds = fds.size
-      # Generator::ArrayArgPlan
+      n_fds = fds.size # Generator::ArrayArgPlan
       fds = fds.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -131,25 +131,24 @@ module GLib
       GLib::Source.new(_retval, GICrystal::Transfer::None)
     end
 
-    def invoke_full(priority : Int32, function : Pointer(Void), data : Pointer(Void)?, notify : Pointer(Void)?) : Nil
+    def invoke_full(priority : Int32, function : GLib::SourceFunc) : Nil
       # g_main_context_invoke_full: (Method)
       # @data: (nullable)
       # @notify: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      data = if data.nil?
-               Pointer(Void).null
-             else
-               data.to_unsafe
-             end
-
-      # Generator::NullableArrayPlan
-      notify = if notify.nil?
-                 LibGLib::DestroyNotify.null
-               else
-                 notify.to_unsafe
-               end
+      # Generator::CallbackArgPlan
+      if function
+        _box = ::Box.box(function)
+        function = ->(lib_user_data : Pointer(Void)) {
+          user_data = lib_user_data
+          ::Box(Proc(Bool)).unbox(user_data).call
+        }.pointer
+        data = GICrystal::ClosureDataManager.register(_box)
+        notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        function = data = notify = Pointer(Void).null
+      end
 
       # C call
       LibGLib.g_main_context_invoke_full(self, priority, function, data, notify)
@@ -210,7 +209,6 @@ module GLib
 
       # Generator::OutArgUsedInReturnPlan
       priority = Pointer(Int32).null
-
       # C call
       _retval = LibGLib.g_main_context_prepare(self, priority)
 
@@ -236,8 +234,7 @@ module GLib
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_fds = fds.size
-      # Generator::ArrayArgPlan
+      n_fds = fds.size # Generator::ArrayArgPlan
       fds = fds.to_a.map(&.to_unsafe).to_unsafe
 
       # C call

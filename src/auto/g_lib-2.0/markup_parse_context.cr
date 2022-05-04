@@ -30,7 +30,7 @@ module GLib
       LibGLib.g_markup_parse_context_get_type
     end
 
-    def initialize(parser : GLib::MarkupParser, flags : GLib::MarkupParseFlags, user_data : Pointer(Void)?, user_data_dnotify : Pointer(Void))
+    def initialize(parser : GLib::MarkupParser, flags : GLib::MarkupParseFlags, user_data : Pointer(Void)?, user_data_dnotify : GLib::DestroyNotify)
       # g_markup_parse_context_new: (Constructor)
       # @user_data: (nullable)
       # Returns: (transfer full)
@@ -48,6 +48,7 @@ module GLib
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def end_parse : Bool
@@ -96,10 +97,8 @@ module GLib
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      line_number = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      line_number = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       char_number = Pointer(Int32).null
-
       # C call
       LibGLib.g_markup_parse_context_get_position(self, line_number, char_number)
 

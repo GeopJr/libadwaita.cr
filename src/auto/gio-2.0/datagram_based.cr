@@ -113,10 +113,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      num_messages = messages.size
-      # Generator::ArrayArgPlan
+      num_messages = messages.size # Generator::ArrayArgPlan
       messages = messages.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -144,10 +142,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      num_messages = messages.size
-      # Generator::ArrayArgPlan
+      num_messages = messages.size # Generator::ArrayArgPlan
       messages = messages.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null

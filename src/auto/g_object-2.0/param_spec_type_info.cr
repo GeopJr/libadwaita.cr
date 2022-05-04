@@ -19,7 +19,7 @@ module GObject
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(instance_size : UInt16? = nil, n_preallocs : UInt16? = nil, instance_init : Pointer(Void)? = nil, value_type : UInt64? = nil, finalize : Pointer(Void)? = nil, value_set_default : Pointer(Void)? = nil, value_validate : Pointer(Void)? = nil, values_cmp : Pointer(Void)? = nil)
+    def self.new(instance_size : UInt16? = nil, n_preallocs : UInt16? = nil, instance_init : GObject::InstanceInit? = nil, value_type : UInt64? = nil, finalize : GObject::Finalize? = nil, value_set_default : GObject::ValueSetDefault? = nil, value_validate : GObject::ValueValidate? = nil, values_cmp : GObject::ValuesCmp? = nil)
       _ptr = Pointer(Void).malloc(56)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.instance_size = instance_size unless instance_size.nil?
@@ -60,13 +60,13 @@ module GObject
       value
     end
 
-    def instance_init : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def instance_init : GObject::InstanceInit
+      _var = (@pointer + 8).as(Pointer(Void*))
+      GObject::InstanceInit.new(_var, GICrystal::Transfer::None)
     end
 
-    def instance_init=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(-> Void))
+    def instance_init=(value : GObject::InstanceInit)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::ParamSpecTypeInfo))
       value
     end
@@ -81,46 +81,46 @@ module GObject
       value
     end
 
-    def finalize : Pointer(Void)
-      _var = (@pointer + 24).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def finalize : GObject::Finalize
+      _var = (@pointer + 24).as(Pointer(Void*))
+      GObject::Finalize.new(_var, GICrystal::Transfer::None)
     end
 
-    def finalize=(value : Pointer(Void))
-      _var = (@pointer + 24).as(Pointer(-> Void))
+    def finalize=(value : GObject::Finalize)
+      _var = (@pointer + 24).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::ParamSpecTypeInfo))
       value
     end
 
-    def value_set_default : Pointer(Void)
-      _var = (@pointer + 32).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def value_set_default : GObject::ValueSetDefault
+      _var = (@pointer + 32).as(Pointer(Void*))
+      GObject::ValueSetDefault.new(_var, GICrystal::Transfer::None)
     end
 
-    def value_set_default=(value : Pointer(Void))
-      _var = (@pointer + 32).as(Pointer(-> Void))
+    def value_set_default=(value : GObject::ValueSetDefault)
+      _var = (@pointer + 32).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::ParamSpecTypeInfo))
       value
     end
 
-    def value_validate : Pointer(Void)
-      _var = (@pointer + 40).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def value_validate : GObject::ValueValidate
+      _var = (@pointer + 40).as(Pointer(Void*))
+      GObject::ValueValidate.new(_var, GICrystal::Transfer::None)
     end
 
-    def value_validate=(value : Pointer(Void))
-      _var = (@pointer + 40).as(Pointer(-> Void))
+    def value_validate=(value : GObject::ValueValidate)
+      _var = (@pointer + 40).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::ParamSpecTypeInfo))
       value
     end
 
-    def values_cmp : Pointer(Void)
-      _var = (@pointer + 48).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def values_cmp : GObject::ValuesCmp
+      _var = (@pointer + 48).as(Pointer(Void*))
+      GObject::ValuesCmp.new(_var, GICrystal::Transfer::None)
     end
 
-    def values_cmp=(value : Pointer(Void))
-      _var = (@pointer + 48).as(Pointer(-> Void))
+    def values_cmp=(value : GObject::ValuesCmp)
+      _var = (@pointer + 48).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGObject::ParamSpecTypeInfo))
       value
     end

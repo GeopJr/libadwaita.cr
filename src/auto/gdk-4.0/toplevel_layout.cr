@@ -44,6 +44,7 @@ module Gdk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def copy : Gdk::ToplevelLayout

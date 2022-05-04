@@ -121,7 +121,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       normal = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_plane_get_normal(self, normal)
 
@@ -205,7 +204,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
-
       # C call
       LibGraphene.graphene_plane_negate(self, res)
 
@@ -221,7 +219,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
-
       # C call
       LibGraphene.graphene_plane_normalize(self, res)
 
@@ -242,10 +239,8 @@ module Graphene
                       else
                         normal_matrix.to_unsafe
                       end
-
       # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
-
       # C call
       LibGraphene.graphene_plane_transform(self, matrix, normal_matrix, res)
 

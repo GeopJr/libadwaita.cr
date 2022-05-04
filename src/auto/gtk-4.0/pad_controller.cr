@@ -62,6 +62,17 @@ module Gtk
         sizeof(LibGtk::PadController), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -108,6 +119,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -177,6 +190,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Adds an individual action to @controller.
@@ -202,24 +216,19 @@ module Gtk
     # @controller.
     #
     # See `Gtk#PadActionEntry` and `Gtk::PadController#action=`.
-    def set_action_entries(entries : Enumerable(Gtk::PadActionEntry)) : Nil
+    def action_entries=(entries : Enumerable(Gtk::PadActionEntry)) : Nil
       # gtk_pad_controller_set_action_entries: (Method)
       # @entries: (array length=n_entries element-type Interface)
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_entries = entries.size
-      # Generator::ArrayArgPlan
+      n_entries = entries.size # Generator::ArrayArgPlan
       entries = entries.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       LibGtk.gtk_pad_controller_set_action_entries(self, entries, n_entries)
 
       # Return value handling
-    end
-
-    def set_action_entries(*entries : Gtk::PadActionEntry)
-      set_action_entries(entries)
     end
   end
 end

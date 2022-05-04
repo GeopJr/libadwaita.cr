@@ -33,10 +33,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      n_parameters = parameters.size
-      # Generator::ArrayArgPlan
+      n_parameters = parameters.size # Generator::ArrayArgPlan
       parameters = parameters.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null

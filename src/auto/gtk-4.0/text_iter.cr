@@ -272,7 +272,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def backward_find_char(pred : Pointer(Void), user_data : Pointer(Void)?, limit : Gtk::TextIter?) : Bool
+    def backward_find_char(pred : Gtk::TextCharPredicate, user_data : Pointer(Void)?, limit : Gtk::TextIter?) : Bool
       # gtk_text_iter_backward_find_char: (Method)
       # @user_data: (nullable)
       # @limit: (nullable)
@@ -284,7 +284,6 @@ module Gtk
                   else
                     user_data.to_unsafe
                   end
-
       # Generator::NullableArrayPlan
       limit = if limit.nil?
                 Pointer(Void).null
@@ -332,14 +331,10 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      match_start = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      match_start = Gtk::TextIter.new
-      # Generator::OutArgUsedInReturnPlan
-      match_end = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      match_end = Gtk::TextIter.new
-      # Generator::NullableArrayPlan
+      match_start = Pointer(Void).null # Generator::CallerAllocatesPlan
+      match_start = Gtk::TextIter.new  # Generator::OutArgUsedInReturnPlan
+      match_end = Pointer(Void).null   # Generator::CallerAllocatesPlan
+      match_end = Gtk::TextIter.new    # Generator::NullableArrayPlan
       limit = if limit.nil?
                 Pointer(Void).null
               else
@@ -658,7 +653,7 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    def forward_find_char(pred : Pointer(Void), user_data : Pointer(Void)?, limit : Gtk::TextIter?) : Bool
+    def forward_find_char(pred : Gtk::TextCharPredicate, user_data : Pointer(Void)?, limit : Gtk::TextIter?) : Bool
       # gtk_text_iter_forward_find_char: (Method)
       # @user_data: (nullable)
       # @limit: (nullable)
@@ -670,7 +665,6 @@ module Gtk
                   else
                     user_data.to_unsafe
                   end
-
       # Generator::NullableArrayPlan
       limit = if limit.nil?
                 Pointer(Void).null
@@ -718,14 +712,10 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      match_start = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      match_start = Gtk::TextIter.new
-      # Generator::OutArgUsedInReturnPlan
-      match_end = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      match_end = Gtk::TextIter.new
-      # Generator::NullableArrayPlan
+      match_start = Pointer(Void).null # Generator::CallerAllocatesPlan
+      match_start = Gtk::TextIter.new  # Generator::OutArgUsedInReturnPlan
+      match_end = Pointer(Void).null   # Generator::CallerAllocatesPlan
+      match_end = Gtk::TextIter.new    # Generator::NullableArrayPlan
       limit = if limit.nil?
                 Pointer(Void).null
               else

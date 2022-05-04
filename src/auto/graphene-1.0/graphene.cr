@@ -77,6 +77,8 @@ module Graphene
   # ]|
   VEC4_LEN = 4
 
+  # Callbacks
+
   # Base class for all errors in this module.
   class GrapheneError < RuntimeError
     # :nodoc:

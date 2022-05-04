@@ -143,10 +143,8 @@ module Gio
              else
                tmpl.to_unsafe
              end
-
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(iostream)
-
       # C call
       _retval = LibGio.g_file_new_tmp(tmpl, iostream, pointerof(_error))
 
@@ -195,7 +193,7 @@ module Gio
       Gio::FileOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def append_to_async(flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def append_to_async(flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_append_to_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -208,14 +206,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -271,7 +261,7 @@ module Gio
       GICrystal.transfer_full(_retval)
     end
 
-    def copy(destination : Gio::File, flags : Gio::FileCopyFlags, cancellable : Gio::Cancellable?, progress_callback : Pointer(Void)?, progress_callback_data : Pointer(Void)?) : Bool
+    def copy(destination : Gio::File, flags : Gio::FileCopyFlags, cancellable : Gio::Cancellable?, progress_callback : Gio::FileProgressCallback?, progress_callback_data : Pointer(Void)?) : Bool
       # g_file_copy: (Method | Throws)
       # @cancellable: (nullable)
       # @progress_callback: (nullable)
@@ -286,14 +276,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      progress_callback = if progress_callback.nil?
-                            LibGio::FileProgressCallback.null
-                          else
-                            progress_callback.to_unsafe
-                          end
-
       # Generator::NullableArrayPlan
       progress_callback_data = if progress_callback_data.nil?
                                  Pointer(Void).null
@@ -312,7 +294,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def copy_async(destination : Gio::File, flags : Gio::FileCopyFlags, io_priority : Int32, cancellable : Gio::Cancellable?, progress_callback : Pointer(Void)?, progress_callback_data : Pointer(Void)?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def copy_async(destination : Gio::File, flags : Gio::FileCopyFlags, io_priority : Int32, cancellable : Gio::Cancellable?, progress_callback : Gio::FileProgressCallback?, progress_callback_data : Pointer(Void)?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_copy_async: (Method)
       # @cancellable: (nullable)
       # @progress_callback: (nullable)
@@ -327,28 +309,12 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      progress_callback = if progress_callback.nil?
-                            LibGio::FileProgressCallback.null
-                          else
-                            progress_callback.to_unsafe
-                          end
-
       # Generator::NullableArrayPlan
       progress_callback_data = if progress_callback_data.nil?
                                  Pointer(Void).null
                                else
                                  progress_callback_data.to_unsafe
                                end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -429,7 +395,7 @@ module Gio
       Gio::FileOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def create_async(flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def create_async(flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_create_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -442,14 +408,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -505,7 +463,7 @@ module Gio
       Gio::FileIOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def create_readwrite_async(flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def create_readwrite_async(flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_create_readwrite_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -518,14 +476,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -581,7 +531,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def delete_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def delete_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_delete_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -594,14 +544,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -644,7 +586,7 @@ module Gio
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def eject_mountable(flags : Gio::MountUnmountFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def eject_mountable(flags : Gio::MountUnmountFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_eject_mountable: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -657,14 +599,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -695,7 +629,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def eject_mountable_with_operation(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def eject_mountable_with_operation(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_eject_mountable_with_operation: (Method)
       # @mount_operation: (nullable)
       # @cancellable: (nullable)
@@ -709,21 +643,12 @@ module Gio
                         else
                           mount_operation.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -779,7 +704,7 @@ module Gio
       Gio::FileEnumerator.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def enumerate_children_async(attributes : ::String, flags : Gio::FileQueryInfoFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def enumerate_children_async(attributes : ::String, flags : Gio::FileQueryInfoFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_enumerate_children_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -792,14 +717,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -867,7 +784,7 @@ module Gio
       Gio::Mount__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def find_enclosing_mount_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def find_enclosing_mount_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_find_enclosing_mount_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -880,14 +797,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1113,10 +1022,8 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
       # Generator::OutArgUsedInReturnPlan
       etag_out = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGio.g_file_load_bytes(self, cancellable, etag_out, pointerof(_error))
 
@@ -1128,7 +1035,7 @@ module Gio
       GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def load_bytes_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def load_bytes_async(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_load_bytes_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -1141,14 +1048,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1171,7 +1070,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       etag_out = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGio.g_file_load_bytes_finish(self, result, etag_out, pointerof(_error))
 
@@ -1199,17 +1097,12 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
       # Generator::ArrayLengthArgPlan
-      length = contents.size
-      # Generator::ArrayArgPlan
+      length = contents.size # Generator::ArrayArgPlan
       contents = contents.to_a.to_unsafe
-
       # Generator::OutArgUsedInReturnPlan
-      length = Pointer(UInt64).null
-      # Generator::OutArgUsedInReturnPlan
+      length = Pointer(UInt64).null # Generator::OutArgUsedInReturnPlan
       etag_out = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGio.g_file_load_contents(self, cancellable, contents, length, etag_out, pointerof(_error))
 
@@ -1221,7 +1114,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def load_contents_async(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def load_contents_async(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_load_contents_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -1234,14 +1127,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1265,15 +1150,11 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      length = contents.size
-      # Generator::ArrayArgPlan
+      length = contents.size # Generator::ArrayArgPlan
       contents = contents.to_a.to_unsafe
-
       # Generator::OutArgUsedInReturnPlan
-      length = Pointer(UInt64).null
-      # Generator::OutArgUsedInReturnPlan
+      length = Pointer(UInt64).null # Generator::OutArgUsedInReturnPlan
       etag_out = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGio.g_file_load_contents_finish(self, res, contents, length, etag_out, pointerof(_error))
 
@@ -1295,15 +1176,11 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      length = contents.size
-      # Generator::ArrayArgPlan
+      length = contents.size # Generator::ArrayArgPlan
       contents = contents.to_a.to_unsafe
-
       # Generator::OutArgUsedInReturnPlan
-      length = Pointer(UInt64).null
-      # Generator::OutArgUsedInReturnPlan
+      length = Pointer(UInt64).null # Generator::OutArgUsedInReturnPlan
       etag_out = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGio.g_file_load_partial_contents_finish(self, res, contents, length, etag_out, pointerof(_error))
 
@@ -1340,7 +1217,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def make_directory_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def make_directory_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_make_directory_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -1353,14 +1230,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1451,12 +1320,9 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      disk_usage = Pointer(UInt64).null
-      # Generator::OutArgUsedInReturnPlan
-      num_dirs = Pointer(UInt64).null
-      # Generator::OutArgUsedInReturnPlan
+      disk_usage = Pointer(UInt64).null # Generator::OutArgUsedInReturnPlan
+      num_dirs = Pointer(UInt64).null   # Generator::OutArgUsedInReturnPlan
       num_files = Pointer(UInt64).null
-
       # C call
       _retval = LibGio.g_file_measure_disk_usage_finish(self, result, disk_usage, num_dirs, num_files, pointerof(_error))
 
@@ -1543,7 +1409,7 @@ module Gio
       Gio::FileMonitor.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def mount_enclosing_volume(flags : Gio::MountMountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def mount_enclosing_volume(flags : Gio::MountMountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_mount_enclosing_volume: (Method)
       # @mount_operation: (nullable)
       # @cancellable: (nullable)
@@ -1557,21 +1423,12 @@ module Gio
                         else
                           mount_operation.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1602,7 +1459,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def mount_mountable(flags : Gio::MountMountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def mount_mountable(flags : Gio::MountMountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_mount_mountable: (Method)
       # @mount_operation: (nullable)
       # @cancellable: (nullable)
@@ -1616,21 +1473,12 @@ module Gio
                         else
                           mount_operation.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1661,7 +1509,7 @@ module Gio
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def move(destination : Gio::File, flags : Gio::FileCopyFlags, cancellable : Gio::Cancellable?, progress_callback : Pointer(Void)?, progress_callback_data : Pointer(Void)?) : Bool
+    def move(destination : Gio::File, flags : Gio::FileCopyFlags, cancellable : Gio::Cancellable?, progress_callback : Gio::FileProgressCallback?, progress_callback_data : Pointer(Void)?) : Bool
       # g_file_move: (Method | Throws)
       # @cancellable: (nullable)
       # @progress_callback: (nullable)
@@ -1676,14 +1524,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      progress_callback = if progress_callback.nil?
-                            LibGio::FileProgressCallback.null
-                          else
-                            progress_callback.to_unsafe
-                          end
-
       # Generator::NullableArrayPlan
       progress_callback_data = if progress_callback_data.nil?
                                  Pointer(Void).null
@@ -1727,7 +1567,7 @@ module Gio
       Gio::FileIOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def open_readwrite_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def open_readwrite_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_open_readwrite_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -1740,14 +1580,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1790,7 +1622,7 @@ module Gio
       ::Path.new(::String.new(_retval)) unless _retval.null?
     end
 
-    def poll_mountable(cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def poll_mountable(cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_poll_mountable: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -1803,14 +1635,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1866,7 +1690,7 @@ module Gio
       Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def query_default_handler_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def query_default_handler_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_query_default_handler_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -1879,14 +1703,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1982,7 +1798,7 @@ module Gio
       Gio::FileInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def query_filesystem_info_async(attributes : ::String, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def query_filesystem_info_async(attributes : ::String, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_query_filesystem_info_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -1995,14 +1811,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2058,7 +1866,7 @@ module Gio
       Gio::FileInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def query_info_async(attributes : ::String, flags : Gio::FileQueryInfoFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def query_info_async(attributes : ::String, flags : Gio::FileQueryInfoFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_query_info_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -2071,14 +1879,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2184,7 +1984,7 @@ module Gio
       Gio::FileInputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def read_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def read_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_read_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -2197,14 +1997,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2249,7 +2041,6 @@ module Gio
              else
                etag.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -2268,7 +2059,7 @@ module Gio
       Gio::FileOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def replace_async(etag : ::String?, make_backup : Bool, flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def replace_async(etag : ::String?, make_backup : Bool, flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_replace_async: (Method)
       # @etag: (nullable)
       # @cancellable: (nullable)
@@ -2282,21 +2073,12 @@ module Gio
              else
                etag.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2321,20 +2103,16 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      length = contents.size
-      # Generator::ArrayArgPlan
+      length = contents.size # Generator::ArrayArgPlan
       contents = contents.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       etag = if etag.nil?
                Pointer(LibC::Char).null
              else
                etag.to_unsafe
              end
-
       # Generator::OutArgUsedInReturnPlan
-      new_etag = Pointer(Pointer(LibC::Char)).null
-      # Generator::NullableArrayPlan
+      new_etag = Pointer(Pointer(LibC::Char)).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -2352,7 +2130,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def replace_contents_async(contents : Enumerable(UInt8), etag : ::String?, make_backup : Bool, flags : Gio::FileCreateFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def replace_contents_async(contents : Enumerable(UInt8), etag : ::String?, make_backup : Bool, flags : Gio::FileCreateFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_replace_contents_async: (Method)
       # @contents: (array length=length element-type UInt8)
       # @etag: (nullable)
@@ -2362,31 +2140,20 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      length = contents.size
-      # Generator::ArrayArgPlan
+      length = contents.size # Generator::ArrayArgPlan
       contents = contents.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       etag = if etag.nil?
                Pointer(LibC::Char).null
              else
                etag.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2400,7 +2167,7 @@ module Gio
       # Return value handling
     end
 
-    def replace_contents_bytes_async(contents : GLib::Bytes, etag : ::String?, make_backup : Bool, flags : Gio::FileCreateFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def replace_contents_bytes_async(contents : GLib::Bytes, etag : ::String?, make_backup : Bool, flags : Gio::FileCreateFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_replace_contents_bytes_async: (Method)
       # @etag: (nullable)
       # @cancellable: (nullable)
@@ -2414,21 +2181,12 @@ module Gio
              else
                etag.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2451,7 +2209,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       new_etag = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGio.g_file_replace_contents_finish(self, res, new_etag, pointerof(_error))
 
@@ -2494,7 +2251,6 @@ module Gio
              else
                etag.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -2513,7 +2269,7 @@ module Gio
       Gio::FileIOStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def replace_readwrite_async(etag : ::String?, make_backup : Bool, flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def replace_readwrite_async(etag : ::String?, make_backup : Bool, flags : Gio::FileCreateFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_replace_readwrite_async: (Method)
       # @etag: (nullable)
       # @cancellable: (nullable)
@@ -2527,21 +2283,12 @@ module Gio
              else
                etag.to_unsafe
              end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2598,7 +2345,6 @@ module Gio
                 else
                   value_p.to_unsafe
                 end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -2767,7 +2513,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def set_attributes_async(info : Gio::FileInfo, flags : Gio::FileQueryInfoFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def set_attributes_async(info : Gio::FileInfo, flags : Gio::FileQueryInfoFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_set_attributes_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -2780,14 +2526,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2810,7 +2548,6 @@ module Gio
 
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(info)
-
       # C call
       _retval = LibGio.g_file_set_attributes_finish(self, result, info, pointerof(_error))
 
@@ -2872,7 +2609,7 @@ module Gio
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def set_display_name_async(display_name : ::String, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def set_display_name_async(display_name : ::String, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_set_display_name_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -2885,14 +2622,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2923,7 +2652,7 @@ module Gio
       Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def start_mountable(flags : Gio::DriveStartFlags, start_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def start_mountable(flags : Gio::DriveStartFlags, start_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_start_mountable: (Method)
       # @start_operation: (nullable)
       # @cancellable: (nullable)
@@ -2937,21 +2666,12 @@ module Gio
                         else
                           start_operation.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -2982,7 +2702,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def stop_mountable(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def stop_mountable(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_stop_mountable: (Method)
       # @mount_operation: (nullable)
       # @cancellable: (nullable)
@@ -2996,21 +2716,12 @@ module Gio
                         else
                           mount_operation.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -3078,7 +2789,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def trash_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def trash_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_trash_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -3091,14 +2802,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -3129,7 +2832,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def unmount_mountable(flags : Gio::MountUnmountFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def unmount_mountable(flags : Gio::MountUnmountFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_unmount_mountable: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -3142,14 +2845,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -3180,7 +2875,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def unmount_mountable_with_operation(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def unmount_mountable_with_operation(flags : Gio::MountUnmountFlags, mount_operation : Gio::MountOperation?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_file_unmount_mountable_with_operation: (Method)
       # @mount_operation: (nullable)
       # @cancellable: (nullable)
@@ -3194,21 +2889,12 @@ module Gio
                         else
                           mount_operation.to_unsafe
                         end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

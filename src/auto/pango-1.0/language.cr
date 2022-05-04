@@ -48,10 +48,8 @@ module Pango
       # Returns: (transfer none) (array length=num_scripts element-type Interface)
 
       # Generator::OutArgUsedInReturnPlan
-      num_scripts = 0
-      # Generator::CallerAllocatesPlan
+      num_scripts = 0 # Generator::CallerAllocatesPlan
       num_scripts = Int32.new
-
       # C call
       _retval = LibPango.pango_language_get_scripts(self, pointerof(num_scripts))
 

@@ -46,6 +46,7 @@ module Pango
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def change(attr : Pango::Attribute) : Nil
@@ -83,7 +84,7 @@ module Pango
       GICrystal.to_bool(_retval)
     end
 
-    def filter(func : Pointer(Void), data : Pointer(Void)?) : Pango::AttrList?
+    def filter(func : Pango::AttrFilterFunc, data : Pointer(Void)?) : Pango::AttrList?
       # pango_attr_list_filter: (Method)
       # @data: (nullable)
       # Returns: (transfer full)

@@ -14,6 +14,17 @@ module Pango
         sizeof(LibPango::Font), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -31,8 +42,7 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_descs = descs.try(&.size) || 0
-      # Generator::NullableArrayPlan
+      n_descs = descs.try(&.size) || 0 # Generator::NullableArrayPlan
       descs = if descs.nil?
                 Pointer(Pointer(Void)).null
               else
@@ -139,8 +149,7 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      len = features.size
-      # Generator::ArrayArgPlan
+      len = features.size # Generator::ArrayArgPlan
       features = features.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -190,14 +199,10 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      ink_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      ink_rect = Pango::Rectangle.new
-      # Generator::OutArgUsedInReturnPlan
-      logical_rect = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      ink_rect = Pointer(Void).null     # Generator::CallerAllocatesPlan
+      ink_rect = Pango::Rectangle.new   # Generator::OutArgUsedInReturnPlan
+      logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
-
       # C call
       LibPango.pango_font_get_glyph_extents(self, glyph, ink_rect, logical_rect)
 

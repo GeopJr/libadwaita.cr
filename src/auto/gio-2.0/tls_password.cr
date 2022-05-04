@@ -13,6 +13,17 @@ module Gio
         sizeof(LibGio::TlsPassword), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -44,6 +55,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -107,6 +120,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Get a description string about what the password will be used for.
@@ -147,7 +161,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       length = 0_u64
-
       # C call
       _retval = LibGio.g_tls_password_get_value(self, pointerof(length))
 
@@ -200,24 +213,19 @@ module Gio
     # @length if using a nul-terminated password, and @length will be
     # calculated automatically. (Note that the terminating nul is not
     # considered part of the password in this case.)
-    def set_value(value : Enumerable(UInt8)) : Nil
+    def value=(value : Enumerable(UInt8)) : Nil
       # g_tls_password_set_value: (Method)
       # @value: (array length=length element-type UInt8)
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      length = value.size
-      # Generator::ArrayArgPlan
+      length = value.size # Generator::ArrayArgPlan
       value = value.to_a.to_unsafe
 
       # C call
       LibGio.g_tls_password_set_value(self, value, length)
 
       # Return value handling
-    end
-
-    def set_value(*value : UInt8)
-      set_value(value)
     end
 
     # Provide the value for this password.
@@ -229,23 +237,15 @@ module Gio
     # @length if using a nul-terminated password, and @length will be
     # calculated automatically. (Note that the terminating nul is not
     # considered part of the password in this case.)
-    def set_value_full(value : Enumerable(UInt8), destroy : Pointer(Void)?) : Nil
+    def set_value_full(value : Enumerable(UInt8), destroy : GLib::DestroyNotify?) : Nil
       # g_tls_password_set_value_full: (Method)
       # @value: (array length=length element-type UInt8)
       # @destroy: (nullable)
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      length = value.size
-      # Generator::ArrayArgPlan
+      length = value.size # Generator::ArrayArgPlan
       value = value.to_a.to_unsafe
-
-      # Generator::NullableArrayPlan
-      destroy = if destroy.nil?
-                  LibGLib::DestroyNotify.null
-                else
-                  destroy.to_unsafe
-                end
 
       # C call
       LibGio.g_tls_password_set_value_full(self, value, length, destroy)

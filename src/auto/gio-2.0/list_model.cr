@@ -117,58 +117,58 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(UInt32, UInt32, UInt32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, lib_arg2 : UInt32, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          ::Box(Proc(UInt32, UInt32, UInt32, Nil)).unbox(box).call(arg0, arg1, arg2)
-        }
+      def connect(handler : Proc(UInt32, UInt32, UInt32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_removed : UInt32, lib_added : UInt32, _lib_box : Pointer(Void)) {
+          position = lib_position
+          removed = lib_removed
+          added = lib_added
+          ::Box(Proc(UInt32, UInt32, UInt32, Nil)).unbox(_lib_box).call(position, removed, added)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(UInt32, UInt32, UInt32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, lib_arg2 : UInt32, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          ::Box(Proc(UInt32, UInt32, UInt32, Nil)).unbox(box).call(arg0, arg1, arg2)
-        }
+      def connect_after(handler : Proc(UInt32, UInt32, UInt32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_removed : UInt32, lib_added : UInt32, _lib_box : Pointer(Void)) {
+          position = lib_position
+          removed = lib_removed
+          added = lib_added
+          ::Box(Proc(UInt32, UInt32, UInt32, Nil)).unbox(_lib_box).call(position, removed, added)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, lib_arg2 : UInt32, box : Pointer(Void)) {
-          sender = Gio::ListModel__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          ::Box(Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
-        }
+      def connect(handler : Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_removed : UInt32, lib_added : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gio::ListModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          position = lib_position
+          removed = lib_removed
+          added = lib_added
+          ::Box(Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil)).unbox(_lib_box).call(_sender, position, removed, added)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, lib_arg1 : UInt32, lib_arg2 : UInt32, box : Pointer(Void)) {
-          sender = Gio::ListModel__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          arg2 = lib_arg2
-          ::Box(Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
-        }
+      def connect_after(handler : Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_removed : UInt32, lib_added : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gio::ListModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          position = lib_position
+          removed = lib_removed
+          added = lib_added
+          ::Box(Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil)).unbox(_lib_box).call(_sender, position, removed, added)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(position : UInt32, removed : UInt32, added : UInt32) : Nil

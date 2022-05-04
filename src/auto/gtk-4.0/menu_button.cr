@@ -83,6 +83,17 @@ module Gtk
         sizeof(LibGtk::MenuButton), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -325,6 +336,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -498,6 +511,7 @@ module Gtk
       LibGObject.g_object_ref_sink(_retval)
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Gets whether to show a dropdown arrow even when using an icon.
@@ -706,33 +720,27 @@ module Gtk
     #
     # Using this function will not reset the menu widget attached to
     # @menu_button. Instead, this can be done manually in @func.
-    def set_create_popup_func(func : Pointer(Void)?, user_data : Pointer(Void)?, destroy_notify : Pointer(Void)?) : Nil
+    def create_popup_func=(func : Gtk::MenuButtonCreatePopupFunc?) : Nil
       # gtk_menu_button_set_create_popup_func: (Method)
       # @func: (nullable)
       # @user_data: (nullable)
       # @destroy_notify: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      func = if func.nil?
-               LibGtk::MenuButtonCreatePopupFunc.null
-             else
-               func.to_unsafe
-             end
-
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # Generator::NullableArrayPlan
-      destroy_notify = if destroy_notify.nil?
-                         LibGLib::DestroyNotify.null
-                       else
-                         destroy_notify.to_unsafe
-                       end
+      # Generator::CallbackArgPlan
+      if func
+        _box = ::Box.box(func)
+        func = ->(lib_menu_button : Pointer(Void), lib_user_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          menu_button = Gtk::MenuButton.new(lib_menu_button, :none)
+          user_data = lib_user_data
+          ::Box(Proc(Gtk::MenuButton, Nil)).unbox(user_data).call(menu_button)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        destroy_notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        func = user_data = destroy_notify = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_menu_button_set_create_popup_func(self, func, user_data, destroy_notify)
@@ -910,46 +918,46 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::MenuButton, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::MenuButton.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::MenuButton, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(Gtk::MenuButton, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::MenuButton.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::MenuButton, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::MenuButton, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::MenuButton.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::MenuButton, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(Gtk::MenuButton, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::MenuButton.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::MenuButton, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil

@@ -23,6 +23,17 @@ module Gio
         sizeof(LibGio::InputStream), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -102,7 +113,7 @@ module Gio
     # The asynchronous methods have a default fallback that uses threads to implement
     # asynchronicity, so they are optional for inheriting classes. However, if you
     # override one you must override all.
-    def close_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def close_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_input_stream_close_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -115,14 +126,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -210,10 +213,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -261,10 +262,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -293,7 +292,7 @@ module Gio
     # Any outstanding I/O request with higher priority (lower numerical
     # value) will be executed before an outstanding request with lower
     # priority. Default priority is %G_PRIORITY_DEFAULT.
-    def read_all_async(buffer : Enumerable(UInt8), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def read_all_async(buffer : Enumerable(UInt8), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_input_stream_read_all_async: (Method)
       # @buffer: (out) (caller-allocates) (array length=count element-type UInt8)
       # @cancellable: (nullable)
@@ -302,24 +301,14 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -383,7 +372,7 @@ module Gio
     # The asynchronous methods have a default fallback that uses threads to implement
     # asynchronicity, so they are optional for inheriting classes. However, if you
     # override one you must override all.
-    def read_async(buffer : Enumerable(UInt8), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def read_async(buffer : Enumerable(UInt8), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_input_stream_read_async: (Method)
       # @buffer: (out) (caller-allocates) (array length=count element-type UInt8)
       # @cancellable: (nullable)
@@ -392,24 +381,14 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -491,7 +470,7 @@ module Gio
     # Any outstanding I/O request with higher priority (lower numerical
     # value) will be executed before an outstanding request with lower
     # priority. Default priority is %G_PRIORITY_DEFAULT.
-    def read_bytes_async(count : UInt64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def read_bytes_async(count : UInt64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_input_stream_read_bytes_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -504,14 +483,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -643,7 +614,7 @@ module Gio
     # The asynchronous methods have a default fallback that uses threads to
     # implement asynchronicity, so they are optional for inheriting classes.
     # However, if you override one, you must override all.
-    def skip_async(count : UInt64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def skip_async(count : UInt64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_input_stream_skip_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -656,14 +627,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

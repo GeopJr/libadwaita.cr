@@ -11,6 +11,12 @@ require "./font.cr"
 require "./font_map.cr"
 
 module PangoCairo
+  # Callbacks
+
+  # Function type for rendering attributes of type %PANGO_ATTR_SHAPE
+  # with Pango's Cairo renderer.
+  alias ShapeRendererFunc = Proc(Cairo::Context, Pango::AttrShape, Bool, Nil)
+
   # Base class for all errors in this module.
   class PangoCairoError < RuntimeError
     # :nodoc:
@@ -77,33 +83,30 @@ module PangoCairo
     # Return value handling
   end
 
-  def self.context_set_shape_renderer(context : Pango::Context, func : Pointer(Void)?, data : Pointer(Void)?, dnotify : Pointer(Void)?) : Nil
+  def self.context_set_shape_renderer(context : Pango::Context, func : PangoCairo::ShapeRendererFunc?) : Nil
     # pango_cairo_context_set_shape_renderer: (None)
     # @func: (nullable)
     # @data: (nullable)
     # @dnotify: (nullable)
     # Returns: (transfer none)
 
-    # Generator::NullableArrayPlan
-    func = if func.nil?
-             LibPangoCairo::ShapeRendererFunc.null
-           else
-             func.to_unsafe
-           end
-
-    # Generator::NullableArrayPlan
-    data = if data.nil?
-             Pointer(Void).null
-           else
-             data.to_unsafe
-           end
-
-    # Generator::NullableArrayPlan
-    dnotify = if dnotify.nil?
-                LibGLib::DestroyNotify.null
-              else
-                dnotify.to_unsafe
-              end
+    # Generator::CallbackArgPlan
+    if func
+      _box = ::Box.box(func)
+      func = ->(lib_cr : Pointer(Void), lib_attr : Pointer(Void), lib_do_path : LibC::Int, lib_data : Pointer(Void)) {
+        # Generator::GObjectArgPlan
+        cr = Cairo::Context.new(lib_cr, :none)
+        # Generator::GObjectArgPlan
+        attr = Pango::AttrShape.new(lib_attr, :none)
+        do_path = lib_do_path
+        data = lib_data
+        ::Box(Proc(Cairo::Context, Pango::AttrShape, Bool, Nil)).unbox(data).call(cr, attr, do_path)
+      }.pointer
+      data = GICrystal::ClosureDataManager.register(_box)
+      dnotify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+    else
+      func = data = dnotify = Pointer(Void).null
+    end
 
     # C call
     LibPangoCairo.pango_cairo_context_set_shape_renderer(context, func, data, dnotify)

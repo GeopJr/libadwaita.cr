@@ -23,6 +23,17 @@ module Gio
         sizeof(LibGio::OutputStream), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -108,7 +119,7 @@ module Gio
     # The asynchronous methods have a default fallback that uses threads
     # to implement asynchronicity, so they are optional for inheriting
     # classes. However, if you override one you must override all.
-    def close_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def close_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_output_stream_close_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -121,14 +132,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -201,7 +204,7 @@ module Gio
     # When the operation is finished @callback will be
     # called. You can then call g_output_stream_flush_finish() to get the
     # result of the operation.
-    def flush_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def flush_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_output_stream_flush_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -214,14 +217,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -348,7 +343,7 @@ module Gio
     #
     # For the synchronous, blocking version of this function, see
     # g_output_stream_splice().
-    def splice_async(source : Gio::InputStream, flags : Gio::OutputStreamSpliceFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def splice_async(source : Gio::InputStream, flags : Gio::OutputStreamSpliceFlags, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_output_stream_splice_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -361,14 +356,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -429,10 +416,8 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -480,13 +465,10 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::OutArgUsedInReturnPlan
-      bytes_written = Pointer(UInt64).null
-      # Generator::NullableArrayPlan
+      bytes_written = Pointer(UInt64).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -519,7 +501,7 @@ module Gio
     #
     # Note that no copy of @buffer will be made, so it must stay valid
     # until @callback is called.
-    def write_all_async(buffer : Enumerable(UInt8), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def write_all_async(buffer : Enumerable(UInt8), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_output_stream_write_all_async: (Method)
       # @buffer: (array length=count element-type UInt8)
       # @cancellable: (nullable)
@@ -528,24 +510,14 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -578,7 +550,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       bytes_written = Pointer(UInt64).null
-
       # C call
       _retval = LibGio.g_output_stream_write_all_finish(self, result, bytes_written, pointerof(_error))
 
@@ -625,7 +596,7 @@ module Gio
     # until @callback is called. See g_output_stream_write_bytes_async()
     # for a #GBytes version that will automatically hold a reference to
     # the contents (without copying) for the duration of the call.
-    def write_async(buffer : Enumerable(UInt8), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def write_async(buffer : Enumerable(UInt8), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_output_stream_write_async: (Method)
       # @buffer: (array length=count element-type UInt8)
       # @cancellable: (nullable)
@@ -634,24 +605,14 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -714,7 +675,7 @@ module Gio
     #
     # For the synchronous, blocking version of this function, see
     # g_output_stream_write_bytes().
-    def write_bytes_async(bytes : GLib::Bytes, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def write_bytes_async(bytes : GLib::Bytes, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_output_stream_write_bytes_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -727,14 +688,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -817,13 +770,10 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      n_vectors = vectors.size
-      # Generator::ArrayArgPlan
+      n_vectors = vectors.size # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::OutArgUsedInReturnPlan
-      bytes_written = Pointer(UInt64).null
-      # Generator::NullableArrayPlan
+      bytes_written = Pointer(UInt64).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -873,13 +823,10 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      n_vectors = vectors.size
-      # Generator::ArrayArgPlan
+      n_vectors = vectors.size # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::OutArgUsedInReturnPlan
-      bytes_written = Pointer(UInt64).null
-      # Generator::NullableArrayPlan
+      bytes_written = Pointer(UInt64).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -913,7 +860,7 @@ module Gio
     # Note that no copy of @vectors will be made, so it must stay valid
     # until @callback is called. The content of the individual elements
     # of @vectors might be changed by this function.
-    def writev_all_async(vectors : Enumerable(Gio::OutputVector), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def writev_all_async(vectors : Enumerable(Gio::OutputVector), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_output_stream_writev_all_async: (Method)
       # @vectors: (array length=n_vectors element-type Interface)
       # @cancellable: (nullable)
@@ -922,24 +869,14 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_vectors = vectors.size
-      # Generator::ArrayArgPlan
+      n_vectors = vectors.size # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -972,7 +909,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       bytes_written = Pointer(UInt64).null
-
       # C call
       _retval = LibGio.g_output_stream_writev_all_finish(self, result, bytes_written, pointerof(_error))
 
@@ -1014,7 +950,7 @@ module Gio
     #
     # Note that no copy of @vectors will be made, so it must stay valid
     # until @callback is called.
-    def writev_async(vectors : Enumerable(Gio::OutputVector), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def writev_async(vectors : Enumerable(Gio::OutputVector), io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_output_stream_writev_async: (Method)
       # @vectors: (array length=n_vectors element-type Interface)
       # @cancellable: (nullable)
@@ -1023,24 +959,14 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_vectors = vectors.size
-      # Generator::ArrayArgPlan
+      n_vectors = vectors.size # Generator::ArrayArgPlan
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1064,7 +990,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       bytes_written = Pointer(UInt64).null
-
       # C call
       _retval = LibGio.g_output_stream_writev_finish(self, result, bytes_written, pointerof(_error))
 

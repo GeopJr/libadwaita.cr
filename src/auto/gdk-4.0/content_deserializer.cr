@@ -26,6 +26,17 @@ module Gdk
         sizeof(LibGdk::ContentDeserializer), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -174,7 +185,7 @@ module Gdk
     end
 
     # Associate data with the current deserialization operation.
-    def set_task_data(data : Pointer(Void)?, notify : Pointer(Void)) : Nil
+    def set_task_data(data : Pointer(Void)?, notify : GLib::DestroyNotify) : Nil
       # gdk_content_deserializer_set_task_data: (Method)
       # @data: (nullable)
       # Returns: (transfer none)

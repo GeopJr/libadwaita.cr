@@ -33,18 +33,18 @@ lib LibGdkPixbuf
 
   struct PixbufAnimationClass # 168 bytes long
     parent_class : LibGObject::ObjectClass
-    is_static_image : -> Void
-    get_static_image : -> Void
-    get_size : -> Void
-    get_iter : -> Void
+    is_static_image : Void*
+    get_static_image : Void*
+    get_size : Void*
+    get_iter : Void*
   end
 
   struct PixbufAnimationIterClass # 168 bytes long
     parent_class : LibGObject::ObjectClass
-    get_delay_time : -> Void
-    get_pixbuf : -> Void
-    on_currently_loading_frame : -> Void
-    advance : -> Void
+    get_delay_time : Void*
+    get_pixbuf : Void*
+    on_currently_loading_frame : Void*
+    advance : Void*
   end
 
   struct PixbufFormat # 64 bytes long
@@ -61,10 +61,10 @@ lib LibGdkPixbuf
 
   struct PixbufLoaderClass # 168 bytes long
     parent_class : LibGObject::ObjectClass
-    size_prepared : -> Void
-    area_prepared : -> Void
-    area_updated : -> Void
-    closed : -> Void
+    size_prepared : Void*
+    area_prepared : Void*
+    area_updated : Void*
+    closed : Void*
   end
 
   struct PixbufModule # 136 bytes long
@@ -72,15 +72,15 @@ lib LibGdkPixbuf
     module_path : Pointer(LibC::Char)
     _module : Pointer(LibGModule::Module)
     info : Pointer(LibGdkPixbuf::PixbufFormat)
-    load : LibGdkPixbuf::PixbufModuleLoadFunc
-    load_xpm_data : LibGdkPixbuf::PixbufModuleLoadXpmDataFunc
+    load : Void*
+    load_xpm_data : Void*
     begin_load : Pointer(Void)
-    stop_load : LibGdkPixbuf::PixbufModuleStopLoadFunc
-    load_increment : LibGdkPixbuf::PixbufModuleIncrementLoadFunc
-    load_animation : LibGdkPixbuf::PixbufModuleLoadAnimationFunc
-    save : LibGdkPixbuf::PixbufModuleSaveFunc
+    stop_load : Void*
+    load_increment : Void*
+    load_animation : Void*
+    save : Void*
     save_to_callback : Pointer(Void)
-    is_save_option_supported : LibGdkPixbuf::PixbufModuleSaveOptionSupportedFunc
+    is_save_option_supported : Void*
     _reserved1 : Pointer(Void)
     _reserved2 : Pointer(Void)
     _reserved3 : Pointer(Void)
@@ -135,7 +135,7 @@ lib LibGdkPixbuf
   fun gdk_pixbuf_animation_new_from_file(filename : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_pixbuf_animation_new_from_resource(resource_path : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_pixbuf_animation_new_from_stream(stream : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun gdk_pixbuf_animation_new_from_stream_async(stream : Pointer(Void), cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_pixbuf_animation_new_from_stream_async(stream : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_pixbuf_animation_new_from_stream_finish(async_result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_pixbuf_apply_embedded_orientation(this : Void*) : Pointer(Void)
   fun gdk_pixbuf_calculate_rowstride(colorspace : UInt32, has_alpha : LibC::Int, bits_per_sample : Int32, width : Int32, height : Int32) : Int32
@@ -165,7 +165,7 @@ lib LibGdkPixbuf
   fun gdk_pixbuf_get_byte_length(this : Void*) : UInt64
   fun gdk_pixbuf_get_colorspace(this : Void*) : UInt32
   fun gdk_pixbuf_get_file_info(filename : Pointer(LibC::Char), width : Pointer(Int32), height : Pointer(Int32)) : Pointer(Void)
-  fun gdk_pixbuf_get_file_info_async(filename : Pointer(LibC::Char), cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_pixbuf_get_file_info_async(filename : Pointer(LibC::Char), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_pixbuf_get_file_info_finish(async_result : Pointer(Void), width : Pointer(Int32), height : Pointer(Int32), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_pixbuf_get_formats : Pointer(LibGLib::SList)
   fun gdk_pixbuf_get_has_alpha(this : Void*) : LibC::Int
@@ -191,7 +191,7 @@ lib LibGdkPixbuf
   fun gdk_pixbuf_loader_write_bytes(this : Void*, buffer : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun gdk_pixbuf_new(colorspace : UInt32, has_alpha : LibC::Int, bits_per_sample : Int32, width : Int32, height : Int32) : Pointer(Void)
   fun gdk_pixbuf_new_from_bytes(data : Pointer(Void), colorspace : UInt32, has_alpha : LibC::Int, bits_per_sample : Int32, width : Int32, height : Int32, rowstride : Int32) : Pointer(Void)
-  fun gdk_pixbuf_new_from_data(data : Pointer(UInt8), colorspace : UInt32, has_alpha : LibC::Int, bits_per_sample : Int32, width : Int32, height : Int32, rowstride : Int32, destroy_fn : PixbufDestroyNotify, destroy_fn_data : Pointer(Void)) : Pointer(Void)
+  fun gdk_pixbuf_new_from_data(data : Pointer(UInt8), colorspace : UInt32, has_alpha : LibC::Int, bits_per_sample : Int32, width : Int32, height : Int32, rowstride : Int32, destroy_fn : Void*, destroy_fn_data : Pointer(Void)) : Pointer(Void)
   fun gdk_pixbuf_new_from_file(filename : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_pixbuf_new_from_file_at_scale(filename : Pointer(LibC::Char), width : Int32, height : Int32, preserve_aspect_ratio : LibC::Int, error : LibGLib::Error**) : Pointer(Void)
   fun gdk_pixbuf_new_from_file_at_size(filename : Pointer(LibC::Char), width : Int32, height : Int32, error : LibGLib::Error**) : Pointer(Void)
@@ -199,9 +199,9 @@ lib LibGdkPixbuf
   fun gdk_pixbuf_new_from_resource(resource_path : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_pixbuf_new_from_resource_at_scale(resource_path : Pointer(LibC::Char), width : Int32, height : Int32, preserve_aspect_ratio : LibC::Int, error : LibGLib::Error**) : Pointer(Void)
   fun gdk_pixbuf_new_from_stream(stream : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun gdk_pixbuf_new_from_stream_async(stream : Pointer(Void), cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_pixbuf_new_from_stream_async(stream : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_pixbuf_new_from_stream_at_scale(stream : Pointer(Void), width : Int32, height : Int32, preserve_aspect_ratio : LibC::Int, cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
-  fun gdk_pixbuf_new_from_stream_at_scale_async(stream : Pointer(Void), width : Int32, height : Int32, preserve_aspect_ratio : LibC::Int, cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_pixbuf_new_from_stream_at_scale_async(stream : Pointer(Void), width : Int32, height : Int32, preserve_aspect_ratio : LibC::Int, cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_pixbuf_new_from_stream_finish(async_result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun gdk_pixbuf_new_from_xpm_data(data : Pointer(Pointer(LibC::Char))) : Pointer(Void)
   fun gdk_pixbuf_new_subpixbuf(this : Void*, src_x : Int32, src_y : Int32, width : Int32, height : Int32) : Pointer(Void)
@@ -213,10 +213,10 @@ lib LibGdkPixbuf
   fun gdk_pixbuf_rotate_simple(this : Void*, angle : UInt32) : Pointer(Void)
   fun gdk_pixbuf_saturate_and_pixelate(this : Void*, dest : Pointer(Void), saturation : Float32, pixelate : LibC::Int) : Void
   fun gdk_pixbuf_save_to_bufferv(this : Void*, buffer : Pointer(Pointer(UInt8)), buffer_size : Pointer(UInt64), type : Pointer(LibC::Char), option_keys : Pointer(Pointer(LibC::Char)), option_values : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
-  fun gdk_pixbuf_save_to_callbackv(this : Void*, save_func : PixbufSaveFunc, user_data : Pointer(Void), type : Pointer(LibC::Char), option_keys : Pointer(Pointer(LibC::Char)), option_values : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
+  fun gdk_pixbuf_save_to_callbackv(this : Void*, save_func : Void*, user_data : Pointer(Void), type : Pointer(LibC::Char), option_keys : Pointer(Pointer(LibC::Char)), option_values : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
   fun gdk_pixbuf_save_to_stream_finish(async_result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun gdk_pixbuf_save_to_streamv(this : Void*, stream : Pointer(Void), type : Pointer(LibC::Char), option_keys : Pointer(Pointer(LibC::Char)), option_values : Pointer(Pointer(LibC::Char)), cancellable : Pointer(Void), error : LibGLib::Error**) : LibC::Int
-  fun gdk_pixbuf_save_to_streamv_async(this : Void*, stream : Pointer(Void), type : Pointer(LibC::Char), option_keys : Pointer(Pointer(LibC::Char)), option_values : Pointer(Pointer(LibC::Char)), cancellable : Pointer(Void), callback : LibGio::AsyncReadyCallback, user_data : Pointer(Void)) : Void
+  fun gdk_pixbuf_save_to_streamv_async(this : Void*, stream : Pointer(Void), type : Pointer(LibC::Char), option_keys : Pointer(Pointer(LibC::Char)), option_values : Pointer(Pointer(LibC::Char)), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun gdk_pixbuf_savev(this : Void*, filename : Pointer(LibC::Char), type : Pointer(LibC::Char), option_keys : Pointer(Pointer(LibC::Char)), option_values : Pointer(Pointer(LibC::Char)), error : LibGLib::Error**) : LibC::Int
   fun gdk_pixbuf_scale(this : Void*, dest : Pointer(Void), dest_x : Int32, dest_y : Int32, dest_width : Int32, dest_height : Int32, offset_x : Float64, offset_y : Float64, scale_x : Float64, scale_y : Float64, interp_type : UInt32) : Void
   fun gdk_pixbuf_scale_simple(this : Void*, dest_width : Int32, dest_height : Int32, interp_type : UInt32) : Pointer(Void)

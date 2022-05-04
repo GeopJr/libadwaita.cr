@@ -189,7 +189,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def close_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def close_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dtls_connection_close_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -202,14 +202,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -272,8 +264,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      data = Pointer(Pointer(UInt8)).null
-      # Generator::ArrayArgPlan
+      data = Pointer(Pointer(UInt8)).null # Generator::ArrayArgPlan
       data = data.to_a.to_unsafe
 
       # C call
@@ -420,7 +411,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def handshake_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def handshake_async(io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dtls_connection_handshake_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -433,14 +424,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -580,7 +563,7 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def shutdown_async(shutdown_read : Bool, shutdown_write : Bool, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def shutdown_async(shutdown_read : Bool, shutdown_write : Bool, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_dtls_connection_shutdown_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -593,14 +576,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -655,56 +630,62 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
-          arg0 = Gio::TlsCertificate.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::TlsCertificateFlags.new(lib_arg1)
-          _retval = ::Box(Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(box).call(arg0, arg1)
-          _retval
-        }
+      def connect(handler : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_peer_cert : Pointer(Void), lib_errors : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          peer_cert = Gio::TlsCertificate.new(lib_peer_cert, :none)
+          # Generator::GObjectArgPlan
+          errors = Gio::TlsCertificateFlags.new(lib_errors, :none)
+          ::Box(Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(_lib_box).call(peer_cert, errors)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
-          arg0 = Gio::TlsCertificate.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::TlsCertificateFlags.new(lib_arg1)
-          _retval = ::Box(Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(box).call(arg0, arg1)
-          _retval
-        }
+      def connect_after(handler : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_peer_cert : Pointer(Void), lib_errors : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          peer_cert = Gio::TlsCertificate.new(lib_peer_cert, :none)
+          # Generator::GObjectArgPlan
+          errors = Gio::TlsCertificateFlags.new(lib_errors, :none)
+          ::Box(Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(_lib_box).call(peer_cert, errors)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
-          sender = Gio::DtlsConnection__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::TlsCertificate.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::TlsCertificateFlags.new(lib_arg1)
-          ::Box(Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
-        }
+      def connect(handler : Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_peer_cert : Pointer(Void), lib_errors : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gio::DtlsConnection__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          peer_cert = Gio::TlsCertificate.new(lib_peer_cert, :none)
+          # Generator::GObjectArgPlan
+          errors = Gio::TlsCertificateFlags.new(lib_errors, :none)
+          ::Box(Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(_lib_box).call(_sender, peer_cert, errors)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
-          sender = Gio::DtlsConnection__Impl.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::TlsCertificate.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gio::TlsCertificateFlags.new(lib_arg1)
-          ::Box(Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(box).call(sender, arg0, arg1).to_unsafe
-        }
+      def connect_after(handler : Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_peer_cert : Pointer(Void), lib_errors : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gio::DtlsConnection__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          peer_cert = Gio::TlsCertificate.new(lib_peer_cert, :none)
+          # Generator::GObjectArgPlan
+          errors = Gio::TlsCertificateFlags.new(lib_errors, :none)
+          ::Box(Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(_lib_box).call(_sender, peer_cert, errors)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(peer_cert : Gio::TlsCertificate, errors : Gio::TlsCertificateFlags) : Nil

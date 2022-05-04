@@ -14,6 +14,17 @@ module Adw
         sizeof(LibAdw::CallbackAnimationTarget), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -26,25 +37,25 @@ module Adw
 
     # Creates a new `AdwAnimationTarget` that calls the given @callback during
     # the animation.
-    def initialize(callback : Pointer(Void)?, user_data : Pointer(Void)?, destroy : Pointer(Void))
+    def initialize(callback : Adw::AnimationTargetFunc?)
       # adw_callback_animation_target_new: (Constructor)
       # @callback: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer full)
 
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibAdw::AnimationTargetFunc.null
-                 else
-                   callback.to_unsafe
-                 end
-
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
+      # Generator::CallbackArgPlan
+      if callback
+        _box = ::Box.box(callback)
+        callback = ->(lib_value : Float64, lib_user_data : Pointer(Void)) {
+          value = lib_value
+          user_data = lib_user_data
+          ::Box(Proc(Float64, Nil)).unbox(user_data).call(value)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        callback = user_data = destroy = Pointer(Void).null
+      end
 
       # C call
       _retval = LibAdw.adw_callback_animation_target_new(callback, user_data, destroy)
@@ -52,6 +63,7 @@ module Adw
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
   end
 end

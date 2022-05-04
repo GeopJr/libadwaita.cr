@@ -229,6 +229,7 @@ module GLib
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def add_child_source(child_source : GLib::Source) : Nil
@@ -443,25 +444,24 @@ module GLib
       # Return value handling
     end
 
-    def set_callback(func : Pointer(Void), data : Pointer(Void)?, notify : Pointer(Void)?) : Nil
+    def callback=(func : GLib::SourceFunc) : Nil
       # g_source_set_callback: (Method)
       # @data: (nullable)
       # @notify: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      data = if data.nil?
-               Pointer(Void).null
-             else
-               data.to_unsafe
-             end
-
-      # Generator::NullableArrayPlan
-      notify = if notify.nil?
-                 LibGLib::DestroyNotify.null
-               else
-                 notify.to_unsafe
-               end
+      # Generator::CallbackArgPlan
+      if func
+        _box = ::Box.box(func)
+        func = ->(lib_user_data : Pointer(Void)) {
+          user_data = lib_user_data
+          ::Box(Proc(Bool)).unbox(user_data).call
+        }.pointer
+        data = GICrystal::ClosureDataManager.register(_box)
+        notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        func = data = notify = Pointer(Void).null
+      end
 
       # C call
       LibGLib.g_source_set_callback(self, func, data, notify)

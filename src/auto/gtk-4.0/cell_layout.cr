@@ -204,25 +204,32 @@ module Gtk
       # Return value handling
     end
 
-    def set_cell_data_func(cell : Gtk::CellRenderer, func : Pointer(Void)?, func_data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
+    def set_cell_data_func(cell : Gtk::CellRenderer, func : Gtk::CellLayoutDataFunc?) : Nil
       # gtk_cell_layout_set_cell_data_func: (Method)
       # @func: (nullable)
       # @func_data: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      func = if func.nil?
-               LibGtk::CellLayoutDataFunc.null
-             else
-               func.to_unsafe
-             end
-
-      # Generator::NullableArrayPlan
-      func_data = if func_data.nil?
-                    Pointer(Void).null
-                  else
-                    func_data.to_unsafe
-                  end
+      # Generator::CallbackArgPlan
+      if func
+        _box = ::Box.box(func)
+        func = ->(lib_cell_layout : Pointer(Void), lib_cell : Pointer(Void), lib_tree_model : Pointer(Void), lib_iter : Pointer(Void), lib_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          cell_layout = Gtk::CellLayout.new(lib_cell_layout, :none)
+          # Generator::GObjectArgPlan
+          cell = Gtk::CellRenderer.new(lib_cell, :none)
+          # Generator::GObjectArgPlan
+          tree_model = Gtk::TreeModel.new(lib_tree_model, :none)
+          # Generator::GObjectArgPlan
+          iter = Gtk::TreeIter.new(lib_iter, :none)
+          data = lib_data
+          ::Box(Proc(Gtk::CellLayout, Gtk::CellRenderer, Gtk::TreeModel, Gtk::TreeIter, Nil)).unbox(data).call(cell_layout, cell, tree_model, iter)
+        }.pointer
+        func_data = GICrystal::ClosureDataManager.register(_box)
+        destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        func = func_data = destroy = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_cell_layout_set_cell_data_func(self, cell, func, func_data, destroy)

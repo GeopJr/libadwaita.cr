@@ -18,6 +18,8 @@ require "./scaled_font.cr"
 require "./surface.cr"
 
 module Cairo
+  # Callbacks
+
   # Base class for all errors in this module.
   class CairoError < RuntimeError
     # :nodoc:

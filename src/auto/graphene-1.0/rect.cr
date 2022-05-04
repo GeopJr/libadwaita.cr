@@ -108,7 +108,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_rect_expand(self, p, res)
 
@@ -146,7 +145,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
-
       # C call
       LibGraphene.graphene_rect_get_bottom_left(self, p)
 
@@ -162,7 +160,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
-
       # C call
       LibGraphene.graphene_rect_get_bottom_right(self, p)
 
@@ -178,7 +175,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
-
       # C call
       LibGraphene.graphene_rect_get_center(self, p)
 
@@ -206,7 +202,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
-
       # C call
       LibGraphene.graphene_rect_get_top_left(self, p)
 
@@ -222,7 +217,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
-
       # C call
       LibGraphene.graphene_rect_get_top_right(self, p)
 
@@ -237,6 +231,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 4") if vertices.size < 4
+
       vertices = vertices.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -328,7 +324,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_rect_inset_r(self, d_x, d_y, res)
 
@@ -344,7 +339,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_rect_interpolate(self, b, factor, res)
 
@@ -359,10 +353,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      res = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      res = Pointer(Void).null # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       _retval = LibGraphene.graphene_rect_intersection(self, b, res)
 
@@ -390,7 +382,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_rect_normalize_r(self, res)
 
@@ -418,7 +409,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_rect_offset_r(self, d_x, d_y, res)
 
@@ -434,7 +424,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_rect_round(self, res)
 
@@ -450,7 +439,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_rect_round_extents(self, res)
 
@@ -478,7 +466,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_rect_scale(self, s_h, s_v, res)
 
@@ -494,7 +481,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
-
       # C call
       LibGraphene.graphene_rect_union(self, b, res)
 

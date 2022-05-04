@@ -54,6 +54,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def self.new_custom(name : ::String, display_name : ::String, width : Float64, height : Float64, unit : Gtk::Unit) : self

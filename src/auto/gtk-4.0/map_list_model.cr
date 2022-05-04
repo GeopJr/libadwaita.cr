@@ -45,6 +45,17 @@ module Gtk
         sizeof(LibGtk::MapListModel), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -71,6 +82,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -102,7 +115,7 @@ module Gtk
     end
 
     # Creates a new `GtkMapListModel` for the given arguments.
-    def initialize(model : Gio::ListModel?, map_func : Pointer(Void)?, user_data : Pointer(Void)?, user_destroy : Pointer(Void))
+    def initialize(model : Gio::ListModel?, map_func : Gtk::MapListModelMapFunc?)
       # gtk_map_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)
       # @map_func: (nullable)
@@ -115,20 +128,21 @@ module Gtk
               else
                 model.to_unsafe
               end
-
-      # Generator::NullableArrayPlan
-      map_func = if map_func.nil?
-                   LibGtk::MapListModelMapFunc.null
-                 else
-                   map_func.to_unsafe
-                 end
-
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
+      # Generator::CallbackArgPlan
+      if map_func
+        _box = ::Box.box(map_func)
+        map_func = ->(lib_item : Pointer(Void), lib_user_data : Pointer(Void)) {
+          # Generator::TransferFullArgPlan
+          # Generator::GObjectArgPlan
+          item = GObject::Object.new(lib_item, :none)
+          user_data = lib_user_data
+          ::Box(Proc(GObject::Object, GObject::Object)).unbox(user_data).call(item)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        map_func = user_data = user_destroy = Pointer(Void).null
+      end
 
       # C call
       _retval = LibGtk.gtk_map_list_model_new(model, map_func, user_data, user_destroy)
@@ -136,6 +150,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Gets the model that is currently being mapped or %NULL if none.
@@ -175,25 +190,27 @@ module Gtk
     # GTK makes no effort to ensure that @map_func conforms to the item type
     # of @self. It assumes that the caller knows what they are doing and the map
     # function returns items of the appropriate type.
-    def set_map_func(map_func : Pointer(Void)?, user_data : Pointer(Void)?, user_destroy : Pointer(Void)) : Nil
+    def map_func=(map_func : Gtk::MapListModelMapFunc?) : Nil
       # gtk_map_list_model_set_map_func: (Method)
       # @map_func: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      map_func = if map_func.nil?
-                   LibGtk::MapListModelMapFunc.null
-                 else
-                   map_func.to_unsafe
-                 end
-
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
+      # Generator::CallbackArgPlan
+      if map_func
+        _box = ::Box.box(map_func)
+        map_func = ->(lib_item : Pointer(Void), lib_user_data : Pointer(Void)) {
+          # Generator::TransferFullArgPlan
+          # Generator::GObjectArgPlan
+          item = GObject::Object.new(lib_item, :none)
+          user_data = lib_user_data
+          ::Box(Proc(GObject::Object, GObject::Object)).unbox(user_data).call(item)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        map_func = user_data = user_destroy = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_map_list_model_set_map_func(self, map_func, user_data, user_destroy)

@@ -22,6 +22,17 @@ module Gtk
         sizeof(LibGtk::PrintJob), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -63,6 +74,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -156,6 +169,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Gets whether this job is printed collated.
@@ -218,7 +232,6 @@ module Gtk
 
       # Generator::OutArgUsedInReturnPlan
       n_ranges = 0
-
       # C call
       _retval = LibGtk.gtk_print_job_get_page_ranges(self, pointerof(n_ranges))
 
@@ -379,17 +392,27 @@ module Gtk
     end
 
     # Sends the print job off to the printer.
-    def send(callback : Pointer(Void), user_data : Pointer(Void)?, dnotify : Pointer(Void)) : Nil
+    def send(callback : Gtk::PrintJobCompleteFunc) : Nil
       # gtk_print_job_send: (Method)
       # @user_data: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
+      # Generator::CallbackArgPlan
+      if callback
+        _box = ::Box.box(callback)
+        callback = ->(lib_print_job : Pointer(Void), lib_user_data : Pointer(Void), lib_error : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          print_job = Gtk::PrintJob.new(lib_print_job, :none)
+          # Generator::NullableArrayPlan
+          user_data = (lib_user_data.null? ? nil : lib_user_data)
+          error = lib_error
+          ::Box(Proc(Gtk::PrintJob, Pointer(Void)?, Nil)).unbox(error).call(print_job, user_data)
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        dnotify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        callback = user_data = dnotify = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_print_job_send(self, callback, user_data, dnotify)
@@ -442,24 +465,19 @@ module Gtk
     end
 
     # Sets the page ranges for this job.
-    def set_page_ranges(ranges : Enumerable(Gtk::PageRange)) : Nil
+    def page_ranges=(ranges : Enumerable(Gtk::PageRange)) : Nil
       # gtk_print_job_set_page_ranges: (Method)
       # @ranges: (transfer full) (array length=n_ranges element-type Interface)
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_ranges = ranges.size
-      # Generator::ArrayArgPlan
+      n_ranges = ranges.size # Generator::ArrayArgPlan
       ranges = ranges.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
       LibGtk.gtk_print_job_set_page_ranges(self, ranges, n_ranges)
 
       # Return value handling
-    end
-
-    def set_page_ranges(*ranges : Gtk::PageRange)
-      set_page_ranges(ranges)
     end
 
     # Sets the `GtkPageSet` setting for this job.
@@ -617,46 +635,46 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::PrintJob, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::PrintJob.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::PrintJob, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(Gtk::PrintJob, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::PrintJob.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::PrintJob, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::PrintJob, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::PrintJob.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::PrintJob, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(Gtk::PrintJob, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::PrintJob.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::PrintJob, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil

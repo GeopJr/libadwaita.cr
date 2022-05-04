@@ -159,6 +159,17 @@ module GdkPixbuf
         sizeof(LibGdkPixbuf::Pixbuf), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -220,6 +231,8 @@ module GdkPixbuf
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -377,7 +390,8 @@ module GdkPixbuf
 
       # Return value handling
 
-      @pointer = _retval unless _retval.null?
+      @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id)) unless _retval.null?
     end
 
     # Creates a new #GdkPixbuf out of in-memory readonly image data.
@@ -409,7 +423,7 @@ module GdkPixbuf
     # it is its responsibility to free the pixel array.
     #
     # See also: `GdkPixbuf::Pixbuf#new_from_bytes`
-    def self.new_from_data(data : Enumerable(UInt8), colorspace : GdkPixbuf::Colorspace, has_alpha : Bool, bits_per_sample : Int32, width : Int32, height : Int32, rowstride : Int32, destroy_fn : Pointer(Void)?, destroy_fn_data : Pointer(Void)?) : self
+    def self.new_from_data(data : Enumerable(UInt8), colorspace : GdkPixbuf::Colorspace, has_alpha : Bool, bits_per_sample : Int32, width : Int32, height : Int32, rowstride : Int32, destroy_fn : GdkPixbuf::PixbufDestroyNotify?, destroy_fn_data : Pointer(Void)?) : self
       # gdk_pixbuf_new_from_data: (Constructor)
       # @data: (array element-type UInt8)
       # @destroy_fn: (nullable)
@@ -418,14 +432,6 @@ module GdkPixbuf
 
       # Generator::ArrayArgPlan
       data = data.to_a.to_unsafe
-
-      # Generator::NullableArrayPlan
-      destroy_fn = if destroy_fn.nil?
-                     LibGdkPixbuf::PixbufDestroyNotify.null
-                   else
-                     destroy_fn.to_unsafe
-                   end
-
       # Generator::NullableArrayPlan
       destroy_fn_data = if destroy_fn_data.nil?
                           Pointer(Void).null
@@ -588,8 +594,7 @@ module GdkPixbuf
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      data_length = data.size
-      # Generator::ArrayArgPlan
+      data_length = data.size # Generator::ArrayArgPlan
       data = data.to_a.to_unsafe
 
       # C call
@@ -805,10 +810,8 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      width = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_get_file_info(filename, width, height)
 
@@ -826,7 +829,7 @@ module GdkPixbuf
     # When the operation is finished, @callback will be called in the
     # main thread. You can then call gdk_pixbuf_get_file_info_finish() to
     # get the result of the operation.
-    def self.file_info_async(filename : ::String, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def self.file_info_async(filename : ::String, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # gdk_pixbuf_get_file_info_async: (None)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -839,14 +842,6 @@ module GdkPixbuf
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -918,7 +913,7 @@ module GdkPixbuf
     # When the operation is finished, @callback will be called in the main thread.
     # You can then call gdk_pixbuf_new_from_stream_finish() to get the result of
     # the operation.
-    def self.new_from_stream_async(stream : Gio::InputStream, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def self.new_from_stream_async(stream : Gio::InputStream, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # gdk_pixbuf_new_from_stream_async: (None)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -931,14 +926,6 @@ module GdkPixbuf
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -959,7 +946,7 @@ module GdkPixbuf
     #
     # When the operation is finished, @callback will be called in the main thread.
     # You can then call gdk_pixbuf_new_from_stream_finish() to get the result of the operation.
-    def self.new_from_stream_at_scale_async(stream : Gio::InputStream, width : Int32, height : Int32, preserve_aspect_ratio : Bool, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def self.new_from_stream_at_scale_async(stream : Gio::InputStream, width : Int32, height : Int32, preserve_aspect_ratio : Bool, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # gdk_pixbuf_new_from_stream_at_scale_async: (None)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -972,14 +959,6 @@ module GdkPixbuf
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1332,7 +1311,6 @@ module GdkPixbuf
 
       # Generator::OutArgUsedInReturnPlan
       length = 0_u32
-
       # C call
       _retval = LibGdkPixbuf.gdk_pixbuf_get_pixels_with_length(self, pointerof(length))
 
@@ -1492,17 +1470,14 @@ module GdkPixbuf
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      buffer_size = buffer.size
-      # Generator::ArrayArgPlan
+      buffer_size = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
-
       # Generator::NullableArrayPlan
       option_keys = if option_keys.nil?
                       Pointer(Pointer(LibC::Char)).null
                     else
                       option_keys.to_a.map(&.to_unsafe).to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       option_values = if option_values.nil?
                         Pointer(Pointer(LibC::Char)).null
@@ -1529,7 +1504,7 @@ module GdkPixbuf
     # If @error is set, `FALSE` will be returned.
     #
     # See `GdkPixbuf::Pixbuf#save_to_callback` for more details.
-    def save_to_callbackv(save_func : Pointer(Void), user_data : Pointer(Void)?, type : ::String, option_keys : Enumerable(::String)?, option_values : Enumerable(::String)?) : Bool
+    def save_to_callbackv(save_func : GdkPixbuf::PixbufSaveFunc, user_data : Pointer(Void)?, type : ::String, option_keys : Enumerable(::String)?, option_values : Enumerable(::String)?) : Bool
       # gdk_pixbuf_save_to_callbackv: (Method | Throws)
       # @user_data: (nullable)
       # @option_keys: (nullable) (array zero-terminated=1 element-type Utf8)
@@ -1544,14 +1519,12 @@ module GdkPixbuf
                   else
                     user_data.to_unsafe
                   end
-
       # Generator::NullableArrayPlan
       option_keys = if option_keys.nil?
                       Pointer(Pointer(LibC::Char)).null
                     else
                       option_keys.to_a.map(&.to_unsafe).to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       option_values = if option_values.nil?
                         Pointer(Pointer(LibC::Char)).null
@@ -1591,14 +1564,12 @@ module GdkPixbuf
                     else
                       option_keys.to_a.map(&.to_unsafe).to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       option_values = if option_values.nil?
                         Pointer(Pointer(LibC::Char)).null
                       else
                         option_values.to_a.map(&.to_unsafe).to_unsafe
                       end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
@@ -1626,7 +1597,7 @@ module GdkPixbuf
     #
     # You can then call gdk_pixbuf_save_to_stream_finish() to get the result of
     # the operation.
-    def save_to_streamv_async(stream : Gio::OutputStream, type : ::String, option_keys : Enumerable(::String)?, option_values : Enumerable(::String)?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def save_to_streamv_async(stream : Gio::OutputStream, type : ::String, option_keys : Enumerable(::String)?, option_values : Enumerable(::String)?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # gdk_pixbuf_save_to_streamv_async: (Method)
       # @option_keys: (nullable) (array zero-terminated=1 element-type Utf8)
       # @option_values: (nullable) (array zero-terminated=1 element-type Utf8)
@@ -1641,28 +1612,18 @@ module GdkPixbuf
                     else
                       option_keys.to_a.map(&.to_unsafe).to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       option_values = if option_values.nil?
                         Pointer(Pointer(LibC::Char)).null
                       else
                         option_values.to_a.map(&.to_unsafe).to_unsafe
                       end
-
       # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -1697,7 +1658,6 @@ module GdkPixbuf
                     else
                       option_keys.to_a.map(&.to_unsafe).to_unsafe
                     end
-
       # Generator::NullableArrayPlan
       option_values = if option_values.nil?
                         Pointer(Pointer(LibC::Char)).null

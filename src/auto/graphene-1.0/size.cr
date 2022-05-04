@@ -117,7 +117,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Size.new
-
       # C call
       LibGraphene.graphene_size_interpolate(self, b, factor, res)
 
@@ -133,7 +132,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Size.new
-
       # C call
       LibGraphene.graphene_size_scale(self, factor, res)
 

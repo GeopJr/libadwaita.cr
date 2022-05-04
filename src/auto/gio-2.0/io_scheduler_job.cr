@@ -16,25 +16,24 @@ module Gio
       LibC.memcmp(self, other.to_unsafe, sizeof(LibGio::IOSchedulerJob)).zero?
     end
 
-    def send_to_mainloop(func : Pointer(Void), user_data : Pointer(Void)?, notify : Pointer(Void)?) : Bool
+    def send_to_mainloop(func : GLib::SourceFunc) : Bool
       # g_io_scheduler_job_send_to_mainloop: (Method)
       # @user_data: (nullable)
       # @notify: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # Generator::NullableArrayPlan
-      notify = if notify.nil?
-                 LibGLib::DestroyNotify.null
-               else
-                 notify.to_unsafe
-               end
+      # Generator::CallbackArgPlan
+      if func
+        _box = ::Box.box(func)
+        func = ->(lib_user_data : Pointer(Void)) {
+          user_data = lib_user_data
+          ::Box(Proc(Bool)).unbox(user_data).call
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        func = user_data = notify = Pointer(Void).null
+      end
 
       # C call
       _retval = LibGio.g_io_scheduler_job_send_to_mainloop(self, func, user_data, notify)
@@ -44,25 +43,24 @@ module Gio
       GICrystal.to_bool(_retval)
     end
 
-    def send_to_mainloop_async(func : Pointer(Void), user_data : Pointer(Void)?, notify : Pointer(Void)?) : Nil
+    def send_to_mainloop_async(func : GLib::SourceFunc) : Nil
       # g_io_scheduler_job_send_to_mainloop_async: (Method)
       # @user_data: (nullable)
       # @notify: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      user_data = if user_data.nil?
-                    Pointer(Void).null
-                  else
-                    user_data.to_unsafe
-                  end
-
-      # Generator::NullableArrayPlan
-      notify = if notify.nil?
-                 LibGLib::DestroyNotify.null
-               else
-                 notify.to_unsafe
-               end
+      # Generator::CallbackArgPlan
+      if func
+        _box = ::Box.box(func)
+        func = ->(lib_user_data : Pointer(Void)) {
+          user_data = lib_user_data
+          ::Box(Proc(Bool)).unbox(user_data).call
+        }.pointer
+        user_data = GICrystal::ClosureDataManager.register(_box)
+        notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        func = user_data = notify = Pointer(Void).null
+      end
 
       # C call
       LibGio.g_io_scheduler_job_send_to_mainloop_async(self, func, user_data, notify)

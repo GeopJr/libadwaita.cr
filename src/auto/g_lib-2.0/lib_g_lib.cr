@@ -212,7 +212,7 @@ lib LibGLib
     hook_id : UInt64
     flags : UInt32
     func : Pointer(Void)
-    destroy : LibGLib::DestroyNotify
+    destroy : Void*
   end
 
   struct HookList # 56 bytes long
@@ -221,7 +221,7 @@ lib LibGLib
     is_setup : UInt32
     hooks : Pointer(LibGLib::Hook)
     dummy3 : Pointer(Void)
-    finalize_hook : LibGLib::HookFinalizeFunc
+    finalize_hook : Void*
     dummy : Pointer(Void)[2]
   end
 
@@ -249,14 +249,14 @@ lib LibGLib
   end
 
   struct IOFuncs # 64 bytes long
-    io_read : -> Void
-    io_write : -> Void
-    io_seek : -> Void
-    io_close : -> Void
-    io_create_watch : -> Void
-    io_free : -> Void
-    io_set_flags : -> Void
-    io_get_flags : -> Void
+    io_read : Void*
+    io_write : Void*
+    io_seek : Void*
+    io_close : Void*
+    io_create_watch : Void*
+    io_free : Void*
+    io_set_flags : Void*
+    io_get_flags : Void*
   end
 
   type KeyFile = Void # Struct with zero bytes
@@ -282,22 +282,22 @@ lib LibGLib
   type MarkupParseContext = Void # Struct with zero bytes
 
   struct MarkupParser # 40 bytes long
-    start_element : -> Void
-    end_element : -> Void
-    text : -> Void
-    passthrough : -> Void
-    error : -> Void
+    start_element : Void*
+    end_element : Void*
+    text : Void*
+    passthrough : Void*
+    error : Void*
   end
 
   type MatchInfo = Void # Struct with zero bytes
 
   struct MemVTable # 48 bytes long
-    malloc : -> Void
-    realloc : -> Void
-    free : -> Void
-    calloc : -> Void
-    try_malloc : -> Void
-    try_realloc : -> Void
+    malloc : Void*
+    realloc : Void*
+    free : Void*
+    calloc : Void*
+    try_malloc : Void*
+    try_realloc : Void*
   end
 
   struct Node # 40 bytes long
@@ -337,7 +337,7 @@ lib LibGLib
 
   struct Private # 32 bytes long
     p : Pointer(Void)
-    notify : LibGLib::DestroyNotify
+    notify : Void*
     future : Pointer(Void)[2]
   end
 
@@ -392,7 +392,7 @@ lib LibGLib
     text_end : Pointer(LibC::Char)
     buffer : Pointer(LibC::Char)
     scope_id : UInt32
-    msg_handler : LibGLib::ScannerMsgFunc
+    msg_handler : Void*
   end
 
   struct ScannerConfig # 128 bytes long
@@ -446,18 +446,18 @@ lib LibGLib
   end
 
   struct SourceCallbackFuncs # 24 bytes long
-    ref : -> Void
-    unref : -> Void
+    ref : Void*
+    unref : Void*
     get : Pointer(Void)
   end
 
   struct SourceFuncs # 48 bytes long
-    prepare : -> Void
-    check : -> Void
+    prepare : Void*
+    check : Void*
     dispatch : Pointer(Void)
-    finalize : -> Void
-    closure_callback : LibGLib::SourceFunc
-    closure_marshal : LibGLib::SourceDummyMarshal
+    finalize : Void*
+    closure_callback : Void*
+    closure_marshal : Void*
   end
 
   type SourcePrivate = Void # Struct with zero bytes
@@ -503,7 +503,7 @@ lib LibGLib
   type Thread = Void # Struct with zero bytes
 
   struct ThreadPool # 24 bytes long
-    func : LibGLib::Func
+    func : Void*
     user_data : Pointer(Void)
     exclusive : LibC::Int
   end
@@ -618,7 +618,7 @@ lib LibGLib
   fun g_async_queue_unlock(this : Void*) : Void
   fun g_async_queue_unref(this : Void*) : Void
   fun g_async_queue_unref_and_unlock(this : Void*) : Void
-  fun g_atexit(func : VoidFunc) : Void
+  fun g_atexit(func : Void*) : Void
   fun g_atomic_int_add(atomic : Pointer(Int32), val : Int32) : Int32
   fun g_atomic_int_and(atomic : Pointer(UInt32), val : UInt32) : UInt32
   fun g_atomic_int_compare_and_exchange(atomic : Pointer(Int32), oldval : Int32, newval : Int32) : LibC::Int
@@ -642,7 +642,7 @@ lib LibGLib
   fun g_atomic_rc_box_dup(block_size : UInt64, mem_block : Pointer(Void)) : Pointer(Void)
   fun g_atomic_rc_box_get_size(mem_block : Pointer(Void)) : UInt64
   fun g_atomic_rc_box_release(mem_block : Pointer(Void)) : Void
-  fun g_atomic_rc_box_release_full(mem_block : Pointer(Void), clear_func : DestroyNotify) : Void
+  fun g_atomic_rc_box_release_full(mem_block : Pointer(Void), clear_func : Void*) : Void
   fun g_atomic_ref_count_compare(arc : Pointer(Int32), val : Int32) : LibC::Int
   fun g_atomic_ref_count_dec(arc : Pointer(Int32)) : LibC::Int
   fun g_atomic_ref_count_inc(arc : Pointer(Int32)) : Void
@@ -747,7 +747,7 @@ lib LibGLib
   fun g_checksum_type_get_length(checksum_type : UInt32) : Int64
   fun g_checksum_type_get_length(checksum_type : UInt32) : Int64
   fun g_checksum_update(this : Void*, data : Pointer(UInt8), length : Int64) : Void
-  fun g_child_watch_add_full(priority : Int32, pid : Int32, function : ChildWatchFunc, data : Pointer(Void), notify : DestroyNotify) : UInt32
+  fun g_child_watch_add_full(priority : Int32, pid : Int32, function : Void*, data : Pointer(Void), notify : Void*) : UInt32
   fun g_child_watch_source_new(pid : Int32) : Pointer(Void)
   fun g_clear_error(error : LibGLib::Error**) : Void
   fun g_close(fd : Int32, error : LibGLib::Error**) : LibC::Int
@@ -766,14 +766,14 @@ lib LibGLib
   fun g_convert(str : Pointer(UInt8), len : Int64, to_codeset : Pointer(LibC::Char), from_codeset : Pointer(LibC::Char), bytes_read : Pointer(UInt64), bytes_written : Pointer(UInt64), error : LibGLib::Error**) : Pointer(UInt8)
   fun g_convert_error_quark : UInt32
   fun g_convert_with_fallback(str : Pointer(UInt8), len : Int64, to_codeset : Pointer(LibC::Char), from_codeset : Pointer(LibC::Char), fallback : Pointer(LibC::Char), bytes_read : Pointer(UInt64), bytes_written : Pointer(UInt64), error : LibGLib::Error**) : Pointer(UInt8)
-  fun g_datalist_foreach(datalist : Pointer(Void), func : DataForeachFunc, user_data : Pointer(Void)) : Void
+  fun g_datalist_foreach(datalist : Pointer(Void), func : Void*, user_data : Pointer(Void)) : Void
   fun g_datalist_get_data(datalist : Pointer(Void), key : Pointer(LibC::Char)) : Pointer(Void)
   fun g_datalist_get_flags(datalist : Pointer(Void)) : UInt32
   fun g_datalist_id_get_data(datalist : Pointer(Void), key_id : UInt32) : Pointer(Void)
   fun g_datalist_set_flags(datalist : Pointer(Void), flags : UInt32) : Void
   fun g_datalist_unset_flags(datalist : Pointer(Void), flags : UInt32) : Void
   fun g_dataset_destroy(dataset_location : Pointer(Void)) : Void
-  fun g_dataset_foreach(dataset_location : Pointer(Void), func : DataForeachFunc, user_data : Pointer(Void)) : Void
+  fun g_dataset_foreach(dataset_location : Pointer(Void), func : Void*, user_data : Pointer(Void)) : Void
   fun g_dataset_id_get_data(dataset_location : Pointer(Void), key_id : UInt32) : Pointer(Void)
   fun g_date_add_days(this : Void*, n_days : UInt32) : Void
   fun g_date_add_months(this : Void*, n_months : UInt32) : Void
@@ -1018,7 +1018,7 @@ lib LibGLib
   fun g_hostname_is_non_ascii(hostname : Pointer(LibC::Char)) : LibC::Int
   fun g_hostname_to_ascii(hostname : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun g_hostname_to_unicode(hostname : Pointer(LibC::Char)) : Pointer(LibC::Char)
-  fun g_idle_add_full(priority : Int32, function : SourceFunc, data : Pointer(Void), notify : DestroyNotify) : UInt32
+  fun g_idle_add_full(priority : Int32, function : Void*, data : Pointer(Void), notify : Void*) : UInt32
   fun g_idle_remove_by_data(data : Pointer(Void)) : LibC::Int
   fun g_idle_source_new : Pointer(Void)
   fun g_int64_equal(v1 : Pointer(Void), v2 : Pointer(Void)) : LibC::Int
@@ -1027,7 +1027,7 @@ lib LibGLib
   fun g_int_hash(v : Pointer(Void)) : UInt32
   fun g_intern_static_string(string : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun g_intern_string(string : Pointer(LibC::Char)) : Pointer(LibC::Char)
-  fun g_io_add_watch_full(channel : Pointer(Void), priority : Int32, condition : UInt32, func : IOFunc, user_data : Pointer(Void), notify : DestroyNotify) : UInt32
+  fun g_io_add_watch_full(channel : Pointer(Void), priority : Int32, condition : UInt32, func : Void*, user_data : Pointer(Void), notify : Void*) : UInt32
   fun g_io_channel_close(this : Void*) : Void
   fun g_io_channel_error_from_errno(en : Int32) : UInt32
   fun g_io_channel_error_from_errno(en : Int32) : UInt32
@@ -1123,8 +1123,8 @@ lib LibGLib
   fun g_log_remove_handler(log_domain : Pointer(LibC::Char), handler_id : UInt32) : Void
   fun g_log_set_always_fatal(fatal_mask : Int32) : Int32
   fun g_log_set_fatal_mask(log_domain : Pointer(LibC::Char), fatal_mask : Int32) : Int32
-  fun g_log_set_handler_full(log_domain : Pointer(LibC::Char), log_levels : Int32, log_func : LogFunc, user_data : Pointer(Void), destroy : DestroyNotify) : UInt32
-  fun g_log_set_writer_func(func : LogWriterFunc, user_data : Pointer(Void), user_data_free : DestroyNotify) : Void
+  fun g_log_set_handler_full(log_domain : Pointer(LibC::Char), log_levels : Int32, log_func : Void*, user_data : Pointer(Void), destroy : Void*) : UInt32
+  fun g_log_set_writer_func(func : Void*, user_data : Pointer(Void), user_data_free : Void*) : Void
   fun g_log_structured_array(log_level : Int32, fields : Pointer(Void), n_fields : UInt64) : Void
   fun g_log_variant(log_domain : Pointer(LibC::Char), log_level : Int32, fields : Pointer(Void)) : Void
   fun g_log_writer_default(log_level : Int32, fields : Pointer(Void), n_fields : UInt64, user_data : Pointer(Void)) : UInt32
@@ -1148,7 +1148,7 @@ lib LibGLib
   fun g_main_context_get_thread_default : Pointer(Void)
   fun g_main_context_get_type : UInt64
   @[Raises]
-  fun g_main_context_invoke_full(this : Void*, priority : Int32, function : SourceFunc, data : Pointer(Void), notify : DestroyNotify) : Void
+  fun g_main_context_invoke_full(this : Void*, priority : Int32, function : Void*, data : Pointer(Void), notify : Void*) : Void
   fun g_main_context_is_owner(this : Void*) : LibC::Int
   fun g_main_context_iteration(this : Void*, may_block : LibC::Int) : LibC::Int
   fun g_main_context_new : Pointer(Void)
@@ -1197,7 +1197,7 @@ lib LibGLib
   fun g_markup_parse_context_get_position(this : Void*, line_number : Pointer(Int32), char_number : Pointer(Int32)) : Void
   fun g_markup_parse_context_get_type : UInt64
   fun g_markup_parse_context_get_user_data(this : Void*) : Pointer(Void)
-  fun g_markup_parse_context_new(parser : Pointer(Void), flags : UInt32, user_data : Pointer(Void), user_data_dnotify : DestroyNotify) : Pointer(Void)
+  fun g_markup_parse_context_new(parser : Pointer(Void), flags : UInt32, user_data : Pointer(Void), user_data_dnotify : Void*) : Pointer(Void)
   fun g_markup_parse_context_parse(this : Void*, text : Pointer(LibC::Char), text_len : Int64, error : LibGLib::Error**) : LibC::Int
   fun g_markup_parse_context_pop(this : Void*) : Pointer(Void)
   fun g_markup_parse_context_push(this : Void*, parser : Pointer(Void), user_data : Pointer(Void)) : Void
@@ -1261,15 +1261,15 @@ lib LibGLib
   fun g_option_context_set_main_group(this : Void*, group : Pointer(Void)) : Void
   fun g_option_context_set_strict_posix(this : Void*, strict_posix : LibC::Int) : Void
   fun g_option_context_set_summary(this : Void*, summary : Pointer(LibC::Char)) : Void
-  fun g_option_context_set_translate_func(this : Void*, func : TranslateFunc, data : Pointer(Void), destroy_notify : DestroyNotify) : Void
+  fun g_option_context_set_translate_func(this : Void*, func : Void*, data : Pointer(Void), destroy_notify : Void*) : Void
   fun g_option_context_set_translation_domain(this : Void*, domain : Pointer(LibC::Char)) : Void
   fun g_option_error_quark : UInt32
   fun g_option_group_add_entries(this : Void*, entries : Pointer(Void)) : Void
   fun g_option_group_free(this : Void*) : Void
   fun g_option_group_get_type : UInt64
-  fun g_option_group_new(name : Pointer(LibC::Char), description : Pointer(LibC::Char), help_description : Pointer(LibC::Char), user_data : Pointer(Void), destroy : DestroyNotify) : Pointer(Void)
+  fun g_option_group_new(name : Pointer(LibC::Char), description : Pointer(LibC::Char), help_description : Pointer(LibC::Char), user_data : Pointer(Void), destroy : Void*) : Pointer(Void)
   fun g_option_group_ref(this : Void*) : Pointer(Void)
-  fun g_option_group_set_translate_func(this : Void*, func : TranslateFunc, data : Pointer(Void), destroy_notify : DestroyNotify) : Void
+  fun g_option_group_set_translate_func(this : Void*, func : Void*, data : Pointer(Void), destroy_notify : Void*) : Void
   fun g_option_group_set_translation_domain(this : Void*, domain : Pointer(LibC::Char)) : Void
   fun g_option_group_unref(this : Void*) : Void
   fun g_parse_debug_string(string : Pointer(LibC::Char), keys : Pointer(Void), nkeys : UInt32) : UInt32
@@ -1301,9 +1301,9 @@ lib LibGLib
   fun g_quark_to_string(quark : UInt32) : Pointer(LibC::Char)
   fun g_quark_try_string(string : Pointer(LibC::Char)) : UInt32
   fun g_queue_clear(this : Void*) : Void
-  fun g_queue_clear_full(this : Void*, free_func : DestroyNotify) : Void
+  fun g_queue_clear_full(this : Void*, free_func : Void*) : Void
   fun g_queue_free(this : Void*) : Void
-  fun g_queue_free_full(this : Void*, free_func : DestroyNotify) : Void
+  fun g_queue_free_full(this : Void*, free_func : Void*) : Void
   fun g_queue_get_length(this : Void*) : UInt32
   fun g_queue_index(this : Void*, data : Pointer(Void)) : Int32
   fun g_queue_init(this : Void*) : Void
@@ -1338,7 +1338,7 @@ lib LibGLib
   fun g_rc_box_dup(block_size : UInt64, mem_block : Pointer(Void)) : Pointer(Void)
   fun g_rc_box_get_size(mem_block : Pointer(Void)) : UInt64
   fun g_rc_box_release(mem_block : Pointer(Void)) : Void
-  fun g_rc_box_release_full(mem_block : Pointer(Void), clear_func : DestroyNotify) : Void
+  fun g_rc_box_release_full(mem_block : Pointer(Void), clear_func : Void*) : Void
   fun g_realloc(mem : Pointer(Void), n_bytes : UInt64) : Pointer(Void)
   fun g_realloc_n(mem : Pointer(Void), n_blocks : UInt64, n_block_bytes : UInt64) : Pointer(Void)
   fun g_rec_mutex_clear(this : Void*) : Void
@@ -1492,7 +1492,7 @@ lib LibGLib
   fun g_source_remove_child_source(this : Void*, child_source : Pointer(Void)) : Void
   fun g_source_remove_poll(this : Void*, fd : Pointer(Void)) : Void
   fun g_source_remove_unix_fd(this : Void*, tag : Pointer(Void)) : Void
-  fun g_source_set_callback(this : Void*, func : SourceFunc, data : Pointer(Void), notify : DestroyNotify) : Void
+  fun g_source_set_callback(this : Void*, func : Void*, data : Pointer(Void), notify : Void*) : Void
   fun g_source_set_callback_indirect(this : Void*, callback_data : Pointer(Void), callback_funcs : Pointer(Void)) : Void
   fun g_source_set_can_recurse(this : Void*, can_recurse : LibC::Int) : Void
   fun g_source_set_funcs(this : Void*, funcs : Pointer(Void)) : Void
@@ -1504,10 +1504,10 @@ lib LibGLib
   fun g_source_set_static_name(this : Void*, name : Pointer(LibC::Char)) : Void
   fun g_source_unref(this : Void*) : Void
   fun g_spaced_primes_closest(num : UInt32) : UInt32
-  fun g_spawn_async(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : SpawnChildSetupFunc, user_data : Pointer(Void), child_pid : Pointer(Int32), error : LibGLib::Error**) : LibC::Int
-  fun g_spawn_async_with_fds(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : SpawnChildSetupFunc, user_data : Pointer(Void), child_pid : Pointer(Int32), stdin_fd : Int32, stdout_fd : Int32, stderr_fd : Int32, error : LibGLib::Error**) : LibC::Int
-  fun g_spawn_async_with_pipes(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : SpawnChildSetupFunc, user_data : Pointer(Void), child_pid : Pointer(Int32), standard_input : Pointer(Int32), standard_output : Pointer(Int32), standard_error : Pointer(Int32), error : LibGLib::Error**) : LibC::Int
-  fun g_spawn_async_with_pipes_and_fds(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : SpawnChildSetupFunc, user_data : Pointer(Void), stdin_fd : Int32, stdout_fd : Int32, stderr_fd : Int32, source_fds : Pointer(Int32), target_fds : Pointer(Int32), n_fds : UInt64, child_pid_out : Pointer(Int32), stdin_pipe_out : Pointer(Int32), stdout_pipe_out : Pointer(Int32), stderr_pipe_out : Pointer(Int32), error : LibGLib::Error**) : LibC::Int
+  fun g_spawn_async(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : Void*, user_data : Pointer(Void), child_pid : Pointer(Int32), error : LibGLib::Error**) : LibC::Int
+  fun g_spawn_async_with_fds(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : Void*, user_data : Pointer(Void), child_pid : Pointer(Int32), stdin_fd : Int32, stdout_fd : Int32, stderr_fd : Int32, error : LibGLib::Error**) : LibC::Int
+  fun g_spawn_async_with_pipes(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : Void*, user_data : Pointer(Void), child_pid : Pointer(Int32), standard_input : Pointer(Int32), standard_output : Pointer(Int32), standard_error : Pointer(Int32), error : LibGLib::Error**) : LibC::Int
+  fun g_spawn_async_with_pipes_and_fds(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : Void*, user_data : Pointer(Void), stdin_fd : Int32, stdout_fd : Int32, stderr_fd : Int32, source_fds : Pointer(Int32), target_fds : Pointer(Int32), n_fds : UInt64, child_pid_out : Pointer(Int32), stdin_pipe_out : Pointer(Int32), stdout_pipe_out : Pointer(Int32), stderr_pipe_out : Pointer(Int32), error : LibGLib::Error**) : LibC::Int
   fun g_spawn_check_exit_status(wait_status : Int32, error : LibGLib::Error**) : LibC::Int
   fun g_spawn_check_wait_status(wait_status : Int32, error : LibGLib::Error**) : LibC::Int
   fun g_spawn_close_pid(pid : Int32) : Void
@@ -1515,7 +1515,7 @@ lib LibGLib
   fun g_spawn_command_line_sync(command_line : Pointer(LibC::Char), standard_output : Pointer(Pointer(UInt8)), standard_error : Pointer(Pointer(UInt8)), wait_status : Pointer(Int32), error : LibGLib::Error**) : LibC::Int
   fun g_spawn_error_quark : UInt32
   fun g_spawn_exit_error_quark : UInt32
-  fun g_spawn_sync(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : SpawnChildSetupFunc, user_data : Pointer(Void), standard_output : Pointer(Pointer(UInt8)), standard_error : Pointer(Pointer(UInt8)), wait_status : Pointer(Int32), error : LibGLib::Error**) : LibC::Int
+  fun g_spawn_sync(working_directory : Pointer(LibC::Char), argv : Pointer(Pointer(LibC::Char)), envp : Pointer(Pointer(LibC::Char)), flags : UInt32, child_setup : Void*, user_data : Pointer(Void), standard_output : Pointer(Pointer(UInt8)), standard_error : Pointer(Pointer(UInt8)), wait_status : Pointer(Int32), error : LibGLib::Error**) : LibC::Int
   fun g_stpcpy(dest : Pointer(LibC::Char), src : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun g_str_equal(v1 : Pointer(Void), v2 : Pointer(Void)) : LibC::Int
   fun g_str_has_prefix(str : Pointer(LibC::Char), prefix : Pointer(LibC::Char)) : LibC::Int
@@ -1595,9 +1595,9 @@ lib LibGLib
   fun g_strv_equal(strv1 : Pointer(LibC::Char), strv2 : Pointer(LibC::Char)) : LibC::Int
   fun g_strv_get_type : UInt64
   fun g_strv_length(str_array : Pointer(LibC::Char)) : UInt32
-  fun g_test_add_data_func(testpath : Pointer(LibC::Char), test_data : Pointer(Void), test_func : TestDataFunc) : Void
-  fun g_test_add_data_func_full(testpath : Pointer(LibC::Char), test_data : Pointer(Void), test_func : TestDataFunc, data_free_func : DestroyNotify) : Void
-  fun g_test_add_func(testpath : Pointer(LibC::Char), test_func : TestFunc) : Void
+  fun g_test_add_data_func(testpath : Pointer(LibC::Char), test_data : Pointer(Void), test_func : Void*) : Void
+  fun g_test_add_data_func_full(testpath : Pointer(LibC::Char), test_data : Pointer(Void), test_func : Void*, data_free_func : Void*) : Void
+  fun g_test_add_func(testpath : Pointer(LibC::Char), test_func : Void*) : Void
   fun g_test_assert_expected_messages_internal(domain : Pointer(LibC::Char), file : Pointer(LibC::Char), line : Int32, func : Pointer(LibC::Char)) : Void
   fun g_test_bug(bug_uri_snippet : Pointer(LibC::Char)) : Void
   fun g_test_bug_base(uri_pattern : Pointer(LibC::Char)) : Void
@@ -1612,7 +1612,7 @@ lib LibGLib
   fun g_test_log_buffer_push(this : Void*, n_bytes : UInt32, bytes : Pointer(UInt8)) : Void
   fun g_test_log_msg_free(this : Void*) : Void
   fun g_test_log_type_name(log_type : UInt32) : Pointer(LibC::Char)
-  fun g_test_queue_destroy(destroy_func : DestroyNotify, destroy_data : Pointer(Void)) : Void
+  fun g_test_queue_destroy(destroy_func : Void*, destroy_data : Pointer(Void)) : Void
   fun g_test_queue_free(gfree_pointer : Pointer(Void)) : Void
   fun g_test_rand_double : Float64
   fun g_test_rand_double_range(range_start : Float64, range_end : Float64) : Float64
@@ -1641,7 +1641,7 @@ lib LibGLib
   fun g_thread_exit(retval : Pointer(Void)) : Void
   fun g_thread_get_type : UInt64
   fun g_thread_join(this : Void*) : Pointer(Void)
-  fun g_thread_new(name : Pointer(LibC::Char), func : ThreadFunc, data : Pointer(Void)) : Pointer(Void)
+  fun g_thread_new(name : Pointer(LibC::Char), func : Void*, data : Pointer(Void)) : Pointer(Void)
   fun g_thread_pool_free(this : Void*, immediate : LibC::Int, wait_ : LibC::Int) : Void
   fun g_thread_pool_get_max_idle_time : UInt32
   fun g_thread_pool_get_max_idle_time : UInt32
@@ -1664,7 +1664,7 @@ lib LibGLib
   fun g_thread_ref(this : Void*) : Pointer(Void)
   fun g_thread_self : Pointer(Void)
   fun g_thread_self : Pointer(Void)
-  fun g_thread_try_new(name : Pointer(LibC::Char), func : ThreadFunc, data : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
+  fun g_thread_try_new(name : Pointer(LibC::Char), func : Void*, data : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_thread_unref(this : Void*) : Void
   fun g_thread_yield : Void
   fun g_thread_yield : Void
@@ -1686,8 +1686,8 @@ lib LibGLib
   fun g_time_zone_new_utc : Pointer(Void)
   fun g_time_zone_ref(this : Void*) : Pointer(Void)
   fun g_time_zone_unref(this : Void*) : Void
-  fun g_timeout_add_full(priority : Int32, interval : UInt32, function : SourceFunc, data : Pointer(Void), notify : DestroyNotify) : UInt32
-  fun g_timeout_add_seconds_full(priority : Int32, interval : UInt32, function : SourceFunc, data : Pointer(Void), notify : DestroyNotify) : UInt32
+  fun g_timeout_add_full(priority : Int32, interval : UInt32, function : Void*, data : Pointer(Void), notify : Void*) : UInt32
+  fun g_timeout_add_seconds_full(priority : Int32, interval : UInt32, function : Void*, data : Pointer(Void), notify : Void*) : UInt32
   fun g_timeout_source_new(interval : UInt32) : Pointer(Void)
   fun g_timeout_source_new_seconds(interval : UInt32) : Pointer(Void)
   fun g_timer_continue(this : Void*) : Void
@@ -1714,7 +1714,7 @@ lib LibGLib
   fun g_tree_lookup_extended(this : Void*, lookup_key : Pointer(Void), orig_key : Pointer(Pointer(Void)), value : Pointer(Pointer(Void))) : LibC::Int
   fun g_tree_lookup_node(this : Void*, key : Pointer(Void)) : Pointer(Void)
   fun g_tree_lower_bound(this : Void*, key : Pointer(Void)) : Pointer(Void)
-  fun g_tree_new_full(key_compare_func : CompareDataFunc, key_compare_data : Pointer(Void), key_destroy_func : DestroyNotify, value_destroy_func : DestroyNotify) : Pointer(Void)
+  fun g_tree_new_full(key_compare_func : Void*, key_compare_data : Pointer(Void), key_destroy_func : Void*, value_destroy_func : Void*) : Pointer(Void)
   fun g_tree_nnodes(this : Void*) : Int32
   fun g_tree_node_first(this : Void*) : Pointer(Void)
   fun g_tree_node_key(this : Void*) : Pointer(Void)
@@ -1775,12 +1775,12 @@ lib LibGLib
   fun g_unicode_script_from_iso15924(iso15924 : UInt32) : Int32
   fun g_unicode_script_to_iso15924(script : Int32) : UInt32
   fun g_unix_error_quark : UInt32
-  fun g_unix_fd_add_full(priority : Int32, fd : Int32, condition : UInt32, function : UnixFDSourceFunc, user_data : Pointer(Void), notify : DestroyNotify) : UInt32
+  fun g_unix_fd_add_full(priority : Int32, fd : Int32, condition : UInt32, function : Void*, user_data : Pointer(Void), notify : Void*) : UInt32
   fun g_unix_fd_source_new(fd : Int32, condition : UInt32) : Pointer(Void)
   fun g_unix_get_passwd_entry(user_name : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun g_unix_open_pipe(fds : Pointer(Int32), flags : Int32, error : LibGLib::Error**) : LibC::Int
   fun g_unix_set_fd_nonblocking(fd : Int32, nonblock : LibC::Int, error : LibGLib::Error**) : LibC::Int
-  fun g_unix_signal_add_full(priority : Int32, signum : Int32, handler : SourceFunc, user_data : Pointer(Void), notify : DestroyNotify) : UInt32
+  fun g_unix_signal_add_full(priority : Int32, signum : Int32, handler : Void*, user_data : Pointer(Void), notify : Void*) : UInt32
   fun g_unix_signal_source_new(signum : Int32) : Pointer(Void)
   fun g_unlink(filename : Pointer(LibC::Char)) : Int32
   fun g_unsetenv(variable : Pointer(LibC::Char)) : Void
@@ -1945,7 +1945,7 @@ lib LibGLib
   fun g_variant_new_double(value : Float64) : Pointer(Void)
   fun g_variant_new_fixed_array(element_type : Pointer(Void), elements : Pointer(Void), n_elements : UInt64, element_size : UInt64) : Pointer(Void)
   fun g_variant_new_from_bytes(type : Pointer(Void), bytes : Pointer(Void), trusted : LibC::Int) : Pointer(Void)
-  fun g_variant_new_from_data(type : Pointer(Void), data : Pointer(UInt8), size : UInt64, trusted : LibC::Int, notify : DestroyNotify, user_data : Pointer(Void)) : Pointer(Void)
+  fun g_variant_new_from_data(type : Pointer(Void), data : Pointer(UInt8), size : UInt64, trusted : LibC::Int, notify : Void*, user_data : Pointer(Void)) : Pointer(Void)
   fun g_variant_new_handle(value : Int32) : Pointer(Void)
   fun g_variant_new_int16(value : Int16) : Pointer(Void)
   fun g_variant_new_int32(value : Int32) : Pointer(Void)

@@ -136,10 +136,8 @@ module Graphene
           else
             p.to_unsafe
           end
-
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       _retval = LibGraphene.graphene_triangle_get_barycoords(self, p, res)
 
@@ -155,7 +153,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
-
       # C call
       LibGraphene.graphene_triangle_get_bounding_box(self, res)
 
@@ -171,7 +168,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_triangle_get_midpoint(self, res)
 
@@ -187,7 +183,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_triangle_get_normal(self, res)
 
@@ -203,7 +198,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
-
       # C call
       LibGraphene.graphene_triangle_get_plane(self, res)
 
@@ -220,18 +214,12 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      a = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      a = Graphene::Point3D.new
-      # Generator::OutArgUsedInReturnPlan
-      b = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      b = Graphene::Point3D.new
-      # Generator::OutArgUsedInReturnPlan
-      c = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      a = Pointer(Void).null    # Generator::CallerAllocatesPlan
+      a = Graphene::Point3D.new # Generator::OutArgUsedInReturnPlan
+      b = Pointer(Void).null    # Generator::CallerAllocatesPlan
+      b = Graphene::Point3D.new # Generator::OutArgUsedInReturnPlan
+      c = Pointer(Void).null    # Generator::CallerAllocatesPlan
       c = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_triangle_get_points(self, a, b, c)
 
@@ -252,10 +240,8 @@ module Graphene
           else
             p.to_unsafe
           end
-
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       _retval = LibGraphene.graphene_triangle_get_uv(self, p, uv_a, uv_b, uv_c, res)
 
@@ -272,18 +258,12 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      a = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      a = Graphene::Vec3.new
-      # Generator::OutArgUsedInReturnPlan
-      b = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
-      b = Graphene::Vec3.new
-      # Generator::OutArgUsedInReturnPlan
-      c = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      a = Pointer(Void).null # Generator::CallerAllocatesPlan
+      a = Graphene::Vec3.new # Generator::OutArgUsedInReturnPlan
+      b = Pointer(Void).null # Generator::CallerAllocatesPlan
+      b = Graphene::Vec3.new # Generator::OutArgUsedInReturnPlan
+      c = Pointer(Void).null # Generator::CallerAllocatesPlan
       c = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_triangle_get_vertices(self, a, b, c)
 
@@ -300,12 +280,16 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 3") if a.size < 3
+
       a = a.to_a.to_unsafe
-
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 3") if b.size < 3
+
       b = b.to_a.to_unsafe
-
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 3") if c.size < 3
+
       c = c.to_a.to_unsafe
 
       # C call
@@ -329,14 +313,12 @@ module Graphene
           else
             a.to_unsafe
           end
-
       # Generator::NullableArrayPlan
       b = if b.nil?
             Pointer(Void).null
           else
             b.to_unsafe
           end
-
       # Generator::NullableArrayPlan
       c = if c.nil?
             Pointer(Void).null
@@ -365,14 +347,12 @@ module Graphene
           else
             a.to_unsafe
           end
-
       # Generator::NullableArrayPlan
       b = if b.nil?
             Pointer(Void).null
           else
             b.to_unsafe
           end
-
       # Generator::NullableArrayPlan
       c = if c.nil?
             Pointer(Void).null

@@ -184,6 +184,17 @@ module Gtk
         sizeof(LibGtk::ConstraintLayout), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -205,6 +216,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Adds a constraint to the layout manager.
@@ -227,7 +239,6 @@ module Gtk
 
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(constraint)
-
       # C call
       LibGtk.gtk_constraint_layout_add_constraint(self, constraint)
 
@@ -247,8 +258,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # Generator::ArrayLengthArgPlan
-      n_lines = lines.size
-      # Generator::ArrayArgPlan
+      n_lines = lines.size # Generator::ArrayArgPlan
       lines = lines.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
@@ -276,7 +286,6 @@ module Gtk
 
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(guide)
-
       # C call
       LibGtk.gtk_constraint_layout_add_guide(self, guide)
 

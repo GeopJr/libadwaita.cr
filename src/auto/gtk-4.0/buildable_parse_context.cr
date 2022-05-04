@@ -47,10 +47,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      line_number = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      line_number = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       char_number = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_buildable_parse_context_get_position(self, line_number, char_number)
 

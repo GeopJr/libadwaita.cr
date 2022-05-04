@@ -32,6 +32,17 @@ module Gio
         sizeof(LibGio::TlsInteraction), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -95,7 +106,7 @@ module Gio
     # not support immediate cancellation.
     #
     # Certain implementations may not support immediate cancellation.
-    def ask_password_async(password : Gio::TlsPassword, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def ask_password_async(password : Gio::TlsPassword, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_tls_interaction_ask_password_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -108,14 +119,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -293,7 +296,7 @@ module Gio
     # also choose to provide a certificate from elsewhere. @callback will be called
     # when the operation completes. Alternatively the user may abort this certificate
     # request, which will usually abort the TLS connection.
-    def request_certificate_async(connection : Gio::TlsConnection, flags : Gio::TlsCertificateRequestFlags, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def request_certificate_async(connection : Gio::TlsConnection, flags : Gio::TlsCertificateRequestFlags, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_tls_interaction_request_certificate_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -306,14 +309,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null

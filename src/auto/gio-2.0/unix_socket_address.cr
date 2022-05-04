@@ -33,6 +33,17 @@ module Gio
         sizeof(LibGio::UnixSocketAddress), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -74,6 +85,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -155,6 +168,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Creates a new %G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED
@@ -165,8 +179,7 @@ module Gio
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      path_len = path.size
-      # Generator::ArrayArgPlan
+      path_len = path.size # Generator::ArrayArgPlan
       path = path.to_a.to_unsafe
 
       # C call
@@ -218,8 +231,7 @@ module Gio
       # Returns: (transfer full)
 
       # Generator::ArrayLengthArgPlan
-      path_len = path.size
-      # Generator::ArrayArgPlan
+      path_len = path.size # Generator::ArrayArgPlan
       path = path.to_a.to_unsafe
 
       # C call

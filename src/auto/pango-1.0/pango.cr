@@ -102,6 +102,19 @@ module Pango
   # A string literal containing the version of Pango available at compile-time.
   VERSION_STRING = "1.50.4"
 
+  # Callbacks
+
+  # Type of a function that can duplicate user data for an attribute.
+  alias AttrDataCopyFunc = Proc(Pointer(Void))
+
+  # Type of a function filtering a list of attributes.
+  alias AttrFilterFunc = Proc(Pango::Attribute, Bool)
+
+  # Callback used when enumerating fonts in a fontset.
+  #
+  # See `Pango::Fontset#foreach`.
+  alias FontsetForeachFunc = Proc(Pango::Fontset, Pango::Font, Bool)
+
   # Base class for all errors in this module.
   class PangoError < RuntimeError
     # :nodoc:
@@ -982,8 +995,7 @@ module Pango
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    attrs_len = attrs.size
-    # Generator::ArrayArgPlan
+    attrs_len = attrs.size # Generator::ArrayArgPlan
     attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -1244,7 +1256,7 @@ module Pango
     Pango::Attribute.new(_retval, GICrystal::Transfer::Full)
   end
 
-  def self.attr_shape_new_with_data(ink_rect : Pango::Rectangle, logical_rect : Pango::Rectangle, data : Pointer(Void)?, copy_func : Pointer(Void)?, destroy_func : Pointer(Void)?) : Pango::Attribute
+  def self.attr_shape_new_with_data(ink_rect : Pango::Rectangle, logical_rect : Pango::Rectangle, data : Pointer(Void)?, copy_func : Pango::AttrDataCopyFunc?, destroy_func : GLib::DestroyNotify?) : Pango::Attribute
     # pango_attr_shape_new_with_data: (None)
     # @data: (nullable)
     # @copy_func: (nullable)
@@ -1257,20 +1269,6 @@ module Pango
            else
              data.to_unsafe
            end
-
-    # Generator::NullableArrayPlan
-    copy_func = if copy_func.nil?
-                  LibPango::AttrDataCopyFunc.null
-                else
-                  copy_func.to_unsafe
-                end
-
-    # Generator::NullableArrayPlan
-    destroy_func = if destroy_func.nil?
-                     LibGLib::DestroyNotify.null
-                   else
-                     destroy_func.to_unsafe
-                   end
 
     # C call
     _retval = LibPango.pango_attr_shape_new_with_data(ink_rect, logical_rect, data, copy_func, destroy_func)
@@ -1478,8 +1476,7 @@ module Pango
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    attrs_len = attrs.size
-    # Generator::ArrayArgPlan
+    attrs_len = attrs.size # Generator::ArrayArgPlan
     attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -1518,7 +1515,6 @@ module Pango
                 else
                   inclusive.to_unsafe
                 end
-
     # Generator::NullableArrayPlan
     nearest = if nearest.nil?
                 Pointer(Void).null
@@ -1574,8 +1570,7 @@ module Pango
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    attrs_len = attrs.size
-    # Generator::ArrayArgPlan
+    attrs_len = attrs.size # Generator::ArrayArgPlan
     attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -1782,12 +1777,9 @@ module Pango
     _error = Pointer(LibGLib::Error).null
 
     # Generator::OutArgUsedInReturnPlan
-    attr_list = Pointer(Pointer(Void)).null
-    # Generator::OutArgUsedInReturnPlan
-    text = Pointer(Pointer(LibC::Char)).null
-    # Generator::OutArgUsedInReturnPlan
+    attr_list = Pointer(Pointer(Void)).null  # Generator::OutArgUsedInReturnPlan
+    text = Pointer(Pointer(LibC::Char)).null # Generator::OutArgUsedInReturnPlan
     accel_char = Pointer(UInt32).null
-
     # C call
     _retval = LibPango.pango_markup_parser_finish(context, attr_list, text, accel_char, pointerof(_error))
 
@@ -1824,12 +1816,9 @@ module Pango
           else
             str.to_unsafe
           end
-
     # Generator::OutArgUsedInReturnPlan
-    value = Pointer(Int32).null
-    # Generator::OutArgUsedInReturnPlan
+    value = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
     possible_values = Pointer(Pointer(LibC::Char)).null
-
     # C call
     _retval = LibPango.pango_parse_enum(type, str, value, warn, possible_values)
 
@@ -1848,12 +1837,9 @@ module Pango
     _error = Pointer(LibGLib::Error).null
 
     # Generator::OutArgUsedInReturnPlan
-    attr_list = Pointer(Pointer(Void)).null
-    # Generator::OutArgUsedInReturnPlan
-    text = Pointer(Pointer(LibC::Char)).null
-    # Generator::OutArgUsedInReturnPlan
+    attr_list = Pointer(Pointer(Void)).null  # Generator::OutArgUsedInReturnPlan
+    text = Pointer(Pointer(LibC::Char)).null # Generator::OutArgUsedInReturnPlan
     accel_char = Pointer(UInt32).null
-
     # C call
     _retval = LibPango.pango_parse_markup(markup_text, length, accel_marker, attr_list, text, accel_char, pointerof(_error))
 
@@ -2065,7 +2051,6 @@ module Pango
                      else
                        paragraph_text.to_unsafe
                      end
-
     # Generator::NullableArrayPlan
     log_attrs = if log_attrs.nil?
                   Pointer(Void).null
@@ -2140,8 +2125,7 @@ module Pango
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    attrs_len = attrs.size
-    # Generator::ArrayArgPlan
+    attrs_len = attrs.size # Generator::ArrayArgPlan
     attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
 
     # C call

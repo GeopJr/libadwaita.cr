@@ -34,6 +34,17 @@ module Gtk
         sizeof(LibGtk::SortListModel), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -70,6 +81,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -143,23 +156,21 @@ module Gtk
               else
                 model.to_unsafe
               end
-
       # Generator::NullableArrayPlan
       sorter = if sorter.nil?
                  Pointer(Void).null
                else
                  sorter.to_unsafe
                end
-
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(sorter)
-
       # C call
       _retval = LibGtk.gtk_sort_list_model_new(model, sorter)
 
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns whether incremental sorting is enabled.

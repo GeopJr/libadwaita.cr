@@ -26,6 +26,17 @@ module Gio
         sizeof(LibGio::FileMonitor), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -52,6 +63,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -189,58 +202,78 @@ module Gio
         connect(block)
       end
 
-      def connect(block : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : UInt32, box : Pointer(Void)) {
-          arg0 = Gio::File__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = (lib_arg1.null? ? nil : Gio::File__Impl.new(lib_arg1, GICrystal::Transfer::None))
-          arg2 = Gio::FileMonitorEvent.new(lib_arg2)
-          ::Box(Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(box).call(arg0, arg1, arg2)
-        }
+      def connect(handler : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          file = Gio::File.new(lib_file, :none)
+          # Generator::NullableArrayPlan
+          other_file = (lib_other_file.null? ? nil : Gio::File__Impl.new(lib_other_file, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          other_file = Gio::File.new(lib_other_file, :none)
+          # Generator::GObjectArgPlan
+          event_type = Gio::FileMonitorEvent.new(lib_event_type, :none)
+          ::Box(Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(file, other_file, event_type)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : UInt32, box : Pointer(Void)) {
-          arg0 = Gio::File__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = (lib_arg1.null? ? nil : Gio::File__Impl.new(lib_arg1, GICrystal::Transfer::None))
-          arg2 = Gio::FileMonitorEvent.new(lib_arg2)
-          ::Box(Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(box).call(arg0, arg1, arg2)
-        }
+      def connect_after(handler : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          file = Gio::File.new(lib_file, :none)
+          # Generator::NullableArrayPlan
+          other_file = (lib_other_file.null? ? nil : Gio::File__Impl.new(lib_other_file, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          other_file = Gio::File.new(lib_other_file, :none)
+          # Generator::GObjectArgPlan
+          event_type = Gio::FileMonitorEvent.new(lib_event_type, :none)
+          ::Box(Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(file, other_file, event_type)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : UInt32, box : Pointer(Void)) {
-          sender = Gio::FileMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::File__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = (lib_arg1.null? ? nil : Gio::File__Impl.new(lib_arg1, GICrystal::Transfer::None))
-          arg2 = Gio::FileMonitorEvent.new(lib_arg2)
-          ::Box(Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
-        }
+      def connect(handler : Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gio::FileMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          file = Gio::File.new(lib_file, :none)
+          # Generator::NullableArrayPlan
+          other_file = (lib_other_file.null? ? nil : Gio::File__Impl.new(lib_other_file, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          other_file = Gio::File.new(lib_other_file, :none)
+          # Generator::GObjectArgPlan
+          event_type = Gio::FileMonitorEvent.new(lib_event_type, :none)
+          ::Box(Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(_sender, file, other_file, event_type)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : UInt32, box : Pointer(Void)) {
-          sender = Gio::FileMonitor.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gio::File__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = (lib_arg1.null? ? nil : Gio::File__Impl.new(lib_arg1, GICrystal::Transfer::None))
-          arg2 = Gio::FileMonitorEvent.new(lib_arg2)
-          ::Box(Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(box).call(sender, arg0, arg1, arg2)
-        }
+      def connect_after(handler : Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gio::FileMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          file = Gio::File.new(lib_file, :none)
+          # Generator::NullableArrayPlan
+          other_file = (lib_other_file.null? ? nil : Gio::File__Impl.new(lib_other_file, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          other_file = Gio::File.new(lib_other_file, :none)
+          # Generator::GObjectArgPlan
+          event_type = Gio::FileMonitorEvent.new(lib_event_type, :none)
+          ::Box(Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(_sender, file, other_file, event_type)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(file : Gio::File, other_file : Gio::File?, event_type : Gio::FileMonitorEvent) : Nil

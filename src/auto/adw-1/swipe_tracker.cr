@@ -25,6 +25,17 @@ module Adw
         sizeof(LibAdw::SwipeTracker), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -71,6 +82,8 @@ module Adw
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -164,6 +177,7 @@ module Adw
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Gets whether to allow swiping for more than one snap point at a time.
@@ -315,46 +329,46 @@ module Adw
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Adw::SwipeTracker, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Adw::SwipeTracker, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(Adw::SwipeTracker, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Adw::SwipeTracker, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Adw::SwipeTracker, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Adw::SwipeTracker, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(Adw::SwipeTracker, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Adw::SwipeTracker, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil
@@ -396,54 +410,54 @@ module Adw
         connect(block)
       end
 
-      def connect(block : Proc(Float64, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Float64, Float64, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect(handler : Proc(Float64, Float64, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_velocity : Float64, lib_to : Float64, _lib_box : Pointer(Void)) {
+          velocity = lib_velocity
+          to = lib_to
+          ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(velocity, to)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Float64, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Float64, Float64, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect_after(handler : Proc(Float64, Float64, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_velocity : Float64, lib_to : Float64, _lib_box : Pointer(Void)) {
+          velocity = lib_velocity
+          to = lib_to
+          ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(velocity, to)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Adw::SwipeTracker, Float64, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Adw::SwipeTracker, Float64, Float64, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect(handler : Proc(Adw::SwipeTracker, Float64, Float64, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_velocity : Float64, lib_to : Float64, _lib_box : Pointer(Void)) {
+          _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
+          velocity = lib_velocity
+          to = lib_to
+          ::Box(Proc(Adw::SwipeTracker, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, velocity, to)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Adw::SwipeTracker, Float64, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, lib_arg1 : Float64, box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          arg1 = lib_arg1
-          ::Box(Proc(Adw::SwipeTracker, Float64, Float64, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect_after(handler : Proc(Adw::SwipeTracker, Float64, Float64, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_velocity : Float64, lib_to : Float64, _lib_box : Pointer(Void)) {
+          _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
+          velocity = lib_velocity
+          to = lib_to
+          ::Box(Proc(Adw::SwipeTracker, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, velocity, to)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(velocity : Float64, to : Float64) : Nil
@@ -483,50 +497,54 @@ module Adw
         connect(block)
       end
 
-      def connect(block : Proc(Adw::NavigationDirection, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Adw::NavigationDirection.new(lib_arg0)
-          ::Box(Proc(Adw::NavigationDirection, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Adw::NavigationDirection, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          direction = Adw::NavigationDirection.new(lib_direction, :none)
+          ::Box(Proc(Adw::NavigationDirection, Nil)).unbox(_lib_box).call(direction)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Adw::NavigationDirection, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Adw::NavigationDirection.new(lib_arg0)
-          ::Box(Proc(Adw::NavigationDirection, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Adw::NavigationDirection, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          direction = Adw::NavigationDirection.new(lib_direction, :none)
+          ::Box(Proc(Adw::NavigationDirection, Nil)).unbox(_lib_box).call(direction)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Adw::NavigationDirection.new(lib_arg0)
-          ::Box(Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          direction = Adw::NavigationDirection.new(lib_direction, :none)
+          ::Box(Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil)).unbox(_lib_box).call(_sender, direction)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Adw::NavigationDirection.new(lib_arg0)
-          ::Box(Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          direction = Adw::NavigationDirection.new(lib_direction, :none)
+          ::Box(Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil)).unbox(_lib_box).call(_sender, direction)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(direction : Adw::NavigationDirection) : Nil
@@ -563,50 +581,50 @@ module Adw
         connect(block)
       end
 
-      def connect(block : Proc(Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          ::Box(Proc(Float64, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Float64, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_progress : Float64, _lib_box : Pointer(Void)) {
+          progress = lib_progress
+          ::Box(Proc(Float64, Nil)).unbox(_lib_box).call(progress)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, box : Pointer(Void)) {
-          arg0 = lib_arg0
-          ::Box(Proc(Float64, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Float64, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_progress : Float64, _lib_box : Pointer(Void)) {
+          progress = lib_progress
+          ::Box(Proc(Float64, Nil)).unbox(_lib_box).call(progress)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Adw::SwipeTracker, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          ::Box(Proc(Adw::SwipeTracker, Float64, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Adw::SwipeTracker, Float64, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_progress : Float64, _lib_box : Pointer(Void)) {
+          _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
+          progress = lib_progress
+          ::Box(Proc(Adw::SwipeTracker, Float64, Nil)).unbox(_lib_box).call(_sender, progress)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Adw::SwipeTracker, Float64, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Float64, box : Pointer(Void)) {
-          sender = Adw::SwipeTracker.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = lib_arg0
-          ::Box(Proc(Adw::SwipeTracker, Float64, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Adw::SwipeTracker, Float64, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_progress : Float64, _lib_box : Pointer(Void)) {
+          _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
+          progress = lib_progress
+          ::Box(Proc(Adw::SwipeTracker, Float64, Nil)).unbox(_lib_box).call(_sender, progress)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(progress : Float64) : Nil

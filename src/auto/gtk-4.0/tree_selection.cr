@@ -37,6 +37,17 @@ module Gtk
         sizeof(LibGtk::TreeSelection), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -58,6 +69,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -119,12 +132,9 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      model = Pointer(Pointer(Void)).null
-      # Generator::OutArgUsedInReturnPlan
-      iter = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      model = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
+      iter = Pointer(Void).null           # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
-
       # C call
       _retval = LibGtk.gtk_tree_selection_get_selected(self, model, iter)
 
@@ -149,7 +159,6 @@ module Gtk
 
       # Generator::OutArgUsedInReturnPlan
       model = Pointer(Pointer(Void)).null
-
       # C call
       _retval = LibGtk.gtk_tree_selection_get_selected_rows(self, model)
 
@@ -247,7 +256,7 @@ module Gtk
     # Calls a function for each selected node. Note that you cannot modify
     # the tree or selection from within this function. As a result,
     # gtk_tree_selection_get_selected_rows() might be more useful.
-    def selected_foreach(func : Pointer(Void), data : Pointer(Void)?) : Nil
+    def selected_foreach(func : Gtk::TreeSelectionForeachFunc, data : Pointer(Void)?) : Nil
       # gtk_tree_selection_selected_foreach: (Method)
       # @data: (nullable)
       # Returns: (transfer none)
@@ -284,25 +293,31 @@ module Gtk
     # giving some control over which nodes are selected. The select function
     # should return %TRUE if the state of the node may be toggled, and %FALSE
     # if the state of the node should be left unchanged.
-    def set_select_function(func : Pointer(Void)?, data : Pointer(Void)?, destroy : Pointer(Void)) : Nil
+    def select_function=(func : Gtk::TreeSelectionFunc?) : Nil
       # gtk_tree_selection_set_select_function: (Method)
       # @func: (nullable)
       # @data: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      func = if func.nil?
-               LibGtk::TreeSelectionFunc.null
-             else
-               func.to_unsafe
-             end
-
-      # Generator::NullableArrayPlan
-      data = if data.nil?
-               Pointer(Void).null
-             else
-               data.to_unsafe
-             end
+      # Generator::CallbackArgPlan
+      if func
+        _box = ::Box.box(func)
+        func = ->(lib_selection : Pointer(Void), lib_model : Pointer(Void), lib_path : Pointer(Void), lib_path_currently_selected : LibC::Int, lib_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          selection = Gtk::TreeSelection.new(lib_selection, :none)
+          # Generator::GObjectArgPlan
+          model = Gtk::TreeModel.new(lib_model, :none)
+          # Generator::GObjectArgPlan
+          path = Gtk::TreePath.new(lib_path, :none)
+          path_currently_selected = lib_path_currently_selected
+          data = lib_data
+          ::Box(Proc(Gtk::TreeSelection, Gtk::TreeModel, Gtk::TreePath, Bool, Bool)).unbox(data).call(selection, model, path, path_currently_selected)
+        }.pointer
+        data = GICrystal::ClosureDataManager.register(_box)
+        destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        func = data = destroy = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_tree_selection_set_select_function(self, func, data, destroy)
@@ -383,46 +398,46 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(box).call
-        }
+      def connect_after(handler : Proc(Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          ::Box(Proc(Nil)).unbox(_lib_box).call
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::TreeSelection, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::TreeSelection.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeSelection, Nil)).unbox(box).call(sender)
-        }
+      def connect(handler : Proc(Gtk::TreeSelection, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::TreeSelection.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeSelection, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::TreeSelection, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::TreeSelection.new(lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeSelection, Nil)).unbox(box).call(sender)
-        }
+      def connect_after(handler : Proc(Gtk::TreeSelection, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::TreeSelection.new(_lib_sender, GICrystal::Transfer::None)
+          ::Box(Proc(Gtk::TreeSelection, Nil)).unbox(_lib_box).call(_sender)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit : Nil

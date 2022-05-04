@@ -31,6 +31,17 @@ module Gtk
         sizeof(LibGtk::BuilderCScope), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -56,6 +67,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Adds the @callback_symbol to the scope of @builder under the
@@ -66,7 +78,7 @@ module Gtk
     # are added. Using this method allows for better encapsulation as it
     # does not require that callback symbols be declared in the global
     # namespace.
-    def add_callback_symbol(callback_name : ::String, callback_symbol : Pointer(Void)) : Nil
+    def add_callback_symbol(callback_name : ::String, callback_symbol : GObject::Callback) : Nil
       # gtk_builder_cscope_add_callback_symbol: (Method)
       # Returns: (transfer none)
 

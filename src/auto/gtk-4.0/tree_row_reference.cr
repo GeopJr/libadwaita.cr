@@ -37,7 +37,8 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval unless _retval.null?
+      @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id)) unless _retval.null?
     end
 
     def self.new_proxy(proxy : GObject::Object, model : Gtk::TreeModel, path : Gtk::TreePath) : self?

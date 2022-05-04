@@ -23,9 +23,20 @@ module Gsk
         sizeof(LibGsk::RenderNode), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_param_spec_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_param_spec_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
-      LibGObject.gsk_render_node_ref(self) unless transfer.full?
+      LibGObject.gsk_render_node_ref(self) if transfer.none?
     end
 
     # Called by the garbage collector. Decreases the reference count of object.
@@ -34,6 +45,8 @@ module Gsk
       {% if flag?(:debugmemory) %}
         LibC.printf("~%s at %p - ref count: %d\n", self.class.name.to_unsafe, self, ref_count)
       {% end %}
+      LibGObject.g_param_spec_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).null)
+      LibGObject.g_param_spec_set_qdata(self, GICrystal::GC_COLLECTED_QDATA_KEY, Pointer(Void).new(0x1))
       LibGObject.gsk_render_node_unref(self)
     end
 
@@ -65,18 +78,11 @@ module Gsk
     # Loads data previously created via `Gsk::RenderNode#serialize`.
     #
     # For a discussion of the supported format, see that function.
-    def self.deserialize(bytes : GLib::Bytes, error_func : Pointer(Void)?, user_data : Pointer(Void)?) : Gsk::RenderNode?
+    def self.deserialize(bytes : GLib::Bytes, error_func : Gsk::ParseErrorFunc?, user_data : Pointer(Void)?) : Gsk::RenderNode?
       # gsk_render_node_deserialize: (None)
       # @error_func: (nullable)
       # @user_data: (nullable)
       # Returns: (transfer full)
-
-      # Generator::NullableArrayPlan
-      error_func = if error_func.nil?
-                     LibGsk::ParseErrorFunc.null
-                   else
-                     error_func.to_unsafe
-                   end
 
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
@@ -121,7 +127,6 @@ module Gsk
 
       # Generator::CallerAllocatesPlan
       bounds = Graphene::Rect.new
-
       # C call
       LibGsk.gsk_render_node_get_bounds(self, bounds)
 

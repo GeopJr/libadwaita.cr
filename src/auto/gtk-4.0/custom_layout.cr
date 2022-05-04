@@ -18,6 +18,17 @@ module Gtk
         sizeof(LibGtk::CustomLayout), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -33,17 +44,10 @@ module Gtk
     # Legacy layout managers map to the old `GtkWidget` size negotiation
     # virtual functions, and are meant to be used during the transition
     # from layout containers to layout manager delegates.
-    def initialize(request_mode : Pointer(Void)?, measure : Pointer(Void), allocate : Pointer(Void))
+    def initialize(request_mode : Gtk::CustomRequestModeFunc?, measure : Gtk::CustomMeasureFunc, allocate : Gtk::CustomAllocateFunc)
       # gtk_custom_layout_new: (Constructor)
       # @request_mode: (nullable)
       # Returns: (transfer full)
-
-      # Generator::NullableArrayPlan
-      request_mode = if request_mode.nil?
-                       LibGtk::CustomRequestModeFunc.null
-                     else
-                       request_mode.to_unsafe
-                     end
 
       # C call
       _retval = LibGtk.gtk_custom_layout_new(request_mode, measure, allocate)
@@ -51,6 +55,7 @@ module Gtk
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
   end
 end

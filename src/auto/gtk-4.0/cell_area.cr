@@ -343,6 +343,17 @@ module Gtk
         sizeof(LibGtk::CellArea), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -375,6 +386,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -632,7 +645,7 @@ module Gtk
     end
 
     # Calls @callback for every `GtkCellRenderer` in @area.
-    def foreach(callback : Pointer(Void), callback_data : Pointer(Void)?) : Nil
+    def foreach(callback : Gtk::CellCallback, callback_data : Pointer(Void)?) : Nil
       # gtk_cell_area_foreach: (Method)
       # @callback_data: (nullable)
       # Returns: (transfer none)
@@ -652,7 +665,7 @@ module Gtk
 
     # Calls @callback for every `GtkCellRenderer` in @area with the
     # allocated rectangle inside @cell_area.
-    def foreach_alloc(context : Gtk::CellAreaContext, widget : Gtk::Widget, cell_area : Gdk::Rectangle, background_area : Gdk::Rectangle, callback : Pointer(Void), callback_data : Pointer(Void)?) : Nil
+    def foreach_alloc(context : Gtk::CellAreaContext, widget : Gtk::Widget, cell_area : Gdk::Rectangle, background_area : Gdk::Rectangle, callback : Gtk::CellAllocCallback, callback_data : Pointer(Void)?) : Nil
       # gtk_cell_area_foreach_alloc: (Method)
       # @callback_data: (nullable)
       # Returns: (transfer none)
@@ -679,7 +692,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       allocation = Gdk::Rectangle.new
-
       # C call
       LibGtk.gtk_cell_area_get_cell_allocation(self, context, widget, renderer, cell_area, allocation)
 
@@ -696,10 +708,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      alloc_area = Pointer(Void).null
-      # Generator::CallerAllocatesPlan
+      alloc_area = Pointer(Void).null # Generator::CallerAllocatesPlan
       alloc_area = Gdk::Rectangle.new
-
       # C call
       _retval = LibGtk.gtk_cell_area_get_cell_at_position(self, context, widget, cell_area, x, y, alloc_area)
 
@@ -812,10 +822,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      minimum_height = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      minimum_height = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_get_preferred_height(self, context, widget, minimum_height, natural_height)
 
@@ -843,10 +851,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      minimum_height = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      minimum_height = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_get_preferred_height_for_width(self, context, widget, width, minimum_height, natural_height)
 
@@ -867,10 +873,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      minimum_width = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      minimum_width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_get_preferred_width(self, context, widget, minimum_width, natural_width)
 
@@ -898,10 +902,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      minimum_width = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      minimum_width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_get_preferred_width_for_height(self, context, widget, height, minimum_width, natural_width)
 
@@ -945,7 +947,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       inner_area = Gdk::Rectangle.new
-
       # C call
       LibGtk.gtk_cell_area_inner_cell_area(self, widget, cell_area, inner_area)
 
@@ -1017,10 +1018,8 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      minimum_size = Pointer(Int32).null
-      # Generator::OutArgUsedInReturnPlan
+      minimum_size = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_size = Pointer(Int32).null
-
       # C call
       LibGtk.gtk_cell_area_request_renderer(self, renderer, orientation, widget, for_size, minimum_size, natural_size)
 
@@ -1107,62 +1106,74 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(Void), lib_arg3 : Pointer(LibC::Char), box : Pointer(Void)) {
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::CellEditable__Impl.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = Gdk::Rectangle.new(lib_arg2, GICrystal::Transfer::None)
-          arg3 = ::String.new(lib_arg3)
-          ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
-        }
+      def connect(handler : Proc(Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_editable : Pointer(Void), lib_cell_area : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          # Generator::GObjectArgPlan
+          editable = Gtk::CellEditable.new(lib_editable, :none)
+          # Generator::GObjectArgPlan
+          cell_area = Gdk::Rectangle.new(lib_cell_area, :none)
+          path = lib_path
+          ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil)).unbox(_lib_box).call(renderer, editable, cell_area, path)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(Void), lib_arg3 : Pointer(LibC::Char), box : Pointer(Void)) {
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::CellEditable__Impl.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = Gdk::Rectangle.new(lib_arg2, GICrystal::Transfer::None)
-          arg3 = ::String.new(lib_arg3)
-          ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
-        }
+      def connect_after(handler : Proc(Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_editable : Pointer(Void), lib_cell_area : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          # Generator::GObjectArgPlan
+          editable = Gtk::CellEditable.new(lib_editable, :none)
+          # Generator::GObjectArgPlan
+          cell_area = Gdk::Rectangle.new(lib_cell_area, :none)
+          path = lib_path
+          ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil)).unbox(_lib_box).call(renderer, editable, cell_area, path)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(Void), lib_arg3 : Pointer(LibC::Char), box : Pointer(Void)) {
-          sender = Gtk::CellArea.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::CellEditable__Impl.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = Gdk::Rectangle.new(lib_arg2, GICrystal::Transfer::None)
-          arg3 = ::String.new(lib_arg3)
-          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
-        }
+      def connect(handler : Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_editable : Pointer(Void), lib_cell_area : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          _sender = Gtk::CellArea.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          # Generator::GObjectArgPlan
+          editable = Gtk::CellEditable.new(lib_editable, :none)
+          # Generator::GObjectArgPlan
+          cell_area = Gdk::Rectangle.new(lib_cell_area, :none)
+          path = lib_path
+          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil)).unbox(_lib_box).call(_sender, renderer, editable, cell_area, path)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : Pointer(Void), lib_arg3 : Pointer(LibC::Char), box : Pointer(Void)) {
-          sender = Gtk::CellArea.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::CellEditable__Impl.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = Gdk::Rectangle.new(lib_arg2, GICrystal::Transfer::None)
-          arg3 = ::String.new(lib_arg3)
-          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
-        }
+      def connect_after(handler : Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_editable : Pointer(Void), lib_cell_area : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          _sender = Gtk::CellArea.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          # Generator::GObjectArgPlan
+          editable = Gtk::CellEditable.new(lib_editable, :none)
+          # Generator::GObjectArgPlan
+          cell_area = Gdk::Rectangle.new(lib_cell_area, :none)
+          path = lib_path
+          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Gdk::Rectangle, ::String, Nil)).unbox(_lib_box).call(_sender, renderer, editable, cell_area, path)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(renderer : Gtk::CellRenderer, editable : Gtk::CellEditable, cell_area : Gdk::Rectangle, path : ::String) : Nil
@@ -1199,62 +1210,70 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::TreeModel__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = GICrystal.to_bool(lib_arg2)
-          arg3 = GICrystal.to_bool(lib_arg3)
-          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
-        }
+      def connect(handler : Proc(Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_is_expander : LibC::Int, lib_is_expanded : LibC::Int, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          model = Gtk::TreeModel.new(lib_model, :none)
+          # Generator::GObjectArgPlan
+          iter = Gtk::TreeIter.new(lib_iter, :none)
+          is_expander = lib_is_expander
+          is_expanded = lib_is_expanded
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil)).unbox(_lib_box).call(model, iter, is_expander, is_expanded)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
-          arg0 = Gtk::TreeModel__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = GICrystal.to_bool(lib_arg2)
-          arg3 = GICrystal.to_bool(lib_arg3)
-          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil)).unbox(box).call(arg0, arg1, arg2, arg3)
-        }
+      def connect_after(handler : Proc(Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_is_expander : LibC::Int, lib_is_expanded : LibC::Int, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          model = Gtk::TreeModel.new(lib_model, :none)
+          # Generator::GObjectArgPlan
+          iter = Gtk::TreeIter.new(lib_iter, :none)
+          is_expander = lib_is_expander
+          is_expanded = lib_is_expanded
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil)).unbox(_lib_box).call(model, iter, is_expander, is_expanded)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::CellArea, Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
-          sender = Gtk::CellArea.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::TreeModel__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = GICrystal.to_bool(lib_arg2)
-          arg3 = GICrystal.to_bool(lib_arg3)
-          ::Box(Proc(Gtk::CellArea, Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
-        }
+      def connect(handler : Proc(Gtk::CellArea, Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_is_expander : LibC::Int, lib_is_expanded : LibC::Int, _lib_box : Pointer(Void)) {
+          _sender = Gtk::CellArea.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          model = Gtk::TreeModel.new(lib_model, :none)
+          # Generator::GObjectArgPlan
+          iter = Gtk::TreeIter.new(lib_iter, :none)
+          is_expander = lib_is_expander
+          is_expanded = lib_is_expanded
+          ::Box(Proc(Gtk::CellArea, Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil)).unbox(_lib_box).call(_sender, model, iter, is_expander, is_expanded)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::CellArea, Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), lib_arg2 : LibC::Int, lib_arg3 : LibC::Int, box : Pointer(Void)) {
-          sender = Gtk::CellArea.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::TreeModel__Impl.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::TreeIter.new(lib_arg1, GICrystal::Transfer::None)
-          arg2 = GICrystal.to_bool(lib_arg2)
-          arg3 = GICrystal.to_bool(lib_arg3)
-          ::Box(Proc(Gtk::CellArea, Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil)).unbox(box).call(sender, arg0, arg1, arg2, arg3)
-        }
+      def connect_after(handler : Proc(Gtk::CellArea, Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_is_expander : LibC::Int, lib_is_expanded : LibC::Int, _lib_box : Pointer(Void)) {
+          _sender = Gtk::CellArea.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          model = Gtk::TreeModel.new(lib_model, :none)
+          # Generator::GObjectArgPlan
+          iter = Gtk::TreeIter.new(lib_iter, :none)
+          is_expander = lib_is_expander
+          is_expanded = lib_is_expanded
+          ::Box(Proc(Gtk::CellArea, Gtk::TreeModel, Gtk::TreeIter, Bool, Bool, Nil)).unbox(_lib_box).call(_sender, model, iter, is_expander, is_expanded)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(model : Gtk::TreeModel, iter : Gtk::TreeIter, is_expander : Bool, is_expanded : Bool) : Nil
@@ -1298,54 +1317,58 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gtk::CellRenderer, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(LibC::Char), box : Pointer(Void)) {
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = ::String.new(lib_arg1)
-          ::Box(Proc(Gtk::CellRenderer, ::String, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect(handler : Proc(Gtk::CellRenderer, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          path = lib_path
+          ::Box(Proc(Gtk::CellRenderer, ::String, Nil)).unbox(_lib_box).call(renderer, path)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::CellRenderer, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(LibC::Char), box : Pointer(Void)) {
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = ::String.new(lib_arg1)
-          ::Box(Proc(Gtk::CellRenderer, ::String, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gtk::CellRenderer, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          path = lib_path
+          ::Box(Proc(Gtk::CellRenderer, ::String, Nil)).unbox(_lib_box).call(renderer, path)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::CellArea, Gtk::CellRenderer, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(LibC::Char), box : Pointer(Void)) {
-          sender = Gtk::CellArea.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = ::String.new(lib_arg1)
-          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, ::String, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect(handler : Proc(Gtk::CellArea, Gtk::CellRenderer, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          _sender = Gtk::CellArea.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          path = lib_path
+          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, ::String, Nil)).unbox(_lib_box).call(_sender, renderer, path)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::CellArea, Gtk::CellRenderer, ::String, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(LibC::Char), box : Pointer(Void)) {
-          sender = Gtk::CellArea.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = ::String.new(lib_arg1)
-          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, ::String, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gtk::CellArea, Gtk::CellRenderer, ::String, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
+          _sender = Gtk::CellArea.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          path = lib_path
+          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, ::String, Nil)).unbox(_lib_box).call(_sender, renderer, path)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(renderer : Gtk::CellRenderer, path : ::String) : Nil
@@ -1383,54 +1406,62 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gtk::CellRenderer, Gtk::CellEditable, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::CellEditable__Impl.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect(handler : Proc(Gtk::CellRenderer, Gtk::CellEditable, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_editable : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          # Generator::GObjectArgPlan
+          editable = Gtk::CellEditable.new(lib_editable, :none)
+          ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, Nil)).unbox(_lib_box).call(renderer, editable)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::CellRenderer, Gtk::CellEditable, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::CellEditable__Impl.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gtk::CellRenderer, Gtk::CellEditable, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_editable : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          # Generator::GObjectArgPlan
+          editable = Gtk::CellEditable.new(lib_editable, :none)
+          ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, Nil)).unbox(_lib_box).call(renderer, editable)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::CellArea.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::CellEditable__Impl.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect(handler : Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_editable : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::CellArea.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          # Generator::GObjectArgPlan
+          editable = Gtk::CellEditable.new(lib_editable, :none)
+          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Nil)).unbox(_lib_box).call(_sender, renderer, editable)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::CellArea.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::CellRenderer.new(lib_arg0, GICrystal::Transfer::None)
-          arg1 = Gtk::CellEditable__Impl.new(lib_arg1, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_renderer : Pointer(Void), lib_editable : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::CellArea.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          renderer = Gtk::CellRenderer.new(lib_renderer, :none)
+          # Generator::GObjectArgPlan
+          editable = Gtk::CellEditable.new(lib_editable, :none)
+          ::Box(Proc(Gtk::CellArea, Gtk::CellRenderer, Gtk::CellEditable, Nil)).unbox(_lib_box).call(_sender, renderer, editable)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(renderer : Gtk::CellRenderer, editable : Gtk::CellEditable) : Nil

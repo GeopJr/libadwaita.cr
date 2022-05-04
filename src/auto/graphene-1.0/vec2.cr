@@ -64,7 +64,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_add(self, b, res)
 
@@ -80,7 +79,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_divide(self, b, res)
 
@@ -165,6 +163,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 2") if src.size < 2
+
       src = src.to_a.to_unsafe
 
       # C call
@@ -198,7 +198,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_interpolate(self, v2, factor, res)
 
@@ -226,7 +225,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_max(self, b, res)
 
@@ -242,7 +240,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_min(self, b, res)
 
@@ -258,7 +255,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_multiply(self, b, res)
 
@@ -286,7 +282,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_negate(self, res)
 
@@ -302,7 +297,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_normalize(self, res)
 
@@ -318,7 +312,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_scale(self, factor, res)
 
@@ -334,7 +327,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
-
       # C call
       LibGraphene.graphene_vec2_subtract(self, b, res)
 
@@ -349,6 +341,8 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::ArrayArgPlan
+      raise ArgumentError.new("Enumerable of size < 2") if dest.size < 2
+
       dest = dest.to_a.to_unsafe
 
       # C call

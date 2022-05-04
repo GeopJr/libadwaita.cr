@@ -40,6 +40,7 @@ module Pango
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def copy : Pango::TabArray
@@ -107,10 +108,8 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      alignment = Pointer(UInt32).null
-      # Generator::OutArgUsedInReturnPlan
+      alignment = Pointer(UInt32).null # Generator::OutArgUsedInReturnPlan
       location = Pointer(Int32).null
-
       # C call
       LibPango.pango_tab_array_get_tab(self, tab_index, alignment, location)
 
@@ -124,10 +123,8 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      alignments = Pointer(Pointer(UInt32)).null
-      # Generator::OutArgUsedInReturnPlan
-      locations = Pointer(Pointer(Int32)).null
-      # Generator::ArrayArgPlan
+      alignments = Pointer(Pointer(UInt32)).null # Generator::OutArgUsedInReturnPlan
+      locations = Pointer(Pointer(Int32)).null   # Generator::ArrayArgPlan
       locations = locations.to_a.to_unsafe
 
       # C call

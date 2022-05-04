@@ -29,6 +29,17 @@ module Gio
         sizeof(LibGio::BufferedInputStream), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -60,6 +71,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -94,6 +107,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Creates a new #GBufferedInputStream from the given @base_stream,
@@ -165,7 +179,7 @@ module Gio
     #
     # If @count is -1 then the attempted read size is equal to the number
     # of bytes that are required to fill the buffer.
-    def fill_async(count : Int64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def fill_async(count : Int64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_buffered_input_stream_fill_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -178,14 +192,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -251,8 +257,7 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      count = buffer.size
-      # Generator::ArrayArgPlan
+      count = buffer.size # Generator::ArrayArgPlan
       buffer = buffer.to_a.to_unsafe
 
       # C call
@@ -273,7 +278,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       count = 0_u64
-
       # C call
       _retval = LibGio.g_buffered_input_stream_peek_buffer(self, pointerof(count))
 

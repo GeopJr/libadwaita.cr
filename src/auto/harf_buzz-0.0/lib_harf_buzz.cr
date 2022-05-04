@@ -309,7 +309,7 @@ lib LibHarfBuzz
   fun hb_buffer_set_invisible_glyph(buffer : Pointer(Void), invisible : UInt32) : Void
   fun hb_buffer_set_language(buffer : Pointer(Void), language : Pointer(Void)) : Void
   fun hb_buffer_set_length(buffer : Pointer(Void), length : UInt32) : Int32
-  fun hb_buffer_set_message_func(buffer : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_buffer_set_message_func(buffer : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun hb_buffer_set_not_found_glyph(buffer : Pointer(Void), not_found : UInt32) : Void
   fun hb_buffer_set_replacement_codepoint(buffer : Pointer(Void), replacement : UInt32) : Void
   fun hb_buffer_set_script(buffer : Pointer(Void), script : UInt32) : Void
@@ -326,11 +326,11 @@ lib LibHarfBuzz
   fun hb_draw_funcs_create : Pointer(Void)
   fun hb_draw_funcs_is_immutable(dfuncs : Pointer(Void)) : Int32
   fun hb_draw_funcs_make_immutable(dfuncs : Pointer(Void)) : Void
-  fun hb_draw_funcs_set_close_path_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_draw_funcs_set_cubic_to_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_draw_funcs_set_line_to_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_draw_funcs_set_move_to_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_draw_funcs_set_quadratic_to_func(dfuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_draw_funcs_set_close_path_func(dfuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_draw_funcs_set_cubic_to_func(dfuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_draw_funcs_set_line_to_func(dfuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_draw_funcs_set_move_to_func(dfuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_draw_funcs_set_quadratic_to_func(dfuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun hb_draw_line_to(dfuncs : Pointer(Void), draw_data : Pointer(Void), st : Pointer(Void), to_x : Float32, to_y : Float32) : Void
   fun hb_draw_move_to(dfuncs : Pointer(Void), draw_data : Pointer(Void), st : Pointer(Void), to_x : Float32, to_y : Float32) : Void
   fun hb_draw_quadratic_to(dfuncs : Pointer(Void), draw_data : Pointer(Void), st : Pointer(Void), control_x : Float32, control_y : Float32, to_x : Float32, to_y : Float32) : Void
@@ -341,7 +341,7 @@ lib LibHarfBuzz
   fun hb_face_collect_variation_unicodes(face : Pointer(Void), variation_selector : UInt32, _out : Pointer(Void)) : Void
   fun hb_face_count(blob : Pointer(Void)) : UInt32
   fun hb_face_create(blob : Pointer(Void), index : UInt32) : Pointer(Void)
-  fun hb_face_create_for_tables(reference_table_func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Pointer(Void)
+  fun hb_face_create_for_tables(reference_table_func : Void*, user_data : Pointer(Void), destroy : Void*) : Pointer(Void)
   fun hb_face_get_empty : Pointer(Void)
   fun hb_face_get_glyph_count(face : Pointer(Void)) : UInt32
   fun hb_face_get_index(face : Pointer(Void)) : UInt32
@@ -364,25 +364,25 @@ lib LibHarfBuzz
   fun hb_font_funcs_get_empty : Pointer(Void)
   fun hb_font_funcs_is_immutable(ffuncs : Pointer(Void)) : Int32
   fun hb_font_funcs_make_immutable(ffuncs : Pointer(Void)) : Void
-  fun hb_font_funcs_set_font_h_extents_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_font_v_extents_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_contour_point_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_extents_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_from_name_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_h_advance_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_h_advances_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_h_kerning_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_h_origin_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_name_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_shape_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_v_advance_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_v_advances_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_v_kerning_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_glyph_v_origin_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_nominal_glyph_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_nominal_glyphs_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_funcs_set_variation_glyph_func(ffuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_font_funcs_set_font_h_extents_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_font_v_extents_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_contour_point_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_extents_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_from_name_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_h_advance_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_h_advances_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_h_kerning_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_h_origin_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_name_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_shape_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_v_advance_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_v_advances_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_v_kerning_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_glyph_v_origin_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_nominal_glyph_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_nominal_glyphs_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_funcs_set_variation_glyph_func(ffuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun hb_font_get_empty : Pointer(Void)
   fun hb_font_get_extents_for_direction(font : Pointer(Void), direction : UInt32, extents : Pointer(Void)) : Void
   fun hb_font_get_face(font : Pointer(Void)) : Pointer(Void)
@@ -423,8 +423,8 @@ lib LibHarfBuzz
   fun hb_font_is_immutable(font : Pointer(Void)) : Int32
   fun hb_font_make_immutable(font : Pointer(Void)) : Void
   fun hb_font_set_face(font : Pointer(Void), face : Pointer(Void)) : Void
-  fun hb_font_set_funcs(font : Pointer(Void), klass : Pointer(Void), font_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_font_set_funcs_data(font : Pointer(Void), font_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_font_set_funcs(font : Pointer(Void), klass : Pointer(Void), font_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_font_set_funcs_data(font : Pointer(Void), font_data : Pointer(Void), destroy : Void*) : Void
   fun hb_font_set_parent(font : Pointer(Void), parent : Pointer(Void)) : Void
   fun hb_font_set_ppem(font : Pointer(Void), x_ppem : UInt32, y_ppem : UInt32) : Void
   fun hb_font_set_ptem(font : Pointer(Void), ptem : Float32) : Void
@@ -614,7 +614,7 @@ lib LibHarfBuzz
   fun hb_shape_plan_get_shaper(shape_plan : Pointer(Void)) : Pointer(LibC::Char)
   fun hb_style_get_value(font : Pointer(Void), style_tag : UInt32) : Float32
   fun hb_tag_from_string(str : Pointer(UInt8), len : Int32) : UInt32
-  fun hb_tag_to_string(tag : UInt32, buf : Pointer(Pointer(UInt8[4]))) : Void
+  fun hb_tag_to_string(tag : UInt32, buf : Pointer(Pointer(UInt8))) : Void
   fun hb_unicode_combining_class(ufuncs : Pointer(Void), unicode : UInt32) : UInt32
   fun hb_unicode_compose(ufuncs : Pointer(Void), a : UInt32, b : UInt32, ab : Pointer(UInt32)) : Int32
   fun hb_unicode_decompose(ufuncs : Pointer(Void), ab : UInt32, a : Pointer(UInt32), b : Pointer(UInt32)) : Int32
@@ -626,14 +626,14 @@ lib LibHarfBuzz
   fun hb_unicode_funcs_get_parent(ufuncs : Pointer(Void)) : Pointer(Void)
   fun hb_unicode_funcs_is_immutable(ufuncs : Pointer(Void)) : Int32
   fun hb_unicode_funcs_make_immutable(ufuncs : Pointer(Void)) : Void
-  fun hb_unicode_funcs_set_combining_class_func(ufuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_unicode_funcs_set_compose_func(ufuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_unicode_funcs_set_decompose_compatibility_func(ufuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_unicode_funcs_set_decompose_func(ufuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_unicode_funcs_set_eastasian_width_func(ufuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_unicode_funcs_set_general_category_func(ufuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_unicode_funcs_set_mirroring_func(ufuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
-  fun hb_unicode_funcs_set_script_func(ufuncs : Pointer(Void), func : -> Void, user_data : Pointer(Void), destroy : -> Void) : Void
+  fun hb_unicode_funcs_set_combining_class_func(ufuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_unicode_funcs_set_compose_func(ufuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_unicode_funcs_set_decompose_compatibility_func(ufuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_unicode_funcs_set_decompose_func(ufuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_unicode_funcs_set_eastasian_width_func(ufuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_unicode_funcs_set_general_category_func(ufuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_unicode_funcs_set_mirroring_func(ufuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
+  fun hb_unicode_funcs_set_script_func(ufuncs : Pointer(Void), func : Void*, user_data : Pointer(Void), destroy : Void*) : Void
   fun hb_unicode_general_category(ufuncs : Pointer(Void), unicode : UInt32) : UInt32
   fun hb_unicode_mirroring(ufuncs : Pointer(Void), unicode : UInt32) : UInt32
   fun hb_unicode_script(ufuncs : Pointer(Void), unicode : UInt32) : UInt32

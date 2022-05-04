@@ -56,7 +56,7 @@ module GdkPixbuf
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(module_name : ::String? = nil, module_path : ::String? = nil, module _module : GModule::Module? = nil, info : GdkPixbuf::PixbufFormat? = nil, load : Pointer(Void)? = nil, load_xpm_data : Pointer(Void)? = nil, begin_load : Pointer(Void)? = nil, stop_load : Pointer(Void)? = nil, load_increment : Pointer(Void)? = nil, load_animation : Pointer(Void)? = nil, save : Pointer(Void)? = nil, save_to_callback : Pointer(Void)? = nil, is_save_option_supported : Pointer(Void)? = nil, _reserved1 : Pointer(Void)? = nil, _reserved2 : Pointer(Void)? = nil, _reserved3 : Pointer(Void)? = nil, _reserved4 : Pointer(Void)? = nil)
+    def self.new(module_name : ::String? = nil, module_path : ::String? = nil, module _module : GModule::Module? = nil, info : GdkPixbuf::PixbufFormat? = nil, load : GdkPixbuf::PixbufModuleLoadFunc? = nil, load_xpm_data : GdkPixbuf::PixbufModuleLoadXpmDataFunc? = nil, begin_load : Pointer(Void)? = nil, stop_load : GdkPixbuf::PixbufModuleStopLoadFunc? = nil, load_increment : GdkPixbuf::PixbufModuleIncrementLoadFunc? = nil, load_animation : GdkPixbuf::PixbufModuleLoadAnimationFunc? = nil, save : GdkPixbuf::PixbufModuleSaveFunc? = nil, save_to_callback : Pointer(Void)? = nil, is_save_option_supported : GdkPixbuf::PixbufModuleSaveOptionSupportedFunc? = nil, _reserved1 : Pointer(Void)? = nil, _reserved2 : Pointer(Void)? = nil, _reserved3 : Pointer(Void)? = nil, _reserved4 : Pointer(Void)? = nil)
       _ptr = Pointer(Void).malloc(136)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.module_name = module_name unless module_name.nil?
@@ -146,24 +146,24 @@ module GdkPixbuf
       value
     end
 
-    def load : Pointer(Void)
-      _var = (@pointer + 32).as(Pointer(LibGdkPixbuf::PixbufModuleLoadFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def load : GdkPixbuf::PixbufModuleLoadFunc
+      _var = (@pointer + 32).as(Pointer(Void*))
+      GdkPixbuf::PixbufModuleLoadFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def load=(value : Pointer(Void))
-      _var = (@pointer + 32).as(Pointer(LibGdkPixbuf::PixbufModuleLoadFunc))
+    def load=(value : GdkPixbuf::PixbufModuleLoadFunc)
+      _var = (@pointer + 32).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
-    def load_xpm_data : Pointer(Void)
-      _var = (@pointer + 40).as(Pointer(LibGdkPixbuf::PixbufModuleLoadXpmDataFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def load_xpm_data : GdkPixbuf::PixbufModuleLoadXpmDataFunc
+      _var = (@pointer + 40).as(Pointer(Void*))
+      GdkPixbuf::PixbufModuleLoadXpmDataFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def load_xpm_data=(value : Pointer(Void))
-      _var = (@pointer + 40).as(Pointer(LibGdkPixbuf::PixbufModuleLoadXpmDataFunc))
+    def load_xpm_data=(value : GdkPixbuf::PixbufModuleLoadXpmDataFunc)
+      _var = (@pointer + 40).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
@@ -183,46 +183,46 @@ module GdkPixbuf
       value
     end
 
-    def stop_load : Pointer(Void)
-      _var = (@pointer + 56).as(Pointer(LibGdkPixbuf::PixbufModuleStopLoadFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def stop_load : GdkPixbuf::PixbufModuleStopLoadFunc
+      _var = (@pointer + 56).as(Pointer(Void*))
+      GdkPixbuf::PixbufModuleStopLoadFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def stop_load=(value : Pointer(Void))
-      _var = (@pointer + 56).as(Pointer(LibGdkPixbuf::PixbufModuleStopLoadFunc))
+    def stop_load=(value : GdkPixbuf::PixbufModuleStopLoadFunc)
+      _var = (@pointer + 56).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
-    def load_increment : Pointer(Void)
-      _var = (@pointer + 64).as(Pointer(LibGdkPixbuf::PixbufModuleIncrementLoadFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def load_increment : GdkPixbuf::PixbufModuleIncrementLoadFunc
+      _var = (@pointer + 64).as(Pointer(Void*))
+      GdkPixbuf::PixbufModuleIncrementLoadFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def load_increment=(value : Pointer(Void))
-      _var = (@pointer + 64).as(Pointer(LibGdkPixbuf::PixbufModuleIncrementLoadFunc))
+    def load_increment=(value : GdkPixbuf::PixbufModuleIncrementLoadFunc)
+      _var = (@pointer + 64).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
-    def load_animation : Pointer(Void)
-      _var = (@pointer + 72).as(Pointer(LibGdkPixbuf::PixbufModuleLoadAnimationFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def load_animation : GdkPixbuf::PixbufModuleLoadAnimationFunc
+      _var = (@pointer + 72).as(Pointer(Void*))
+      GdkPixbuf::PixbufModuleLoadAnimationFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def load_animation=(value : Pointer(Void))
-      _var = (@pointer + 72).as(Pointer(LibGdkPixbuf::PixbufModuleLoadAnimationFunc))
+    def load_animation=(value : GdkPixbuf::PixbufModuleLoadAnimationFunc)
+      _var = (@pointer + 72).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
 
-    def save : Pointer(Void)
-      _var = (@pointer + 80).as(Pointer(LibGdkPixbuf::PixbufModuleSaveFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def save : GdkPixbuf::PixbufModuleSaveFunc
+      _var = (@pointer + 80).as(Pointer(Void*))
+      GdkPixbuf::PixbufModuleSaveFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def save=(value : Pointer(Void))
-      _var = (@pointer + 80).as(Pointer(LibGdkPixbuf::PixbufModuleSaveFunc))
+    def save=(value : GdkPixbuf::PixbufModuleSaveFunc)
+      _var = (@pointer + 80).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end
@@ -242,13 +242,13 @@ module GdkPixbuf
       value
     end
 
-    def is_save_option_supported : Pointer(Void)
-      _var = (@pointer + 96).as(Pointer(LibGdkPixbuf::PixbufModuleSaveOptionSupportedFunc))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def is_save_option_supported : GdkPixbuf::PixbufModuleSaveOptionSupportedFunc
+      _var = (@pointer + 96).as(Pointer(Void*))
+      GdkPixbuf::PixbufModuleSaveOptionSupportedFunc.new(_var, GICrystal::Transfer::None)
     end
 
-    def is_save_option_supported=(value : Pointer(Void))
-      _var = (@pointer + 96).as(Pointer(LibGdkPixbuf::PixbufModuleSaveOptionSupportedFunc))
+    def is_save_option_supported=(value : GdkPixbuf::PixbufModuleSaveOptionSupportedFunc)
+      _var = (@pointer + 96).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGdkPixbuf::PixbufModule))
       value
     end

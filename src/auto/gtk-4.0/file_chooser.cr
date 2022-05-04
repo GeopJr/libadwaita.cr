@@ -128,7 +128,6 @@ module Gtk
                 else
                   options.to_a.map(&.to_unsafe).to_unsafe
                 end
-
       # Generator::NullableArrayPlan
       option_labels = if option_labels.nil?
                         Pointer(Pointer(LibC::Char)).null

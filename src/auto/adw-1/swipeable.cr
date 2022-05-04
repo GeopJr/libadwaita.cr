@@ -48,7 +48,6 @@ module Adw
 
       # Generator::OutArgUsedInReturnPlan
       n_snap_points = 0
-
       # C call
       _retval = LibAdw.adw_swipeable_get_snap_points(self, pointerof(n_snap_points))
 
@@ -64,7 +63,6 @@ module Adw
 
       # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
-
       # C call
       LibAdw.adw_swipeable_get_swipe_area(self, navigation_direction, is_drag, rect)
 

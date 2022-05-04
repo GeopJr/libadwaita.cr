@@ -11,8 +11,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # Generator::OutArgUsedInReturnPlan
-      type = Pointer(Pointer(LibC::Char)).null
-      # Generator::NullableArrayPlan
+      type = Pointer(Pointer(LibC::Char)).null # Generator::NullableArrayPlan
       cancellable = if cancellable.nil?
                       Pointer(Void).null
                     else
@@ -30,7 +29,7 @@ module Gio
       Gio::InputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def load_async(size : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+    def load_async(size : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
       # g_loadable_icon_load_async: (Method)
       # @cancellable: (nullable)
       # @callback: (nullable)
@@ -43,14 +42,6 @@ module Gio
                     else
                       cancellable.to_unsafe
                     end
-
-      # Generator::NullableArrayPlan
-      callback = if callback.nil?
-                   LibGio::AsyncReadyCallback.null
-                 else
-                   callback.to_unsafe
-                 end
-
       # Generator::NullableArrayPlan
       user_data = if user_data.nil?
                     Pointer(Void).null
@@ -73,7 +64,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       type = Pointer(Pointer(LibC::Char)).null
-
       # C call
       _retval = LibGio.g_loadable_icon_load_finish(self, res, type, pointerof(_error))
 

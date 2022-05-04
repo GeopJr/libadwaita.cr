@@ -30,6 +30,17 @@ module Gtk
         sizeof(LibGtk::Filter), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -130,50 +141,54 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gtk::FilterChange, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::FilterChange.new(lib_arg0)
-          ::Box(Proc(Gtk::FilterChange, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gtk::FilterChange, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          change = Gtk::FilterChange.new(lib_change, :none)
+          ::Box(Proc(Gtk::FilterChange, Nil)).unbox(_lib_box).call(change)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::FilterChange, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          arg0 = Gtk::FilterChange.new(lib_arg0)
-          ::Box(Proc(Gtk::FilterChange, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gtk::FilterChange, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          change = Gtk::FilterChange.new(lib_change, :none)
+          ::Box(Proc(Gtk::FilterChange, Nil)).unbox(_lib_box).call(change)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::Filter, Gtk::FilterChange, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          sender = Gtk::Filter.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::FilterChange.new(lib_arg0)
-          ::Box(Proc(Gtk::Filter, Gtk::FilterChange, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gtk::Filter, Gtk::FilterChange, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gtk::Filter.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          change = Gtk::FilterChange.new(lib_change, :none)
+          ::Box(Proc(Gtk::Filter, Gtk::FilterChange, Nil)).unbox(_lib_box).call(_sender, change)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::Filter, Gtk::FilterChange, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : UInt32, box : Pointer(Void)) {
-          sender = Gtk::Filter.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = Gtk::FilterChange.new(lib_arg0)
-          ::Box(Proc(Gtk::Filter, Gtk::FilterChange, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gtk::Filter, Gtk::FilterChange, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gtk::Filter.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::GObjectArgPlan
+          change = Gtk::FilterChange.new(lib_change, :none)
+          ::Box(Proc(Gtk::Filter, Gtk::FilterChange, Nil)).unbox(_lib_box).call(_sender, change)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(change : Gtk::FilterChange) : Nil

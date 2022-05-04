@@ -101,6 +101,17 @@ module Gtk
         sizeof(LibGtk::Gesture), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -142,6 +153,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -182,7 +195,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
-
       # C call
       _retval = LibGtk.gtk_gesture_get_bounding_box(self, rect)
 
@@ -295,12 +307,9 @@ module Gtk
                  else
                    sequence.to_unsafe
                  end
-
       # Generator::OutArgUsedInReturnPlan
-      x = Pointer(Float64).null
-      # Generator::OutArgUsedInReturnPlan
+      x = Pointer(Float64).null # Generator::OutArgUsedInReturnPlan
       y = Pointer(Float64).null
-
       # C call
       _retval = LibGtk.gtk_gesture_get_point(self, sequence, x, y)
 
@@ -548,50 +557,62 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(sequence : Gdk::EventSequence?) : Nil
@@ -637,50 +658,62 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(sequence : Gdk::EventSequence?) : Nil
@@ -725,50 +758,62 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(sequence : Gdk::EventSequence?) : Nil
@@ -808,54 +853,70 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          arg1 = Gtk::EventSequenceState.new(lib_arg1)
-          ::Box(Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect(handler : Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), lib_state : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::GObjectArgPlan
+          state = Gtk::EventSequenceState.new(lib_state, :none)
+          ::Box(Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(_lib_box).call(sequence, state)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          arg1 = Gtk::EventSequenceState.new(lib_arg1)
-          ::Box(Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(box).call(arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), lib_state : UInt32, _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::GObjectArgPlan
+          state = Gtk::EventSequenceState.new(lib_state, :none)
+          ::Box(Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(_lib_box).call(sequence, state)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          arg1 = Gtk::EventSequenceState.new(lib_arg1)
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), lib_state : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::GObjectArgPlan
+          state = Gtk::EventSequenceState.new(lib_state, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(_lib_box).call(_sender, sequence, state)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), lib_arg1 : UInt32, box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          arg1 = Gtk::EventSequenceState.new(lib_arg1)
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(box).call(sender, arg0, arg1)
-        }
+      def connect_after(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), lib_state : UInt32, _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::GObjectArgPlan
+          state = Gtk::EventSequenceState.new(lib_state, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(_lib_box).call(_sender, sequence, state)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(sequence : Gdk::EventSequence?, state : Gtk::EventSequenceState) : Nil
@@ -894,50 +955,62 @@ module Gtk
         connect(block)
       end
 
-      def connect(block : Proc(Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(box).call(arg0)
-        }
+      def connect(handler : Proc(Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(box).call(arg0)
-        }
+      def connect_after(handler : Proc(Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 0)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(block : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
-        box = ::Box.box(block)
-        slot = ->(lib_sender : Pointer(Void), lib_arg0 : Pointer(Void), box : Pointer(Void)) {
-          sender = Gtk::Gesture.new(lib_sender, GICrystal::Transfer::None)
-          arg0 = (lib_arg0.null? ? nil : Gdk::EventSequence.new(lib_arg0, GICrystal::Transfer::None))
-          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(box).call(sender, arg0)
-        }
+      def connect_after(handler : Proc(Gtk::Gesture, Gdk::EventSequence?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::NullableArrayPlan
+          sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
+          # Generator::GObjectArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
+        }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, slot.pointer,
-          GICrystal::ClosureDataManager.register(box), ->GICrystal::ClosureDataManager.deregister, 1)
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
       def emit(sequence : Gdk::EventSequence?) : Nil

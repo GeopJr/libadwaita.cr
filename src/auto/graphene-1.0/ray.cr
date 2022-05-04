@@ -98,7 +98,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_ray_get_closest_point_to_point(self, p, res)
 
@@ -114,7 +113,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       direction = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_ray_get_direction(self, direction)
 
@@ -154,7 +152,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       origin = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_ray_get_origin(self, origin)
 
@@ -170,7 +167,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       position = Graphene::Point3D.new
-
       # C call
       LibGraphene.graphene_ray_get_position_at(self, t, position)
 
@@ -191,7 +187,6 @@ module Graphene
                else
                  origin.to_unsafe
                end
-
       # Generator::NullableArrayPlan
       direction = if direction.nil?
                     Pointer(Void).null
@@ -231,7 +226,6 @@ module Graphene
                else
                  origin.to_unsafe
                end
-
       # Generator::NullableArrayPlan
       direction = if direction.nil?
                     Pointer(Void).null

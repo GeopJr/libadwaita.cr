@@ -451,6 +451,263 @@ module Gtk
   # See also: `Gtk::TreeSortable#sort_column_id=`
   TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID = -2
 
+  # Callbacks
+
+  # Type of callback used to calculate the next page in a `GtkAssistant`.
+  #
+  # It’s called both for computing the next page when the user presses the
+  # “forward” button and for handling the behavior of the “last” button.
+  #
+  # See `Gtk::Assistant#forward_page_func=`.
+  alias AssistantPageFunc = Proc(Int32, Int32)
+
+  # The type of the callback functions used for iterating over the
+  # cell renderers and their allocated areas inside a `GtkCellArea`,
+  # see gtk_cell_area_foreach_alloc().
+  alias CellAllocCallback = Proc(Gtk::CellRenderer, Gdk::Rectangle, Gdk::Rectangle, Bool)
+
+  # The type of the callback functions used for iterating over
+  # the cell renderers of a `GtkCellArea`, see gtk_cell_area_foreach().
+  alias CellCallback = Proc(Gtk::CellRenderer, Bool)
+
+  # A function which should set the value of @cell_layout’s cell renderer(s)
+  # as appropriate.
+  alias CellLayoutDataFunc = Proc(Gtk::CellLayout, Gtk::CellRenderer, Gtk::TreeModel, Gtk::TreeIter, Nil)
+
+  # A function to be used by `GtkCustomLayout` to allocate a widget.
+  alias CustomAllocateFunc = Proc(Gtk::Widget, Int32, Int32, Nil)
+
+  # User function that is called to determine if the @item should be matched.
+  #
+  # If the filter matches the item, this function must return %TRUE. If the
+  # item should be filtered out, %FALSE must be returned.
+  alias CustomFilterFunc = Proc(GObject::Object, Bool)
+
+  # A function to be used by `GtkCustomLayout` to measure a widget.
+  alias CustomMeasureFunc = Proc(Gtk::Widget, Gtk::Orientation, Int32, Int32, Int32, Int32, Nil)
+
+  # Queries a widget for its preferred size request mode.
+  alias CustomRequestModeFunc = Proc(Gtk::SizeRequestMode)
+
+  # Whenever @drawing_area needs to redraw, this function will be called.
+  #
+  # This function should exclusively redraw the contents of the drawing area
+  # and must not call any widget functions that cause changes.
+  alias DrawingAreaDrawFunc = Proc(Gtk::DrawingArea, Cairo::Context, Int32, Int32, Nil)
+
+  # A function which decides whether the row indicated by @iter matches
+  # a given @key, and should be displayed as a possible completion for @key.
+  #
+  # Note that @key is normalized and case-folded (see g_utf8_normalize()
+  # and g_utf8_casefold()). If this is not appropriate, match functions
+  # have access to the unmodified key via
+  # `gtk_editable_get_text (GTK_EDITABLE (gtk_entry_completion_get_entry ()))`.
+  alias EntryCompletionMatchFunc = Proc(Gtk::EntryCompletion, ::String, Gtk::TreeIter, Bool)
+
+  # Callback called by gtk_expression_watch() when the
+  # expression value changes.
+  alias ExpressionNotify = Proc(Nil)
+
+  # Called for flow boxes that are bound to a `GListModel`.
+  #
+  # This function is called for each item that gets added to the model.
+  alias FlowBoxCreateWidgetFunc = Proc(GObject::Object, Gtk::Widget)
+
+  # A function that will be called whenever a child changes
+  # or is added.
+  #
+  # It lets you control if the child should be visible or not.
+  alias FlowBoxFilterFunc = Proc(Gtk::FlowBoxChild, Bool)
+
+  # A function used by gtk_flow_box_selected_foreach().
+  #
+  # It will be called on every selected child of the @box.
+  alias FlowBoxForeachFunc = Proc(Gtk::FlowBox, Gtk::FlowBoxChild, Nil)
+
+  # A function to compare two children to determine which
+  # should come first.
+  alias FlowBoxSortFunc = Proc(Gtk::FlowBoxChild, Gtk::FlowBoxChild, Int32)
+
+  # The type of function that is used for deciding what fonts get
+  # shown in a `GtkFontChooser`.
+  #
+  # See `Gtk::FontChooser#filter_func=`.
+  alias FontFilterFunc = Proc(Pango::FontFamily, Pango::FontFace, Bool)
+
+  # A function used by gtk_icon_view_selected_foreach() to map all
+  # selected rows.
+  #
+  # It will be called on every selected row in the view.
+  alias IconViewForeachFunc = Proc(Gtk::IconView, Gtk::TreePath, Nil)
+
+  # Called for list boxes that are bound to a `GListModel` with
+  # gtk_list_box_bind_model() for each item that gets added to the model.
+  #
+  # If the widget returned is not a #GtkListBoxRow widget, then the widget
+  # will be inserted as the child of an intermediate #GtkListBoxRow.
+  alias ListBoxCreateWidgetFunc = Proc(GObject::Object, Gtk::Widget)
+
+  # Will be called whenever the row changes or is added and lets you control
+  # if the row should be visible or not.
+  alias ListBoxFilterFunc = Proc(Gtk::ListBoxRow, Bool)
+
+  # A function used by gtk_list_box_selected_foreach().
+  #
+  # It will be called on every selected child of the @box.
+  alias ListBoxForeachFunc = Proc(Gtk::ListBox, Gtk::ListBoxRow, Nil)
+
+  # Compare two rows to determine which should be first.
+  alias ListBoxSortFunc = Proc(Gtk::ListBoxRow, Gtk::ListBoxRow, Int32)
+
+  # Whenever @row changes or which row is before @row changes this
+  # is called, which lets you update the header on @row.
+  #
+  # You may remove or set a new one via `Gtk::ListBoxRow#header=`
+  # or just change the state of the current header widget.
+  alias ListBoxUpdateHeaderFunc = Proc(Gtk::ListBoxRow, Gtk::ListBoxRow?, Nil)
+
+  # User function that is called to map an @item of the original model to
+  # an item expected by the map model.
+  #
+  # The returned items must conform to the item type of the model they are
+  # used with.
+  alias MapListModelMapFunc = Proc(GObject::Object, GObject::Object)
+
+  # User-provided callback function to create a popup for a
+  # `GtkMenuButton` on demand.
+  #
+  # This function is called when the popup of @menu_button is shown,
+  # but none has been provided via `Gtk::MenuButton#popover=`
+  # or `Gtk::MenuButton#menu_model=`.
+  alias MenuButtonCreatePopupFunc = Proc(Gtk::MenuButton, Nil)
+
+  # The type of function that is passed to
+  # gtk_print_run_page_setup_dialog_async().
+  #
+  # This function will be called when the page setup dialog
+  # is dismissed, and also serves as destroy notify for @data.
+  alias PageSetupDoneFunc = Proc(Gtk::PageSetup, Nil)
+
+  # The type of callback that is passed to gtk_print_job_send().
+  #
+  # It is called when the print job has been completely sent.
+  alias PrintJobCompleteFunc = Proc(Gtk::PrintJob, Pointer(Void)?, Nil)
+
+  alias PrintSettingsFunc = Proc(::String, ::String, Nil)
+
+  # The type of function passed to gtk_enumerate_printers().
+  #
+  # Note that you need to ref @printer, if you want to keep
+  # a reference to it after the function has returned.
+  alias PrinterFunc = Proc(Gtk::Printer, Bool)
+
+  alias ScaleFormatValueFunc = Proc(Gtk::Scale, Float64, ::String)
+
+  # Prototype for shortcuts based on user callbacks.
+  alias ShortcutFunc = Proc(Gtk::Widget, GLib::Variant?, Bool)
+
+  # The predicate function used by gtk_text_iter_forward_find_char() and
+  # gtk_text_iter_backward_find_char().
+  alias TextCharPredicate = Proc(UInt32, Bool)
+
+  # A function used with gtk_text_tag_table_foreach(),
+  # to iterate over every `GtkTextTag` inside a `GtkTextTagTable`.
+  alias TextTagTableForeach = Proc(Gtk::TextTag, Nil)
+
+  # Callback type for adding a function to update animations. See gtk_widget_add_tick_callback().
+  alias TickCallback = Proc(Gtk::Widget, Gdk::FrameClock, Bool)
+
+  # A function to set the properties of a cell instead of just using the
+  # straight mapping between the cell and the model.
+  #
+  # This function is useful for customizing the cell renderer. For example,
+  # a function might get an* integer from the @tree_model, and render it to
+  # the “text” attribute of “cell” by converting it to its written equivalent.
+  #
+  # See also: gtk_tree_view_column_set_cell_data_func()
+  alias TreeCellDataFunc = Proc(Gtk::TreeViewColumn, Gtk::CellRenderer, Gtk::TreeModel, Gtk::TreeIter, Nil)
+
+  # A GtkTreeIterCompareFunc should return a negative integer, zero, or a positive
+  # integer if @a sorts before @b, @a sorts with @b, or @a sorts after @b
+  # respectively.
+  #
+  # If two iters compare as equal, their order in the sorted model
+  # is undefined. In order to ensure that the `GtkTreeSortable` behaves as
+  # expected, the GtkTreeIterCompareFunc must define a partial order on
+  # the model, i.e. it must be reflexive, antisymmetric and transitive.
+  #
+  # For example, if @model is a product catalogue, then a compare function
+  # for the “price” column could be one which returns
+  # `price_of(@a) - price_of(@b)`.
+  alias TreeIterCompareFunc = Proc(Gtk::TreeModel, Gtk::TreeIter, Gtk::TreeIter, Int32)
+
+  # Prototype of the function called to create new child models when
+  # gtk_tree_list_row_set_expanded() is called.
+  #
+  # This function can return %NULL to indicate that @item is guaranteed to be
+  # a leaf node and will never have children. If it does not have children but
+  # may get children later, it should return an empty model that is filled once
+  # children arrive.
+  alias TreeListModelCreateModelFunc = Proc(GObject::Object, Gio::ListModel)
+
+  # A function which calculates display values from raw values in the model.
+  # It must fill @value with the display value for the column @column in the
+  # row indicated by @iter.
+  #
+  # Since this function is called for each data access, it’s not a
+  # particularly efficient operation.
+  alias TreeModelFilterModifyFunc = Proc(Gtk::TreeModel, Gtk::TreeIter, GObject::Value, Int32, Nil)
+
+  # A function which decides whether the row indicated by @iter is visible.
+  alias TreeModelFilterVisibleFunc = Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)
+
+  # Type of the callback passed to gtk_tree_model_foreach() to
+  # iterate over the rows in a tree model.
+  alias TreeModelForeachFunc = Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Bool)
+
+  # A function used by gtk_tree_selection_selected_foreach() to map all
+  # selected rows.  It will be called on every selected row in the view.
+  alias TreeSelectionForeachFunc = Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)
+
+  # A function used by gtk_tree_selection_set_select_function() to filter
+  # whether or not a row may be selected. It is called whenever a row's
+  # state might change.
+  #
+  # A return value of %TRUE indicates to @selection that it is okay to
+  # change the selection.
+  alias TreeSelectionFunc = Proc(Gtk::TreeSelection, Gtk::TreeModel, Gtk::TreePath, Bool, Bool)
+
+  # Function type for determining whether @column can be dropped in a
+  # particular spot (as determined by @prev_column and @next_column).  In
+  # left to right locales, @prev_column is on the left of the potential drop
+  # spot, and @next_column is on the right.  In right to left mode, this is
+  # reversed.  This function should return %TRUE if the spot is a valid drop
+  # spot.  Please note that returning %TRUE does not actually indicate that
+  # the column drop was made, but is meant only to indicate a possible drop
+  # spot to the user.
+  alias TreeViewColumnDropFunc = Proc(Gtk::TreeView, Gtk::TreeViewColumn, Gtk::TreeViewColumn, Gtk::TreeViewColumn, Bool)
+
+  # Function used for gtk_tree_view_map_expanded_rows().
+  alias TreeViewMappingFunc = Proc(Gtk::TreeView, Gtk::TreePath, Nil)
+
+  # Function type for determining whether the row pointed to by @iter should
+  # be rendered as a separator. A common way to implement this is to have a
+  # boolean column in the model, whose values the `GtkTreeViewRowSeparatorFunc`
+  # returns.
+  alias TreeViewRowSeparatorFunc = Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)
+
+  # A function used for checking whether a row in @model matches
+  # a search key string entered by the user. Note the return value
+  # is reversed from what you would normally expect, though it
+  # has some similarity to strcmp() returning 0 for equal strings.
+  alias TreeViewSearchEqualFunc = Proc(Gtk::TreeModel, Int32, ::String, Gtk::TreeIter, Bool)
+
+  # The type of the callback functions used for activating
+  # actions installed with gtk_widget_class_install_action().
+  #
+  # The @parameter must match the @parameter_type of the action.
+  alias WidgetActionActivateFunc = Proc(Gtk::Widget, ::String, Nil)
+
   # Base class for all errors in this module.
   class GtkError < RuntimeError
     # :nodoc:
@@ -2604,10 +2861,8 @@ module Gtk
     # Returns: (transfer none)
 
     # Generator::OutArgUsedInReturnPlan
-    accelerator_key = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
+    accelerator_key = Pointer(UInt32).null # Generator::OutArgUsedInReturnPlan
     accelerator_mods = Pointer(UInt32).null
-
     # C call
     _retval = LibGtk.gtk_accelerator_parse(accelerator, accelerator_key, accelerator_mods)
 
@@ -2630,17 +2885,12 @@ module Gtk
               else
                 display.to_unsafe
               end
-
     # Generator::OutArgUsedInReturnPlan
-    accelerator_key = Pointer(UInt32).null
-    # Generator::OutArgUsedInReturnPlan
-    accelerator_codes = Pointer(Pointer(UInt32)).null
-    # Generator::ArrayArgPlan
+    accelerator_key = Pointer(UInt32).null            # Generator::OutArgUsedInReturnPlan
+    accelerator_codes = Pointer(Pointer(UInt32)).null # Generator::ArrayArgPlan
     accelerator_codes = accelerator_codes.to_a.to_unsafe
-
     # Generator::OutArgUsedInReturnPlan
     accelerator_mods = Pointer(UInt32).null
-
     # C call
     _retval = LibGtk.gtk_accelerator_parse_with_keycode(accelerator, display, accelerator_key, accelerator_codes, accelerator_mods)
 
@@ -2719,10 +2969,8 @@ module Gtk
     # Returns: (transfer none)
 
     # Generator::CallerAllocatesPlan
-    iter = Gtk::BitsetIter.new
-    # Generator::OutArgUsedInReturnPlan
+    iter = Gtk::BitsetIter.new # Generator::OutArgUsedInReturnPlan
     value = Pointer(UInt32).null
-
     # C call
     _retval = LibGtk.gtk_bitset_iter_init_at(iter, set, target, value)
 
@@ -2738,10 +2986,8 @@ module Gtk
     # Returns: (transfer none)
 
     # Generator::CallerAllocatesPlan
-    iter = Gtk::BitsetIter.new
-    # Generator::OutArgUsedInReturnPlan
+    iter = Gtk::BitsetIter.new # Generator::OutArgUsedInReturnPlan
     value = Pointer(UInt32).null
-
     # C call
     _retval = LibGtk.gtk_bitset_iter_init_first(iter, set, value)
 
@@ -2757,10 +3003,8 @@ module Gtk
     # Returns: (transfer none)
 
     # Generator::CallerAllocatesPlan
-    iter = Gtk::BitsetIter.new
-    # Generator::OutArgUsedInReturnPlan
+    iter = Gtk::BitsetIter.new # Generator::OutArgUsedInReturnPlan
     value = Pointer(UInt32).null
-
     # C call
     _retval = LibGtk.gtk_bitset_iter_init_last(iter, set, value)
 
@@ -2845,8 +3089,7 @@ module Gtk
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    n_requested_sizes = sizes.size
-    # Generator::ArrayArgPlan
+    n_requested_sizes = sizes.size # Generator::ArrayArgPlan
     sizes = sizes.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -2907,7 +3150,7 @@ module Gtk
     _retval
   end
 
-  def self.enumerate_printers(func : Pointer(Void), data : Pointer(Void)?, destroy : Pointer(Void), wait : Bool) : Nil
+  def self.enumerate_printers(func : Gtk::PrinterFunc, data : Pointer(Void)?, destroy : GLib::DestroyNotify, wait : Bool) : Nil
     # gtk_enumerate_printers: (None)
     # @data: (nullable)
     # Returns: (transfer none)
@@ -3176,7 +3419,6 @@ module Gtk
              else
                parent.to_unsafe
              end
-
     # Generator::NullableArrayPlan
     page_setup = if page_setup.nil?
                    Pointer(Void).null
@@ -3192,7 +3434,7 @@ module Gtk
     Gtk::PageSetup.new(_retval, GICrystal::Transfer::Full)
   end
 
-  def self.print_run_page_setup_dialog_async(parent : Gtk::Window?, page_setup : Gtk::PageSetup?, settings : Gtk::PrintSettings, done_cb : Pointer(Void), data : Pointer(Void)?) : Nil
+  def self.print_run_page_setup_dialog_async(parent : Gtk::Window?, page_setup : Gtk::PageSetup?, settings : Gtk::PrintSettings, done_cb : Gtk::PageSetupDoneFunc, data : Pointer(Void)?) : Nil
     # gtk_print_run_page_setup_dialog_async: (None)
     # @parent: (nullable)
     # @page_setup: (nullable)
@@ -3205,14 +3447,12 @@ module Gtk
              else
                parent.to_unsafe
              end
-
     # Generator::NullableArrayPlan
     page_setup = if page_setup.nil?
                    Pointer(Void).null
                  else
                    page_setup.to_unsafe
                  end
-
     # Generator::NullableArrayPlan
     data = if data.nil?
              Pointer(Void).null
@@ -3399,7 +3639,7 @@ module Gtk
     # Return value handling
   end
 
-  def self.show_uri_full(parent : Gtk::Window?, uri : ::String, timestamp : UInt32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+  def self.show_uri_full(parent : Gtk::Window?, uri : ::String, timestamp : UInt32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
     # gtk_show_uri_full: (None)
     # @parent: (nullable)
     # @cancellable: (nullable)
@@ -3413,21 +3653,12 @@ module Gtk
              else
                parent.to_unsafe
              end
-
     # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
                   else
                     cancellable.to_unsafe
                   end
-
-    # Generator::NullableArrayPlan
-    callback = if callback.nil?
-                 LibGio::AsyncReadyCallback.null
-               else
-                 callback.to_unsafe
-               end
-
     # Generator::NullableArrayPlan
     user_data = if user_data.nil?
                   Pointer(Void).null
@@ -3523,7 +3754,6 @@ module Gtk
 
     # Generator::OutArgUsedInReturnPlan
     n_types = 0_u32
-
     # C call
     _retval = LibGtk.gtk_test_list_all_types(pointerof(n_types))
 
@@ -3576,12 +3806,9 @@ module Gtk
             else
               value.to_unsafe
             end
-
     # Generator::OutArgUsedInReturnPlan
-    tree_model = Pointer(Pointer(Void)).null
-    # Generator::OutArgUsedInReturnPlan
+    tree_model = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
     path = Pointer(Pointer(Void)).null
-
     # C call
     _retval = LibGtk.gtk_tree_get_row_drag_data(value, tree_model, path)
 
@@ -3676,17 +3903,14 @@ module Gtk
             else
               value.to_unsafe
             end
-
     # Generator::NullableArrayPlan
     expression = if expression.nil?
                    Pointer(Void).null
                  else
                    expression.to_unsafe
                  end
-
     # Generator::TransferFullArgPlan
     LibGObject.gtk_expression_ref(expression)
-
     # C call
     LibGtk.gtk_value_take_expression(value, expression)
 

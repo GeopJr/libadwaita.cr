@@ -2372,6 +2372,22 @@ module Gdk
   # is given in the main loop.
   PRIORITY_REDRAW = 120
 
+  # Callbacks
+
+  # The type of a function that can be registered with gdk_content_register_deserializer().
+  #
+  # When the function gets called to operate on content, it can call functions on the
+  # @deserializer object to obtain the mime type, input stream, user data, etc. for its
+  # operation.
+  alias ContentDeserializeFunc = Proc(Nil)
+
+  # The type of a function that can be registered with gdk_content_register_serializer().
+  #
+  # When the function gets called to operate on content, it can call functions on the
+  # @serializer object to obtain the mime type, output stream, user data, etc. for its
+  # operation.
+  alias ContentSerializeFunc = Proc(Nil)
+
   # Base class for all errors in this module.
   class GdkError < RuntimeError
     # :nodoc:
@@ -3011,7 +3027,7 @@ module Gdk
     # Return value handling
   end
 
-  def self.content_deserialize_async(stream : Gio::InputStream, mime_type : ::String, type : UInt64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+  def self.content_deserialize_async(stream : Gio::InputStream, mime_type : ::String, type : UInt64, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
     # gdk_content_deserialize_async: (None)
     # @cancellable: (nullable)
     # @callback: (nullable)
@@ -3024,14 +3040,6 @@ module Gdk
                   else
                     cancellable.to_unsafe
                   end
-
-    # Generator::NullableArrayPlan
-    callback = if callback.nil?
-                 LibGio::AsyncReadyCallback.null
-               else
-                 callback.to_unsafe
-               end
-
     # Generator::NullableArrayPlan
     user_data = if user_data.nil?
                   Pointer(Void).null
@@ -3054,7 +3062,6 @@ module Gdk
 
     # Generator::CallerAllocatesPlan
     value = GObject::Value.new
-
     # C call
     _retval = LibGdk.gdk_content_deserialize_finish(result, value, pointerof(_error))
 
@@ -3078,17 +3085,23 @@ module Gdk
     Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
   end
 
-  def self.content_register_deserializer(mime_type : ::String, type : UInt64, deserialize : Pointer(Void), data : Pointer(Void)?, notify : Pointer(Void)) : Nil
+  def self.content_register_deserializer(mime_type : ::String, type : UInt64, deserialize : Gdk::ContentDeserializeFunc) : Nil
     # gdk_content_register_deserializer: (None)
     # @data: (nullable)
     # Returns: (transfer none)
 
-    # Generator::NullableArrayPlan
-    data = if data.nil?
-             Pointer(Void).null
-           else
-             data.to_unsafe
-           end
+    # Generator::CallbackArgPlan
+    if deserialize
+      _box = ::Box.box(deserialize)
+      deserialize = ->(lib_deserializer : Pointer(Void)) {
+        deserializer = lib_deserializer
+        ::Box(Proc(Nil)).unbox(deserializer).call
+      }.pointer
+      data = GICrystal::ClosureDataManager.register(_box)
+      notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+    else
+      deserialize = data = notify = Pointer(Void).null
+    end
 
     # C call
     LibGdk.gdk_content_register_deserializer(mime_type, type, deserialize, data, notify)
@@ -3096,17 +3109,23 @@ module Gdk
     # Return value handling
   end
 
-  def self.content_register_serializer(type : UInt64, mime_type : ::String, serialize : Pointer(Void), data : Pointer(Void)?, notify : Pointer(Void)) : Nil
+  def self.content_register_serializer(type : UInt64, mime_type : ::String, serialize : Gdk::ContentSerializeFunc) : Nil
     # gdk_content_register_serializer: (None)
     # @data: (nullable)
     # Returns: (transfer none)
 
-    # Generator::NullableArrayPlan
-    data = if data.nil?
-             Pointer(Void).null
-           else
-             data.to_unsafe
-           end
+    # Generator::CallbackArgPlan
+    if serialize
+      _box = ::Box.box(serialize)
+      serialize = ->(lib_serializer : Pointer(Void)) {
+        serializer = lib_serializer
+        ::Box(Proc(Nil)).unbox(serializer).call
+      }.pointer
+      data = GICrystal::ClosureDataManager.register(_box)
+      notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+    else
+      serialize = data = notify = Pointer(Void).null
+    end
 
     # C call
     LibGdk.gdk_content_register_serializer(type, mime_type, serialize, data, notify)
@@ -3114,7 +3133,7 @@ module Gdk
     # Return value handling
   end
 
-  def self.content_serialize_async(stream : Gio::OutputStream, mime_type : ::String, value : _, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+  def self.content_serialize_async(stream : Gio::OutputStream, mime_type : ::String, value : _, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
     # gdk_content_serialize_async: (None)
     # @cancellable: (nullable)
     # @callback: (nullable)
@@ -3127,21 +3146,12 @@ module Gdk
             else
               value.to_unsafe
             end
-
     # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
                   else
                     cancellable.to_unsafe
                   end
-
-    # Generator::NullableArrayPlan
-    callback = if callback.nil?
-                 LibGio::AsyncReadyCallback.null
-               else
-                 callback.to_unsafe
-               end
-
     # Generator::NullableArrayPlan
     user_data = if user_data.nil?
                   Pointer(Void).null

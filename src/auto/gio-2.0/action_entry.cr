@@ -21,7 +21,7 @@ module Gio
       LibGLib.g_free(pointer) if transfer.full?
     end
 
-    def self.new(name : ::String? = nil, activate : Pointer(Void)? = nil, parameter_type : ::String? = nil, state : ::String? = nil, change_state : Pointer(Void)? = nil, padding : Enumerable(UInt64)? = nil)
+    def self.new(name : ::String? = nil, activate : Gio::Activate? = nil, parameter_type : ::String? = nil, state : ::String? = nil, change_state : Gio::ChangeState? = nil, padding : Enumerable(UInt64)? = nil)
       _ptr = Pointer(Void).malloc(64)
       _instance = new(_ptr, GICrystal::Transfer::None)
       _instance.name = name unless name.nil?
@@ -55,13 +55,13 @@ module Gio
       value
     end
 
-    def activate : Pointer(Void)
-      _var = (@pointer + 8).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def activate : Gio::Activate
+      _var = (@pointer + 8).as(Pointer(Void*))
+      Gio::Activate.new(_var, GICrystal::Transfer::None)
     end
 
-    def activate=(value : Pointer(Void))
-      _var = (@pointer + 8).as(Pointer(-> Void))
+    def activate=(value : Gio::Activate)
+      _var = (@pointer + 8).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGio::ActionEntry))
       value
     end
@@ -96,13 +96,13 @@ module Gio
       value
     end
 
-    def change_state : Pointer(Void)
-      _var = (@pointer + 32).as(Pointer(-> Void))
-      Pointer(Void).new(_var, GICrystal::Transfer::None)
+    def change_state : Gio::ChangeState
+      _var = (@pointer + 32).as(Pointer(Void*))
+      Gio::ChangeState.new(_var, GICrystal::Transfer::None)
     end
 
-    def change_state=(value : Pointer(Void))
-      _var = (@pointer + 32).as(Pointer(-> Void))
+    def change_state=(value : Gio::ChangeState)
+      _var = (@pointer + 32).as(Pointer(Void*))
       _var.copy_from(value.to_unsafe, sizeof(LibGio::ActionEntry))
       value
     end

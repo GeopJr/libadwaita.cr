@@ -37,6 +37,7 @@ module Pango
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     def free : Nil
@@ -57,12 +58,9 @@ module Pango
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      start = Pointer(Pointer(LibC::Char)).null
-      # Generator::OutArgUsedInReturnPlan
-      _end = Pointer(Pointer(LibC::Char)).null
-      # Generator::OutArgUsedInReturnPlan
+      start = Pointer(Pointer(LibC::Char)).null # Generator::OutArgUsedInReturnPlan
+      _end = Pointer(Pointer(LibC::Char)).null  # Generator::OutArgUsedInReturnPlan
       script = Pointer(Int32).null
-
       # C call
       LibPango.pango_script_iter_get_range(self, start, _end, script)
 

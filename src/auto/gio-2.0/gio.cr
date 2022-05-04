@@ -843,6 +843,286 @@ module Gio
   # See [Extending GIO][extending-gio].
   VOLUME_MONITOR_EXTENSION_POINT_NAME = "gio-volume-monitor"
 
+  # Callbacks
+
+  # Type definition for a function that will be called back when an asynchronous
+  # operation within GIO has been completed. #GAsyncReadyCallback
+  # callbacks from #GTask are guaranteed to be invoked in a later
+  # iteration of the
+  # [thread-default main context][g-main-context-push-thread-default]
+  # where the #GTask was created. All other users of
+  # #GAsyncReadyCallback must likewise call it asynchronously in a
+  # later iteration of the main context.
+  #
+  # The asynchronous operation is guaranteed to have held a reference to
+  # @source_object from the time when the `*_async()` function was called, until
+  # after this callback returns.
+  alias AsyncReadyCallback = Proc(GObject::Object?, Gio::AsyncResult, Nil)
+
+  # Invoked when a connection to a message bus has been obtained.
+  alias BusAcquiredCallback = Proc(Gio::DBusConnection, ::String, Nil)
+
+  # Invoked when the name is acquired.
+  alias BusNameAcquiredCallback = Proc(Gio::DBusConnection, ::String, Nil)
+
+  # Invoked when the name being watched is known to have to have an owner.
+  alias BusNameAppearedCallback = Proc(Gio::DBusConnection, ::String, ::String, Nil)
+
+  # Invoked when the name is lost or @connection has been closed.
+  alias BusNameLostCallback = Proc(Gio::DBusConnection, ::String, Nil)
+
+  # Invoked when the name being watched is known not to have to have an owner.
+  #
+  # This is also invoked when the #GDBusConnection on which the watch was
+  # established has been closed.  In that case, @connection will be
+  # %NULL.
+  alias BusNameVanishedCallback = Proc(Gio::DBusConnection, ::String, Nil)
+
+  # This is the function type of the callback used for the #GSource
+  # returned by g_cancellable_source_new().
+  alias CancellableSourceFunc = Proc(Gio::Cancellable?, Bool)
+
+  # The type of the @get_property function in #GDBusInterfaceVTable.
+  alias DBusInterfaceGetPropertyFunc = Proc(Gio::DBusConnection, ::String, ::String, ::String, ::String, GLib::Error, GLib::Variant)
+
+  # The type of the @method_call function in #GDBusInterfaceVTable.
+  alias DBusInterfaceMethodCallFunc = Proc(Gio::DBusConnection, ::String, ::String, ::String, ::String, GLib::Variant, Gio::DBusMethodInvocation, Nil)
+
+  # The type of the @set_property function in #GDBusInterfaceVTable.
+  alias DBusInterfaceSetPropertyFunc = Proc(Gio::DBusConnection, ::String, ::String, ::String, ::String, GLib::Variant, GLib::Error, Bool)
+
+  # Signature for function used in g_dbus_connection_add_filter().
+  #
+  # A filter function is passed a #GDBusMessage and expected to return
+  # a #GDBusMessage too. Passive filter functions that don't modify the
+  # message can simply return the @message object:
+  # |[
+  # static GDBusMessage *
+  # passive_filter (GDBusConnection *connection
+  #                 GDBusMessage    *message,
+  #                 gboolean         incoming,
+  #                 gpointer         user_data)
+  # {
+  #   // inspect @message
+  #   return message;
+  # }
+  # ]|
+  # Filter functions that wants to drop a message can simply return %NULL:
+  # |[
+  # static GDBusMessage *
+  # drop_filter (GDBusConnection *connection
+  #              GDBusMessage    *message,
+  #              gboolean         incoming,
+  #              gpointer         user_data)
+  # {
+  #   if (should_drop_message)
+  #     {
+  #       g_object_unref (message);
+  #       message = NULL;
+  #     }
+  #   return message;
+  # }
+  # ]|
+  # Finally, a filter function may modify a message by copying it:
+  # |[
+  # static GDBusMessage *
+  # modifying_filter (GDBusConnection *connection
+  #                   GDBusMessage    *message,
+  #                   gboolean         incoming,
+  #                   gpointer         user_data)
+  # {
+  #   GDBusMessage *copy;
+  #   GError *error;
+  #
+  #   error = NULL;
+  #   copy = g_dbus_message_copy (message, &error);
+  #   // handle @error being set
+  #   g_object_unref (message);
+  #
+  #   // modify @copy
+  #
+  #   return copy;
+  # }
+  # ]|
+  # If the returned #GDBusMessage is different from @message and cannot
+  # be sent on @connection (it could use features, such as file
+  # descriptors, not compatible with @connection), then a warning is
+  # logged to standard error. Applications can
+  # check this ahead of time using g_dbus_message_to_blob() passing a
+  # #GDBusCapabilityFlags value obtained from @connection.
+  alias DBusMessageFilterFunction = Proc(Gio::DBusConnection, Gio::DBusMessage, Bool, Gio::DBusMessage)
+
+  # Function signature for a function used to determine the #GType to
+  # use for an interface proxy (if @interface_name is not %NULL) or
+  # object proxy (if @interface_name is %NULL).
+  #
+  # This function is called in the
+  # [thread-default main loop][g-main-context-push-thread-default]
+  # that @manager was constructed in.
+  alias DBusProxyTypeFunc = Proc(Gio::DBusObjectManagerClient, ::String, ::String?, UInt64)
+
+  # Signature for callback function used in g_dbus_connection_signal_subscribe().
+  alias DBusSignalCallback = Proc(Gio::DBusConnection, ::String?, ::String, ::String, ::String, GLib::Variant, Nil)
+
+  # The type of the @dispatch function in #GDBusSubtreeVTable.
+  #
+  # Subtrees are flat.  @node, if non-%NULL, is always exactly one
+  # segment of the object path (ie: it never contains a slash).
+  alias DBusSubtreeDispatchFunc = Proc(Gio::DBusConnection, ::String, ::String, ::String, ::String, Pointer(Void), Gio::DBusInterfaceVTable)
+
+  # The type of the @enumerate function in #GDBusSubtreeVTable.
+  #
+  # This function is called when generating introspection data and also
+  # when preparing to dispatch incoming messages in the event that the
+  # %G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES flag is not
+  # specified (ie: to verify that the object path is valid).
+  #
+  # Hierarchies are not supported; the items that you return should not
+  # contain the `/` character.
+  #
+  # The return value will be freed with g_strfreev().
+  alias DBusSubtreeEnumerateFunc = Proc(Gio::DBusConnection, ::String, ::String, Enumerable(::String))
+
+  # The type of the @introspect function in #GDBusSubtreeVTable.
+  #
+  # Subtrees are flat.  @node, if non-%NULL, is always exactly one
+  # segment of the object path (ie: it never contains a slash).
+  #
+  # This function should return %NULL to indicate that there is no object
+  # at this node.
+  #
+  # If this function returns non-%NULL, the return value is expected to
+  # be a %NULL-terminated array of pointers to #GDBusInterfaceInfo
+  # structures describing the interfaces implemented by @node.  This
+  # array will have g_dbus_interface_info_unref() called on each item
+  # before being freed with g_free().
+  #
+  # The difference between returning %NULL and an array containing zero
+  # items is that the standard DBus interfaces will returned to the
+  # remote introspector in the empty array case, but not in the %NULL
+  # case.
+  alias DBusSubtreeIntrospectFunc = Proc(Gio::DBusConnection, ::String, ::String, ::String, Enumerable(Gio::DBusInterfaceInfo))
+
+  # This is the function type of the callback used for the #GSource
+  # returned by g_datagram_based_create_source().
+  alias DatagramBasedSourceFunc = Proc(Gio::DatagramBased, GLib::IOCondition, Bool)
+
+  # During invocation, g_desktop_app_info_launch_uris_as_manager() may
+  # create one or more child processes.  This callback is invoked once
+  # for each, providing the process ID.
+  alias DesktopAppLaunchCallback = Proc(Gio::DesktopAppInfo, Int32, Nil)
+
+  # This callback type is used by g_file_measure_disk_usage() to make
+  # periodic progress reports when measuring the amount of disk spaced
+  # used by a directory.
+  #
+  # These calls are made on a best-effort basis and not all types of
+  # #GFile will support them.  At the minimum, however, one call will
+  # always be made immediately.
+  #
+  # In the case that there is no support, @reporting will be set to
+  # %FALSE (and the other values undefined) and no further calls will be
+  # made.  Otherwise, the @reporting will be %TRUE and the other values
+  # all-zeros during the first (immediate) call.  In this way, you can
+  # know which type of progress UI to show without a delay.
+  #
+  # For g_file_measure_disk_usage() the callback is made directly.  For
+  # g_file_measure_disk_usage_async() the callback is made via the
+  # default main context of the calling thread (ie: the same way that the
+  # final async result would be reported).
+  #
+  # @current_size is in the same units as requested by the operation (see
+  # %G_FILE_MEASURE_APPARENT_SIZE).
+  #
+  # The frequency of the updates is implementation defined, but is
+  # ideally about once every 200ms.
+  #
+  # The last progress callback may or may not be equal to the final
+  # result.  Always check the async result to get the final value.
+  alias FileMeasureProgressCallback = Proc(Bool, UInt64, UInt64, UInt64, Nil)
+
+  # When doing file operations that may take a while, such as moving
+  # a file or copying a file, a progress callback is used to pass how
+  # far along that operation is to the application.
+  alias FileProgressCallback = Proc(Int64, Int64, Nil)
+
+  # When loading the partial contents of a file with g_file_load_partial_contents_async(),
+  # it may become necessary to determine if any more data from the file should be loaded.
+  # A #GFileReadMoreCallback function facilitates this by returning %TRUE if more data
+  # should be read, or %FALSE otherwise.
+  alias FileReadMoreCallback = Proc(::String, Int64, Bool)
+
+  # I/O Job function.
+  #
+  # Long-running jobs should periodically check the @cancellable
+  # to see if they have been cancelled.
+  alias IOSchedulerJobFunc = Proc(Gio::IOSchedulerJob, Gio::Cancellable?, Bool)
+
+  # This is the function type of the callback used for the #GSource
+  # returned by g_pollable_input_stream_create_source() and
+  # g_pollable_output_stream_create_source().
+  alias PollableSourceFunc = Proc(GObject::Object, Bool)
+
+  # Changes the size of the memory block pointed to by @data to
+  # @size bytes.
+  #
+  # The function should have the same semantics as realloc().
+  alias ReallocFunc = Proc(Pointer(Void)?, Pointer(Void))
+
+  # The type for the function that is used to convert from #GSettings to
+  # an object property. The @value is already initialized to hold values
+  # of the appropriate type.
+  alias SettingsBindGetMapping = Proc(GObject::Value, GLib::Variant, Bool)
+
+  # The type for the function that is used to convert an object property
+  # value to a #GVariant for storing it in #GSettings.
+  alias SettingsBindSetMapping = Proc(GObject::Value, GLib::VariantType, GLib::Variant)
+
+  # The type of the function that is used to convert from a value stored
+  # in a #GSettings to a value that is useful to the application.
+  #
+  # If the value is successfully mapped, the result should be stored at
+  # @result and %TRUE returned.  If mapping fails (for example, if @value
+  # is not in the right format) then %FALSE should be returned.
+  #
+  # If @value is %NULL then it means that the mapping function is being
+  # given a "last chance" to successfully return a valid value.  %TRUE
+  # must be returned in this case.
+  alias SettingsGetMapping = Proc(GLib::Variant, Pointer(Void)?, Bool)
+
+  # Simple thread function that runs an asynchronous operation and
+  # checks for cancellation.
+  alias SimpleAsyncThreadFunc = Proc(Gio::SimpleAsyncResult, GObject::Object, Nil)
+
+  # This is the function type of the callback used for the #GSource
+  # returned by g_socket_create_source().
+  alias SocketSourceFunc = Proc(Gio::Socket, GLib::IOCondition, Bool)
+
+  # The prototype for a task function to be run in a thread via
+  # g_task_run_in_thread() or g_task_run_in_thread_sync().
+  #
+  # If the return-on-cancel flag is set on @task, and @cancellable gets
+  # cancelled, then the #GTask will be completed immediately (as though
+  # g_task_return_error_if_cancelled() had been called), without
+  # waiting for the task function to complete. However, the task
+  # function will continue running in its thread in the background. The
+  # function therefore needs to be careful about how it uses
+  # externally-visible state in this case. See
+  # g_task_set_return_on_cancel() for more details.
+  #
+  # Other than in that case, @task will be completed when the
+  # #GTaskThreadFunc returns, not when it calls a
+  # `g_task_return_` function.
+  alias TaskThreadFunc = Proc(Gio::Task, GObject::Object, Pointer(Void)?, Nil)
+
+  # This function type is used by g_vfs_register_uri_scheme() to make it
+  # possible for a client to associate an URI scheme to a different #GFile
+  # implementation.
+  #
+  # The client should return a reference to the new file that has been
+  # created for @uri, or %NULL to continue with the default implementation.
+  alias VfsFileLookupFunc = Proc(Gio::Vfs, ::String, Gio::File)
+
   # Base class for all errors in this module.
   class GioError < RuntimeError
     # :nodoc:
@@ -2108,7 +2388,7 @@ module Gio
     GICrystal.to_bool(_retval)
   end
 
-  def self.app_info_launch_default_for_uri_async(uri : ::String, context : Gio::AppLaunchContext?, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+  def self.app_info_launch_default_for_uri_async(uri : ::String, context : Gio::AppLaunchContext?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
     # g_app_info_launch_default_for_uri_async: (None)
     # @context: (nullable)
     # @cancellable: (nullable)
@@ -2122,21 +2402,12 @@ module Gio
               else
                 context.to_unsafe
               end
-
     # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
                   else
                     cancellable.to_unsafe
                   end
-
-    # Generator::NullableArrayPlan
-    callback = if callback.nil?
-                 LibGio::AsyncReadyCallback.null
-               else
-                 callback.to_unsafe
-               end
-
     # Generator::NullableArrayPlan
     user_data = if user_data.nil?
                   Pointer(Void).null
@@ -2177,7 +2448,7 @@ module Gio
     # Return value handling
   end
 
-  def self.async_initable_newv_async(object_type : UInt64, n_parameters : UInt32, parameters : GObject::Parameter, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+  def self.async_initable_newv_async(object_type : UInt64, n_parameters : UInt32, parameters : GObject::Parameter, io_priority : Int32, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
     # g_async_initable_newv_async: (None)
     # @cancellable: (nullable)
     # @callback: (nullable)
@@ -2190,14 +2461,6 @@ module Gio
                   else
                     cancellable.to_unsafe
                   end
-
-    # Generator::NullableArrayPlan
-    callback = if callback.nil?
-                 LibGio::AsyncReadyCallback.null
-               else
-                 callback.to_unsafe
-               end
-
     # Generator::NullableArrayPlan
     user_data = if user_data.nil?
                   Pointer(Void).null
@@ -2211,7 +2474,7 @@ module Gio
     # Return value handling
   end
 
-  def self.bus_get(bus_type : Gio::BusType, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+  def self.bus_get(bus_type : Gio::BusType, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
     # g_bus_get: (None)
     # @cancellable: (nullable)
     # @callback: (nullable)
@@ -2224,14 +2487,6 @@ module Gio
                   else
                     cancellable.to_unsafe
                   end
-
-    # Generator::NullableArrayPlan
-    callback = if callback.nil?
-                 LibGio::AsyncReadyCallback.null
-               else
-                 callback.to_unsafe
-               end
-
     # Generator::NullableArrayPlan
     user_data = if user_data.nil?
                   Pointer(Void).null
@@ -2299,7 +2554,6 @@ module Gio
                             else
                               name_acquired_closure.to_unsafe
                             end
-
     # Generator::NullableArrayPlan
     name_lost_closure = if name_lost_closure.nil?
                           Pointer(Void).null
@@ -2328,14 +2582,12 @@ module Gio
                            else
                              bus_acquired_closure.to_unsafe
                            end
-
     # Generator::NullableArrayPlan
     name_acquired_closure = if name_acquired_closure.nil?
                               Pointer(Void).null
                             else
                               name_acquired_closure.to_unsafe
                             end
-
     # Generator::NullableArrayPlan
     name_lost_closure = if name_lost_closure.nil?
                           Pointer(Void).null
@@ -2383,7 +2635,6 @@ module Gio
                             else
                               name_appeared_closure.to_unsafe
                             end
-
     # Generator::NullableArrayPlan
     name_vanished_closure = if name_vanished_closure.nil?
                               Pointer(Void).null
@@ -2411,7 +2662,6 @@ module Gio
                             else
                               name_appeared_closure.to_unsafe
                             end
-
     # Generator::NullableArrayPlan
     name_vanished_closure = if name_vanished_closure.nil?
                               Pointer(Void).null
@@ -2548,19 +2798,15 @@ module Gio
                else
                  filename.to_unsafe
                end
-
     # Generator::ArrayLengthArgPlan
-    data_size = data.try(&.size) || 0
-    # Generator::NullableArrayPlan
+    data_size = data.try(&.size) || 0 # Generator::NullableArrayPlan
     data = if data.nil?
              Pointer(UInt8).null
            else
              data.to_a.to_unsafe
            end
-
     # Generator::OutArgUsedInReturnPlan
     result_uncertain = Pointer(LibC::Int).null
-
     # C call
     _retval = LibGio.g_content_type_guess(filename, data, data_size, result_uncertain)
 
@@ -2688,7 +2934,7 @@ module Gio
     GICrystal.transfer_full(_retval)
   end
 
-  def self.dbus_address_get_stream(address : ::String, cancellable : Gio::Cancellable?, callback : Pointer(Void)?, user_data : Pointer(Void)?) : Nil
+  def self.dbus_address_get_stream(address : ::String, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
     # g_dbus_address_get_stream: (None)
     # @cancellable: (nullable)
     # @callback: (nullable)
@@ -2701,14 +2947,6 @@ module Gio
                   else
                     cancellable.to_unsafe
                   end
-
-    # Generator::NullableArrayPlan
-    callback = if callback.nil?
-                 LibGio::AsyncReadyCallback.null
-               else
-                 callback.to_unsafe
-               end
-
     # Generator::NullableArrayPlan
     user_data = if user_data.nil?
                   Pointer(Void).null
@@ -2731,7 +2969,6 @@ module Gio
 
     # Generator::OutArgUsedInReturnPlan
     out_guid = Pointer(Pointer(LibC::Char)).null
-
     # C call
     _retval = LibGio.g_dbus_address_get_stream_finish(res, out_guid, pointerof(_error))
 
@@ -2752,8 +2989,7 @@ module Gio
     _error = Pointer(LibGLib::Error).null
 
     # Generator::OutArgUsedInReturnPlan
-    out_guid = Pointer(Pointer(LibC::Char)).null
-    # Generator::NullableArrayPlan
+    out_guid = Pointer(Pointer(LibC::Char)).null # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
                   else
@@ -2869,8 +3105,7 @@ module Gio
     # Returns: (transfer none)
 
     # Generator::ArrayLengthArgPlan
-    num_entries = entries.size
-    # Generator::ArrayArgPlan
+    num_entries = entries.size # Generator::ArrayArgPlan
     entries = entries.to_a.map(&.to_unsafe).to_unsafe
 
     # C call
@@ -2977,10 +3212,8 @@ module Gio
             else
               value.to_unsafe
             end
-
     # Generator::CallerAllocatesPlan
     out_gvalue = GObject::Value.new
-
     # C call
     LibGio.g_dbus_gvariant_to_gvalue(value, out_gvalue)
 
@@ -3214,10 +3447,8 @@ module Gio
            else
              tmpl.to_unsafe
            end
-
     # Generator::TransferFullArgPlan
     LibGObject.g_object_ref_sink(iostream)
-
     # C call
     _retval = LibGio.g_file_new_tmp(tmpl, iostream, pointerof(_error))
 
@@ -3298,10 +3529,8 @@ module Gio
     _error = Pointer(LibGLib::Error).null
 
     # Generator::ArrayLengthArgPlan
-    n_parameters = parameters.size
-    # Generator::ArrayArgPlan
+    n_parameters = parameters.size # Generator::ArrayArgPlan
     parameters = parameters.to_a.map(&.to_unsafe).to_unsafe
-
     # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
@@ -3434,7 +3663,7 @@ module Gio
     # Return value handling
   end
 
-  def self.io_scheduler_push_job(job_func : Pointer(Void), user_data : Pointer(Void)?, notify : Pointer(Void)?, io_priority : Int32, cancellable : Gio::Cancellable?) : Nil
+  def self.io_scheduler_push_job(job_func : Gio::IOSchedulerJobFunc, user_data : Pointer(Void)?, notify : GLib::DestroyNotify?, io_priority : Int32, cancellable : Gio::Cancellable?) : Nil
     # g_io_scheduler_push_job: (None)
     # @user_data: (nullable)
     # @notify: (nullable)
@@ -3447,14 +3676,6 @@ module Gio
                 else
                   user_data.to_unsafe
                 end
-
-    # Generator::NullableArrayPlan
-    notify = if notify.nil?
-               LibGLib::DestroyNotify.null
-             else
-               notify.to_unsafe
-             end
-
     # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
@@ -3570,7 +3791,6 @@ module Gio
                    else
                      child_source.to_unsafe
                    end
-
     # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
@@ -3595,10 +3815,8 @@ module Gio
     _error = Pointer(LibGLib::Error).null
 
     # Generator::ArrayLengthArgPlan
-    count = buffer.size
-    # Generator::ArrayArgPlan
+    count = buffer.size # Generator::ArrayArgPlan
     buffer = buffer.to_a.to_unsafe
-
     # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
@@ -3626,10 +3844,8 @@ module Gio
     _error = Pointer(LibGLib::Error).null
 
     # Generator::ArrayLengthArgPlan
-    count = buffer.size
-    # Generator::ArrayArgPlan
+    count = buffer.size # Generator::ArrayArgPlan
     buffer = buffer.to_a.to_unsafe
-
     # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
@@ -3658,10 +3874,8 @@ module Gio
     _error = Pointer(LibGLib::Error).null
 
     # Generator::ArrayLengthArgPlan
-    count = buffer.size
-    # Generator::ArrayArgPlan
+    count = buffer.size # Generator::ArrayArgPlan
     buffer = buffer.to_a.to_unsafe
-
     # Generator::NullableArrayPlan
     cancellable = if cancellable.nil?
                     Pointer(Void).null
@@ -3783,10 +3997,8 @@ module Gio
     _error = Pointer(LibGLib::Error).null
 
     # Generator::OutArgUsedInReturnPlan
-    size = Pointer(UInt64).null
-    # Generator::OutArgUsedInReturnPlan
+    size = Pointer(UInt64).null # Generator::OutArgUsedInReturnPlan
     flags = Pointer(UInt32).null
-
     # C call
     _retval = LibGio.g_resources_get_info(path, lookup_flags, size, flags, pointerof(_error))
 
@@ -3864,7 +4076,7 @@ module Gio
     Gio::SettingsSchemaSource.new(_retval, GICrystal::Transfer::None) unless _retval.null?
   end
 
-  def self.simple_async_report_gerror_in_idle(object : GObject::Object?, callback : Pointer(Void)?, user_data : Pointer(Void)?, error : GLib::Error) : Nil
+  def self.simple_async_report_gerror_in_idle(object : GObject::Object?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?, error : GLib::Error) : Nil
     # g_simple_async_report_gerror_in_idle: (None)
     # @object: (nullable)
     # @callback: (nullable)
@@ -3877,14 +4089,6 @@ module Gio
              else
                object.to_unsafe
              end
-
-    # Generator::NullableArrayPlan
-    callback = if callback.nil?
-                 LibGio::AsyncReadyCallback.null
-               else
-                 callback.to_unsafe
-               end
-
     # Generator::NullableArrayPlan
     user_data = if user_data.nil?
                   Pointer(Void).null
@@ -4044,7 +4248,6 @@ module Gio
 
     # Generator::OutArgUsedInReturnPlan
     time_read = Pointer(UInt64).null
-
     # C call
     _retval = LibGio.g_unix_mount_at(mount_path, time_read)
 
@@ -4084,7 +4287,6 @@ module Gio
 
     # Generator::OutArgUsedInReturnPlan
     time_read = Pointer(UInt64).null
-
     # C call
     _retval = LibGio.g_unix_mount_for(file_path, time_read)
 
@@ -4254,7 +4456,6 @@ module Gio
 
     # Generator::OutArgUsedInReturnPlan
     time_read = Pointer(UInt64).null
-
     # C call
     _retval = LibGio.g_unix_mount_point_at(mount_path, time_read)
 
@@ -4282,7 +4483,6 @@ module Gio
 
     # Generator::OutArgUsedInReturnPlan
     time_read = Pointer(UInt64).null
-
     # C call
     _retval = LibGio.g_unix_mount_points_get(time_read)
 
@@ -4310,7 +4510,6 @@ module Gio
 
     # Generator::OutArgUsedInReturnPlan
     time_read = Pointer(UInt64).null
-
     # C call
     _retval = LibGio.g_unix_mounts_get(time_read)
 

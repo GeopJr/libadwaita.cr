@@ -71,6 +71,11 @@ module Adw
   # concatenation.
   VERSION_S = "1.1.0"
 
+  # Callbacks
+
+  # Prototype for animation targets based on user callbacks.
+  alias AnimationTargetFunc = Proc(Float64, Nil)
+
   # Base class for all errors in this module.
   class AdwError < RuntimeError
     # :nodoc:

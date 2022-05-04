@@ -20,6 +20,17 @@ module Gio
         sizeof(LibGio::ListStore), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -41,6 +52,8 @@ module Gio
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -75,6 +88,7 @@ module Gio
       # Return value handling
 
       @pointer = _retval
+      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Appends @item to @store. @item must be of type #GListStore:item-type.
@@ -106,7 +120,6 @@ module Gio
 
       # Generator::OutArgUsedInReturnPlan
       position = Pointer(UInt32).null
-
       # C call
       _retval = LibGio.g_list_store_find(self, item, position)
 
@@ -119,14 +132,13 @@ module Gio
     # comparing them with @compare_func until the first occurrence of @item which
     # matches. If @item was not found, then @position will not be set, and this
     # method will return %FALSE.
-    def find_with_equal_func(item : GObject::Object, equal_func : Pointer(Void)) : Bool
+    def find_with_equal_func(item : GObject::Object, equal_func : GLib::EqualFunc) : Bool
       # g_list_store_find_with_equal_func: (Method)
       # @position: (out) (transfer full) (optional)
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
       position = Pointer(UInt32).null
-
       # C call
       _retval = LibGio.g_list_store_find_with_equal_func(self, item, equal_func, position)
 
@@ -161,7 +173,7 @@ module Gio
     # inserting items by way of this function.
     #
     # This function takes a ref on @item.
-    def insert_sorted(item : GObject::Object, compare_func : Pointer(Void), user_data : Pointer(Void)?) : UInt32
+    def insert_sorted(item : GObject::Object, compare_func : GLib::CompareDataFunc, user_data : Pointer(Void)?) : UInt32
       # g_list_store_insert_sorted: (Method)
       # @user_data: (nullable)
       # Returns: (transfer none)
@@ -208,7 +220,7 @@ module Gio
     end
 
     # Sort the items in @store according to @compare_func.
-    def sort(compare_func : Pointer(Void), user_data : Pointer(Void)?) : Nil
+    def sort(compare_func : GLib::CompareDataFunc, user_data : Pointer(Void)?) : Nil
       # g_list_store_sort: (Method)
       # @user_data: (nullable)
       # Returns: (transfer none)
@@ -245,8 +257,7 @@ module Gio
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_additions = additions.size
-      # Generator::ArrayArgPlan
+      n_additions = additions.size # Generator::ArrayArgPlan
       additions = additions.to_a.map(&.to_unsafe).to_unsafe
 
       # C call

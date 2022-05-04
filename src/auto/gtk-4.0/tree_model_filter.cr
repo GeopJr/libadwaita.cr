@@ -85,6 +85,17 @@ module Gtk
         sizeof(LibGtk::TreeModelFilter), instance_init, 0)
     end
 
+    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
+      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
+      return instance.as(self) if instance
+
+      instance = {{ @type }}.allocate
+      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
+      instance.initialize(pointer, transfer)
+      GC.add_finalizer(instance)
+      instance
+    end
+
     # :nodoc:
     def initialize(@pointer, transfer : GICrystal::Transfer)
       super
@@ -111,6 +122,8 @@ module Gtk
       _n.times do |i|
         LibGObject.g_value_unset(_values.to_unsafe + i)
       end
+
+      LibGObject.g_object_set_qdata(@pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Returns the type id (GType) registered in GLib type system.
@@ -174,7 +187,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       filter_iter = Gtk::TreeIter.new
-
       # C call
       _retval = LibGtk.gtk_tree_model_filter_convert_child_iter_to_iter(self, filter_iter, child_iter)
 
@@ -208,7 +220,6 @@ module Gtk
 
       # Generator::CallerAllocatesPlan
       child_iter = Gtk::TreeIter.new
-
       # C call
       LibGtk.gtk_tree_model_filter_convert_iter_to_child_iter(self, child_iter, filter_iter)
 
@@ -268,7 +279,7 @@ module Gtk
     #
     # Note that gtk_tree_model_filter_set_modify_func()
     # can only be called once for a given filter model.
-    def set_modify_func(types : Enumerable(UInt64), func : Pointer(Void), data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    def set_modify_func(types : Enumerable(UInt64), func : Gtk::TreeModelFilterModifyFunc) : Nil
       # gtk_tree_model_filter_set_modify_func: (Method)
       # @types: (array length=n_columns element-type Gtype)
       # @data: (nullable)
@@ -276,23 +287,28 @@ module Gtk
       # Returns: (transfer none)
 
       # Generator::ArrayLengthArgPlan
-      n_columns = types.size
-      # Generator::ArrayArgPlan
+      n_columns = types.size # Generator::ArrayArgPlan
       types = types.to_a.to_unsafe
-
-      # Generator::NullableArrayPlan
-      data = if data.nil?
-               Pointer(Void).null
-             else
-               data.to_unsafe
-             end
-
-      # Generator::NullableArrayPlan
-      destroy = if destroy.nil?
-                  LibGLib::DestroyNotify.null
-                else
-                  destroy.to_unsafe
-                end
+      # Generator::CallbackArgPlan
+      if func
+        _box = ::Box.box(func)
+        func = ->(lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_value : Void, lib_column : Int32, lib_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          model = Gtk::TreeModel.new(lib_model, :none)
+          # Generator::GObjectArgPlan
+          iter = Gtk::TreeIter.new(lib_iter, :none)
+          # Generator::CallerAllocatesPlan
+          # Generator::GObjectArgPlan
+          value = GObject::Value.new(lib_value, :none)
+          column = lib_column
+          data = lib_data
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, GObject::Value, Int32, Nil)).unbox(data).call(model, iter, column)
+        }.pointer
+        data = GICrystal::ClosureDataManager.register(_box)
+        destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        func = data = destroy = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_tree_model_filter_set_modify_func(self, n_columns, types, func, data, destroy)
@@ -353,25 +369,28 @@ module Gtk
     # Note that gtk_tree_model_filter_set_visible_func() or
     # gtk_tree_model_filter_set_visible_column() can only be called
     # once for a given filter model.
-    def set_visible_func(func : Pointer(Void), data : Pointer(Void)?, destroy : Pointer(Void)?) : Nil
+    def visible_func=(func : Gtk::TreeModelFilterVisibleFunc) : Nil
       # gtk_tree_model_filter_set_visible_func: (Method)
       # @data: (nullable)
       # @destroy: (nullable)
       # Returns: (transfer none)
 
-      # Generator::NullableArrayPlan
-      data = if data.nil?
-               Pointer(Void).null
-             else
-               data.to_unsafe
-             end
-
-      # Generator::NullableArrayPlan
-      destroy = if destroy.nil?
-                  LibGLib::DestroyNotify.null
-                else
-                  destroy.to_unsafe
-                end
+      # Generator::CallbackArgPlan
+      if func
+        _box = ::Box.box(func)
+        func = ->(lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_data : Pointer(Void)) {
+          # Generator::GObjectArgPlan
+          model = Gtk::TreeModel.new(lib_model, :none)
+          # Generator::GObjectArgPlan
+          iter = Gtk::TreeIter.new(lib_iter, :none)
+          data = lib_data
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(data).call(model, iter)
+        }.pointer
+        data = GICrystal::ClosureDataManager.register(_box)
+        destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
+      else
+        func = data = destroy = Pointer(Void).null
+      end
 
       # C call
       LibGtk.gtk_tree_model_filter_set_visible_func(self, func, data, destroy)

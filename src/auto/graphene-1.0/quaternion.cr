@@ -96,7 +96,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
-
       # C call
       LibGraphene.graphene_quaternion_add(self, b, res)
 
@@ -254,7 +253,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
-
       # C call
       LibGraphene.graphene_quaternion_invert(self, res)
 
@@ -270,7 +268,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
-
       # C call
       LibGraphene.graphene_quaternion_multiply(self, b, res)
 
@@ -286,7 +283,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
-
       # C call
       LibGraphene.graphene_quaternion_normalize(self, res)
 
@@ -302,7 +298,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
-
       # C call
       LibGraphene.graphene_quaternion_scale(self, factor, res)
 
@@ -318,7 +313,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
-
       # C call
       LibGraphene.graphene_quaternion_slerp(self, b, factor, res)
 
@@ -335,7 +329,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       axis = Graphene::Vec3.new
-
       # C call
       LibGraphene.graphene_quaternion_to_angle_vec3(self, angle, axis)
 
@@ -352,12 +345,9 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      deg_x = Pointer(Float32).null
-      # Generator::OutArgUsedInReturnPlan
-      deg_y = Pointer(Float32).null
-      # Generator::OutArgUsedInReturnPlan
+      deg_x = Pointer(Float32).null # Generator::OutArgUsedInReturnPlan
+      deg_y = Pointer(Float32).null # Generator::OutArgUsedInReturnPlan
       deg_z = Pointer(Float32).null
-
       # C call
       LibGraphene.graphene_quaternion_to_angles(self, deg_x, deg_y, deg_z)
 
@@ -371,7 +361,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       m = Graphene::Matrix.new
-
       # C call
       LibGraphene.graphene_quaternion_to_matrix(self, m)
 
@@ -388,12 +377,9 @@ module Graphene
       # Returns: (transfer none)
 
       # Generator::OutArgUsedInReturnPlan
-      rad_x = Pointer(Float32).null
-      # Generator::OutArgUsedInReturnPlan
-      rad_y = Pointer(Float32).null
-      # Generator::OutArgUsedInReturnPlan
+      rad_x = Pointer(Float32).null # Generator::OutArgUsedInReturnPlan
+      rad_y = Pointer(Float32).null # Generator::OutArgUsedInReturnPlan
       rad_z = Pointer(Float32).null
-
       # C call
       LibGraphene.graphene_quaternion_to_radians(self, rad_x, rad_y, rad_z)
 
@@ -407,7 +393,6 @@ module Graphene
 
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
-
       # C call
       LibGraphene.graphene_quaternion_to_vec4(self, res)
 
