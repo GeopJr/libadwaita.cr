@@ -41,7 +41,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_type_class_add_private(self, private_size)
+      LibGObject.g_type_class_add_private(@pointer, private_size)
 
       # Return value handling
     end
@@ -51,7 +51,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_type_class_get_private(self, private_type)
+      _retval = LibGObject.g_type_class_get_private(@pointer, private_type)
 
       # Return value handling
 
@@ -63,7 +63,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_type_class_peek_parent(self)
+      _retval = LibGObject.g_type_class_peek_parent(@pointer)
 
       # Return value handling
 
@@ -75,7 +75,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_type_class_unref(self)
+      LibGObject.g_type_class_unref(@pointer)
 
       # Return value handling
     end

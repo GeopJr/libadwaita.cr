@@ -22,7 +22,7 @@ module Gio
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "server-identity", pointerof(value), Pointer(Void).null)
-      Gio::SocketConnectable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractSocketConnectable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def validation_flags=(value : Gio::TlsCertificateFlags) : Gio::TlsCertificateFlags
@@ -62,7 +62,7 @@ module Gio
 
       # Return value handling
 
-      Gio::DtlsClientConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractDtlsClientConnection.new(_retval, GICrystal::Transfer::Full)
     end
 
     def accepted_cas : GLib::List
@@ -70,7 +70,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dtls_client_connection_get_accepted_cas(self)
+      _retval = LibGio.g_dtls_client_connection_get_accepted_cas(@pointer)
 
       # Return value handling
 
@@ -82,11 +82,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_client_connection_get_server_identity(self)
+      _retval = LibGio.g_dtls_client_connection_get_server_identity(@pointer)
 
       # Return value handling
 
-      Gio::SocketConnectable__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractSocketConnectable.new(_retval, GICrystal::Transfer::None)
     end
 
     def validation_flags : Gio::TlsCertificateFlags
@@ -94,7 +94,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_client_connection_get_validation_flags(self)
+      _retval = LibGio.g_dtls_client_connection_get_validation_flags(@pointer)
 
       # Return value handling
 
@@ -106,7 +106,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dtls_client_connection_set_server_identity(self, identity)
+      LibGio.g_dtls_client_connection_set_server_identity(@pointer, identity)
 
       # Return value handling
     end
@@ -116,7 +116,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dtls_client_connection_set_validation_flags(self, flags)
+      LibGio.g_dtls_client_connection_set_validation_flags(@pointer, flags)
 
       # Return value handling
     end
@@ -126,8 +126,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class DtlsClientConnection__Impl < GObject::Object
+  class AbstractDtlsClientConnection < GObject::Object
     include DtlsClientConnection
+
+    GICrystal.define_new_method(Gio::AbstractDtlsClientConnection, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

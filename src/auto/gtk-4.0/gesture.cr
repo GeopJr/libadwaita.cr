@@ -101,15 +101,13 @@ module Gtk
         sizeof(LibGtk::Gesture), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Gesture, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Gesture`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -196,7 +194,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
       # C call
-      _retval = LibGtk.gtk_gesture_get_bounding_box(self, rect)
+      _retval = LibGtk.gtk_gesture_get_bounding_box(@pointer, rect)
 
       # Return value handling
 
@@ -215,7 +213,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_get_bounding_box_center(self, x, y)
+      _retval = LibGtk.gtk_gesture_get_bounding_box_center(@pointer, x, y)
 
       # Return value handling
 
@@ -231,7 +229,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_get_device(self)
+      _retval = LibGtk.gtk_gesture_get_device(@pointer)
 
       # Return value handling
 
@@ -244,7 +242,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_gesture_get_group(self)
+      _retval = LibGtk.gtk_gesture_get_group(@pointer)
 
       # Return value handling
 
@@ -269,7 +267,7 @@ module Gtk
                  end
 
       # C call
-      _retval = LibGtk.gtk_gesture_get_last_event(self, sequence)
+      _retval = LibGtk.gtk_gesture_get_last_event(@pointer, sequence)
 
       # Return value handling
 
@@ -282,7 +280,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_get_last_updated_sequence(self)
+      _retval = LibGtk.gtk_gesture_get_last_updated_sequence(@pointer)
 
       # Return value handling
 
@@ -311,7 +309,7 @@ module Gtk
       x = Pointer(Float64).null # Generator::OutArgUsedInReturnPlan
       y = Pointer(Float64).null
       # C call
-      _retval = LibGtk.gtk_gesture_get_point(self, sequence, x, y)
+      _retval = LibGtk.gtk_gesture_get_point(@pointer, sequence, x, y)
 
       # Return value handling
 
@@ -324,7 +322,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_get_sequence_state(self, sequence)
+      _retval = LibGtk.gtk_gesture_get_sequence_state(@pointer, sequence)
 
       # Return value handling
 
@@ -338,7 +336,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_gesture_get_sequences(self)
+      _retval = LibGtk.gtk_gesture_get_sequences(@pointer)
 
       # Return value handling
 
@@ -367,7 +365,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gesture_group(self, gesture)
+      LibGtk.gtk_gesture_group(@pointer, gesture)
 
       # Return value handling
     end
@@ -387,7 +385,7 @@ module Gtk
                  end
 
       # C call
-      _retval = LibGtk.gtk_gesture_handles_sequence(self, sequence)
+      _retval = LibGtk.gtk_gesture_handles_sequence(@pointer, sequence)
 
       # Return value handling
 
@@ -403,7 +401,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_is_active(self)
+      _retval = LibGtk.gtk_gesture_is_active(@pointer)
 
       # Return value handling
 
@@ -416,7 +414,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_is_grouped_with(self, other)
+      _retval = LibGtk.gtk_gesture_is_grouped_with(@pointer, other)
 
       # Return value handling
 
@@ -432,7 +430,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_is_recognized(self)
+      _retval = LibGtk.gtk_gesture_is_recognized(@pointer)
 
       # Return value handling
 
@@ -489,7 +487,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_set_sequence_state(self, sequence, state)
+      _retval = LibGtk.gtk_gesture_set_sequence_state(@pointer, sequence, state)
 
       # Return value handling
 
@@ -506,7 +504,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_set_state(self, state)
+      _retval = LibGtk.gtk_gesture_set_state(@pointer, state)
 
       # Return value handling
 
@@ -519,7 +517,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gesture_ungroup(self)
+      LibGtk.gtk_gesture_ungroup(@pointer)
 
       # Return value handling
     end
@@ -562,8 +560,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
         }.pointer
 
@@ -576,8 +574,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
         }.pointer
 
@@ -591,8 +589,8 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
         }.pointer
 
@@ -606,8 +604,8 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
         }.pointer
 
@@ -616,6 +614,13 @@ module Gtk
       end
 
       def emit(sequence : Gdk::EventSequence?) : Nil
+        # Generator::NullableArrayPlan
+        sequence = if sequence.nil?
+                     Void.null
+                   else
+                     sequence.to_unsafe
+                   end
+
         LibGObject.g_signal_emit_by_name(@source, "begin", sequence)
       end
     end
@@ -663,8 +668,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
         }.pointer
 
@@ -677,8 +682,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
         }.pointer
 
@@ -692,8 +697,8 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
         }.pointer
 
@@ -707,8 +712,8 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
         }.pointer
 
@@ -717,6 +722,13 @@ module Gtk
       end
 
       def emit(sequence : Gdk::EventSequence?) : Nil
+        # Generator::NullableArrayPlan
+        sequence = if sequence.nil?
+                     Void.null
+                   else
+                     sequence.to_unsafe
+                   end
+
         LibGObject.g_signal_emit_by_name(@source, "cancel", sequence)
       end
     end
@@ -763,8 +775,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
         }.pointer
 
@@ -777,8 +789,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
         }.pointer
 
@@ -792,8 +804,8 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
         }.pointer
 
@@ -807,8 +819,8 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
         }.pointer
 
@@ -817,6 +829,13 @@ module Gtk
       end
 
       def emit(sequence : Gdk::EventSequence?) : Nil
+        # Generator::NullableArrayPlan
+        sequence = if sequence.nil?
+                     Void.null
+                   else
+                     sequence.to_unsafe
+                   end
+
         LibGObject.g_signal_emit_by_name(@source, "end", sequence)
       end
     end
@@ -858,10 +877,10 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), lib_state : UInt32, _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
-          # Generator::GObjectArgPlan
-          state = Gtk::EventSequenceState.new(lib_state, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
+          # Generator::BuiltInTypeArgPlan
+          state = Gtk::EventSequenceState.new(lib_state)
           ::Box(Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(_lib_box).call(sequence, state)
         }.pointer
 
@@ -874,10 +893,10 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), lib_state : UInt32, _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
-          # Generator::GObjectArgPlan
-          state = Gtk::EventSequenceState.new(lib_state, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
+          # Generator::BuiltInTypeArgPlan
+          state = Gtk::EventSequenceState.new(lib_state)
           ::Box(Proc(Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(_lib_box).call(sequence, state)
         }.pointer
 
@@ -891,10 +910,10 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
-          # Generator::GObjectArgPlan
-          state = Gtk::EventSequenceState.new(lib_state, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
+          # Generator::BuiltInTypeArgPlan
+          state = Gtk::EventSequenceState.new(lib_state)
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(_lib_box).call(_sender, sequence, state)
         }.pointer
 
@@ -908,10 +927,10 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
-          # Generator::GObjectArgPlan
-          state = Gtk::EventSequenceState.new(lib_state, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
+          # Generator::BuiltInTypeArgPlan
+          state = Gtk::EventSequenceState.new(lib_state)
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Gtk::EventSequenceState, Nil)).unbox(_lib_box).call(_sender, sequence, state)
         }.pointer
 
@@ -920,6 +939,13 @@ module Gtk
       end
 
       def emit(sequence : Gdk::EventSequence?, state : Gtk::EventSequenceState) : Nil
+        # Generator::NullableArrayPlan
+        sequence = if sequence.nil?
+                     Void.null
+                   else
+                     sequence.to_unsafe
+                   end
+
         LibGObject.g_signal_emit_by_name(@source, "sequence-state-changed", sequence, state)
       end
     end
@@ -960,8 +986,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
         }.pointer
 
@@ -974,8 +1000,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_sequence : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gdk::EventSequence?, Nil)).unbox(_lib_box).call(sequence)
         }.pointer
 
@@ -989,8 +1015,8 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
         }.pointer
 
@@ -1004,8 +1030,8 @@ module Gtk
           _sender = Gtk::Gesture.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sequence = (lib_sequence.null? ? nil : Gdk::EventSequence.new(lib_sequence, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          sequence = Gdk::EventSequence.new(lib_sequence, :none)
+          # Generator::BuiltInTypeArgPlan
+          sequence = Gdk::EventSequence.new(lib_sequence, :none) unless lib_sequence.null?
           ::Box(Proc(Gtk::Gesture, Gdk::EventSequence?, Nil)).unbox(_lib_box).call(_sender, sequence)
         }.pointer
 
@@ -1014,6 +1040,13 @@ module Gtk
       end
 
       def emit(sequence : Gdk::EventSequence?) : Nil
+        # Generator::NullableArrayPlan
+        sequence = if sequence.nil?
+                     Void.null
+                   else
+                     sequence.to_unsafe
+                   end
+
         LibGObject.g_signal_emit_by_name(@source, "update", sequence)
       end
     end

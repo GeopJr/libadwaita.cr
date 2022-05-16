@@ -14,15 +14,13 @@ module Gio
         sizeof(LibGio::MenuItem), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(MenuItem, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `MenuItem`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -210,7 +208,7 @@ module Gio
                       end
 
       # C call
-      _retval = LibGio.g_menu_item_get_attribute_value(self, attribute, expected_type)
+      _retval = LibGio.g_menu_item_get_attribute_value(@pointer, attribute, expected_type)
 
       # Return value handling
 
@@ -223,7 +221,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_menu_item_get_link(self, link)
+      _retval = LibGio.g_menu_item_get_link(@pointer, link)
 
       # Return value handling
 
@@ -288,7 +286,7 @@ module Gio
                      end
 
       # C call
-      LibGio.g_menu_item_set_action_and_target_value(self, action, target_value)
+      LibGio.g_menu_item_set_action_and_target_value(@pointer, action, target_value)
 
       # Return value handling
     end
@@ -327,7 +325,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_menu_item_set_attribute_value(self, attribute, value)
+      LibGio.g_menu_item_set_attribute_value(@pointer, attribute, value)
 
       # Return value handling
     end
@@ -348,7 +346,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_menu_item_set_detailed_action(self, detailed_action)
+      LibGio.g_menu_item_set_detailed_action(@pointer, detailed_action)
 
       # Return value handling
     end
@@ -370,7 +368,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_menu_item_set_icon(self, icon)
+      LibGio.g_menu_item_set_icon(@pointer, icon)
 
       # Return value handling
     end
@@ -392,7 +390,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_menu_item_set_label(self, label)
+      LibGio.g_menu_item_set_label(@pointer, label)
 
       # Return value handling
     end
@@ -420,7 +418,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_menu_item_set_link(self, link, model)
+      LibGio.g_menu_item_set_link(@pointer, link, model)
 
       # Return value handling
     end
@@ -445,7 +443,7 @@ module Gio
                 end
 
       # C call
-      LibGio.g_menu_item_set_section(self, section)
+      LibGio.g_menu_item_set_section(@pointer, section)
 
       # Return value handling
     end
@@ -470,7 +468,7 @@ module Gio
                 end
 
       # C call
-      LibGio.g_menu_item_set_submenu(self, submenu)
+      LibGio.g_menu_item_set_submenu(@pointer, submenu)
 
       # Return value handling
     end

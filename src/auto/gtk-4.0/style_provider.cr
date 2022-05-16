@@ -56,7 +56,7 @@ module Gtk
       def connect(handler : Proc(Gtk::StyleProvider, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::StyleProvider__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractStyleProvider.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::StyleProvider, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -67,7 +67,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::StyleProvider, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::StyleProvider__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractStyleProvider.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::StyleProvider, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -89,8 +89,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class StyleProvider__Impl < GObject::Object
+  class AbstractStyleProvider < GObject::Object
     include StyleProvider
+
+    GICrystal.define_new_method(Gtk::AbstractStyleProvider, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

@@ -65,7 +65,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_add(self, b, res)
+      LibGraphene.graphene_vec3_add(@pointer, b, res)
 
       # Return value handling
 
@@ -80,7 +80,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_cross(self, b, res)
+      LibGraphene.graphene_vec3_cross(@pointer, b, res)
 
       # Return value handling
 
@@ -95,7 +95,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_divide(self, b, res)
+      LibGraphene.graphene_vec3_divide(@pointer, b, res)
 
       # Return value handling
 
@@ -107,7 +107,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_vec3_dot(self, b)
+      _retval = LibGraphene.graphene_vec3_dot(@pointer, b)
 
       # Return value handling
 
@@ -119,7 +119,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_vec3_equal(self, v2)
+      _retval = LibGraphene.graphene_vec3_equal(@pointer, v2)
 
       # Return value handling
 
@@ -131,7 +131,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_vec3_free(self)
+      LibGraphene.graphene_vec3_free(@pointer)
 
       # Return value handling
     end
@@ -141,7 +141,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_vec3_get_x(self)
+      _retval = LibGraphene.graphene_vec3_get_x(@pointer)
 
       # Return value handling
 
@@ -156,7 +156,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
       # C call
-      LibGraphene.graphene_vec3_get_xy(self, res)
+      LibGraphene.graphene_vec3_get_xy(@pointer, res)
 
       # Return value handling
 
@@ -171,7 +171,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_get_xy0(self, res)
+      LibGraphene.graphene_vec3_get_xy0(@pointer, res)
 
       # Return value handling
 
@@ -186,7 +186,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
       # C call
-      LibGraphene.graphene_vec3_get_xyz0(self, res)
+      LibGraphene.graphene_vec3_get_xyz0(@pointer, res)
 
       # Return value handling
 
@@ -201,7 +201,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
       # C call
-      LibGraphene.graphene_vec3_get_xyz1(self, res)
+      LibGraphene.graphene_vec3_get_xyz1(@pointer, res)
 
       # Return value handling
 
@@ -216,7 +216,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
       # C call
-      LibGraphene.graphene_vec3_get_xyzw(self, w, res)
+      LibGraphene.graphene_vec3_get_xyzw(@pointer, w, res)
 
       # Return value handling
 
@@ -228,7 +228,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_vec3_get_y(self)
+      _retval = LibGraphene.graphene_vec3_get_y(@pointer)
 
       # Return value handling
 
@@ -240,7 +240,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_vec3_get_z(self)
+      _retval = LibGraphene.graphene_vec3_get_z(@pointer)
 
       # Return value handling
 
@@ -252,7 +252,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_vec3_init(self, x, y, z)
+      _retval = LibGraphene.graphene_vec3_init(@pointer, x, y, z)
 
       # Return value handling
 
@@ -270,7 +270,7 @@ module Graphene
       src = src.to_a.to_unsafe
 
       # C call
-      _retval = LibGraphene.graphene_vec3_init_from_float(self, src)
+      _retval = LibGraphene.graphene_vec3_init_from_float(@pointer, src)
 
       # Return value handling
 
@@ -286,7 +286,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_vec3_init_from_vec3(self, src)
+      _retval = LibGraphene.graphene_vec3_init_from_vec3(@pointer, src)
 
       # Return value handling
 
@@ -301,7 +301,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_interpolate(self, v2, factor, res)
+      LibGraphene.graphene_vec3_interpolate(@pointer, v2, factor, res)
 
       # Return value handling
 
@@ -313,7 +313,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_vec3_length(self)
+      _retval = LibGraphene.graphene_vec3_length(@pointer)
 
       # Return value handling
 
@@ -328,7 +328,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_max(self, b, res)
+      LibGraphene.graphene_vec3_max(@pointer, b, res)
 
       # Return value handling
 
@@ -343,7 +343,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_min(self, b, res)
+      LibGraphene.graphene_vec3_min(@pointer, b, res)
 
       # Return value handling
 
@@ -358,7 +358,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_multiply(self, b, res)
+      LibGraphene.graphene_vec3_multiply(@pointer, b, res)
 
       # Return value handling
 
@@ -370,7 +370,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_vec3_near(self, v2, epsilon)
+      _retval = LibGraphene.graphene_vec3_near(@pointer, v2, epsilon)
 
       # Return value handling
 
@@ -385,7 +385,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_negate(self, res)
+      LibGraphene.graphene_vec3_negate(@pointer, res)
 
       # Return value handling
 
@@ -400,7 +400,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_normalize(self, res)
+      LibGraphene.graphene_vec3_normalize(@pointer, res)
 
       # Return value handling
 
@@ -415,7 +415,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_scale(self, factor, res)
+      LibGraphene.graphene_vec3_scale(@pointer, factor, res)
 
       # Return value handling
 
@@ -430,7 +430,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_vec3_subtract(self, b, res)
+      LibGraphene.graphene_vec3_subtract(@pointer, b, res)
 
       # Return value handling
 
@@ -448,7 +448,7 @@ module Graphene
       dest = dest.to_a.to_unsafe
 
       # C call
-      LibGraphene.graphene_vec3_to_float(self, dest)
+      LibGraphene.graphene_vec3_to_float(@pointer, dest)
 
       # Return value handling
     end

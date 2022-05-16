@@ -72,15 +72,13 @@ module Gio
         sizeof(LibGio::Subprocess), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Subprocess, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Subprocess`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -228,7 +226,7 @@ module Gio
       stdout_buf = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       stderr_buf = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGio.g_subprocess_communicate(self, stdin_buf, cancellable, stdout_buf, stderr_buf, pointerof(_error))
+      _retval = LibGio.g_subprocess_communicate(@pointer, stdin_buf, cancellable, stdout_buf, stderr_buf, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -268,7 +266,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_subprocess_communicate_async(self, stdin_buf, cancellable, callback, user_data)
+      LibGio.g_subprocess_communicate_async(@pointer, stdin_buf, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -286,7 +284,7 @@ module Gio
       stdout_buf = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       stderr_buf = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGio.g_subprocess_communicate_finish(self, result, stdout_buf, stderr_buf, pointerof(_error))
+      _retval = LibGio.g_subprocess_communicate_finish(@pointer, result, stdout_buf, stderr_buf, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -327,7 +325,7 @@ module Gio
       stdout_buf = Pointer(Pointer(LibC::Char)).null # Generator::OutArgUsedInReturnPlan
       stderr_buf = Pointer(Pointer(LibC::Char)).null
       # C call
-      _retval = LibGio.g_subprocess_communicate_utf8(self, stdin_buf, cancellable, stdout_buf, stderr_buf, pointerof(_error))
+      _retval = LibGio.g_subprocess_communicate_utf8(@pointer, stdin_buf, cancellable, stdout_buf, stderr_buf, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -367,7 +365,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_subprocess_communicate_utf8_async(self, stdin_buf, cancellable, callback, user_data)
+      LibGio.g_subprocess_communicate_utf8_async(@pointer, stdin_buf, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -385,7 +383,7 @@ module Gio
       stdout_buf = Pointer(Pointer(LibC::Char)).null # Generator::OutArgUsedInReturnPlan
       stderr_buf = Pointer(Pointer(LibC::Char)).null
       # C call
-      _retval = LibGio.g_subprocess_communicate_utf8_finish(self, result, stdout_buf, stderr_buf, pointerof(_error))
+      _retval = LibGio.g_subprocess_communicate_utf8_finish(@pointer, result, stdout_buf, stderr_buf, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -407,7 +405,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_force_exit(self)
+      LibGio.g_subprocess_force_exit(@pointer)
 
       # Return value handling
     end
@@ -425,7 +423,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_exit_status(self)
+      _retval = LibGio.g_subprocess_get_exit_status(@pointer)
 
       # Return value handling
 
@@ -440,7 +438,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_identifier(self)
+      _retval = LibGio.g_subprocess_get_identifier(@pointer)
 
       # Return value handling
 
@@ -459,7 +457,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_if_exited(self)
+      _retval = LibGio.g_subprocess_get_if_exited(@pointer)
 
       # Return value handling
 
@@ -477,7 +475,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_if_signaled(self)
+      _retval = LibGio.g_subprocess_get_if_signaled(@pointer)
 
       # Return value handling
 
@@ -500,7 +498,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_status(self)
+      _retval = LibGio.g_subprocess_get_status(@pointer)
 
       # Return value handling
 
@@ -517,7 +515,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_stderr_pipe(self)
+      _retval = LibGio.g_subprocess_get_stderr_pipe(@pointer)
 
       # Return value handling
 
@@ -534,7 +532,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_stdin_pipe(self)
+      _retval = LibGio.g_subprocess_get_stdin_pipe(@pointer)
 
       # Return value handling
 
@@ -551,7 +549,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_stdout_pipe(self)
+      _retval = LibGio.g_subprocess_get_stdout_pipe(@pointer)
 
       # Return value handling
 
@@ -569,7 +567,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_successful(self)
+      _retval = LibGio.g_subprocess_get_successful(@pointer)
 
       # Return value handling
 
@@ -588,7 +586,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_subprocess_get_term_sig(self)
+      _retval = LibGio.g_subprocess_get_term_sig(@pointer)
 
       # Return value handling
 
@@ -607,7 +605,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_send_signal(self, signal_num)
+      LibGio.g_subprocess_send_signal(@pointer, signal_num)
 
       # Return value handling
     end
@@ -638,7 +636,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_subprocess_wait(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_subprocess_wait(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -672,7 +670,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_subprocess_wait_async(self, cancellable, callback, user_data)
+      LibGio.g_subprocess_wait_async(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -693,7 +691,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_subprocess_wait_check(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_subprocess_wait_check(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -727,7 +725,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_subprocess_wait_check_async(self, cancellable, callback, user_data)
+      LibGio.g_subprocess_wait_check_async(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -741,7 +739,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_subprocess_wait_check_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_subprocess_wait_check_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -760,7 +758,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_subprocess_wait_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_subprocess_wait_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?

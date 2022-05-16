@@ -74,15 +74,13 @@ module Gio
         sizeof(LibGio::DBusAuthObserver), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DBusAuthObserver, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DBusAuthObserver`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -115,7 +113,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_auth_observer_allow_mechanism(self, mechanism)
+      _retval = LibGio.g_dbus_auth_observer_allow_mechanism(@pointer, mechanism)
 
       # Return value handling
 
@@ -136,7 +134,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dbus_auth_observer_authorize_authenticated_peer(self, stream, credentials)
+      _retval = LibGio.g_dbus_auth_observer_authorize_authenticated_peer(@pointer, stream, credentials)
 
       # Return value handling
 
@@ -171,7 +169,8 @@ module Gio
       def connect(handler : Proc(::String, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mechanism : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          mechanism = lib_mechanism
+          # Generator::BuiltInTypeArgPlan
+          mechanism = ::String.new(lib_mechanism)
           ::Box(Proc(::String, Bool)).unbox(_lib_box).call(mechanism)
         }.pointer
 
@@ -182,7 +181,8 @@ module Gio
       def connect_after(handler : Proc(::String, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mechanism : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          mechanism = lib_mechanism
+          # Generator::BuiltInTypeArgPlan
+          mechanism = ::String.new(lib_mechanism)
           ::Box(Proc(::String, Bool)).unbox(_lib_box).call(mechanism)
         }.pointer
 
@@ -194,7 +194,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mechanism : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusAuthObserver.new(_lib_sender, GICrystal::Transfer::None)
-          mechanism = lib_mechanism
+          # Generator::BuiltInTypeArgPlan
+          mechanism = ::String.new(lib_mechanism)
           ::Box(Proc(Gio::DBusAuthObserver, ::String, Bool)).unbox(_lib_box).call(_sender, mechanism)
         }.pointer
 
@@ -206,7 +207,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mechanism : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusAuthObserver.new(_lib_sender, GICrystal::Transfer::None)
-          mechanism = lib_mechanism
+          # Generator::BuiltInTypeArgPlan
+          mechanism = ::String.new(lib_mechanism)
           ::Box(Proc(Gio::DBusAuthObserver, ::String, Bool)).unbox(_lib_box).call(_sender, mechanism)
         }.pointer
 
@@ -252,12 +254,12 @@ module Gio
       def connect(handler : Proc(Gio::IOStream, Gio::Credentials?, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_stream : Pointer(Void), lib_credentials : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           stream = Gio::IOStream.new(lib_stream, :none)
           # Generator::NullableArrayPlan
           credentials = (lib_credentials.null? ? nil : Gio::Credentials.new(lib_credentials, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          credentials = Gio::Credentials.new(lib_credentials, :none)
+          # Generator::BuiltInTypeArgPlan
+          credentials = Gio::Credentials.new(lib_credentials, :none) unless lib_credentials.null?
           ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(_lib_box).call(stream, credentials)
         }.pointer
 
@@ -268,12 +270,12 @@ module Gio
       def connect_after(handler : Proc(Gio::IOStream, Gio::Credentials?, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_stream : Pointer(Void), lib_credentials : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           stream = Gio::IOStream.new(lib_stream, :none)
           # Generator::NullableArrayPlan
           credentials = (lib_credentials.null? ? nil : Gio::Credentials.new(lib_credentials, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          credentials = Gio::Credentials.new(lib_credentials, :none)
+          # Generator::BuiltInTypeArgPlan
+          credentials = Gio::Credentials.new(lib_credentials, :none) unless lib_credentials.null?
           ::Box(Proc(Gio::IOStream, Gio::Credentials?, Bool)).unbox(_lib_box).call(stream, credentials)
         }.pointer
 
@@ -285,12 +287,12 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_stream : Pointer(Void), lib_credentials : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusAuthObserver.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           stream = Gio::IOStream.new(lib_stream, :none)
           # Generator::NullableArrayPlan
           credentials = (lib_credentials.null? ? nil : Gio::Credentials.new(lib_credentials, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          credentials = Gio::Credentials.new(lib_credentials, :none)
+          # Generator::BuiltInTypeArgPlan
+          credentials = Gio::Credentials.new(lib_credentials, :none) unless lib_credentials.null?
           ::Box(Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool)).unbox(_lib_box).call(_sender, stream, credentials)
         }.pointer
 
@@ -302,12 +304,12 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_stream : Pointer(Void), lib_credentials : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusAuthObserver.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           stream = Gio::IOStream.new(lib_stream, :none)
           # Generator::NullableArrayPlan
           credentials = (lib_credentials.null? ? nil : Gio::Credentials.new(lib_credentials, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          credentials = Gio::Credentials.new(lib_credentials, :none)
+          # Generator::BuiltInTypeArgPlan
+          credentials = Gio::Credentials.new(lib_credentials, :none) unless lib_credentials.null?
           ::Box(Proc(Gio::DBusAuthObserver, Gio::IOStream, Gio::Credentials?, Bool)).unbox(_lib_box).call(_sender, stream, credentials)
         }.pointer
 
@@ -316,6 +318,13 @@ module Gio
       end
 
       def emit(stream : Gio::IOStream, credentials : Gio::Credentials?) : Nil
+        # Generator::NullableArrayPlan
+        credentials = if credentials.nil?
+                        Void.null
+                      else
+                        credentials.to_unsafe
+                      end
+
         LibGObject.g_signal_emit_by_name(@source, "authorize-authenticated-peer", stream, credentials)
       end
     end

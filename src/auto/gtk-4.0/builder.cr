@@ -195,15 +195,13 @@ module Gtk
         sizeof(LibGtk::Builder), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Builder, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Builder`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -273,7 +271,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "scope", pointerof(value), Pointer(Void).null)
-      Gtk::BuilderScope__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractBuilderScope.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def translation_domain=(value : ::String) : ::String
@@ -388,7 +386,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_builder_add_from_file(self, filename, pointerof(_error))
+      _retval = LibGtk.gtk_builder_add_from_file(@pointer, filename, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -420,7 +418,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_builder_add_from_resource(self, resource_path, pointerof(_error))
+      _retval = LibGtk.gtk_builder_add_from_resource(@pointer, resource_path, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -452,7 +450,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_builder_add_from_string(self, buffer, length, pointerof(_error))
+      _retval = LibGtk.gtk_builder_add_from_string(@pointer, buffer, length, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -484,7 +482,7 @@ module Gtk
       object_ids = object_ids.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGtk.gtk_builder_add_objects_from_file(self, filename, object_ids, pointerof(_error))
+      _retval = LibGtk.gtk_builder_add_objects_from_file(@pointer, filename, object_ids, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -516,7 +514,7 @@ module Gtk
       object_ids = object_ids.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGtk.gtk_builder_add_objects_from_resource(self, resource_path, object_ids, pointerof(_error))
+      _retval = LibGtk.gtk_builder_add_objects_from_resource(@pointer, resource_path, object_ids, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -547,7 +545,7 @@ module Gtk
       object_ids = object_ids.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGtk.gtk_builder_add_objects_from_string(self, buffer, length, object_ids, pointerof(_error))
+      _retval = LibGtk.gtk_builder_add_objects_from_string(@pointer, buffer, length, object_ids, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -579,7 +577,7 @@ module Gtk
                end
 
       # C call
-      _retval = LibGtk.gtk_builder_create_closure(self, function_name, flags, object, pointerof(_error))
+      _retval = LibGtk.gtk_builder_create_closure(@pointer, function_name, flags, object, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -596,7 +594,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_builder_expose_object(self, name, object)
+      LibGtk.gtk_builder_expose_object(@pointer, name, object)
 
       # Return value handling
     end
@@ -613,7 +611,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_builder_extend_with_template(self, object, template_type, buffer, length, pointerof(_error))
+      _retval = LibGtk.gtk_builder_extend_with_template(@pointer, object, template_type, buffer, length, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -629,7 +627,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_builder_get_current_object(self)
+      _retval = LibGtk.gtk_builder_get_current_object(@pointer)
 
       # Return value handling
 
@@ -645,7 +643,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_builder_get_object(self, name)
+      _retval = LibGtk.gtk_builder_get_object(@pointer, name)
 
       # Return value handling
 
@@ -661,7 +659,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_builder_get_objects(self)
+      _retval = LibGtk.gtk_builder_get_objects(@pointer)
 
       # Return value handling
 
@@ -674,11 +672,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_builder_get_scope(self)
+      _retval = LibGtk.gtk_builder_get_scope(@pointer)
 
       # Return value handling
 
-      Gtk::BuilderScope__Impl.new(_retval, GICrystal::Transfer::None)
+      Gtk::AbstractBuilderScope.new(_retval, GICrystal::Transfer::None)
     end
 
     # Gets the translation domain of @builder.
@@ -687,7 +685,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_builder_get_translation_domain(self)
+      _retval = LibGtk.gtk_builder_get_translation_domain(@pointer)
 
       # Return value handling
 
@@ -704,7 +702,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_builder_get_type_from_name(self, type_name)
+      _retval = LibGtk.gtk_builder_get_type_from_name(@pointer, type_name)
 
       # Return value handling
 
@@ -733,7 +731,7 @@ module Gtk
                        end
 
       # C call
-      LibGtk.gtk_builder_set_current_object(self, current_object)
+      LibGtk.gtk_builder_set_current_object(@pointer, current_object)
 
       # Return value handling
     end
@@ -754,7 +752,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_builder_set_scope(self, scope)
+      LibGtk.gtk_builder_set_scope(@pointer, scope)
 
       # Return value handling
     end
@@ -773,7 +771,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_builder_set_translation_domain(self, domain)
+      LibGtk.gtk_builder_set_translation_domain(@pointer, domain)
 
       # Return value handling
     end
@@ -799,7 +797,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       value = GObject::Value.new
       # C call
-      _retval = LibGtk.gtk_builder_value_from_string(self, pspec, string, value, pointerof(_error))
+      _retval = LibGtk.gtk_builder_value_from_string(@pointer, pspec, string, value, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -829,7 +827,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       value = GObject::Value.new
       # C call
-      _retval = LibGtk.gtk_builder_value_from_string_type(self, type, string, value, pointerof(_error))
+      _retval = LibGtk.gtk_builder_value_from_string_type(@pointer, type, string, value, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?

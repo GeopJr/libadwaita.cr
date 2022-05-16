@@ -17,8 +17,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class ShortcutManager__Impl < GObject::Object
+  class AbstractShortcutManager < GObject::Object
     include ShortcutManager
+
+    GICrystal.define_new_method(Gtk::AbstractShortcutManager, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

@@ -13,15 +13,13 @@ module Adw
         sizeof(LibAdw::TabPage), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TabPage, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TabPage`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -131,7 +129,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "icon", pointerof(value), Pointer(Void).null)
-      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractIcon.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def indicator_activatable=(value : Bool) : Bool
@@ -161,7 +159,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "indicator-icon", pointerof(value), Pointer(Void).null)
-      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractIcon.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def loading=(value : Bool) : Bool
@@ -261,7 +259,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_child(self)
+      _retval = LibAdw.adw_tab_page_get_child(@pointer)
 
       # Return value handling
 
@@ -274,11 +272,11 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_icon(self)
+      _retval = LibAdw.adw_tab_page_get_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets whether the indicator of @self is activatable.
@@ -287,7 +285,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_indicator_activatable(self)
+      _retval = LibAdw.adw_tab_page_get_indicator_activatable(@pointer)
 
       # Return value handling
 
@@ -300,11 +298,11 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_indicator_icon(self)
+      _retval = LibAdw.adw_tab_page_get_indicator_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets whether @self is loading.
@@ -313,7 +311,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_loading(self)
+      _retval = LibAdw.adw_tab_page_get_loading(@pointer)
 
       # Return value handling
 
@@ -326,7 +324,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_needs_attention(self)
+      _retval = LibAdw.adw_tab_page_get_needs_attention(@pointer)
 
       # Return value handling
 
@@ -339,7 +337,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_parent(self)
+      _retval = LibAdw.adw_tab_page_get_parent(@pointer)
 
       # Return value handling
 
@@ -352,7 +350,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_pinned(self)
+      _retval = LibAdw.adw_tab_page_get_pinned(@pointer)
 
       # Return value handling
 
@@ -365,7 +363,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_selected(self)
+      _retval = LibAdw.adw_tab_page_get_selected(@pointer)
 
       # Return value handling
 
@@ -378,7 +376,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_title(self)
+      _retval = LibAdw.adw_tab_page_get_title(@pointer)
 
       # Return value handling
 
@@ -391,7 +389,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_page_get_tooltip(self)
+      _retval = LibAdw.adw_tab_page_get_tooltip(@pointer)
 
       # Return value handling
 
@@ -412,7 +410,7 @@ module Adw
              end
 
       # C call
-      LibAdw.adw_tab_page_set_icon(self, icon)
+      LibAdw.adw_tab_page_set_icon(@pointer, icon)
 
       # Return value handling
     end
@@ -423,7 +421,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_page_set_indicator_activatable(self, activatable)
+      LibAdw.adw_tab_page_set_indicator_activatable(@pointer, activatable)
 
       # Return value handling
     end
@@ -442,7 +440,7 @@ module Adw
                        end
 
       # C call
-      LibAdw.adw_tab_page_set_indicator_icon(self, indicator_icon)
+      LibAdw.adw_tab_page_set_indicator_icon(@pointer, indicator_icon)
 
       # Return value handling
     end
@@ -453,7 +451,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_page_set_loading(self, loading)
+      LibAdw.adw_tab_page_set_loading(@pointer, loading)
 
       # Return value handling
     end
@@ -464,7 +462,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_page_set_needs_attention(self, needs_attention)
+      LibAdw.adw_tab_page_set_needs_attention(@pointer, needs_attention)
 
       # Return value handling
     end
@@ -475,7 +473,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_page_set_title(self, title)
+      LibAdw.adw_tab_page_set_title(@pointer, title)
 
       # Return value handling
     end
@@ -486,7 +484,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_page_set_tooltip(self, tooltip)
+      LibAdw.adw_tab_page_set_tooltip(@pointer, tooltip)
 
       # Return value handling
     end

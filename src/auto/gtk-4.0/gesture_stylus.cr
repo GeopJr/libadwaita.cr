@@ -16,15 +16,13 @@ module Gtk
         sizeof(LibGtk::GestureStylus), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(GestureStylus, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `GestureStylus`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -124,7 +122,7 @@ module Gtk
       values = values.to_a.to_unsafe
 
       # C call
-      _retval = LibGtk.gtk_gesture_stylus_get_axes(self, axes, values)
+      _retval = LibGtk.gtk_gesture_stylus_get_axes(@pointer, axes, values)
 
       # Return value handling
 
@@ -143,7 +141,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_stylus_get_axis(self, axis, value)
+      _retval = LibGtk.gtk_gesture_stylus_get_axis(@pointer, axis, value)
 
       # Return value handling
 
@@ -174,7 +172,7 @@ module Gtk
       backlog = backlog.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGtk.gtk_gesture_stylus_get_backlog(self, backlog, n_elems)
+      _retval = LibGtk.gtk_gesture_stylus_get_backlog(@pointer, backlog, n_elems)
 
       # Return value handling
 
@@ -196,7 +194,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_stylus_get_device_tool(self)
+      _retval = LibGtk.gtk_gesture_stylus_get_device_tool(@pointer)
 
       # Return value handling
 

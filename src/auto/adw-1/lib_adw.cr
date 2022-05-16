@@ -1,5 +1,4 @@
 @[Link("adwaita-1", pkg_config: "adwaita-1")]
-
 lib LibAdw
   # Flags
 
@@ -607,7 +606,7 @@ lib LibAdw
   fun adw_preferences_group_new : Pointer(Void)
   fun adw_preferences_group_remove(this : Void*, child : Pointer(Void)) : Void
   fun adw_preferences_group_set_description(this : Void*, description : Pointer(LibC::Char)) : Void
-  fun adw_preferences_group_set_header_suffix(this : Void*, child : Pointer(Void)) : Void
+  fun adw_preferences_group_set_header_suffix(this : Void*, suffix : Pointer(Void)) : Void
   fun adw_preferences_group_set_title(this : Void*, title : Pointer(LibC::Char)) : Void
   fun adw_preferences_page_add(this : Void*, group : Pointer(Void)) : Void
   fun adw_preferences_page_get_icon_name(this : Void*) : Pointer(LibC::Char)

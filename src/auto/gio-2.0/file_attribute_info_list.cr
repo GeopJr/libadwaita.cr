@@ -76,7 +76,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_attribute_info_list_add(self, name, type, flags)
+      LibGio.g_file_attribute_info_list_add(@pointer, name, type, flags)
 
       # Return value handling
     end
@@ -86,7 +86,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_attribute_info_list_dup(self)
+      _retval = LibGio.g_file_attribute_info_list_dup(@pointer)
 
       # Return value handling
 
@@ -98,7 +98,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_attribute_info_list_lookup(self, name)
+      _retval = LibGio.g_file_attribute_info_list_lookup(@pointer, name)
 
       # Return value handling
 
@@ -110,7 +110,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_attribute_info_list_ref(self)
+      _retval = LibGio.g_file_attribute_info_list_ref(@pointer)
 
       # Return value handling
 
@@ -122,7 +122,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_attribute_info_list_unref(self)
+      LibGio.g_file_attribute_info_list_unref(@pointer)
 
       # Return value handling
     end

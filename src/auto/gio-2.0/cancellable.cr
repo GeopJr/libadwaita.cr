@@ -15,15 +15,13 @@ module Gio
         sizeof(LibGio::Cancellable), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Cancellable, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Cancellable`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -91,7 +89,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_cancellable_cancel(self)
+      LibGio.g_cancellable_cancel(@pointer)
 
       # Return value handling
     end
@@ -133,7 +131,7 @@ module Gio
       end
 
       # C call
-      _retval = LibGio.g_cancellable_connect(self, callback, data, data_destroy_func)
+      _retval = LibGio.g_cancellable_connect(@pointer, callback, data, data_destroy_func)
 
       # Return value handling
 
@@ -159,7 +157,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_cancellable_disconnect(self, handler_id)
+      LibGio.g_cancellable_disconnect(@pointer, handler_id)
 
       # Return value handling
     end
@@ -182,7 +180,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_cancellable_get_fd(self)
+      _retval = LibGio.g_cancellable_get_fd(@pointer)
 
       # Return value handling
 
@@ -195,7 +193,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_cancellable_is_cancelled(self)
+      _retval = LibGio.g_cancellable_is_cancelled(@pointer)
 
       # Return value handling
 
@@ -225,7 +223,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_cancellable_make_pollfd(self, pollfd)
+      _retval = LibGio.g_cancellable_make_pollfd(@pointer, pollfd)
 
       # Return value handling
 
@@ -239,7 +237,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_cancellable_pop_current(self)
+      LibGio.g_cancellable_pop_current(@pointer)
 
       # Return value handling
     end
@@ -257,7 +255,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_cancellable_push_current(self)
+      LibGio.g_cancellable_push_current(@pointer)
 
       # Return value handling
     end
@@ -276,7 +274,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_cancellable_release_fd(self)
+      LibGio.g_cancellable_release_fd(@pointer)
 
       # Return value handling
     end
@@ -297,7 +295,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_cancellable_reset(self)
+      LibGio.g_cancellable_reset(@pointer)
 
       # Return value handling
     end
@@ -311,7 +309,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_cancellable_set_error_if_cancelled(self, pointerof(_error))
+      _retval = LibGio.g_cancellable_set_error_if_cancelled(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -335,7 +333,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_cancellable_source_new(self)
+      _retval = LibGio.g_cancellable_source_new(@pointer)
 
       # Return value handling
 

@@ -55,7 +55,7 @@ module Gio
 
       # Return value handling
 
-      Gio::MemoryMonitor__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractMemoryMonitor.new(_retval, GICrystal::Transfer::Full)
     end
 
     struct LowMemoryWarningSignal
@@ -85,8 +85,8 @@ module Gio
       def connect(handler : Proc(Gio::MemoryMonitorWarningLevel, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_level : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          level = Gio::MemoryMonitorWarningLevel.new(lib_level, :none)
+          # Generator::BuiltInTypeArgPlan
+          level = Gio::MemoryMonitorWarningLevel.new(lib_level)
           ::Box(Proc(Gio::MemoryMonitorWarningLevel, Nil)).unbox(_lib_box).call(level)
         }.pointer
 
@@ -97,8 +97,8 @@ module Gio
       def connect_after(handler : Proc(Gio::MemoryMonitorWarningLevel, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_level : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          level = Gio::MemoryMonitorWarningLevel.new(lib_level, :none)
+          # Generator::BuiltInTypeArgPlan
+          level = Gio::MemoryMonitorWarningLevel.new(lib_level)
           ::Box(Proc(Gio::MemoryMonitorWarningLevel, Nil)).unbox(_lib_box).call(level)
         }.pointer
 
@@ -109,9 +109,9 @@ module Gio
       def connect(handler : Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_level : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gio::MemoryMonitor__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          level = Gio::MemoryMonitorWarningLevel.new(lib_level, :none)
+          _sender = Gio::AbstractMemoryMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          level = Gio::MemoryMonitorWarningLevel.new(lib_level)
           ::Box(Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil)).unbox(_lib_box).call(_sender, level)
         }.pointer
 
@@ -122,9 +122,9 @@ module Gio
       def connect_after(handler : Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_level : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gio::MemoryMonitor__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          level = Gio::MemoryMonitorWarningLevel.new(lib_level, :none)
+          _sender = Gio::AbstractMemoryMonitor.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          level = Gio::MemoryMonitorWarningLevel.new(lib_level)
           ::Box(Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil)).unbox(_lib_box).call(_sender, level)
         }.pointer
 
@@ -146,8 +146,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class MemoryMonitor__Impl < GObject::Object
+  class AbstractMemoryMonitor < GObject::Object
     include MemoryMonitor
+
+    GICrystal.define_new_method(Gio::AbstractMemoryMonitor, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

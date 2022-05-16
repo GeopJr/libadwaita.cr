@@ -34,15 +34,13 @@ module Gtk
         sizeof(LibGtk::ScaleButton), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ScaleButton, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ScaleButton`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -345,7 +343,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_button_get_adjustment(self)
+      _retval = LibGtk.gtk_scale_button_get_adjustment(@pointer)
 
       # Return value handling
 
@@ -358,7 +356,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_button_get_minus_button(self)
+      _retval = LibGtk.gtk_scale_button_get_minus_button(@pointer)
 
       # Return value handling
 
@@ -371,7 +369,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_button_get_plus_button(self)
+      _retval = LibGtk.gtk_scale_button_get_plus_button(@pointer)
 
       # Return value handling
 
@@ -384,7 +382,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_button_get_popup(self)
+      _retval = LibGtk.gtk_scale_button_get_popup(@pointer)
 
       # Return value handling
 
@@ -397,7 +395,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_button_get_value(self)
+      _retval = LibGtk.gtk_scale_button_get_value(@pointer)
 
       # Return value handling
 
@@ -413,7 +411,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scale_button_set_adjustment(self, adjustment)
+      LibGtk.gtk_scale_button_set_adjustment(@pointer, adjustment)
 
       # Return value handling
     end
@@ -428,7 +426,7 @@ module Gtk
       icons = icons.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_scale_button_set_icons(self, icons)
+      LibGtk.gtk_scale_button_set_icons(@pointer, icons)
 
       # Return value handling
     end
@@ -445,7 +443,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scale_button_set_value(self, value)
+      LibGtk.gtk_scale_button_set_value(@pointer, value)
 
       # Return value handling
     end

@@ -19,8 +19,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class BuilderScope__Impl < GObject::Object
+  class AbstractBuilderScope < GObject::Object
     include BuilderScope
+
+    GICrystal.define_new_method(Gtk::AbstractBuilderScope, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

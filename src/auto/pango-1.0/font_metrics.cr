@@ -158,7 +158,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_metrics_get_approximate_char_width(self)
+      _retval = LibPango.pango_font_metrics_get_approximate_char_width(@pointer)
 
       # Return value handling
 
@@ -170,7 +170,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_metrics_get_approximate_digit_width(self)
+      _retval = LibPango.pango_font_metrics_get_approximate_digit_width(@pointer)
 
       # Return value handling
 
@@ -182,7 +182,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_metrics_get_ascent(self)
+      _retval = LibPango.pango_font_metrics_get_ascent(@pointer)
 
       # Return value handling
 
@@ -194,7 +194,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_metrics_get_descent(self)
+      _retval = LibPango.pango_font_metrics_get_descent(@pointer)
 
       # Return value handling
 
@@ -206,7 +206,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_metrics_get_height(self)
+      _retval = LibPango.pango_font_metrics_get_height(@pointer)
 
       # Return value handling
 
@@ -218,7 +218,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_metrics_get_strikethrough_position(self)
+      _retval = LibPango.pango_font_metrics_get_strikethrough_position(@pointer)
 
       # Return value handling
 
@@ -230,7 +230,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_metrics_get_strikethrough_thickness(self)
+      _retval = LibPango.pango_font_metrics_get_strikethrough_thickness(@pointer)
 
       # Return value handling
 
@@ -242,7 +242,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_metrics_get_underline_position(self)
+      _retval = LibPango.pango_font_metrics_get_underline_position(@pointer)
 
       # Return value handling
 
@@ -254,7 +254,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_metrics_get_underline_thickness(self)
+      _retval = LibPango.pango_font_metrics_get_underline_thickness(@pointer)
 
       # Return value handling
 
@@ -266,7 +266,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_metrics_ref(self)
+      _retval = LibPango.pango_font_metrics_ref(@pointer)
 
       # Return value handling
 
@@ -278,7 +278,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_metrics_unref(self)
+      LibPango.pango_font_metrics_unref(@pointer)
 
       # Return value handling
     end

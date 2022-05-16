@@ -42,7 +42,7 @@ module Gio
                       end
 
       # C call
-      LibGio.g_remote_action_group_activate_action_full(self, action_name, parameter, platform_data)
+      LibGio.g_remote_action_group_activate_action_full(@pointer, action_name, parameter, platform_data)
 
       # Return value handling
     end
@@ -65,7 +65,7 @@ module Gio
                       end
 
       # C call
-      LibGio.g_remote_action_group_change_action_state_full(self, action_name, value, platform_data)
+      LibGio.g_remote_action_group_change_action_state_full(@pointer, action_name, value, platform_data)
 
       # Return value handling
     end
@@ -75,8 +75,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class RemoteActionGroup__Impl < GObject::Object
+  class AbstractRemoteActionGroup < GObject::Object
     include RemoteActionGroup
+
+    GICrystal.define_new_method(Gio::AbstractRemoteActionGroup, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

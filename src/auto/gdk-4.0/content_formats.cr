@@ -100,7 +100,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_contain_gtype(self, type)
+      _retval = LibGdk.gdk_content_formats_contain_gtype(@pointer, type)
 
       # Return value handling
 
@@ -112,7 +112,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_contain_mime_type(self, mime_type)
+      _retval = LibGdk.gdk_content_formats_contain_mime_type(@pointer, mime_type)
 
       # Return value handling
 
@@ -127,7 +127,7 @@ module Gdk
       # Generator::OutArgUsedInReturnPlan
       n_gtypes = 0_u64
       # C call
-      _retval = LibGdk.gdk_content_formats_get_gtypes(self, pointerof(n_gtypes))
+      _retval = LibGdk.gdk_content_formats_get_gtypes(@pointer, pointerof(n_gtypes))
 
       # Return value handling
 
@@ -142,7 +142,7 @@ module Gdk
       # Generator::OutArgUsedInReturnPlan
       n_mime_types = 0_u64
       # C call
-      _retval = LibGdk.gdk_content_formats_get_mime_types(self, pointerof(n_mime_types))
+      _retval = LibGdk.gdk_content_formats_get_mime_types(@pointer, pointerof(n_mime_types))
 
       # Return value handling
 
@@ -154,7 +154,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_match(self, second)
+      _retval = LibGdk.gdk_content_formats_match(@pointer, second)
 
       # Return value handling
 
@@ -166,7 +166,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_match_gtype(self, second)
+      _retval = LibGdk.gdk_content_formats_match_gtype(@pointer, second)
 
       # Return value handling
 
@@ -178,7 +178,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_match_mime_type(self, second)
+      _retval = LibGdk.gdk_content_formats_match_mime_type(@pointer, second)
 
       # Return value handling
 
@@ -190,7 +190,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_content_formats_print(self, string)
+      LibGdk.gdk_content_formats_print(@pointer, string)
 
       # Return value handling
     end
@@ -200,7 +200,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_ref(self)
+      _retval = LibGdk.gdk_content_formats_ref(@pointer)
 
       # Return value handling
 
@@ -212,7 +212,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_to_string(self)
+      _retval = LibGdk.gdk_content_formats_to_string(@pointer)
 
       # Return value handling
 
@@ -224,7 +224,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_union(self, second)
+      _retval = LibGdk.gdk_content_formats_union(@pointer, second)
 
       # Return value handling
 
@@ -236,7 +236,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_union_deserialize_gtypes(self)
+      _retval = LibGdk.gdk_content_formats_union_deserialize_gtypes(@pointer)
 
       # Return value handling
 
@@ -248,7 +248,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_union_deserialize_mime_types(self)
+      _retval = LibGdk.gdk_content_formats_union_deserialize_mime_types(@pointer)
 
       # Return value handling
 
@@ -260,7 +260,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_union_serialize_gtypes(self)
+      _retval = LibGdk.gdk_content_formats_union_serialize_gtypes(@pointer)
 
       # Return value handling
 
@@ -272,7 +272,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_union_serialize_mime_types(self)
+      _retval = LibGdk.gdk_content_formats_union_serialize_mime_types(@pointer)
 
       # Return value handling
 
@@ -284,7 +284,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_content_formats_unref(self)
+      LibGdk.gdk_content_formats_unref(@pointer)
 
       # Return value handling
     end

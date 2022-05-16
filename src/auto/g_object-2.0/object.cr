@@ -8,6 +8,14 @@ module GObject
   #
   # All the fields in the `GObject` structure are private to the implementation
   # and should never be accessed directly.
+  #
+  # Since GLib 2.72, all #GObjects are guaranteed to be aligned to at least the
+  # alignment of the largest basic GLib type (typically this is #guint64 or
+  # #gdouble). If you need larger alignment for an element in a #GObject, you
+  # should allocate it on the heap (aligned), or arrange for your #GObject to be
+  # appropriately padded. This guarantee applies to the #GObject (or derived)
+  # struct, the #GObjectClass (or derived) struct, and any private data allocated
+  # by G_ADD_PRIVATE().
   @[GObject::GeneratedWrapper]
   class Object
     @pointer : Pointer(Void)
@@ -37,38 +45,17 @@ module GObject
       def self._instance_init(instance : Pointer(LibGObject::TypeInstance), type : Pointer(LibGObject::TypeClass)) : Nil
       end
 
-      def self.new : self
-        instance = {{ @type.id }}.allocate
-        gobj_ptr = LibGObject.g_object_newv({{ @type.id }}.g_type, 0, Pointer(Void).null)
-        LibGObject.g_object_ref_sink(gobj_ptr) if LibGObject.g_object_is_floating(gobj_ptr) == 1
-
-        LibGObject.g_object_set_qdata(gobj_ptr, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-        instance.initialize(gobj_ptr, :full)
-        GC.add_finalizer(instance)
-        instance
-      end
-
-      def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-        instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-        return instance.as(self) if instance
-
-        instance = {{ @type }}.allocate
-        LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-        instance.initialize(pointer, transfer)
-        GC.add_finalizer(instance)
-        instance
-      end
-
       # Cast a `GObject::Object` to this type, returns nil if cast can't be made.
       def self.cast?(obj : GObject::Object) : self?
         return if LibGObject.g_type_check_instance_is_a(obj, g_type).zero?
 
         # If the object was collected by Crystal GC but still alive in C world we can't bring
         # the crystal object form the dead.
-        gc_collected = LibGObject.g_object_get_qdata(obj, GICrystal::GC_COLLECTED_QDATA_KEY).address
-        raise GICrystal::ObjectCollectedError.new if gc_collected != 0
+        gc_collected = LibGObject.g_object_get_qdata(obj, GICrystal::GC_COLLECTED_QDATA_KEY)
+        instance = LibGObject.g_object_get_qdata(obj, GICrystal::INSTANCE_QDATA_KEY)
+        raise GICrystal::ObjectCollectedError.new if gc_collected || instance.null?
 
-        new(obj.to_unsafe, :none)
+        instance.as(self)
       end
       {% end %}
     end
@@ -80,15 +67,13 @@ module GObject
         sizeof(LibGObject::Object), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Object, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Object`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -245,7 +230,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_object_bind_property(self, source_property, target, target_property, flags)
+      _retval = LibGObject.g_object_bind_property(@pointer, source_property, target, target_property, flags)
 
       # Return value handling
 
@@ -282,7 +267,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_object_bind_property_with_closures(self, source_property, target, target_property, flags, transform_to, transform_from)
+      _retval = LibGObject.g_object_bind_property_with_closures(@pointer, source_property, target, target_property, flags, transform_to, transform_from)
 
       # Return value handling
 
@@ -303,7 +288,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_object_freeze_notify(self)
+      LibGObject.g_object_freeze_notify(@pointer)
 
       # Return value handling
     end
@@ -314,7 +299,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_object_get_data(self, key)
+      _retval = LibGObject.g_object_get_data(@pointer, key)
 
       # Return value handling
 
@@ -349,7 +334,7 @@ module GObject
               end
 
       # C call
-      LibGObject.g_object_get_property(self, property_name, value)
+      LibGObject.g_object_get_property(@pointer, property_name, value)
 
       # Return value handling
     end
@@ -361,7 +346,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_object_get_qdata(self, quark)
+      _retval = LibGObject.g_object_get_qdata(@pointer, quark)
 
       # Return value handling
 
@@ -386,7 +371,7 @@ module GObject
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
-      LibGObject.g_object_getv(self, n_properties, names, values)
+      LibGObject.g_object_getv(@pointer, n_properties, names, values)
 
       # Return value handling
     end
@@ -406,7 +391,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_object_notify(self, property_name)
+      LibGObject.g_object_notify(@pointer, property_name)
 
       # Return value handling
     end
@@ -454,7 +439,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_object_notify_by_pspec(self, pspec)
+      LibGObject.g_object_notify_by_pspec(@pointer, pspec)
 
       # Return value handling
     end
@@ -468,7 +453,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_object_run_dispose(self)
+      LibGObject.g_object_run_dispose(@pointer)
 
       # Return value handling
     end
@@ -496,7 +481,7 @@ module GObject
              end
 
       # C call
-      LibGObject.g_object_set_data(self, key, data)
+      LibGObject.g_object_set_data(@pointer, key, data)
 
       # Return value handling
     end
@@ -514,7 +499,7 @@ module GObject
               end
 
       # C call
-      LibGObject.g_object_set_property(self, property_name, value)
+      LibGObject.g_object_set_property(@pointer, property_name, value)
 
       # Return value handling
     end
@@ -526,7 +511,7 @@ module GObject
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGObject.g_object_steal_data(self, key)
+      _retval = LibGObject.g_object_steal_data(@pointer, key)
 
       # Return value handling
 
@@ -573,7 +558,7 @@ module GObject
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGObject.g_object_steal_qdata(self, quark)
+      _retval = LibGObject.g_object_steal_qdata(@pointer, quark)
 
       # Return value handling
 
@@ -594,7 +579,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_object_thaw_notify(self)
+      LibGObject.g_object_thaw_notify(@pointer)
 
       # Return value handling
     end
@@ -613,7 +598,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_object_watch_closure(self, closure)
+      LibGObject.g_object_watch_closure(@pointer, closure)
 
       # Return value handling
     end
@@ -670,7 +655,7 @@ module GObject
       def connect(handler : Proc(GObject::ParamSpec, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           pspec = GObject::ParamSpec.new(lib_pspec, :none)
           ::Box(Proc(GObject::ParamSpec, Nil)).unbox(_lib_box).call(pspec)
         }.pointer
@@ -682,7 +667,7 @@ module GObject
       def connect_after(handler : Proc(GObject::ParamSpec, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           pspec = GObject::ParamSpec.new(lib_pspec, :none)
           ::Box(Proc(GObject::ParamSpec, Nil)).unbox(_lib_box).call(pspec)
         }.pointer
@@ -695,7 +680,7 @@ module GObject
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = GObject::Object.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           pspec = GObject::ParamSpec.new(lib_pspec, :none)
           ::Box(Proc(GObject::Object, GObject::ParamSpec, Nil)).unbox(_lib_box).call(_sender, pspec)
         }.pointer
@@ -708,7 +693,7 @@ module GObject
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = GObject::Object.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           pspec = GObject::ParamSpec.new(lib_pspec, :none)
           ::Box(Proc(GObject::Object, GObject::ParamSpec, Nil)).unbox(_lib_box).call(_sender, pspec)
         }.pointer

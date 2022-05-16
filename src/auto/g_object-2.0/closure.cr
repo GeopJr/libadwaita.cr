@@ -265,7 +265,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_closure_invalidate(self)
+      LibGObject.g_closure_invalidate(@pointer)
 
       # Return value handling
     end
@@ -290,7 +290,7 @@ module GObject
                         end
 
       # C call
-      LibGObject.g_closure_invoke(self, return_value, n_param_values, param_values, invocation_hint)
+      LibGObject.g_closure_invoke(@pointer, return_value, n_param_values, param_values, invocation_hint)
 
       # Return value handling
 
@@ -302,7 +302,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_closure_ref(self)
+      _retval = LibGObject.g_closure_ref(@pointer)
 
       # Return value handling
 
@@ -314,7 +314,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_closure_sink(self)
+      LibGObject.g_closure_sink(@pointer)
 
       # Return value handling
     end
@@ -324,7 +324,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_closure_unref(self)
+      LibGObject.g_closure_unref(@pointer)
 
       # Return value handling
     end

@@ -44,15 +44,13 @@ module Gtk
         sizeof(LibGtk::CssProvider), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CssProvider, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CssProvider`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -92,7 +90,7 @@ module Gtk
       data = data.to_a.to_unsafe
 
       # C call
-      LibGtk.gtk_css_provider_load_from_data(self, data, length)
+      LibGtk.gtk_css_provider_load_from_data(@pointer, data, length)
 
       # Return value handling
     end
@@ -109,7 +107,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_css_provider_load_from_file(self, file)
+      LibGtk.gtk_css_provider_load_from_file(@pointer, file)
 
       # Return value handling
     end
@@ -122,7 +120,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_css_provider_load_from_path(self, path)
+      LibGtk.gtk_css_provider_load_from_path(@pointer, path)
 
       # Return value handling
     end
@@ -136,7 +134,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_css_provider_load_from_resource(self, resource_path)
+      LibGtk.gtk_css_provider_load_from_resource(@pointer, resource_path)
 
       # Return value handling
     end
@@ -159,7 +157,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_css_provider_load_named(self, name, variant)
+      LibGtk.gtk_css_provider_load_named(@pointer, name, variant)
 
       # Return value handling
     end
@@ -176,7 +174,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_css_provider_to_string(self)
+      _retval = LibGtk.gtk_css_provider_to_string(@pointer)
 
       # Return value handling
 
@@ -223,7 +221,7 @@ module Gtk
       def connect(handler : Proc(Gtk::CssSection, GLib::Error, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           section = Gtk::CssSection.new(lib_section, :none)
           error = lib_error
           ::Box(Proc(Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(section, error)
@@ -236,7 +234,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::CssSection, GLib::Error, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           section = Gtk::CssSection.new(lib_section, :none)
           error = lib_error
           ::Box(Proc(Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(section, error)
@@ -250,7 +248,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::CssProvider.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           section = Gtk::CssSection.new(lib_section, :none)
           error = lib_error
           ::Box(Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(_sender, section, error)
@@ -264,7 +262,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::CssProvider.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           section = Gtk::CssSection.new(lib_section, :none)
           error = lib_error
           ::Box(Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(_sender, section, error)

@@ -148,15 +148,13 @@ module Gtk
         sizeof(LibGtk::SpinButton), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SpinButton, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SpinButton`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -636,7 +634,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_spin_button_configure(self, adjustment, climb_rate, digits)
+      LibGtk.gtk_spin_button_configure(@pointer, adjustment, climb_rate, digits)
 
       # Return value handling
     end
@@ -647,7 +645,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_spin_button_get_adjustment(self)
+      _retval = LibGtk.gtk_spin_button_get_adjustment(@pointer)
 
       # Return value handling
 
@@ -660,7 +658,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_spin_button_get_climb_rate(self)
+      _retval = LibGtk.gtk_spin_button_get_climb_rate(@pointer)
 
       # Return value handling
 
@@ -673,7 +671,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_spin_button_get_digits(self)
+      _retval = LibGtk.gtk_spin_button_get_digits(@pointer)
 
       # Return value handling
 
@@ -694,7 +692,7 @@ module Gtk
       step = Pointer(Float64).null # Generator::OutArgUsedInReturnPlan
       page = Pointer(Float64).null
       # C call
-      LibGtk.gtk_spin_button_get_increments(self, step, page)
+      LibGtk.gtk_spin_button_get_increments(@pointer, step, page)
 
       # Return value handling
     end
@@ -705,7 +703,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_spin_button_get_numeric(self)
+      _retval = LibGtk.gtk_spin_button_get_numeric(@pointer)
 
       # Return value handling
 
@@ -725,7 +723,7 @@ module Gtk
       min = Pointer(Float64).null # Generator::OutArgUsedInReturnPlan
       max = Pointer(Float64).null
       # C call
-      LibGtk.gtk_spin_button_get_range(self, min, max)
+      LibGtk.gtk_spin_button_get_range(@pointer, min, max)
 
       # Return value handling
     end
@@ -736,7 +734,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_spin_button_get_snap_to_ticks(self)
+      _retval = LibGtk.gtk_spin_button_get_snap_to_ticks(@pointer)
 
       # Return value handling
 
@@ -751,7 +749,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_spin_button_get_update_policy(self)
+      _retval = LibGtk.gtk_spin_button_get_update_policy(@pointer)
 
       # Return value handling
 
@@ -764,7 +762,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_spin_button_get_value(self)
+      _retval = LibGtk.gtk_spin_button_get_value(@pointer)
 
       # Return value handling
 
@@ -777,7 +775,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_spin_button_get_value_as_int(self)
+      _retval = LibGtk.gtk_spin_button_get_value_as_int(@pointer)
 
       # Return value handling
 
@@ -792,7 +790,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_spin_button_get_wrap(self)
+      _retval = LibGtk.gtk_spin_button_get_wrap(@pointer)
 
       # Return value handling
 
@@ -805,7 +803,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_adjustment(self, adjustment)
+      LibGtk.gtk_spin_button_set_adjustment(@pointer, adjustment)
 
       # Return value handling
     end
@@ -817,7 +815,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_climb_rate(self, climb_rate)
+      LibGtk.gtk_spin_button_set_climb_rate(@pointer, climb_rate)
 
       # Return value handling
     end
@@ -830,7 +828,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_digits(self, digits)
+      LibGtk.gtk_spin_button_set_digits(@pointer, digits)
 
       # Return value handling
     end
@@ -844,7 +842,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_increments(self, step, page)
+      LibGtk.gtk_spin_button_set_increments(@pointer, step, page)
 
       # Return value handling
     end
@@ -856,7 +854,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_numeric(self, numeric)
+      LibGtk.gtk_spin_button_set_numeric(@pointer, numeric)
 
       # Return value handling
     end
@@ -870,7 +868,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_range(self, min, max)
+      LibGtk.gtk_spin_button_set_range(@pointer, min, max)
 
       # Return value handling
     end
@@ -883,7 +881,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_snap_to_ticks(self, snap_to_ticks)
+      LibGtk.gtk_spin_button_set_snap_to_ticks(@pointer, snap_to_ticks)
 
       # Return value handling
     end
@@ -897,7 +895,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_update_policy(self, policy)
+      LibGtk.gtk_spin_button_set_update_policy(@pointer, policy)
 
       # Return value handling
     end
@@ -908,7 +906,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_value(self, value)
+      LibGtk.gtk_spin_button_set_value(@pointer, value)
 
       # Return value handling
     end
@@ -921,7 +919,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_set_wrap(self, wrap)
+      LibGtk.gtk_spin_button_set_wrap(@pointer, wrap)
 
       # Return value handling
     end
@@ -933,7 +931,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_spin(self, direction, increment)
+      LibGtk.gtk_spin_button_spin(@pointer, direction, increment)
 
       # Return value handling
     end
@@ -944,7 +942,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_spin_button_update(self)
+      LibGtk.gtk_spin_button_update(@pointer)
 
       # Return value handling
     end
@@ -985,8 +983,8 @@ module Gtk
       def connect(handler : Proc(Gtk::ScrollType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           ::Box(Proc(Gtk::ScrollType, Nil)).unbox(_lib_box).call(scroll)
         }.pointer
 
@@ -997,8 +995,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::ScrollType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           ::Box(Proc(Gtk::ScrollType, Nil)).unbox(_lib_box).call(scroll)
         }.pointer
 
@@ -1010,8 +1008,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::SpinButton.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           ::Box(Proc(Gtk::SpinButton, Gtk::ScrollType, Nil)).unbox(_lib_box).call(_sender, scroll)
         }.pointer
 
@@ -1023,8 +1021,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::SpinButton.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           ::Box(Proc(Gtk::SpinButton, Gtk::ScrollType, Nil)).unbox(_lib_box).call(_sender, scroll)
         }.pointer
 

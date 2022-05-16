@@ -50,15 +50,13 @@ module Pango
         sizeof(LibPango::Layout), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Layout, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Layout`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -113,7 +111,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_context_changed(self)
+      LibPango.pango_layout_context_changed(@pointer)
 
       # Return value handling
     end
@@ -127,7 +125,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_layout_copy(self)
+      _retval = LibPango.pango_layout_copy(@pointer)
 
       # Return value handling
 
@@ -141,7 +139,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_alignment(self)
+      _retval = LibPango.pango_layout_get_alignment(@pointer)
 
       # Return value handling
 
@@ -154,7 +152,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_attributes(self)
+      _retval = LibPango.pango_layout_get_attributes(@pointer)
 
       # Return value handling
 
@@ -170,7 +168,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_auto_dir(self)
+      _retval = LibPango.pango_layout_get_auto_dir(@pointer)
 
       # Return value handling
 
@@ -183,7 +181,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_baseline(self)
+      _retval = LibPango.pango_layout_get_baseline(@pointer)
 
       # Return value handling
 
@@ -213,7 +211,7 @@ module Pango
       weak_pos = Pointer(Void).null     # Generator::CallerAllocatesPlan
       weak_pos = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_get_caret_pos(self, index_, strong_pos, weak_pos)
+      LibPango.pango_layout_get_caret_pos(@pointer, index_, strong_pos, weak_pos)
 
       # Return value handling
 
@@ -227,7 +225,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_character_count(self)
+      _retval = LibPango.pango_layout_get_character_count(@pointer)
 
       # Return value handling
 
@@ -240,7 +238,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_context(self)
+      _retval = LibPango.pango_layout_get_context(@pointer)
 
       # Return value handling
 
@@ -286,7 +284,7 @@ module Pango
       weak_pos = Pointer(Void).null     # Generator::CallerAllocatesPlan
       weak_pos = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_get_cursor_pos(self, index_, strong_pos, weak_pos)
+      LibPango.pango_layout_get_cursor_pos(@pointer, index_, strong_pos, weak_pos)
 
       # Return value handling
 
@@ -299,7 +297,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_direction(self, index)
+      _retval = LibPango.pango_layout_get_direction(@pointer, index)
 
       # Return value handling
 
@@ -317,7 +315,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_ellipsize(self)
+      _retval = LibPango.pango_layout_get_ellipsize(@pointer)
 
       # Return value handling
 
@@ -346,7 +344,7 @@ module Pango
       logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_get_extents(self, ink_rect, logical_rect)
+      LibPango.pango_layout_get_extents(@pointer, ink_rect, logical_rect)
 
       # Return value handling
 
@@ -359,7 +357,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_font_description(self)
+      _retval = LibPango.pango_layout_get_font_description(@pointer)
 
       # Return value handling
 
@@ -374,7 +372,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_height(self)
+      _retval = LibPango.pango_layout_get_height(@pointer)
 
       # Return value handling
 
@@ -389,7 +387,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_indent(self)
+      _retval = LibPango.pango_layout_get_indent(@pointer)
 
       # Return value handling
 
@@ -402,7 +400,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_layout_get_iter(self)
+      _retval = LibPango.pango_layout_get_iter(@pointer)
 
       # Return value handling
 
@@ -416,7 +414,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_justify(self)
+      _retval = LibPango.pango_layout_get_justify(@pointer)
 
       # Return value handling
 
@@ -430,7 +428,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_justify_last_line(self)
+      _retval = LibPango.pango_layout_get_justify_last_line(@pointer)
 
       # Return value handling
 
@@ -446,7 +444,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_line(self, line)
+      _retval = LibPango.pango_layout_get_line(@pointer, line)
 
       # Return value handling
 
@@ -459,7 +457,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_line_count(self)
+      _retval = LibPango.pango_layout_get_line_count(@pointer)
 
       # Return value handling
 
@@ -476,7 +474,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_line_readonly(self, line)
+      _retval = LibPango.pango_layout_get_line_readonly(@pointer, line)
 
       # Return value handling
 
@@ -491,7 +489,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_line_spacing(self)
+      _retval = LibPango.pango_layout_get_line_spacing(@pointer)
 
       # Return value handling
 
@@ -507,7 +505,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_lines(self)
+      _retval = LibPango.pango_layout_get_lines(@pointer)
 
       # Return value handling
 
@@ -524,7 +522,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_lines_readonly(self)
+      _retval = LibPango.pango_layout_get_lines_readonly(@pointer)
 
       # Return value handling
 
@@ -544,7 +542,7 @@ module Pango
       attrs = attrs.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibPango.pango_layout_get_log_attrs(self, attrs, n_attrs)
+      LibPango.pango_layout_get_log_attrs(@pointer, attrs, n_attrs)
 
       # Return value handling
     end
@@ -572,7 +570,7 @@ module Pango
       # Generator::OutArgUsedInReturnPlan
       n_attrs = 0
       # C call
-      _retval = LibPango.pango_layout_get_log_attrs_readonly(self, pointerof(n_attrs))
+      _retval = LibPango.pango_layout_get_log_attrs_readonly(@pointer, pointerof(n_attrs))
 
       # Return value handling
 
@@ -597,7 +595,7 @@ module Pango
       logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_get_pixel_extents(self, ink_rect, logical_rect)
+      LibPango.pango_layout_get_pixel_extents(@pointer, ink_rect, logical_rect)
 
       # Return value handling
 
@@ -620,7 +618,7 @@ module Pango
       width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibPango.pango_layout_get_pixel_size(self, width, height)
+      LibPango.pango_layout_get_pixel_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -642,7 +640,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_serial(self)
+      _retval = LibPango.pango_layout_get_serial(@pointer)
 
       # Return value handling
 
@@ -657,7 +655,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_single_paragraph_mode(self)
+      _retval = LibPango.pango_layout_get_single_paragraph_mode(@pointer)
 
       # Return value handling
 
@@ -678,7 +676,7 @@ module Pango
       width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibPango.pango_layout_get_size(self, width, height)
+      LibPango.pango_layout_get_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -689,7 +687,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_spacing(self)
+      _retval = LibPango.pango_layout_get_spacing(@pointer)
 
       # Return value handling
 
@@ -707,7 +705,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_layout_get_tabs(self)
+      _retval = LibPango.pango_layout_get_tabs(@pointer)
 
       # Return value handling
 
@@ -722,7 +720,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_text(self)
+      _retval = LibPango.pango_layout_get_text(@pointer)
 
       # Return value handling
 
@@ -740,7 +738,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_unknown_glyphs_count(self)
+      _retval = LibPango.pango_layout_get_unknown_glyphs_count(@pointer)
 
       # Return value handling
 
@@ -753,7 +751,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_width(self)
+      _retval = LibPango.pango_layout_get_width(@pointer)
 
       # Return value handling
 
@@ -769,7 +767,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_get_wrap(self)
+      _retval = LibPango.pango_layout_get_wrap(@pointer)
 
       # Return value handling
 
@@ -789,7 +787,7 @@ module Pango
       line = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       x_pos = Pointer(Int32).null
       # C call
-      LibPango.pango_layout_index_to_line_x(self, index_, trailing, line, x_pos)
+      LibPango.pango_layout_index_to_line_x(@pointer, index_, trailing, line, x_pos)
 
       # Return value handling
     end
@@ -809,7 +807,7 @@ module Pango
       # Generator::CallerAllocatesPlan
       pos = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_index_to_pos(self, index_, pos)
+      LibPango.pango_layout_index_to_pos(@pointer, index_, pos)
 
       # Return value handling
 
@@ -827,7 +825,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_is_ellipsized(self)
+      _retval = LibPango.pango_layout_is_ellipsized(@pointer)
 
       # Return value handling
 
@@ -845,7 +843,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_is_wrapped(self)
+      _retval = LibPango.pango_layout_is_wrapped(@pointer)
 
       # Return value handling
 
@@ -874,7 +872,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_move_cursor_visually(self, strong, old_index, old_trailing, direction, new_index, new_trailing)
+      LibPango.pango_layout_move_cursor_visually(@pointer, strong, old_index, old_trailing, direction, new_index, new_trailing)
 
       # Return value handling
     end
@@ -892,7 +890,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_layout_serialize(self, flags)
+      _retval = LibPango.pango_layout_serialize(@pointer, flags)
 
       # Return value handling
 
@@ -908,7 +906,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_alignment(self, alignment)
+      LibPango.pango_layout_set_alignment(@pointer, alignment)
 
       # Return value handling
     end
@@ -929,7 +927,7 @@ module Pango
               end
 
       # C call
-      LibPango.pango_layout_set_attributes(self, attrs)
+      LibPango.pango_layout_set_attributes(@pointer, attrs)
 
       # Return value handling
     end
@@ -955,7 +953,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_auto_dir(self, auto_dir)
+      LibPango.pango_layout_set_auto_dir(@pointer, auto_dir)
 
       # Return value handling
     end
@@ -980,7 +978,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_ellipsize(self, ellipsize)
+      LibPango.pango_layout_set_ellipsize(@pointer, ellipsize)
 
       # Return value handling
     end
@@ -1002,7 +1000,7 @@ module Pango
              end
 
       # C call
-      LibPango.pango_layout_set_font_description(self, desc)
+      LibPango.pango_layout_set_font_description(@pointer, desc)
 
       # Return value handling
     end
@@ -1037,7 +1035,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_height(self, height)
+      LibPango.pango_layout_set_height(@pointer, height)
 
       # Return value handling
     end
@@ -1057,7 +1055,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_indent(self, indent)
+      LibPango.pango_layout_set_indent(@pointer, indent)
 
       # Return value handling
     end
@@ -1084,7 +1082,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_justify(self, justify)
+      LibPango.pango_layout_set_justify(@pointer, justify)
 
       # Return value handling
     end
@@ -1101,7 +1099,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_justify_last_line(self, justify)
+      LibPango.pango_layout_set_justify_last_line(@pointer, justify)
 
       # Return value handling
     end
@@ -1127,7 +1125,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_line_spacing(self, factor)
+      LibPango.pango_layout_set_line_spacing(@pointer, factor)
 
       # Return value handling
     end
@@ -1145,7 +1143,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_markup(self, markup, length)
+      LibPango.pango_layout_set_markup(@pointer, markup, length)
 
       # Return value handling
     end
@@ -1172,7 +1170,7 @@ module Pango
       accel_char = Pointer(UInt32).null # Generator::CallerAllocatesPlan
       accel_char = UInt32.new
       # C call
-      LibPango.pango_layout_set_markup_with_accel(self, markup, length, accel_marker, accel_char)
+      LibPango.pango_layout_set_markup_with_accel(@pointer, markup, length, accel_marker, accel_char)
 
       # Return value handling
 
@@ -1192,7 +1190,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_single_paragraph_mode(self, setting)
+      LibPango.pango_layout_set_single_paragraph_mode(@pointer, setting)
 
       # Return value handling
     end
@@ -1218,7 +1216,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_spacing(self, spacing)
+      LibPango.pango_layout_set_spacing(@pointer, spacing)
 
       # Return value handling
     end
@@ -1249,7 +1247,7 @@ module Pango
              end
 
       # C call
-      LibPango.pango_layout_set_tabs(self, tabs)
+      LibPango.pango_layout_set_tabs(@pointer, tabs)
 
       # Return value handling
     end
@@ -1269,7 +1267,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_text(self, text, length)
+      LibPango.pango_layout_set_text(@pointer, text, length)
 
       # Return value handling
     end
@@ -1283,7 +1281,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_width(self, width)
+      LibPango.pango_layout_set_width(@pointer, width)
 
       # Return value handling
     end
@@ -1300,7 +1298,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_set_wrap(self, wrap)
+      LibPango.pango_layout_set_wrap(@pointer, wrap)
 
       # Return value handling
     end
@@ -1321,7 +1319,7 @@ module Pango
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibPango.pango_layout_write_to_file(self, flags, filename, pointerof(_error))
+      _retval = LibPango.pango_layout_write_to_file(@pointer, flags, filename, pointerof(_error))
 
       # Error check
       Pango.raise_exception(_error) unless _error.null?
@@ -1347,7 +1345,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_xy_to_index(self, x, y, index_, trailing)
+      _retval = LibPango.pango_layout_xy_to_index(@pointer, x, y, index_, trailing)
 
       # Return value handling
 

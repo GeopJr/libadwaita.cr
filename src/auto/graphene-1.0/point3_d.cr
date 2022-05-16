@@ -83,7 +83,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_point3d_cross(self, b, res)
+      LibGraphene.graphene_point3d_cross(@pointer, b, res)
 
       # Return value handling
 
@@ -99,7 +99,7 @@ module Graphene
       delta = Pointer(Void).null # Generator::CallerAllocatesPlan
       delta = Graphene::Vec3.new
       # C call
-      _retval = LibGraphene.graphene_point3d_distance(self, b, delta)
+      _retval = LibGraphene.graphene_point3d_distance(@pointer, b, delta)
 
       # Return value handling
 
@@ -111,7 +111,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point3d_dot(self, b)
+      _retval = LibGraphene.graphene_point3d_dot(@pointer, b)
 
       # Return value handling
 
@@ -123,7 +123,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point3d_equal(self, b)
+      _retval = LibGraphene.graphene_point3d_equal(@pointer, b)
 
       # Return value handling
 
@@ -135,7 +135,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_point3d_free(self)
+      LibGraphene.graphene_point3d_free(@pointer)
 
       # Return value handling
     end
@@ -145,7 +145,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point3d_init(self, x, y, z)
+      _retval = LibGraphene.graphene_point3d_init(@pointer, x, y, z)
 
       # Return value handling
 
@@ -157,7 +157,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point3d_init_from_point(self, src)
+      _retval = LibGraphene.graphene_point3d_init_from_point(@pointer, src)
 
       # Return value handling
 
@@ -169,7 +169,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point3d_init_from_vec3(self, v)
+      _retval = LibGraphene.graphene_point3d_init_from_vec3(@pointer, v)
 
       # Return value handling
 
@@ -184,7 +184,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_point3d_interpolate(self, b, factor, res)
+      LibGraphene.graphene_point3d_interpolate(@pointer, b, factor, res)
 
       # Return value handling
 
@@ -196,7 +196,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point3d_length(self)
+      _retval = LibGraphene.graphene_point3d_length(@pointer)
 
       # Return value handling
 
@@ -208,7 +208,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point3d_near(self, b, epsilon)
+      _retval = LibGraphene.graphene_point3d_near(@pointer, b, epsilon)
 
       # Return value handling
 
@@ -223,7 +223,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_point3d_normalize(self, res)
+      LibGraphene.graphene_point3d_normalize(@pointer, res)
 
       # Return value handling
 
@@ -238,7 +238,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_point3d_normalize_viewport(self, viewport, z_near, z_far, res)
+      LibGraphene.graphene_point3d_normalize_viewport(@pointer, viewport, z_near, z_far, res)
 
       # Return value handling
 
@@ -253,7 +253,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_point3d_scale(self, factor, res)
+      LibGraphene.graphene_point3d_scale(@pointer, factor, res)
 
       # Return value handling
 
@@ -268,7 +268,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       v = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_point3d_to_vec3(self, v)
+      LibGraphene.graphene_point3d_to_vec3(@pointer, v)
 
       # Return value handling
 

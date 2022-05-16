@@ -17,15 +17,13 @@ module Pango
         sizeof(LibPango::FontFamily), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FontFamily, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FontFamily`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -52,7 +50,7 @@ module Pango
              end
 
       # C call
-      _retval = LibPango.pango_font_family_get_face(self, name)
+      _retval = LibPango.pango_font_family_get_face(@pointer, name)
 
       # Return value handling
 
@@ -69,7 +67,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_family_get_name(self)
+      _retval = LibPango.pango_font_family_get_name(@pointer)
 
       # Return value handling
 
@@ -95,7 +93,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_family_is_monospace(self)
+      _retval = LibPango.pango_font_family_is_monospace(@pointer)
 
       # Return value handling
 
@@ -112,7 +110,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_family_is_variable(self)
+      _retval = LibPango.pango_font_family_is_variable(@pointer)
 
       # Return value handling
 
@@ -141,7 +139,7 @@ module Pango
       faces = faces.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibPango.pango_font_family_list_faces(self, faces, n_faces)
+      LibPango.pango_font_family_list_faces(@pointer, faces, n_faces)
 
       # Return value handling
     end

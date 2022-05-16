@@ -36,15 +36,13 @@ module Gio
         sizeof(LibGio::SettingsBackend), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SettingsBackend, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SettingsBackend`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -135,7 +133,7 @@ module Gio
                    end
 
       # C call
-      LibGio.g_settings_backend_changed(self, key, origin_tag)
+      LibGio.g_settings_backend_changed(@pointer, key, origin_tag)
 
       # Return value handling
     end
@@ -156,7 +154,7 @@ module Gio
                    end
 
       # C call
-      LibGio.g_settings_backend_changed_tree(self, tree, origin_tag)
+      LibGio.g_settings_backend_changed_tree(@pointer, tree, origin_tag)
 
       # Return value handling
     end
@@ -198,7 +196,7 @@ module Gio
                    end
 
       # C call
-      LibGio.g_settings_backend_keys_changed(self, path, items, origin_tag)
+      LibGio.g_settings_backend_keys_changed(@pointer, path, items, origin_tag)
 
       # Return value handling
     end
@@ -237,7 +235,7 @@ module Gio
                    end
 
       # C call
-      LibGio.g_settings_backend_path_changed(self, path, origin_tag)
+      LibGio.g_settings_backend_path_changed(@pointer, path, origin_tag)
 
       # Return value handling
     end
@@ -252,7 +250,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_backend_path_writable_changed(self, path)
+      LibGio.g_settings_backend_path_writable_changed(@pointer, path)
 
       # Return value handling
     end
@@ -266,7 +264,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_backend_writable_changed(self, key)
+      LibGio.g_settings_backend_writable_changed(@pointer, key)
 
       # Return value handling
     end

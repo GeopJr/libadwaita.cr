@@ -23,15 +23,13 @@ module Gio
         sizeof(LibGio::SimpleProxyResolver), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SimpleProxyResolver, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SimpleProxyResolver`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -127,7 +125,7 @@ module Gio
 
       # Return value handling
 
-      Gio::ProxyResolver__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractProxyResolver.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Sets the default proxy on @resolver, to be used for any URIs that
@@ -142,7 +140,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_proxy_resolver_set_default_proxy(self, default_proxy)
+      LibGio.g_simple_proxy_resolver_set_default_proxy(@pointer, default_proxy)
 
       # Return value handling
     end
@@ -160,7 +158,7 @@ module Gio
       ignore_hosts = ignore_hosts.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGio.g_simple_proxy_resolver_set_ignore_hosts(self, ignore_hosts)
+      LibGio.g_simple_proxy_resolver_set_ignore_hosts(@pointer, ignore_hosts)
 
       # Return value handling
     end
@@ -178,7 +176,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_proxy_resolver_set_uri_proxy(self, uri_scheme, proxy)
+      LibGio.g_simple_proxy_resolver_set_uri_proxy(@pointer, uri_scheme, proxy)
 
       # Return value handling
     end

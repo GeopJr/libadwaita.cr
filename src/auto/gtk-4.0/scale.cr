@@ -104,15 +104,13 @@ module Gtk
         sizeof(LibGtk::Scale), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Scale, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Scale`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -500,7 +498,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_scale_add_mark(self, value, position, markup)
+      LibGtk.gtk_scale_add_mark(@pointer, value, position, markup)
 
       # Return value handling
     end
@@ -511,7 +509,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scale_clear_marks(self)
+      LibGtk.gtk_scale_clear_marks(@pointer)
 
       # Return value handling
     end
@@ -522,7 +520,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_get_digits(self)
+      _retval = LibGtk.gtk_scale_get_digits(@pointer)
 
       # Return value handling
 
@@ -536,7 +534,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_get_draw_value(self)
+      _retval = LibGtk.gtk_scale_get_draw_value(@pointer)
 
       # Return value handling
 
@@ -549,7 +547,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_get_has_origin(self)
+      _retval = LibGtk.gtk_scale_get_has_origin(@pointer)
 
       # Return value handling
 
@@ -565,7 +563,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_get_layout(self)
+      _retval = LibGtk.gtk_scale_get_layout(@pointer)
 
       # Return value handling
 
@@ -590,7 +588,7 @@ module Gtk
       x = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       y = Pointer(Int32).null
       # C call
-      LibGtk.gtk_scale_get_layout_offsets(self, x, y)
+      LibGtk.gtk_scale_get_layout_offsets(@pointer, x, y)
 
       # Return value handling
     end
@@ -601,7 +599,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scale_get_value_pos(self)
+      _retval = LibGtk.gtk_scale_get_value_pos(@pointer)
 
       # Return value handling
 
@@ -625,7 +623,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scale_set_digits(self, digits)
+      LibGtk.gtk_scale_set_digits(@pointer, digits)
 
       # Return value handling
     end
@@ -637,7 +635,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scale_set_draw_value(self, draw_value)
+      LibGtk.gtk_scale_set_draw_value(@pointer, draw_value)
 
       # Return value handling
     end
@@ -661,11 +659,10 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_scale : Pointer(Void), lib_value : Float64, lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           scale = Gtk::Scale.new(lib_scale, :none)
           value = lib_value
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::Scale, Float64, ::String)).unbox(user_data).call(scale, value)
+          ::Box(Proc(Gtk::Scale, Float64, ::String)).unbox(lib_user_data).call(scale, value)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy_notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -674,7 +671,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_scale_set_format_value_func(self, func, user_data, destroy_notify)
+      LibGtk.gtk_scale_set_format_value_func(@pointer, func, user_data, destroy_notify)
 
       # Return value handling
     end
@@ -689,7 +686,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scale_set_has_origin(self, has_origin)
+      LibGtk.gtk_scale_set_has_origin(@pointer, has_origin)
 
       # Return value handling
     end
@@ -700,7 +697,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scale_set_value_pos(self, pos)
+      LibGtk.gtk_scale_set_value_pos(@pointer, pos)
 
       # Return value handling
     end

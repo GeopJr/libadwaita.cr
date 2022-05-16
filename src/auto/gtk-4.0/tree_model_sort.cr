@@ -117,15 +117,13 @@ module Gtk
         sizeof(LibGtk::TreeModelSort), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TreeModelSort, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TreeModelSort`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -170,7 +168,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractTreeModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     # Creates a new `GtkTreeModelSort`, with @child_model as the child model.
@@ -197,7 +195,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_sort_clear_cache(self)
+      LibGtk.gtk_tree_model_sort_clear_cache(@pointer)
 
       # Return value handling
     end
@@ -213,7 +211,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       sort_iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_tree_model_sort_convert_child_iter_to_iter(self, sort_iter, child_iter)
+      _retval = LibGtk.gtk_tree_model_sort_convert_child_iter_to_iter(@pointer, sort_iter, child_iter)
 
       # Return value handling
 
@@ -229,7 +227,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_sort_convert_child_path_to_path(self, child_path)
+      _retval = LibGtk.gtk_tree_model_sort_convert_child_path_to_path(@pointer, child_path)
 
       # Return value handling
 
@@ -245,7 +243,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       child_iter = Gtk::TreeIter.new
       # C call
-      LibGtk.gtk_tree_model_sort_convert_iter_to_child_iter(self, child_iter, sorted_iter)
+      LibGtk.gtk_tree_model_sort_convert_iter_to_child_iter(@pointer, child_iter, sorted_iter)
 
       # Return value handling
 
@@ -262,7 +260,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_sort_convert_path_to_child_path(self, sorted_path)
+      _retval = LibGtk.gtk_tree_model_sort_convert_path_to_child_path(@pointer, sorted_path)
 
       # Return value handling
 
@@ -275,11 +273,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_sort_get_model(self)
+      _retval = LibGtk.gtk_tree_model_sort_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None)
+      Gtk::AbstractTreeModel.new(_retval, GICrystal::Transfer::None)
     end
 
     # > This function is slow. Only use it for debugging and/or testing
@@ -291,7 +289,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_sort_iter_is_valid(self, iter)
+      _retval = LibGtk.gtk_tree_model_sort_iter_is_valid(@pointer, iter)
 
       # Return value handling
 
@@ -307,7 +305,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_sort_reset_default_sort_func(self)
+      LibGtk.gtk_tree_model_sort_reset_default_sort_func(@pointer)
 
       # Return value handling
     end

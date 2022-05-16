@@ -45,15 +45,13 @@ module Gdk
         sizeof(LibGdk::FrameClock), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FrameClock, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FrameClock`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -78,7 +76,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_frame_clock_begin_updating(self)
+      LibGdk.gdk_frame_clock_begin_updating(@pointer)
 
       # Return value handling
     end
@@ -91,7 +89,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_frame_clock_end_updating(self)
+      LibGdk.gdk_frame_clock_end_updating(@pointer)
 
       # Return value handling
     end
@@ -102,7 +100,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_clock_get_current_timings(self)
+      _retval = LibGdk.gdk_frame_clock_get_current_timings(@pointer)
 
       # Return value handling
 
@@ -116,7 +114,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_clock_get_fps(self)
+      _retval = LibGdk.gdk_frame_clock_get_fps(@pointer)
 
       # Return value handling
 
@@ -130,7 +128,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_clock_get_frame_counter(self)
+      _retval = LibGdk.gdk_frame_clock_get_frame_counter(@pointer)
 
       # Return value handling
 
@@ -149,7 +147,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_clock_get_frame_time(self)
+      _retval = LibGdk.gdk_frame_clock_get_frame_time(@pointer)
 
       # Return value handling
 
@@ -169,7 +167,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_clock_get_history_start(self)
+      _retval = LibGdk.gdk_frame_clock_get_history_start(@pointer)
 
       # Return value handling
 
@@ -192,7 +190,7 @@ module Gdk
       # Generator::OutArgUsedInReturnPlan
       refresh_interval_return = Pointer(Int64).null
       # C call
-      LibGdk.gdk_frame_clock_get_refresh_info(self, base_time, refresh_interval_return, presentation_time_return)
+      LibGdk.gdk_frame_clock_get_refresh_info(@pointer, base_time, refresh_interval_return, presentation_time_return)
 
       # Return value handling
     end
@@ -208,7 +206,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_clock_get_timings(self, frame_counter)
+      _retval = LibGdk.gdk_frame_clock_get_timings(@pointer, frame_counter)
 
       # Return value handling
 
@@ -231,7 +229,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_frame_clock_request_phase(self, phase)
+      LibGdk.gdk_frame_clock_request_phase(@pointer, phase)
 
       # Return value handling
     end

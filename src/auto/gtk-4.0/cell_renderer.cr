@@ -49,15 +49,13 @@ module Gtk
         sizeof(LibGtk::CellRenderer), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CellRenderer, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CellRenderer`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -379,7 +377,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_activate(self, event, widget, path, background_area, cell_area, flags)
+      _retval = LibGtk.gtk_cell_renderer_activate(@pointer, event, widget, path, background_area, cell_area, flags)
 
       # Return value handling
 
@@ -396,7 +394,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       aligned_area = Gdk::Rectangle.new
       # C call
-      LibGtk.gtk_cell_renderer_get_aligned_area(self, widget, flags, cell_area, aligned_area)
+      LibGtk.gtk_cell_renderer_get_aligned_area(@pointer, widget, flags, cell_area, aligned_area)
 
       # Return value handling
 
@@ -414,7 +412,7 @@ module Gtk
       xalign = Pointer(Float32).null # Generator::OutArgUsedInReturnPlan
       yalign = Pointer(Float32).null
       # C call
-      LibGtk.gtk_cell_renderer_get_alignment(self, xalign, yalign)
+      LibGtk.gtk_cell_renderer_get_alignment(@pointer, xalign, yalign)
 
       # Return value handling
     end
@@ -430,7 +428,7 @@ module Gtk
       width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_renderer_get_fixed_size(self, width, height)
+      LibGtk.gtk_cell_renderer_get_fixed_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -441,7 +439,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_get_is_expanded(self)
+      _retval = LibGtk.gtk_cell_renderer_get_is_expanded(@pointer)
 
       # Return value handling
 
@@ -454,7 +452,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_get_is_expander(self)
+      _retval = LibGtk.gtk_cell_renderer_get_is_expander(@pointer)
 
       # Return value handling
 
@@ -472,7 +470,7 @@ module Gtk
       xpad = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       ypad = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_renderer_get_padding(self, xpad, ypad)
+      LibGtk.gtk_cell_renderer_get_padding(@pointer, xpad, ypad)
 
       # Return value handling
     end
@@ -488,7 +486,7 @@ module Gtk
       minimum_size = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_size = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_renderer_get_preferred_height(self, widget, minimum_size, natural_size)
+      LibGtk.gtk_cell_renderer_get_preferred_height(@pointer, widget, minimum_size, natural_size)
 
       # Return value handling
     end
@@ -505,7 +503,7 @@ module Gtk
       minimum_height = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_renderer_get_preferred_height_for_width(self, widget, width, minimum_height, natural_height)
+      LibGtk.gtk_cell_renderer_get_preferred_height_for_width(@pointer, widget, width, minimum_height, natural_height)
 
       # Return value handling
     end
@@ -524,7 +522,7 @@ module Gtk
       natural_size = Pointer(Void).null   # Generator::CallerAllocatesPlan
       natural_size = Gtk::Requisition.new
       # C call
-      LibGtk.gtk_cell_renderer_get_preferred_size(self, widget, minimum_size, natural_size)
+      LibGtk.gtk_cell_renderer_get_preferred_size(@pointer, widget, minimum_size, natural_size)
 
       # Return value handling
 
@@ -542,7 +540,7 @@ module Gtk
       minimum_size = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_size = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_renderer_get_preferred_width(self, widget, minimum_size, natural_size)
+      LibGtk.gtk_cell_renderer_get_preferred_width(@pointer, widget, minimum_size, natural_size)
 
       # Return value handling
     end
@@ -559,7 +557,7 @@ module Gtk
       minimum_width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_renderer_get_preferred_width_for_height(self, widget, height, minimum_width, natural_width)
+      LibGtk.gtk_cell_renderer_get_preferred_width_for_height(@pointer, widget, height, minimum_width, natural_width)
 
       # Return value handling
     end
@@ -571,7 +569,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_get_request_mode(self)
+      _retval = LibGtk.gtk_cell_renderer_get_request_mode(@pointer)
 
       # Return value handling
 
@@ -584,7 +582,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_get_sensitive(self)
+      _retval = LibGtk.gtk_cell_renderer_get_sensitive(@pointer)
 
       # Return value handling
 
@@ -607,7 +605,7 @@ module Gtk
                end
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_get_state(self, widget, cell_state)
+      _retval = LibGtk.gtk_cell_renderer_get_state(@pointer, widget, cell_state)
 
       # Return value handling
 
@@ -620,7 +618,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_get_visible(self)
+      _retval = LibGtk.gtk_cell_renderer_get_visible(@pointer)
 
       # Return value handling
 
@@ -633,7 +631,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_is_activatable(self)
+      _retval = LibGtk.gtk_cell_renderer_is_activatable(@pointer)
 
       # Return value handling
 
@@ -646,7 +644,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_set_alignment(self, xalign, yalign)
+      LibGtk.gtk_cell_renderer_set_alignment(@pointer, xalign, yalign)
 
       # Return value handling
     end
@@ -657,7 +655,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_set_fixed_size(self, width, height)
+      LibGtk.gtk_cell_renderer_set_fixed_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -668,7 +666,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_set_is_expanded(self, is_expanded)
+      LibGtk.gtk_cell_renderer_set_is_expanded(@pointer, is_expanded)
 
       # Return value handling
     end
@@ -679,7 +677,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_set_is_expander(self, is_expander)
+      LibGtk.gtk_cell_renderer_set_is_expander(@pointer, is_expander)
 
       # Return value handling
     end
@@ -690,7 +688,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_set_padding(self, xpad, ypad)
+      LibGtk.gtk_cell_renderer_set_padding(@pointer, xpad, ypad)
 
       # Return value handling
     end
@@ -701,7 +699,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_set_sensitive(self, sensitive)
+      LibGtk.gtk_cell_renderer_set_sensitive(@pointer, sensitive)
 
       # Return value handling
     end
@@ -712,7 +710,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_set_visible(self, visible)
+      LibGtk.gtk_cell_renderer_set_visible(@pointer, visible)
 
       # Return value handling
     end
@@ -729,7 +727,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_snapshot(self, snapshot, widget, background_area, cell_area, flags)
+      LibGtk.gtk_cell_renderer_snapshot(@pointer, snapshot, widget, background_area, cell_area, flags)
 
       # Return value handling
     end
@@ -749,11 +747,11 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_start_editing(self, event, widget, path, background_area, cell_area, flags)
+      _retval = LibGtk.gtk_cell_renderer_start_editing(@pointer, event, widget, path, background_area, cell_area, flags)
 
       # Return value handling
 
-      Gtk::CellEditable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractCellEditable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Informs the cell renderer that the editing is stopped.
@@ -768,7 +766,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_stop_editing(self, canceled)
+      LibGtk.gtk_cell_renderer_stop_editing(@pointer, canceled)
 
       # Return value handling
     end
@@ -909,9 +907,10 @@ module Gtk
       def connect(handler : Proc(Gtk::CellEditable, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_editable : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           editable = Gtk::CellEditable.new(lib_editable, :none)
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(Gtk::CellEditable, ::String, Nil)).unbox(_lib_box).call(editable, path)
         }.pointer
 
@@ -922,9 +921,10 @@ module Gtk
       def connect_after(handler : Proc(Gtk::CellEditable, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_editable : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           editable = Gtk::CellEditable.new(lib_editable, :none)
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(Gtk::CellEditable, ::String, Nil)).unbox(_lib_box).call(editable, path)
         }.pointer
 
@@ -936,9 +936,10 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_editable : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRenderer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           editable = Gtk::CellEditable.new(lib_editable, :none)
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, ::String, Nil)).unbox(_lib_box).call(_sender, editable, path)
         }.pointer
 
@@ -950,9 +951,10 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_editable : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRenderer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           editable = Gtk::CellEditable.new(lib_editable, :none)
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, ::String, Nil)).unbox(_lib_box).call(_sender, editable, path)
         }.pointer
 

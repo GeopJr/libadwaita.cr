@@ -63,15 +63,13 @@ module Gtk
         sizeof(LibGtk::LayoutManager), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(LayoutManager, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `LayoutManager`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -92,7 +90,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_layout_manager_allocate(self, widget, width, height, baseline)
+      LibGtk.gtk_layout_manager_allocate(@pointer, widget, width, height, baseline)
 
       # Return value handling
     end
@@ -110,7 +108,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_layout_manager_get_layout_child(self, child)
+      _retval = LibGtk.gtk_layout_manager_get_layout_child(@pointer, child)
 
       # Return value handling
 
@@ -123,7 +121,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_layout_manager_get_request_mode(self)
+      _retval = LibGtk.gtk_layout_manager_get_request_mode(@pointer)
 
       # Return value handling
 
@@ -136,7 +134,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_layout_manager_get_widget(self)
+      _retval = LibGtk.gtk_layout_manager_get_widget(@pointer)
 
       # Return value handling
 
@@ -152,7 +150,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_layout_manager_layout_changed(self)
+      LibGtk.gtk_layout_manager_layout_changed(@pointer)
 
       # Return value handling
     end
@@ -176,7 +174,7 @@ module Gtk
       minimum_baseline = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_baseline = Pointer(Int32).null
       # C call
-      LibGtk.gtk_layout_manager_measure(self, widget, orientation, for_size, minimum, natural, minimum_baseline, natural_baseline)
+      LibGtk.gtk_layout_manager_measure(@pointer, widget, orientation, for_size, minimum, natural, minimum_baseline, natural_baseline)
 
       # Return value handling
     end

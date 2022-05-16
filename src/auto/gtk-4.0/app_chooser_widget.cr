@@ -47,15 +47,13 @@ module Gtk
         sizeof(LibGtk::AppChooserWidget), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(AppChooserWidget, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `AppChooserWidget`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -407,7 +405,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_widget_get_default_text(self)
+      _retval = LibGtk.gtk_app_chooser_widget_get_default_text(@pointer)
 
       # Return value handling
 
@@ -421,7 +419,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_widget_get_show_all(self)
+      _retval = LibGtk.gtk_app_chooser_widget_get_show_all(@pointer)
 
       # Return value handling
 
@@ -435,7 +433,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_widget_get_show_default(self)
+      _retval = LibGtk.gtk_app_chooser_widget_get_show_default(@pointer)
 
       # Return value handling
 
@@ -449,7 +447,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_widget_get_show_fallback(self)
+      _retval = LibGtk.gtk_app_chooser_widget_get_show_fallback(@pointer)
 
       # Return value handling
 
@@ -463,7 +461,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_widget_get_show_other(self)
+      _retval = LibGtk.gtk_app_chooser_widget_get_show_other(@pointer)
 
       # Return value handling
 
@@ -477,7 +475,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_widget_get_show_recommended(self)
+      _retval = LibGtk.gtk_app_chooser_widget_get_show_recommended(@pointer)
 
       # Return value handling
 
@@ -491,7 +489,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_widget_set_default_text(self, text)
+      LibGtk.gtk_app_chooser_widget_set_default_text(@pointer, text)
 
       # Return value handling
     end
@@ -503,7 +501,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_widget_set_show_all(self, setting)
+      LibGtk.gtk_app_chooser_widget_set_show_all(@pointer, setting)
 
       # Return value handling
     end
@@ -515,7 +513,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_widget_set_show_default(self, setting)
+      LibGtk.gtk_app_chooser_widget_set_show_default(@pointer, setting)
 
       # Return value handling
     end
@@ -527,7 +525,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_widget_set_show_fallback(self, setting)
+      LibGtk.gtk_app_chooser_widget_set_show_fallback(@pointer, setting)
 
       # Return value handling
     end
@@ -539,7 +537,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_widget_set_show_other(self, setting)
+      LibGtk.gtk_app_chooser_widget_set_show_other(@pointer, setting)
 
       # Return value handling
     end
@@ -551,7 +549,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_widget_set_show_recommended(self, setting)
+      LibGtk.gtk_app_chooser_widget_set_show_recommended(@pointer, setting)
 
       # Return value handling
     end
@@ -588,7 +586,7 @@ module Gtk
       def connect(handler : Proc(Gio::AppInfo, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           application = Gio::AppInfo.new(lib_application, :none)
           ::Box(Proc(Gio::AppInfo, Nil)).unbox(_lib_box).call(application)
         }.pointer
@@ -600,7 +598,7 @@ module Gtk
       def connect_after(handler : Proc(Gio::AppInfo, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           application = Gio::AppInfo.new(lib_application, :none)
           ::Box(Proc(Gio::AppInfo, Nil)).unbox(_lib_box).call(application)
         }.pointer
@@ -613,7 +611,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::AppChooserWidget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           application = Gio::AppInfo.new(lib_application, :none)
           ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(_lib_box).call(_sender, application)
         }.pointer
@@ -626,7 +624,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::AppChooserWidget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           application = Gio::AppInfo.new(lib_application, :none)
           ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(_lib_box).call(_sender, application)
         }.pointer
@@ -672,7 +670,7 @@ module Gtk
       def connect(handler : Proc(Gio::AppInfo, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           application = Gio::AppInfo.new(lib_application, :none)
           ::Box(Proc(Gio::AppInfo, Nil)).unbox(_lib_box).call(application)
         }.pointer
@@ -684,7 +682,7 @@ module Gtk
       def connect_after(handler : Proc(Gio::AppInfo, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           application = Gio::AppInfo.new(lib_application, :none)
           ::Box(Proc(Gio::AppInfo, Nil)).unbox(_lib_box).call(application)
         }.pointer
@@ -697,7 +695,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::AppChooserWidget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           application = Gio::AppInfo.new(lib_application, :none)
           ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(_lib_box).call(_sender, application)
         }.pointer
@@ -710,7 +708,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_application : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::AppChooserWidget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           application = Gio::AppInfo.new(lib_application, :none)
           ::Box(Proc(Gtk::AppChooserWidget, Gio::AppInfo, Nil)).unbox(_lib_box).call(_sender, application)
         }.pointer

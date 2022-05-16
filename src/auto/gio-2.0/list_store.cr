@@ -20,15 +20,13 @@ module Gio
         sizeof(LibGio::ListStore), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ListStore, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ListStore`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -102,7 +100,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_list_store_append(self, item)
+      LibGio.g_list_store_append(@pointer, item)
 
       # Return value handling
     end
@@ -121,7 +119,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       position = Pointer(UInt32).null
       # C call
-      _retval = LibGio.g_list_store_find(self, item, position)
+      _retval = LibGio.g_list_store_find(@pointer, item, position)
 
       # Return value handling
 
@@ -140,7 +138,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       position = Pointer(UInt32).null
       # C call
-      _retval = LibGio.g_list_store_find_with_equal_func(self, item, equal_func, position)
+      _retval = LibGio.g_list_store_find_with_equal_func(@pointer, item, equal_func, position)
 
       # Return value handling
 
@@ -160,7 +158,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_list_store_insert(self, position, item)
+      LibGio.g_list_store_insert(@pointer, position, item)
 
       # Return value handling
     end
@@ -186,7 +184,7 @@ module Gio
                   end
 
       # C call
-      _retval = LibGio.g_list_store_insert_sorted(self, item, compare_func, user_data)
+      _retval = LibGio.g_list_store_insert_sorted(@pointer, item, compare_func, user_data)
 
       # Return value handling
 
@@ -203,7 +201,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_list_store_remove(self, position)
+      LibGio.g_list_store_remove(@pointer, position)
 
       # Return value handling
     end
@@ -214,7 +212,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_list_store_remove_all(self)
+      LibGio.g_list_store_remove_all(@pointer)
 
       # Return value handling
     end
@@ -233,7 +231,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_list_store_sort(self, compare_func, user_data)
+      LibGio.g_list_store_sort(@pointer, compare_func, user_data)
 
       # Return value handling
     end
@@ -261,7 +259,7 @@ module Gio
       additions = additions.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGio.g_list_store_splice(self, position, n_removals, additions, n_additions)
+      LibGio.g_list_store_splice(@pointer, position, n_removals, additions, n_additions)
 
       # Return value handling
     end

@@ -9,7 +9,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_pollable_output_stream_can_poll(self)
+      _retval = LibGio.g_pollable_output_stream_can_poll(@pointer)
 
       # Return value handling
 
@@ -29,7 +29,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_pollable_output_stream_create_source(self, cancellable)
+      _retval = LibGio.g_pollable_output_stream_create_source(@pointer, cancellable)
 
       # Return value handling
 
@@ -41,7 +41,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_pollable_output_stream_is_writable(self)
+      _retval = LibGio.g_pollable_output_stream_is_writable(@pointer)
 
       # Return value handling
 
@@ -67,7 +67,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_pollable_output_stream_write_nonblocking(self, buffer, count, cancellable, pointerof(_error))
+      _retval = LibGio.g_pollable_output_stream_write_nonblocking(@pointer, buffer, count, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -98,7 +98,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_pollable_output_stream_writev_nonblocking(self, vectors, n_vectors, bytes_written, cancellable, pointerof(_error))
+      _retval = LibGio.g_pollable_output_stream_writev_nonblocking(@pointer, vectors, n_vectors, bytes_written, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -113,8 +113,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class PollableOutputStream__Impl < GObject::Object
+  class AbstractPollableOutputStream < GObject::Object
     include PollableOutputStream
+
+    GICrystal.define_new_method(Gio::AbstractPollableOutputStream, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

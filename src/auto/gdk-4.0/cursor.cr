@@ -45,15 +45,13 @@ module Gdk
         sizeof(LibGdk::Cursor), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Cursor, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Cursor`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -251,7 +249,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_cursor_get_fallback(self)
+      _retval = LibGdk.gdk_cursor_get_fallback(@pointer)
 
       # Return value handling
 
@@ -270,7 +268,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_cursor_get_hotspot_x(self)
+      _retval = LibGdk.gdk_cursor_get_hotspot_x(@pointer)
 
       # Return value handling
 
@@ -289,7 +287,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_cursor_get_hotspot_y(self)
+      _retval = LibGdk.gdk_cursor_get_hotspot_y(@pointer)
 
       # Return value handling
 
@@ -304,7 +302,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_cursor_get_name(self)
+      _retval = LibGdk.gdk_cursor_get_name(@pointer)
 
       # Return value handling
 
@@ -319,7 +317,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_cursor_get_texture(self)
+      _retval = LibGdk.gdk_cursor_get_texture(@pointer)
 
       # Return value handling
 

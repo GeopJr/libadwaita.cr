@@ -50,7 +50,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_action_group_action_added(self, action_name)
+      LibGio.g_action_group_action_added(@pointer, action_name)
 
       # Return value handling
     end
@@ -60,7 +60,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_action_group_action_enabled_changed(self, action_name, enabled)
+      LibGio.g_action_group_action_enabled_changed(@pointer, action_name, enabled)
 
       # Return value handling
     end
@@ -70,7 +70,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_action_group_action_removed(self, action_name)
+      LibGio.g_action_group_action_removed(@pointer, action_name)
 
       # Return value handling
     end
@@ -87,7 +87,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_action_group_action_state_changed(self, action_name, state)
+      LibGio.g_action_group_action_state_changed(@pointer, action_name, state)
 
       # Return value handling
     end
@@ -107,7 +107,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_action_group_activate_action(self, action_name, parameter)
+      LibGio.g_action_group_activate_action(@pointer, action_name, parameter)
 
       # Return value handling
     end
@@ -124,7 +124,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_action_group_change_action_state(self, action_name, value)
+      LibGio.g_action_group_change_action_state(@pointer, action_name, value)
 
       # Return value handling
     end
@@ -134,7 +134,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_action_group_get_action_enabled(self, action_name)
+      _retval = LibGio.g_action_group_get_action_enabled(@pointer, action_name)
 
       # Return value handling
 
@@ -146,7 +146,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_action_group_get_action_parameter_type(self, action_name)
+      _retval = LibGio.g_action_group_get_action_parameter_type(@pointer, action_name)
 
       # Return value handling
 
@@ -158,7 +158,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_action_group_get_action_state(self, action_name)
+      _retval = LibGio.g_action_group_get_action_state(@pointer, action_name)
 
       # Return value handling
 
@@ -170,7 +170,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_action_group_get_action_state_hint(self, action_name)
+      _retval = LibGio.g_action_group_get_action_state_hint(@pointer, action_name)
 
       # Return value handling
 
@@ -182,7 +182,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_action_group_get_action_state_type(self, action_name)
+      _retval = LibGio.g_action_group_get_action_state_type(@pointer, action_name)
 
       # Return value handling
 
@@ -194,7 +194,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_action_group_has_action(self, action_name)
+      _retval = LibGio.g_action_group_has_action(@pointer, action_name)
 
       # Return value handling
 
@@ -206,7 +206,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_action_group_list_actions(self)
+      _retval = LibGio.g_action_group_list_actions(@pointer)
 
       # Return value handling
 
@@ -228,7 +228,7 @@ module Gio
       state_hint = Pointer(Pointer(Void)).null     # Generator::OutArgUsedInReturnPlan
       state = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGio.g_action_group_query_action(self, action_name, enabled, parameter_type, state_type, state_hint, state)
+      _retval = LibGio.g_action_group_query_action(@pointer, action_name, enabled, parameter_type, state_type, state_hint, state)
 
       # Return value handling
 
@@ -262,7 +262,8 @@ module Gio
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          action_name = lib_action_name
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(action_name)
         }.pointer
 
@@ -273,7 +274,8 @@ module Gio
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          action_name = lib_action_name
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(action_name)
         }.pointer
 
@@ -284,8 +286,9 @@ module Gio
       def connect(handler : Proc(Gio::ActionGroup, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gio::ActionGroup__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          action_name = lib_action_name
+          _sender = Gio::AbstractActionGroup.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           ::Box(Proc(Gio::ActionGroup, ::String, Nil)).unbox(_lib_box).call(_sender, action_name)
         }.pointer
 
@@ -296,8 +299,9 @@ module Gio
       def connect_after(handler : Proc(Gio::ActionGroup, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gio::ActionGroup__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          action_name = lib_action_name
+          _sender = Gio::AbstractActionGroup.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           ::Box(Proc(Gio::ActionGroup, ::String, Nil)).unbox(_lib_box).call(_sender, action_name)
         }.pointer
 
@@ -341,7 +345,8 @@ module Gio
       def connect(handler : Proc(::String, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), lib_enabled : LibC::Int, _lib_box : Pointer(Void)) {
-          action_name = lib_action_name
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           enabled = lib_enabled
           ::Box(Proc(::String, Bool, Nil)).unbox(_lib_box).call(action_name, enabled)
         }.pointer
@@ -353,7 +358,8 @@ module Gio
       def connect_after(handler : Proc(::String, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), lib_enabled : LibC::Int, _lib_box : Pointer(Void)) {
-          action_name = lib_action_name
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           enabled = lib_enabled
           ::Box(Proc(::String, Bool, Nil)).unbox(_lib_box).call(action_name, enabled)
         }.pointer
@@ -365,8 +371,9 @@ module Gio
       def connect(handler : Proc(Gio::ActionGroup, ::String, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), lib_enabled : LibC::Int, _lib_box : Pointer(Void)) {
-          _sender = Gio::ActionGroup__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          action_name = lib_action_name
+          _sender = Gio::AbstractActionGroup.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           enabled = lib_enabled
           ::Box(Proc(Gio::ActionGroup, ::String, Bool, Nil)).unbox(_lib_box).call(_sender, action_name, enabled)
         }.pointer
@@ -378,8 +385,9 @@ module Gio
       def connect_after(handler : Proc(Gio::ActionGroup, ::String, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), lib_enabled : LibC::Int, _lib_box : Pointer(Void)) {
-          _sender = Gio::ActionGroup__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          action_name = lib_action_name
+          _sender = Gio::AbstractActionGroup.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           enabled = lib_enabled
           ::Box(Proc(Gio::ActionGroup, ::String, Bool, Nil)).unbox(_lib_box).call(_sender, action_name, enabled)
         }.pointer
@@ -424,7 +432,8 @@ module Gio
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          action_name = lib_action_name
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(action_name)
         }.pointer
 
@@ -435,7 +444,8 @@ module Gio
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          action_name = lib_action_name
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(action_name)
         }.pointer
 
@@ -446,8 +456,9 @@ module Gio
       def connect(handler : Proc(Gio::ActionGroup, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gio::ActionGroup__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          action_name = lib_action_name
+          _sender = Gio::AbstractActionGroup.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           ::Box(Proc(Gio::ActionGroup, ::String, Nil)).unbox(_lib_box).call(_sender, action_name)
         }.pointer
 
@@ -458,8 +469,9 @@ module Gio
       def connect_after(handler : Proc(Gio::ActionGroup, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gio::ActionGroup__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          action_name = lib_action_name
+          _sender = Gio::AbstractActionGroup.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           ::Box(Proc(Gio::ActionGroup, ::String, Nil)).unbox(_lib_box).call(_sender, action_name)
         }.pointer
 
@@ -503,10 +515,9 @@ module Gio
       def connect(handler : Proc(::String, GLib::Variant, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
-          action_name = lib_action_name
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           # Generator::HandmadeArgPlan
-          value = GLib::Variant.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GLib::Variant.new(lib_value, :none)
           ::Box(Proc(::String, GLib::Variant, Nil)).unbox(_lib_box).call(action_name, value)
         }.pointer
@@ -518,10 +529,9 @@ module Gio
       def connect_after(handler : Proc(::String, GLib::Variant, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
-          action_name = lib_action_name
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           # Generator::HandmadeArgPlan
-          value = GLib::Variant.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GLib::Variant.new(lib_value, :none)
           ::Box(Proc(::String, GLib::Variant, Nil)).unbox(_lib_box).call(action_name, value)
         }.pointer
@@ -533,11 +543,10 @@ module Gio
       def connect(handler : Proc(Gio::ActionGroup, ::String, GLib::Variant, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::ActionGroup__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          action_name = lib_action_name
+          _sender = Gio::AbstractActionGroup.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           # Generator::HandmadeArgPlan
-          value = GLib::Variant.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GLib::Variant.new(lib_value, :none)
           ::Box(Proc(Gio::ActionGroup, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, action_name, value)
         }.pointer
@@ -549,11 +558,10 @@ module Gio
       def connect_after(handler : Proc(Gio::ActionGroup, ::String, GLib::Variant, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_action_name : Pointer(LibC::Char), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::ActionGroup__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          action_name = lib_action_name
+          _sender = Gio::AbstractActionGroup.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          action_name = ::String.new(lib_action_name)
           # Generator::HandmadeArgPlan
-          value = GLib::Variant.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GLib::Variant.new(lib_value, :none)
           ::Box(Proc(Gio::ActionGroup, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, action_name, value)
         }.pointer
@@ -563,7 +571,13 @@ module Gio
       end
 
       def emit(action_name : ::String, value : _) : Nil
-        value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
+        # Generator::HandmadeArgPlan
+        value = if !value.is_a?(GLib::Variant)
+                  GLib::Variant.new(value).to_unsafe
+                else
+                  value.to_unsafe
+                end
+
         LibGObject.g_signal_emit_by_name(@source, "action-state-changed", action_name, value)
       end
     end
@@ -577,8 +591,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class ActionGroup__Impl < GObject::Object
+  class AbstractActionGroup < GObject::Object
     include ActionGroup
+
+    GICrystal.define_new_method(Gio::AbstractActionGroup, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

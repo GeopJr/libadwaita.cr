@@ -80,7 +80,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_as_color(self)
+      _retval = LibPango.pango_attribute_as_color(@pointer)
 
       # Return value handling
 
@@ -92,7 +92,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_as_float(self)
+      _retval = LibPango.pango_attribute_as_float(@pointer)
 
       # Return value handling
 
@@ -104,7 +104,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_as_font_desc(self)
+      _retval = LibPango.pango_attribute_as_font_desc(@pointer)
 
       # Return value handling
 
@@ -116,7 +116,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_as_font_features(self)
+      _retval = LibPango.pango_attribute_as_font_features(@pointer)
 
       # Return value handling
 
@@ -128,7 +128,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_as_int(self)
+      _retval = LibPango.pango_attribute_as_int(@pointer)
 
       # Return value handling
 
@@ -140,7 +140,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_as_language(self)
+      _retval = LibPango.pango_attribute_as_language(@pointer)
 
       # Return value handling
 
@@ -152,7 +152,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_as_shape(self)
+      _retval = LibPango.pango_attribute_as_shape(@pointer)
 
       # Return value handling
 
@@ -164,7 +164,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_as_size(self)
+      _retval = LibPango.pango_attribute_as_size(@pointer)
 
       # Return value handling
 
@@ -176,7 +176,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_as_string(self)
+      _retval = LibPango.pango_attribute_as_string(@pointer)
 
       # Return value handling
 
@@ -188,7 +188,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_attribute_copy(self)
+      _retval = LibPango.pango_attribute_copy(@pointer)
 
       # Return value handling
 
@@ -200,7 +200,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attribute_destroy(self)
+      LibPango.pango_attribute_destroy(@pointer)
 
       # Return value handling
     end
@@ -210,7 +210,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attribute_equal(self, attr2)
+      _retval = LibPango.pango_attribute_equal(@pointer, attr2)
 
       # Return value handling
 
@@ -222,7 +222,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attribute_init(self, klass)
+      LibPango.pango_attribute_init(@pointer, klass)
 
       # Return value handling
     end

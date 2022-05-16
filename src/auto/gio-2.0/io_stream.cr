@@ -58,15 +58,13 @@ module Gio
         sizeof(LibGio::IOStream), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(IOStream, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `IOStream`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -156,7 +154,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_io_stream_clear_pending(self)
+      LibGio.g_io_stream_clear_pending(@pointer)
 
       # Return value handling
     end
@@ -209,7 +207,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_io_stream_close(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_io_stream_close(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -250,7 +248,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_io_stream_close_async(self, io_priority, cancellable, callback, user_data)
+      LibGio.g_io_stream_close_async(@pointer, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -263,7 +261,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_io_stream_close_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_io_stream_close_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -280,7 +278,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_io_stream_get_input_stream(self)
+      _retval = LibGio.g_io_stream_get_input_stream(@pointer)
 
       # Return value handling
 
@@ -294,7 +292,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_io_stream_get_output_stream(self)
+      _retval = LibGio.g_io_stream_get_output_stream(@pointer)
 
       # Return value handling
 
@@ -307,7 +305,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_io_stream_has_pending(self)
+      _retval = LibGio.g_io_stream_has_pending(@pointer)
 
       # Return value handling
 
@@ -320,7 +318,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_io_stream_is_closed(self)
+      _retval = LibGio.g_io_stream_is_closed(@pointer)
 
       # Return value handling
 
@@ -337,7 +335,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_io_stream_set_pending(self, pointerof(_error))
+      _retval = LibGio.g_io_stream_set_pending(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -375,7 +373,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_io_stream_splice_async(self, stream2, flags, io_priority, cancellable, callback, user_data)
+      LibGio.g_io_stream_splice_async(@pointer, stream2, flags, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end

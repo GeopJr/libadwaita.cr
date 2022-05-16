@@ -46,15 +46,13 @@ module Gtk
         sizeof(LibGtk::CellView), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CellView, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CellView`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -360,7 +358,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractTreeModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     # Creates a new `GtkCellView` widget.
@@ -452,7 +450,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_cell_view_get_displayed_row(self)
+      _retval = LibGtk.gtk_cell_view_get_displayed_row(@pointer)
 
       # Return value handling
 
@@ -466,7 +464,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_view_get_draw_sensitive(self)
+      _retval = LibGtk.gtk_cell_view_get_draw_sensitive(@pointer)
 
       # Return value handling
 
@@ -480,7 +478,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_view_get_fit_model(self)
+      _retval = LibGtk.gtk_cell_view_get_fit_model(@pointer)
 
       # Return value handling
 
@@ -494,11 +492,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_view_get_model(self)
+      _retval = LibGtk.gtk_cell_view_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractTreeModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Sets the row of the model that is currently displayed
@@ -520,7 +518,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_cell_view_set_displayed_row(self, path)
+      LibGtk.gtk_cell_view_set_displayed_row(@pointer, path)
 
       # Return value handling
     end
@@ -534,7 +532,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_view_set_draw_sensitive(self, draw_sensitive)
+      LibGtk.gtk_cell_view_set_draw_sensitive(@pointer, draw_sensitive)
 
       # Return value handling
     end
@@ -549,7 +547,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_view_set_fit_model(self, fit_model)
+      LibGtk.gtk_cell_view_set_fit_model(@pointer, fit_model)
 
       # Return value handling
     end
@@ -570,7 +568,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_cell_view_set_model(self, model)
+      LibGtk.gtk_cell_view_set_model(@pointer, model)
 
       # Return value handling
     end

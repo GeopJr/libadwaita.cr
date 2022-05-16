@@ -237,7 +237,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_add_child_source(self, child_source)
+      LibGLib.g_source_add_child_source(@pointer, child_source)
 
       # Return value handling
     end
@@ -247,7 +247,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_add_unix_fd(self, fd, events)
+      _retval = LibGLib.g_source_add_unix_fd(@pointer, fd, events)
 
       # Return value handling
 
@@ -267,7 +267,7 @@ module GLib
                 end
 
       # C call
-      _retval = LibGLib.g_source_attach(self, context)
+      _retval = LibGLib.g_source_attach(@pointer, context)
 
       # Return value handling
 
@@ -279,7 +279,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_destroy(self)
+      LibGLib.g_source_destroy(@pointer)
 
       # Return value handling
     end
@@ -289,7 +289,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_get_can_recurse(self)
+      _retval = LibGLib.g_source_get_can_recurse(@pointer)
 
       # Return value handling
 
@@ -301,7 +301,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_get_context(self)
+      _retval = LibGLib.g_source_get_context(@pointer)
 
       # Return value handling
 
@@ -313,7 +313,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_get_current_time(self, timeval)
+      LibGLib.g_source_get_current_time(@pointer, timeval)
 
       # Return value handling
     end
@@ -323,7 +323,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_get_id(self)
+      _retval = LibGLib.g_source_get_id(@pointer)
 
       # Return value handling
 
@@ -335,7 +335,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_get_name(self)
+      _retval = LibGLib.g_source_get_name(@pointer)
 
       # Return value handling
 
@@ -347,7 +347,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_get_priority(self)
+      _retval = LibGLib.g_source_get_priority(@pointer)
 
       # Return value handling
 
@@ -359,7 +359,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_get_ready_time(self)
+      _retval = LibGLib.g_source_get_ready_time(@pointer)
 
       # Return value handling
 
@@ -371,7 +371,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_get_time(self)
+      _retval = LibGLib.g_source_get_time(@pointer)
 
       # Return value handling
 
@@ -383,7 +383,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_is_destroyed(self)
+      _retval = LibGLib.g_source_is_destroyed(@pointer)
 
       # Return value handling
 
@@ -395,7 +395,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_modify_unix_fd(self, tag, new_events)
+      LibGLib.g_source_modify_unix_fd(@pointer, tag, new_events)
 
       # Return value handling
     end
@@ -405,7 +405,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_source_query_unix_fd(self, tag)
+      _retval = LibGLib.g_source_query_unix_fd(@pointer, tag)
 
       # Return value handling
 
@@ -417,7 +417,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_source_ref(self)
+      _retval = LibGLib.g_source_ref(@pointer)
 
       # Return value handling
 
@@ -429,7 +429,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_remove_child_source(self, child_source)
+      LibGLib.g_source_remove_child_source(@pointer, child_source)
 
       # Return value handling
     end
@@ -439,7 +439,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_remove_unix_fd(self, tag)
+      LibGLib.g_source_remove_unix_fd(@pointer, tag)
 
       # Return value handling
     end
@@ -454,8 +454,7 @@ module GLib
       if func
         _box = ::Box.box(func)
         func = ->(lib_user_data : Pointer(Void)) {
-          user_data = lib_user_data
-          ::Box(Proc(Bool)).unbox(user_data).call
+          ::Box(Proc(Bool)).unbox(lib_user_data).call
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
         notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -464,7 +463,7 @@ module GLib
       end
 
       # C call
-      LibGLib.g_source_set_callback(self, func, data, notify)
+      LibGLib.g_source_set_callback(@pointer, func, data, notify)
 
       # Return value handling
     end
@@ -482,7 +481,7 @@ module GLib
                       end
 
       # C call
-      LibGLib.g_source_set_callback_indirect(self, callback_data, callback_funcs)
+      LibGLib.g_source_set_callback_indirect(@pointer, callback_data, callback_funcs)
 
       # Return value handling
     end
@@ -492,7 +491,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_set_can_recurse(self, can_recurse)
+      LibGLib.g_source_set_can_recurse(@pointer, can_recurse)
 
       # Return value handling
     end
@@ -502,7 +501,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_set_funcs(self, funcs)
+      LibGLib.g_source_set_funcs(@pointer, funcs)
 
       # Return value handling
     end
@@ -512,7 +511,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_set_name(self, name)
+      LibGLib.g_source_set_name(@pointer, name)
 
       # Return value handling
     end
@@ -522,7 +521,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_set_priority(self, priority)
+      LibGLib.g_source_set_priority(@pointer, priority)
 
       # Return value handling
     end
@@ -532,7 +531,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_set_ready_time(self, ready_time)
+      LibGLib.g_source_set_ready_time(@pointer, ready_time)
 
       # Return value handling
     end
@@ -542,7 +541,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_set_static_name(self, name)
+      LibGLib.g_source_set_static_name(@pointer, name)
 
       # Return value handling
     end
@@ -552,7 +551,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_source_unref(self)
+      LibGLib.g_source_unref(@pointer)
 
       # Return value handling
     end

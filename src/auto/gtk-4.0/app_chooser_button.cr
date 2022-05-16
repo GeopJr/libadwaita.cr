@@ -51,15 +51,13 @@ module Gtk
         sizeof(LibGtk::AppChooserButton), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(AppChooserButton, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `AppChooserButton`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -378,7 +376,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_button_append_custom_item(self, name, label, icon)
+      LibGtk.gtk_app_chooser_button_append_custom_item(@pointer, name, label, icon)
 
       # Return value handling
     end
@@ -390,7 +388,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_button_append_separator(self)
+      LibGtk.gtk_app_chooser_button_append_separator(@pointer)
 
       # Return value handling
     end
@@ -401,7 +399,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_button_get_heading(self)
+      _retval = LibGtk.gtk_app_chooser_button_get_heading(@pointer)
 
       # Return value handling
 
@@ -414,7 +412,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_button_get_modal(self)
+      _retval = LibGtk.gtk_app_chooser_button_get_modal(@pointer)
 
       # Return value handling
 
@@ -428,7 +426,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_button_get_show_default_item(self)
+      _retval = LibGtk.gtk_app_chooser_button_get_show_default_item(@pointer)
 
       # Return value handling
 
@@ -442,7 +440,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_button_get_show_dialog_item(self)
+      _retval = LibGtk.gtk_app_chooser_button_get_show_dialog_item(@pointer)
 
       # Return value handling
 
@@ -460,7 +458,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_button_set_active_custom_item(self, name)
+      LibGtk.gtk_app_chooser_button_set_active_custom_item(@pointer, name)
 
       # Return value handling
     end
@@ -473,7 +471,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_button_set_heading(self, heading)
+      LibGtk.gtk_app_chooser_button_set_heading(@pointer, heading)
 
       # Return value handling
     end
@@ -484,7 +482,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_button_set_modal(self, modal)
+      LibGtk.gtk_app_chooser_button_set_modal(@pointer, modal)
 
       # Return value handling
     end
@@ -496,7 +494,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_button_set_show_default_item(self, setting)
+      LibGtk.gtk_app_chooser_button_set_show_default_item(@pointer, setting)
 
       # Return value handling
     end
@@ -508,7 +506,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_button_set_show_dialog_item(self, setting)
+      LibGtk.gtk_app_chooser_button_set_show_dialog_item(@pointer, setting)
 
       # Return value handling
     end
@@ -699,7 +697,8 @@ module Gtk
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_item_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          item_name = lib_item_name
+          # Generator::BuiltInTypeArgPlan
+          item_name = ::String.new(lib_item_name)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(item_name)
         }.pointer
 
@@ -710,7 +709,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_item_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          item_name = lib_item_name
+          # Generator::BuiltInTypeArgPlan
+          item_name = ::String.new(lib_item_name)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(item_name)
         }.pointer
 
@@ -722,7 +722,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_item_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::AppChooserButton.new(_lib_sender, GICrystal::Transfer::None)
-          item_name = lib_item_name
+          # Generator::BuiltInTypeArgPlan
+          item_name = ::String.new(lib_item_name)
           ::Box(Proc(Gtk::AppChooserButton, ::String, Nil)).unbox(_lib_box).call(_sender, item_name)
         }.pointer
 
@@ -734,7 +735,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_item_name : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::AppChooserButton.new(_lib_sender, GICrystal::Transfer::None)
-          item_name = lib_item_name
+          # Generator::BuiltInTypeArgPlan
+          item_name = ::String.new(lib_item_name)
           ::Box(Proc(Gtk::AppChooserButton, ::String, Nil)).unbox(_lib_box).call(_sender, item_name)
         }.pointer
 

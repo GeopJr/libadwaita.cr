@@ -14,15 +14,13 @@ module Pango
         sizeof(LibPango::Font), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Font, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Font`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -85,7 +83,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_describe(self)
+      _retval = LibPango.pango_font_describe(@pointer)
 
       # Return value handling
 
@@ -101,7 +99,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_describe_with_absolute_size(self)
+      _retval = LibPango.pango_font_describe_with_absolute_size(@pointer)
 
       # Return value handling
 
@@ -114,7 +112,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_get_coverage(self, language)
+      _retval = LibPango.pango_font_get_coverage(@pointer, language)
 
       # Return value handling
 
@@ -127,7 +125,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_get_face(self)
+      _retval = LibPango.pango_font_get_face(@pointer)
 
       # Return value handling
 
@@ -153,7 +151,7 @@ module Pango
       features = features.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibPango.pango_font_get_features(self, features, len, num_features)
+      LibPango.pango_font_get_features(@pointer, features, len, num_features)
 
       # Return value handling
     end
@@ -174,7 +172,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_get_font_map(self)
+      _retval = LibPango.pango_font_get_font_map(@pointer)
 
       # Return value handling
 
@@ -204,7 +202,7 @@ module Pango
       logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_font_get_glyph_extents(self, glyph, ink_rect, logical_rect)
+      LibPango.pango_font_get_glyph_extents(@pointer, glyph, ink_rect, logical_rect)
 
       # Return value handling
 
@@ -224,7 +222,7 @@ module Pango
       # Returns: (transfer none) (array zero-terminated=1 element-type Interface)
 
       # C call
-      _retval = LibPango.pango_font_get_languages(self)
+      _retval = LibPango.pango_font_get_languages(@pointer)
 
       # Return value handling
 
@@ -252,7 +250,7 @@ module Pango
                  end
 
       # C call
-      _retval = LibPango.pango_font_get_metrics(self, language)
+      _retval = LibPango.pango_font_get_metrics(@pointer, language)
 
       # Return value handling
 
@@ -265,7 +263,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_has_char(self, wc)
+      _retval = LibPango.pango_font_has_char(@pointer, wc)
 
       # Return value handling
 
@@ -286,7 +284,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_serialize(self)
+      _retval = LibPango.pango_font_serialize(@pointer)
 
       # Return value handling
 

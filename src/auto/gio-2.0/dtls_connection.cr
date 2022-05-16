@@ -46,7 +46,7 @@ module Gio
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "base-socket", pointerof(value), Pointer(Void).null)
-      Gio::DatagramBased__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractDatagramBased.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def certificate=(value : Gio::TlsCertificate?) : Gio::TlsCertificate?
@@ -179,7 +179,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dtls_connection_close(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_dtls_connection_close(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -210,7 +210,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dtls_connection_close_async(self, io_priority, cancellable, callback, user_data)
+      LibGio.g_dtls_connection_close_async(@pointer, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -222,7 +222,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dtls_connection_close_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_dtls_connection_close_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -237,7 +237,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_emit_accept_certificate(self, peer_cert, errors)
+      _retval = LibGio.g_dtls_connection_emit_accept_certificate(@pointer, peer_cert, errors)
 
       # Return value handling
 
@@ -249,7 +249,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_certificate(self)
+      _retval = LibGio.g_dtls_connection_get_certificate(@pointer)
 
       # Return value handling
 
@@ -268,7 +268,7 @@ module Gio
       data = data.to_a.to_unsafe
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_channel_binding_data(self, type, data, pointerof(_error))
+      _retval = LibGio.g_dtls_connection_get_channel_binding_data(@pointer, type, data, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -283,7 +283,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_ciphersuite_name(self)
+      _retval = LibGio.g_dtls_connection_get_ciphersuite_name(@pointer)
 
       # Return value handling
 
@@ -295,7 +295,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_database(self)
+      _retval = LibGio.g_dtls_connection_get_database(@pointer)
 
       # Return value handling
 
@@ -307,7 +307,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_interaction(self)
+      _retval = LibGio.g_dtls_connection_get_interaction(@pointer)
 
       # Return value handling
 
@@ -319,7 +319,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_negotiated_protocol(self)
+      _retval = LibGio.g_dtls_connection_get_negotiated_protocol(@pointer)
 
       # Return value handling
 
@@ -331,7 +331,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_peer_certificate(self)
+      _retval = LibGio.g_dtls_connection_get_peer_certificate(@pointer)
 
       # Return value handling
 
@@ -343,7 +343,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_peer_certificate_errors(self)
+      _retval = LibGio.g_dtls_connection_get_peer_certificate_errors(@pointer)
 
       # Return value handling
 
@@ -355,7 +355,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_protocol_version(self)
+      _retval = LibGio.g_dtls_connection_get_protocol_version(@pointer)
 
       # Return value handling
 
@@ -367,7 +367,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_rehandshake_mode(self)
+      _retval = LibGio.g_dtls_connection_get_rehandshake_mode(@pointer)
 
       # Return value handling
 
@@ -379,7 +379,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dtls_connection_get_require_close_notify(self)
+      _retval = LibGio.g_dtls_connection_get_require_close_notify(@pointer)
 
       # Return value handling
 
@@ -401,7 +401,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dtls_connection_handshake(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_dtls_connection_handshake(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -432,7 +432,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dtls_connection_handshake_async(self, io_priority, cancellable, callback, user_data)
+      LibGio.g_dtls_connection_handshake_async(@pointer, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -444,7 +444,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dtls_connection_handshake_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_dtls_connection_handshake_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -467,7 +467,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dtls_connection_set_advertised_protocols(self, protocols)
+      LibGio.g_dtls_connection_set_advertised_protocols(@pointer, protocols)
 
       # Return value handling
     end
@@ -477,7 +477,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dtls_connection_set_certificate(self, certificate)
+      LibGio.g_dtls_connection_set_certificate(@pointer, certificate)
 
       # Return value handling
     end
@@ -495,7 +495,7 @@ module Gio
                  end
 
       # C call
-      LibGio.g_dtls_connection_set_database(self, database)
+      LibGio.g_dtls_connection_set_database(@pointer, database)
 
       # Return value handling
     end
@@ -513,7 +513,7 @@ module Gio
                     end
 
       # C call
-      LibGio.g_dtls_connection_set_interaction(self, interaction)
+      LibGio.g_dtls_connection_set_interaction(@pointer, interaction)
 
       # Return value handling
     end
@@ -523,7 +523,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dtls_connection_set_rehandshake_mode(self, mode)
+      LibGio.g_dtls_connection_set_rehandshake_mode(@pointer, mode)
 
       # Return value handling
     end
@@ -533,7 +533,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dtls_connection_set_require_close_notify(self, require_close_notify)
+      LibGio.g_dtls_connection_set_require_close_notify(@pointer, require_close_notify)
 
       # Return value handling
     end
@@ -553,7 +553,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dtls_connection_shutdown(self, shutdown_read, shutdown_write, cancellable, pointerof(_error))
+      _retval = LibGio.g_dtls_connection_shutdown(@pointer, shutdown_read, shutdown_write, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -584,7 +584,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dtls_connection_shutdown_async(self, shutdown_read, shutdown_write, io_priority, cancellable, callback, user_data)
+      LibGio.g_dtls_connection_shutdown_async(@pointer, shutdown_read, shutdown_write, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -596,7 +596,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dtls_connection_shutdown_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_dtls_connection_shutdown_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -633,10 +633,10 @@ module Gio
       def connect(handler : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_peer_cert : Pointer(Void), lib_errors : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           peer_cert = Gio::TlsCertificate.new(lib_peer_cert, :none)
-          # Generator::GObjectArgPlan
-          errors = Gio::TlsCertificateFlags.new(lib_errors, :none)
+          # Generator::BuiltInTypeArgPlan
+          errors = Gio::TlsCertificateFlags.new(lib_errors)
           ::Box(Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(_lib_box).call(peer_cert, errors)
         }.pointer
 
@@ -647,10 +647,10 @@ module Gio
       def connect_after(handler : Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_peer_cert : Pointer(Void), lib_errors : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           peer_cert = Gio::TlsCertificate.new(lib_peer_cert, :none)
-          # Generator::GObjectArgPlan
-          errors = Gio::TlsCertificateFlags.new(lib_errors, :none)
+          # Generator::BuiltInTypeArgPlan
+          errors = Gio::TlsCertificateFlags.new(lib_errors)
           ::Box(Proc(Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(_lib_box).call(peer_cert, errors)
         }.pointer
 
@@ -661,11 +661,11 @@ module Gio
       def connect(handler : Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_peer_cert : Pointer(Void), lib_errors : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gio::DtlsConnection__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gio::AbstractDtlsConnection.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           peer_cert = Gio::TlsCertificate.new(lib_peer_cert, :none)
-          # Generator::GObjectArgPlan
-          errors = Gio::TlsCertificateFlags.new(lib_errors, :none)
+          # Generator::BuiltInTypeArgPlan
+          errors = Gio::TlsCertificateFlags.new(lib_errors)
           ::Box(Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(_lib_box).call(_sender, peer_cert, errors)
         }.pointer
 
@@ -676,11 +676,11 @@ module Gio
       def connect_after(handler : Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_peer_cert : Pointer(Void), lib_errors : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gio::DtlsConnection__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gio::AbstractDtlsConnection.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           peer_cert = Gio::TlsCertificate.new(lib_peer_cert, :none)
-          # Generator::GObjectArgPlan
-          errors = Gio::TlsCertificateFlags.new(lib_errors, :none)
+          # Generator::BuiltInTypeArgPlan
+          errors = Gio::TlsCertificateFlags.new(lib_errors)
           ::Box(Proc(Gio::DtlsConnection, Gio::TlsCertificate, Gio::TlsCertificateFlags, Bool)).unbox(_lib_box).call(_sender, peer_cert, errors)
         }.pointer
 
@@ -702,8 +702,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class DtlsConnection__Impl < GObject::Object
+  class AbstractDtlsConnection < GObject::Object
     include DtlsConnection
+
+    GICrystal.define_new_method(Gio::AbstractDtlsConnection, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

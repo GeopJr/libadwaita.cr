@@ -299,15 +299,13 @@ module Gio
         sizeof(LibGio::Settings), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Settings, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Settings`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -669,7 +667,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_apply(self)
+      LibGio.g_settings_apply(@pointer)
 
       # Return value handling
     end
@@ -699,7 +697,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_bind(self, key, object, property, flags)
+      LibGio.g_settings_bind(@pointer, key, object, property, flags)
 
       # Return value handling
     end
@@ -726,7 +724,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_bind_writable(self, key, object, property, inverted)
+      LibGio.g_settings_bind_writable(@pointer, key, object, property, inverted)
 
       # Return value handling
     end
@@ -750,11 +748,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_create_action(self, key)
+      _retval = LibGio.g_settings_create_action(@pointer, key)
 
       # Return value handling
 
-      Gio::Action__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractAction.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Changes the #GSettings object into 'delay-apply' mode. In this
@@ -765,7 +763,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_delay(self)
+      LibGio.g_settings_delay(@pointer)
 
       # Return value handling
     end
@@ -781,7 +779,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_get_boolean(self, key)
+      _retval = LibGio.g_settings_get_boolean(@pointer, key)
 
       # Return value handling
 
@@ -802,7 +800,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_get_child(self, name)
+      _retval = LibGio.g_settings_get_child(@pointer, name)
 
       # Return value handling
 
@@ -835,7 +833,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_get_default_value(self, key)
+      _retval = LibGio.g_settings_get_default_value(@pointer, key)
 
       # Return value handling
 
@@ -853,7 +851,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_get_double(self, key)
+      _retval = LibGio.g_settings_get_double(@pointer, key)
 
       # Return value handling
 
@@ -877,7 +875,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_get_enum(self, key)
+      _retval = LibGio.g_settings_get_enum(@pointer, key)
 
       # Return value handling
 
@@ -901,7 +899,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_get_flags(self, key)
+      _retval = LibGio.g_settings_get_flags(@pointer, key)
 
       # Return value handling
 
@@ -915,7 +913,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_get_has_unapplied(self)
+      _retval = LibGio.g_settings_get_has_unapplied(@pointer)
 
       # Return value handling
 
@@ -933,7 +931,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_get_int(self, key)
+      _retval = LibGio.g_settings_get_int(@pointer, key)
 
       # Return value handling
 
@@ -951,7 +949,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_get_int64(self, key)
+      _retval = LibGio.g_settings_get_int64(@pointer, key)
 
       # Return value handling
 
@@ -998,7 +996,7 @@ module Gio
                   end
 
       # C call
-      _retval = LibGio.g_settings_get_mapped(self, key, mapping, user_data)
+      _retval = LibGio.g_settings_get_mapped(@pointer, key, mapping, user_data)
 
       # Return value handling
 
@@ -1011,7 +1009,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_get_range(self, key)
+      _retval = LibGio.g_settings_get_range(@pointer, key)
 
       # Return value handling
 
@@ -1029,7 +1027,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_get_string(self, key)
+      _retval = LibGio.g_settings_get_string(@pointer, key)
 
       # Return value handling
 
@@ -1045,7 +1043,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_settings_get_strv(self, key)
+      _retval = LibGio.g_settings_get_strv(@pointer, key)
 
       # Return value handling
 
@@ -1064,7 +1062,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_get_uint(self, key)
+      _retval = LibGio.g_settings_get_uint(@pointer, key)
 
       # Return value handling
 
@@ -1083,7 +1081,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_get_uint64(self, key)
+      _retval = LibGio.g_settings_get_uint64(@pointer, key)
 
       # Return value handling
 
@@ -1113,7 +1111,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_get_user_value(self, key)
+      _retval = LibGio.g_settings_get_user_value(@pointer, key)
 
       # Return value handling
 
@@ -1129,7 +1127,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_get_value(self, key)
+      _retval = LibGio.g_settings_get_value(@pointer, key)
 
       # Return value handling
 
@@ -1142,7 +1140,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_is_writable(self, name)
+      _retval = LibGio.g_settings_is_writable(@pointer, name)
 
       # Return value handling
 
@@ -1165,7 +1163,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_settings_list_children(self)
+      _retval = LibGio.g_settings_list_children(@pointer)
 
       # Return value handling
 
@@ -1185,7 +1183,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_settings_list_keys(self)
+      _retval = LibGio.g_settings_list_keys(@pointer)
 
       # Return value handling
 
@@ -1206,7 +1204,7 @@ module Gio
               end
 
       # C call
-      _retval = LibGio.g_settings_range_check(self, key, value)
+      _retval = LibGio.g_settings_range_check(@pointer, key, value)
 
       # Return value handling
 
@@ -1223,7 +1221,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_reset(self, key)
+      LibGio.g_settings_reset(@pointer, key)
 
       # Return value handling
     end
@@ -1239,7 +1237,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_revert(self)
+      LibGio.g_settings_revert(@pointer)
 
       # Return value handling
     end
@@ -1255,7 +1253,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_set_boolean(self, key, value)
+      _retval = LibGio.g_settings_set_boolean(@pointer, key, value)
 
       # Return value handling
 
@@ -1273,7 +1271,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_set_double(self, key, value)
+      _retval = LibGio.g_settings_set_double(@pointer, key, value)
 
       # Return value handling
 
@@ -1295,7 +1293,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_set_enum(self, key, value)
+      _retval = LibGio.g_settings_set_enum(@pointer, key, value)
 
       # Return value handling
 
@@ -1318,7 +1316,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_set_flags(self, key, value)
+      _retval = LibGio.g_settings_set_flags(@pointer, key, value)
 
       # Return value handling
 
@@ -1336,7 +1334,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_set_int(self, key, value)
+      _retval = LibGio.g_settings_set_int(@pointer, key, value)
 
       # Return value handling
 
@@ -1354,7 +1352,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_set_int64(self, key, value)
+      _retval = LibGio.g_settings_set_int64(@pointer, key, value)
 
       # Return value handling
 
@@ -1372,7 +1370,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_set_string(self, key, value)
+      _retval = LibGio.g_settings_set_string(@pointer, key, value)
 
       # Return value handling
 
@@ -1399,7 +1397,7 @@ module Gio
               end
 
       # C call
-      _retval = LibGio.g_settings_set_strv(self, key, value)
+      _retval = LibGio.g_settings_set_strv(@pointer, key, value)
 
       # Return value handling
 
@@ -1418,7 +1416,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_set_uint(self, key, value)
+      _retval = LibGio.g_settings_set_uint(@pointer, key, value)
 
       # Return value handling
 
@@ -1437,7 +1435,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_set_uint64(self, key, value)
+      _retval = LibGio.g_settings_set_uint64(@pointer, key, value)
 
       # Return value handling
 
@@ -1463,7 +1461,7 @@ module Gio
               end
 
       # C call
-      _retval = LibGio.g_settings_set_value(self, key, value)
+      _retval = LibGio.g_settings_set_value(@pointer, key, value)
 
       # Return value handling
 
@@ -1501,73 +1499,77 @@ module Gio
         @detail ? "change-event::#{@detail}" : "change-event"
       end
 
-      def connect(&block : Proc(Enumerable(UInt32)?, Int32, Bool))
+      def connect(&block : Proc(Enumerable(UInt32)?, Bool))
         connect(block)
       end
 
-      def connect_after(&block : Proc(Enumerable(UInt32)?, Int32, Bool))
+      def connect_after(&block : Proc(Enumerable(UInt32)?, Bool))
         connect(block)
       end
 
-      def connect(handler : Proc(Enumerable(UInt32)?, Int32, Bool))
+      def connect(handler : Proc(Enumerable(UInt32)?, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_keys : Pointer(UInt32), lib_n_keys : Int32, _lib_box : Pointer(Void)) {
           # Generator::ArrayLengthArgPlan
           # Generator::NullableArrayPlan
           keys = (lib_keys.null? ? nil : GICrystal.transfer_array(lib_keys, n_keys, GICrystal::Transfer::None))
-          n_keys = lib_n_keys
-          ::Box(Proc(Enumerable(UInt32)?, Int32, Bool)).unbox(_lib_box).call(keys)
+          ::Box(Proc(Enumerable(UInt32)?, Bool)).unbox(_lib_box).call(keys)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(handler : Proc(Enumerable(UInt32)?, Int32, Bool))
+      def connect_after(handler : Proc(Enumerable(UInt32)?, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_keys : Pointer(UInt32), lib_n_keys : Int32, _lib_box : Pointer(Void)) {
           # Generator::ArrayLengthArgPlan
           # Generator::NullableArrayPlan
           keys = (lib_keys.null? ? nil : GICrystal.transfer_array(lib_keys, n_keys, GICrystal::Transfer::None))
-          n_keys = lib_n_keys
-          ::Box(Proc(Enumerable(UInt32)?, Int32, Bool)).unbox(_lib_box).call(keys)
+          ::Box(Proc(Enumerable(UInt32)?, Bool)).unbox(_lib_box).call(keys)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(handler : Proc(Gio::Settings, Enumerable(UInt32)?, Int32, Bool))
+      def connect(handler : Proc(Gio::Settings, Enumerable(UInt32)?, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_keys : Pointer(UInt32), lib_n_keys : Int32, _lib_box : Pointer(Void)) {
           _sender = Gio::Settings.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::ArrayLengthArgPlan
           # Generator::NullableArrayPlan
           keys = (lib_keys.null? ? nil : GICrystal.transfer_array(lib_keys, n_keys, GICrystal::Transfer::None))
-          n_keys = lib_n_keys
-          ::Box(Proc(Gio::Settings, Enumerable(UInt32)?, Int32, Bool)).unbox(_lib_box).call(_sender, keys)
+          ::Box(Proc(Gio::Settings, Enumerable(UInt32)?, Bool)).unbox(_lib_box).call(_sender, keys)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(handler : Proc(Gio::Settings, Enumerable(UInt32)?, Int32, Bool))
+      def connect_after(handler : Proc(Gio::Settings, Enumerable(UInt32)?, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_keys : Pointer(UInt32), lib_n_keys : Int32, _lib_box : Pointer(Void)) {
           _sender = Gio::Settings.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::ArrayLengthArgPlan
           # Generator::NullableArrayPlan
           keys = (lib_keys.null? ? nil : GICrystal.transfer_array(lib_keys, n_keys, GICrystal::Transfer::None))
-          n_keys = lib_n_keys
-          ::Box(Proc(Gio::Settings, Enumerable(UInt32)?, Int32, Bool)).unbox(_lib_box).call(_sender, keys)
+          ::Box(Proc(Gio::Settings, Enumerable(UInt32)?, Bool)).unbox(_lib_box).call(_sender, keys)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(keys : Enumerable(UInt32)?, n_keys : Int32) : Nil
+      def emit(keys : Enumerable(UInt32)?) : Nil
+        # Generator::ArrayLengthArgPlan
+        n_keys = keys.try(&.size) || 0 # Generator::NullableArrayPlan
+        keys = if keys.nil?
+                 Pointer(UInt32).null
+               else
+                 keys.to_a.to_unsafe
+               end
+
         LibGObject.g_signal_emit_by_name(@source, "change-event", keys, n_keys)
       end
     end
@@ -1613,7 +1615,8 @@ module Gio
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_key : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          key = lib_key
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(key)
         }.pointer
 
@@ -1624,7 +1627,8 @@ module Gio
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_key : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          key = lib_key
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(key)
         }.pointer
 
@@ -1636,7 +1640,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_key : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::Settings.new(_lib_sender, GICrystal::Transfer::None)
-          key = lib_key
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
           ::Box(Proc(Gio::Settings, ::String, Nil)).unbox(_lib_box).call(_sender, key)
         }.pointer
 
@@ -1648,7 +1653,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_key : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::Settings.new(_lib_sender, GICrystal::Transfer::None)
-          key = lib_key
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
           ::Box(Proc(Gio::Settings, ::String, Nil)).unbox(_lib_box).call(_sender, key)
         }.pointer
 
@@ -1796,7 +1802,8 @@ module Gio
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_key : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          key = lib_key
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(key)
         }.pointer
 
@@ -1807,7 +1814,8 @@ module Gio
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_key : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          key = lib_key
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(key)
         }.pointer
 
@@ -1819,7 +1827,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_key : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::Settings.new(_lib_sender, GICrystal::Transfer::None)
-          key = lib_key
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
           ::Box(Proc(Gio::Settings, ::String, Nil)).unbox(_lib_box).call(_sender, key)
         }.pointer
 
@@ -1831,7 +1840,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_key : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::Settings.new(_lib_sender, GICrystal::Transfer::None)
-          key = lib_key
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
           ::Box(Proc(Gio::Settings, ::String, Nil)).unbox(_lib_box).call(_sender, key)
         }.pointer
 

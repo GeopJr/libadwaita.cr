@@ -19,15 +19,13 @@ module Gtk
         sizeof(LibGtk::FlattenListModel), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FlattenListModel, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FlattenListModel`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -72,7 +70,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     # Creates a new `GtkFlattenListModel` that flattens @list.
@@ -103,11 +101,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flatten_list_model_get_model(self)
+      _retval = LibGtk.gtk_flatten_list_model_get_model(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns the model containing the item at the given position.
@@ -116,11 +114,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flatten_list_model_get_model_for_item(self, position)
+      _retval = LibGtk.gtk_flatten_list_model_get_model_for_item(@pointer, position)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Sets a new model to be flattened.
@@ -137,7 +135,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_flatten_list_model_set_model(self, model)
+      LibGtk.gtk_flatten_list_model_set_model(@pointer, model)
 
       # Return value handling
     end

@@ -24,7 +24,7 @@ module Gtk
 
       # Return value handling
 
-      Gtk::Native__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractNative.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def renderer : Gsk::Renderer
@@ -32,7 +32,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_native_get_renderer(self)
+      _retval = LibGtk.gtk_native_get_renderer(@pointer)
 
       # Return value handling
 
@@ -44,7 +44,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_native_get_surface(self)
+      _retval = LibGtk.gtk_native_get_surface(@pointer)
 
       # Return value handling
 
@@ -58,7 +58,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_native_get_surface_transform(self, x, y)
+      LibGtk.gtk_native_get_surface_transform(@pointer, x, y)
 
       # Return value handling
     end
@@ -68,7 +68,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_native_realize(self)
+      LibGtk.gtk_native_realize(@pointer)
 
       # Return value handling
     end
@@ -78,7 +78,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_native_unrealize(self)
+      LibGtk.gtk_native_unrealize(@pointer)
 
       # Return value handling
     end
@@ -88,8 +88,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Native__Impl < GObject::Object
+  class AbstractNative < GObject::Object
     include Native
+
+    GICrystal.define_new_method(Gtk::AbstractNative, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

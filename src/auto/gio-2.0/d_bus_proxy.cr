@@ -65,15 +65,13 @@ module Gio
         sizeof(LibGio::DBusProxy), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DBusProxy, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DBusProxy`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -573,7 +571,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dbus_proxy_call(self, method_name, parameters, flags, timeout_msec, cancellable, callback, user_data)
+      LibGio.g_dbus_proxy_call(@pointer, method_name, parameters, flags, timeout_msec, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -586,7 +584,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_proxy_call_finish(self, res, pointerof(_error))
+      _retval = LibGio.g_dbus_proxy_call_finish(@pointer, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -654,7 +652,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dbus_proxy_call_sync(self, method_name, parameters, flags, timeout_msec, cancellable, pointerof(_error))
+      _retval = LibGio.g_dbus_proxy_call_sync(@pointer, method_name, parameters, flags, timeout_msec, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -704,7 +702,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dbus_proxy_call_with_unix_fd_list(self, method_name, parameters, flags, timeout_msec, fd_list, cancellable, callback, user_data)
+      LibGio.g_dbus_proxy_call_with_unix_fd_list(@pointer, method_name, parameters, flags, timeout_msec, fd_list, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -720,7 +718,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       out_fd_list = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGio.g_dbus_proxy_call_with_unix_fd_list_finish(self, out_fd_list, res, pointerof(_error))
+      _retval = LibGio.g_dbus_proxy_call_with_unix_fd_list_finish(@pointer, out_fd_list, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -766,7 +764,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dbus_proxy_call_with_unix_fd_list_sync(self, method_name, parameters, flags, timeout_msec, fd_list, out_fd_list, cancellable, pointerof(_error))
+      _retval = LibGio.g_dbus_proxy_call_with_unix_fd_list_sync(@pointer, method_name, parameters, flags, timeout_msec, fd_list, out_fd_list, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -787,7 +785,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_cached_property(self, property_name)
+      _retval = LibGio.g_dbus_proxy_get_cached_property(@pointer, property_name)
 
       # Return value handling
 
@@ -800,7 +798,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_cached_property_names(self)
+      _retval = LibGio.g_dbus_proxy_get_cached_property_names(@pointer)
 
       # Return value handling
 
@@ -813,7 +811,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_connection(self)
+      _retval = LibGio.g_dbus_proxy_get_connection(@pointer)
 
       # Return value handling
 
@@ -830,7 +828,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_default_timeout(self)
+      _retval = LibGio.g_dbus_proxy_get_default_timeout(@pointer)
 
       # Return value handling
 
@@ -843,7 +841,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_flags(self)
+      _retval = LibGio.g_dbus_proxy_get_flags(@pointer)
 
       # Return value handling
 
@@ -858,7 +856,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_interface_info(self)
+      _retval = LibGio.g_dbus_proxy_get_interface_info(@pointer)
 
       # Return value handling
 
@@ -871,7 +869,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_interface_name(self)
+      _retval = LibGio.g_dbus_proxy_get_interface_name(@pointer)
 
       # Return value handling
 
@@ -888,7 +886,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_name(self)
+      _retval = LibGio.g_dbus_proxy_get_name(@pointer)
 
       # Return value handling
 
@@ -904,7 +902,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_name_owner(self)
+      _retval = LibGio.g_dbus_proxy_get_name_owner(@pointer)
 
       # Return value handling
 
@@ -917,7 +915,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_proxy_get_object_path(self)
+      _retval = LibGio.g_dbus_proxy_get_object_path(@pointer)
 
       # Return value handling
 
@@ -972,7 +970,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_dbus_proxy_set_cached_property(self, property_name, value)
+      LibGio.g_dbus_proxy_set_cached_property(@pointer, property_name, value)
 
       # Return value handling
     end
@@ -987,7 +985,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_proxy_set_default_timeout(self, timeout_msec)
+      LibGio.g_dbus_proxy_set_default_timeout(@pointer, timeout_msec)
 
       # Return value handling
     end
@@ -1008,7 +1006,7 @@ module Gio
              end
 
       # C call
-      LibGio.g_dbus_proxy_set_interface_info(self, info)
+      LibGio.g_dbus_proxy_set_interface_info(@pointer, info)
 
       # Return value handling
     end
@@ -1054,9 +1052,8 @@ module Gio
         handler = ->(_lib_sender : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
           changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::GObjectArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(changed_properties, invalidated_properties)
         }.pointer
 
@@ -1069,9 +1066,8 @@ module Gio
         handler = ->(_lib_sender : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
           changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::GObjectArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(changed_properties, invalidated_properties)
         }.pointer
 
@@ -1085,9 +1081,8 @@ module Gio
           _sender = Gio::DBusProxy.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
           changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::GObjectArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, changed_properties, invalidated_properties)
         }.pointer
 
@@ -1101,9 +1096,8 @@ module Gio
           _sender = Gio::DBusProxy.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
           changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::GObjectArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, changed_properties, invalidated_properties)
         }.pointer
 
@@ -1112,7 +1106,15 @@ module Gio
       end
 
       def emit(changed_properties : _, invalidated_properties : Enumerable(::String)) : Nil
-        changed_properties = GLib::Variant.new(changed_properties) unless changed_properties.is_a?(GLib::Variant)
+        # Generator::HandmadeArgPlan
+        changed_properties = if !changed_properties.is_a?(GLib::Variant)
+                               GLib::Variant.new(changed_properties).to_unsafe
+                             else
+                               changed_properties.to_unsafe
+                             end
+        # Generator::ArrayArgPlan
+        invalidated_properties = invalidated_properties.to_a.map(&.to_unsafe).to_unsafe
+
         LibGObject.g_signal_emit_by_name(@source, "g-properties-changed", changed_properties, invalidated_properties)
       end
     end
@@ -1155,10 +1157,11 @@ module Gio
         handler = ->(_lib_sender : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sender_name = (lib_sender_name.null? ? nil : ::String.new(lib_sender_name))
-          signal_name = lib_signal_name
+          # Generator::BuiltInTypeArgPlan
+          sender_name = ::String.new(lib_sender_name) unless lib_sender_name.null?
+          # Generator::BuiltInTypeArgPlan
+          signal_name = ::String.new(lib_signal_name)
           # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          # Generator::GObjectArgPlan
           parameters = GLib::Variant.new(lib_parameters, :none)
           ::Box(Proc(::String?, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(sender_name, signal_name, parameters)
         }.pointer
@@ -1172,10 +1175,11 @@ module Gio
         handler = ->(_lib_sender : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           sender_name = (lib_sender_name.null? ? nil : ::String.new(lib_sender_name))
-          signal_name = lib_signal_name
+          # Generator::BuiltInTypeArgPlan
+          sender_name = ::String.new(lib_sender_name) unless lib_sender_name.null?
+          # Generator::BuiltInTypeArgPlan
+          signal_name = ::String.new(lib_signal_name)
           # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          # Generator::GObjectArgPlan
           parameters = GLib::Variant.new(lib_parameters, :none)
           ::Box(Proc(::String?, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(sender_name, signal_name, parameters)
         }.pointer
@@ -1190,10 +1194,11 @@ module Gio
           _sender = Gio::DBusProxy.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sender_name = (lib_sender_name.null? ? nil : ::String.new(lib_sender_name))
-          signal_name = lib_signal_name
+          # Generator::BuiltInTypeArgPlan
+          sender_name = ::String.new(lib_sender_name) unless lib_sender_name.null?
+          # Generator::BuiltInTypeArgPlan
+          signal_name = ::String.new(lib_signal_name)
           # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          # Generator::GObjectArgPlan
           parameters = GLib::Variant.new(lib_parameters, :none)
           ::Box(Proc(Gio::DBusProxy, ::String?, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, sender_name, signal_name, parameters)
         }.pointer
@@ -1208,10 +1213,11 @@ module Gio
           _sender = Gio::DBusProxy.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           sender_name = (lib_sender_name.null? ? nil : ::String.new(lib_sender_name))
-          signal_name = lib_signal_name
+          # Generator::BuiltInTypeArgPlan
+          sender_name = ::String.new(lib_sender_name) unless lib_sender_name.null?
+          # Generator::BuiltInTypeArgPlan
+          signal_name = ::String.new(lib_signal_name)
           # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          # Generator::GObjectArgPlan
           parameters = GLib::Variant.new(lib_parameters, :none)
           ::Box(Proc(Gio::DBusProxy, ::String?, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, sender_name, signal_name, parameters)
         }.pointer
@@ -1221,7 +1227,19 @@ module Gio
       end
 
       def emit(sender_name : ::String?, signal_name : ::String, parameters : _) : Nil
-        parameters = GLib::Variant.new(parameters) unless parameters.is_a?(GLib::Variant)
+        # Generator::NullableArrayPlan
+        sender_name = if sender_name.nil?
+                        Pointer(LibC::Char).null
+                      else
+                        sender_name.to_unsafe
+                      end
+        # Generator::HandmadeArgPlan
+        parameters = if !parameters.is_a?(GLib::Variant)
+                       GLib::Variant.new(parameters).to_unsafe
+                     else
+                       parameters.to_unsafe
+                     end
+
         LibGObject.g_signal_emit_by_name(@source, "g-signal", sender_name, signal_name, parameters)
       end
     end

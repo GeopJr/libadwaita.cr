@@ -52,15 +52,13 @@ module Adw
         sizeof(LibAdw::ExpanderRow), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ExpanderRow, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ExpanderRow`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -425,7 +423,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_expander_row_add_action(self, widget)
+      LibAdw.adw_expander_row_add_action(@pointer, widget)
 
       # Return value handling
     end
@@ -436,7 +434,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_expander_row_add_prefix(self, widget)
+      LibAdw.adw_expander_row_add_prefix(@pointer, widget)
 
       # Return value handling
     end
@@ -449,7 +447,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_expander_row_add_row(self, child)
+      LibAdw.adw_expander_row_add_row(@pointer, child)
 
       # Return value handling
     end
@@ -460,7 +458,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_expander_row_get_enable_expansion(self)
+      _retval = LibAdw.adw_expander_row_get_enable_expansion(@pointer)
 
       # Return value handling
 
@@ -473,7 +471,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_expander_row_get_expanded(self)
+      _retval = LibAdw.adw_expander_row_get_expanded(@pointer)
 
       # Return value handling
 
@@ -486,7 +484,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_expander_row_get_icon_name(self)
+      _retval = LibAdw.adw_expander_row_get_icon_name(@pointer)
 
       # Return value handling
 
@@ -499,7 +497,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_expander_row_get_show_enable_switch(self)
+      _retval = LibAdw.adw_expander_row_get_show_enable_switch(@pointer)
 
       # Return value handling
 
@@ -512,7 +510,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_expander_row_get_subtitle(self)
+      _retval = LibAdw.adw_expander_row_get_subtitle(@pointer)
 
       # Return value handling
 
@@ -524,7 +522,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_expander_row_remove(self, child)
+      LibAdw.adw_expander_row_remove(@pointer, child)
 
       # Return value handling
     end
@@ -535,7 +533,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_expander_row_set_enable_expansion(self, enable_expansion)
+      LibAdw.adw_expander_row_set_enable_expansion(@pointer, enable_expansion)
 
       # Return value handling
     end
@@ -546,7 +544,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_expander_row_set_expanded(self, expanded)
+      LibAdw.adw_expander_row_set_expanded(@pointer, expanded)
 
       # Return value handling
     end
@@ -565,7 +563,7 @@ module Adw
                   end
 
       # C call
-      LibAdw.adw_expander_row_set_icon_name(self, icon_name)
+      LibAdw.adw_expander_row_set_icon_name(@pointer, icon_name)
 
       # Return value handling
     end
@@ -576,7 +574,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_expander_row_set_show_enable_switch(self, show_enable_switch)
+      LibAdw.adw_expander_row_set_show_enable_switch(@pointer, show_enable_switch)
 
       # Return value handling
     end
@@ -587,7 +585,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_expander_row_set_subtitle(self, subtitle)
+      LibAdw.adw_expander_row_set_subtitle(@pointer, subtitle)
 
       # Return value handling
     end

@@ -18,15 +18,13 @@ module Gtk
         sizeof(LibGtk::ATContext), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ATContext, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ATContext`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -81,7 +79,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "accessible", pointerof(value), Pointer(Void).null)
-      Gtk::Accessible__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractAccessible.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def accessible_role=(value : Gtk::AccessibleRole) : Gtk::AccessibleRole
@@ -137,11 +135,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_at_context_get_accessible(self)
+      _retval = LibGtk.gtk_at_context_get_accessible(@pointer)
 
       # Return value handling
 
-      Gtk::Accessible__Impl.new(_retval, GICrystal::Transfer::None)
+      Gtk::AbstractAccessible.new(_retval, GICrystal::Transfer::None)
     end
 
     # Retrieves the accessible role of this context.
@@ -150,7 +148,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_at_context_get_accessible_role(self)
+      _retval = LibGtk.gtk_at_context_get_accessible_role(@pointer)
 
       # Return value handling
 

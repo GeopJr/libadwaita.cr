@@ -44,7 +44,7 @@ module Gio
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def self.hash(icon : Pointer(Void)) : UInt32
@@ -73,7 +73,7 @@ module Gio
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     def equal(icon2 : Gio::Icon?) : Bool
@@ -89,7 +89,7 @@ module Gio
               end
 
       # C call
-      _retval = LibGio.g_icon_equal(self, icon2)
+      _retval = LibGio.g_icon_equal(@pointer, icon2)
 
       # Return value handling
 
@@ -101,7 +101,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_icon_serialize(self)
+      _retval = LibGio.g_icon_serialize(@pointer)
 
       # Return value handling
 
@@ -113,7 +113,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_icon_to_string(self)
+      _retval = LibGio.g_icon_to_string(@pointer)
 
       # Return value handling
 
@@ -125,8 +125,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Icon__Impl < GObject::Object
+  class AbstractIcon < GObject::Object
     include Icon
+
+    GICrystal.define_new_method(Gio::AbstractIcon, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

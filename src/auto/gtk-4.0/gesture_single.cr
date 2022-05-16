@@ -26,15 +26,13 @@ module Gtk
         sizeof(LibGtk::GestureSingle), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(GestureSingle, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `GestureSingle`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -155,7 +153,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_single_get_button(self)
+      _retval = LibGtk.gtk_gesture_single_get_button(@pointer)
 
       # Return value handling
 
@@ -169,7 +167,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_single_get_current_button(self)
+      _retval = LibGtk.gtk_gesture_single_get_current_button(@pointer)
 
       # Return value handling
 
@@ -185,7 +183,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_gesture_single_get_current_sequence(self)
+      _retval = LibGtk.gtk_gesture_single_get_current_sequence(@pointer)
 
       # Return value handling
 
@@ -200,7 +198,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_single_get_exclusive(self)
+      _retval = LibGtk.gtk_gesture_single_get_exclusive(@pointer)
 
       # Return value handling
 
@@ -213,7 +211,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_single_get_touch_only(self)
+      _retval = LibGtk.gtk_gesture_single_get_touch_only(@pointer)
 
       # Return value handling
 
@@ -230,7 +228,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gesture_single_set_button(self, button)
+      LibGtk.gtk_gesture_single_set_button(@pointer, button)
 
       # Return value handling
     end
@@ -245,7 +243,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gesture_single_set_exclusive(self, exclusive)
+      LibGtk.gtk_gesture_single_set_exclusive(@pointer, exclusive)
 
       # Return value handling
     end
@@ -260,7 +258,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gesture_single_set_touch_only(self, touch_only)
+      LibGtk.gtk_gesture_single_set_touch_only(@pointer, touch_only)
 
       # Return value handling
     end

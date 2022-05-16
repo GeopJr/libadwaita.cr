@@ -87,7 +87,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_rgba_copy(self)
+      _retval = LibGdk.gdk_rgba_copy(@pointer)
 
       # Return value handling
 
@@ -99,7 +99,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_rgba_equal(self, p2)
+      _retval = LibGdk.gdk_rgba_equal(@pointer, p2)
 
       # Return value handling
 
@@ -111,7 +111,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_rgba_free(self)
+      LibGdk.gdk_rgba_free(@pointer)
 
       # Return value handling
     end
@@ -121,7 +121,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_rgba_hash(self)
+      _retval = LibGdk.gdk_rgba_hash(@pointer)
 
       # Return value handling
 
@@ -133,7 +133,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_rgba_is_clear(self)
+      _retval = LibGdk.gdk_rgba_is_clear(@pointer)
 
       # Return value handling
 
@@ -145,7 +145,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_rgba_is_opaque(self)
+      _retval = LibGdk.gdk_rgba_is_opaque(@pointer)
 
       # Return value handling
 
@@ -157,7 +157,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_rgba_parse(self, spec)
+      _retval = LibGdk.gdk_rgba_parse(@pointer, spec)
 
       # Return value handling
 
@@ -169,7 +169,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_rgba_to_string(self)
+      _retval = LibGdk.gdk_rgba_to_string(@pointer)
 
       # Return value handling
 

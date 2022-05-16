@@ -155,15 +155,13 @@ module Gtk
         sizeof(LibGtk::Expression), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_param_spec_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Expression, g_param_spec_get_qdata, g_param_spec_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_param_spec_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Expression`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -232,7 +230,7 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_expression_bind(self, target, property, this_)
+      _retval = LibGtk.gtk_expression_bind(@pointer, target, property, this_)
 
       # Return value handling
 
@@ -268,7 +266,7 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_expression_evaluate(self, this_, value)
+      _retval = LibGtk.gtk_expression_evaluate(@pointer, this_, value)
 
       # Return value handling
 
@@ -284,7 +282,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_expression_get_value_type(self)
+      _retval = LibGtk.gtk_expression_get_value_type(@pointer)
 
       # Return value handling
 
@@ -303,7 +301,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_expression_is_static(self)
+      _retval = LibGtk.gtk_expression_is_static(@pointer)
 
       # Return value handling
 
@@ -316,7 +314,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_expression_ref(self)
+      _retval = LibGtk.gtk_expression_ref(@pointer)
 
       # Return value handling
 
@@ -332,7 +330,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_expression_unref(self)
+      LibGtk.gtk_expression_unref(@pointer)
 
       # Return value handling
     end
@@ -361,8 +359,7 @@ module Gtk
       if notify
         _box = ::Box.box(notify)
         notify = ->(lib_user_data : Pointer(Void)) {
-          user_data = lib_user_data
-          ::Box(Proc(Nil)).unbox(user_data).call
+          ::Box(Proc(Nil)).unbox(lib_user_data).call
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -371,7 +368,7 @@ module Gtk
       end
 
       # C call
-      _retval = LibGtk.gtk_expression_watch(self, this_, notify, user_data, user_destroy)
+      _retval = LibGtk.gtk_expression_watch(@pointer, this_, notify, user_data, user_destroy)
 
       # Return value handling
 

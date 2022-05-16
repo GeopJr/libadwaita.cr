@@ -16,15 +16,13 @@ module Gio
         sizeof(LibGio::DBusInterfaceSkeleton), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DBusInterfaceSkeleton, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DBusInterfaceSkeleton`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -86,7 +84,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_interface_skeleton_export(self, connection, object_path, pointerof(_error))
+      _retval = LibGio.g_dbus_interface_skeleton_export(@pointer, connection, object_path, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -109,7 +107,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_interface_skeleton_flush(self)
+      LibGio.g_dbus_interface_skeleton_flush(@pointer)
 
       # Return value handling
     end
@@ -120,7 +118,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_interface_skeleton_get_connection(self)
+      _retval = LibGio.g_dbus_interface_skeleton_get_connection(@pointer)
 
       # Return value handling
 
@@ -133,7 +131,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_interface_skeleton_get_connections(self)
+      _retval = LibGio.g_dbus_interface_skeleton_get_connections(@pointer)
 
       # Return value handling
 
@@ -147,7 +145,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_interface_skeleton_get_flags(self)
+      _retval = LibGio.g_dbus_interface_skeleton_get_flags(@pointer)
 
       # Return value handling
 
@@ -161,7 +159,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_interface_skeleton_get_info(self)
+      _retval = LibGio.g_dbus_interface_skeleton_get_info(@pointer)
 
       # Return value handling
 
@@ -174,7 +172,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_interface_skeleton_get_object_path(self)
+      _retval = LibGio.g_dbus_interface_skeleton_get_object_path(@pointer)
 
       # Return value handling
 
@@ -187,7 +185,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_interface_skeleton_get_properties(self)
+      _retval = LibGio.g_dbus_interface_skeleton_get_properties(@pointer)
 
       # Return value handling
 
@@ -200,7 +198,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_interface_skeleton_has_connection(self, connection)
+      _retval = LibGio.g_dbus_interface_skeleton_has_connection(@pointer, connection)
 
       # Return value handling
 
@@ -213,7 +211,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_interface_skeleton_set_flags(self, flags)
+      LibGio.g_dbus_interface_skeleton_set_flags(@pointer, flags)
 
       # Return value handling
     end
@@ -227,7 +225,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_interface_skeleton_unexport(self)
+      LibGio.g_dbus_interface_skeleton_unexport(@pointer)
 
       # Return value handling
     end
@@ -241,7 +239,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_interface_skeleton_unexport_from_connection(self, connection)
+      LibGio.g_dbus_interface_skeleton_unexport_from_connection(@pointer, connection)
 
       # Return value handling
     end
@@ -306,7 +304,7 @@ module Gio
       def connect(handler : Proc(Gio::DBusMethodInvocation, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_invocation : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           invocation = Gio::DBusMethodInvocation.new(lib_invocation, :none)
           ::Box(Proc(Gio::DBusMethodInvocation, Bool)).unbox(_lib_box).call(invocation)
         }.pointer
@@ -318,7 +316,7 @@ module Gio
       def connect_after(handler : Proc(Gio::DBusMethodInvocation, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_invocation : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           invocation = Gio::DBusMethodInvocation.new(lib_invocation, :none)
           ::Box(Proc(Gio::DBusMethodInvocation, Bool)).unbox(_lib_box).call(invocation)
         }.pointer
@@ -331,7 +329,7 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_invocation : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusInterfaceSkeleton.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           invocation = Gio::DBusMethodInvocation.new(lib_invocation, :none)
           ::Box(Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(_lib_box).call(_sender, invocation)
         }.pointer
@@ -344,7 +342,7 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_invocation : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusInterfaceSkeleton.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           invocation = Gio::DBusMethodInvocation.new(lib_invocation, :none)
           ::Box(Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(_lib_box).call(_sender, invocation)
         }.pointer

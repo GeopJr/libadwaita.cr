@@ -74,7 +74,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_equal(self, b)
+      _retval = LibGraphene.graphene_ray_equal(@pointer, b)
 
       # Return value handling
 
@@ -86,7 +86,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_ray_free(self)
+      LibGraphene.graphene_ray_free(@pointer)
 
       # Return value handling
     end
@@ -99,7 +99,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_ray_get_closest_point_to_point(self, p, res)
+      LibGraphene.graphene_ray_get_closest_point_to_point(@pointer, p, res)
 
       # Return value handling
 
@@ -114,7 +114,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       direction = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_ray_get_direction(self, direction)
+      LibGraphene.graphene_ray_get_direction(@pointer, direction)
 
       # Return value handling
 
@@ -126,7 +126,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_get_distance_to_plane(self, p)
+      _retval = LibGraphene.graphene_ray_get_distance_to_plane(@pointer, p)
 
       # Return value handling
 
@@ -138,7 +138,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_get_distance_to_point(self, p)
+      _retval = LibGraphene.graphene_ray_get_distance_to_point(@pointer, p)
 
       # Return value handling
 
@@ -153,7 +153,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       origin = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_ray_get_origin(self, origin)
+      LibGraphene.graphene_ray_get_origin(@pointer, origin)
 
       # Return value handling
 
@@ -168,7 +168,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       position = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_ray_get_position_at(self, t, position)
+      LibGraphene.graphene_ray_get_position_at(@pointer, t, position)
 
       # Return value handling
 
@@ -195,7 +195,7 @@ module Graphene
                   end
 
       # C call
-      _retval = LibGraphene.graphene_ray_init(self, origin, direction)
+      _retval = LibGraphene.graphene_ray_init(@pointer, origin, direction)
 
       # Return value handling
 
@@ -207,7 +207,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_init_from_ray(self, src)
+      _retval = LibGraphene.graphene_ray_init_from_ray(@pointer, src)
 
       # Return value handling
 
@@ -234,7 +234,7 @@ module Graphene
                   end
 
       # C call
-      _retval = LibGraphene.graphene_ray_init_from_vec3(self, origin, direction)
+      _retval = LibGraphene.graphene_ray_init_from_vec3(@pointer, origin, direction)
 
       # Return value handling
 
@@ -247,7 +247,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_intersect_box(self, b, t_out)
+      _retval = LibGraphene.graphene_ray_intersect_box(@pointer, b, t_out)
 
       # Return value handling
 
@@ -260,7 +260,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_intersect_sphere(self, s, t_out)
+      _retval = LibGraphene.graphene_ray_intersect_sphere(@pointer, s, t_out)
 
       # Return value handling
 
@@ -273,7 +273,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_intersect_triangle(self, t, t_out)
+      _retval = LibGraphene.graphene_ray_intersect_triangle(@pointer, t, t_out)
 
       # Return value handling
 
@@ -285,7 +285,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_intersects_box(self, b)
+      _retval = LibGraphene.graphene_ray_intersects_box(@pointer, b)
 
       # Return value handling
 
@@ -297,7 +297,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_intersects_sphere(self, s)
+      _retval = LibGraphene.graphene_ray_intersects_sphere(@pointer, s)
 
       # Return value handling
 
@@ -309,7 +309,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_ray_intersects_triangle(self, t)
+      _retval = LibGraphene.graphene_ray_intersects_triangle(@pointer, t)
 
       # Return value handling
 

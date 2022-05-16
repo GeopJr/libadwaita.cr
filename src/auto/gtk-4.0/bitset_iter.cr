@@ -51,7 +51,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_iter_get_value(self)
+      _retval = LibGtk.gtk_bitset_iter_get_value(@pointer)
 
       # Return value handling
 
@@ -63,7 +63,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_iter_is_valid(self)
+      _retval = LibGtk.gtk_bitset_iter_is_valid(@pointer)
 
       # Return value handling
 
@@ -78,7 +78,7 @@ module Gtk
       # Generator::OutArgUsedInReturnPlan
       value = Pointer(UInt32).null
       # C call
-      _retval = LibGtk.gtk_bitset_iter_next(self, value)
+      _retval = LibGtk.gtk_bitset_iter_next(@pointer, value)
 
       # Return value handling
 
@@ -93,7 +93,7 @@ module Gtk
       # Generator::OutArgUsedInReturnPlan
       value = Pointer(UInt32).null
       # C call
-      _retval = LibGtk.gtk_bitset_iter_previous(self, value)
+      _retval = LibGtk.gtk_bitset_iter_previous(@pointer, value)
 
       # Return value handling
 

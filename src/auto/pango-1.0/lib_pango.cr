@@ -1,5 +1,4 @@
 @[Link("pango-1.0", pkg_config: "pango-1.0")]
-
 lib LibPango
   # Flags
   type FontMask = UInt32

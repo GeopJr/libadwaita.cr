@@ -109,15 +109,13 @@ module Gtk
         sizeof(LibGtk::Grid), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Grid, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Grid`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -451,7 +449,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_attach(self, child, column, row, width, height)
+      LibGtk.gtk_grid_attach(@pointer, child, column, row, width, height)
 
       # Return value handling
     end
@@ -478,7 +476,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_grid_attach_next_to(self, child, sibling, side, width, height)
+      LibGtk.gtk_grid_attach_next_to(@pointer, child, sibling, side, width, height)
 
       # Return value handling
     end
@@ -489,7 +487,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_grid_get_baseline_row(self)
+      _retval = LibGtk.gtk_grid_get_baseline_row(@pointer)
 
       # Return value handling
 
@@ -503,7 +501,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_grid_get_child_at(self, column, row)
+      _retval = LibGtk.gtk_grid_get_child_at(@pointer, column, row)
 
       # Return value handling
 
@@ -516,7 +514,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_grid_get_column_homogeneous(self)
+      _retval = LibGtk.gtk_grid_get_column_homogeneous(@pointer)
 
       # Return value handling
 
@@ -529,7 +527,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_grid_get_column_spacing(self)
+      _retval = LibGtk.gtk_grid_get_column_spacing(@pointer)
 
       # Return value handling
 
@@ -544,7 +542,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_grid_get_row_baseline_position(self, row)
+      _retval = LibGtk.gtk_grid_get_row_baseline_position(@pointer, row)
 
       # Return value handling
 
@@ -557,7 +555,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_grid_get_row_homogeneous(self)
+      _retval = LibGtk.gtk_grid_get_row_homogeneous(@pointer)
 
       # Return value handling
 
@@ -570,7 +568,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_grid_get_row_spacing(self)
+      _retval = LibGtk.gtk_grid_get_row_spacing(@pointer)
 
       # Return value handling
 
@@ -587,7 +585,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_insert_column(self, position)
+      LibGtk.gtk_grid_insert_column(@pointer, position)
 
       # Return value handling
     end
@@ -603,7 +601,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_insert_next_to(self, sibling, side)
+      LibGtk.gtk_grid_insert_next_to(@pointer, sibling, side)
 
       # Return value handling
     end
@@ -618,7 +616,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_insert_row(self, position)
+      LibGtk.gtk_grid_insert_row(@pointer, position)
 
       # Return value handling
     end
@@ -638,7 +636,7 @@ module Gtk
       width = Pointer(Int32).null  # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_grid_query_child(self, child, column, row, width, height)
+      LibGtk.gtk_grid_query_child(@pointer, child, column, row, width, height)
 
       # Return value handling
     end
@@ -652,7 +650,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_remove(self, child)
+      LibGtk.gtk_grid_remove(@pointer, child)
 
       # Return value handling
     end
@@ -668,7 +666,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_remove_column(self, position)
+      LibGtk.gtk_grid_remove_column(@pointer, position)
 
       # Return value handling
     end
@@ -684,7 +682,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_remove_row(self, position)
+      LibGtk.gtk_grid_remove_row(@pointer, position)
 
       # Return value handling
     end
@@ -699,7 +697,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_set_baseline_row(self, row)
+      LibGtk.gtk_grid_set_baseline_row(@pointer, row)
 
       # Return value handling
     end
@@ -710,7 +708,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_set_column_homogeneous(self, homogeneous)
+      LibGtk.gtk_grid_set_column_homogeneous(@pointer, homogeneous)
 
       # Return value handling
     end
@@ -721,7 +719,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_set_column_spacing(self, spacing)
+      LibGtk.gtk_grid_set_column_spacing(@pointer, spacing)
 
       # Return value handling
     end
@@ -735,7 +733,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_set_row_baseline_position(self, row, pos)
+      LibGtk.gtk_grid_set_row_baseline_position(@pointer, row, pos)
 
       # Return value handling
     end
@@ -746,7 +744,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_set_row_homogeneous(self, homogeneous)
+      LibGtk.gtk_grid_set_row_homogeneous(@pointer, homogeneous)
 
       # Return value handling
     end
@@ -757,7 +755,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_grid_set_row_spacing(self, spacing)
+      LibGtk.gtk_grid_set_row_spacing(@pointer, spacing)
 
       # Return value handling
     end

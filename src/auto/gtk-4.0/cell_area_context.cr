@@ -24,15 +24,13 @@ module Gtk
         sizeof(LibGtk::CellAreaContext), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CellAreaContext, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CellAreaContext`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -147,7 +145,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_area_context_allocate(self, width, height)
+      LibGtk.gtk_cell_area_context_allocate(@pointer, width, height)
 
       # Return value handling
     end
@@ -167,7 +165,7 @@ module Gtk
       width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_area_context_get_allocation(self, width, height)
+      LibGtk.gtk_cell_area_context_get_allocation(@pointer, width, height)
 
       # Return value handling
     end
@@ -187,7 +185,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_area_context_get_area(self)
+      _retval = LibGtk.gtk_cell_area_context_get_area(@pointer)
 
       # Return value handling
 
@@ -209,7 +207,7 @@ module Gtk
       minimum_height = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_area_context_get_preferred_height(self, minimum_height, natural_height)
+      LibGtk.gtk_cell_area_context_get_preferred_height(@pointer, minimum_height, natural_height)
 
       # Return value handling
     end
@@ -229,7 +227,7 @@ module Gtk
       minimum_height = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_area_context_get_preferred_height_for_width(self, width, minimum_height, natural_height)
+      LibGtk.gtk_cell_area_context_get_preferred_height_for_width(@pointer, width, minimum_height, natural_height)
 
       # Return value handling
     end
@@ -249,7 +247,7 @@ module Gtk
       minimum_width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_area_context_get_preferred_width(self, minimum_width, natural_width)
+      LibGtk.gtk_cell_area_context_get_preferred_width(@pointer, minimum_width, natural_width)
 
       # Return value handling
     end
@@ -269,7 +267,7 @@ module Gtk
       minimum_width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_width = Pointer(Int32).null
       # C call
-      LibGtk.gtk_cell_area_context_get_preferred_width_for_height(self, height, minimum_width, natural_width)
+      LibGtk.gtk_cell_area_context_get_preferred_width_for_height(@pointer, height, minimum_width, natural_width)
 
       # Return value handling
     end
@@ -286,7 +284,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_area_context_push_preferred_height(self, minimum_height, natural_height)
+      LibGtk.gtk_cell_area_context_push_preferred_height(@pointer, minimum_height, natural_height)
 
       # Return value handling
     end
@@ -303,7 +301,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_area_context_push_preferred_width(self, minimum_width, natural_width)
+      LibGtk.gtk_cell_area_context_push_preferred_width(@pointer, minimum_width, natural_width)
 
       # Return value handling
     end
@@ -335,7 +333,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_area_context_reset(self)
+      LibGtk.gtk_cell_area_context_reset(@pointer)
 
       # Return value handling
     end

@@ -20,15 +20,13 @@ module Gio
         sizeof(LibGio::SubprocessLauncher), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SubprocessLauncher, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SubprocessLauncher`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -101,7 +99,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_close(self)
+      LibGio.g_subprocess_launcher_close(@pointer)
 
       # Return value handling
     end
@@ -116,7 +114,7 @@ module Gio
       # Returns: (transfer none Filename)
 
       # C call
-      _retval = LibGio.g_subprocess_launcher_getenv(self, variable)
+      _retval = LibGio.g_subprocess_launcher_getenv(@pointer, variable)
 
       # Return value handling
 
@@ -133,7 +131,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_set_cwd(self, cwd)
+      LibGio.g_subprocess_launcher_set_cwd(@pointer, cwd)
 
       # Return value handling
     end
@@ -166,7 +164,7 @@ module Gio
       env = env.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGio.g_subprocess_launcher_set_environ(self, env)
+      LibGio.g_subprocess_launcher_set_environ(@pointer, env)
 
       # Return value handling
     end
@@ -188,7 +186,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_set_flags(self, flags)
+      LibGio.g_subprocess_launcher_set_flags(@pointer, flags)
 
       # Return value handling
     end
@@ -220,7 +218,7 @@ module Gio
              end
 
       # C call
-      LibGio.g_subprocess_launcher_set_stderr_file_path(self, path)
+      LibGio.g_subprocess_launcher_set_stderr_file_path(@pointer, path)
 
       # Return value handling
     end
@@ -240,7 +238,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_set_stdin_file_path(self, path)
+      LibGio.g_subprocess_launcher_set_stdin_file_path(@pointer, path)
 
       # Return value handling
     end
@@ -269,7 +267,7 @@ module Gio
              end
 
       # C call
-      LibGio.g_subprocess_launcher_set_stdout_file_path(self, path)
+      LibGio.g_subprocess_launcher_set_stdout_file_path(@pointer, path)
 
       # Return value handling
     end
@@ -285,7 +283,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_setenv(self, variable, value, overwrite)
+      LibGio.g_subprocess_launcher_setenv(@pointer, variable, value, overwrite)
 
       # Return value handling
     end
@@ -302,7 +300,7 @@ module Gio
       argv = argv.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGio.g_subprocess_launcher_spawnv(self, argv, pointerof(_error))
+      _retval = LibGio.g_subprocess_launcher_spawnv(@pointer, argv, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -333,7 +331,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_take_fd(self, source_fd, target_fd)
+      LibGio.g_subprocess_launcher_take_fd(@pointer, source_fd, target_fd)
 
       # Return value handling
     end
@@ -359,7 +357,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_take_stderr_fd(self, fd)
+      LibGio.g_subprocess_launcher_take_stderr_fd(@pointer, fd)
 
       # Return value handling
     end
@@ -387,7 +385,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_take_stdin_fd(self, fd)
+      LibGio.g_subprocess_launcher_take_stdin_fd(@pointer, fd)
 
       # Return value handling
     end
@@ -414,7 +412,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_take_stdout_fd(self, fd)
+      LibGio.g_subprocess_launcher_take_stdout_fd(@pointer, fd)
 
       # Return value handling
     end
@@ -429,7 +427,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_subprocess_launcher_unsetenv(self, variable)
+      LibGio.g_subprocess_launcher_unsetenv(@pointer, variable)
 
       # Return value handling
     end

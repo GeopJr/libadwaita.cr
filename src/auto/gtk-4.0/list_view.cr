@@ -127,15 +127,13 @@ module Gtk
         sizeof(LibGtk::ListView), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ListView, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ListView`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -431,7 +429,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractSelectionModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def show_separators=(value : Bool) : Bool
@@ -512,7 +510,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_view_get_enable_rubberband(self)
+      _retval = LibGtk.gtk_list_view_get_enable_rubberband(@pointer)
 
       # Return value handling
 
@@ -525,7 +523,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_view_get_factory(self)
+      _retval = LibGtk.gtk_list_view_get_factory(@pointer)
 
       # Return value handling
 
@@ -538,11 +536,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_view_get_model(self)
+      _retval = LibGtk.gtk_list_view_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractSelectionModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns whether the list box should show separators
@@ -552,7 +550,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_view_get_show_separators(self)
+      _retval = LibGtk.gtk_list_view_get_show_separators(@pointer)
 
       # Return value handling
 
@@ -566,7 +564,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_view_get_single_click_activate(self)
+      _retval = LibGtk.gtk_list_view_get_single_click_activate(@pointer)
 
       # Return value handling
 
@@ -579,7 +577,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_view_set_enable_rubberband(self, enable_rubberband)
+      LibGtk.gtk_list_view_set_enable_rubberband(@pointer, enable_rubberband)
 
       # Return value handling
     end
@@ -598,7 +596,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_list_view_set_factory(self, factory)
+      LibGtk.gtk_list_view_set_factory(@pointer, factory)
 
       # Return value handling
     end
@@ -619,7 +617,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_list_view_set_model(self, model)
+      LibGtk.gtk_list_view_set_model(@pointer, model)
 
       # Return value handling
     end
@@ -631,7 +629,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_view_set_show_separators(self, show_separators)
+      LibGtk.gtk_list_view_set_show_separators(@pointer, show_separators)
 
       # Return value handling
     end
@@ -643,7 +641,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_view_set_single_click_activate(self, single_click_activate)
+      LibGtk.gtk_list_view_set_single_click_activate(@pointer, single_click_activate)
 
       # Return value handling
     end

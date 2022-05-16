@@ -18,7 +18,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_root_get_display(self)
+      _retval = LibGtk.gtk_root_get_display(@pointer)
 
       # Return value handling
 
@@ -30,7 +30,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_root_get_focus(self)
+      _retval = LibGtk.gtk_root_get_focus(@pointer)
 
       # Return value handling
 
@@ -50,7 +50,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_root_set_focus(self, focus)
+      LibGtk.gtk_root_set_focus(@pointer, focus)
 
       # Return value handling
     end
@@ -60,8 +60,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Root__Impl < GObject::Object
+  class AbstractRoot < GObject::Object
     include Root
+
+    GICrystal.define_new_method(Gtk::AbstractRoot, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

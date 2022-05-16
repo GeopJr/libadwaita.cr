@@ -47,15 +47,13 @@ module Gtk
         sizeof(LibGtk::IconTheme), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(IconTheme, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `IconTheme`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -227,7 +225,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_theme_add_resource_path(self, path)
+      LibGtk.gtk_icon_theme_add_resource_path(@pointer, path)
 
       # Return value handling
     end
@@ -240,7 +238,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_theme_add_search_path(self, path)
+      LibGtk.gtk_icon_theme_add_search_path(@pointer, path)
 
       # Return value handling
     end
@@ -252,7 +250,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_get_display(self)
+      _retval = LibGtk.gtk_icon_theme_get_display(@pointer)
 
       # Return value handling
 
@@ -265,7 +263,7 @@ module Gtk
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_get_icon_names(self)
+      _retval = LibGtk.gtk_icon_theme_get_icon_names(@pointer)
 
       # Return value handling
 
@@ -282,7 +280,7 @@ module Gtk
       # Returns: (transfer full) (array zero-terminated=1 element-type Int32)
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_get_icon_sizes(self, icon_name)
+      _retval = LibGtk.gtk_icon_theme_get_icon_sizes(@pointer, icon_name)
 
       # Return value handling
 
@@ -297,7 +295,7 @@ module Gtk
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_get_resource_path(self)
+      _retval = LibGtk.gtk_icon_theme_get_resource_path(@pointer)
 
       # Return value handling
 
@@ -312,7 +310,7 @@ module Gtk
       # Returns: (transfer full) (array zero-terminated=1 element-type Filename)
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_get_search_path(self)
+      _retval = LibGtk.gtk_icon_theme_get_search_path(@pointer)
 
       # Return value handling
 
@@ -327,7 +325,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_get_theme_name(self)
+      _retval = LibGtk.gtk_icon_theme_get_theme_name(@pointer)
 
       # Return value handling
 
@@ -341,7 +339,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_has_gicon(self, gicon)
+      _retval = LibGtk.gtk_icon_theme_has_gicon(@pointer, gicon)
 
       # Return value handling
 
@@ -355,7 +353,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_has_icon(self, icon_name)
+      _retval = LibGtk.gtk_icon_theme_has_icon(@pointer, icon_name)
 
       # Return value handling
 
@@ -371,7 +369,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_lookup_by_gicon(self, icon, size, scale, direction, flags)
+      _retval = LibGtk.gtk_icon_theme_lookup_by_gicon(@pointer, icon, size, scale, direction, flags)
 
       # Return value handling
 
@@ -407,7 +405,7 @@ module Gtk
                   end
 
       # C call
-      _retval = LibGtk.gtk_icon_theme_lookup_icon(self, icon_name, fallbacks, size, scale, direction, flags)
+      _retval = LibGtk.gtk_icon_theme_lookup_icon(@pointer, icon_name, fallbacks, size, scale, direction, flags)
 
       # Return value handling
 
@@ -438,7 +436,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_icon_theme_set_resource_path(self, path)
+      LibGtk.gtk_icon_theme_set_resource_path(@pointer, path)
 
       # Return value handling
     end
@@ -471,7 +469,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_icon_theme_set_search_path(self, path)
+      LibGtk.gtk_icon_theme_set_search_path(@pointer, path)
 
       # Return value handling
     end
@@ -494,7 +492,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_icon_theme_set_theme_name(self, theme_name)
+      LibGtk.gtk_icon_theme_set_theme_name(@pointer, theme_name)
 
       # Return value handling
     end

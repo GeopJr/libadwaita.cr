@@ -38,15 +38,13 @@ module Adw
         sizeof(LibAdw::StatusPage), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(StatusPage, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `StatusPage`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -332,7 +330,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "paintable", pointerof(value), Pointer(Void).null)
-      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gdk::AbstractPaintable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def title=(value : ::String) : ::String
@@ -371,7 +369,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_status_page_get_child(self)
+      _retval = LibAdw.adw_status_page_get_child(@pointer)
 
       # Return value handling
 
@@ -384,7 +382,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_status_page_get_description(self)
+      _retval = LibAdw.adw_status_page_get_description(@pointer)
 
       # Return value handling
 
@@ -397,7 +395,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_status_page_get_icon_name(self)
+      _retval = LibAdw.adw_status_page_get_icon_name(@pointer)
 
       # Return value handling
 
@@ -410,11 +408,11 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_status_page_get_paintable(self)
+      _retval = LibAdw.adw_status_page_get_paintable(@pointer)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the title for @self.
@@ -423,7 +421,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_status_page_get_title(self)
+      _retval = LibAdw.adw_status_page_get_title(@pointer)
 
       # Return value handling
 
@@ -444,7 +442,7 @@ module Adw
               end
 
       # C call
-      LibAdw.adw_status_page_set_child(self, child)
+      LibAdw.adw_status_page_set_child(@pointer, child)
 
       # Return value handling
     end
@@ -463,7 +461,7 @@ module Adw
                     end
 
       # C call
-      LibAdw.adw_status_page_set_description(self, description)
+      LibAdw.adw_status_page_set_description(@pointer, description)
 
       # Return value handling
     end
@@ -482,7 +480,7 @@ module Adw
                   end
 
       # C call
-      LibAdw.adw_status_page_set_icon_name(self, icon_name)
+      LibAdw.adw_status_page_set_icon_name(@pointer, icon_name)
 
       # Return value handling
     end
@@ -501,7 +499,7 @@ module Adw
                   end
 
       # C call
-      LibAdw.adw_status_page_set_paintable(self, paintable)
+      LibAdw.adw_status_page_set_paintable(@pointer, paintable)
 
       # Return value handling
     end
@@ -512,7 +510,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_status_page_set_title(self, title)
+      LibAdw.adw_status_page_set_title(@pointer, title)
 
       # Return value handling
     end

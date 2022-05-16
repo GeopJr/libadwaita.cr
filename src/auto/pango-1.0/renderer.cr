@@ -18,15 +18,13 @@ module Pango
         sizeof(LibPango::Renderer), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Renderer, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Renderer`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -53,7 +51,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_activate(self)
+      LibPango.pango_renderer_activate(@pointer)
 
       # Return value handling
     end
@@ -66,7 +64,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_deactivate(self)
+      LibPango.pango_renderer_deactivate(@pointer)
 
       # Return value handling
     end
@@ -85,7 +83,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_draw_error_underline(self, x, y, width, height)
+      LibPango.pango_renderer_draw_error_underline(@pointer, x, y, width, height)
 
       # Return value handling
     end
@@ -96,7 +94,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_draw_glyph(self, font, glyph, x, y)
+      LibPango.pango_renderer_draw_glyph(@pointer, font, glyph, x, y)
 
       # Return value handling
     end
@@ -132,7 +130,7 @@ module Pango
              end
 
       # C call
-      LibPango.pango_renderer_draw_glyph_item(self, text, glyph_item, x, y)
+      LibPango.pango_renderer_draw_glyph_item(@pointer, text, glyph_item, x, y)
 
       # Return value handling
     end
@@ -143,7 +141,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_draw_glyphs(self, font, glyphs, x, y)
+      LibPango.pango_renderer_draw_glyphs(@pointer, font, glyphs, x, y)
 
       # Return value handling
     end
@@ -157,7 +155,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_draw_layout(self, layout, x, y)
+      LibPango.pango_renderer_draw_layout(@pointer, layout, x, y)
 
       # Return value handling
     end
@@ -172,7 +170,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_draw_layout_line(self, line, x, y)
+      LibPango.pango_renderer_draw_layout_line(@pointer, line, x, y)
 
       # Return value handling
     end
@@ -187,7 +185,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_draw_rectangle(self, part, x, y, width, height)
+      LibPango.pango_renderer_draw_rectangle(@pointer, part, x, y, width, height)
 
       # Return value handling
     end
@@ -199,7 +197,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_draw_trapezoid(self, part, y1_, x11, x21, y2, x12, x22)
+      LibPango.pango_renderer_draw_trapezoid(@pointer, part, y1_, x11, x21, y2, x12, x22)
 
       # Return value handling
     end
@@ -210,7 +208,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_renderer_get_alpha(self, part)
+      _retval = LibPango.pango_renderer_get_alpha(@pointer, part)
 
       # Return value handling
 
@@ -223,7 +221,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_renderer_get_color(self, part)
+      _retval = LibPango.pango_renderer_get_color(@pointer, part)
 
       # Return value handling
 
@@ -242,7 +240,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_renderer_get_layout(self)
+      _retval = LibPango.pango_renderer_get_layout(@pointer)
 
       # Return value handling
 
@@ -261,7 +259,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_renderer_get_layout_line(self)
+      _retval = LibPango.pango_renderer_get_layout_line(@pointer)
 
       # Return value handling
 
@@ -277,7 +275,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_renderer_get_matrix(self)
+      _retval = LibPango.pango_renderer_get_matrix(@pointer)
 
       # Return value handling
 
@@ -304,7 +302,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_part_changed(self, part)
+      LibPango.pango_renderer_part_changed(@pointer, part)
 
       # Return value handling
     end
@@ -318,7 +316,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_renderer_set_alpha(self, part, alpha)
+      LibPango.pango_renderer_set_alpha(@pointer, part, alpha)
 
       # Return value handling
     end
@@ -339,7 +337,7 @@ module Pango
               end
 
       # C call
-      LibPango.pango_renderer_set_color(self, part, color)
+      LibPango.pango_renderer_set_color(@pointer, part, color)
 
       # Return value handling
     end
@@ -358,7 +356,7 @@ module Pango
                end
 
       # C call
-      LibPango.pango_renderer_set_matrix(self, matrix)
+      LibPango.pango_renderer_set_matrix(@pointer, matrix)
 
       # Return value handling
     end

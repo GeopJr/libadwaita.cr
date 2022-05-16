@@ -74,7 +74,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_equal(self, b)
+      _retval = LibGraphene.graphene_euler_equal(@pointer, b)
 
       # Return value handling
 
@@ -86,7 +86,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_euler_free(self)
+      LibGraphene.graphene_euler_free(@pointer)
 
       # Return value handling
     end
@@ -96,7 +96,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_get_alpha(self)
+      _retval = LibGraphene.graphene_euler_get_alpha(@pointer)
 
       # Return value handling
 
@@ -108,7 +108,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_get_beta(self)
+      _retval = LibGraphene.graphene_euler_get_beta(@pointer)
 
       # Return value handling
 
@@ -120,7 +120,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_get_gamma(self)
+      _retval = LibGraphene.graphene_euler_get_gamma(@pointer)
 
       # Return value handling
 
@@ -132,7 +132,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_get_order(self)
+      _retval = LibGraphene.graphene_euler_get_order(@pointer)
 
       # Return value handling
 
@@ -144,7 +144,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_get_x(self)
+      _retval = LibGraphene.graphene_euler_get_x(@pointer)
 
       # Return value handling
 
@@ -156,7 +156,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_get_y(self)
+      _retval = LibGraphene.graphene_euler_get_y(@pointer)
 
       # Return value handling
 
@@ -168,7 +168,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_get_z(self)
+      _retval = LibGraphene.graphene_euler_get_z(@pointer)
 
       # Return value handling
 
@@ -180,7 +180,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_init(self, x, y, z)
+      _retval = LibGraphene.graphene_euler_init(@pointer, x, y, z)
 
       # Return value handling
 
@@ -200,7 +200,7 @@ module Graphene
             end
 
       # C call
-      _retval = LibGraphene.graphene_euler_init_from_euler(self, src)
+      _retval = LibGraphene.graphene_euler_init_from_euler(@pointer, src)
 
       # Return value handling
 
@@ -220,7 +220,7 @@ module Graphene
           end
 
       # C call
-      _retval = LibGraphene.graphene_euler_init_from_matrix(self, m, order)
+      _retval = LibGraphene.graphene_euler_init_from_matrix(@pointer, m, order)
 
       # Return value handling
 
@@ -240,7 +240,7 @@ module Graphene
           end
 
       # C call
-      _retval = LibGraphene.graphene_euler_init_from_quaternion(self, q, order)
+      _retval = LibGraphene.graphene_euler_init_from_quaternion(@pointer, q, order)
 
       # Return value handling
 
@@ -252,7 +252,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_init_from_radians(self, x, y, z, order)
+      _retval = LibGraphene.graphene_euler_init_from_radians(@pointer, x, y, z, order)
 
       # Return value handling
 
@@ -272,7 +272,7 @@ module Graphene
           end
 
       # C call
-      _retval = LibGraphene.graphene_euler_init_from_vec3(self, v, order)
+      _retval = LibGraphene.graphene_euler_init_from_vec3(@pointer, v, order)
 
       # Return value handling
 
@@ -284,7 +284,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_euler_init_with_order(self, x, y, z, order)
+      _retval = LibGraphene.graphene_euler_init_with_order(@pointer, x, y, z, order)
 
       # Return value handling
 
@@ -299,7 +299,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Euler.new
       # C call
-      LibGraphene.graphene_euler_reorder(self, order, res)
+      LibGraphene.graphene_euler_reorder(@pointer, order, res)
 
       # Return value handling
 
@@ -314,7 +314,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
       # C call
-      LibGraphene.graphene_euler_to_matrix(self, res)
+      LibGraphene.graphene_euler_to_matrix(@pointer, res)
 
       # Return value handling
 
@@ -329,7 +329,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Quaternion.new
       # C call
-      LibGraphene.graphene_euler_to_quaternion(self, res)
+      LibGraphene.graphene_euler_to_quaternion(@pointer, res)
 
       # Return value handling
 
@@ -344,7 +344,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_euler_to_vec3(self, res)
+      LibGraphene.graphene_euler_to_vec3(@pointer, res)
 
       # Return value handling
 

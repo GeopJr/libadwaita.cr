@@ -46,7 +46,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_type_instance_get_private(self, private_type)
+      _retval = LibGObject.g_type_instance_get_private(@pointer, private_type)
 
       # Return value handling
 

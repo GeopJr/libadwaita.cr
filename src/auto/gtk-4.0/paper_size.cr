@@ -142,7 +142,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_copy(self)
+      _retval = LibGtk.gtk_paper_size_copy(@pointer)
 
       # Return value handling
 
@@ -154,7 +154,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paper_size_free(self)
+      LibGtk.gtk_paper_size_free(@pointer)
 
       # Return value handling
     end
@@ -164,7 +164,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_get_default_bottom_margin(self, unit)
+      _retval = LibGtk.gtk_paper_size_get_default_bottom_margin(@pointer, unit)
 
       # Return value handling
 
@@ -176,7 +176,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_get_default_left_margin(self, unit)
+      _retval = LibGtk.gtk_paper_size_get_default_left_margin(@pointer, unit)
 
       # Return value handling
 
@@ -188,7 +188,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_get_default_right_margin(self, unit)
+      _retval = LibGtk.gtk_paper_size_get_default_right_margin(@pointer, unit)
 
       # Return value handling
 
@@ -200,7 +200,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_get_default_top_margin(self, unit)
+      _retval = LibGtk.gtk_paper_size_get_default_top_margin(@pointer, unit)
 
       # Return value handling
 
@@ -212,7 +212,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_get_display_name(self)
+      _retval = LibGtk.gtk_paper_size_get_display_name(@pointer)
 
       # Return value handling
 
@@ -224,7 +224,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_get_height(self, unit)
+      _retval = LibGtk.gtk_paper_size_get_height(@pointer, unit)
 
       # Return value handling
 
@@ -236,7 +236,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_get_name(self)
+      _retval = LibGtk.gtk_paper_size_get_name(@pointer)
 
       # Return value handling
 
@@ -248,7 +248,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_get_ppd_name(self)
+      _retval = LibGtk.gtk_paper_size_get_ppd_name(@pointer)
 
       # Return value handling
 
@@ -260,7 +260,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_get_width(self, unit)
+      _retval = LibGtk.gtk_paper_size_get_width(@pointer, unit)
 
       # Return value handling
 
@@ -272,7 +272,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_is_custom(self)
+      _retval = LibGtk.gtk_paper_size_is_custom(@pointer)
 
       # Return value handling
 
@@ -284,7 +284,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_is_equal(self, size2)
+      _retval = LibGtk.gtk_paper_size_is_equal(@pointer, size2)
 
       # Return value handling
 
@@ -296,7 +296,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_is_ipp(self)
+      _retval = LibGtk.gtk_paper_size_is_ipp(@pointer)
 
       # Return value handling
 
@@ -308,7 +308,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paper_size_set_size(self, width, height, unit)
+      LibGtk.gtk_paper_size_set_size(@pointer, width, height, unit)
 
       # Return value handling
     end
@@ -318,7 +318,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paper_size_to_gvariant(self)
+      _retval = LibGtk.gtk_paper_size_to_gvariant(@pointer)
 
       # Return value handling
 
@@ -330,7 +330,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paper_size_to_key_file(self, key_file, group_name)
+      LibGtk.gtk_paper_size_to_key_file(@pointer, key_file, group_name)
 
       # Return value handling
     end

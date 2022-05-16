@@ -46,7 +46,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_volume_can_eject(self)
+      _retval = LibGio.g_volume_can_eject(@pointer)
 
       # Return value handling
 
@@ -58,7 +58,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_volume_can_mount(self)
+      _retval = LibGio.g_volume_can_mount(@pointer)
 
       # Return value handling
 
@@ -86,7 +86,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_volume_eject(self, flags, cancellable, callback, user_data)
+      LibGio.g_volume_eject(@pointer, flags, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -98,7 +98,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_volume_eject_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_volume_eject_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -136,7 +136,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_volume_eject_with_operation(self, flags, mount_operation, cancellable, callback, user_data)
+      LibGio.g_volume_eject_with_operation(@pointer, flags, mount_operation, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -148,7 +148,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_volume_eject_with_operation_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_volume_eject_with_operation_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -163,7 +163,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_volume_enumerate_identifiers(self)
+      _retval = LibGio.g_volume_enumerate_identifiers(@pointer)
 
       # Return value handling
 
@@ -175,11 +175,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_volume_get_activation_root(self)
+      _retval = LibGio.g_volume_get_activation_root(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def drive : Gio::Drive?
@@ -187,11 +187,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_volume_get_drive(self)
+      _retval = LibGio.g_volume_get_drive(@pointer)
 
       # Return value handling
 
-      Gio::Drive__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractDrive.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def icon : Gio::Icon
@@ -199,11 +199,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_volume_get_icon(self)
+      _retval = LibGio.g_volume_get_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     def identifier(kind : ::String) : ::String?
@@ -211,7 +211,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_volume_get_identifier(self, kind)
+      _retval = LibGio.g_volume_get_identifier(@pointer, kind)
 
       # Return value handling
 
@@ -223,11 +223,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_volume_get_mount(self)
+      _retval = LibGio.g_volume_get_mount(@pointer)
 
       # Return value handling
 
-      Gio::Mount__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractMount.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def name : ::String
@@ -235,7 +235,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_volume_get_name(self)
+      _retval = LibGio.g_volume_get_name(@pointer)
 
       # Return value handling
 
@@ -247,7 +247,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_volume_get_sort_key(self)
+      _retval = LibGio.g_volume_get_sort_key(@pointer)
 
       # Return value handling
 
@@ -259,11 +259,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_volume_get_symbolic_icon(self)
+      _retval = LibGio.g_volume_get_symbolic_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     def uuid : ::String?
@@ -271,7 +271,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_volume_get_uuid(self)
+      _retval = LibGio.g_volume_get_uuid(@pointer)
 
       # Return value handling
 
@@ -306,7 +306,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_volume_mount(self, flags, mount_operation, cancellable, callback, user_data)
+      LibGio.g_volume_mount(@pointer, flags, mount_operation, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -318,7 +318,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_volume_mount_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_volume_mount_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -333,7 +333,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_volume_should_automount(self)
+      _retval = LibGio.g_volume_should_automount(@pointer)
 
       # Return value handling
 
@@ -387,7 +387,7 @@ module Gio
       def connect(handler : Proc(Gio::Volume, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Volume__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractVolume.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -398,7 +398,7 @@ module Gio
       def connect_after(handler : Proc(Gio::Volume, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Volume__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractVolume.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -462,7 +462,7 @@ module Gio
       def connect(handler : Proc(Gio::Volume, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Volume__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractVolume.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -473,7 +473,7 @@ module Gio
       def connect_after(handler : Proc(Gio::Volume, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Volume__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractVolume.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Volume, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -495,8 +495,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Volume__Impl < GObject::Object
+  class AbstractVolume < GObject::Object
     include Volume
+
+    GICrystal.define_new_method(Gio::AbstractVolume, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

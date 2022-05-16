@@ -22,15 +22,13 @@ module Gio
         sizeof(LibGio::InetAddress), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(InetAddress, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `InetAddress`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -293,7 +291,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_equal(self, other_address)
+      _retval = LibGio.g_inet_address_equal(@pointer, other_address)
 
       # Return value handling
 
@@ -306,7 +304,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_family(self)
+      _retval = LibGio.g_inet_address_get_family(@pointer)
 
       # Return value handling
 
@@ -319,7 +317,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_any(self)
+      _retval = LibGio.g_inet_address_get_is_any(@pointer)
 
       # Return value handling
 
@@ -334,7 +332,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_link_local(self)
+      _retval = LibGio.g_inet_address_get_is_link_local(@pointer)
 
       # Return value handling
 
@@ -347,7 +345,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_loopback(self)
+      _retval = LibGio.g_inet_address_get_is_loopback(@pointer)
 
       # Return value handling
 
@@ -360,7 +358,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_mc_global(self)
+      _retval = LibGio.g_inet_address_get_is_mc_global(@pointer)
 
       # Return value handling
 
@@ -373,7 +371,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_mc_link_local(self)
+      _retval = LibGio.g_inet_address_get_is_mc_link_local(@pointer)
 
       # Return value handling
 
@@ -386,7 +384,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_mc_node_local(self)
+      _retval = LibGio.g_inet_address_get_is_mc_node_local(@pointer)
 
       # Return value handling
 
@@ -399,7 +397,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_mc_org_local(self)
+      _retval = LibGio.g_inet_address_get_is_mc_org_local(@pointer)
 
       # Return value handling
 
@@ -412,7 +410,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_mc_site_local(self)
+      _retval = LibGio.g_inet_address_get_is_mc_site_local(@pointer)
 
       # Return value handling
 
@@ -425,7 +423,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_multicast(self)
+      _retval = LibGio.g_inet_address_get_is_multicast(@pointer)
 
       # Return value handling
 
@@ -441,7 +439,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_is_site_local(self)
+      _retval = LibGio.g_inet_address_get_is_site_local(@pointer)
 
       # Return value handling
 
@@ -455,7 +453,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_inet_address_get_native_size(self)
+      _retval = LibGio.g_inet_address_get_native_size(@pointer)
 
       # Return value handling
 
@@ -468,7 +466,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_inet_address_to_string(self)
+      _retval = LibGio.g_inet_address_to_string(@pointer)
 
       # Return value handling
 

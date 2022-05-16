@@ -13,15 +13,13 @@ module Gsk
         sizeof(LibGsk::InsetShadowNode), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(InsetShadowNode, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `InsetShadowNode`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -55,7 +53,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_inset_shadow_node_get_blur_radius(self)
+      _retval = LibGsk.gsk_inset_shadow_node_get_blur_radius(@pointer)
 
       # Return value handling
 
@@ -68,7 +66,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_inset_shadow_node_get_color(self)
+      _retval = LibGsk.gsk_inset_shadow_node_get_color(@pointer)
 
       # Return value handling
 
@@ -81,7 +79,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_inset_shadow_node_get_dx(self)
+      _retval = LibGsk.gsk_inset_shadow_node_get_dx(@pointer)
 
       # Return value handling
 
@@ -94,7 +92,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_inset_shadow_node_get_dy(self)
+      _retval = LibGsk.gsk_inset_shadow_node_get_dy(@pointer)
 
       # Return value handling
 
@@ -107,7 +105,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_inset_shadow_node_get_outline(self)
+      _retval = LibGsk.gsk_inset_shadow_node_get_outline(@pointer)
 
       # Return value handling
 
@@ -120,7 +118,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_inset_shadow_node_get_spread(self)
+      _retval = LibGsk.gsk_inset_shadow_node_get_spread(@pointer)
 
       # Return value handling
 

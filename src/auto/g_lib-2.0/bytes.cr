@@ -105,7 +105,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_bytes_compare(self, bytes2)
+      _retval = LibGLib.g_bytes_compare(@pointer, bytes2)
 
       # Return value handling
 
@@ -117,7 +117,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_bytes_equal(self, bytes2)
+      _retval = LibGLib.g_bytes_equal(@pointer, bytes2)
 
       # Return value handling
 
@@ -132,7 +132,7 @@ module GLib
       # Generator::OutArgUsedInReturnPlan
       size = 0_u64
       # C call
-      _retval = LibGLib.g_bytes_get_data(self, pointerof(size))
+      _retval = LibGLib.g_bytes_get_data(@pointer, pointerof(size))
 
       # Return value handling
 
@@ -144,7 +144,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_bytes_get_region(self, element_size, offset, n_elements)
+      _retval = LibGLib.g_bytes_get_region(@pointer, element_size, offset, n_elements)
 
       # Return value handling
 
@@ -156,7 +156,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_bytes_get_size(self)
+      _retval = LibGLib.g_bytes_get_size(@pointer)
 
       # Return value handling
 
@@ -168,7 +168,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_bytes_hash(self)
+      _retval = LibGLib.g_bytes_hash(@pointer)
 
       # Return value handling
 
@@ -180,7 +180,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_bytes_new_from_bytes(self, offset, length)
+      _retval = LibGLib.g_bytes_new_from_bytes(@pointer, offset, length)
 
       # Return value handling
 
@@ -192,7 +192,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_bytes_ref(self)
+      _retval = LibGLib.g_bytes_ref(@pointer)
 
       # Return value handling
 

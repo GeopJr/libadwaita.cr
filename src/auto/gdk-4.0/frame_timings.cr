@@ -38,7 +38,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_timings_get_complete(self)
+      _retval = LibGdk.gdk_frame_timings_get_complete(@pointer)
 
       # Return value handling
 
@@ -50,7 +50,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_timings_get_frame_counter(self)
+      _retval = LibGdk.gdk_frame_timings_get_frame_counter(@pointer)
 
       # Return value handling
 
@@ -62,7 +62,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_timings_get_frame_time(self)
+      _retval = LibGdk.gdk_frame_timings_get_frame_time(@pointer)
 
       # Return value handling
 
@@ -74,7 +74,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_timings_get_predicted_presentation_time(self)
+      _retval = LibGdk.gdk_frame_timings_get_predicted_presentation_time(@pointer)
 
       # Return value handling
 
@@ -86,7 +86,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_timings_get_presentation_time(self)
+      _retval = LibGdk.gdk_frame_timings_get_presentation_time(@pointer)
 
       # Return value handling
 
@@ -98,7 +98,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_frame_timings_get_refresh_interval(self)
+      _retval = LibGdk.gdk_frame_timings_get_refresh_interval(@pointer)
 
       # Return value handling
 
@@ -110,7 +110,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_frame_timings_ref(self)
+      _retval = LibGdk.gdk_frame_timings_ref(@pointer)
 
       # Return value handling
 
@@ -122,7 +122,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_frame_timings_unref(self)
+      LibGdk.gdk_frame_timings_unref(@pointer)
 
       # Return value handling
     end

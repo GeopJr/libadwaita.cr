@@ -51,15 +51,13 @@ module Adw
         sizeof(LibAdw::ComboRow), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ComboRow, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ComboRow`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -420,7 +418,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def selected=(value : UInt32) : UInt32
@@ -482,7 +480,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_combo_row_get_expression(self)
+      _retval = LibAdw.adw_combo_row_get_expression(@pointer)
 
       # Return value handling
 
@@ -495,7 +493,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_combo_row_get_factory(self)
+      _retval = LibAdw.adw_combo_row_get_factory(@pointer)
 
       # Return value handling
 
@@ -508,7 +506,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_combo_row_get_list_factory(self)
+      _retval = LibAdw.adw_combo_row_get_list_factory(@pointer)
 
       # Return value handling
 
@@ -521,11 +519,11 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_combo_row_get_model(self)
+      _retval = LibAdw.adw_combo_row_get_model(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the position of the selected item.
@@ -534,7 +532,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_combo_row_get_selected(self)
+      _retval = LibAdw.adw_combo_row_get_selected(@pointer)
 
       # Return value handling
 
@@ -547,7 +545,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_combo_row_get_selected_item(self)
+      _retval = LibAdw.adw_combo_row_get_selected_item(@pointer)
 
       # Return value handling
 
@@ -560,7 +558,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_combo_row_get_use_subtitle(self)
+      _retval = LibAdw.adw_combo_row_get_use_subtitle(@pointer)
 
       # Return value handling
 
@@ -583,7 +581,7 @@ module Adw
                    end
 
       # C call
-      LibAdw.adw_combo_row_set_expression(self, expression)
+      LibAdw.adw_combo_row_set_expression(@pointer, expression)
 
       # Return value handling
     end
@@ -602,7 +600,7 @@ module Adw
                 end
 
       # C call
-      LibAdw.adw_combo_row_set_factory(self, factory)
+      LibAdw.adw_combo_row_set_factory(@pointer, factory)
 
       # Return value handling
     end
@@ -621,7 +619,7 @@ module Adw
                 end
 
       # C call
-      LibAdw.adw_combo_row_set_list_factory(self, factory)
+      LibAdw.adw_combo_row_set_list_factory(@pointer, factory)
 
       # Return value handling
     end
@@ -640,7 +638,7 @@ module Adw
               end
 
       # C call
-      LibAdw.adw_combo_row_set_model(self, model)
+      LibAdw.adw_combo_row_set_model(@pointer, model)
 
       # Return value handling
     end
@@ -651,7 +649,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_combo_row_set_selected(self, position)
+      LibAdw.adw_combo_row_set_selected(@pointer, position)
 
       # Return value handling
     end
@@ -662,7 +660,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_combo_row_set_use_subtitle(self, use_subtitle)
+      LibAdw.adw_combo_row_set_use_subtitle(@pointer, use_subtitle)
 
       # Return value handling
     end

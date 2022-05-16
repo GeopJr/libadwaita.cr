@@ -34,15 +34,13 @@ module Gdk
         sizeof(LibGdk::AppLaunchContext), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(AppLaunchContext, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `AppLaunchContext`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -96,7 +94,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_app_launch_context_get_display(self)
+      _retval = LibGdk.gdk_app_launch_context_get_display(@pointer)
 
       # Return value handling
 
@@ -121,7 +119,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_app_launch_context_set_desktop(self, desktop)
+      LibGdk.gdk_app_launch_context_set_desktop(@pointer, desktop)
 
       # Return value handling
     end
@@ -146,7 +144,7 @@ module Gdk
              end
 
       # C call
-      LibGdk.gdk_app_launch_context_set_icon(self, icon)
+      LibGdk.gdk_app_launch_context_set_icon(@pointer, icon)
 
       # Return value handling
     end
@@ -173,7 +171,7 @@ module Gdk
                   end
 
       # C call
-      LibGdk.gdk_app_launch_context_set_icon_name(self, icon_name)
+      LibGdk.gdk_app_launch_context_set_icon_name(@pointer, icon_name)
 
       # Return value handling
     end
@@ -192,7 +190,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_app_launch_context_set_timestamp(self, timestamp)
+      LibGdk.gdk_app_launch_context_set_timestamp(@pointer, timestamp)
 
       # Return value handling
     end

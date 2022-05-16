@@ -39,15 +39,13 @@ module Gtk
         sizeof(LibGtk::TextTagTable), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TextTagTable, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TextTagTable`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -87,7 +85,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_tag_table_add(self, tag)
+      _retval = LibGtk.gtk_text_tag_table_add(@pointer, tag)
 
       # Return value handling
 
@@ -111,7 +109,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_text_tag_table_foreach(self, func, data)
+      LibGtk.gtk_text_tag_table_foreach(@pointer, func, data)
 
       # Return value handling
     end
@@ -122,7 +120,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_tag_table_get_size(self)
+      _retval = LibGtk.gtk_text_tag_table_get_size(@pointer)
 
       # Return value handling
 
@@ -135,7 +133,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_tag_table_lookup(self, name)
+      _retval = LibGtk.gtk_text_tag_table_lookup(@pointer, name)
 
       # Return value handling
 
@@ -153,7 +151,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_tag_table_remove(self, tag)
+      LibGtk.gtk_text_tag_table_remove(@pointer, tag)
 
       # Return value handling
     end
@@ -186,7 +184,7 @@ module Gtk
       def connect(handler : Proc(Gtk::TextTag, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           ::Box(Proc(Gtk::TextTag, Nil)).unbox(_lib_box).call(tag)
         }.pointer
@@ -198,7 +196,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextTag, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           ::Box(Proc(Gtk::TextTag, Nil)).unbox(_lib_box).call(tag)
         }.pointer
@@ -211,7 +209,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextTagTable.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           ::Box(Proc(Gtk::TextTagTable, Gtk::TextTag, Nil)).unbox(_lib_box).call(_sender, tag)
         }.pointer
@@ -224,7 +222,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextTagTable.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           ::Box(Proc(Gtk::TextTagTable, Gtk::TextTag, Nil)).unbox(_lib_box).call(_sender, tag)
         }.pointer
@@ -270,7 +268,7 @@ module Gtk
       def connect(handler : Proc(Gtk::TextTag, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_size_changed : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           size_changed = lib_size_changed
           ::Box(Proc(Gtk::TextTag, Bool, Nil)).unbox(_lib_box).call(tag, size_changed)
@@ -283,7 +281,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextTag, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_size_changed : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           size_changed = lib_size_changed
           ::Box(Proc(Gtk::TextTag, Bool, Nil)).unbox(_lib_box).call(tag, size_changed)
@@ -297,7 +295,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_size_changed : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::TextTagTable.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           size_changed = lib_size_changed
           ::Box(Proc(Gtk::TextTagTable, Gtk::TextTag, Bool, Nil)).unbox(_lib_box).call(_sender, tag, size_changed)
@@ -311,7 +309,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_size_changed : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::TextTagTable.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           size_changed = lib_size_changed
           ::Box(Proc(Gtk::TextTagTable, Gtk::TextTag, Bool, Nil)).unbox(_lib_box).call(_sender, tag, size_changed)
@@ -361,7 +359,7 @@ module Gtk
       def connect(handler : Proc(Gtk::TextTag, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           ::Box(Proc(Gtk::TextTag, Nil)).unbox(_lib_box).call(tag)
         }.pointer
@@ -373,7 +371,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextTag, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           ::Box(Proc(Gtk::TextTag, Nil)).unbox(_lib_box).call(tag)
         }.pointer
@@ -386,7 +384,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextTagTable.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           ::Box(Proc(Gtk::TextTagTable, Gtk::TextTag, Nil)).unbox(_lib_box).call(_sender, tag)
         }.pointer
@@ -399,7 +397,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextTagTable.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
           ::Box(Proc(Gtk::TextTagTable, Gtk::TextTag, Nil)).unbox(_lib_box).call(_sender, tag)
         }.pointer

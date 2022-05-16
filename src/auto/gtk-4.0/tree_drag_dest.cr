@@ -13,7 +13,7 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_tree_drag_dest_drag_data_received(self, dest, value)
+      _retval = LibGtk.gtk_tree_drag_dest_drag_data_received(@pointer, dest, value)
 
       # Return value handling
 
@@ -32,7 +32,7 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_tree_drag_dest_row_drop_possible(self, dest_path, value)
+      _retval = LibGtk.gtk_tree_drag_dest_row_drop_possible(@pointer, dest_path, value)
 
       # Return value handling
 
@@ -44,8 +44,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class TreeDragDest__Impl < GObject::Object
+  class AbstractTreeDragDest < GObject::Object
     include TreeDragDest
+
+    GICrystal.define_new_method(Gtk::AbstractTreeDragDest, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

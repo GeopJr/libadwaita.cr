@@ -159,15 +159,13 @@ module GdkPixbuf
         sizeof(LibGdkPixbuf::Pixbuf), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Pixbuf, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Pixbuf`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -1007,7 +1005,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_add_alpha(self, substitute_color, r, g, b)
+      _retval = LibGdkPixbuf.gdk_pixbuf_add_alpha(@pointer, substitute_color, r, g, b)
 
       # Return value handling
 
@@ -1029,7 +1027,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_apply_embedded_orientation(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_apply_embedded_orientation(@pointer)
 
       # Return value handling
 
@@ -1054,7 +1052,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_composite(self, dest, dest_x, dest_y, dest_width, dest_height, offset_x, offset_y, scale_x, scale_y, interp_type, overall_alpha)
+      LibGdkPixbuf.gdk_pixbuf_composite(@pointer, dest, dest_x, dest_y, dest_width, dest_height, offset_x, offset_y, scale_x, scale_y, interp_type, overall_alpha)
 
       # Return value handling
     end
@@ -1076,7 +1074,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_composite_color(self, dest, dest_x, dest_y, dest_width, dest_height, offset_x, offset_y, scale_x, scale_y, interp_type, overall_alpha, check_x, check_y, check_size, color1, color2)
+      LibGdkPixbuf.gdk_pixbuf_composite_color(@pointer, dest, dest_x, dest_y, dest_width, dest_height, offset_x, offset_y, scale_x, scale_y, interp_type, overall_alpha, check_x, check_y, check_size, color1, color2)
 
       # Return value handling
     end
@@ -1089,7 +1087,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_composite_color_simple(self, dest_width, dest_height, interp_type, overall_alpha, check_size, color1, color2)
+      _retval = LibGdkPixbuf.gdk_pixbuf_composite_color_simple(@pointer, dest_width, dest_height, interp_type, overall_alpha, check_size, color1, color2)
 
       # Return value handling
 
@@ -1106,7 +1104,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_copy(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_copy(@pointer)
 
       # Return value handling
 
@@ -1125,7 +1123,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_copy_area(self, src_x, src_y, width, height, dest_pixbuf, dest_x, dest_y)
+      LibGdkPixbuf.gdk_pixbuf_copy_area(@pointer, src_x, src_y, width, height, dest_pixbuf, dest_x, dest_y)
 
       # Return value handling
     end
@@ -1141,7 +1139,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_copy_options(self, dest_pixbuf)
+      _retval = LibGdkPixbuf.gdk_pixbuf_copy_options(@pointer, dest_pixbuf)
 
       # Return value handling
 
@@ -1158,7 +1156,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_fill(self, pixel)
+      LibGdkPixbuf.gdk_pixbuf_fill(@pointer, pixel)
 
       # Return value handling
     end
@@ -1170,7 +1168,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_flip(self, horizontal)
+      _retval = LibGdkPixbuf.gdk_pixbuf_flip(@pointer, horizontal)
 
       # Return value handling
 
@@ -1183,7 +1181,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_bits_per_sample(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_bits_per_sample(@pointer)
 
       # Return value handling
 
@@ -1196,7 +1194,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_byte_length(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_byte_length(@pointer)
 
       # Return value handling
 
@@ -1209,7 +1207,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_colorspace(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_colorspace(@pointer)
 
       # Return value handling
 
@@ -1222,7 +1220,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_has_alpha(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_has_alpha(@pointer)
 
       # Return value handling
 
@@ -1235,7 +1233,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_height(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_height(@pointer)
 
       # Return value handling
 
@@ -1248,7 +1246,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_n_channels(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_n_channels(@pointer)
 
       # Return value handling
 
@@ -1275,7 +1273,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_option(self, key)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_option(@pointer, key)
 
       # Return value handling
 
@@ -1290,7 +1288,7 @@ module GdkPixbuf
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_options(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_options(@pointer)
 
       # Return value handling
 
@@ -1312,7 +1310,7 @@ module GdkPixbuf
       # Generator::OutArgUsedInReturnPlan
       length = 0_u32
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_pixels_with_length(self, pointerof(length))
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_pixels_with_length(@pointer, pointerof(length))
 
       # Return value handling
 
@@ -1326,7 +1324,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_rowstride(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_rowstride(@pointer)
 
       # Return value handling
 
@@ -1339,7 +1337,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_get_width(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_get_width(@pointer)
 
       # Return value handling
 
@@ -1360,7 +1358,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_new_subpixbuf(self, src_x, src_y, width, height)
+      _retval = LibGdkPixbuf.gdk_pixbuf_new_subpixbuf(@pointer, src_x, src_y, width, height)
 
       # Return value handling
 
@@ -1377,7 +1375,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_read_pixel_bytes(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_read_pixel_bytes(@pointer)
 
       # Return value handling
 
@@ -1393,7 +1391,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_read_pixels(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_read_pixels(@pointer)
 
       # Return value handling
 
@@ -1406,7 +1404,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_remove_option(self, key)
+      _retval = LibGdkPixbuf.gdk_pixbuf_remove_option(@pointer, key)
 
       # Return value handling
 
@@ -1422,7 +1420,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_rotate_simple(self, angle)
+      _retval = LibGdkPixbuf.gdk_pixbuf_rotate_simple(@pointer, angle)
 
       # Return value handling
 
@@ -1448,7 +1446,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_saturate_and_pixelate(self, dest, saturation, pixelate)
+      LibGdkPixbuf.gdk_pixbuf_saturate_and_pixelate(@pointer, dest, saturation, pixelate)
 
       # Return value handling
     end
@@ -1486,7 +1484,7 @@ module GdkPixbuf
                       end
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_save_to_bufferv(self, buffer, buffer_size, type, option_keys, option_values, pointerof(_error))
+      _retval = LibGdkPixbuf.gdk_pixbuf_save_to_bufferv(@pointer, buffer, buffer_size, type, option_keys, option_values, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
@@ -1533,7 +1531,7 @@ module GdkPixbuf
                       end
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_save_to_callbackv(self, save_func, user_data, type, option_keys, option_values, pointerof(_error))
+      _retval = LibGdkPixbuf.gdk_pixbuf_save_to_callbackv(@pointer, save_func, user_data, type, option_keys, option_values, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
@@ -1578,7 +1576,7 @@ module GdkPixbuf
                     end
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_save_to_streamv(self, stream, type, option_keys, option_values, cancellable, pointerof(_error))
+      _retval = LibGdkPixbuf.gdk_pixbuf_save_to_streamv(@pointer, stream, type, option_keys, option_values, cancellable, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
@@ -1632,7 +1630,7 @@ module GdkPixbuf
                   end
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_save_to_streamv_async(self, stream, type, option_keys, option_values, cancellable, callback, user_data)
+      LibGdkPixbuf.gdk_pixbuf_save_to_streamv_async(@pointer, stream, type, option_keys, option_values, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -1666,7 +1664,7 @@ module GdkPixbuf
                       end
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_savev(self, filename, type, option_keys, option_values, pointerof(_error))
+      _retval = LibGdkPixbuf.gdk_pixbuf_savev(@pointer, filename, type, option_keys, option_values, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
@@ -1694,7 +1692,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_scale(self, dest, dest_x, dest_y, dest_width, dest_height, offset_x, offset_y, scale_x, scale_y, interp_type)
+      LibGdkPixbuf.gdk_pixbuf_scale(@pointer, dest, dest_x, dest_y, dest_width, dest_height, offset_x, offset_y, scale_x, scale_y, interp_type)
 
       # Return value handling
     end
@@ -1722,7 +1720,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_scale_simple(self, dest_width, dest_height, interp_type)
+      _retval = LibGdkPixbuf.gdk_pixbuf_scale_simple(@pointer, dest_width, dest_height, interp_type)
 
       # Return value handling
 
@@ -1738,7 +1736,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_set_option(self, key, value)
+      _retval = LibGdkPixbuf.gdk_pixbuf_set_option(@pointer, key, value)
 
       # Return value handling
 

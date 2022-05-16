@@ -66,15 +66,13 @@ module Gtk
         sizeof(LibGtk::Assistant), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Assistant, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Assistant`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -413,7 +411,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def use_header_bar=(value : Int32) : Int32
@@ -452,7 +450,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_add_action_widget(self, child)
+      LibGtk.gtk_assistant_add_action_widget(@pointer, child)
 
       # Return value handling
     end
@@ -463,7 +461,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_append_page(self, page)
+      _retval = LibGtk.gtk_assistant_append_page(@pointer, page)
 
       # Return value handling
 
@@ -485,7 +483,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_commit(self)
+      LibGtk.gtk_assistant_commit(@pointer)
 
       # Return value handling
     end
@@ -496,7 +494,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_get_current_page(self)
+      _retval = LibGtk.gtk_assistant_get_current_page(@pointer)
 
       # Return value handling
 
@@ -509,7 +507,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_get_n_pages(self)
+      _retval = LibGtk.gtk_assistant_get_n_pages(@pointer)
 
       # Return value handling
 
@@ -522,7 +520,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_get_nth_page(self, page_num)
+      _retval = LibGtk.gtk_assistant_get_nth_page(@pointer, page_num)
 
       # Return value handling
 
@@ -535,7 +533,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_get_page(self, child)
+      _retval = LibGtk.gtk_assistant_get_page(@pointer, child)
 
       # Return value handling
 
@@ -548,7 +546,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_get_page_complete(self, page)
+      _retval = LibGtk.gtk_assistant_get_page_complete(@pointer, page)
 
       # Return value handling
 
@@ -561,7 +559,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_get_page_title(self, page)
+      _retval = LibGtk.gtk_assistant_get_page_title(@pointer, page)
 
       # Return value handling
 
@@ -574,7 +572,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_get_page_type(self, page)
+      _retval = LibGtk.gtk_assistant_get_page_type(@pointer, page)
 
       # Return value handling
 
@@ -587,11 +585,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_assistant_get_pages(self)
+      _retval = LibGtk.gtk_assistant_get_pages(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Inserts a page in the @assistant at a given position.
@@ -600,7 +598,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_insert_page(self, page, position)
+      _retval = LibGtk.gtk_assistant_insert_page(@pointer, page, position)
 
       # Return value handling
 
@@ -619,7 +617,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_next_page(self)
+      LibGtk.gtk_assistant_next_page(@pointer)
 
       # Return value handling
     end
@@ -630,7 +628,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_assistant_prepend_page(self, page)
+      _retval = LibGtk.gtk_assistant_prepend_page(@pointer, page)
 
       # Return value handling
 
@@ -649,7 +647,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_previous_page(self)
+      LibGtk.gtk_assistant_previous_page(@pointer)
 
       # Return value handling
     end
@@ -660,7 +658,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_remove_action_widget(self, child)
+      LibGtk.gtk_assistant_remove_action_widget(@pointer, child)
 
       # Return value handling
     end
@@ -671,7 +669,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_remove_page(self, page_num)
+      LibGtk.gtk_assistant_remove_page(@pointer, page_num)
 
       # Return value handling
     end
@@ -686,7 +684,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_set_current_page(self, page_num)
+      LibGtk.gtk_assistant_set_current_page(@pointer, page_num)
 
       # Return value handling
     end
@@ -709,8 +707,7 @@ module Gtk
         _box = ::Box.box(page_func)
         page_func = ->(lib_current_page : Int32, lib_data : Pointer(Void)) {
           current_page = lib_current_page
-          data = lib_data
-          ::Box(Proc(Int32, Int32)).unbox(data).call(current_page)
+          ::Box(Proc(Int32, Int32)).unbox(lib_data).call(current_page)
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -719,7 +716,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_assistant_set_forward_page_func(self, page_func, data, destroy)
+      LibGtk.gtk_assistant_set_forward_page_func(@pointer, page_func, data, destroy)
 
       # Return value handling
     end
@@ -733,7 +730,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_set_page_complete(self, page, complete)
+      LibGtk.gtk_assistant_set_page_complete(@pointer, page, complete)
 
       # Return value handling
     end
@@ -747,7 +744,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_set_page_title(self, page, title)
+      LibGtk.gtk_assistant_set_page_title(@pointer, page, title)
 
       # Return value handling
     end
@@ -760,7 +757,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_set_page_type(self, page, type)
+      LibGtk.gtk_assistant_set_page_type(@pointer, page, type)
 
       # Return value handling
     end
@@ -779,7 +776,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_assistant_update_buttons_state(self)
+      LibGtk.gtk_assistant_update_buttons_state(@pointer)
 
       # Return value handling
     end
@@ -1132,7 +1129,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Widget, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           ::Box(Proc(Gtk::Widget, Nil)).unbox(_lib_box).call(page)
         }.pointer
@@ -1144,7 +1141,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Widget, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           ::Box(Proc(Gtk::Widget, Nil)).unbox(_lib_box).call(page)
         }.pointer
@@ -1157,7 +1154,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Assistant.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           ::Box(Proc(Gtk::Assistant, Gtk::Widget, Nil)).unbox(_lib_box).call(_sender, page)
         }.pointer
@@ -1170,7 +1167,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Assistant.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           ::Box(Proc(Gtk::Assistant, Gtk::Widget, Nil)).unbox(_lib_box).call(_sender, page)
         }.pointer

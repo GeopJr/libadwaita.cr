@@ -26,15 +26,13 @@ module Gio
         sizeof(LibGio::SocketListener), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SocketListener, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SocketListener`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -126,7 +124,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_listener_accept(self, source_object, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_listener_accept(@pointer, source_object, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -162,7 +160,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_socket_listener_accept_async(self, cancellable, callback, user_data)
+      LibGio.g_socket_listener_accept_async(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -178,7 +176,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       source_object = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGio.g_socket_listener_accept_finish(self, result, source_object, pointerof(_error))
+      _retval = LibGio.g_socket_listener_accept_finish(@pointer, result, source_object, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -219,7 +217,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_listener_accept_socket(self, source_object, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_listener_accept_socket(@pointer, source_object, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -255,7 +253,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_socket_listener_accept_socket_async(self, cancellable, callback, user_data)
+      LibGio.g_socket_listener_accept_socket_async(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -271,7 +269,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       source_object = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGio.g_socket_listener_accept_socket_finish(self, result, source_object, pointerof(_error))
+      _retval = LibGio.g_socket_listener_accept_socket_finish(@pointer, result, source_object, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -321,7 +319,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       effective_address = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGio.g_socket_listener_add_address(self, address, type, protocol, source_object, effective_address, pointerof(_error))
+      _retval = LibGio.g_socket_listener_add_address(@pointer, address, type, protocol, source_object, effective_address, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -356,7 +354,7 @@ module Gio
                       end
 
       # C call
-      _retval = LibGio.g_socket_listener_add_any_inet_port(self, source_object, pointerof(_error))
+      _retval = LibGio.g_socket_listener_add_any_inet_port(@pointer, source_object, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -393,7 +391,7 @@ module Gio
                       end
 
       # C call
-      _retval = LibGio.g_socket_listener_add_inet_port(self, port, source_object, pointerof(_error))
+      _retval = LibGio.g_socket_listener_add_inet_port(@pointer, port, source_object, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -431,7 +429,7 @@ module Gio
                       end
 
       # C call
-      _retval = LibGio.g_socket_listener_add_socket(self, socket, source_object, pointerof(_error))
+      _retval = LibGio.g_socket_listener_add_socket(@pointer, socket, source_object, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -447,7 +445,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_listener_close(self)
+      LibGio.g_socket_listener_close(@pointer)
 
       # Return value handling
     end
@@ -462,7 +460,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_listener_set_backlog(self, listen_backlog)
+      LibGio.g_socket_listener_set_backlog(@pointer, listen_backlog)
 
       # Return value handling
     end
@@ -498,9 +496,9 @@ module Gio
       def connect(handler : Proc(Gio::SocketListenerEvent, Gio::Socket, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_socket : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          event = Gio::SocketListenerEvent.new(lib_event, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          event = Gio::SocketListenerEvent.new(lib_event)
+          # Generator::BuiltInTypeArgPlan
           socket = Gio::Socket.new(lib_socket, :none)
           ::Box(Proc(Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(_lib_box).call(event, socket)
         }.pointer
@@ -512,9 +510,9 @@ module Gio
       def connect_after(handler : Proc(Gio::SocketListenerEvent, Gio::Socket, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_socket : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          event = Gio::SocketListenerEvent.new(lib_event, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          event = Gio::SocketListenerEvent.new(lib_event)
+          # Generator::BuiltInTypeArgPlan
           socket = Gio::Socket.new(lib_socket, :none)
           ::Box(Proc(Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(_lib_box).call(event, socket)
         }.pointer
@@ -527,9 +525,9 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_socket : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::SocketListener.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          event = Gio::SocketListenerEvent.new(lib_event, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          event = Gio::SocketListenerEvent.new(lib_event)
+          # Generator::BuiltInTypeArgPlan
           socket = Gio::Socket.new(lib_socket, :none)
           ::Box(Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(_lib_box).call(_sender, event, socket)
         }.pointer
@@ -542,9 +540,9 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_socket : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::SocketListener.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          event = Gio::SocketListenerEvent.new(lib_event, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          event = Gio::SocketListenerEvent.new(lib_event)
+          # Generator::BuiltInTypeArgPlan
           socket = Gio::Socket.new(lib_socket, :none)
           ::Box(Proc(Gio::SocketListener, Gio::SocketListenerEvent, Gio::Socket, Nil)).unbox(_lib_box).call(_sender, event, socket)
         }.pointer

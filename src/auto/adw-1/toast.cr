@@ -135,15 +135,13 @@ module Adw
         sizeof(LibAdw::Toast), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Toast, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Toast`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -315,7 +313,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_toast_dismiss(self)
+      LibAdw.adw_toast_dismiss(@pointer)
 
       # Return value handling
     end
@@ -326,7 +324,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_toast_get_action_name(self)
+      _retval = LibAdw.adw_toast_get_action_name(@pointer)
 
       # Return value handling
 
@@ -339,7 +337,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_toast_get_action_target_value(self)
+      _retval = LibAdw.adw_toast_get_action_target_value(@pointer)
 
       # Return value handling
 
@@ -352,7 +350,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_toast_get_button_label(self)
+      _retval = LibAdw.adw_toast_get_button_label(@pointer)
 
       # Return value handling
 
@@ -365,7 +363,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_toast_get_priority(self)
+      _retval = LibAdw.adw_toast_get_priority(@pointer)
 
       # Return value handling
 
@@ -378,7 +376,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_toast_get_timeout(self)
+      _retval = LibAdw.adw_toast_get_timeout(@pointer)
 
       # Return value handling
 
@@ -391,7 +389,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_toast_get_title(self)
+      _retval = LibAdw.adw_toast_get_title(@pointer)
 
       # Return value handling
 
@@ -412,7 +410,7 @@ module Adw
                     end
 
       # C call
-      LibAdw.adw_toast_set_action_name(self, action_name)
+      LibAdw.adw_toast_set_action_name(@pointer, action_name)
 
       # Return value handling
     end
@@ -436,7 +434,7 @@ module Adw
                       end
 
       # C call
-      LibAdw.adw_toast_set_action_target_value(self, action_target)
+      LibAdw.adw_toast_set_action_target_value(@pointer, action_target)
 
       # Return value handling
     end
@@ -457,7 +455,7 @@ module Adw
                      end
 
       # C call
-      LibAdw.adw_toast_set_button_label(self, button_label)
+      LibAdw.adw_toast_set_button_label(@pointer, button_label)
 
       # Return value handling
     end
@@ -479,7 +477,7 @@ module Adw
                              end
 
       # C call
-      LibAdw.adw_toast_set_detailed_action_name(self, detailed_action_name)
+      LibAdw.adw_toast_set_detailed_action_name(@pointer, detailed_action_name)
 
       # Return value handling
     end
@@ -498,7 +496,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_toast_set_priority(self, priority)
+      LibAdw.adw_toast_set_priority(@pointer, priority)
 
       # Return value handling
     end
@@ -515,7 +513,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_toast_set_timeout(self, timeout)
+      LibAdw.adw_toast_set_timeout(@pointer, timeout)
 
       # Return value handling
     end
@@ -526,7 +524,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_toast_set_title(self, title)
+      LibAdw.adw_toast_set_title(@pointer, title)
 
       # Return value handling
     end

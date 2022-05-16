@@ -23,15 +23,13 @@ module Gsk
         sizeof(LibGsk::RenderNode), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_param_spec_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(RenderNode, g_param_spec_get_qdata, g_param_spec_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_param_spec_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `RenderNode`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -112,7 +110,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_render_node_draw(self, cr)
+      LibGsk.gsk_render_node_draw(@pointer, cr)
 
       # Return value handling
     end
@@ -128,7 +126,7 @@ module Gsk
       # Generator::CallerAllocatesPlan
       bounds = Graphene::Rect.new
       # C call
-      LibGsk.gsk_render_node_get_bounds(self, bounds)
+      LibGsk.gsk_render_node_get_bounds(@pointer, bounds)
 
       # Return value handling
 
@@ -141,7 +139,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_render_node_get_node_type(self)
+      _retval = LibGsk.gsk_render_node_get_node_type(@pointer)
 
       # Return value handling
 
@@ -154,7 +152,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_render_node_ref(self)
+      _retval = LibGsk.gsk_render_node_ref(@pointer)
 
       # Return value handling
 
@@ -175,7 +173,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_render_node_serialize(self)
+      _retval = LibGsk.gsk_render_node_serialize(@pointer)
 
       # Return value handling
 
@@ -191,7 +189,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_render_node_unref(self)
+      LibGsk.gsk_render_node_unref(@pointer)
 
       # Return value handling
     end
@@ -210,7 +208,7 @@ module Gsk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGsk.gsk_render_node_write_to_file(self, filename, pointerof(_error))
+      _retval = LibGsk.gsk_render_node_write_to_file(@pointer, filename, pointerof(_error))
 
       # Error check
       Gsk.raise_exception(_error) unless _error.null?

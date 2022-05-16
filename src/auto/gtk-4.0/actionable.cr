@@ -48,7 +48,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_actionable_get_action_name(self)
+      _retval = LibGtk.gtk_actionable_get_action_name(@pointer)
 
       # Return value handling
 
@@ -60,7 +60,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_actionable_get_action_target_value(self)
+      _retval = LibGtk.gtk_actionable_get_action_target_value(@pointer)
 
       # Return value handling
 
@@ -80,7 +80,7 @@ module Gtk
                     end
 
       # C call
-      LibGtk.gtk_actionable_set_action_name(self, action_name)
+      LibGtk.gtk_actionable_set_action_name(@pointer, action_name)
 
       # Return value handling
     end
@@ -100,7 +100,7 @@ module Gtk
                      end
 
       # C call
-      LibGtk.gtk_actionable_set_action_target_value(self, target_value)
+      LibGtk.gtk_actionable_set_action_target_value(@pointer, target_value)
 
       # Return value handling
     end
@@ -110,7 +110,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_actionable_set_detailed_action_name(self, detailed_action_name)
+      LibGtk.gtk_actionable_set_detailed_action_name(@pointer, detailed_action_name)
 
       # Return value handling
     end
@@ -120,8 +120,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Actionable__Impl < GObject::Object
+  class AbstractActionable < GObject::Object
     include Actionable
+
+    GICrystal.define_new_method(Gtk::AbstractActionable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

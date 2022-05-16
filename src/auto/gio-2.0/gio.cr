@@ -54,6 +54,8 @@ require "./d_bus_subtree_v_table.cr"
 require "./data_input_stream.cr"
 require "./data_output_stream.cr"
 require "./datagram_based.cr"
+require "./debug_controller.cr"
+require "./debug_controller_d_bus.cr"
 require "./desktop_app_info.cr"
 require "./desktop_app_info_lookup.cr"
 require "./drive.cr"
@@ -204,6 +206,9 @@ module Gio
   # In code that needs to be backwards-compatible with older GLib,
   # use %FALSE instead.
   DBUS_METHOD_INVOCATION_UNHANDLED = true
+  # Extension point for debug control functionality.
+  # See [Extending GIO][extending-gio].
+  DEBUG_CONTROLLER_EXTENSION_POINT_NAME = "gio-debug-controller"
   # Extension point for default handler to URI association. See
   # [Extending GIO][extending-gio].
   DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME = "gio-desktop-app-info-lookup"
@@ -1175,6 +1180,8 @@ module Gio
     NetbsdUnpcbid = 5
     # The native credentials type is a `struct xucred`. Added in 2.66.
     AppleXucred = 6
+    # The native credentials type is a PID `DWORD`. Added in 2.72.
+    Win32Pid = 7
   end
 
   # Enumeration used to describe the byte order of a D-Bus message.
@@ -1379,7 +1386,7 @@ module Gio
 
   # Indicates a hint from the file system whether files should be
   # previewed in a file manager. Returned as the value of the key
-  # #G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
+  # %G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW.
   enum FilesystemPreviewType : UInt32
     # Only preview files if user has explicitly requested it.
     IfAlways = 0
@@ -1932,6 +1939,7 @@ module Gio
     DoNotAutoStart               =  4
     GetInvalidatedProperties     =  8
     DoNotAutoStartAtConstruction = 16
+    NoMatchRule                  = 32
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
@@ -2145,14 +2153,15 @@ module Gio
   end
   @[Flags]
   enum SubprocessFlags : UInt32
-    StdinPipe     =   1
-    StdinInherit  =   2
-    StdoutPipe    =   4
-    StdoutSilence =   8
-    StderrPipe    =  16
-    StderrSilence =  32
-    StderrMerge   =  64
-    InheritFds    = 128
+    StdinPipe          =   1
+    StdinInherit       =   2
+    StdoutPipe         =   4
+    StdoutSilence      =   8
+    StderrPipe         =  16
+    StderrSilence      =  32
+    StderrMerge        =  64
+    InheritFds         = 128
+    SearchPathFromEnvp = 256
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
@@ -2288,7 +2297,7 @@ module Gio
 
     # Return value handling
 
-    Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.app_info_get_all : GLib::List
@@ -2324,7 +2333,7 @@ module Gio
 
     # Return value handling
 
-    Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+    Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
   end
 
   def self.app_info_get_default_for_uri_scheme(uri_scheme : ::String) : Gio::AppInfo?
@@ -2336,7 +2345,7 @@ module Gio
 
     # Return value handling
 
-    Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+    Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
   end
 
   def self.app_info_get_fallback_for_type(content_type : ::String) : GLib::List
@@ -2746,7 +2755,7 @@ module Gio
 
     # Return value handling
 
-    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.content_type_get_mime_dirs : Enumerable(::String)
@@ -2782,7 +2791,7 @@ module Gio
 
     # Return value handling
 
-    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.content_type_guess(filename : ::String?, data : Enumerable(UInt8)?) : ::String
@@ -3357,7 +3366,7 @@ module Gio
 
     # Return value handling
 
-    Gio::DtlsClientConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractDtlsClientConnection.new(_retval, GICrystal::Transfer::Full)
   end
 
   def dtls_server_connection_new(base_socket : Gio::DatagramBased, certificate : Gio::TlsCertificate?) : Gio::DtlsServerConnection
@@ -3382,7 +3391,7 @@ module Gio
 
     # Return value handling
 
-    Gio::DtlsServerConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractDtlsServerConnection.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.file_new_for_commandline_arg(arg : ::String) : Gio::File
@@ -3394,7 +3403,7 @@ module Gio
 
     # Return value handling
 
-    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.file_new_for_commandline_arg_and_cwd(arg : ::String, cwd : ::String) : Gio::File
@@ -3406,7 +3415,7 @@ module Gio
 
     # Return value handling
 
-    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.file_new_for_path(path : ::String) : Gio::File
@@ -3418,7 +3427,7 @@ module Gio
 
     # Return value handling
 
-    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.file_new_for_uri(uri : ::String) : Gio::File
@@ -3430,7 +3439,7 @@ module Gio
 
     # Return value handling
 
-    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
   end
 
   def file_new_tmp(tmpl : ::String?, iostream : Gio::FileIOStream) : Gio::File
@@ -3457,7 +3466,7 @@ module Gio
 
     # Return value handling
 
-    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.file_parse_name(parse_name : ::String) : Gio::File
@@ -3469,7 +3478,7 @@ module Gio
 
     # Return value handling
 
-    Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.icon_deserialize(value : _) : Gio::Icon?
@@ -3488,7 +3497,7 @@ module Gio
 
     # Return value handling
 
-    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+    Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
   end
 
   def self.icon_hash(icon : Pointer(Void)) : UInt32
@@ -3517,7 +3526,7 @@ module Gio
 
     # Return value handling
 
-    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
   end
 
   def initable_newv(object_type : UInt64, parameters : Enumerable(GObject::Parameter), cancellable : Gio::Cancellable?) : GObject::Object
@@ -3718,7 +3727,7 @@ module Gio
 
     # Return value handling
 
-    Gio::MemoryMonitor__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractMemoryMonitor.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.memory_settings_backend_new : Gio::SettingsBackend
@@ -3742,7 +3751,7 @@ module Gio
 
     # Return value handling
 
-    Gio::NetworkMonitor__Impl.new(_retval, GICrystal::Transfer::None)
+    Gio::AbstractNetworkMonitor.new(_retval, GICrystal::Transfer::None)
   end
 
   def self.networking_init : Nil
@@ -3903,7 +3912,7 @@ module Gio
 
     # Return value handling
 
-    Gio::PowerProfileMonitor__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractPowerProfileMonitor.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.proxy_get_default_for_protocol(protocol : ::String) : Gio::Proxy?
@@ -3915,7 +3924,7 @@ module Gio
 
     # Return value handling
 
-    Gio::Proxy__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+    Gio::AbstractProxy.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
   end
 
   def self.proxy_resolver_get_default : Gio::ProxyResolver
@@ -3927,7 +3936,7 @@ module Gio
 
     # Return value handling
 
-    Gio::ProxyResolver__Impl.new(_retval, GICrystal::Transfer::None)
+    Gio::AbstractProxyResolver.new(_retval, GICrystal::Transfer::None)
   end
 
   def self.resolver_error_quark : UInt32
@@ -4111,7 +4120,7 @@ module Gio
 
     # Return value handling
 
-    Gio::TlsBackend__Impl.new(_retval, GICrystal::Transfer::None)
+    Gio::AbstractTlsBackend.new(_retval, GICrystal::Transfer::None)
   end
 
   def self.tls_channel_binding_error_quark : UInt32
@@ -4148,7 +4157,7 @@ module Gio
 
     # Return value handling
 
-    Gio::TlsClientConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractTlsClientConnection.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.tls_error_quark : UInt32
@@ -4177,7 +4186,7 @@ module Gio
 
     # Return value handling
 
-    Gio::TlsFileDatabase__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractTlsFileDatabase.new(_retval, GICrystal::Transfer::Full)
   end
 
   def tls_server_connection_new(base_io_stream : Gio::IOStream, certificate : Gio::TlsCertificate?) : Gio::TlsServerConnection
@@ -4202,7 +4211,7 @@ module Gio
 
     # Return value handling
 
-    Gio::TlsServerConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractTlsServerConnection.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.unix_is_mount_path_system_internal(mount_path : ::String) : Bool
@@ -4386,7 +4395,7 @@ module Gio
 
     # Return value handling
 
-    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.unix_mount_guess_name(mount_entry : Gio::UnixMountEntry) : ::String
@@ -4422,7 +4431,7 @@ module Gio
 
     # Return value handling
 
-    Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.unix_mount_is_readonly(mount_entry : Gio::UnixMountEntry) : Bool
@@ -4807,7 +4816,7 @@ module Gio
   #   }
   # ]|
   # but should instead treat all unrecognized error codes the same as
-  # #G_IO_ERROR_FAILED.
+  # %G_IO_ERROR_FAILED.
   #
   # See also #GPollableReturn for a cheaper way of returning
   # %G_IO_ERROR_WOULD_BLOCK to callers without allocating a #GError.
@@ -5223,6 +5232,12 @@ module Gio
         7
       end
     end
+
+    class BadCertificatePassword < TlsError
+      def code : Int32
+        8
+      end
+    end
   end
 
   # :nodoc:
@@ -5357,6 +5372,7 @@ module Gio
       raise TlsError::CertificateRequired.new(error) if error_code == 5
       raise TlsError::Eof.new(error) if error_code == 6
       raise TlsError::InappropriateFallback.new(error) if error_code == 7
+      raise TlsError::BadCertificatePassword.new(error) if error_code == 8
     end
 
     GObject.raise_exception(error)

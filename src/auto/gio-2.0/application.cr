@@ -132,15 +132,13 @@ module Gio
         sizeof(LibGio::Application), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Application, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Application`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -414,7 +412,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_activate(self)
+      LibGio.g_application_activate(@pointer)
 
       # Return value handling
     end
@@ -445,7 +443,7 @@ module Gio
                         end
 
       # C call
-      LibGio.g_application_add_main_option(self, long_name, short_name, flags, arg, description, arg_description)
+      LibGio.g_application_add_main_option(@pointer, long_name, short_name, flags, arg, description, arg_description)
 
       # Return value handling
     end
@@ -513,7 +511,7 @@ module Gio
       entries = entries.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGio.g_application_add_main_option_entries(self, entries)
+      LibGio.g_application_add_main_option_entries(@pointer, entries)
 
       # Return value handling
     end
@@ -553,7 +551,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_add_option_group(self, group)
+      LibGio.g_application_add_option_group(@pointer, group)
 
       # Return value handling
     end
@@ -569,7 +567,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_bind_busy_property(self, object, property)
+      LibGio.g_application_bind_busy_property(@pointer, object, property)
 
       # Return value handling
     end
@@ -580,7 +578,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_get_application_id(self)
+      _retval = LibGio.g_application_get_application_id(@pointer)
 
       # Return value handling
 
@@ -605,7 +603,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_get_dbus_connection(self)
+      _retval = LibGio.g_application_get_dbus_connection(@pointer)
 
       # Return value handling
 
@@ -631,7 +629,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_get_dbus_object_path(self)
+      _retval = LibGio.g_application_get_dbus_object_path(@pointer)
 
       # Return value handling
 
@@ -646,7 +644,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_get_flags(self)
+      _retval = LibGio.g_application_get_flags(@pointer)
 
       # Return value handling
 
@@ -662,7 +660,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_get_inactivity_timeout(self)
+      _retval = LibGio.g_application_get_inactivity_timeout(@pointer)
 
       # Return value handling
 
@@ -676,7 +674,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_get_is_busy(self)
+      _retval = LibGio.g_application_get_is_busy(@pointer)
 
       # Return value handling
 
@@ -692,7 +690,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_get_is_registered(self)
+      _retval = LibGio.g_application_get_is_registered(@pointer)
 
       # Return value handling
 
@@ -714,7 +712,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_get_is_remote(self)
+      _retval = LibGio.g_application_get_is_remote(@pointer)
 
       # Return value handling
 
@@ -729,7 +727,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_get_resource_base_path(self)
+      _retval = LibGio.g_application_get_resource_base_path(@pointer)
 
       # Return value handling
 
@@ -748,7 +746,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_hold(self)
+      LibGio.g_application_hold(@pointer)
 
       # Return value handling
     end
@@ -770,7 +768,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_mark_busy(self)
+      LibGio.g_application_mark_busy(@pointer)
 
       # Return value handling
     end
@@ -799,7 +797,7 @@ module Gio
       files = files.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGio.g_application_open(self, files, n_files, hint)
+      LibGio.g_application_open(@pointer, files, n_files, hint)
 
       # Return value handling
     end
@@ -822,7 +820,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_quit(self)
+      LibGio.g_application_quit(@pointer)
 
       # Return value handling
     end
@@ -872,7 +870,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_application_register(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_application_register(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -893,7 +891,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_release(self)
+      LibGio.g_application_release(@pointer)
 
       # Return value handling
     end
@@ -987,7 +985,7 @@ module Gio
              end
 
       # C call
-      _retval = LibGio.g_application_run(self, argc, argv)
+      _retval = LibGio.g_application_run(@pointer, argc, argv)
 
       # Return value handling
 
@@ -1037,7 +1035,7 @@ module Gio
            end
 
       # C call
-      LibGio.g_application_send_notification(self, id, notification)
+      LibGio.g_application_send_notification(@pointer, id, notification)
 
       # Return value handling
     end
@@ -1057,7 +1055,7 @@ module Gio
                      end
 
       # C call
-      LibGio.g_application_set_action_group(self, action_group)
+      LibGio.g_application_set_action_group(@pointer, action_group)
 
       # Return value handling
     end
@@ -1082,7 +1080,7 @@ module Gio
                        end
 
       # C call
-      LibGio.g_application_set_application_id(self, application_id)
+      LibGio.g_application_set_application_id(@pointer, application_id)
 
       # Return value handling
     end
@@ -1098,7 +1096,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_set_default(self)
+      LibGio.g_application_set_default(@pointer)
 
       # Return value handling
     end
@@ -1114,7 +1112,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_set_flags(self, flags)
+      LibGio.g_application_set_flags(@pointer, flags)
 
       # Return value handling
     end
@@ -1132,7 +1130,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_set_inactivity_timeout(self, inactivity_timeout)
+      LibGio.g_application_set_inactivity_timeout(@pointer, inactivity_timeout)
 
       # Return value handling
     end
@@ -1153,7 +1151,7 @@ module Gio
                     end
 
       # C call
-      LibGio.g_application_set_option_context_description(self, description)
+      LibGio.g_application_set_option_context_description(@pointer, description)
 
       # Return value handling
     end
@@ -1177,7 +1175,7 @@ module Gio
                          end
 
       # C call
-      LibGio.g_application_set_option_context_parameter_string(self, parameter_string)
+      LibGio.g_application_set_option_context_parameter_string(@pointer, parameter_string)
 
       # Return value handling
     end
@@ -1198,7 +1196,7 @@ module Gio
                 end
 
       # C call
-      LibGio.g_application_set_option_context_summary(self, summary)
+      LibGio.g_application_set_option_context_summary(@pointer, summary)
 
       # Return value handling
     end
@@ -1249,7 +1247,7 @@ module Gio
                       end
 
       # C call
-      LibGio.g_application_set_resource_base_path(self, resource_path)
+      LibGio.g_application_set_resource_base_path(@pointer, resource_path)
 
       # Return value handling
     end
@@ -1262,7 +1260,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_unbind_busy_property(self, object, property)
+      LibGio.g_application_unbind_busy_property(@pointer, object, property)
 
       # Return value handling
     end
@@ -1279,7 +1277,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_unmark_busy(self)
+      LibGio.g_application_unmark_busy(@pointer)
 
       # Return value handling
     end
@@ -1302,7 +1300,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_withdraw_notification(self, id)
+      LibGio.g_application_withdraw_notification(@pointer, id)
 
       # Return value handling
     end
@@ -1414,7 +1412,7 @@ module Gio
       def connect(handler : Proc(Gio::ApplicationCommandLine, Int32))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_command_line : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           command_line = Gio::ApplicationCommandLine.new(lib_command_line, :none)
           ::Box(Proc(Gio::ApplicationCommandLine, Int32)).unbox(_lib_box).call(command_line)
         }.pointer
@@ -1426,7 +1424,7 @@ module Gio
       def connect_after(handler : Proc(Gio::ApplicationCommandLine, Int32))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_command_line : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           command_line = Gio::ApplicationCommandLine.new(lib_command_line, :none)
           ::Box(Proc(Gio::ApplicationCommandLine, Int32)).unbox(_lib_box).call(command_line)
         }.pointer
@@ -1439,7 +1437,7 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_command_line : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::Application.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           command_line = Gio::ApplicationCommandLine.new(lib_command_line, :none)
           ::Box(Proc(Gio::Application, Gio::ApplicationCommandLine, Int32)).unbox(_lib_box).call(_sender, command_line)
         }.pointer
@@ -1452,7 +1450,7 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_command_line : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::Application.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           command_line = Gio::ApplicationCommandLine.new(lib_command_line, :none)
           ::Box(Proc(Gio::Application, Gio::ApplicationCommandLine, Int32)).unbox(_lib_box).call(_sender, command_line)
         }.pointer
@@ -1538,7 +1536,7 @@ module Gio
       def connect(handler : Proc(GLib::VariantDict, Int32))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_options : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           options = GLib::VariantDict.new(lib_options, :none)
           ::Box(Proc(GLib::VariantDict, Int32)).unbox(_lib_box).call(options)
         }.pointer
@@ -1550,7 +1548,7 @@ module Gio
       def connect_after(handler : Proc(GLib::VariantDict, Int32))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_options : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           options = GLib::VariantDict.new(lib_options, :none)
           ::Box(Proc(GLib::VariantDict, Int32)).unbox(_lib_box).call(options)
         }.pointer
@@ -1563,7 +1561,7 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_options : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::Application.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           options = GLib::VariantDict.new(lib_options, :none)
           ::Box(Proc(Gio::Application, GLib::VariantDict, Int32)).unbox(_lib_box).call(_sender, options)
         }.pointer
@@ -1576,7 +1574,7 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_options : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::Application.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           options = GLib::VariantDict.new(lib_options, :none)
           ::Box(Proc(Gio::Application, GLib::VariantDict, Int32)).unbox(_lib_box).call(_sender, options)
         }.pointer
@@ -1692,73 +1690,93 @@ module Gio
         @detail ? "open::#{@detail}" : "open"
       end
 
-      def connect(&block : Proc(Enumerable(Gio::File), Int32, ::String, Nil))
+      def connect(&block : Proc(Enumerable(Gio::File), ::String, Nil))
         connect(block)
       end
 
-      def connect_after(&block : Proc(Enumerable(Gio::File), Int32, ::String, Nil))
+      def connect_after(&block : Proc(Enumerable(Gio::File), ::String, Nil))
         connect(block)
       end
 
-      def connect(handler : Proc(Enumerable(Gio::File), Int32, ::String, Nil))
+      def connect(handler : Proc(Enumerable(Gio::File), ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_files : Pointer(Void), lib_n_files : Int32, lib_hint : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           # Generator::ArrayLengthArgPlan
           # Generator::ArrayArgPlan
-          n_files = lib_n_files
-          hint = lib_hint
-          ::Box(Proc(Enumerable(Gio::File), Int32, ::String, Nil)).unbox(_lib_box).call(files, hint)
+          lib_files = lib_files.as(Pointer(Pointer(Void)))
+          files = Array(Gio::File).new(lib_n_files) do |_i|
+            Gio::AbstractFile.new((lib_files + _i).value, GICrystal::Transfer::None)
+          end
+          # Generator::BuiltInTypeArgPlan
+          hint = ::String.new(lib_hint)
+          ::Box(Proc(Enumerable(Gio::File), ::String, Nil)).unbox(_lib_box).call(files, hint)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(handler : Proc(Enumerable(Gio::File), Int32, ::String, Nil))
+      def connect_after(handler : Proc(Enumerable(Gio::File), ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_files : Pointer(Void), lib_n_files : Int32, lib_hint : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           # Generator::ArrayLengthArgPlan
           # Generator::ArrayArgPlan
-          n_files = lib_n_files
-          hint = lib_hint
-          ::Box(Proc(Enumerable(Gio::File), Int32, ::String, Nil)).unbox(_lib_box).call(files, hint)
+          lib_files = lib_files.as(Pointer(Pointer(Void)))
+          files = Array(Gio::File).new(lib_n_files) do |_i|
+            Gio::AbstractFile.new((lib_files + _i).value, GICrystal::Transfer::None)
+          end
+          # Generator::BuiltInTypeArgPlan
+          hint = ::String.new(lib_hint)
+          ::Box(Proc(Enumerable(Gio::File), ::String, Nil)).unbox(_lib_box).call(files, hint)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(handler : Proc(Gio::Application, Enumerable(Gio::File), Int32, ::String, Nil))
+      def connect(handler : Proc(Gio::Application, Enumerable(Gio::File), ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_files : Pointer(Void), lib_n_files : Int32, lib_hint : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::Application.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::ArrayLengthArgPlan
           # Generator::ArrayArgPlan
-          n_files = lib_n_files
-          hint = lib_hint
-          ::Box(Proc(Gio::Application, Enumerable(Gio::File), Int32, ::String, Nil)).unbox(_lib_box).call(_sender, files, hint)
+          lib_files = lib_files.as(Pointer(Pointer(Void)))
+          files = Array(Gio::File).new(lib_n_files) do |_i|
+            Gio::AbstractFile.new((lib_files + _i).value, GICrystal::Transfer::None)
+          end
+          # Generator::BuiltInTypeArgPlan
+          hint = ::String.new(lib_hint)
+          ::Box(Proc(Gio::Application, Enumerable(Gio::File), ::String, Nil)).unbox(_lib_box).call(_sender, files, hint)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(handler : Proc(Gio::Application, Enumerable(Gio::File), Int32, ::String, Nil))
+      def connect_after(handler : Proc(Gio::Application, Enumerable(Gio::File), ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_files : Pointer(Void), lib_n_files : Int32, lib_hint : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::Application.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::ArrayLengthArgPlan
           # Generator::ArrayArgPlan
-          n_files = lib_n_files
-          hint = lib_hint
-          ::Box(Proc(Gio::Application, Enumerable(Gio::File), Int32, ::String, Nil)).unbox(_lib_box).call(_sender, files, hint)
+          lib_files = lib_files.as(Pointer(Pointer(Void)))
+          files = Array(Gio::File).new(lib_n_files) do |_i|
+            Gio::AbstractFile.new((lib_files + _i).value, GICrystal::Transfer::None)
+          end
+          # Generator::BuiltInTypeArgPlan
+          hint = ::String.new(lib_hint)
+          ::Box(Proc(Gio::Application, Enumerable(Gio::File), ::String, Nil)).unbox(_lib_box).call(_sender, files, hint)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(files : Enumerable(Gio::File), n_files : Int32, hint : ::String) : Nil
+      def emit(files : Enumerable(Gio::File), hint : ::String) : Nil
+        # Generator::ArrayLengthArgPlan
+        n_files = files.size # Generator::ArrayArgPlan
+        files = files.to_a.map(&.to_unsafe).to_unsafe
+
         LibGObject.g_signal_emit_by_name(@source, "open", files, n_files, hint)
       end
     end

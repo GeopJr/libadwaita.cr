@@ -97,15 +97,13 @@ module Gtk
         sizeof(LibGtk::DragSource), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DragSource, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DragSource`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -233,7 +231,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drag_source_drag_cancel(self)
+      LibGtk.gtk_drag_source_drag_cancel(@pointer)
 
       # Return value handling
     end
@@ -244,7 +242,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drag_source_get_actions(self)
+      _retval = LibGtk.gtk_drag_source_get_actions(@pointer)
 
       # Return value handling
 
@@ -257,7 +255,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drag_source_get_content(self)
+      _retval = LibGtk.gtk_drag_source_get_content(@pointer)
 
       # Return value handling
 
@@ -270,7 +268,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drag_source_get_drag(self)
+      _retval = LibGtk.gtk_drag_source_get_drag(@pointer)
 
       # Return value handling
 
@@ -291,7 +289,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drag_source_set_actions(self, actions)
+      LibGtk.gtk_drag_source_set_actions(@pointer, actions)
 
       # Return value handling
     end
@@ -319,7 +317,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_drag_source_set_content(self, content)
+      LibGtk.gtk_drag_source_set_content(@pointer, content)
 
       # Return value handling
     end
@@ -347,7 +345,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_drag_source_set_icon(self, paintable, hot_x, hot_y)
+      LibGtk.gtk_drag_source_set_icon(@pointer, paintable, hot_x, hot_y)
 
       # Return value handling
     end
@@ -383,7 +381,7 @@ module Gtk
       def connect(handler : Proc(Gdk::Drag, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
           ::Box(Proc(Gdk::Drag, Nil)).unbox(_lib_box).call(drag)
         }.pointer
@@ -395,7 +393,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Drag, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
           ::Box(Proc(Gdk::Drag, Nil)).unbox(_lib_box).call(drag)
         }.pointer
@@ -408,7 +406,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::DragSource.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
           ::Box(Proc(Gtk::DragSource, Gdk::Drag, Nil)).unbox(_lib_box).call(_sender, drag)
         }.pointer
@@ -421,7 +419,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::DragSource.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
           ::Box(Proc(Gtk::DragSource, Gdk::Drag, Nil)).unbox(_lib_box).call(_sender, drag)
         }.pointer
@@ -471,10 +469,10 @@ module Gtk
       def connect(handler : Proc(Gdk::Drag, Gdk::DragCancelReason, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), lib_reason : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
-          # Generator::GObjectArgPlan
-          reason = Gdk::DragCancelReason.new(lib_reason, :none)
+          # Generator::BuiltInTypeArgPlan
+          reason = Gdk::DragCancelReason.new(lib_reason)
           ::Box(Proc(Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(_lib_box).call(drag, reason)
         }.pointer
 
@@ -485,10 +483,10 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Drag, Gdk::DragCancelReason, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), lib_reason : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
-          # Generator::GObjectArgPlan
-          reason = Gdk::DragCancelReason.new(lib_reason, :none)
+          # Generator::BuiltInTypeArgPlan
+          reason = Gdk::DragCancelReason.new(lib_reason)
           ::Box(Proc(Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(_lib_box).call(drag, reason)
         }.pointer
 
@@ -500,10 +498,10 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), lib_reason : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::DragSource.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
-          # Generator::GObjectArgPlan
-          reason = Gdk::DragCancelReason.new(lib_reason, :none)
+          # Generator::BuiltInTypeArgPlan
+          reason = Gdk::DragCancelReason.new(lib_reason)
           ::Box(Proc(Gtk::DragSource, Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(_lib_box).call(_sender, drag, reason)
         }.pointer
 
@@ -515,10 +513,10 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), lib_reason : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::DragSource.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
-          # Generator::GObjectArgPlan
-          reason = Gdk::DragCancelReason.new(lib_reason, :none)
+          # Generator::BuiltInTypeArgPlan
+          reason = Gdk::DragCancelReason.new(lib_reason)
           ::Box(Proc(Gtk::DragSource, Gdk::Drag, Gdk::DragCancelReason, Bool)).unbox(_lib_box).call(_sender, drag, reason)
         }.pointer
 
@@ -567,7 +565,7 @@ module Gtk
       def connect(handler : Proc(Gdk::Drag, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), lib_delete_data : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
           delete_data = lib_delete_data
           ::Box(Proc(Gdk::Drag, Bool, Nil)).unbox(_lib_box).call(drag, delete_data)
@@ -580,7 +578,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Drag, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), lib_delete_data : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
           delete_data = lib_delete_data
           ::Box(Proc(Gdk::Drag, Bool, Nil)).unbox(_lib_box).call(drag, delete_data)
@@ -594,7 +592,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), lib_delete_data : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::DragSource.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
           delete_data = lib_delete_data
           ::Box(Proc(Gtk::DragSource, Gdk::Drag, Bool, Nil)).unbox(_lib_box).call(_sender, drag, delete_data)
@@ -608,7 +606,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drag : Pointer(Void), lib_delete_data : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::DragSource.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drag = Gdk::Drag.new(lib_drag, :none)
           delete_data = lib_delete_data
           ::Box(Proc(Gtk::DragSource, Gdk::Drag, Bool, Nil)).unbox(_lib_box).call(_sender, drag, delete_data)

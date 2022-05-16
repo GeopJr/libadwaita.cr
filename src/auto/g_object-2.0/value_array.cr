@@ -96,7 +96,7 @@ module GObject
               end
 
       # C call
-      _retval = LibGObject.g_value_array_append(self, value)
+      _retval = LibGObject.g_value_array_append(@pointer, value)
 
       # Return value handling
 
@@ -108,7 +108,7 @@ module GObject
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGObject.g_value_array_copy(self)
+      _retval = LibGObject.g_value_array_copy(@pointer)
 
       # Return value handling
 
@@ -120,7 +120,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_value_array_get_nth(self, index_)
+      _retval = LibGObject.g_value_array_get_nth(@pointer, index_)
 
       # Return value handling
 
@@ -142,7 +142,7 @@ module GObject
               end
 
       # C call
-      _retval = LibGObject.g_value_array_insert(self, index_, value)
+      _retval = LibGObject.g_value_array_insert(@pointer, index_, value)
 
       # Return value handling
 
@@ -164,7 +164,7 @@ module GObject
               end
 
       # C call
-      _retval = LibGObject.g_value_array_prepend(self, value)
+      _retval = LibGObject.g_value_array_prepend(@pointer, value)
 
       # Return value handling
 
@@ -176,7 +176,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_value_array_remove(self, index_)
+      _retval = LibGObject.g_value_array_remove(@pointer, index_)
 
       # Return value handling
 
@@ -196,7 +196,7 @@ module GObject
                   end
 
       # C call
-      _retval = LibGObject.g_value_array_sort_with_data(self, compare_func, user_data)
+      _retval = LibGObject.g_value_array_sort_with_data(@pointer, compare_func, user_data)
 
       # Return value handling
 

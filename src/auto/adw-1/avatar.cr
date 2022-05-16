@@ -44,15 +44,13 @@ module Adw
         sizeof(LibAdw::Avatar), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Avatar, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Avatar`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -293,7 +291,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "custom-image", pointerof(value), Pointer(Void).null)
-      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gdk::AbstractPaintable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def icon_name=(value : ::String) : ::String
@@ -387,7 +385,7 @@ module Adw
       # Returns: (transfer full)
 
       # C call
-      _retval = LibAdw.adw_avatar_draw_to_texture(self, scale_factor)
+      _retval = LibAdw.adw_avatar_draw_to_texture(@pointer, scale_factor)
 
       # Return value handling
 
@@ -400,11 +398,11 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_avatar_get_custom_image(self)
+      _retval = LibAdw.adw_avatar_get_custom_image(@pointer)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the name of an icon to use as a fallback.
@@ -413,7 +411,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_avatar_get_icon_name(self)
+      _retval = LibAdw.adw_avatar_get_icon_name(@pointer)
 
       # Return value handling
 
@@ -426,7 +424,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_avatar_get_show_initials(self)
+      _retval = LibAdw.adw_avatar_get_show_initials(@pointer)
 
       # Return value handling
 
@@ -439,7 +437,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_avatar_get_size(self)
+      _retval = LibAdw.adw_avatar_get_size(@pointer)
 
       # Return value handling
 
@@ -452,7 +450,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_avatar_get_text(self)
+      _retval = LibAdw.adw_avatar_get_text(@pointer)
 
       # Return value handling
 
@@ -473,7 +471,7 @@ module Adw
                      end
 
       # C call
-      LibAdw.adw_avatar_set_custom_image(self, custom_image)
+      LibAdw.adw_avatar_set_custom_image(@pointer, custom_image)
 
       # Return value handling
     end
@@ -494,7 +492,7 @@ module Adw
                   end
 
       # C call
-      LibAdw.adw_avatar_set_icon_name(self, icon_name)
+      LibAdw.adw_avatar_set_icon_name(@pointer, icon_name)
 
       # Return value handling
     end
@@ -505,7 +503,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_avatar_set_show_initials(self, show_initials)
+      LibAdw.adw_avatar_set_show_initials(@pointer, show_initials)
 
       # Return value handling
     end
@@ -516,7 +514,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_avatar_set_size(self, size)
+      LibAdw.adw_avatar_set_size(@pointer, size)
 
       # Return value handling
     end
@@ -535,7 +533,7 @@ module Adw
              end
 
       # C call
-      LibAdw.adw_avatar_set_text(self, text)
+      LibAdw.adw_avatar_set_text(@pointer, text)
 
       # Return value handling
     end

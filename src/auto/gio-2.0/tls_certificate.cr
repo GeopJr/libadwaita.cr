@@ -17,15 +17,13 @@ module Gio
         sizeof(LibGio::TlsCertificate), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TlsCertificate, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TlsCertificate`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -33,9 +31,9 @@ module Gio
       super
     end
 
-    def initialize(*, certificate : Enumerable(UInt8)? = nil, certificate_pem : ::String? = nil, dns_names : Enumerable(Pointer(Void))? = nil, ip_addresses : Enumerable(Pointer(Void))? = nil, issuer : Gio::TlsCertificate? = nil, issuer_name : ::String? = nil, not_valid_after : GLib::DateTime? = nil, not_valid_before : GLib::DateTime? = nil, pkcs11_uri : ::String? = nil, private_key : Enumerable(UInt8)? = nil, private_key_pem : ::String? = nil, private_key_pkcs11_uri : ::String? = nil, subject_name : ::String? = nil)
-      _names = uninitialized Pointer(LibC::Char)[13]
-      _values = StaticArray(LibGObject::Value, 13).new(LibGObject::Value.new)
+    def initialize(*, certificate : Enumerable(UInt8)? = nil, certificate_pem : ::String? = nil, dns_names : Enumerable(Pointer(Void))? = nil, ip_addresses : Enumerable(Pointer(Void))? = nil, issuer : Gio::TlsCertificate? = nil, issuer_name : ::String? = nil, not_valid_after : GLib::DateTime? = nil, not_valid_before : GLib::DateTime? = nil, password : ::String? = nil, pkcs11_uri : ::String? = nil, pkcs12_data : Enumerable(UInt8)? = nil, private_key : Enumerable(UInt8)? = nil, private_key_pem : ::String? = nil, private_key_pkcs11_uri : ::String? = nil, subject_name : ::String? = nil)
+      _names = uninitialized Pointer(LibC::Char)[15]
+      _values = StaticArray(LibGObject::Value, 15).new(LibGObject::Value.new)
       _n = 0
 
       if !certificate.nil?
@@ -78,9 +76,19 @@ module Gio
         GObject::Value.init_g_value(_values.to_unsafe + _n, not_valid_before)
         _n += 1
       end
+      if !password.nil?
+        (_names.to_unsafe + _n).value = "password".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, password)
+        _n += 1
+      end
       if !pkcs11_uri.nil?
         (_names.to_unsafe + _n).value = "pkcs11-uri".to_unsafe
         GObject::Value.init_g_value(_values.to_unsafe + _n, pkcs11_uri)
+        _n += 1
+      end
+      if !pkcs12_data.nil?
+        (_names.to_unsafe + _n).value = "pkcs12-data".to_unsafe
+        GObject::Value.init_g_value(_values.to_unsafe + _n, pkcs12_data)
         _n += 1
       end
       if !private_key.nil?
@@ -203,6 +211,13 @@ module Gio
       GLib::DateTime.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
+    def password=(value : ::String) : ::String
+      unsafe_value = value
+
+      LibGObject.g_object_set(self, "password", unsafe_value, Pointer(Void).null)
+      value
+    end
+
     def pkcs11_uri=(value : ::String) : ::String
       unsafe_value = value
 
@@ -216,6 +231,13 @@ module Gio
       value = uninitialized Pointer(LibC::Char)
       LibGObject.g_object_get(self, "pkcs11-uri", pointerof(value), Pointer(Void).null)
       ::String.new(value)
+    end
+
+    def pkcs12_data=(value : Enumerable(UInt8)) : Enumerable(UInt8)
+      # handle array
+
+      LibGObject.g_object_set(self, "pkcs12-data", unsafe_value, Pointer(Void).null)
+      value
     end
 
     def private_key=(value : Enumerable(UInt8)) : Enumerable(UInt8)
@@ -288,6 +310,31 @@ module Gio
 
       # C call
       _retval = LibGio.g_tls_certificate_new_from_file(file, pointerof(_error))
+
+      # Error check
+      Gio.raise_exception(_error) unless _error.null?
+
+      # Return value handling
+
+      Gio::TlsCertificate.new(_retval, GICrystal::Transfer::Full)
+    end
+
+    # Creates a #GTlsCertificate from the data in @file.
+    #
+    # If @file cannot be read or parsed, the function will return %NULL and
+    # set @error.
+    #
+    # Any unknown file types will error with %G_IO_ERROR_NOT_SUPPORTED.
+    # Currently only `.p12` and `.pfx` files are supported.
+    # See g_tls_certificate_new_from_pkcs12() for more details.
+    def self.new_from_file_with_password(file : ::String, password : ::String) : self
+      # g_tls_certificate_new_from_file_with_password: (Constructor | Throws)
+      # Returns: (transfer full)
+
+      _error = Pointer(LibGLib::Error).null
+
+      # C call
+      _retval = LibGio.g_tls_certificate_new_from_file_with_password(file, password, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -408,6 +455,52 @@ module Gio
       Gio::TlsCertificate.new(_retval, GICrystal::Transfer::Full)
     end
 
+    # Creates a #GTlsCertificate from the data in @data. It must contain
+    # a certificate and matching private key.
+    #
+    # If extra certificates are included they will be verified as a chain
+    # and the #GTlsCertificate:issuer property will be set.
+    # All other data will be ignored.
+    #
+    # You can pass as single password for all of the data which will be
+    # used both for the PKCS #12 container as well as encrypted
+    # private keys. If decryption fails it will error with
+    # %G_TLS_ERROR_BAD_CERTIFICATE_PASSWORD.
+    #
+    # This constructor requires support in the current #GTlsBackend.
+    # If support is missing it will error with
+    # %G_IO_ERROR_NOT_SUPPORTED.
+    #
+    # Other parsing failures will error with %G_TLS_ERROR_BAD_CERTIFICATE.
+    def self.new_from_pkcs12(data : Enumerable(UInt8), password : ::String?) : self
+      # g_tls_certificate_new_from_pkcs12: (Constructor | Throws)
+      # @data: (array length=length element-type UInt8)
+      # @password: (nullable)
+      # Returns: (transfer full)
+
+      _error = Pointer(LibGLib::Error).null
+
+      # Generator::ArrayLengthArgPlan
+      length = data.size # Generator::ArrayArgPlan
+      data = data.to_a.to_unsafe
+      # Generator::NullableArrayPlan
+      password = if password.nil?
+                   Pointer(LibC::Char).null
+                 else
+                   password.to_unsafe
+                 end
+
+      # C call
+      _retval = LibGio.g_tls_certificate_new_from_pkcs12(data, length, password, pointerof(_error))
+
+      # Error check
+      Gio.raise_exception(_error) unless _error.null?
+
+      # Return value handling
+
+      Gio::TlsCertificate.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def list_new_from_file(file : ::String) : GLib::List
       # g_tls_certificate_list_new_from_file: (Throws)
       # Returns: (transfer full)
@@ -431,7 +524,7 @@ module Gio
       # Returns: (transfer container) (array element-type Interface)
 
       # C call
-      _retval = LibGio.g_tls_certificate_get_dns_names(self)
+      _retval = LibGio.g_tls_certificate_get_dns_names(@pointer)
 
       # Return value handling
 
@@ -444,7 +537,7 @@ module Gio
       # Returns: (transfer container) (array element-type Interface)
 
       # C call
-      _retval = LibGio.g_tls_certificate_get_ip_addresses(self)
+      _retval = LibGio.g_tls_certificate_get_ip_addresses(@pointer)
 
       # Return value handling
 
@@ -457,7 +550,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_certificate_get_issuer(self)
+      _retval = LibGio.g_tls_certificate_get_issuer(@pointer)
 
       # Return value handling
 
@@ -470,7 +563,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_tls_certificate_get_issuer_name(self)
+      _retval = LibGio.g_tls_certificate_get_issuer_name(@pointer)
 
       # Return value handling
 
@@ -483,7 +576,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_tls_certificate_get_not_valid_after(self)
+      _retval = LibGio.g_tls_certificate_get_not_valid_after(@pointer)
 
       # Return value handling
 
@@ -496,7 +589,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_tls_certificate_get_not_valid_before(self)
+      _retval = LibGio.g_tls_certificate_get_not_valid_before(@pointer)
 
       # Return value handling
 
@@ -509,7 +602,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_tls_certificate_get_subject_name(self)
+      _retval = LibGio.g_tls_certificate_get_subject_name(@pointer)
 
       # Return value handling
 
@@ -526,7 +619,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_certificate_is_same(self, cert_two)
+      _retval = LibGio.g_tls_certificate_is_same(@pointer, cert_two)
 
       # Return value handling
 
@@ -584,7 +677,7 @@ module Gio
                    end
 
       # C call
-      _retval = LibGio.g_tls_certificate_verify(self, identity, trusted_ca)
+      _retval = LibGio.g_tls_certificate_verify(@pointer, identity, trusted_ca)
 
       # Return value handling
 

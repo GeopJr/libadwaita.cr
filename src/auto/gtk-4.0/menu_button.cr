@@ -83,15 +83,13 @@ module Gtk
         sizeof(LibGtk::MenuButton), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(MenuButton, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `MenuButton`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -520,7 +518,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_always_show_arrow(self)
+      _retval = LibGtk.gtk_menu_button_get_always_show_arrow(@pointer)
 
       # Return value handling
 
@@ -533,7 +531,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_child(self)
+      _retval = LibGtk.gtk_menu_button_get_child(@pointer)
 
       # Return value handling
 
@@ -546,7 +544,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_direction(self)
+      _retval = LibGtk.gtk_menu_button_get_direction(@pointer)
 
       # Return value handling
 
@@ -559,7 +557,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_has_frame(self)
+      _retval = LibGtk.gtk_menu_button_get_has_frame(@pointer)
 
       # Return value handling
 
@@ -572,7 +570,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_icon_name(self)
+      _retval = LibGtk.gtk_menu_button_get_icon_name(@pointer)
 
       # Return value handling
 
@@ -585,7 +583,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_label(self)
+      _retval = LibGtk.gtk_menu_button_get_label(@pointer)
 
       # Return value handling
 
@@ -598,7 +596,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_menu_model(self)
+      _retval = LibGtk.gtk_menu_button_get_menu_model(@pointer)
 
       # Return value handling
 
@@ -614,7 +612,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_popover(self)
+      _retval = LibGtk.gtk_menu_button_get_popover(@pointer)
 
       # Return value handling
 
@@ -627,7 +625,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_primary(self)
+      _retval = LibGtk.gtk_menu_button_get_primary(@pointer)
 
       # Return value handling
 
@@ -641,7 +639,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_menu_button_get_use_underline(self)
+      _retval = LibGtk.gtk_menu_button_get_use_underline(@pointer)
 
       # Return value handling
 
@@ -654,7 +652,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_menu_button_popdown(self)
+      LibGtk.gtk_menu_button_popdown(@pointer)
 
       # Return value handling
     end
@@ -665,7 +663,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_menu_button_popup(self)
+      LibGtk.gtk_menu_button_popup(@pointer)
 
       # Return value handling
     end
@@ -677,7 +675,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_menu_button_set_always_show_arrow(self, always_show_arrow)
+      LibGtk.gtk_menu_button_set_always_show_arrow(@pointer, always_show_arrow)
 
       # Return value handling
     end
@@ -703,7 +701,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_menu_button_set_child(self, child)
+      LibGtk.gtk_menu_button_set_child(@pointer, child)
 
       # Return value handling
     end
@@ -731,10 +729,9 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_menu_button : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           menu_button = Gtk::MenuButton.new(lib_menu_button, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::MenuButton, Nil)).unbox(user_data).call(menu_button)
+          ::Box(Proc(Gtk::MenuButton, Nil)).unbox(lib_user_data).call(menu_button)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy_notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -743,7 +740,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_menu_button_set_create_popup_func(self, func, user_data, destroy_notify)
+      LibGtk.gtk_menu_button_set_create_popup_func(@pointer, func, user_data, destroy_notify)
 
       # Return value handling
     end
@@ -763,7 +760,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_menu_button_set_direction(self, direction)
+      LibGtk.gtk_menu_button_set_direction(@pointer, direction)
 
       # Return value handling
     end
@@ -774,7 +771,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_menu_button_set_has_frame(self, has_frame)
+      LibGtk.gtk_menu_button_set_has_frame(@pointer, has_frame)
 
       # Return value handling
     end
@@ -792,7 +789,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_menu_button_set_icon_name(self, icon_name)
+      LibGtk.gtk_menu_button_set_icon_name(@pointer, icon_name)
 
       # Return value handling
     end
@@ -809,7 +806,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_menu_button_set_label(self, label)
+      LibGtk.gtk_menu_button_set_label(@pointer, label)
 
       # Return value handling
     end
@@ -837,7 +834,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_menu_button_set_menu_model(self, menu_model)
+      LibGtk.gtk_menu_button_set_menu_model(@pointer, menu_model)
 
       # Return value handling
     end
@@ -861,7 +858,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_menu_button_set_popover(self, popover)
+      LibGtk.gtk_menu_button_set_popover(@pointer, popover)
 
       # Return value handling
     end
@@ -874,7 +871,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_menu_button_set_primary(self, primary)
+      LibGtk.gtk_menu_button_set_primary(@pointer, primary)
 
       # Return value handling
     end
@@ -885,7 +882,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_menu_button_set_use_underline(self, use_underline)
+      LibGtk.gtk_menu_button_set_use_underline(@pointer, use_underline)
 
       # Return value handling
     end

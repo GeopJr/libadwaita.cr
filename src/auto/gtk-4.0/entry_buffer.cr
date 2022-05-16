@@ -22,15 +22,13 @@ module Gtk
         sizeof(LibGtk::EntryBuffer), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(EntryBuffer, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `EntryBuffer`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -151,7 +149,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_buffer_delete_text(self, position, n_chars)
+      _retval = LibGtk.gtk_entry_buffer_delete_text(@pointer, position, n_chars)
 
       # Return value handling
 
@@ -164,7 +162,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_buffer_emit_deleted_text(self, position, n_chars)
+      LibGtk.gtk_entry_buffer_emit_deleted_text(@pointer, position, n_chars)
 
       # Return value handling
     end
@@ -175,7 +173,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_buffer_emit_inserted_text(self, position, chars, n_chars)
+      LibGtk.gtk_entry_buffer_emit_inserted_text(@pointer, position, chars, n_chars)
 
       # Return value handling
     end
@@ -188,7 +186,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_buffer_get_bytes(self)
+      _retval = LibGtk.gtk_entry_buffer_get_bytes(@pointer)
 
       # Return value handling
 
@@ -201,7 +199,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_buffer_get_length(self)
+      _retval = LibGtk.gtk_entry_buffer_get_length(@pointer)
 
       # Return value handling
 
@@ -214,7 +212,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_buffer_get_max_length(self)
+      _retval = LibGtk.gtk_entry_buffer_get_max_length(@pointer)
 
       # Return value handling
 
@@ -230,7 +228,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_buffer_get_text(self)
+      _retval = LibGtk.gtk_entry_buffer_get_text(@pointer)
 
       # Return value handling
 
@@ -251,7 +249,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_buffer_insert_text(self, position, chars, n_chars)
+      _retval = LibGtk.gtk_entry_buffer_insert_text(@pointer, position, chars, n_chars)
 
       # Return value handling
 
@@ -267,7 +265,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_buffer_set_max_length(self, max_length)
+      LibGtk.gtk_entry_buffer_set_max_length(@pointer, max_length)
 
       # Return value handling
     end
@@ -284,7 +282,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_buffer_set_text(self, chars, n_chars)
+      LibGtk.gtk_entry_buffer_set_text(@pointer, chars, n_chars)
 
       # Return value handling
     end
@@ -405,7 +403,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_chars : Pointer(LibC::Char), lib_n_chars : UInt32, _lib_box : Pointer(Void)) {
           position = lib_position
-          chars = lib_chars
+          # Generator::BuiltInTypeArgPlan
+          chars = ::String.new(lib_chars)
           n_chars = lib_n_chars
           ::Box(Proc(UInt32, ::String, UInt32, Nil)).unbox(_lib_box).call(position, chars, n_chars)
         }.pointer
@@ -418,7 +417,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_chars : Pointer(LibC::Char), lib_n_chars : UInt32, _lib_box : Pointer(Void)) {
           position = lib_position
-          chars = lib_chars
+          # Generator::BuiltInTypeArgPlan
+          chars = ::String.new(lib_chars)
           n_chars = lib_n_chars
           ::Box(Proc(UInt32, ::String, UInt32, Nil)).unbox(_lib_box).call(position, chars, n_chars)
         }.pointer
@@ -432,7 +432,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_chars : Pointer(LibC::Char), lib_n_chars : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::EntryBuffer.new(_lib_sender, GICrystal::Transfer::None)
           position = lib_position
-          chars = lib_chars
+          # Generator::BuiltInTypeArgPlan
+          chars = ::String.new(lib_chars)
           n_chars = lib_n_chars
           ::Box(Proc(Gtk::EntryBuffer, UInt32, ::String, UInt32, Nil)).unbox(_lib_box).call(_sender, position, chars, n_chars)
         }.pointer
@@ -446,7 +447,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_chars : Pointer(LibC::Char), lib_n_chars : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::EntryBuffer.new(_lib_sender, GICrystal::Transfer::None)
           position = lib_position
-          chars = lib_chars
+          # Generator::BuiltInTypeArgPlan
+          chars = ::String.new(lib_chars)
           n_chars = lib_n_chars
           ::Box(Proc(Gtk::EntryBuffer, UInt32, ::String, UInt32, Nil)).unbox(_lib_box).call(_sender, position, chars, n_chars)
         }.pointer

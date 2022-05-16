@@ -20,15 +20,13 @@ module Gtk
         sizeof(LibGtk::CellRendererText), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CellRendererText, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CellRendererText`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -1061,7 +1059,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_text_set_fixed_height_from_font(self, number_of_rows)
+      LibGtk.gtk_cell_renderer_text_set_fixed_height_from_font(@pointer, number_of_rows)
 
       # Return value handling
     end
@@ -1097,8 +1095,10 @@ module Gtk
       def connect(handler : Proc(::String, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), lib_new_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          path = lib_path
-          new_text = lib_new_text
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
+          # Generator::BuiltInTypeArgPlan
+          new_text = ::String.new(lib_new_text)
           ::Box(Proc(::String, ::String, Nil)).unbox(_lib_box).call(path, new_text)
         }.pointer
 
@@ -1109,8 +1109,10 @@ module Gtk
       def connect_after(handler : Proc(::String, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), lib_new_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          path = lib_path
-          new_text = lib_new_text
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
+          # Generator::BuiltInTypeArgPlan
+          new_text = ::String.new(lib_new_text)
           ::Box(Proc(::String, ::String, Nil)).unbox(_lib_box).call(path, new_text)
         }.pointer
 
@@ -1122,8 +1124,10 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), lib_new_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererText.new(_lib_sender, GICrystal::Transfer::None)
-          path = lib_path
-          new_text = lib_new_text
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
+          # Generator::BuiltInTypeArgPlan
+          new_text = ::String.new(lib_new_text)
           ::Box(Proc(Gtk::CellRendererText, ::String, ::String, Nil)).unbox(_lib_box).call(_sender, path, new_text)
         }.pointer
 
@@ -1135,8 +1139,10 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), lib_new_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererText.new(_lib_sender, GICrystal::Transfer::None)
-          path = lib_path
-          new_text = lib_new_text
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
+          # Generator::BuiltInTypeArgPlan
+          new_text = ::String.new(lib_new_text)
           ::Box(Proc(Gtk::CellRendererText, ::String, ::String, Nil)).unbox(_lib_box).call(_sender, path, new_text)
         }.pointer
 

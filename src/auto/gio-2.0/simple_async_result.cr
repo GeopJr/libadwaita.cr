@@ -180,15 +180,13 @@ module Gio
         sizeof(LibGio::SimpleAsyncResult), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SimpleAsyncResult, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SimpleAsyncResult`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -327,7 +325,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_async_result_complete(self)
+      LibGio.g_simple_async_result_complete(@pointer)
 
       # Return value handling
     end
@@ -344,7 +342,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_async_result_complete_in_idle(self)
+      LibGio.g_simple_async_result_complete_in_idle(@pointer)
 
       # Return value handling
     end
@@ -355,7 +353,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_simple_async_result_get_op_res_gboolean(self)
+      _retval = LibGio.g_simple_async_result_get_op_res_gboolean(@pointer)
 
       # Return value handling
 
@@ -368,7 +366,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_simple_async_result_get_op_res_gssize(self)
+      _retval = LibGio.g_simple_async_result_get_op_res_gssize(@pointer)
 
       # Return value handling
 
@@ -388,7 +386,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_simple_async_result_propagate_error(self, pointerof(_error))
+      _retval = LibGio.g_simple_async_result_propagate_error(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -426,7 +424,7 @@ module Gio
                           end
 
       # C call
-      LibGio.g_simple_async_result_set_check_cancellable(self, check_cancellable)
+      LibGio.g_simple_async_result_set_check_cancellable(@pointer, check_cancellable)
 
       # Return value handling
     end
@@ -437,7 +435,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_async_result_set_from_error(self, error)
+      LibGio.g_simple_async_result_set_from_error(@pointer, error)
 
       # Return value handling
     end
@@ -452,7 +450,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_async_result_set_handle_cancellation(self, handle_cancellation)
+      LibGio.g_simple_async_result_set_handle_cancellation(@pointer, handle_cancellation)
 
       # Return value handling
     end
@@ -463,7 +461,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_async_result_set_op_res_gboolean(self, op_res)
+      LibGio.g_simple_async_result_set_op_res_gboolean(@pointer, op_res)
 
       # Return value handling
     end
@@ -475,7 +473,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_async_result_set_op_res_gssize(self, op_res)
+      LibGio.g_simple_async_result_set_op_res_gssize(@pointer, op_res)
 
       # Return value handling
     end

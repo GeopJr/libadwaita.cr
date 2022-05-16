@@ -106,7 +106,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_property_info_ref(self)
+      _retval = LibGio.g_dbus_property_info_ref(@pointer)
 
       # Return value handling
 
@@ -118,7 +118,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_property_info_unref(self)
+      LibGio.g_dbus_property_info_unref(@pointer)
 
       # Return value handling
     end

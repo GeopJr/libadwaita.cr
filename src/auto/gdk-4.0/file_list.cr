@@ -31,7 +31,7 @@ module Gdk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGdk.gdk_file_list_get_files(self)
+      _retval = LibGdk.gdk_file_list_get_files(@pointer)
 
       # Return value handling
 

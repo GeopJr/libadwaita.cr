@@ -1,5 +1,4 @@
 @[Link("gmodule-2.0", pkg_config: "gmodule-2.0")]
-
 lib LibGModule
   # Flags
   type ModuleFlags = UInt32

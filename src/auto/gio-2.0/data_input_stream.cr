@@ -17,15 +17,13 @@ module Gio
         sizeof(LibGio::DataInputStream), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DataInputStream, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DataInputStream`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -128,7 +126,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_data_input_stream_get_byte_order(self)
+      _retval = LibGio.g_data_input_stream_get_byte_order(@pointer)
 
       # Return value handling
 
@@ -141,7 +139,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_data_input_stream_get_newline_type(self)
+      _retval = LibGio.g_data_input_stream_get_newline_type(@pointer)
 
       # Return value handling
 
@@ -164,7 +162,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_byte(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_byte(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -193,7 +191,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_int16(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_int16(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -226,7 +224,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_int32(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_int32(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -259,7 +257,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_int64(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_int64(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -293,7 +291,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_line(self, length, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_line(@pointer, length, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -330,7 +328,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_data_input_stream_read_line_async(self, io_priority, cancellable, callback, user_data)
+      LibGio.g_data_input_stream_read_line_async(@pointer, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -349,7 +347,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       length = Pointer(UInt64).null
       # C call
-      _retval = LibGio.g_data_input_stream_read_line_finish(self, result, length, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_line_finish(@pointer, result, length, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -371,7 +369,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       length = Pointer(UInt64).null
       # C call
-      _retval = LibGio.g_data_input_stream_read_line_finish_utf8(self, result, length, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_line_finish_utf8(@pointer, result, length, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -403,7 +401,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_line_utf8(self, length, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_line_utf8(@pointer, length, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -432,7 +430,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_uint16(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_uint16(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -465,7 +463,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_uint32(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_uint32(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -498,7 +496,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_uint64(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_uint64(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -536,7 +534,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_until(self, stop_chars, length, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_until(@pointer, stop_chars, length, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -582,7 +580,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_data_input_stream_read_until_async(self, stop_chars, io_priority, cancellable, callback, user_data)
+      LibGio.g_data_input_stream_read_until_async(@pointer, stop_chars, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -599,7 +597,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       length = Pointer(UInt64).null
       # C call
-      _retval = LibGio.g_data_input_stream_read_until_finish(self, result, length, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_until_finish(@pointer, result, length, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -638,7 +636,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_data_input_stream_read_upto(self, stop_chars, stop_chars_len, length, cancellable, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_upto(@pointer, stop_chars, stop_chars_len, length, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -683,7 +681,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_data_input_stream_read_upto_async(self, stop_chars, stop_chars_len, io_priority, cancellable, callback, user_data)
+      LibGio.g_data_input_stream_read_upto_async(@pointer, stop_chars, stop_chars_len, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -706,7 +704,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       length = Pointer(UInt64).null
       # C call
-      _retval = LibGio.g_data_input_stream_read_upto_finish(self, result, length, pointerof(_error))
+      _retval = LibGio.g_data_input_stream_read_upto_finish(@pointer, result, length, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -723,7 +721,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_data_input_stream_set_byte_order(self, order)
+      LibGio.g_data_input_stream_set_byte_order(@pointer, order)
 
       # Return value handling
     end
@@ -738,7 +736,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_data_input_stream_set_newline_type(self, type)
+      LibGio.g_data_input_stream_set_newline_type(@pointer, type)
 
       # Return value handling
     end

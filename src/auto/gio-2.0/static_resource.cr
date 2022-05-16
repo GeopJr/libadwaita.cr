@@ -106,7 +106,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_static_resource_fini(self)
+      LibGio.g_static_resource_fini(@pointer)
 
       # Return value handling
     end
@@ -116,7 +116,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_static_resource_get_resource(self)
+      _retval = LibGio.g_static_resource_get_resource(@pointer)
 
       # Return value handling
 
@@ -128,7 +128,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_static_resource_init(self)
+      LibGio.g_static_resource_init(@pointer)
 
       # Return value handling
     end

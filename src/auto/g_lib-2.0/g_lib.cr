@@ -340,7 +340,7 @@ module GLib
   # Like #gtk_micro_version, but from the headers used at
   # application compile time, rather than from the library
   # linked against at application run time.
-  MICRO_VERSION = 5
+  MICRO_VERSION = 1
   # The minimum value which can be held in a #gint16.
   MININT16 = -32768_i16
   # The minimum value which can be held in a #gint32.
@@ -354,7 +354,7 @@ module GLib
   # Like #gtk_minor_version, but from the headers used at
   # application compile time, rather than from the library
   # linked against at application run time.
-  MINOR_VERSION = 70
+  MINOR_VERSION = 72
   MODULE_SUFFIX = "so"
   # If a long option in the main group has this name, it is not treated as a
   # regular option. Instead it collects all non-option arguments which would
@@ -363,7 +363,7 @@ module GLib
   # or %G_OPTION_ARG_FILENAME_ARRAY.
   #
   #
-  # Using #G_OPTION_REMAINING instead of simply scanning `argv`
+  # Using %G_OPTION_REMAINING instead of simply scanning `argv`
   # for leftover arguments has the advantage that GOption takes care of
   # necessary encoding conversions for strings or filenames.
   OPTION_REMAINING = ""
@@ -399,8 +399,8 @@ module GLib
   PRIORITY_HIGH = -100
   # Use this for high priority idle functions.
   #
-  # GTK+ uses #G_PRIORITY_HIGH_IDLE + 10 for resizing operations,
-  # and #G_PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is
+  # GTK+ uses %G_PRIORITY_HIGH_IDLE + 10 for resizing operations,
+  # and %G_PRIORITY_HIGH_IDLE + 20 for redrawing operations. (This is
   # done to ensure that any pending resizes are processed before any
   # pending redraws, so that widgets are not redrawn twice unnecessarily.)
   PRIORITY_HIGH_IDLE = 100
@@ -451,6 +451,7 @@ module GLib
   #  - g_get_user_config_dir()
   #  - g_get_system_data_dirs()
   #  - g_get_user_data_dir()
+  #  - g_get_user_state_dir()
   #  - g_get_user_runtime_dir()
   #
   # The subdirectories may not be created by the test harness; as with normal
@@ -1551,6 +1552,18 @@ module GLib
     KhitanSmallScript = 155
     # Yezidi. Since: 2.66
     Yezidi = 156
+    # Cypro-Minoan. Since: 2.72
+    CyproMinoan = 157
+    # Old Uyghur. Since: 2.72
+    OldUyghur = 158
+    # Tangsa. Since: 2.72
+    Tangsa = 159
+    # Toto. Since: 2.72
+    Toto = 160
+    # Vithkuqi. Since: 2.72
+    Vithkuqi = 161
+    # Mathematical notation. Since: 2.72
+    Math = 162
   end
 
   # These are the possible character classifications from the
@@ -1773,6 +1786,10 @@ module GLib
     LevelInfo     =  64
     LevelDebug    = 128
     LevelMask     =  -4
+  end
+  @[Flags]
+  enum MainContextFlags : UInt32
+    OwnerlessPolling = 1
   end
   @[Flags]
   enum MarkupCollectType : UInt32
@@ -2077,6 +2094,18 @@ module GLib
     # Return value handling
 
     ::Path.new(::String.new(_retval)) unless _retval.null?
+  end
+
+  def self.user_state_dir : ::Path
+    # g_get_user_state_dir: (None)
+    # Returns: (transfer none Filename)
+
+    # C call
+    _retval = LibGLib.g_get_user_state_dir
+
+    # Return value handling
+
+    ::Path.new(::String.new(_retval))
   end
 
   def self.idle_remove_by_data(data : Pointer(Void)?) : Bool

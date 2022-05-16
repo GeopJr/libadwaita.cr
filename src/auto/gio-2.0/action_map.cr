@@ -14,7 +14,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_action_map_add_action(self, action)
+      LibGio.g_action_map_add_action(@pointer, action)
 
       # Return value handling
     end
@@ -36,7 +36,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_action_map_add_action_entries(self, entries, n_entries, user_data)
+      LibGio.g_action_map_add_action_entries(@pointer, entries, n_entries, user_data)
 
       # Return value handling
     end
@@ -46,11 +46,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_action_map_lookup_action(self, action_name)
+      _retval = LibGio.g_action_map_lookup_action(@pointer, action_name)
 
       # Return value handling
 
-      Gio::Action__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractAction.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def remove_action(action_name : ::String) : Nil
@@ -58,7 +58,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_action_map_remove_action(self, action_name)
+      LibGio.g_action_map_remove_action(@pointer, action_name)
 
       # Return value handling
     end
@@ -68,8 +68,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class ActionMap__Impl < GObject::Object
+  class AbstractActionMap < GObject::Object
     include ActionMap
+
+    GICrystal.define_new_method(Gio::AbstractActionMap, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

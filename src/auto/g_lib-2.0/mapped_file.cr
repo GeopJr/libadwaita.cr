@@ -68,7 +68,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_mapped_file_free(self)
+      LibGLib.g_mapped_file_free(@pointer)
 
       # Return value handling
     end
@@ -78,7 +78,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_mapped_file_get_bytes(self)
+      _retval = LibGLib.g_mapped_file_get_bytes(@pointer)
 
       # Return value handling
 
@@ -90,7 +90,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_mapped_file_get_contents(self)
+      _retval = LibGLib.g_mapped_file_get_contents(@pointer)
 
       # Return value handling
 
@@ -102,7 +102,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_mapped_file_get_length(self)
+      _retval = LibGLib.g_mapped_file_get_length(@pointer)
 
       # Return value handling
 
@@ -114,7 +114,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_mapped_file_ref(self)
+      _retval = LibGLib.g_mapped_file_ref(@pointer)
 
       # Return value handling
 
@@ -126,7 +126,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_mapped_file_unref(self)
+      LibGLib.g_mapped_file_unref(@pointer)
 
       # Return value handling
     end

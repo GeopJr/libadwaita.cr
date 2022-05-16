@@ -14,15 +14,13 @@ module Pango
         sizeof(LibPango::FontFace), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FontFace, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FontFace`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -45,7 +43,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_face_describe(self)
+      _retval = LibPango.pango_font_face_describe(@pointer)
 
       # Return value handling
 
@@ -62,7 +60,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_face_get_face_name(self)
+      _retval = LibPango.pango_font_face_get_face_name(@pointer)
 
       # Return value handling
 
@@ -75,7 +73,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_face_get_family(self)
+      _retval = LibPango.pango_font_face_get_family(@pointer)
 
       # Return value handling
 
@@ -92,7 +90,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_face_is_synthesized(self)
+      _retval = LibPango.pango_font_face_is_synthesized(@pointer)
 
       # Return value handling
 
@@ -115,7 +113,7 @@ module Pango
       n_sizes = sizes.try(&.size) || 0 # Generator::OutArgUsedInReturnPlan
       sizes = Pointer(Pointer(Int32)).null
       # C call
-      LibPango.pango_font_face_list_sizes(self, sizes, n_sizes)
+      LibPango.pango_font_face_list_sizes(@pointer, sizes, n_sizes)
 
       # Return value handling
     end

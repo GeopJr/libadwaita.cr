@@ -17,15 +17,13 @@ module Pango
         sizeof(LibPango::FontMap), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FontMap, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FontMap`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -50,7 +48,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_map_changed(self)
+      LibPango.pango_font_map_changed(@pointer)
 
       # Return value handling
     end
@@ -69,7 +67,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_map_create_context(self)
+      _retval = LibPango.pango_font_map_create_context(@pointer)
 
       # Return value handling
 
@@ -82,7 +80,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_map_get_family(self, name)
+      _retval = LibPango.pango_font_map_get_family(@pointer, name)
 
       # Return value handling
 
@@ -106,7 +104,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_map_get_serial(self)
+      _retval = LibPango.pango_font_map_get_serial(@pointer)
 
       # Return value handling
 
@@ -130,7 +128,7 @@ module Pango
       families = families.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibPango.pango_font_map_list_families(self, families, n_families)
+      LibPango.pango_font_map_list_families(@pointer, families, n_families)
 
       # Return value handling
     end
@@ -145,7 +143,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_map_load_font(self, context, desc)
+      _retval = LibPango.pango_font_map_load_font(@pointer, context, desc)
 
       # Return value handling
 
@@ -159,7 +157,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_map_load_fontset(self, context, desc, language)
+      _retval = LibPango.pango_font_map_load_fontset(@pointer, context, desc, language)
 
       # Return value handling
 

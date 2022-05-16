@@ -18,15 +18,13 @@ module Gtk
         sizeof(LibGtk::CellRendererToggle), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CellRendererToggle, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CellRendererToggle`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -238,7 +236,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_toggle_get_activatable(self)
+      _retval = LibGtk.gtk_cell_renderer_toggle_get_activatable(@pointer)
 
       # Return value handling
 
@@ -252,7 +250,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_toggle_get_active(self)
+      _retval = LibGtk.gtk_cell_renderer_toggle_get_active(@pointer)
 
       # Return value handling
 
@@ -265,7 +263,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_renderer_toggle_get_radio(self)
+      _retval = LibGtk.gtk_cell_renderer_toggle_get_radio(@pointer)
 
       # Return value handling
 
@@ -278,7 +276,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_toggle_set_activatable(self, setting)
+      LibGtk.gtk_cell_renderer_toggle_set_activatable(@pointer, setting)
 
       # Return value handling
     end
@@ -289,7 +287,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_toggle_set_active(self, setting)
+      LibGtk.gtk_cell_renderer_toggle_set_active(@pointer, setting)
 
       # Return value handling
     end
@@ -306,7 +304,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_renderer_toggle_set_radio(self, radio)
+      LibGtk.gtk_cell_renderer_toggle_set_radio(@pointer, radio)
 
       # Return value handling
     end
@@ -343,7 +341,8 @@ module Gtk
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(path)
         }.pointer
 
@@ -354,7 +353,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(path)
         }.pointer
 
@@ -366,7 +366,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererToggle.new(_lib_sender, GICrystal::Transfer::None)
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(Gtk::CellRendererToggle, ::String, Nil)).unbox(_lib_box).call(_sender, path)
         }.pointer
 
@@ -378,7 +379,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererToggle.new(_lib_sender, GICrystal::Transfer::None)
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(Gtk::CellRendererToggle, ::String, Nil)).unbox(_lib_box).call(_sender, path)
         }.pointer
 

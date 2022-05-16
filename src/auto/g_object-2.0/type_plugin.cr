@@ -53,7 +53,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_type_plugin_complete_interface_info(self, instance_type, interface_type, info)
+      LibGObject.g_type_plugin_complete_interface_info(@pointer, instance_type, interface_type, info)
 
       # Return value handling
     end
@@ -63,7 +63,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_type_plugin_complete_type_info(self, g_type, info, value_table)
+      LibGObject.g_type_plugin_complete_type_info(@pointer, g_type, info, value_table)
 
       # Return value handling
     end
@@ -73,7 +73,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_type_plugin_unuse(self)
+      LibGObject.g_type_plugin_unuse(@pointer)
 
       # Return value handling
     end
@@ -83,7 +83,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_type_plugin_use(self)
+      LibGObject.g_type_plugin_use(@pointer)
 
       # Return value handling
     end
@@ -93,8 +93,14 @@ module GObject
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class TypePlugin__Impl < GObject::Object
+  class AbstractTypePlugin < GObject::Object
     include TypePlugin
+
+    GICrystal.define_new_method(GObject::AbstractTypePlugin, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

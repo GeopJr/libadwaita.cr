@@ -37,15 +37,13 @@ module Gtk
         sizeof(LibGtk::TreeSelection), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TreeSelection, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TreeSelection`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -99,7 +97,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_selection_count_selected_rows(self)
+      _retval = LibGtk.gtk_tree_selection_count_selected_rows(@pointer)
 
       # Return value handling
 
@@ -113,7 +111,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_selection_get_mode(self)
+      _retval = LibGtk.gtk_tree_selection_get_mode(@pointer)
 
       # Return value handling
 
@@ -136,7 +134,7 @@ module Gtk
       iter = Pointer(Void).null           # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_tree_selection_get_selected(self, model, iter)
+      _retval = LibGtk.gtk_tree_selection_get_selected(@pointer, model, iter)
 
       # Return value handling
 
@@ -160,7 +158,7 @@ module Gtk
       # Generator::OutArgUsedInReturnPlan
       model = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGtk.gtk_tree_selection_get_selected_rows(self, model)
+      _retval = LibGtk.gtk_tree_selection_get_selected_rows(@pointer, model)
 
       # Return value handling
 
@@ -173,7 +171,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_selection_get_tree_view(self)
+      _retval = LibGtk.gtk_tree_selection_get_tree_view(@pointer)
 
       # Return value handling
 
@@ -186,7 +184,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_selection_iter_is_selected(self, iter)
+      _retval = LibGtk.gtk_tree_selection_iter_is_selected(@pointer, iter)
 
       # Return value handling
 
@@ -200,7 +198,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_selection_path_is_selected(self, path)
+      _retval = LibGtk.gtk_tree_selection_path_is_selected(@pointer, path)
 
       # Return value handling
 
@@ -214,7 +212,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_selection_select_all(self)
+      LibGtk.gtk_tree_selection_select_all(@pointer)
 
       # Return value handling
     end
@@ -225,7 +223,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_selection_select_iter(self, iter)
+      LibGtk.gtk_tree_selection_select_iter(@pointer, iter)
 
       # Return value handling
     end
@@ -236,7 +234,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_selection_select_path(self, path)
+      LibGtk.gtk_tree_selection_select_path(@pointer, path)
 
       # Return value handling
     end
@@ -248,7 +246,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_selection_select_range(self, start_path, end_path)
+      LibGtk.gtk_tree_selection_select_range(@pointer, start_path, end_path)
 
       # Return value handling
     end
@@ -269,7 +267,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_tree_selection_selected_foreach(self, func, data)
+      LibGtk.gtk_tree_selection_selected_foreach(@pointer, func, data)
 
       # Return value handling
     end
@@ -282,7 +280,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_selection_set_mode(self, type)
+      LibGtk.gtk_tree_selection_set_mode(@pointer, type)
 
       # Return value handling
     end
@@ -303,15 +301,14 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_selection : Pointer(Void), lib_model : Pointer(Void), lib_path : Pointer(Void), lib_path_currently_selected : LibC::Int, lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           selection = Gtk::TreeSelection.new(lib_selection, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           path_currently_selected = lib_path_currently_selected
-          data = lib_data
-          ::Box(Proc(Gtk::TreeSelection, Gtk::TreeModel, Gtk::TreePath, Bool, Bool)).unbox(data).call(selection, model, path, path_currently_selected)
+          ::Box(Proc(Gtk::TreeSelection, Gtk::TreeModel, Gtk::TreePath, Bool, Bool)).unbox(lib_data).call(selection, model, path, path_currently_selected)
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -320,7 +317,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_tree_selection_set_select_function(self, func, data, destroy)
+      LibGtk.gtk_tree_selection_set_select_function(@pointer, func, data, destroy)
 
       # Return value handling
     end
@@ -331,7 +328,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_selection_unselect_all(self)
+      LibGtk.gtk_tree_selection_unselect_all(@pointer)
 
       # Return value handling
     end
@@ -342,7 +339,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_selection_unselect_iter(self, iter)
+      LibGtk.gtk_tree_selection_unselect_iter(@pointer, iter)
 
       # Return value handling
     end
@@ -353,7 +350,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_selection_unselect_path(self, path)
+      LibGtk.gtk_tree_selection_unselect_path(@pointer, path)
 
       # Return value handling
     end
@@ -365,7 +362,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_selection_unselect_range(self, start_path, end_path)
+      LibGtk.gtk_tree_selection_unselect_range(@pointer, start_path, end_path)
 
       # Return value handling
     end

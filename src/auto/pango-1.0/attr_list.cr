@@ -55,7 +55,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attr_list_change(self, attr)
+      LibPango.pango_attr_list_change(@pointer, attr)
 
       # Return value handling
     end
@@ -65,7 +65,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_attr_list_copy(self)
+      _retval = LibPango.pango_attr_list_copy(@pointer)
 
       # Return value handling
 
@@ -77,7 +77,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attr_list_equal(self, other_list)
+      _retval = LibPango.pango_attr_list_equal(@pointer, other_list)
 
       # Return value handling
 
@@ -97,7 +97,7 @@ module Pango
              end
 
       # C call
-      _retval = LibPango.pango_attr_list_filter(self, func, data)
+      _retval = LibPango.pango_attr_list_filter(@pointer, func, data)
 
       # Return value handling
 
@@ -109,7 +109,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_attr_list_get_attributes(self)
+      _retval = LibPango.pango_attr_list_get_attributes(@pointer)
 
       # Return value handling
 
@@ -121,7 +121,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_attr_list_get_iterator(self)
+      _retval = LibPango.pango_attr_list_get_iterator(@pointer)
 
       # Return value handling
 
@@ -134,7 +134,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attr_list_insert(self, attr)
+      LibPango.pango_attr_list_insert(@pointer, attr)
 
       # Return value handling
     end
@@ -145,7 +145,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attr_list_insert_before(self, attr)
+      LibPango.pango_attr_list_insert_before(@pointer, attr)
 
       # Return value handling
     end
@@ -155,7 +155,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_attr_list_ref(self)
+      _retval = LibPango.pango_attr_list_ref(@pointer)
 
       # Return value handling
 
@@ -167,7 +167,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attr_list_splice(self, other, pos, len)
+      LibPango.pango_attr_list_splice(@pointer, other, pos, len)
 
       # Return value handling
     end
@@ -177,7 +177,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_attr_list_to_string(self)
+      _retval = LibPango.pango_attr_list_to_string(@pointer)
 
       # Return value handling
 
@@ -189,7 +189,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attr_list_unref(self)
+      LibPango.pango_attr_list_unref(@pointer)
 
       # Return value handling
     end
@@ -199,7 +199,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attr_list_update(self, pos, remove, add)
+      LibPango.pango_attr_list_update(@pointer, pos, remove, add)
 
       # Return value handling
     end

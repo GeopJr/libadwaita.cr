@@ -183,7 +183,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_resources_register(self)
+      LibGio.g_resources_register(@pointer)
 
       # Return value handling
     end
@@ -193,7 +193,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_resources_unregister(self)
+      LibGio.g_resources_unregister(@pointer)
 
       # Return value handling
     end
@@ -205,7 +205,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_resource_enumerate_children(self, path, lookup_flags, pointerof(_error))
+      _retval = LibGio.g_resource_enumerate_children(@pointer, path, lookup_flags, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -227,7 +227,7 @@ module Gio
       size = Pointer(UInt64).null # Generator::OutArgUsedInReturnPlan
       flags = Pointer(UInt32).null
       # C call
-      _retval = LibGio.g_resource_get_info(self, path, lookup_flags, size, flags, pointerof(_error))
+      _retval = LibGio.g_resource_get_info(@pointer, path, lookup_flags, size, flags, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -244,7 +244,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_resource_lookup_data(self, path, lookup_flags, pointerof(_error))
+      _retval = LibGio.g_resource_lookup_data(@pointer, path, lookup_flags, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -261,7 +261,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_resource_open_stream(self, path, lookup_flags, pointerof(_error))
+      _retval = LibGio.g_resource_open_stream(@pointer, path, lookup_flags, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -276,7 +276,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_resource_ref(self)
+      _retval = LibGio.g_resource_ref(@pointer)
 
       # Return value handling
 
@@ -288,7 +288,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_resource_unref(self)
+      LibGio.g_resource_unref(@pointer)
 
       # Return value handling
     end

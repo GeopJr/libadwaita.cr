@@ -63,15 +63,13 @@ module Gtk
         sizeof(LibGtk::Image), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Image, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Image`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -347,7 +345,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "gicon", pointerof(value), Pointer(Void).null)
-      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractIcon.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def icon_name=(value : ::String) : ::String
@@ -392,7 +390,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "paintable", pointerof(value), Pointer(Void).null)
-      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gdk::AbstractPaintable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def pixel_size=(value : Int32) : Int32
@@ -627,7 +625,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_image_clear(self)
+      LibGtk.gtk_image_clear(@pointer)
 
       # Return value handling
     end
@@ -643,11 +641,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_image_get_gicon(self)
+      _retval = LibGtk.gtk_image_get_gicon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the icon name and size being displayed by the `GtkImage`.
@@ -661,7 +659,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_image_get_icon_name(self)
+      _retval = LibGtk.gtk_image_get_icon_name(@pointer)
 
       # Return value handling
 
@@ -674,7 +672,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_image_get_icon_size(self)
+      _retval = LibGtk.gtk_image_get_icon_size(@pointer)
 
       # Return value handling
 
@@ -692,11 +690,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_image_get_paintable(self)
+      _retval = LibGtk.gtk_image_get_paintable(@pointer)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the pixel size used for named icons.
@@ -705,7 +703,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_image_get_pixel_size(self)
+      _retval = LibGtk.gtk_image_get_pixel_size(@pointer)
 
       # Return value handling
 
@@ -722,7 +720,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_image_get_storage_type(self)
+      _retval = LibGtk.gtk_image_get_storage_type(@pointer)
 
       # Return value handling
 
@@ -745,7 +743,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_image_set_from_file(self, filename)
+      LibGtk.gtk_image_set_from_file(@pointer, filename)
 
       # Return value handling
     end
@@ -758,7 +756,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_image_set_from_gicon(self, icon)
+      LibGtk.gtk_image_set_from_gicon(@pointer, icon)
 
       # Return value handling
     end
@@ -779,7 +777,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_image_set_from_icon_name(self, icon_name)
+      LibGtk.gtk_image_set_from_icon_name(@pointer, icon_name)
 
       # Return value handling
     end
@@ -800,7 +798,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_image_set_from_paintable(self, paintable)
+      LibGtk.gtk_image_set_from_paintable(@pointer, paintable)
 
       # Return value handling
     end
@@ -825,7 +823,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_image_set_from_pixbuf(self, pixbuf)
+      LibGtk.gtk_image_set_from_pixbuf(@pointer, pixbuf)
 
       # Return value handling
     end
@@ -846,7 +844,7 @@ module Gtk
                       end
 
       # C call
-      LibGtk.gtk_image_set_from_resource(self, resource_path)
+      LibGtk.gtk_image_set_from_resource(@pointer, resource_path)
 
       # Return value handling
     end
@@ -857,7 +855,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_image_set_icon_size(self, icon_size)
+      LibGtk.gtk_image_set_icon_size(@pointer, icon_size)
 
       # Return value handling
     end
@@ -871,7 +869,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_image_set_pixel_size(self, pixel_size)
+      LibGtk.gtk_image_set_pixel_size(@pointer, pixel_size)
 
       # Return value handling
     end

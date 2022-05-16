@@ -73,7 +73,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_plane_distance(self, point)
+      _retval = LibGraphene.graphene_plane_distance(@pointer, point)
 
       # Return value handling
 
@@ -85,7 +85,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_plane_equal(self, b)
+      _retval = LibGraphene.graphene_plane_equal(@pointer, b)
 
       # Return value handling
 
@@ -97,7 +97,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_plane_free(self)
+      LibGraphene.graphene_plane_free(@pointer)
 
       # Return value handling
     end
@@ -107,7 +107,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_plane_get_constant(self)
+      _retval = LibGraphene.graphene_plane_get_constant(@pointer)
 
       # Return value handling
 
@@ -122,7 +122,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       normal = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_plane_get_normal(self, normal)
+      LibGraphene.graphene_plane_get_normal(@pointer, normal)
 
       # Return value handling
 
@@ -142,7 +142,7 @@ module Graphene
                end
 
       # C call
-      _retval = LibGraphene.graphene_plane_init(self, normal, constant)
+      _retval = LibGraphene.graphene_plane_init(@pointer, normal, constant)
 
       # Return value handling
 
@@ -154,7 +154,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_plane_init_from_plane(self, src)
+      _retval = LibGraphene.graphene_plane_init_from_plane(@pointer, src)
 
       # Return value handling
 
@@ -166,7 +166,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_plane_init_from_point(self, normal, point)
+      _retval = LibGraphene.graphene_plane_init_from_point(@pointer, normal, point)
 
       # Return value handling
 
@@ -178,7 +178,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_plane_init_from_points(self, a, b, c)
+      _retval = LibGraphene.graphene_plane_init_from_points(@pointer, a, b, c)
 
       # Return value handling
 
@@ -190,7 +190,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_plane_init_from_vec4(self, src)
+      _retval = LibGraphene.graphene_plane_init_from_vec4(@pointer, src)
 
       # Return value handling
 
@@ -205,7 +205,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
       # C call
-      LibGraphene.graphene_plane_negate(self, res)
+      LibGraphene.graphene_plane_negate(@pointer, res)
 
       # Return value handling
 
@@ -220,7 +220,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
       # C call
-      LibGraphene.graphene_plane_normalize(self, res)
+      LibGraphene.graphene_plane_normalize(@pointer, res)
 
       # Return value handling
 
@@ -242,7 +242,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
       # C call
-      LibGraphene.graphene_plane_transform(self, matrix, normal_matrix, res)
+      LibGraphene.graphene_plane_transform(@pointer, matrix, normal_matrix, res)
 
       # Return value handling
 

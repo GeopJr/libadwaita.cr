@@ -137,15 +137,13 @@ module Gsk
         sizeof(LibGsk::GLShader), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(GLShader, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `GLShader`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -258,7 +256,7 @@ module Gsk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_compile(self, renderer, pointerof(_error))
+      _retval = LibGsk.gsk_gl_shader_compile(@pointer, renderer, pointerof(_error))
 
       # Error check
       Gsk.raise_exception(_error) unless _error.null?
@@ -275,7 +273,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_find_uniform_by_name(self, name)
+      _retval = LibGsk.gsk_gl_shader_find_uniform_by_name(@pointer, name)
 
       # Return value handling
 
@@ -290,7 +288,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_arg_bool(self, args, idx)
+      _retval = LibGsk.gsk_gl_shader_get_arg_bool(@pointer, args, idx)
 
       # Return value handling
 
@@ -305,7 +303,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_arg_float(self, args, idx)
+      _retval = LibGsk.gsk_gl_shader_get_arg_float(@pointer, args, idx)
 
       # Return value handling
 
@@ -320,7 +318,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_arg_int(self, args, idx)
+      _retval = LibGsk.gsk_gl_shader_get_arg_int(@pointer, args, idx)
 
       # Return value handling
 
@@ -335,7 +333,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_arg_uint(self, args, idx)
+      _retval = LibGsk.gsk_gl_shader_get_arg_uint(@pointer, args, idx)
 
       # Return value handling
 
@@ -350,7 +348,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_gl_shader_get_arg_vec2(self, args, idx, out_value)
+      LibGsk.gsk_gl_shader_get_arg_vec2(@pointer, args, idx, out_value)
 
       # Return value handling
     end
@@ -363,7 +361,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_gl_shader_get_arg_vec3(self, args, idx, out_value)
+      LibGsk.gsk_gl_shader_get_arg_vec3(@pointer, args, idx, out_value)
 
       # Return value handling
     end
@@ -376,7 +374,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_gl_shader_get_arg_vec4(self, args, idx, out_value)
+      LibGsk.gsk_gl_shader_get_arg_vec4(@pointer, args, idx, out_value)
 
       # Return value handling
     end
@@ -387,7 +385,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_args_size(self)
+      _retval = LibGsk.gsk_gl_shader_get_args_size(@pointer)
 
       # Return value handling
 
@@ -404,7 +402,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_n_textures(self)
+      _retval = LibGsk.gsk_gl_shader_get_n_textures(@pointer)
 
       # Return value handling
 
@@ -417,7 +415,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_n_uniforms(self)
+      _retval = LibGsk.gsk_gl_shader_get_n_uniforms(@pointer)
 
       # Return value handling
 
@@ -431,7 +429,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_resource(self)
+      _retval = LibGsk.gsk_gl_shader_get_resource(@pointer)
 
       # Return value handling
 
@@ -444,7 +442,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_source(self)
+      _retval = LibGsk.gsk_gl_shader_get_source(@pointer)
 
       # Return value handling
 
@@ -457,7 +455,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_uniform_name(self, idx)
+      _retval = LibGsk.gsk_gl_shader_get_uniform_name(@pointer, idx)
 
       # Return value handling
 
@@ -470,7 +468,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_uniform_offset(self, idx)
+      _retval = LibGsk.gsk_gl_shader_get_uniform_offset(@pointer, idx)
 
       # Return value handling
 
@@ -483,7 +481,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_gl_shader_get_uniform_type(self, idx)
+      _retval = LibGsk.gsk_gl_shader_get_uniform_type(@pointer, idx)
 
       # Return value handling
 

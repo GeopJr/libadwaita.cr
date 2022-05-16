@@ -89,15 +89,13 @@ module Gtk
         sizeof(LibGtk::PrintUnixDialog), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(PrintUnixDialog, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `PrintUnixDialog`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -615,7 +613,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_unix_dialog_add_custom_tab(self, child, tab_label)
+      LibGtk.gtk_print_unix_dialog_add_custom_tab(@pointer, child, tab_label)
 
       # Return value handling
     end
@@ -626,7 +624,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_unix_dialog_get_current_page(self)
+      _retval = LibGtk.gtk_print_unix_dialog_get_current_page(@pointer)
 
       # Return value handling
 
@@ -639,7 +637,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_unix_dialog_get_embed_page_setup(self)
+      _retval = LibGtk.gtk_print_unix_dialog_get_embed_page_setup(@pointer)
 
       # Return value handling
 
@@ -652,7 +650,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_unix_dialog_get_has_selection(self)
+      _retval = LibGtk.gtk_print_unix_dialog_get_has_selection(@pointer)
 
       # Return value handling
 
@@ -665,7 +663,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_unix_dialog_get_manual_capabilities(self)
+      _retval = LibGtk.gtk_print_unix_dialog_get_manual_capabilities(@pointer)
 
       # Return value handling
 
@@ -678,7 +676,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_unix_dialog_get_page_setup(self)
+      _retval = LibGtk.gtk_print_unix_dialog_get_page_setup(@pointer)
 
       # Return value handling
 
@@ -691,7 +689,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_unix_dialog_get_page_setup_set(self)
+      _retval = LibGtk.gtk_print_unix_dialog_get_page_setup_set(@pointer)
 
       # Return value handling
 
@@ -704,7 +702,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_unix_dialog_get_selected_printer(self)
+      _retval = LibGtk.gtk_print_unix_dialog_get_selected_printer(@pointer)
 
       # Return value handling
 
@@ -721,7 +719,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_print_unix_dialog_get_settings(self)
+      _retval = LibGtk.gtk_print_unix_dialog_get_settings(@pointer)
 
       # Return value handling
 
@@ -734,7 +732,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_unix_dialog_get_support_selection(self)
+      _retval = LibGtk.gtk_print_unix_dialog_get_support_selection(@pointer)
 
       # Return value handling
 
@@ -750,7 +748,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_unix_dialog_set_current_page(self, current_page)
+      LibGtk.gtk_print_unix_dialog_set_current_page(@pointer, current_page)
 
       # Return value handling
     end
@@ -761,7 +759,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_unix_dialog_set_embed_page_setup(self, embed)
+      LibGtk.gtk_print_unix_dialog_set_embed_page_setup(@pointer, embed)
 
       # Return value handling
     end
@@ -772,7 +770,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_unix_dialog_set_has_selection(self, has_selection)
+      LibGtk.gtk_print_unix_dialog_set_has_selection(@pointer, has_selection)
 
       # Return value handling
     end
@@ -789,7 +787,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_unix_dialog_set_manual_capabilities(self, capabilities)
+      LibGtk.gtk_print_unix_dialog_set_manual_capabilities(@pointer, capabilities)
 
       # Return value handling
     end
@@ -800,7 +798,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_unix_dialog_set_page_setup(self, page_setup)
+      LibGtk.gtk_print_unix_dialog_set_page_setup(@pointer, page_setup)
 
       # Return value handling
     end
@@ -823,7 +821,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_print_unix_dialog_set_settings(self, settings)
+      LibGtk.gtk_print_unix_dialog_set_settings(@pointer, settings)
 
       # Return value handling
     end
@@ -834,7 +832,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_unix_dialog_set_support_selection(self, support_selection)
+      LibGtk.gtk_print_unix_dialog_set_support_selection(@pointer, support_selection)
 
       # Return value handling
     end

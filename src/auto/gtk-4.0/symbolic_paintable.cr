@@ -22,7 +22,7 @@ module Gtk
       colors = colors.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_symbolic_paintable_snapshot_symbolic(self, snapshot, width, height, colors, n_colors)
+      LibGtk.gtk_symbolic_paintable_snapshot_symbolic(@pointer, snapshot, width, height, colors, n_colors)
 
       # Return value handling
     end
@@ -32,8 +32,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class SymbolicPaintable__Impl < GObject::Object
+  class AbstractSymbolicPaintable < GObject::Object
     include SymbolicPaintable
+
+    GICrystal.define_new_method(Gtk::AbstractSymbolicPaintable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

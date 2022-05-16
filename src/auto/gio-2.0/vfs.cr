@@ -13,15 +13,13 @@ module Gio
         sizeof(LibGio::Vfs), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Vfs, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Vfs`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -66,11 +64,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_vfs_get_file_for_path(self, path)
+      _retval = LibGio.g_vfs_get_file_for_path(@pointer, path)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets a #GFile for @uri.
@@ -83,11 +81,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_vfs_get_file_for_uri(self, uri)
+      _retval = LibGio.g_vfs_get_file_for_uri(@pointer, uri)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets a list of URI schemes supported by @vfs.
@@ -96,7 +94,7 @@ module Gio
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_vfs_get_supported_uri_schemes(self)
+      _retval = LibGio.g_vfs_get_supported_uri_schemes(@pointer)
 
       # Return value handling
 
@@ -109,7 +107,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_vfs_is_active(self)
+      _retval = LibGio.g_vfs_is_active(@pointer)
 
       # Return value handling
 
@@ -124,11 +122,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_vfs_parse_name(self, parse_name)
+      _retval = LibGio.g_vfs_parse_name(@pointer, parse_name)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Registers @uri_func and @parse_name_func as the #GFile URI and parse name
@@ -171,11 +169,11 @@ module Gio
       if parse_name_func
         _box = ::Box.box(parse_name_func)
         parse_name_func = ->(lib_vfs : Pointer(Void), lib_identifier : Pointer(LibC::Char), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           vfs = Gio::Vfs.new(lib_vfs, :none)
-          identifier = lib_identifier
-          user_data = lib_user_data
-          ::Box(Proc(Gio::Vfs, ::String, Gio::File)).unbox(user_data).call(vfs, identifier)
+          # Generator::BuiltInTypeArgPlan
+          identifier = ::String.new(lib_identifier)
+          ::Box(Proc(Gio::Vfs, ::String, Gio::File)).unbox(lib_user_data).call(vfs, identifier)
         }.pointer
         parse_name_data = GICrystal::ClosureDataManager.register(_box)
         parse_name_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -184,7 +182,7 @@ module Gio
       end
 
       # C call
-      _retval = LibGio.g_vfs_register_uri_scheme(self, scheme, uri_func, uri_data, uri_destroy, parse_name_func, parse_name_data, parse_name_destroy)
+      _retval = LibGio.g_vfs_register_uri_scheme(@pointer, scheme, uri_func, uri_data, uri_destroy, parse_name_func, parse_name_data, parse_name_destroy)
 
       # Return value handling
 
@@ -198,7 +196,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_vfs_unregister_uri_scheme(self, scheme)
+      _retval = LibGio.g_vfs_unregister_uri_scheme(@pointer, scheme)
 
       # Return value handling
 

@@ -21,15 +21,13 @@ module Gio
         sizeof(LibGio::DesktopAppInfo), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DesktopAppInfo, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DesktopAppInfo`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -197,7 +195,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_action_name(self, action_name)
+      _retval = LibGio.g_desktop_app_info_get_action_name(@pointer, action_name)
 
       # Return value handling
 
@@ -212,7 +210,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_boolean(self, key)
+      _retval = LibGio.g_desktop_app_info_get_boolean(@pointer, key)
 
       # Return value handling
 
@@ -225,7 +223,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_categories(self)
+      _retval = LibGio.g_desktop_app_info_get_categories(@pointer)
 
       # Return value handling
 
@@ -240,7 +238,7 @@ module Gio
       # Returns: (transfer none Filename)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_filename(self)
+      _retval = LibGio.g_desktop_app_info_get_filename(@pointer)
 
       # Return value handling
 
@@ -253,7 +251,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_generic_name(self)
+      _retval = LibGio.g_desktop_app_info_get_generic_name(@pointer)
 
       # Return value handling
 
@@ -267,7 +265,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_is_hidden(self)
+      _retval = LibGio.g_desktop_app_info_get_is_hidden(@pointer)
 
       # Return value handling
 
@@ -280,7 +278,7 @@ module Gio
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_keywords(self)
+      _retval = LibGio.g_desktop_app_info_get_keywords(@pointer)
 
       # Return value handling
 
@@ -296,7 +294,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_locale_string(self, key)
+      _retval = LibGio.g_desktop_app_info_get_locale_string(@pointer, key)
 
       # Return value handling
 
@@ -311,7 +309,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_nodisplay(self)
+      _retval = LibGio.g_desktop_app_info_get_nodisplay(@pointer)
 
       # Return value handling
 
@@ -342,7 +340,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_show_in(self, desktop_env)
+      _retval = LibGio.g_desktop_app_info_get_show_in(@pointer, desktop_env)
 
       # Return value handling
 
@@ -357,7 +355,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_startup_wm_class(self)
+      _retval = LibGio.g_desktop_app_info_get_startup_wm_class(@pointer)
 
       # Return value handling
 
@@ -372,7 +370,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_get_string(self, key)
+      _retval = LibGio.g_desktop_app_info_get_string(@pointer, key)
 
       # Return value handling
 
@@ -390,7 +388,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       length = 0_u64
       # C call
-      _retval = LibGio.g_desktop_app_info_get_string_list(self, key, pointerof(length))
+      _retval = LibGio.g_desktop_app_info_get_string_list(@pointer, key, pointerof(length))
 
       # Return value handling
 
@@ -404,7 +402,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_has_key(self, key)
+      _retval = LibGio.g_desktop_app_info_has_key(@pointer, key)
 
       # Return value handling
 
@@ -439,7 +437,7 @@ module Gio
                        end
 
       # C call
-      LibGio.g_desktop_app_info_launch_action(self, action_name, launch_context)
+      LibGio.g_desktop_app_info_launch_action(@pointer, action_name, launch_context)
 
       # Return value handling
     end
@@ -490,7 +488,7 @@ module Gio
                           end
 
       # C call
-      _retval = LibGio.g_desktop_app_info_launch_uris_as_manager(self, uris, launch_context, spawn_flags, user_setup, user_setup_data, pid_callback, pid_callback_data, pointerof(_error))
+      _retval = LibGio.g_desktop_app_info_launch_uris_as_manager(@pointer, uris, launch_context, spawn_flags, user_setup, user_setup_data, pid_callback, pid_callback_data, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -537,7 +535,7 @@ module Gio
                           end
 
       # C call
-      _retval = LibGio.g_desktop_app_info_launch_uris_as_manager_with_fds(self, uris, launch_context, spawn_flags, user_setup, user_setup_data, pid_callback, pid_callback_data, stdin_fd, stdout_fd, stderr_fd, pointerof(_error))
+      _retval = LibGio.g_desktop_app_info_launch_uris_as_manager_with_fds(@pointer, uris, launch_context, spawn_flags, user_setup, user_setup_data, pid_callback, pid_callback_data, stdin_fd, stdout_fd, stderr_fd, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -557,7 +555,7 @@ module Gio
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_list_actions(self)
+      _retval = LibGio.g_desktop_app_info_list_actions(@pointer)
 
       # Return value handling
 

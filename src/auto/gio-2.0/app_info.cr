@@ -70,7 +70,7 @@ module Gio
 
       # Return value handling
 
-      Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
     def self.all : GLib::List
@@ -106,7 +106,7 @@ module Gio
 
       # Return value handling
 
-      Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def self.default_for_uri_scheme(uri_scheme : ::String) : Gio::AppInfo?
@@ -118,7 +118,7 @@ module Gio
 
       # Return value handling
 
-      Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def self.fallback_for_type(content_type : ::String) : GLib::List
@@ -237,7 +237,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_app_info_add_supports_type(self, content_type, pointerof(_error))
+      _retval = LibGio.g_app_info_add_supports_type(@pointer, content_type, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -252,7 +252,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_can_delete(self)
+      _retval = LibGio.g_app_info_can_delete(@pointer)
 
       # Return value handling
 
@@ -264,7 +264,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_can_remove_supports_type(self)
+      _retval = LibGio.g_app_info_can_remove_supports_type(@pointer)
 
       # Return value handling
 
@@ -276,7 +276,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_delete(self)
+      _retval = LibGio.g_app_info_delete(@pointer)
 
       # Return value handling
 
@@ -288,11 +288,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_app_info_dup(self)
+      _retval = LibGio.g_app_info_dup(@pointer)
 
       # Return value handling
 
-      Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full)
     end
 
     def equal(appinfo2 : Gio::AppInfo) : Bool
@@ -300,7 +300,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_equal(self, appinfo2)
+      _retval = LibGio.g_app_info_equal(@pointer, appinfo2)
 
       # Return value handling
 
@@ -312,7 +312,7 @@ module Gio
       # Returns: (transfer none Filename)
 
       # C call
-      _retval = LibGio.g_app_info_get_commandline(self)
+      _retval = LibGio.g_app_info_get_commandline(@pointer)
 
       # Return value handling
 
@@ -324,7 +324,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_get_description(self)
+      _retval = LibGio.g_app_info_get_description(@pointer)
 
       # Return value handling
 
@@ -336,7 +336,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_get_display_name(self)
+      _retval = LibGio.g_app_info_get_display_name(@pointer)
 
       # Return value handling
 
@@ -348,7 +348,7 @@ module Gio
       # Returns: (transfer none Filename)
 
       # C call
-      _retval = LibGio.g_app_info_get_executable(self)
+      _retval = LibGio.g_app_info_get_executable(@pointer)
 
       # Return value handling
 
@@ -360,11 +360,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_get_icon(self)
+      _retval = LibGio.g_app_info_get_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def id : ::String?
@@ -372,7 +372,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_get_id(self)
+      _retval = LibGio.g_app_info_get_id(@pointer)
 
       # Return value handling
 
@@ -384,7 +384,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_get_name(self)
+      _retval = LibGio.g_app_info_get_name(@pointer)
 
       # Return value handling
 
@@ -396,7 +396,7 @@ module Gio
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_app_info_get_supported_types(self)
+      _retval = LibGio.g_app_info_get_supported_types(@pointer)
 
       # Return value handling
 
@@ -425,7 +425,7 @@ module Gio
                 end
 
       # C call
-      _retval = LibGio.g_app_info_launch(self, files, context, pointerof(_error))
+      _retval = LibGio.g_app_info_launch(@pointer, files, context, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -457,7 +457,7 @@ module Gio
                 end
 
       # C call
-      _retval = LibGio.g_app_info_launch_uris(self, uris, context, pointerof(_error))
+      _retval = LibGio.g_app_info_launch_uris(@pointer, uris, context, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -502,7 +502,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_app_info_launch_uris_async(self, uris, context, cancellable, callback, user_data)
+      LibGio.g_app_info_launch_uris_async(@pointer, uris, context, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -514,7 +514,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_app_info_launch_uris_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_app_info_launch_uris_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -531,7 +531,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_app_info_remove_supports_type(self, content_type, pointerof(_error))
+      _retval = LibGio.g_app_info_remove_supports_type(@pointer, content_type, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -548,7 +548,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_app_info_set_as_default_for_extension(self, extension, pointerof(_error))
+      _retval = LibGio.g_app_info_set_as_default_for_extension(@pointer, extension, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -565,7 +565,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_app_info_set_as_default_for_type(self, content_type, pointerof(_error))
+      _retval = LibGio.g_app_info_set_as_default_for_type(@pointer, content_type, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -582,7 +582,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_app_info_set_as_last_used_for_type(self, content_type, pointerof(_error))
+      _retval = LibGio.g_app_info_set_as_last_used_for_type(@pointer, content_type, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -597,7 +597,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_should_show(self)
+      _retval = LibGio.g_app_info_should_show(@pointer)
 
       # Return value handling
 
@@ -609,7 +609,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_supports_files(self)
+      _retval = LibGio.g_app_info_supports_files(@pointer)
 
       # Return value handling
 
@@ -621,7 +621,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_app_info_supports_uris(self)
+      _retval = LibGio.g_app_info_supports_uris(@pointer)
 
       # Return value handling
 
@@ -633,8 +633,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class AppInfo__Impl < GObject::Object
+  class AbstractAppInfo < GObject::Object
     include AppInfo
+
+    GICrystal.define_new_method(Gio::AbstractAppInfo, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

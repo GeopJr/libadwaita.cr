@@ -37,15 +37,13 @@ module Gio
         sizeof(LibGio::DBusObjectManagerServer), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DBusObjectManagerServer, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DBusObjectManagerServer`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -148,7 +146,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_object_manager_server_export(self, object)
+      LibGio.g_dbus_object_manager_server_export(@pointer, object)
 
       # Return value handling
     end
@@ -162,7 +160,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_object_manager_server_export_uniquely(self, object)
+      LibGio.g_dbus_object_manager_server_export_uniquely(@pointer, object)
 
       # Return value handling
     end
@@ -173,7 +171,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_object_manager_server_get_connection(self)
+      _retval = LibGio.g_dbus_object_manager_server_get_connection(@pointer)
 
       # Return value handling
 
@@ -186,7 +184,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_object_manager_server_is_exported(self, object)
+      _retval = LibGio.g_dbus_object_manager_server_is_exported(@pointer, object)
 
       # Return value handling
 
@@ -208,7 +206,7 @@ module Gio
                    end
 
       # C call
-      LibGio.g_dbus_object_manager_server_set_connection(self, connection)
+      LibGio.g_dbus_object_manager_server_set_connection(@pointer, connection)
 
       # Return value handling
     end
@@ -223,7 +221,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_object_manager_server_unexport(self, object_path)
+      _retval = LibGio.g_dbus_object_manager_server_unexport(@pointer, object_path)
 
       # Return value handling
 

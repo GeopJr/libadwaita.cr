@@ -1,5 +1,4 @@
 @[Link("gio-2.0", pkg_config: "gio-2.0")]
-
 lib LibGio
   # Flags
   type AppInfoCreateFlags = UInt32
@@ -132,6 +131,7 @@ lib LibGio
   type DBusObject = Void
   type DBusObjectManager = Void
   type DatagramBased = Void
+  type DebugController = Void
   type DesktopAppInfoLookup = Void
   type Drive = Void
   type DtlsClientConnection = Void
@@ -243,10 +243,10 @@ lib LibGio
     get_startup_notify_id : Void*
     launch_failed : Void*
     launched : Void*
+    launch_started : Void*
     _g_reserved1 : Pointer(Void)
     _g_reserved2 : Pointer(Void)
     _g_reserved3 : Pointer(Void)
-    _g_reserved4 : Pointer(Void)
   end
 
   type AppLaunchContextPrivate = Void # Struct with zero bytes
@@ -550,6 +550,16 @@ lib LibGio
     condition_wait : Void*
   end
 
+  struct DebugControllerDBusClass # 240 bytes long
+    parent_class : LibGObject::ObjectClass
+    authorize : Void*
+    padding : Pointer(Void)[12]
+  end
+
+  struct DebugControllerInterface # 16 bytes long
+    g_iface : LibGObject::TypeInterface
+  end
+
   struct DesktopAppInfoClass # 136 bytes long
     parent_class : LibGObject::ObjectClass
   end
@@ -754,8 +764,8 @@ lib LibGio
     copy_async : Void*
     copy_finish : Void*
     move : Void*
-    _move_async : Pointer(Void)
-    _move_finish : Pointer(Void)
+    move_async : Void*
+    move_finish : Void*
     mount_mountable : Void*
     mount_mountable_finish : Void*
     unmount_mountable : Void*
@@ -1811,6 +1821,10 @@ lib LibGio
     priv : Pointer(LibGio::DataOutputStreamPrivate)
   end
 
+  struct DebugControllerDBus
+    parent_instance : LibGObject::Object
+  end
+
   type DesktopAppInfo = Void # Object struct with no fields
 
   type Emblem = Void # Object struct with no fields
@@ -2686,6 +2700,12 @@ lib LibGio
   fun g_dbus_signal_info_ref(this : Void*) : Pointer(Void)
   fun g_dbus_signal_info_unref(this : Void*) : Void
   fun g_dbus_unescape_object_path(s : Pointer(LibC::Char)) : Pointer(UInt8)
+  fun g_debug_controller_dbus_get_type : UInt64
+  fun g_debug_controller_dbus_new(connection : Pointer(Void), cancellable : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
+  fun g_debug_controller_dbus_stop(this : Void*) : Void
+  fun g_debug_controller_get_debug_enabled(this : Void*) : LibC::Int
+  fun g_debug_controller_get_type : UInt64
+  fun g_debug_controller_set_debug_enabled(this : Void*, debug_enabled : LibC::Int) : Void
   fun g_desktop_app_info_get_action_name(this : Void*, action_name : Pointer(LibC::Char)) : Pointer(LibC::Char)
   fun g_desktop_app_info_get_boolean(this : Void*, key : Pointer(LibC::Char)) : LibC::Int
   fun g_desktop_app_info_get_categories(this : Void*) : Pointer(LibC::Char)
@@ -2976,6 +2996,8 @@ lib LibGio
   fun g_file_mount_mountable(this : Void*, flags : UInt32, mount_operation : Pointer(Void), cancellable : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
   fun g_file_mount_mountable_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : Pointer(Void)
   fun g_file_move(this : Void*, destination : Pointer(Void), flags : UInt32, cancellable : Pointer(Void), progress_callback : Void*, progress_callback_data : Pointer(Void), error : LibGLib::Error**) : LibC::Int
+  fun g_file_move_async(this : Void*, destination : Pointer(Void), flags : UInt32, io_priority : Int32, cancellable : Pointer(Void), progress_callback : Void*, progress_callback_data : Pointer(Void), callback : Void*, user_data : Pointer(Void)) : Void
+  fun g_file_move_finish(this : Void*, result : Pointer(Void), error : LibGLib::Error**) : LibC::Int
   fun g_file_new_for_commandline_arg(arg : Pointer(LibC::Char)) : Pointer(Void)
   fun g_file_new_for_commandline_arg(arg : Pointer(LibC::Char)) : Pointer(Void)
   fun g_file_new_for_commandline_arg_and_cwd(arg : Pointer(LibC::Char), cwd : Pointer(LibC::Char)) : Pointer(Void)
@@ -3149,12 +3171,10 @@ lib LibGio
   fun g_io_extension_point_register(name : Pointer(LibC::Char)) : Pointer(Void)
   fun g_io_extension_point_set_required_type(this : Void*, type : UInt64) : Void
   fun g_io_module_get_type : UInt64
-  fun g_io_module_load(this : Void*) : Void
   fun g_io_module_new(filename : Pointer(LibC::Char)) : Pointer(Void)
   fun g_io_module_query : Pointer(Pointer(LibC::Char))
   fun g_io_module_scope_block(this : Void*, basename : Pointer(LibC::Char)) : Void
   fun g_io_module_scope_free(this : Void*) : Void
-  fun g_io_module_unload(this : Void*) : Void
   fun g_io_modules_load_all_in_directory(dirname : Pointer(LibC::Char)) : Pointer(LibGLib::List)
   fun g_io_modules_load_all_in_directory_with_scope(dirname : Pointer(LibC::Char), scope : Pointer(Void)) : Pointer(LibGLib::List)
   fun g_io_modules_scan_all_in_directory(dirname : Pointer(LibC::Char)) : Void
@@ -3882,9 +3902,11 @@ lib LibGio
   fun g_tls_certificate_is_same(this : Void*, cert_two : Pointer(Void)) : LibC::Int
   fun g_tls_certificate_list_new_from_file(file : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(LibGLib::List)
   fun g_tls_certificate_new_from_file(file : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
+  fun g_tls_certificate_new_from_file_with_password(file : Pointer(LibC::Char), password : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_certificate_new_from_files(cert_file : Pointer(LibC::Char), key_file : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_certificate_new_from_pem(data : Pointer(LibC::Char), length : Int64, error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_certificate_new_from_pkcs11_uris(pkcs11_uri : Pointer(LibC::Char), private_key_pkcs11_uri : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
+  fun g_tls_certificate_new_from_pkcs12(data : Pointer(UInt8), length : UInt64, password : Pointer(LibC::Char), error : LibGLib::Error**) : Pointer(Void)
   fun g_tls_certificate_verify(this : Void*, identity : Pointer(Void), trusted_ca : Pointer(Void)) : UInt32
   fun g_tls_channel_binding_error_quark : UInt32
   fun g_tls_client_connection_copy_session_state(this : Void*, source : Pointer(Void)) : Void

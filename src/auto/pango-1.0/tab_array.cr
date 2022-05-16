@@ -48,7 +48,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_tab_array_copy(self)
+      _retval = LibPango.pango_tab_array_copy(@pointer)
 
       # Return value handling
 
@@ -60,7 +60,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_tab_array_free(self)
+      LibPango.pango_tab_array_free(@pointer)
 
       # Return value handling
     end
@@ -70,7 +70,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_tab_array_get_decimal_point(self, tab_index)
+      _retval = LibPango.pango_tab_array_get_decimal_point(@pointer, tab_index)
 
       # Return value handling
 
@@ -82,7 +82,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_tab_array_get_positions_in_pixels(self)
+      _retval = LibPango.pango_tab_array_get_positions_in_pixels(@pointer)
 
       # Return value handling
 
@@ -94,7 +94,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_tab_array_get_size(self)
+      _retval = LibPango.pango_tab_array_get_size(@pointer)
 
       # Return value handling
 
@@ -111,7 +111,7 @@ module Pango
       alignment = Pointer(UInt32).null # Generator::OutArgUsedInReturnPlan
       location = Pointer(Int32).null
       # C call
-      LibPango.pango_tab_array_get_tab(self, tab_index, alignment, location)
+      LibPango.pango_tab_array_get_tab(@pointer, tab_index, alignment, location)
 
       # Return value handling
     end
@@ -128,7 +128,7 @@ module Pango
       locations = locations.to_a.to_unsafe
 
       # C call
-      LibPango.pango_tab_array_get_tabs(self, alignments, locations)
+      LibPango.pango_tab_array_get_tabs(@pointer, alignments, locations)
 
       # Return value handling
     end
@@ -138,7 +138,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_tab_array_resize(self, new_size)
+      LibPango.pango_tab_array_resize(@pointer, new_size)
 
       # Return value handling
     end
@@ -148,7 +148,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_tab_array_set_decimal_point(self, tab_index, decimal_point)
+      LibPango.pango_tab_array_set_decimal_point(@pointer, tab_index, decimal_point)
 
       # Return value handling
     end
@@ -158,7 +158,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_tab_array_set_positions_in_pixels(self, positions_in_pixels)
+      LibPango.pango_tab_array_set_positions_in_pixels(@pointer, positions_in_pixels)
 
       # Return value handling
     end
@@ -168,7 +168,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_tab_array_set_tab(self, tab_index, alignment, location)
+      LibPango.pango_tab_array_set_tab(@pointer, tab_index, alignment, location)
 
       # Return value handling
     end
@@ -178,7 +178,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_tab_array_sort(self)
+      LibPango.pango_tab_array_sort(@pointer)
 
       # Return value handling
     end
@@ -188,7 +188,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_tab_array_to_string(self)
+      _retval = LibPango.pango_tab_array_to_string(@pointer)
 
       # Return value handling
 

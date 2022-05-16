@@ -218,15 +218,13 @@ module Gtk
         sizeof(LibGtk::Label), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Label, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Label`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -876,7 +874,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_attributes(self)
+      _retval = LibGtk.gtk_label_get_attributes(@pointer)
 
       # Return value handling
 
@@ -896,7 +894,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_current_uri(self)
+      _retval = LibGtk.gtk_label_get_current_uri(@pointer)
 
       # Return value handling
 
@@ -911,7 +909,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_ellipsize(self)
+      _retval = LibGtk.gtk_label_get_ellipsize(@pointer)
 
       # Return value handling
 
@@ -926,7 +924,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_extra_menu(self)
+      _retval = LibGtk.gtk_label_get_extra_menu(@pointer)
 
       # Return value handling
 
@@ -941,7 +939,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_justify(self)
+      _retval = LibGtk.gtk_label_get_justify(@pointer)
 
       # Return value handling
 
@@ -957,7 +955,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_label(self)
+      _retval = LibGtk.gtk_label_get_label(@pointer)
 
       # Return value handling
 
@@ -976,7 +974,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_layout(self)
+      _retval = LibGtk.gtk_label_get_layout(@pointer)
 
       # Return value handling
 
@@ -1000,7 +998,7 @@ module Gtk
       x = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       y = Pointer(Int32).null
       # C call
-      LibGtk.gtk_label_get_layout_offsets(self, x, y)
+      LibGtk.gtk_label_get_layout_offsets(@pointer, x, y)
 
       # Return value handling
     end
@@ -1014,7 +1012,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_lines(self)
+      _retval = LibGtk.gtk_label_get_lines(@pointer)
 
       # Return value handling
 
@@ -1029,7 +1027,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_max_width_chars(self)
+      _retval = LibGtk.gtk_label_get_max_width_chars(@pointer)
 
       # Return value handling
 
@@ -1046,7 +1044,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_mnemonic_keyval(self)
+      _retval = LibGtk.gtk_label_get_mnemonic_keyval(@pointer)
 
       # Return value handling
 
@@ -1062,7 +1060,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_mnemonic_widget(self)
+      _retval = LibGtk.gtk_label_get_mnemonic_widget(@pointer)
 
       # Return value handling
 
@@ -1077,7 +1075,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_natural_wrap_mode(self)
+      _retval = LibGtk.gtk_label_get_natural_wrap_mode(@pointer)
 
       # Return value handling
 
@@ -1090,7 +1088,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_selectable(self)
+      _retval = LibGtk.gtk_label_get_selectable(@pointer)
 
       # Return value handling
 
@@ -1108,7 +1106,7 @@ module Gtk
       start = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       _end = Pointer(Int32).null
       # C call
-      _retval = LibGtk.gtk_label_get_selection_bounds(self, start, _end)
+      _retval = LibGtk.gtk_label_get_selection_bounds(@pointer, start, _end)
 
       # Return value handling
 
@@ -1121,7 +1119,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_single_line_mode(self)
+      _retval = LibGtk.gtk_label_get_single_line_mode(@pointer)
 
       # Return value handling
 
@@ -1138,7 +1136,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_text(self)
+      _retval = LibGtk.gtk_label_get_text(@pointer)
 
       # Return value handling
 
@@ -1153,7 +1151,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_use_markup(self)
+      _retval = LibGtk.gtk_label_get_use_markup(@pointer)
 
       # Return value handling
 
@@ -1168,7 +1166,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_use_underline(self)
+      _retval = LibGtk.gtk_label_get_use_underline(@pointer)
 
       # Return value handling
 
@@ -1183,7 +1181,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_width_chars(self)
+      _retval = LibGtk.gtk_label_get_width_chars(@pointer)
 
       # Return value handling
 
@@ -1198,7 +1196,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_wrap(self)
+      _retval = LibGtk.gtk_label_get_wrap(@pointer)
 
       # Return value handling
 
@@ -1213,7 +1211,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_wrap_mode(self)
+      _retval = LibGtk.gtk_label_get_wrap_mode(@pointer)
 
       # Return value handling
 
@@ -1228,7 +1226,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_xalign(self)
+      _retval = LibGtk.gtk_label_get_xalign(@pointer)
 
       # Return value handling
 
@@ -1243,7 +1241,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_label_get_yalign(self)
+      _retval = LibGtk.gtk_label_get_yalign(@pointer)
 
       # Return value handling
 
@@ -1260,7 +1258,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_select_region(self, start_offset, end_offset)
+      LibGtk.gtk_label_select_region(@pointer, start_offset, end_offset)
 
       # Return value handling
     end
@@ -1286,7 +1284,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_label_set_attributes(self, attrs)
+      LibGtk.gtk_label_set_attributes(@pointer, attrs)
 
       # Return value handling
     end
@@ -1300,7 +1298,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_ellipsize(self, mode)
+      LibGtk.gtk_label_set_ellipsize(@pointer, mode)
 
       # Return value handling
     end
@@ -1320,7 +1318,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_label_set_extra_menu(self, model)
+      LibGtk.gtk_label_set_extra_menu(@pointer, model)
 
       # Return value handling
     end
@@ -1338,7 +1336,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_justify(self, jtype)
+      LibGtk.gtk_label_set_justify(@pointer, jtype)
 
       # Return value handling
     end
@@ -1353,7 +1351,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_label(self, str)
+      LibGtk.gtk_label_set_label(@pointer, str)
 
       # Return value handling
     end
@@ -1368,7 +1366,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_lines(self, lines)
+      LibGtk.gtk_label_set_lines(@pointer, lines)
 
       # Return value handling
     end
@@ -1408,7 +1406,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_markup(self, str)
+      LibGtk.gtk_label_set_markup(@pointer, str)
 
       # Return value handling
     end
@@ -1427,7 +1425,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_markup_with_mnemonic(self, str)
+      LibGtk.gtk_label_set_markup_with_mnemonic(@pointer, str)
 
       # Return value handling
     end
@@ -1438,7 +1436,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_max_width_chars(self, n_chars)
+      LibGtk.gtk_label_set_max_width_chars(@pointer, n_chars)
 
       # Return value handling
     end
@@ -1473,7 +1471,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_label_set_mnemonic_widget(self, widget)
+      LibGtk.gtk_label_set_mnemonic_widget(@pointer, widget)
 
       # Return value handling
     end
@@ -1487,7 +1485,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_natural_wrap_mode(self, wrap_mode)
+      LibGtk.gtk_label_set_natural_wrap_mode(@pointer, wrap_mode)
 
       # Return value handling
     end
@@ -1501,7 +1499,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_selectable(self, setting)
+      LibGtk.gtk_label_set_selectable(@pointer, setting)
 
       # Return value handling
     end
@@ -1512,7 +1510,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_single_line_mode(self, single_line_mode)
+      LibGtk.gtk_label_set_single_line_mode(@pointer, single_line_mode)
 
       # Return value handling
     end
@@ -1534,7 +1532,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_text(self, str)
+      LibGtk.gtk_label_set_text(@pointer, str)
 
       # Return value handling
     end
@@ -1550,7 +1548,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_text_with_mnemonic(self, str)
+      LibGtk.gtk_label_set_text_with_mnemonic(@pointer, str)
 
       # Return value handling
     end
@@ -1563,7 +1561,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_use_markup(self, setting)
+      LibGtk.gtk_label_set_use_markup(@pointer, setting)
 
       # Return value handling
     end
@@ -1574,7 +1572,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_use_underline(self, setting)
+      LibGtk.gtk_label_set_use_underline(@pointer, setting)
 
       # Return value handling
     end
@@ -1585,7 +1583,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_width_chars(self, n_chars)
+      LibGtk.gtk_label_set_width_chars(@pointer, n_chars)
 
       # Return value handling
     end
@@ -1606,7 +1604,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_wrap(self, wrap)
+      LibGtk.gtk_label_set_wrap(@pointer, wrap)
 
       # Return value handling
     end
@@ -1624,7 +1622,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_wrap_mode(self, wrap_mode)
+      LibGtk.gtk_label_set_wrap_mode(@pointer, wrap_mode)
 
       # Return value handling
     end
@@ -1637,7 +1635,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_xalign(self, xalign)
+      LibGtk.gtk_label_set_xalign(@pointer, xalign)
 
       # Return value handling
     end
@@ -1650,7 +1648,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_label_set_yalign(self, yalign)
+      LibGtk.gtk_label_set_yalign(@pointer, yalign)
 
       # Return value handling
     end
@@ -1769,7 +1767,8 @@ module Gtk
       def connect(handler : Proc(::String, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_uri : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          uri = lib_uri
+          # Generator::BuiltInTypeArgPlan
+          uri = ::String.new(lib_uri)
           ::Box(Proc(::String, Bool)).unbox(_lib_box).call(uri)
         }.pointer
 
@@ -1780,7 +1779,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_uri : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          uri = lib_uri
+          # Generator::BuiltInTypeArgPlan
+          uri = ::String.new(lib_uri)
           ::Box(Proc(::String, Bool)).unbox(_lib_box).call(uri)
         }.pointer
 
@@ -1792,7 +1792,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_uri : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Label.new(_lib_sender, GICrystal::Transfer::None)
-          uri = lib_uri
+          # Generator::BuiltInTypeArgPlan
+          uri = ::String.new(lib_uri)
           ::Box(Proc(Gtk::Label, ::String, Bool)).unbox(_lib_box).call(_sender, uri)
         }.pointer
 
@@ -1804,7 +1805,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_uri : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Label.new(_lib_sender, GICrystal::Transfer::None)
-          uri = lib_uri
+          # Generator::BuiltInTypeArgPlan
+          uri = ::String.new(lib_uri)
           ::Box(Proc(Gtk::Label, ::String, Bool)).unbox(_lib_box).call(_sender, uri)
         }.pointer
 
@@ -1945,8 +1947,8 @@ module Gtk
       def connect(handler : Proc(Gtk::MovementStep, Int32, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib_extend_selection : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           extend_selection = lib_extend_selection
           ::Box(Proc(Gtk::MovementStep, Int32, Bool, Nil)).unbox(_lib_box).call(step, count, extend_selection)
@@ -1959,8 +1961,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::MovementStep, Int32, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib_extend_selection : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           extend_selection = lib_extend_selection
           ::Box(Proc(Gtk::MovementStep, Int32, Bool, Nil)).unbox(_lib_box).call(step, count, extend_selection)
@@ -1974,8 +1976,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib_extend_selection : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::Label.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           extend_selection = lib_extend_selection
           ::Box(Proc(Gtk::Label, Gtk::MovementStep, Int32, Bool, Nil)).unbox(_lib_box).call(_sender, step, count, extend_selection)
@@ -1989,8 +1991,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib_extend_selection : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::Label.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           extend_selection = lib_extend_selection
           ::Box(Proc(Gtk::Label, Gtk::MovementStep, Int32, Bool, Nil)).unbox(_lib_box).call(_sender, step, count, extend_selection)

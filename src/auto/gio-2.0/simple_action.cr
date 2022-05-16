@@ -20,15 +20,13 @@ module Gio
         sizeof(LibGio::SimpleAction), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SimpleAction, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SimpleAction`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -218,7 +216,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_action_set_enabled(self, enabled)
+      LibGio.g_simple_action_set_enabled(@pointer, enabled)
 
       # Return value handling
     end
@@ -245,7 +243,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_simple_action_set_state(self, value)
+      LibGio.g_simple_action_set_state(@pointer, value)
 
       # Return value handling
     end
@@ -269,7 +267,7 @@ module Gio
                    end
 
       # C call
-      LibGio.g_simple_action_set_state_hint(self, state_hint)
+      LibGio.g_simple_action_set_state_hint(@pointer, state_hint)
 
       # Return value handling
     end
@@ -316,8 +314,6 @@ module Gio
         handler = ->(_lib_sender : Pointer(Void), lib_parameter : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
           parameter = GLib::Variant.new(lib_parameter, :none)
-          # Generator::GObjectArgPlan
-          parameter = GLib::Variant.new(lib_parameter, :none)
           ::Box(Proc(GLib::Variant?, Nil)).unbox(_lib_box).call(parameter)
         }.pointer
 
@@ -329,8 +325,6 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_parameter : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
-          parameter = GLib::Variant.new(lib_parameter, :none)
-          # Generator::GObjectArgPlan
           parameter = GLib::Variant.new(lib_parameter, :none)
           ::Box(Proc(GLib::Variant?, Nil)).unbox(_lib_box).call(parameter)
         }.pointer
@@ -345,8 +339,6 @@ module Gio
           _sender = Gio::SimpleAction.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
           parameter = GLib::Variant.new(lib_parameter, :none)
-          # Generator::GObjectArgPlan
-          parameter = GLib::Variant.new(lib_parameter, :none)
           ::Box(Proc(Gio::SimpleAction, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, parameter)
         }.pointer
 
@@ -360,8 +352,6 @@ module Gio
           _sender = Gio::SimpleAction.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
           parameter = GLib::Variant.new(lib_parameter, :none)
-          # Generator::GObjectArgPlan
-          parameter = GLib::Variant.new(lib_parameter, :none)
           ::Box(Proc(Gio::SimpleAction, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, parameter)
         }.pointer
 
@@ -370,7 +360,15 @@ module Gio
       end
 
       def emit(parameter : _?) : Nil
-        parameter = GLib::Variant.new(parameter) unless parameter.is_a?(GLib::Variant)
+        # Generator::HandmadeArgPlan
+        parameter = if parameter.nil?
+                      Pointer(Void).null
+                    elsif !parameter.is_a?(GLib::Variant)
+                      GLib::Variant.new(parameter).to_unsafe
+                    else
+                      parameter.to_unsafe
+                    end
+
         LibGObject.g_signal_emit_by_name(@source, "activate", parameter)
       end
     end
@@ -441,8 +439,6 @@ module Gio
         handler = ->(_lib_sender : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
           value = GLib::Variant.new(lib_value, :none)
-          # Generator::GObjectArgPlan
-          value = GLib::Variant.new(lib_value, :none)
           ::Box(Proc(GLib::Variant?, Nil)).unbox(_lib_box).call(value)
         }.pointer
 
@@ -454,8 +450,6 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
-          value = GLib::Variant.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GLib::Variant.new(lib_value, :none)
           ::Box(Proc(GLib::Variant?, Nil)).unbox(_lib_box).call(value)
         }.pointer
@@ -470,8 +464,6 @@ module Gio
           _sender = Gio::SimpleAction.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
           value = GLib::Variant.new(lib_value, :none)
-          # Generator::GObjectArgPlan
-          value = GLib::Variant.new(lib_value, :none)
           ::Box(Proc(Gio::SimpleAction, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, value)
         }.pointer
 
@@ -485,8 +477,6 @@ module Gio
           _sender = Gio::SimpleAction.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
           value = GLib::Variant.new(lib_value, :none)
-          # Generator::GObjectArgPlan
-          value = GLib::Variant.new(lib_value, :none)
           ::Box(Proc(Gio::SimpleAction, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, value)
         }.pointer
 
@@ -495,7 +485,15 @@ module Gio
       end
 
       def emit(value : _?) : Nil
-        value = GLib::Variant.new(value) unless value.is_a?(GLib::Variant)
+        # Generator::HandmadeArgPlan
+        value = if value.nil?
+                  Pointer(Void).null
+                elsif !value.is_a?(GLib::Variant)
+                  GLib::Variant.new(value).to_unsafe
+                else
+                  value.to_unsafe
+                end
+
         LibGObject.g_signal_emit_by_name(@source, "change-state", value)
       end
     end

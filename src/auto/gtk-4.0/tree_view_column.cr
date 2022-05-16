@@ -28,15 +28,13 @@ module Gtk
         sizeof(LibGtk::TreeViewColumn), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TreeViewColumn, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TreeViewColumn`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -473,7 +471,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_add_attribute(self, cell_renderer, attribute, column)
+      LibGtk.gtk_tree_view_column_add_attribute(@pointer, cell_renderer, attribute, column)
 
       # Return value handling
     end
@@ -492,7 +490,7 @@ module Gtk
       x_offset = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       width = Pointer(Int32).null
       # C call
-      _retval = LibGtk.gtk_tree_view_column_cell_get_position(self, cell_renderer, x_offset, width)
+      _retval = LibGtk.gtk_tree_view_column_cell_get_position(@pointer, cell_renderer, x_offset, width)
 
       # Return value handling
 
@@ -515,7 +513,7 @@ module Gtk
       width = Pointer(Int32).null    # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_tree_view_column_cell_get_size(self, x_offset, y_offset, width, height)
+      LibGtk.gtk_tree_view_column_cell_get_size(@pointer, x_offset, y_offset, width, height)
 
       # Return value handling
     end
@@ -528,7 +526,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_cell_is_visible(self)
+      _retval = LibGtk.gtk_tree_view_column_cell_is_visible(@pointer)
 
       # Return value handling
 
@@ -544,7 +542,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_cell_set_cell_data(self, tree_model, iter, is_expander, is_expanded)
+      LibGtk.gtk_tree_view_column_cell_set_cell_data(@pointer, tree_model, iter, is_expander, is_expanded)
 
       # Return value handling
     end
@@ -555,7 +553,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_clear(self)
+      LibGtk.gtk_tree_view_column_clear(@pointer)
 
       # Return value handling
     end
@@ -567,7 +565,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_clear_attributes(self, cell_renderer)
+      LibGtk.gtk_tree_view_column_clear_attributes(@pointer, cell_renderer)
 
       # Return value handling
     end
@@ -579,7 +577,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_clicked(self)
+      LibGtk.gtk_tree_view_column_clicked(@pointer)
 
       # Return value handling
     end
@@ -591,7 +589,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_focus_cell(self, cell)
+      LibGtk.gtk_tree_view_column_focus_cell(@pointer, cell)
 
       # Return value handling
     end
@@ -603,7 +601,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_alignment(self)
+      _retval = LibGtk.gtk_tree_view_column_get_alignment(@pointer)
 
       # Return value handling
 
@@ -616,7 +614,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_button(self)
+      _retval = LibGtk.gtk_tree_view_column_get_button(@pointer)
 
       # Return value handling
 
@@ -629,7 +627,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_clickable(self)
+      _retval = LibGtk.gtk_tree_view_column_get_clickable(@pointer)
 
       # Return value handling
 
@@ -642,7 +640,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_expand(self)
+      _retval = LibGtk.gtk_tree_view_column_get_expand(@pointer)
 
       # Return value handling
 
@@ -656,7 +654,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_fixed_width(self)
+      _retval = LibGtk.gtk_tree_view_column_get_fixed_width(@pointer)
 
       # Return value handling
 
@@ -670,7 +668,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_max_width(self)
+      _retval = LibGtk.gtk_tree_view_column_get_max_width(@pointer)
 
       # Return value handling
 
@@ -684,7 +682,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_min_width(self)
+      _retval = LibGtk.gtk_tree_view_column_get_min_width(@pointer)
 
       # Return value handling
 
@@ -697,7 +695,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_reorderable(self)
+      _retval = LibGtk.gtk_tree_view_column_get_reorderable(@pointer)
 
       # Return value handling
 
@@ -710,7 +708,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_resizable(self)
+      _retval = LibGtk.gtk_tree_view_column_get_resizable(@pointer)
 
       # Return value handling
 
@@ -723,7 +721,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_sizing(self)
+      _retval = LibGtk.gtk_tree_view_column_get_sizing(@pointer)
 
       # Return value handling
 
@@ -739,7 +737,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_sort_column_id(self)
+      _retval = LibGtk.gtk_tree_view_column_get_sort_column_id(@pointer)
 
       # Return value handling
 
@@ -752,7 +750,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_sort_indicator(self)
+      _retval = LibGtk.gtk_tree_view_column_get_sort_indicator(@pointer)
 
       # Return value handling
 
@@ -765,7 +763,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_sort_order(self)
+      _retval = LibGtk.gtk_tree_view_column_get_sort_order(@pointer)
 
       # Return value handling
 
@@ -778,7 +776,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_spacing(self)
+      _retval = LibGtk.gtk_tree_view_column_get_spacing(@pointer)
 
       # Return value handling
 
@@ -791,7 +789,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_title(self)
+      _retval = LibGtk.gtk_tree_view_column_get_title(@pointer)
 
       # Return value handling
 
@@ -806,7 +804,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_tree_view(self)
+      _retval = LibGtk.gtk_tree_view_column_get_tree_view(@pointer)
 
       # Return value handling
 
@@ -819,7 +817,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_visible(self)
+      _retval = LibGtk.gtk_tree_view_column_get_visible(@pointer)
 
       # Return value handling
 
@@ -834,7 +832,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_widget(self)
+      _retval = LibGtk.gtk_tree_view_column_get_widget(@pointer)
 
       # Return value handling
 
@@ -847,7 +845,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_width(self)
+      _retval = LibGtk.gtk_tree_view_column_get_width(@pointer)
 
       # Return value handling
 
@@ -860,7 +858,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_column_get_x_offset(self)
+      _retval = LibGtk.gtk_tree_view_column_get_x_offset(@pointer)
 
       # Return value handling
 
@@ -875,7 +873,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_pack_end(self, cell, expand)
+      LibGtk.gtk_tree_view_column_pack_end(@pointer, cell, expand)
 
       # Return value handling
     end
@@ -888,7 +886,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_pack_start(self, cell, expand)
+      LibGtk.gtk_tree_view_column_pack_start(@pointer, cell, expand)
 
       # Return value handling
     end
@@ -900,7 +898,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_queue_resize(self)
+      LibGtk.gtk_tree_view_column_queue_resize(@pointer)
 
       # Return value handling
     end
@@ -913,7 +911,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_alignment(self, xalign)
+      LibGtk.gtk_tree_view_column_set_alignment(@pointer, xalign)
 
       # Return value handling
     end
@@ -935,16 +933,15 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_tree_column : Pointer(Void), lib_cell : Pointer(Void), lib_tree_model : Pointer(Void), lib_iter : Pointer(Void), lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tree_column = Gtk::TreeViewColumn.new(lib_tree_column, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           cell = Gtk::CellRenderer.new(lib_cell, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tree_model = Gtk::TreeModel.new(lib_tree_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          data = lib_data
-          ::Box(Proc(Gtk::TreeViewColumn, Gtk::CellRenderer, Gtk::TreeModel, Gtk::TreeIter, Nil)).unbox(data).call(tree_column, cell, tree_model, iter)
+          ::Box(Proc(Gtk::TreeViewColumn, Gtk::CellRenderer, Gtk::TreeModel, Gtk::TreeIter, Nil)).unbox(lib_data).call(tree_column, cell, tree_model, iter)
         }.pointer
         func_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -953,7 +950,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_tree_view_column_set_cell_data_func(self, cell_renderer, func, func_data, destroy)
+      LibGtk.gtk_tree_view_column_set_cell_data_func(@pointer, cell_renderer, func, func_data, destroy)
 
       # Return value handling
     end
@@ -965,7 +962,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_clickable(self, clickable)
+      LibGtk.gtk_tree_view_column_set_clickable(@pointer, clickable)
 
       # Return value handling
     end
@@ -982,7 +979,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_expand(self, expand)
+      LibGtk.gtk_tree_view_column_set_expand(@pointer, expand)
 
       # Return value handling
     end
@@ -1003,7 +1000,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_fixed_width(self, fixed_width)
+      LibGtk.gtk_tree_view_column_set_fixed_width(@pointer, fixed_width)
 
       # Return value handling
     end
@@ -1017,7 +1014,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_max_width(self, max_width)
+      LibGtk.gtk_tree_view_column_set_max_width(@pointer, max_width)
 
       # Return value handling
     end
@@ -1029,7 +1026,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_min_width(self, min_width)
+      LibGtk.gtk_tree_view_column_set_min_width(@pointer, min_width)
 
       # Return value handling
     end
@@ -1041,7 +1038,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_reorderable(self, reorderable)
+      LibGtk.gtk_tree_view_column_set_reorderable(@pointer, reorderable)
 
       # Return value handling
     end
@@ -1057,7 +1054,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_resizable(self, resizable)
+      LibGtk.gtk_tree_view_column_set_resizable(@pointer, resizable)
 
       # Return value handling
     end
@@ -1068,7 +1065,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_sizing(self, type)
+      LibGtk.gtk_tree_view_column_set_sizing(@pointer, type)
 
       # Return value handling
     end
@@ -1080,7 +1077,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_sort_column_id(self, sort_column_id)
+      LibGtk.gtk_tree_view_column_set_sort_column_id(@pointer, sort_column_id)
 
       # Return value handling
     end
@@ -1094,7 +1091,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_sort_indicator(self, setting)
+      LibGtk.gtk_tree_view_column_set_sort_indicator(@pointer, setting)
 
       # Return value handling
     end
@@ -1115,7 +1112,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_sort_order(self, order)
+      LibGtk.gtk_tree_view_column_set_sort_order(@pointer, order)
 
       # Return value handling
     end
@@ -1127,7 +1124,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_spacing(self, spacing)
+      LibGtk.gtk_tree_view_column_set_spacing(@pointer, spacing)
 
       # Return value handling
     end
@@ -1139,7 +1136,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_title(self, title)
+      LibGtk.gtk_tree_view_column_set_title(@pointer, title)
 
       # Return value handling
     end
@@ -1150,7 +1147,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_column_set_visible(self, visible)
+      LibGtk.gtk_tree_view_column_set_visible(@pointer, visible)
 
       # Return value handling
     end
@@ -1170,7 +1167,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_tree_view_column_set_widget(self, widget)
+      LibGtk.gtk_tree_view_column_set_widget(@pointer, widget)
 
       # Return value handling
     end

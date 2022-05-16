@@ -85,7 +85,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_params_get_damping(self)
+      _retval = LibAdw.adw_spring_params_get_damping(@pointer)
 
       # Return value handling
 
@@ -97,7 +97,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_params_get_damping_ratio(self)
+      _retval = LibAdw.adw_spring_params_get_damping_ratio(@pointer)
 
       # Return value handling
 
@@ -109,7 +109,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_params_get_mass(self)
+      _retval = LibAdw.adw_spring_params_get_mass(@pointer)
 
       # Return value handling
 
@@ -121,7 +121,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_params_get_stiffness(self)
+      _retval = LibAdw.adw_spring_params_get_stiffness(@pointer)
 
       # Return value handling
 
@@ -133,7 +133,7 @@ module Adw
       # Returns: (transfer full)
 
       # C call
-      _retval = LibAdw.adw_spring_params_ref(self)
+      _retval = LibAdw.adw_spring_params_ref(@pointer)
 
       # Return value handling
 
@@ -145,7 +145,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_spring_params_unref(self)
+      LibAdw.adw_spring_params_unref(@pointer)
 
       # Return value handling
     end

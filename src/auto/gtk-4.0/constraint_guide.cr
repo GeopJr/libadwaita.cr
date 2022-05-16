@@ -27,15 +27,13 @@ module Gtk
         sizeof(LibGtk::ConstraintGuide), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ConstraintGuide, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ConstraintGuide`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -248,7 +246,7 @@ module Gtk
       width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_constraint_guide_get_max_size(self, width, height)
+      LibGtk.gtk_constraint_guide_get_max_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -264,7 +262,7 @@ module Gtk
       width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_constraint_guide_get_min_size(self, width, height)
+      LibGtk.gtk_constraint_guide_get_min_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -275,7 +273,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_guide_get_name(self)
+      _retval = LibGtk.gtk_constraint_guide_get_name(@pointer)
 
       # Return value handling
 
@@ -293,7 +291,7 @@ module Gtk
       width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_constraint_guide_get_nat_size(self, width, height)
+      LibGtk.gtk_constraint_guide_get_nat_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -304,7 +302,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_guide_get_strength(self)
+      _retval = LibGtk.gtk_constraint_guide_get_strength(@pointer)
 
       # Return value handling
 
@@ -320,7 +318,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_constraint_guide_set_max_size(self, width, height)
+      LibGtk.gtk_constraint_guide_set_max_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -334,7 +332,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_constraint_guide_set_min_size(self, width, height)
+      LibGtk.gtk_constraint_guide_set_min_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -355,7 +353,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_constraint_guide_set_name(self, name)
+      LibGtk.gtk_constraint_guide_set_name(@pointer, name)
 
       # Return value handling
     end
@@ -369,7 +367,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_constraint_guide_set_nat_size(self, width, height)
+      LibGtk.gtk_constraint_guide_set_nat_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -381,7 +379,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_constraint_guide_set_strength(self, strength)
+      LibGtk.gtk_constraint_guide_set_strength(@pointer, strength)
 
       # Return value handling
     end

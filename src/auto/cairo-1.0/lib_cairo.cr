@@ -1,5 +1,4 @@
 @[Link("cairo-gobject", pkg_config: "cairo-gobject")]
-
 lib LibCairo
   # Flags
 

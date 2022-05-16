@@ -22,15 +22,13 @@ module Gdk
         sizeof(LibGdk::Drag), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Drag, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Drag`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -233,7 +231,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_drag_drop_done(self, success)
+      LibGdk.gdk_drag_drop_done(@pointer, success)
 
       # Return value handling
     end
@@ -244,7 +242,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drag_get_actions(self)
+      _retval = LibGdk.gdk_drag_get_actions(@pointer)
 
       # Return value handling
 
@@ -257,7 +255,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drag_get_content(self)
+      _retval = LibGdk.gdk_drag_get_content(@pointer)
 
       # Return value handling
 
@@ -270,7 +268,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drag_get_device(self)
+      _retval = LibGdk.gdk_drag_get_device(@pointer)
 
       # Return value handling
 
@@ -283,7 +281,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drag_get_display(self)
+      _retval = LibGdk.gdk_drag_get_display(@pointer)
 
       # Return value handling
 
@@ -302,7 +300,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drag_get_drag_surface(self)
+      _retval = LibGdk.gdk_drag_get_drag_surface(@pointer)
 
       # Return value handling
 
@@ -315,7 +313,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drag_get_formats(self)
+      _retval = LibGdk.gdk_drag_get_formats(@pointer)
 
       # Return value handling
 
@@ -328,7 +326,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drag_get_selected_action(self)
+      _retval = LibGdk.gdk_drag_get_selected_action(@pointer)
 
       # Return value handling
 
@@ -341,7 +339,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drag_get_surface(self)
+      _retval = LibGdk.gdk_drag_get_surface(@pointer)
 
       # Return value handling
 
@@ -357,7 +355,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_drag_set_hotspot(self, hot_x, hot_y)
+      LibGdk.gdk_drag_set_hotspot(@pointer, hot_x, hot_y)
 
       # Return value handling
     end
@@ -390,8 +388,8 @@ module Gdk
       def connect(handler : Proc(Gdk::DragCancelReason, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_reason : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          reason = Gdk::DragCancelReason.new(lib_reason, :none)
+          # Generator::BuiltInTypeArgPlan
+          reason = Gdk::DragCancelReason.new(lib_reason)
           ::Box(Proc(Gdk::DragCancelReason, Nil)).unbox(_lib_box).call(reason)
         }.pointer
 
@@ -402,8 +400,8 @@ module Gdk
       def connect_after(handler : Proc(Gdk::DragCancelReason, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_reason : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          reason = Gdk::DragCancelReason.new(lib_reason, :none)
+          # Generator::BuiltInTypeArgPlan
+          reason = Gdk::DragCancelReason.new(lib_reason)
           ::Box(Proc(Gdk::DragCancelReason, Nil)).unbox(_lib_box).call(reason)
         }.pointer
 
@@ -415,8 +413,8 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_reason : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gdk::Drag.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          reason = Gdk::DragCancelReason.new(lib_reason, :none)
+          # Generator::BuiltInTypeArgPlan
+          reason = Gdk::DragCancelReason.new(lib_reason)
           ::Box(Proc(Gdk::Drag, Gdk::DragCancelReason, Nil)).unbox(_lib_box).call(_sender, reason)
         }.pointer
 
@@ -428,8 +426,8 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_reason : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gdk::Drag.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          reason = Gdk::DragCancelReason.new(lib_reason, :none)
+          # Generator::BuiltInTypeArgPlan
+          reason = Gdk::DragCancelReason.new(lib_reason)
           ::Box(Proc(Gdk::Drag, Gdk::DragCancelReason, Nil)).unbox(_lib_box).call(_sender, reason)
         }.pointer
 

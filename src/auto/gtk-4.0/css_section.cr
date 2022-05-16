@@ -55,7 +55,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_css_section_get_end_location(self)
+      _retval = LibGtk.gtk_css_section_get_end_location(@pointer)
 
       # Return value handling
 
@@ -67,11 +67,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_css_section_get_file(self)
+      _retval = LibGtk.gtk_css_section_get_file(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def parent : Gtk::CssSection?
@@ -79,7 +79,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_css_section_get_parent(self)
+      _retval = LibGtk.gtk_css_section_get_parent(@pointer)
 
       # Return value handling
 
@@ -91,7 +91,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_css_section_get_start_location(self)
+      _retval = LibGtk.gtk_css_section_get_start_location(@pointer)
 
       # Return value handling
 
@@ -103,7 +103,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_css_section_print(self, string)
+      LibGtk.gtk_css_section_print(@pointer, string)
 
       # Return value handling
     end
@@ -113,7 +113,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_css_section_ref(self)
+      _retval = LibGtk.gtk_css_section_ref(@pointer)
 
       # Return value handling
 
@@ -125,7 +125,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_css_section_to_string(self)
+      _retval = LibGtk.gtk_css_section_to_string(@pointer)
 
       # Return value handling
 
@@ -137,7 +137,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_css_section_unref(self)
+      LibGtk.gtk_css_section_unref(@pointer)
 
       # Return value handling
     end

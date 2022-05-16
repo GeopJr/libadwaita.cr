@@ -42,14 +42,14 @@ module Gtk
                  end
 
       # C call
-      _retval = LibGtk.gtk_recent_info_create_app_info(self, app_name, pointerof(_error))
+      _retval = LibGtk.gtk_recent_info_create_app_info(@pointer, app_name, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
 
       # Return value handling
 
-      Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def exists : Bool
@@ -57,7 +57,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_exists(self)
+      _retval = LibGtk.gtk_recent_info_exists(@pointer)
 
       # Return value handling
 
@@ -69,7 +69,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_added(self)
+      _retval = LibGtk.gtk_recent_info_get_added(@pointer)
 
       # Return value handling
 
@@ -81,7 +81,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_age(self)
+      _retval = LibGtk.gtk_recent_info_get_age(@pointer)
 
       # Return value handling
 
@@ -96,7 +96,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_application_info(self, app_name, app_exec, count, stamp)
+      _retval = LibGtk.gtk_recent_info_get_application_info(@pointer, app_name, app_exec, count, stamp)
 
       # Return value handling
 
@@ -111,7 +111,7 @@ module Gtk
       # Generator::OutArgUsedInReturnPlan
       length = 0_u64
       # C call
-      _retval = LibGtk.gtk_recent_info_get_applications(self, pointerof(length))
+      _retval = LibGtk.gtk_recent_info_get_applications(@pointer, pointerof(length))
 
       # Return value handling
 
@@ -123,7 +123,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_description(self)
+      _retval = LibGtk.gtk_recent_info_get_description(@pointer)
 
       # Return value handling
 
@@ -135,7 +135,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_display_name(self)
+      _retval = LibGtk.gtk_recent_info_get_display_name(@pointer)
 
       # Return value handling
 
@@ -147,11 +147,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_gicon(self)
+      _retval = LibGtk.gtk_recent_info_get_gicon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def groups : Enumerable(::String)
@@ -162,7 +162,7 @@ module Gtk
       # Generator::OutArgUsedInReturnPlan
       length = 0_u64
       # C call
-      _retval = LibGtk.gtk_recent_info_get_groups(self, pointerof(length))
+      _retval = LibGtk.gtk_recent_info_get_groups(@pointer, pointerof(length))
 
       # Return value handling
 
@@ -174,7 +174,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_mime_type(self)
+      _retval = LibGtk.gtk_recent_info_get_mime_type(@pointer)
 
       # Return value handling
 
@@ -186,7 +186,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_modified(self)
+      _retval = LibGtk.gtk_recent_info_get_modified(@pointer)
 
       # Return value handling
 
@@ -198,7 +198,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_private_hint(self)
+      _retval = LibGtk.gtk_recent_info_get_private_hint(@pointer)
 
       # Return value handling
 
@@ -210,7 +210,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_short_name(self)
+      _retval = LibGtk.gtk_recent_info_get_short_name(@pointer)
 
       # Return value handling
 
@@ -222,7 +222,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_uri(self)
+      _retval = LibGtk.gtk_recent_info_get_uri(@pointer)
 
       # Return value handling
 
@@ -234,7 +234,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_uri_display(self)
+      _retval = LibGtk.gtk_recent_info_get_uri_display(@pointer)
 
       # Return value handling
 
@@ -246,7 +246,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_get_visited(self)
+      _retval = LibGtk.gtk_recent_info_get_visited(@pointer)
 
       # Return value handling
 
@@ -258,7 +258,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_has_application(self, app_name)
+      _retval = LibGtk.gtk_recent_info_has_application(@pointer, app_name)
 
       # Return value handling
 
@@ -270,7 +270,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_has_group(self, group_name)
+      _retval = LibGtk.gtk_recent_info_has_group(@pointer, group_name)
 
       # Return value handling
 
@@ -282,7 +282,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_is_local(self)
+      _retval = LibGtk.gtk_recent_info_is_local(@pointer)
 
       # Return value handling
 
@@ -294,7 +294,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_last_application(self)
+      _retval = LibGtk.gtk_recent_info_last_application(@pointer)
 
       # Return value handling
 
@@ -306,7 +306,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_match(self, info_b)
+      _retval = LibGtk.gtk_recent_info_match(@pointer, info_b)
 
       # Return value handling
 
@@ -318,7 +318,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_recent_info_ref(self)
+      _retval = LibGtk.gtk_recent_info_ref(@pointer)
 
       # Return value handling
 
@@ -330,7 +330,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_recent_info_unref(self)
+      LibGtk.gtk_recent_info_unref(@pointer)
 
       # Return value handling
     end

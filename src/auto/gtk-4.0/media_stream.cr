@@ -32,15 +32,13 @@ module Gtk
         sizeof(LibGtk::MediaStream), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(MediaStream, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `MediaStream`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -290,7 +288,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_gerror(self, error)
+      LibGtk.gtk_media_stream_gerror(@pointer, error)
 
       # Return value handling
     end
@@ -303,7 +301,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_get_duration(self)
+      _retval = LibGtk.gtk_media_stream_get_duration(@pointer)
 
       # Return value handling
 
@@ -316,7 +314,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_get_ended(self)
+      _retval = LibGtk.gtk_media_stream_get_ended(@pointer)
 
       # Return value handling
 
@@ -342,7 +340,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_get_error(self)
+      _retval = LibGtk.gtk_media_stream_get_error(@pointer)
 
       # Return value handling
 
@@ -357,7 +355,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_get_loop(self)
+      _retval = LibGtk.gtk_media_stream_get_loop(@pointer)
 
       # Return value handling
 
@@ -372,7 +370,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_get_muted(self)
+      _retval = LibGtk.gtk_media_stream_get_muted(@pointer)
 
       # Return value handling
 
@@ -385,7 +383,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_get_playing(self)
+      _retval = LibGtk.gtk_media_stream_get_playing(@pointer)
 
       # Return value handling
 
@@ -398,7 +396,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_get_timestamp(self)
+      _retval = LibGtk.gtk_media_stream_get_timestamp(@pointer)
 
       # Return value handling
 
@@ -413,7 +411,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_get_volume(self)
+      _retval = LibGtk.gtk_media_stream_get_volume(@pointer)
 
       # Return value handling
 
@@ -426,7 +424,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_has_audio(self)
+      _retval = LibGtk.gtk_media_stream_has_audio(@pointer)
 
       # Return value handling
 
@@ -439,7 +437,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_has_video(self)
+      _retval = LibGtk.gtk_media_stream_has_video(@pointer)
 
       # Return value handling
 
@@ -454,7 +452,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_is_prepared(self)
+      _retval = LibGtk.gtk_media_stream_is_prepared(@pointer)
 
       # Return value handling
 
@@ -475,7 +473,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_is_seekable(self)
+      _retval = LibGtk.gtk_media_stream_is_seekable(@pointer)
 
       # Return value handling
 
@@ -488,7 +486,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_media_stream_is_seeking(self)
+      _retval = LibGtk.gtk_media_stream_is_seeking(@pointer)
 
       # Return value handling
 
@@ -503,7 +501,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_pause(self)
+      LibGtk.gtk_media_stream_pause(@pointer)
 
       # Return value handling
     end
@@ -516,7 +514,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_play(self)
+      LibGtk.gtk_media_stream_play(@pointer)
 
       # Return value handling
     end
@@ -542,7 +540,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_realize(self, surface)
+      LibGtk.gtk_media_stream_realize(@pointer, surface)
 
       # Return value handling
     end
@@ -563,7 +561,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_seek(self, timestamp)
+      LibGtk.gtk_media_stream_seek(@pointer, timestamp)
 
       # Return value handling
     end
@@ -580,7 +578,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_seek_failed(self)
+      LibGtk.gtk_media_stream_seek_failed(@pointer)
 
       # Return value handling
     end
@@ -597,7 +595,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_seek_success(self)
+      LibGtk.gtk_media_stream_seek_success(@pointer)
 
       # Return value handling
     end
@@ -615,7 +613,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_set_loop(self, loop)
+      LibGtk.gtk_media_stream_set_loop(@pointer, loop)
 
       # Return value handling
     end
@@ -633,7 +631,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_set_muted(self, muted)
+      LibGtk.gtk_media_stream_set_muted(@pointer, muted)
 
       # Return value handling
     end
@@ -644,7 +642,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_set_playing(self, playing)
+      LibGtk.gtk_media_stream_set_playing(@pointer, playing)
 
       # Return value handling
     end
@@ -665,7 +663,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_set_volume(self, volume)
+      LibGtk.gtk_media_stream_set_volume(@pointer, volume)
 
       # Return value handling
     end
@@ -681,7 +679,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_stream_ended(self)
+      LibGtk.gtk_media_stream_stream_ended(@pointer)
 
       # Return value handling
     end
@@ -701,7 +699,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_stream_prepared(self, has_audio, has_video, seekable, duration)
+      LibGtk.gtk_media_stream_stream_prepared(@pointer, has_audio, has_video, seekable, duration)
 
       # Return value handling
     end
@@ -716,7 +714,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_stream_unprepared(self)
+      LibGtk.gtk_media_stream_stream_unprepared(@pointer)
 
       # Return value handling
     end
@@ -730,7 +728,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_unrealize(self, surface)
+      LibGtk.gtk_media_stream_unrealize(@pointer, surface)
 
       # Return value handling
     end
@@ -747,7 +745,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_media_stream_update(self, timestamp)
+      LibGtk.gtk_media_stream_update(@pointer, timestamp)
 
       # Return value handling
     end

@@ -64,7 +64,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       r = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_quad_bounds(self, r)
+      LibGraphene.graphene_quad_bounds(@pointer, r)
 
       # Return value handling
 
@@ -76,7 +76,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_quad_contains(self, p)
+      _retval = LibGraphene.graphene_quad_contains(@pointer, p)
 
       # Return value handling
 
@@ -88,7 +88,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_quad_free(self)
+      LibGraphene.graphene_quad_free(@pointer)
 
       # Return value handling
     end
@@ -98,7 +98,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_quad_get_point(self, index_)
+      _retval = LibGraphene.graphene_quad_get_point(@pointer, index_)
 
       # Return value handling
 
@@ -110,7 +110,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_quad_init(self, p1, p2, p3, p4)
+      _retval = LibGraphene.graphene_quad_init(@pointer, p1, p2, p3, p4)
 
       # Return value handling
 
@@ -128,7 +128,7 @@ module Graphene
       points = points.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGraphene.graphene_quad_init_from_points(self, points)
+      _retval = LibGraphene.graphene_quad_init_from_points(@pointer, points)
 
       # Return value handling
 
@@ -144,7 +144,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_quad_init_from_rect(self, r)
+      _retval = LibGraphene.graphene_quad_init_from_rect(@pointer, r)
 
       # Return value handling
 

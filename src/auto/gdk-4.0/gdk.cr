@@ -3094,8 +3094,7 @@ module Gdk
     if deserialize
       _box = ::Box.box(deserialize)
       deserialize = ->(lib_deserializer : Pointer(Void)) {
-        deserializer = lib_deserializer
-        ::Box(Proc(Nil)).unbox(deserializer).call
+        ::Box(Proc(Nil)).unbox(lib_deserializer).call
       }.pointer
       data = GICrystal::ClosureDataManager.register(_box)
       notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -3118,8 +3117,7 @@ module Gdk
     if serialize
       _box = ::Box.box(serialize)
       serialize = ->(lib_serializer : Pointer(Void)) {
-        serializer = lib_serializer
-        ::Box(Proc(Nil)).unbox(serializer).call
+        ::Box(Proc(Nil)).unbox(lib_serializer).call
       }.pointer
       data = GICrystal::ClosureDataManager.register(_box)
       notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -3363,7 +3361,7 @@ module Gdk
 
     # Return value handling
 
-    Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full)
+    Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::Full)
   end
 
   def self.pixbuf_get_from_surface(surface : Cairo::Surface, src_x : Int32, src_y : Int32, width : Int32, height : Int32) : GdkPixbuf::Pixbuf?

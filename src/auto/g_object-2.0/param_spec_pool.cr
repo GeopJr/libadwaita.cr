@@ -25,7 +25,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_param_spec_pool_insert(self, pspec, owner_type)
+      LibGObject.g_param_spec_pool_insert(@pointer, pspec, owner_type)
 
       # Return value handling
     end
@@ -35,7 +35,7 @@ module GObject
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGObject.g_param_spec_pool_list_owned(self, owner_type)
+      _retval = LibGObject.g_param_spec_pool_list_owned(@pointer, owner_type)
 
       # Return value handling
 
@@ -47,7 +47,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_param_spec_pool_lookup(self, param_name, owner_type, walk_ancestors)
+      _retval = LibGObject.g_param_spec_pool_lookup(@pointer, param_name, owner_type, walk_ancestors)
 
       # Return value handling
 
@@ -59,7 +59,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_param_spec_pool_remove(self, pspec)
+      LibGObject.g_param_spec_pool_remove(@pointer, pspec)
 
       # Return value handling
     end

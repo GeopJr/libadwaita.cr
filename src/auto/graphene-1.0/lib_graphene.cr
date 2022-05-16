@@ -1,5 +1,4 @@
 @[Link("graphene-1.0", pkg_config: "graphene-1.0")]
-
 lib LibGraphene
   # Flags
 

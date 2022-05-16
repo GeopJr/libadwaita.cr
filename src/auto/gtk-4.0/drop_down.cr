@@ -48,15 +48,13 @@ module Gtk
         sizeof(LibGtk::DropDown), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DropDown, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DropDown`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -372,7 +370,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def selected=(value : UInt32) : UInt32
@@ -476,7 +474,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_down_get_enable_search(self)
+      _retval = LibGtk.gtk_drop_down_get_enable_search(@pointer)
 
       # Return value handling
 
@@ -491,7 +489,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_down_get_expression(self)
+      _retval = LibGtk.gtk_drop_down_get_expression(@pointer)
 
       # Return value handling
 
@@ -508,7 +506,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_down_get_factory(self)
+      _retval = LibGtk.gtk_drop_down_get_factory(@pointer)
 
       # Return value handling
 
@@ -521,7 +519,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_down_get_list_factory(self)
+      _retval = LibGtk.gtk_drop_down_get_list_factory(@pointer)
 
       # Return value handling
 
@@ -534,11 +532,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_down_get_model(self)
+      _retval = LibGtk.gtk_drop_down_get_model(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the position of the selected item.
@@ -547,7 +545,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_down_get_selected(self)
+      _retval = LibGtk.gtk_drop_down_get_selected(@pointer)
 
       # Return value handling
 
@@ -560,7 +558,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_down_get_selected_item(self)
+      _retval = LibGtk.gtk_drop_down_get_selected_item(@pointer)
 
       # Return value handling
 
@@ -573,7 +571,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_down_get_show_arrow(self)
+      _retval = LibGtk.gtk_drop_down_get_show_arrow(@pointer)
 
       # Return value handling
 
@@ -590,7 +588,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drop_down_set_enable_search(self, enable_search)
+      LibGtk.gtk_drop_down_set_enable_search(@pointer, enable_search)
 
       # Return value handling
     end
@@ -612,7 +610,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_drop_down_set_expression(self, expression)
+      LibGtk.gtk_drop_down_set_expression(@pointer, expression)
 
       # Return value handling
     end
@@ -631,7 +629,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_drop_down_set_factory(self, factory)
+      LibGtk.gtk_drop_down_set_factory(@pointer, factory)
 
       # Return value handling
     end
@@ -650,7 +648,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_drop_down_set_list_factory(self, factory)
+      LibGtk.gtk_drop_down_set_list_factory(@pointer, factory)
 
       # Return value handling
     end
@@ -669,7 +667,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_drop_down_set_model(self, model)
+      LibGtk.gtk_drop_down_set_model(@pointer, model)
 
       # Return value handling
     end
@@ -680,7 +678,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drop_down_set_selected(self, position)
+      LibGtk.gtk_drop_down_set_selected(@pointer, position)
 
       # Return value handling
     end
@@ -691,7 +689,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drop_down_set_show_arrow(self, show_arrow)
+      LibGtk.gtk_drop_down_set_show_arrow(@pointer, show_arrow)
 
       # Return value handling
     end

@@ -62,15 +62,13 @@ module Gtk
         sizeof(LibGtk::PadController), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(PadController, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `PadController`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -140,7 +138,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "action-group", pointerof(value), Pointer(Void).null)
-      Gio::ActionGroup__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractActionGroup.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def pad=(value : Gdk::Device?) : Gdk::Device?
@@ -207,7 +205,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_pad_controller_set_action(self, type, index, mode, label, action_name)
+      LibGtk.gtk_pad_controller_set_action(@pointer, type, index, mode, label, action_name)
 
       # Return value handling
     end
@@ -226,7 +224,7 @@ module Gtk
       entries = entries.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_pad_controller_set_action_entries(self, entries, n_entries)
+      LibGtk.gtk_pad_controller_set_action_entries(@pointer, entries, n_entries)
 
       # Return value handling
     end

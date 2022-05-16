@@ -20,15 +20,13 @@ module Gio
         sizeof(LibGio::Menu), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Menu, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Menu`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -80,7 +78,7 @@ module Gio
                         end
 
       # C call
-      LibGio.g_menu_append(self, label, detailed_action)
+      LibGio.g_menu_append(@pointer, label, detailed_action)
 
       # Return value handling
     end
@@ -93,7 +91,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_menu_append_item(self, item)
+      LibGio.g_menu_append_item(@pointer, item)
 
       # Return value handling
     end
@@ -114,7 +112,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_menu_append_section(self, label, section)
+      LibGio.g_menu_append_section(@pointer, label, section)
 
       # Return value handling
     end
@@ -135,7 +133,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_menu_append_submenu(self, label, submenu)
+      LibGio.g_menu_append_submenu(@pointer, label, submenu)
 
       # Return value handling
     end
@@ -153,7 +151,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_menu_freeze(self)
+      LibGio.g_menu_freeze(@pointer)
 
       # Return value handling
     end
@@ -181,7 +179,7 @@ module Gio
                         end
 
       # C call
-      LibGio.g_menu_insert(self, position, label, detailed_action)
+      LibGio.g_menu_insert(@pointer, position, label, detailed_action)
 
       # Return value handling
     end
@@ -208,7 +206,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_menu_insert_item(self, position, item)
+      LibGio.g_menu_insert_item(@pointer, position, item)
 
       # Return value handling
     end
@@ -229,7 +227,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_menu_insert_section(self, position, label, section)
+      LibGio.g_menu_insert_section(@pointer, position, label, section)
 
       # Return value handling
     end
@@ -250,7 +248,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_menu_insert_submenu(self, position, label, submenu)
+      LibGio.g_menu_insert_submenu(@pointer, position, label, submenu)
 
       # Return value handling
     end
@@ -278,7 +276,7 @@ module Gio
                         end
 
       # C call
-      LibGio.g_menu_prepend(self, label, detailed_action)
+      LibGio.g_menu_prepend(@pointer, label, detailed_action)
 
       # Return value handling
     end
@@ -291,7 +289,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_menu_prepend_item(self, item)
+      LibGio.g_menu_prepend_item(@pointer, item)
 
       # Return value handling
     end
@@ -312,7 +310,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_menu_prepend_section(self, label, section)
+      LibGio.g_menu_prepend_section(@pointer, label, section)
 
       # Return value handling
     end
@@ -333,7 +331,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_menu_prepend_submenu(self, label, submenu)
+      LibGio.g_menu_prepend_submenu(@pointer, label, submenu)
 
       # Return value handling
     end
@@ -353,7 +351,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_menu_remove(self, position)
+      LibGio.g_menu_remove(@pointer, position)
 
       # Return value handling
     end
@@ -364,7 +362,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_menu_remove_all(self)
+      LibGio.g_menu_remove_all(@pointer)
 
       # Return value handling
     end

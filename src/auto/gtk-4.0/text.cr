@@ -86,15 +86,13 @@ module Gtk
         sizeof(LibGtk::Text), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Text, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Text`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -742,7 +740,7 @@ module Gtk
       weak = Pointer(Void).null   # Generator::CallerAllocatesPlan
       weak = Graphene::Rect.new
       # C call
-      LibGtk.gtk_text_compute_cursor_extents(self, position, strong, weak)
+      LibGtk.gtk_text_compute_cursor_extents(@pointer, position, strong, weak)
 
       # Return value handling
 
@@ -758,7 +756,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_activates_default(self)
+      _retval = LibGtk.gtk_text_get_activates_default(@pointer)
 
       # Return value handling
 
@@ -773,7 +771,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_attributes(self)
+      _retval = LibGtk.gtk_text_get_attributes(@pointer)
 
       # Return value handling
 
@@ -787,7 +785,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_buffer(self)
+      _retval = LibGtk.gtk_text_get_buffer(@pointer)
 
       # Return value handling
 
@@ -801,7 +799,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_enable_emoji_completion(self)
+      _retval = LibGtk.gtk_text_get_enable_emoji_completion(@pointer)
 
       # Return value handling
 
@@ -816,7 +814,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_extra_menu(self)
+      _retval = LibGtk.gtk_text_get_extra_menu(@pointer)
 
       # Return value handling
 
@@ -829,7 +827,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_input_hints(self)
+      _retval = LibGtk.gtk_text_get_input_hints(@pointer)
 
       # Return value handling
 
@@ -842,7 +840,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_input_purpose(self)
+      _retval = LibGtk.gtk_text_get_input_purpose(@pointer)
 
       # Return value handling
 
@@ -859,7 +857,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_invisible_char(self)
+      _retval = LibGtk.gtk_text_get_invisible_char(@pointer)
 
       # Return value handling
 
@@ -877,7 +875,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_max_length(self)
+      _retval = LibGtk.gtk_text_get_max_length(@pointer)
 
       # Return value handling
 
@@ -892,7 +890,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_overwrite_mode(self)
+      _retval = LibGtk.gtk_text_get_overwrite_mode(@pointer)
 
       # Return value handling
 
@@ -908,7 +906,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_placeholder_text(self)
+      _retval = LibGtk.gtk_text_get_placeholder_text(@pointer)
 
       # Return value handling
 
@@ -922,7 +920,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_propagate_text_width(self)
+      _retval = LibGtk.gtk_text_get_propagate_text_width(@pointer)
 
       # Return value handling
 
@@ -937,7 +935,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_tabs(self)
+      _retval = LibGtk.gtk_text_get_tabs(@pointer)
 
       # Return value handling
 
@@ -953,7 +951,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_text_length(self)
+      _retval = LibGtk.gtk_text_get_text_length(@pointer)
 
       # Return value handling
 
@@ -967,7 +965,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_truncate_multiline(self)
+      _retval = LibGtk.gtk_text_get_truncate_multiline(@pointer)
 
       # Return value handling
 
@@ -980,7 +978,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_get_visibility(self)
+      _retval = LibGtk.gtk_text_get_visibility(@pointer)
 
       # Return value handling
 
@@ -999,7 +997,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_grab_focus_without_selecting(self)
+      _retval = LibGtk.gtk_text_grab_focus_without_selecting(@pointer)
 
       # Return value handling
 
@@ -1017,7 +1015,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_activates_default(self, activates)
+      LibGtk.gtk_text_set_activates_default(@pointer, activates)
 
       # Return value handling
     end
@@ -1036,7 +1034,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_text_set_attributes(self, attrs)
+      LibGtk.gtk_text_set_attributes(@pointer, attrs)
 
       # Return value handling
     end
@@ -1048,7 +1046,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_buffer(self, buffer)
+      LibGtk.gtk_text_set_buffer(@pointer, buffer)
 
       # Return value handling
     end
@@ -1063,7 +1061,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_enable_emoji_completion(self, enable_emoji_completion)
+      LibGtk.gtk_text_set_enable_emoji_completion(@pointer, enable_emoji_completion)
 
       # Return value handling
     end
@@ -1083,7 +1081,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_text_set_extra_menu(self, model)
+      LibGtk.gtk_text_set_extra_menu(@pointer, model)
 
       # Return value handling
     end
@@ -1095,7 +1093,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_input_hints(self, hints)
+      LibGtk.gtk_text_set_input_hints(@pointer, hints)
 
       # Return value handling
     end
@@ -1109,7 +1107,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_input_purpose(self, purpose)
+      LibGtk.gtk_text_set_input_purpose(@pointer, purpose)
 
       # Return value handling
     end
@@ -1125,7 +1123,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_invisible_char(self, ch)
+      LibGtk.gtk_text_set_invisible_char(@pointer, ch)
 
       # Return value handling
     end
@@ -1142,7 +1140,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_max_length(self, length)
+      LibGtk.gtk_text_set_max_length(@pointer, length)
 
       # Return value handling
     end
@@ -1154,7 +1152,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_overwrite_mode(self, overwrite)
+      LibGtk.gtk_text_set_overwrite_mode(@pointer, overwrite)
 
       # Return value handling
     end
@@ -1176,7 +1174,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_text_set_placeholder_text(self, text)
+      LibGtk.gtk_text_set_placeholder_text(@pointer, text)
 
       # Return value handling
     end
@@ -1187,7 +1185,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_propagate_text_width(self, propagate_text_width)
+      LibGtk.gtk_text_set_propagate_text_width(@pointer, propagate_text_width)
 
       # Return value handling
     end
@@ -1206,7 +1204,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_text_set_tabs(self, tabs)
+      LibGtk.gtk_text_set_tabs(@pointer, tabs)
 
       # Return value handling
     end
@@ -1218,7 +1216,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_truncate_multiline(self, truncate_multiline)
+      LibGtk.gtk_text_set_truncate_multiline(@pointer, truncate_multiline)
 
       # Return value handling
     end
@@ -1242,7 +1240,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_set_visibility(self, visible)
+      LibGtk.gtk_text_set_visibility(@pointer, visible)
 
       # Return value handling
     end
@@ -1256,7 +1254,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_unset_invisible_char(self)
+      LibGtk.gtk_text_unset_invisible_char(@pointer)
 
       # Return value handling
     end
@@ -1623,8 +1621,8 @@ module Gtk
       def connect(handler : Proc(Gtk::DeleteType, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_type : UInt32, lib_count : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          type = Gtk::DeleteType.new(lib_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          type = Gtk::DeleteType.new(lib_type)
           count = lib_count
           ::Box(Proc(Gtk::DeleteType, Int32, Nil)).unbox(_lib_box).call(type, count)
         }.pointer
@@ -1636,8 +1634,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::DeleteType, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_type : UInt32, lib_count : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          type = Gtk::DeleteType.new(lib_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          type = Gtk::DeleteType.new(lib_type)
           count = lib_count
           ::Box(Proc(Gtk::DeleteType, Int32, Nil)).unbox(_lib_box).call(type, count)
         }.pointer
@@ -1650,8 +1648,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_type : UInt32, lib_count : Int32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Text.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          type = Gtk::DeleteType.new(lib_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          type = Gtk::DeleteType.new(lib_type)
           count = lib_count
           ::Box(Proc(Gtk::Text, Gtk::DeleteType, Int32, Nil)).unbox(_lib_box).call(_sender, type, count)
         }.pointer
@@ -1664,8 +1662,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_type : UInt32, lib_count : Int32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Text.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          type = Gtk::DeleteType.new(lib_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          type = Gtk::DeleteType.new(lib_type)
           count = lib_count
           ::Box(Proc(Gtk::Text, Gtk::DeleteType, Int32, Nil)).unbox(_lib_box).call(_sender, type, count)
         }.pointer
@@ -1716,7 +1714,8 @@ module Gtk
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          string = lib_string
+          # Generator::BuiltInTypeArgPlan
+          string = ::String.new(lib_string)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(string)
         }.pointer
 
@@ -1727,7 +1726,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          string = lib_string
+          # Generator::BuiltInTypeArgPlan
+          string = ::String.new(lib_string)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(string)
         }.pointer
 
@@ -1739,7 +1739,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Text.new(_lib_sender, GICrystal::Transfer::None)
-          string = lib_string
+          # Generator::BuiltInTypeArgPlan
+          string = ::String.new(lib_string)
           ::Box(Proc(Gtk::Text, ::String, Nil)).unbox(_lib_box).call(_sender, string)
         }.pointer
 
@@ -1751,7 +1752,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Text.new(_lib_sender, GICrystal::Transfer::None)
-          string = lib_string
+          # Generator::BuiltInTypeArgPlan
+          string = ::String.new(lib_string)
           ::Box(Proc(Gtk::Text, ::String, Nil)).unbox(_lib_box).call(_sender, string)
         }.pointer
 
@@ -1897,8 +1899,8 @@ module Gtk
       def connect(handler : Proc(Gtk::MovementStep, Int32, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           ::Box(Proc(Gtk::MovementStep, Int32, Bool, Nil)).unbox(_lib_box).call(step, count, _extend)
@@ -1911,8 +1913,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::MovementStep, Int32, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           ::Box(Proc(Gtk::MovementStep, Int32, Bool, Nil)).unbox(_lib_box).call(step, count, _extend)
@@ -1926,8 +1928,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::Text.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           ::Box(Proc(Gtk::Text, Gtk::MovementStep, Int32, Bool, Nil)).unbox(_lib_box).call(_sender, step, count, _extend)
@@ -1941,8 +1943,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::Text.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           ::Box(Proc(Gtk::Text, Gtk::MovementStep, Int32, Bool, Nil)).unbox(_lib_box).call(_sender, step, count, _extend)
@@ -1952,7 +1954,7 @@ module Gtk
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(step : Gtk::MovementStep, count : Int32, _extend : Bool) : Nil
+      def emit(step : Gtk::MovementStep, count : Int32, extend _extend : Bool) : Nil
         LibGObject.g_signal_emit_by_name(@source, "move-cursor", step, count, _extend)
       end
     end
@@ -2074,7 +2076,8 @@ module Gtk
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_preedit : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          preedit = lib_preedit
+          # Generator::BuiltInTypeArgPlan
+          preedit = ::String.new(lib_preedit)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(preedit)
         }.pointer
 
@@ -2085,7 +2088,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_preedit : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          preedit = lib_preedit
+          # Generator::BuiltInTypeArgPlan
+          preedit = ::String.new(lib_preedit)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(preedit)
         }.pointer
 
@@ -2097,7 +2101,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_preedit : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Text.new(_lib_sender, GICrystal::Transfer::None)
-          preedit = lib_preedit
+          # Generator::BuiltInTypeArgPlan
+          preedit = ::String.new(lib_preedit)
           ::Box(Proc(Gtk::Text, ::String, Nil)).unbox(_lib_box).call(_sender, preedit)
         }.pointer
 
@@ -2109,7 +2114,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_preedit : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Text.new(_lib_sender, GICrystal::Transfer::None)
-          preedit = lib_preedit
+          # Generator::BuiltInTypeArgPlan
+          preedit = ::String.new(lib_preedit)
           ::Box(Proc(Gtk::Text, ::String, Nil)).unbox(_lib_box).call(_sender, preedit)
         }.pointer
 

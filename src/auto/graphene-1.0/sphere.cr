@@ -70,7 +70,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_sphere_contains_point(self, point)
+      _retval = LibGraphene.graphene_sphere_contains_point(@pointer, point)
 
       # Return value handling
 
@@ -82,7 +82,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_sphere_distance(self, point)
+      _retval = LibGraphene.graphene_sphere_distance(@pointer, point)
 
       # Return value handling
 
@@ -94,7 +94,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_sphere_equal(self, b)
+      _retval = LibGraphene.graphene_sphere_equal(@pointer, b)
 
       # Return value handling
 
@@ -106,7 +106,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_sphere_free(self)
+      LibGraphene.graphene_sphere_free(@pointer)
 
       # Return value handling
     end
@@ -119,7 +119,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       box = Graphene::Box.new
       # C call
-      LibGraphene.graphene_sphere_get_bounding_box(self, box)
+      LibGraphene.graphene_sphere_get_bounding_box(@pointer, box)
 
       # Return value handling
 
@@ -134,7 +134,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       center = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_sphere_get_center(self, center)
+      LibGraphene.graphene_sphere_get_center(@pointer, center)
 
       # Return value handling
 
@@ -146,7 +146,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_sphere_get_radius(self)
+      _retval = LibGraphene.graphene_sphere_get_radius(@pointer)
 
       # Return value handling
 
@@ -166,7 +166,7 @@ module Graphene
                end
 
       # C call
-      _retval = LibGraphene.graphene_sphere_init(self, center, radius)
+      _retval = LibGraphene.graphene_sphere_init(@pointer, center, radius)
 
       # Return value handling
 
@@ -190,7 +190,7 @@ module Graphene
                end
 
       # C call
-      _retval = LibGraphene.graphene_sphere_init_from_points(self, n_points, points, center)
+      _retval = LibGraphene.graphene_sphere_init_from_points(@pointer, n_points, points, center)
 
       # Return value handling
 
@@ -214,7 +214,7 @@ module Graphene
                end
 
       # C call
-      _retval = LibGraphene.graphene_sphere_init_from_vectors(self, n_vectors, vectors, center)
+      _retval = LibGraphene.graphene_sphere_init_from_vectors(@pointer, n_vectors, vectors, center)
 
       # Return value handling
 
@@ -226,7 +226,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_sphere_is_empty(self)
+      _retval = LibGraphene.graphene_sphere_is_empty(@pointer)
 
       # Return value handling
 
@@ -241,7 +241,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Sphere.new
       # C call
-      LibGraphene.graphene_sphere_translate(self, point, res)
+      LibGraphene.graphene_sphere_translate(@pointer, point, res)
 
       # Return value handling
 

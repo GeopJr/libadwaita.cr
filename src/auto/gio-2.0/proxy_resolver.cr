@@ -16,7 +16,7 @@ module Gio
 
       # Return value handling
 
-      Gio::ProxyResolver__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractProxyResolver.new(_retval, GICrystal::Transfer::None)
     end
 
     def is_supported : Bool
@@ -24,7 +24,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_proxy_resolver_is_supported(self)
+      _retval = LibGio.g_proxy_resolver_is_supported(@pointer)
 
       # Return value handling
 
@@ -46,7 +46,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_proxy_resolver_lookup(self, uri, cancellable, pointerof(_error))
+      _retval = LibGio.g_proxy_resolver_lookup(@pointer, uri, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -77,7 +77,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_proxy_resolver_lookup_async(self, uri, cancellable, callback, user_data)
+      LibGio.g_proxy_resolver_lookup_async(@pointer, uri, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -89,7 +89,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_proxy_resolver_lookup_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_proxy_resolver_lookup_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -104,8 +104,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class ProxyResolver__Impl < GObject::Object
+  class AbstractProxyResolver < GObject::Object
     include ProxyResolver
+
+    GICrystal.define_new_method(Gio::AbstractProxyResolver, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

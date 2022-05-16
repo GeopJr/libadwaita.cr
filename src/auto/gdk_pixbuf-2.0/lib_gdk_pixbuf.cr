@@ -1,5 +1,4 @@
 @[Link("gdk_pixbuf-2.0", pkg_config: "gdk_pixbuf-2.0")]
-
 lib LibGdkPixbuf
   # Flags
   type PixbufFormatFlags = UInt32

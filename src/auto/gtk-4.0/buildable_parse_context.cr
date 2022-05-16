@@ -21,7 +21,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_buildable_parse_context_get_element(self)
+      _retval = LibGtk.gtk_buildable_parse_context_get_element(@pointer)
 
       # Return value handling
 
@@ -33,7 +33,7 @@ module Gtk
       # Returns: (transfer none) (array element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_buildable_parse_context_get_element_stack(self)
+      _retval = LibGtk.gtk_buildable_parse_context_get_element_stack(@pointer)
 
       # Return value handling
 
@@ -50,7 +50,7 @@ module Gtk
       line_number = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       char_number = Pointer(Int32).null
       # C call
-      LibGtk.gtk_buildable_parse_context_get_position(self, line_number, char_number)
+      LibGtk.gtk_buildable_parse_context_get_position(@pointer, line_number, char_number)
 
       # Return value handling
     end
@@ -60,7 +60,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_buildable_parse_context_pop(self)
+      _retval = LibGtk.gtk_buildable_parse_context_pop(@pointer)
 
       # Return value handling
 
@@ -80,7 +80,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_buildable_parse_context_push(self, parser, user_data)
+      LibGtk.gtk_buildable_parse_context_push(@pointer, parser, user_data)
 
       # Return value handling
     end

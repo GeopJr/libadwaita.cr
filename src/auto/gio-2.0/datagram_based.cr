@@ -52,7 +52,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_datagram_based_condition_check(self, condition)
+      _retval = LibGio.g_datagram_based_condition_check(@pointer, condition)
 
       # Return value handling
 
@@ -74,7 +74,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_datagram_based_condition_wait(self, condition, timeout, cancellable, pointerof(_error))
+      _retval = LibGio.g_datagram_based_condition_wait(@pointer, condition, timeout, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -97,7 +97,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_datagram_based_create_source(self, condition, cancellable)
+      _retval = LibGio.g_datagram_based_create_source(@pointer, condition, cancellable)
 
       # Return value handling
 
@@ -123,7 +123,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_datagram_based_receive_messages(self, messages, num_messages, flags, timeout, cancellable, pointerof(_error))
+      _retval = LibGio.g_datagram_based_receive_messages(@pointer, messages, num_messages, flags, timeout, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -152,7 +152,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_datagram_based_send_messages(self, messages, num_messages, flags, timeout, cancellable, pointerof(_error))
+      _retval = LibGio.g_datagram_based_send_messages(@pointer, messages, num_messages, flags, timeout, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -167,8 +167,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class DatagramBased__Impl < GObject::Object
+  class AbstractDatagramBased < GObject::Object
     include DatagramBased
+
+    GICrystal.define_new_method(Gio::AbstractDatagramBased, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

@@ -32,7 +32,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_schema_key_get_default_value(self)
+      _retval = LibGio.g_settings_schema_key_get_default_value(@pointer)
 
       # Return value handling
 
@@ -44,7 +44,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_schema_key_get_description(self)
+      _retval = LibGio.g_settings_schema_key_get_description(@pointer)
 
       # Return value handling
 
@@ -56,7 +56,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_schema_key_get_name(self)
+      _retval = LibGio.g_settings_schema_key_get_name(@pointer)
 
       # Return value handling
 
@@ -68,7 +68,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_schema_key_get_range(self)
+      _retval = LibGio.g_settings_schema_key_get_range(@pointer)
 
       # Return value handling
 
@@ -80,7 +80,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_schema_key_get_summary(self)
+      _retval = LibGio.g_settings_schema_key_get_summary(@pointer)
 
       # Return value handling
 
@@ -92,7 +92,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_schema_key_get_value_type(self)
+      _retval = LibGio.g_settings_schema_key_get_value_type(@pointer)
 
       # Return value handling
 
@@ -111,7 +111,7 @@ module Gio
               end
 
       # C call
-      _retval = LibGio.g_settings_schema_key_range_check(self, value)
+      _retval = LibGio.g_settings_schema_key_range_check(@pointer, value)
 
       # Return value handling
 
@@ -123,7 +123,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_schema_key_ref(self)
+      _retval = LibGio.g_settings_schema_key_ref(@pointer)
 
       # Return value handling
 
@@ -135,7 +135,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_schema_key_unref(self)
+      LibGio.g_settings_schema_key_unref(@pointer)
 
       # Return value handling
     end

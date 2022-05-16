@@ -97,15 +97,13 @@ module Gtk
         sizeof(LibGtk::InfoBar), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(InfoBar, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `InfoBar`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -395,7 +393,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_add_action_widget(self, child, response_id)
+      LibGtk.gtk_info_bar_add_action_widget(@pointer, child, response_id)
 
       # Return value handling
     end
@@ -411,7 +409,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_info_bar_add_button(self, button_text, response_id)
+      _retval = LibGtk.gtk_info_bar_add_button(@pointer, button_text, response_id)
 
       # Return value handling
 
@@ -424,7 +422,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_add_child(self, widget)
+      LibGtk.gtk_info_bar_add_child(@pointer, widget)
 
       # Return value handling
     end
@@ -435,7 +433,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_info_bar_get_message_type(self)
+      _retval = LibGtk.gtk_info_bar_get_message_type(@pointer)
 
       # Return value handling
 
@@ -448,7 +446,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_info_bar_get_revealed(self)
+      _retval = LibGtk.gtk_info_bar_get_revealed(@pointer)
 
       # Return value handling
 
@@ -461,7 +459,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_info_bar_get_show_close_button(self)
+      _retval = LibGtk.gtk_info_bar_get_show_close_button(@pointer)
 
       # Return value handling
 
@@ -477,7 +475,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_remove_action_widget(self, widget)
+      LibGtk.gtk_info_bar_remove_action_widget(@pointer, widget)
 
       # Return value handling
     end
@@ -488,7 +486,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_remove_child(self, widget)
+      LibGtk.gtk_info_bar_remove_child(@pointer, widget)
 
       # Return value handling
     end
@@ -499,7 +497,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_response(self, response_id)
+      LibGtk.gtk_info_bar_response(@pointer, response_id)
 
       # Return value handling
     end
@@ -516,7 +514,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_set_default_response(self, response_id)
+      LibGtk.gtk_info_bar_set_default_response(@pointer, response_id)
 
       # Return value handling
     end
@@ -529,7 +527,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_set_message_type(self, message_type)
+      LibGtk.gtk_info_bar_set_message_type(@pointer, message_type)
 
       # Return value handling
     end
@@ -544,7 +542,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_set_response_sensitive(self, response_id, setting)
+      LibGtk.gtk_info_bar_set_response_sensitive(@pointer, response_id, setting)
 
       # Return value handling
     end
@@ -562,7 +560,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_set_revealed(self, revealed)
+      LibGtk.gtk_info_bar_set_revealed(@pointer, revealed)
 
       # Return value handling
     end
@@ -575,7 +573,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_info_bar_set_show_close_button(self, setting)
+      LibGtk.gtk_info_bar_set_show_close_button(@pointer, setting)
 
       # Return value handling
     end

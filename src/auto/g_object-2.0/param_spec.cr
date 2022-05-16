@@ -23,15 +23,13 @@ module GObject
         sizeof(LibGObject::ParamSpec), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_param_spec_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ParamSpec, g_param_spec_get_qdata, g_param_spec_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_param_spec_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ParamSpec`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -99,7 +97,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_param_spec_get_blurb(self)
+      _retval = LibGObject.g_param_spec_get_blurb(@pointer)
 
       # Return value handling
 
@@ -114,7 +112,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_param_spec_get_default_value(self)
+      _retval = LibGObject.g_param_spec_get_default_value(@pointer)
 
       # Return value handling
 
@@ -130,7 +128,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_param_spec_get_name(self)
+      _retval = LibGObject.g_param_spec_get_name(@pointer)
 
       # Return value handling
 
@@ -143,7 +141,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_param_spec_get_name_quark(self)
+      _retval = LibGObject.g_param_spec_get_name_quark(@pointer)
 
       # Return value handling
 
@@ -156,7 +154,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_param_spec_get_nick(self)
+      _retval = LibGObject.g_param_spec_get_nick(@pointer)
 
       # Return value handling
 
@@ -169,7 +167,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_param_spec_get_qdata(self, quark)
+      _retval = LibGObject.g_param_spec_get_qdata(@pointer, quark)
 
       # Return value handling
 
@@ -188,7 +186,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_param_spec_get_redirect_target(self)
+      _retval = LibGObject.g_param_spec_get_redirect_target(@pointer)
 
       # Return value handling
 
@@ -214,7 +212,7 @@ module GObject
              end
 
       # C call
-      LibGObject.g_param_spec_set_qdata(self, quark, data)
+      LibGObject.g_param_spec_set_qdata(@pointer, quark, data)
 
       # Return value handling
     end
@@ -231,7 +229,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_param_spec_sink(self)
+      LibGObject.g_param_spec_sink(@pointer)
 
       # Return value handling
     end
@@ -245,7 +243,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_param_spec_steal_qdata(self, quark)
+      _retval = LibGObject.g_param_spec_steal_qdata(@pointer, quark)
 
       # Return value handling
 

@@ -70,15 +70,13 @@ module Gtk
         sizeof(LibGtk::FlowBox), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FlowBox, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FlowBox`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -473,7 +471,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_append(self, child)
+      LibGtk.gtk_flow_box_append(@pointer, child)
 
       # Return value handling
     end
@@ -509,10 +507,9 @@ module Gtk
       if create_widget_func
         _box = ::Box.box(create_widget_func)
         create_widget_func = ->(lib_item : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           item = GObject::Object.new(lib_item, :none)
-          user_data = lib_user_data
-          ::Box(Proc(GObject::Object, Gtk::Widget)).unbox(user_data).call(item)
+          ::Box(Proc(GObject::Object, Gtk::Widget)).unbox(lib_user_data).call(item)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_data_free_func = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -521,7 +518,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_flow_box_bind_model(self, model, create_widget_func, user_data, user_data_free_func)
+      LibGtk.gtk_flow_box_bind_model(@pointer, model, create_widget_func, user_data, user_data_free_func)
 
       # Return value handling
     end
@@ -532,7 +529,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_activate_on_single_click(self)
+      _retval = LibGtk.gtk_flow_box_get_activate_on_single_click(@pointer)
 
       # Return value handling
 
@@ -545,7 +542,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_child_at_index(self, idx)
+      _retval = LibGtk.gtk_flow_box_get_child_at_index(@pointer, idx)
 
       # Return value handling
 
@@ -560,7 +557,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_child_at_pos(self, x, y)
+      _retval = LibGtk.gtk_flow_box_get_child_at_pos(@pointer, x, y)
 
       # Return value handling
 
@@ -573,7 +570,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_column_spacing(self)
+      _retval = LibGtk.gtk_flow_box_get_column_spacing(@pointer)
 
       # Return value handling
 
@@ -586,7 +583,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_homogeneous(self)
+      _retval = LibGtk.gtk_flow_box_get_homogeneous(@pointer)
 
       # Return value handling
 
@@ -599,7 +596,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_max_children_per_line(self)
+      _retval = LibGtk.gtk_flow_box_get_max_children_per_line(@pointer)
 
       # Return value handling
 
@@ -612,7 +609,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_min_children_per_line(self)
+      _retval = LibGtk.gtk_flow_box_get_min_children_per_line(@pointer)
 
       # Return value handling
 
@@ -625,7 +622,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_row_spacing(self)
+      _retval = LibGtk.gtk_flow_box_get_row_spacing(@pointer)
 
       # Return value handling
 
@@ -638,7 +635,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_selected_children(self)
+      _retval = LibGtk.gtk_flow_box_get_selected_children(@pointer)
 
       # Return value handling
 
@@ -651,7 +648,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_flow_box_get_selection_mode(self)
+      _retval = LibGtk.gtk_flow_box_get_selection_mode(@pointer)
 
       # Return value handling
 
@@ -670,7 +667,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_insert(self, widget, position)
+      LibGtk.gtk_flow_box_insert(@pointer, widget, position)
 
       # Return value handling
     end
@@ -687,7 +684,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_invalidate_filter(self)
+      LibGtk.gtk_flow_box_invalidate_filter(@pointer)
 
       # Return value handling
     end
@@ -701,7 +698,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_invalidate_sort(self)
+      LibGtk.gtk_flow_box_invalidate_sort(@pointer)
 
       # Return value handling
     end
@@ -717,7 +714,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_prepend(self, child)
+      LibGtk.gtk_flow_box_prepend(@pointer, child)
 
       # Return value handling
     end
@@ -728,7 +725,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_remove(self, widget)
+      LibGtk.gtk_flow_box_remove(@pointer, widget)
 
       # Return value handling
     end
@@ -740,7 +737,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_select_all(self)
+      LibGtk.gtk_flow_box_select_all(@pointer)
 
       # Return value handling
     end
@@ -752,7 +749,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_select_child(self, child)
+      LibGtk.gtk_flow_box_select_child(@pointer, child)
 
       # Return value handling
     end
@@ -774,7 +771,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_flow_box_selected_foreach(self, func, data)
+      LibGtk.gtk_flow_box_selected_foreach(@pointer, func, data)
 
       # Return value handling
     end
@@ -786,7 +783,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_set_activate_on_single_click(self, single)
+      LibGtk.gtk_flow_box_set_activate_on_single_click(@pointer, single)
 
       # Return value handling
     end
@@ -797,7 +794,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_set_column_spacing(self, spacing)
+      LibGtk.gtk_flow_box_set_column_spacing(@pointer, spacing)
 
       # Return value handling
     end
@@ -825,10 +822,9 @@ module Gtk
       if filter_func
         _box = ::Box.box(filter_func)
         filter_func = ->(lib_child : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::FlowBoxChild.new(lib_child, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::FlowBoxChild, Bool)).unbox(user_data).call(child)
+          ::Box(Proc(Gtk::FlowBoxChild, Bool)).unbox(lib_user_data).call(child)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -837,7 +833,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_flow_box_set_filter_func(self, filter_func, user_data, destroy)
+      LibGtk.gtk_flow_box_set_filter_func(@pointer, filter_func, user_data, destroy)
 
       # Return value handling
     end
@@ -858,7 +854,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_set_hadjustment(self, adjustment)
+      LibGtk.gtk_flow_box_set_hadjustment(@pointer, adjustment)
 
       # Return value handling
     end
@@ -870,7 +866,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_set_homogeneous(self, homogeneous)
+      LibGtk.gtk_flow_box_set_homogeneous(@pointer, homogeneous)
 
       # Return value handling
     end
@@ -886,7 +882,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_set_max_children_per_line(self, n_children)
+      LibGtk.gtk_flow_box_set_max_children_per_line(@pointer, n_children)
 
       # Return value handling
     end
@@ -898,7 +894,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_set_min_children_per_line(self, n_children)
+      LibGtk.gtk_flow_box_set_min_children_per_line(@pointer, n_children)
 
       # Return value handling
     end
@@ -909,7 +905,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_set_row_spacing(self, spacing)
+      LibGtk.gtk_flow_box_set_row_spacing(@pointer, spacing)
 
       # Return value handling
     end
@@ -920,7 +916,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_set_selection_mode(self, mode)
+      LibGtk.gtk_flow_box_set_selection_mode(@pointer, mode)
 
       # Return value handling
     end
@@ -946,12 +942,11 @@ module Gtk
       if sort_func
         _box = ::Box.box(sort_func)
         sort_func = ->(lib_child1 : Pointer(Void), lib_child2 : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child1 = Gtk::FlowBoxChild.new(lib_child1, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child2 = Gtk::FlowBoxChild.new(lib_child2, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::FlowBoxChild, Gtk::FlowBoxChild, Int32)).unbox(user_data).call(child1, child2)
+          ::Box(Proc(Gtk::FlowBoxChild, Gtk::FlowBoxChild, Int32)).unbox(lib_user_data).call(child1, child2)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -960,7 +955,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_flow_box_set_sort_func(self, sort_func, user_data, destroy)
+      LibGtk.gtk_flow_box_set_sort_func(@pointer, sort_func, user_data, destroy)
 
       # Return value handling
     end
@@ -981,7 +976,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_set_vadjustment(self, adjustment)
+      LibGtk.gtk_flow_box_set_vadjustment(@pointer, adjustment)
 
       # Return value handling
     end
@@ -993,7 +988,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_unselect_all(self)
+      LibGtk.gtk_flow_box_unselect_all(@pointer)
 
       # Return value handling
     end
@@ -1005,7 +1000,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_flow_box_unselect_child(self, child)
+      LibGtk.gtk_flow_box_unselect_child(@pointer, child)
 
       # Return value handling
     end
@@ -1116,7 +1111,7 @@ module Gtk
       def connect(handler : Proc(Gtk::FlowBoxChild, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::FlowBoxChild.new(lib_child, :none)
           ::Box(Proc(Gtk::FlowBoxChild, Nil)).unbox(_lib_box).call(child)
         }.pointer
@@ -1128,7 +1123,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::FlowBoxChild, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::FlowBoxChild.new(lib_child, :none)
           ::Box(Proc(Gtk::FlowBoxChild, Nil)).unbox(_lib_box).call(child)
         }.pointer
@@ -1141,7 +1136,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::FlowBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::FlowBoxChild.new(lib_child, :none)
           ::Box(Proc(Gtk::FlowBox, Gtk::FlowBoxChild, Nil)).unbox(_lib_box).call(_sender, child)
         }.pointer
@@ -1154,7 +1149,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::FlowBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::FlowBoxChild.new(lib_child, :none)
           ::Box(Proc(Gtk::FlowBox, Gtk::FlowBoxChild, Nil)).unbox(_lib_box).call(_sender, child)
         }.pointer
@@ -1215,8 +1210,8 @@ module Gtk
       def connect(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           modify = lib_modify
@@ -1230,8 +1225,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           modify = lib_modify
@@ -1246,8 +1241,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::FlowBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           modify = lib_modify
@@ -1262,8 +1257,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::FlowBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           modify = lib_modify
@@ -1274,7 +1269,7 @@ module Gtk
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(step : Gtk::MovementStep, count : Int32, _extend : Bool, modify : Bool) : Nil
+      def emit(step : Gtk::MovementStep, count : Int32, extend _extend : Bool, modify : Bool) : Nil
         LibGObject.g_signal_emit_by_name(@source, "move-cursor", step, count, _extend, modify)
       end
     end

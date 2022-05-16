@@ -39,7 +39,7 @@ module Gio
 
       # Return value handling
 
-      Gio::PowerProfileMonitor__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractPowerProfileMonitor.new(_retval, GICrystal::Transfer::Full)
     end
 
     def power_saver_enabled : Bool
@@ -47,7 +47,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_power_profile_monitor_get_power_saver_enabled(self)
+      _retval = LibGio.g_power_profile_monitor_get_power_saver_enabled(@pointer)
 
       # Return value handling
 
@@ -59,8 +59,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class PowerProfileMonitor__Impl < GObject::Object
+  class AbstractPowerProfileMonitor < GObject::Object
     include PowerProfileMonitor
+
+    GICrystal.define_new_method(Gio::AbstractPowerProfileMonitor, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

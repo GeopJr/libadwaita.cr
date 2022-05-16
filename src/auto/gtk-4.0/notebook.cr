@@ -116,15 +116,13 @@ module Gtk
         sizeof(LibGtk::Notebook), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Notebook, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Notebook`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -418,7 +416,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def scrollable=(value : Bool) : Bool
@@ -510,7 +508,7 @@ module Gtk
                   end
 
       # C call
-      _retval = LibGtk.gtk_notebook_append_page(self, child, tab_label)
+      _retval = LibGtk.gtk_notebook_append_page(@pointer, child, tab_label)
 
       # Return value handling
 
@@ -539,7 +537,7 @@ module Gtk
                    end
 
       # C call
-      _retval = LibGtk.gtk_notebook_append_page_menu(self, child, tab_label, menu_label)
+      _retval = LibGtk.gtk_notebook_append_page_menu(@pointer, child, tab_label, menu_label)
 
       # Return value handling
 
@@ -557,7 +555,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_detach_tab(self, child)
+      LibGtk.gtk_notebook_detach_tab(@pointer, child)
 
       # Return value handling
     end
@@ -570,7 +568,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_action_widget(self, pack_type)
+      _retval = LibGtk.gtk_notebook_get_action_widget(@pointer, pack_type)
 
       # Return value handling
 
@@ -583,7 +581,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_current_page(self)
+      _retval = LibGtk.gtk_notebook_get_current_page(@pointer)
 
       # Return value handling
 
@@ -596,7 +594,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_group_name(self)
+      _retval = LibGtk.gtk_notebook_get_group_name(@pointer)
 
       # Return value handling
 
@@ -609,7 +607,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_menu_label(self, child)
+      _retval = LibGtk.gtk_notebook_get_menu_label(@pointer, child)
 
       # Return value handling
 
@@ -623,7 +621,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_menu_label_text(self, child)
+      _retval = LibGtk.gtk_notebook_get_menu_label_text(@pointer, child)
 
       # Return value handling
 
@@ -636,7 +634,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_n_pages(self)
+      _retval = LibGtk.gtk_notebook_get_n_pages(@pointer)
 
       # Return value handling
 
@@ -649,7 +647,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_nth_page(self, page_num)
+      _retval = LibGtk.gtk_notebook_get_nth_page(@pointer, page_num)
 
       # Return value handling
 
@@ -662,7 +660,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_page(self, child)
+      _retval = LibGtk.gtk_notebook_get_page(@pointer, child)
 
       # Return value handling
 
@@ -679,11 +677,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_pages(self)
+      _retval = LibGtk.gtk_notebook_get_pages(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns whether the tab label area has arrows for scrolling.
@@ -692,7 +690,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_scrollable(self)
+      _retval = LibGtk.gtk_notebook_get_scrollable(@pointer)
 
       # Return value handling
 
@@ -705,7 +703,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_show_border(self)
+      _retval = LibGtk.gtk_notebook_get_show_border(@pointer)
 
       # Return value handling
 
@@ -718,7 +716,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_show_tabs(self)
+      _retval = LibGtk.gtk_notebook_get_show_tabs(@pointer)
 
       # Return value handling
 
@@ -731,7 +729,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_tab_detachable(self, child)
+      _retval = LibGtk.gtk_notebook_get_tab_detachable(@pointer, child)
 
       # Return value handling
 
@@ -747,7 +745,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_tab_label(self, child)
+      _retval = LibGtk.gtk_notebook_get_tab_label(@pointer, child)
 
       # Return value handling
 
@@ -761,7 +759,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_tab_label_text(self, child)
+      _retval = LibGtk.gtk_notebook_get_tab_label_text(@pointer, child)
 
       # Return value handling
 
@@ -774,7 +772,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_tab_pos(self)
+      _retval = LibGtk.gtk_notebook_get_tab_pos(@pointer)
 
       # Return value handling
 
@@ -787,7 +785,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_get_tab_reorderable(self, child)
+      _retval = LibGtk.gtk_notebook_get_tab_reorderable(@pointer, child)
 
       # Return value handling
 
@@ -808,7 +806,7 @@ module Gtk
                   end
 
       # C call
-      _retval = LibGtk.gtk_notebook_insert_page(self, child, tab_label, position)
+      _retval = LibGtk.gtk_notebook_insert_page(@pointer, child, tab_label, position)
 
       # Return value handling
 
@@ -837,7 +835,7 @@ module Gtk
                    end
 
       # C call
-      _retval = LibGtk.gtk_notebook_insert_page_menu(self, child, tab_label, menu_label, position)
+      _retval = LibGtk.gtk_notebook_insert_page_menu(@pointer, child, tab_label, menu_label, position)
 
       # Return value handling
 
@@ -852,7 +850,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_next_page(self)
+      LibGtk.gtk_notebook_next_page(@pointer)
 
       # Return value handling
     end
@@ -864,7 +862,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_notebook_page_num(self, child)
+      _retval = LibGtk.gtk_notebook_page_num(@pointer, child)
 
       # Return value handling
 
@@ -877,7 +875,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_popup_disable(self)
+      LibGtk.gtk_notebook_popup_disable(@pointer)
 
       # Return value handling
     end
@@ -891,7 +889,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_popup_enable(self)
+      LibGtk.gtk_notebook_popup_enable(@pointer)
 
       # Return value handling
     end
@@ -910,7 +908,7 @@ module Gtk
                   end
 
       # C call
-      _retval = LibGtk.gtk_notebook_prepend_page(self, child, tab_label)
+      _retval = LibGtk.gtk_notebook_prepend_page(@pointer, child, tab_label)
 
       # Return value handling
 
@@ -939,7 +937,7 @@ module Gtk
                    end
 
       # C call
-      _retval = LibGtk.gtk_notebook_prepend_page_menu(self, child, tab_label, menu_label)
+      _retval = LibGtk.gtk_notebook_prepend_page_menu(@pointer, child, tab_label, menu_label)
 
       # Return value handling
 
@@ -954,7 +952,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_prev_page(self)
+      LibGtk.gtk_notebook_prev_page(@pointer)
 
       # Return value handling
     end
@@ -966,7 +964,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_remove_page(self, page_num)
+      LibGtk.gtk_notebook_remove_page(@pointer, page_num)
 
       # Return value handling
     end
@@ -981,7 +979,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_reorder_child(self, child, position)
+      LibGtk.gtk_notebook_reorder_child(@pointer, child, position)
 
       # Return value handling
     end
@@ -996,7 +994,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_action_widget(self, widget, pack_type)
+      LibGtk.gtk_notebook_set_action_widget(@pointer, widget, pack_type)
 
       # Return value handling
     end
@@ -1012,7 +1010,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_current_page(self, page_num)
+      LibGtk.gtk_notebook_set_current_page(@pointer, page_num)
 
       # Return value handling
     end
@@ -1035,7 +1033,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_notebook_set_group_name(self, group_name)
+      LibGtk.gtk_notebook_set_group_name(@pointer, group_name)
 
       # Return value handling
     end
@@ -1054,7 +1052,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_notebook_set_menu_label(self, child, menu_label)
+      LibGtk.gtk_notebook_set_menu_label(@pointer, child, menu_label)
 
       # Return value handling
     end
@@ -1065,7 +1063,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_menu_label_text(self, child, menu_text)
+      LibGtk.gtk_notebook_set_menu_label_text(@pointer, child, menu_text)
 
       # Return value handling
     end
@@ -1077,7 +1075,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_scrollable(self, scrollable)
+      LibGtk.gtk_notebook_set_scrollable(@pointer, scrollable)
 
       # Return value handling
     end
@@ -1090,7 +1088,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_show_border(self, show_border)
+      LibGtk.gtk_notebook_set_show_border(@pointer, show_border)
 
       # Return value handling
     end
@@ -1101,7 +1099,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_show_tabs(self, show_tabs)
+      LibGtk.gtk_notebook_set_show_tabs(@pointer, show_tabs)
 
       # Return value handling
     end
@@ -1158,7 +1156,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_tab_detachable(self, child, detachable)
+      LibGtk.gtk_notebook_set_tab_detachable(@pointer, child, detachable)
 
       # Return value handling
     end
@@ -1180,7 +1178,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_notebook_set_tab_label(self, child, tab_label)
+      LibGtk.gtk_notebook_set_tab_label(@pointer, child, tab_label)
 
       # Return value handling
     end
@@ -1192,7 +1190,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_tab_label_text(self, child, tab_text)
+      LibGtk.gtk_notebook_set_tab_label_text(@pointer, child, tab_text)
 
       # Return value handling
     end
@@ -1203,7 +1201,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_tab_pos(self, pos)
+      LibGtk.gtk_notebook_set_tab_pos(@pointer, pos)
 
       # Return value handling
     end
@@ -1215,7 +1213,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_notebook_set_tab_reorderable(self, child, reorderable)
+      LibGtk.gtk_notebook_set_tab_reorderable(@pointer, child, reorderable)
 
       # Return value handling
     end
@@ -1334,7 +1332,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Widget, Gtk::Notebook))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           ::Box(Proc(Gtk::Widget, Gtk::Notebook)).unbox(_lib_box).call(page)
         }.pointer
@@ -1346,7 +1344,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Widget, Gtk::Notebook))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           ::Box(Proc(Gtk::Widget, Gtk::Notebook)).unbox(_lib_box).call(page)
         }.pointer
@@ -1359,7 +1357,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, Gtk::Notebook)).unbox(_lib_box).call(_sender, page)
         }.pointer
@@ -1372,7 +1370,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, Gtk::Notebook)).unbox(_lib_box).call(_sender, page)
         }.pointer
@@ -1417,8 +1415,8 @@ module Gtk
       def connect(handler : Proc(Gtk::NotebookTab, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          object = Gtk::NotebookTab.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::NotebookTab.new(lib_object)
           ::Box(Proc(Gtk::NotebookTab, Bool)).unbox(_lib_box).call(object)
         }.pointer
 
@@ -1429,8 +1427,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::NotebookTab, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          object = Gtk::NotebookTab.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::NotebookTab.new(lib_object)
           ::Box(Proc(Gtk::NotebookTab, Bool)).unbox(_lib_box).call(object)
         }.pointer
 
@@ -1442,8 +1440,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          object = Gtk::NotebookTab.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::NotebookTab.new(lib_object)
           ::Box(Proc(Gtk::Notebook, Gtk::NotebookTab, Bool)).unbox(_lib_box).call(_sender, object)
         }.pointer
 
@@ -1455,8 +1453,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          object = Gtk::NotebookTab.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::NotebookTab.new(lib_object)
           ::Box(Proc(Gtk::Notebook, Gtk::NotebookTab, Bool)).unbox(_lib_box).call(_sender, object)
         }.pointer
 
@@ -1500,8 +1498,8 @@ module Gtk
       def connect(handler : Proc(Gtk::DirectionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          object = Gtk::DirectionType.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::DirectionType.new(lib_object)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(_lib_box).call(object)
         }.pointer
 
@@ -1512,8 +1510,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::DirectionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          object = Gtk::DirectionType.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::DirectionType.new(lib_object)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(_lib_box).call(object)
         }.pointer
 
@@ -1525,8 +1523,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          object = Gtk::DirectionType.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::DirectionType.new(lib_object)
           ::Box(Proc(Gtk::Notebook, Gtk::DirectionType, Nil)).unbox(_lib_box).call(_sender, object)
         }.pointer
 
@@ -1538,8 +1536,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          object = Gtk::DirectionType.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::DirectionType.new(lib_object)
           ::Box(Proc(Gtk::Notebook, Gtk::DirectionType, Nil)).unbox(_lib_box).call(_sender, object)
         }.pointer
 
@@ -1585,7 +1583,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Widget, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(child, page_num)
@@ -1598,7 +1596,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Widget, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(child, page_num)
@@ -1612,7 +1610,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(_sender, child, page_num)
@@ -1626,7 +1624,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(_sender, child, page_num)
@@ -1674,7 +1672,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Widget, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(child, page_num)
@@ -1687,7 +1685,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Widget, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(child, page_num)
@@ -1701,7 +1699,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(_sender, child, page_num)
@@ -1715,7 +1713,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(_sender, child, page_num)
@@ -1763,7 +1761,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Widget, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(child, page_num)
@@ -1776,7 +1774,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Widget, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(child, page_num)
@@ -1790,7 +1788,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(_sender, child, page_num)
@@ -1804,7 +1802,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_child : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           child = Gtk::Widget.new(lib_child, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(_sender, child, page_num)
@@ -1850,8 +1848,8 @@ module Gtk
       def connect(handler : Proc(Gtk::DirectionType, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, lib_p0 : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          object = Gtk::DirectionType.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::DirectionType.new(lib_object)
           p0 = lib_p0
           ::Box(Proc(Gtk::DirectionType, Bool, Bool)).unbox(_lib_box).call(object, p0)
         }.pointer
@@ -1863,8 +1861,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::DirectionType, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, lib_p0 : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          object = Gtk::DirectionType.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::DirectionType.new(lib_object)
           p0 = lib_p0
           ::Box(Proc(Gtk::DirectionType, Bool, Bool)).unbox(_lib_box).call(object, p0)
         }.pointer
@@ -1877,8 +1875,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, lib_p0 : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          object = Gtk::DirectionType.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::DirectionType.new(lib_object)
           p0 = lib_p0
           ::Box(Proc(Gtk::Notebook, Gtk::DirectionType, Bool, Bool)).unbox(_lib_box).call(_sender, object, p0)
         }.pointer
@@ -1891,8 +1889,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, lib_p0 : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          object = Gtk::DirectionType.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::DirectionType.new(lib_object)
           p0 = lib_p0
           ::Box(Proc(Gtk::Notebook, Gtk::DirectionType, Bool, Bool)).unbox(_lib_box).call(_sender, object, p0)
         }.pointer
@@ -2017,7 +2015,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Widget, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(page, page_num)
@@ -2030,7 +2028,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Widget, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(page, page_num)
@@ -2044,7 +2042,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(_sender, page, page_num)
@@ -2058,7 +2056,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_page_num : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Notebook.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Gtk::Widget.new(lib_page, :none)
           page_num = lib_page_num
           ::Box(Proc(Gtk::Notebook, Gtk::Widget, UInt32, Nil)).unbox(_lib_box).call(_sender, page, page_num)

@@ -68,7 +68,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_initable_init(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_initable_init(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -83,8 +83,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Initable__Impl < GObject::Object
+  class AbstractInitable < GObject::Object
     include Initable
+
+    GICrystal.define_new_method(Gio::AbstractInitable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

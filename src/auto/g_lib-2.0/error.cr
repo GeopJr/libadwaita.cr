@@ -81,7 +81,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_error_free(self)
+      LibGLib.g_error_free(@pointer)
 
       # Return value handling
     end
@@ -91,7 +91,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_error_matches(self, domain, code)
+      _retval = LibGLib.g_error_matches(@pointer, domain, code)
 
       # Return value handling
 

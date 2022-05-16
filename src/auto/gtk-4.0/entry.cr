@@ -117,15 +117,13 @@ module Gtk
         sizeof(LibGtk::Entry), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Entry, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Entry`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -821,7 +819,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "primary-icon-gicon", pointerof(value), Pointer(Void).null)
-      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractIcon.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def primary_icon_name=(value : ::String) : ::String
@@ -851,7 +849,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "primary-icon-paintable", pointerof(value), Pointer(Void).null)
-      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gdk::AbstractPaintable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def primary_icon_sensitive=(value : Bool) : Bool
@@ -972,7 +970,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "secondary-icon-gicon", pointerof(value), Pointer(Void).null)
-      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractIcon.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def secondary_icon_name=(value : ::String) : ::String
@@ -1002,7 +1000,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "secondary-icon-paintable", pointerof(value), Pointer(Void).null)
-      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gdk::AbstractPaintable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def secondary_icon_sensitive=(value : Bool) : Bool
@@ -1161,7 +1159,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_activates_default(self)
+      _retval = LibGtk.gtk_entry_get_activates_default(@pointer)
 
       # Return value handling
 
@@ -1176,7 +1174,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_alignment(self)
+      _retval = LibGtk.gtk_entry_get_alignment(@pointer)
 
       # Return value handling
 
@@ -1191,7 +1189,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_attributes(self)
+      _retval = LibGtk.gtk_entry_get_attributes(@pointer)
 
       # Return value handling
 
@@ -1205,7 +1203,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_buffer(self)
+      _retval = LibGtk.gtk_entry_get_buffer(@pointer)
 
       # Return value handling
 
@@ -1219,7 +1217,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_completion(self)
+      _retval = LibGtk.gtk_entry_get_completion(@pointer)
 
       # Return value handling
 
@@ -1233,7 +1231,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_current_icon_drag_source(self)
+      _retval = LibGtk.gtk_entry_get_current_icon_drag_source(@pointer)
 
       # Return value handling
 
@@ -1246,7 +1244,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_extra_menu(self)
+      _retval = LibGtk.gtk_entry_get_extra_menu(@pointer)
 
       # Return value handling
 
@@ -1259,7 +1257,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_has_frame(self)
+      _retval = LibGtk.gtk_entry_get_has_frame(@pointer)
 
       # Return value handling
 
@@ -1272,7 +1270,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_icon_activatable(self, icon_pos)
+      _retval = LibGtk.gtk_entry_get_icon_activatable(@pointer, icon_pos)
 
       # Return value handling
 
@@ -1296,7 +1294,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       icon_area = Gdk::Rectangle.new
       # C call
-      LibGtk.gtk_entry_get_icon_area(self, icon_pos, icon_area)
+      LibGtk.gtk_entry_get_icon_area(@pointer, icon_pos, icon_area)
 
       # Return value handling
 
@@ -1314,7 +1312,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_icon_at_pos(self, x, y)
+      _retval = LibGtk.gtk_entry_get_icon_at_pos(@pointer, x, y)
 
       # Return value handling
 
@@ -1330,11 +1328,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_icon_gicon(self, icon_pos)
+      _retval = LibGtk.gtk_entry_get_icon_gicon(@pointer, icon_pos)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Retrieves the icon name used for the icon.
@@ -1346,7 +1344,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_icon_name(self, icon_pos)
+      _retval = LibGtk.gtk_entry_get_icon_name(@pointer, icon_pos)
 
       # Return value handling
 
@@ -1361,11 +1359,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_icon_paintable(self, icon_pos)
+      _retval = LibGtk.gtk_entry_get_icon_paintable(@pointer, icon_pos)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns whether the icon appears sensitive or insensitive.
@@ -1374,7 +1372,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_icon_sensitive(self, icon_pos)
+      _retval = LibGtk.gtk_entry_get_icon_sensitive(@pointer, icon_pos)
 
       # Return value handling
 
@@ -1391,7 +1389,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_icon_storage_type(self, icon_pos)
+      _retval = LibGtk.gtk_entry_get_icon_storage_type(@pointer, icon_pos)
 
       # Return value handling
 
@@ -1405,7 +1403,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_icon_tooltip_markup(self, icon_pos)
+      _retval = LibGtk.gtk_entry_get_icon_tooltip_markup(@pointer, icon_pos)
 
       # Return value handling
 
@@ -1419,7 +1417,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_icon_tooltip_text(self, icon_pos)
+      _retval = LibGtk.gtk_entry_get_icon_tooltip_text(@pointer, icon_pos)
 
       # Return value handling
 
@@ -1432,7 +1430,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_input_hints(self)
+      _retval = LibGtk.gtk_entry_get_input_hints(@pointer)
 
       # Return value handling
 
@@ -1445,7 +1443,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_input_purpose(self)
+      _retval = LibGtk.gtk_entry_get_input_purpose(@pointer)
 
       # Return value handling
 
@@ -1459,7 +1457,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_invisible_char(self)
+      _retval = LibGtk.gtk_entry_get_invisible_char(@pointer)
 
       # Return value handling
 
@@ -1474,7 +1472,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_max_length(self)
+      _retval = LibGtk.gtk_entry_get_max_length(@pointer)
 
       # Return value handling
 
@@ -1487,7 +1485,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_overwrite_mode(self)
+      _retval = LibGtk.gtk_entry_get_overwrite_mode(@pointer)
 
       # Return value handling
 
@@ -1501,7 +1499,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_placeholder_text(self)
+      _retval = LibGtk.gtk_entry_get_placeholder_text(@pointer)
 
       # Return value handling
 
@@ -1516,7 +1514,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_progress_fraction(self)
+      _retval = LibGtk.gtk_entry_get_progress_fraction(@pointer)
 
       # Return value handling
 
@@ -1530,7 +1528,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_progress_pulse_step(self)
+      _retval = LibGtk.gtk_entry_get_progress_pulse_step(@pointer)
 
       # Return value handling
 
@@ -1545,7 +1543,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_tabs(self)
+      _retval = LibGtk.gtk_entry_get_tabs(@pointer)
 
       # Return value handling
 
@@ -1561,7 +1559,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_text_length(self)
+      _retval = LibGtk.gtk_entry_get_text_length(@pointer)
 
       # Return value handling
 
@@ -1576,7 +1574,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_get_visibility(self)
+      _retval = LibGtk.gtk_entry_get_visibility(@pointer)
 
       # Return value handling
 
@@ -1594,7 +1592,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_grab_focus_without_selecting(self)
+      _retval = LibGtk.gtk_entry_grab_focus_without_selecting(@pointer)
 
       # Return value handling
 
@@ -1614,7 +1612,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_progress_pulse(self)
+      LibGtk.gtk_entry_progress_pulse(@pointer)
 
       # Return value handling
     end
@@ -1628,7 +1626,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_reset_im_context(self)
+      LibGtk.gtk_entry_reset_im_context(@pointer)
 
       # Return value handling
     end
@@ -1643,7 +1641,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_activates_default(self, setting)
+      LibGtk.gtk_entry_set_activates_default(@pointer, setting)
 
       # Return value handling
     end
@@ -1659,7 +1657,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_alignment(self, xalign)
+      LibGtk.gtk_entry_set_alignment(@pointer, xalign)
 
       # Return value handling
     end
@@ -1676,7 +1674,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_attributes(self, attrs)
+      LibGtk.gtk_entry_set_attributes(@pointer, attrs)
 
       # Return value handling
     end
@@ -1688,7 +1686,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_buffer(self, buffer)
+      LibGtk.gtk_entry_set_buffer(@pointer, buffer)
 
       # Return value handling
     end
@@ -1712,7 +1710,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_entry_set_completion(self, completion)
+      LibGtk.gtk_entry_set_completion(@pointer, completion)
 
       # Return value handling
     end
@@ -1732,7 +1730,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_entry_set_extra_menu(self, model)
+      LibGtk.gtk_entry_set_extra_menu(@pointer, model)
 
       # Return value handling
     end
@@ -1743,7 +1741,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_has_frame(self, setting)
+      LibGtk.gtk_entry_set_has_frame(@pointer, setting)
 
       # Return value handling
     end
@@ -1754,7 +1752,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_icon_activatable(self, icon_pos, activatable)
+      LibGtk.gtk_entry_set_icon_activatable(@pointer, icon_pos, activatable)
 
       # Return value handling
     end
@@ -1768,7 +1766,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_icon_drag_source(self, icon_pos, provider, actions)
+      LibGtk.gtk_entry_set_icon_drag_source(@pointer, icon_pos, provider, actions)
 
       # Return value handling
     end
@@ -1794,7 +1792,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_entry_set_icon_from_gicon(self, icon_pos, icon)
+      LibGtk.gtk_entry_set_icon_from_gicon(@pointer, icon_pos, icon)
 
       # Return value handling
     end
@@ -1820,7 +1818,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_entry_set_icon_from_icon_name(self, icon_pos, icon_name)
+      LibGtk.gtk_entry_set_icon_from_icon_name(@pointer, icon_pos, icon_name)
 
       # Return value handling
     end
@@ -1841,7 +1839,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_entry_set_icon_from_paintable(self, icon_pos, paintable)
+      LibGtk.gtk_entry_set_icon_from_paintable(@pointer, icon_pos, paintable)
 
       # Return value handling
     end
@@ -1852,7 +1850,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_icon_sensitive(self, icon_pos, sensitive)
+      LibGtk.gtk_entry_set_icon_sensitive(@pointer, icon_pos, sensitive)
 
       # Return value handling
     end
@@ -1879,7 +1877,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_entry_set_icon_tooltip_markup(self, icon_pos, tooltip)
+      LibGtk.gtk_entry_set_icon_tooltip_markup(@pointer, icon_pos, tooltip)
 
       # Return value handling
     end
@@ -1914,7 +1912,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_entry_set_icon_tooltip_text(self, icon_pos, tooltip)
+      LibGtk.gtk_entry_set_icon_tooltip_text(@pointer, icon_pos, tooltip)
 
       # Return value handling
     end
@@ -1926,7 +1924,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_input_hints(self, hints)
+      LibGtk.gtk_entry_set_input_hints(@pointer, hints)
 
       # Return value handling
     end
@@ -1938,7 +1936,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_input_purpose(self, purpose)
+      LibGtk.gtk_entry_set_input_purpose(@pointer, purpose)
 
       # Return value handling
     end
@@ -1958,7 +1956,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_invisible_char(self, ch)
+      LibGtk.gtk_entry_set_invisible_char(@pointer, ch)
 
       # Return value handling
     end
@@ -1975,7 +1973,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_max_length(self, max)
+      LibGtk.gtk_entry_set_max_length(@pointer, max)
 
       # Return value handling
     end
@@ -1986,7 +1984,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_overwrite_mode(self, overwrite)
+      LibGtk.gtk_entry_set_overwrite_mode(@pointer, overwrite)
 
       # Return value handling
     end
@@ -2008,7 +2006,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_entry_set_placeholder_text(self, text)
+      LibGtk.gtk_entry_set_placeholder_text(@pointer, text)
 
       # Return value handling
     end
@@ -2022,7 +2020,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_progress_fraction(self, fraction)
+      LibGtk.gtk_entry_set_progress_fraction(@pointer, fraction)
 
       # Return value handling
     end
@@ -2037,7 +2035,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_progress_pulse_step(self, fraction)
+      LibGtk.gtk_entry_set_progress_pulse_step(@pointer, fraction)
 
       # Return value handling
     end
@@ -2058,7 +2056,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_entry_set_tabs(self, tabs)
+      LibGtk.gtk_entry_set_tabs(@pointer, tabs)
 
       # Return value handling
     end
@@ -2082,7 +2080,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_set_visibility(self, visible)
+      LibGtk.gtk_entry_set_visibility(@pointer, visible)
 
       # Return value handling
     end
@@ -2094,7 +2092,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_unset_invisible_char(self)
+      LibGtk.gtk_entry_unset_invisible_char(@pointer)
 
       # Return value handling
     end
@@ -2205,8 +2203,8 @@ module Gtk
       def connect(handler : Proc(Gtk::EntryIconPosition, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_icon_pos : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos)
           ::Box(Proc(Gtk::EntryIconPosition, Nil)).unbox(_lib_box).call(icon_pos)
         }.pointer
 
@@ -2217,8 +2215,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::EntryIconPosition, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_icon_pos : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos)
           ::Box(Proc(Gtk::EntryIconPosition, Nil)).unbox(_lib_box).call(icon_pos)
         }.pointer
 
@@ -2230,8 +2228,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_icon_pos : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Entry.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos)
           ::Box(Proc(Gtk::Entry, Gtk::EntryIconPosition, Nil)).unbox(_lib_box).call(_sender, icon_pos)
         }.pointer
 
@@ -2243,8 +2241,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_icon_pos : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Entry.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos)
           ::Box(Proc(Gtk::Entry, Gtk::EntryIconPosition, Nil)).unbox(_lib_box).call(_sender, icon_pos)
         }.pointer
 
@@ -2290,8 +2288,8 @@ module Gtk
       def connect(handler : Proc(Gtk::EntryIconPosition, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_icon_pos : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos)
           ::Box(Proc(Gtk::EntryIconPosition, Nil)).unbox(_lib_box).call(icon_pos)
         }.pointer
 
@@ -2302,8 +2300,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::EntryIconPosition, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_icon_pos : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos)
           ::Box(Proc(Gtk::EntryIconPosition, Nil)).unbox(_lib_box).call(icon_pos)
         }.pointer
 
@@ -2315,8 +2313,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_icon_pos : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Entry.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos)
           ::Box(Proc(Gtk::Entry, Gtk::EntryIconPosition, Nil)).unbox(_lib_box).call(_sender, icon_pos)
         }.pointer
 
@@ -2328,8 +2326,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_icon_pos : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Entry.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          icon_pos = Gtk::EntryIconPosition.new(lib_icon_pos)
           ::Box(Proc(Gtk::Entry, Gtk::EntryIconPosition, Nil)).unbox(_lib_box).call(_sender, icon_pos)
         }.pointer
 

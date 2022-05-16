@@ -14,15 +14,13 @@ module Gdk
         sizeof(LibGdk::Seat), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Seat, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Seat`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -76,7 +74,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_seat_get_capabilities(self)
+      _retval = LibGdk.gdk_seat_get_capabilities(@pointer)
 
       # Return value handling
 
@@ -89,7 +87,7 @@ module Gdk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGdk.gdk_seat_get_devices(self, capabilities)
+      _retval = LibGdk.gdk_seat_get_devices(@pointer, capabilities)
 
       # Return value handling
 
@@ -102,7 +100,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_seat_get_display(self)
+      _retval = LibGdk.gdk_seat_get_display(@pointer)
 
       # Return value handling
 
@@ -115,7 +113,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_seat_get_keyboard(self)
+      _retval = LibGdk.gdk_seat_get_keyboard(@pointer)
 
       # Return value handling
 
@@ -128,7 +126,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_seat_get_pointer(self)
+      _retval = LibGdk.gdk_seat_get_pointer(@pointer)
 
       # Return value handling
 
@@ -141,7 +139,7 @@ module Gdk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGdk.gdk_seat_get_tools(self)
+      _retval = LibGdk.gdk_seat_get_tools(@pointer)
 
       # Return value handling
 
@@ -176,7 +174,7 @@ module Gdk
       def connect(handler : Proc(Gdk::Device, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           device = Gdk::Device.new(lib_device, :none)
           ::Box(Proc(Gdk::Device, Nil)).unbox(_lib_box).call(device)
         }.pointer
@@ -188,7 +186,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::Device, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           device = Gdk::Device.new(lib_device, :none)
           ::Box(Proc(Gdk::Device, Nil)).unbox(_lib_box).call(device)
         }.pointer
@@ -201,7 +199,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           device = Gdk::Device.new(lib_device, :none)
           ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(_lib_box).call(_sender, device)
         }.pointer
@@ -214,7 +212,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           device = Gdk::Device.new(lib_device, :none)
           ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(_lib_box).call(_sender, device)
         }.pointer
@@ -260,7 +258,7 @@ module Gdk
       def connect(handler : Proc(Gdk::Device, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           device = Gdk::Device.new(lib_device, :none)
           ::Box(Proc(Gdk::Device, Nil)).unbox(_lib_box).call(device)
         }.pointer
@@ -272,7 +270,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::Device, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           device = Gdk::Device.new(lib_device, :none)
           ::Box(Proc(Gdk::Device, Nil)).unbox(_lib_box).call(device)
         }.pointer
@@ -285,7 +283,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           device = Gdk::Device.new(lib_device, :none)
           ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(_lib_box).call(_sender, device)
         }.pointer
@@ -298,7 +296,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_device : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           device = Gdk::Device.new(lib_device, :none)
           ::Box(Proc(Gdk::Seat, Gdk::Device, Nil)).unbox(_lib_box).call(_sender, device)
         }.pointer
@@ -350,7 +348,7 @@ module Gdk
       def connect(handler : Proc(Gdk::DeviceTool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
         }.pointer
@@ -362,7 +360,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::DeviceTool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
         }.pointer
@@ -375,7 +373,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
         }.pointer
@@ -388,7 +386,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
         }.pointer
@@ -434,7 +432,7 @@ module Gdk
       def connect(handler : Proc(Gdk::DeviceTool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
         }.pointer
@@ -446,7 +444,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::DeviceTool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
         }.pointer
@@ -459,7 +457,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
         }.pointer
@@ -472,7 +470,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Seat.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::Seat, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
         }.pointer

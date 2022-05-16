@@ -98,7 +98,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_iter_copy(self)
+      _retval = LibGtk.gtk_tree_iter_copy(@pointer)
 
       # Return value handling
 
@@ -110,7 +110,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_iter_free(self)
+      LibGtk.gtk_tree_iter_free(@pointer)
 
       # Return value handling
     end

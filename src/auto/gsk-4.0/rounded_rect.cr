@@ -65,7 +65,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_contains_point(self, point)
+      _retval = LibGsk.gsk_rounded_rect_contains_point(@pointer, point)
 
       # Return value handling
 
@@ -77,7 +77,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_contains_rect(self, rect)
+      _retval = LibGsk.gsk_rounded_rect_contains_rect(@pointer, rect)
 
       # Return value handling
 
@@ -89,7 +89,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_init(self, bounds, top_left, top_right, bottom_right, bottom_left)
+      _retval = LibGsk.gsk_rounded_rect_init(@pointer, bounds, top_left, top_right, bottom_right, bottom_left)
 
       # Return value handling
 
@@ -101,7 +101,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_init_copy(self, src)
+      _retval = LibGsk.gsk_rounded_rect_init_copy(@pointer, src)
 
       # Return value handling
 
@@ -113,7 +113,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_init_from_rect(self, bounds, radius)
+      _retval = LibGsk.gsk_rounded_rect_init_from_rect(@pointer, bounds, radius)
 
       # Return value handling
 
@@ -125,7 +125,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_intersects_rect(self, rect)
+      _retval = LibGsk.gsk_rounded_rect_intersects_rect(@pointer, rect)
 
       # Return value handling
 
@@ -137,7 +137,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_is_rectilinear(self)
+      _retval = LibGsk.gsk_rounded_rect_is_rectilinear(@pointer)
 
       # Return value handling
 
@@ -149,7 +149,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_normalize(self)
+      _retval = LibGsk.gsk_rounded_rect_normalize(@pointer)
 
       # Return value handling
 
@@ -161,7 +161,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_offset(self, dx, dy)
+      _retval = LibGsk.gsk_rounded_rect_offset(@pointer, dx, dy)
 
       # Return value handling
 
@@ -173,7 +173,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_rounded_rect_shrink(self, top, right, bottom, left)
+      _retval = LibGsk.gsk_rounded_rect_shrink(@pointer, top, right, bottom, left)
 
       # Return value handling
 

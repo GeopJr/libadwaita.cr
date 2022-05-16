@@ -25,15 +25,13 @@ module Gtk
         sizeof(LibGtk::SingleSelection), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SingleSelection, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SingleSelection`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -128,7 +126,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def selected=(value : UInt32) : UInt32
@@ -183,7 +181,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_single_selection_get_autoselect(self)
+      _retval = LibGtk.gtk_single_selection_get_autoselect(@pointer)
 
       # Return value handling
 
@@ -197,7 +195,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_single_selection_get_can_unselect(self)
+      _retval = LibGtk.gtk_single_selection_get_can_unselect(@pointer)
 
       # Return value handling
 
@@ -210,11 +208,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_single_selection_get_model(self)
+      _retval = LibGtk.gtk_single_selection_get_model(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the position of the selected item.
@@ -225,7 +223,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_single_selection_get_selected(self)
+      _retval = LibGtk.gtk_single_selection_get_selected(@pointer)
 
       # Return value handling
 
@@ -240,7 +238,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_single_selection_get_selected_item(self)
+      _retval = LibGtk.gtk_single_selection_get_selected_item(@pointer)
 
       # Return value handling
 
@@ -257,7 +255,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_single_selection_set_autoselect(self, autoselect)
+      LibGtk.gtk_single_selection_set_autoselect(@pointer, autoselect)
 
       # Return value handling
     end
@@ -273,7 +271,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_single_selection_set_can_unselect(self, can_unselect)
+      LibGtk.gtk_single_selection_set_can_unselect(@pointer, can_unselect)
 
       # Return value handling
     end
@@ -294,7 +292,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_single_selection_set_model(self, model)
+      LibGtk.gtk_single_selection_set_model(@pointer, model)
 
       # Return value handling
     end
@@ -312,7 +310,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_single_selection_set_selected(self, position)
+      LibGtk.gtk_single_selection_set_selected(@pointer, position)
 
       # Return value handling
     end

@@ -28,15 +28,13 @@ module Adw
         sizeof(LibAdw::TimedAnimation), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TimedAnimation, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TimedAnimation`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -249,7 +247,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_timed_animation_get_alternate(self)
+      _retval = LibAdw.adw_timed_animation_get_alternate(@pointer)
 
       # Return value handling
 
@@ -262,7 +260,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_timed_animation_get_duration(self)
+      _retval = LibAdw.adw_timed_animation_get_duration(@pointer)
 
       # Return value handling
 
@@ -275,7 +273,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_timed_animation_get_easing(self)
+      _retval = LibAdw.adw_timed_animation_get_easing(@pointer)
 
       # Return value handling
 
@@ -288,7 +286,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_timed_animation_get_repeat_count(self)
+      _retval = LibAdw.adw_timed_animation_get_repeat_count(@pointer)
 
       # Return value handling
 
@@ -301,7 +299,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_timed_animation_get_reverse(self)
+      _retval = LibAdw.adw_timed_animation_get_reverse(@pointer)
 
       # Return value handling
 
@@ -314,7 +312,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_timed_animation_get_value_from(self)
+      _retval = LibAdw.adw_timed_animation_get_value_from(@pointer)
 
       # Return value handling
 
@@ -327,7 +325,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_timed_animation_get_value_to(self)
+      _retval = LibAdw.adw_timed_animation_get_value_to(@pointer)
 
       # Return value handling
 
@@ -340,7 +338,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_timed_animation_set_alternate(self, alternate)
+      LibAdw.adw_timed_animation_set_alternate(@pointer, alternate)
 
       # Return value handling
     end
@@ -353,7 +351,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_timed_animation_set_duration(self, duration)
+      LibAdw.adw_timed_animation_set_duration(@pointer, duration)
 
       # Return value handling
     end
@@ -366,7 +364,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_timed_animation_set_easing(self, easing)
+      LibAdw.adw_timed_animation_set_easing(@pointer, easing)
 
       # Return value handling
     end
@@ -379,7 +377,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_timed_animation_set_repeat_count(self, repeat_count)
+      LibAdw.adw_timed_animation_set_repeat_count(@pointer, repeat_count)
 
       # Return value handling
     end
@@ -390,7 +388,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_timed_animation_set_reverse(self, reverse)
+      LibAdw.adw_timed_animation_set_reverse(@pointer, reverse)
 
       # Return value handling
     end
@@ -401,7 +399,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_timed_animation_set_value_from(self, value)
+      LibAdw.adw_timed_animation_set_value_from(@pointer, value)
 
       # Return value handling
     end
@@ -412,7 +410,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_timed_animation_set_value_to(self, value)
+      LibAdw.adw_timed_animation_set_value_to(@pointer, value)
 
       # Return value handling
     end

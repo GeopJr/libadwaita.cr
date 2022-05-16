@@ -33,15 +33,13 @@ module Gio
         sizeof(LibGio::UnixSocketAddress), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(UnixSocketAddress, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `UnixSocketAddress`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -261,7 +259,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_socket_address_get_address_type(self)
+      _retval = LibGio.g_unix_socket_address_get_address_type(@pointer)
 
       # Return value handling
 
@@ -274,7 +272,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_socket_address_get_is_abstract(self)
+      _retval = LibGio.g_unix_socket_address_get_is_abstract(@pointer)
 
       # Return value handling
 
@@ -292,7 +290,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_socket_address_get_path(self)
+      _retval = LibGio.g_unix_socket_address_get_path(@pointer)
 
       # Return value handling
 
@@ -307,7 +305,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_socket_address_get_path_len(self)
+      _retval = LibGio.g_unix_socket_address_get_path_len(@pointer)
 
       # Return value handling
 

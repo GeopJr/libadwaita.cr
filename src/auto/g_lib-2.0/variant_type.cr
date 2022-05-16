@@ -247,7 +247,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_variant_type_copy(self)
+      _retval = LibGLib.g_variant_type_copy(@pointer)
 
       # Return value handling
 
@@ -259,7 +259,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_variant_type_dup_string(self)
+      _retval = LibGLib.g_variant_type_dup_string(@pointer)
 
       # Return value handling
 
@@ -271,7 +271,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_element(self)
+      _retval = LibGLib.g_variant_type_element(@pointer)
 
       # Return value handling
 
@@ -283,7 +283,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_equal(self, type2)
+      _retval = LibGLib.g_variant_type_equal(@pointer, type2)
 
       # Return value handling
 
@@ -295,7 +295,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_first(self)
+      _retval = LibGLib.g_variant_type_first(@pointer)
 
       # Return value handling
 
@@ -307,7 +307,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_variant_type_free(self)
+      LibGLib.g_variant_type_free(@pointer)
 
       # Return value handling
     end
@@ -317,7 +317,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_get_string_length(self)
+      _retval = LibGLib.g_variant_type_get_string_length(@pointer)
 
       # Return value handling
 
@@ -329,7 +329,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_hash(self)
+      _retval = LibGLib.g_variant_type_hash(@pointer)
 
       # Return value handling
 
@@ -341,7 +341,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_is_array(self)
+      _retval = LibGLib.g_variant_type_is_array(@pointer)
 
       # Return value handling
 
@@ -353,7 +353,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_is_basic(self)
+      _retval = LibGLib.g_variant_type_is_basic(@pointer)
 
       # Return value handling
 
@@ -365,7 +365,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_is_container(self)
+      _retval = LibGLib.g_variant_type_is_container(@pointer)
 
       # Return value handling
 
@@ -377,7 +377,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_is_definite(self)
+      _retval = LibGLib.g_variant_type_is_definite(@pointer)
 
       # Return value handling
 
@@ -389,7 +389,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_is_dict_entry(self)
+      _retval = LibGLib.g_variant_type_is_dict_entry(@pointer)
 
       # Return value handling
 
@@ -401,7 +401,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_is_maybe(self)
+      _retval = LibGLib.g_variant_type_is_maybe(@pointer)
 
       # Return value handling
 
@@ -413,7 +413,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_is_subtype_of(self, supertype)
+      _retval = LibGLib.g_variant_type_is_subtype_of(@pointer, supertype)
 
       # Return value handling
 
@@ -425,7 +425,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_is_tuple(self)
+      _retval = LibGLib.g_variant_type_is_tuple(@pointer)
 
       # Return value handling
 
@@ -437,7 +437,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_is_variant(self)
+      _retval = LibGLib.g_variant_type_is_variant(@pointer)
 
       # Return value handling
 
@@ -449,7 +449,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_key(self)
+      _retval = LibGLib.g_variant_type_key(@pointer)
 
       # Return value handling
 
@@ -461,7 +461,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_n_items(self)
+      _retval = LibGLib.g_variant_type_n_items(@pointer)
 
       # Return value handling
 
@@ -473,7 +473,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_next(self)
+      _retval = LibGLib.g_variant_type_next(@pointer)
 
       # Return value handling
 
@@ -485,7 +485,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_type_value(self)
+      _retval = LibGLib.g_variant_type_value(@pointer)
 
       # Return value handling
 

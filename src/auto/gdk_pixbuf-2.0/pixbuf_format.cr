@@ -173,7 +173,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_copy(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_copy(@pointer)
 
       # Return value handling
 
@@ -185,7 +185,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_format_free(self)
+      LibGdkPixbuf.gdk_pixbuf_format_free(@pointer)
 
       # Return value handling
     end
@@ -195,7 +195,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_description(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_description(@pointer)
 
       # Return value handling
 
@@ -207,7 +207,7 @@ module GdkPixbuf
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_extensions(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_extensions(@pointer)
 
       # Return value handling
 
@@ -219,7 +219,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_license(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_license(@pointer)
 
       # Return value handling
 
@@ -231,7 +231,7 @@ module GdkPixbuf
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_mime_types(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_mime_types(@pointer)
 
       # Return value handling
 
@@ -243,7 +243,7 @@ module GdkPixbuf
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_name(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_get_name(@pointer)
 
       # Return value handling
 
@@ -255,7 +255,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_is_disabled(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_is_disabled(@pointer)
 
       # Return value handling
 
@@ -267,7 +267,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_is_save_option_supported(self, option_key)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_is_save_option_supported(@pointer, option_key)
 
       # Return value handling
 
@@ -279,7 +279,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_is_scalable(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_is_scalable(@pointer)
 
       # Return value handling
 
@@ -291,7 +291,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_format_is_writable(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_format_is_writable(@pointer)
 
       # Return value handling
 
@@ -303,7 +303,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_format_set_disabled(self, disabled)
+      LibGdkPixbuf.gdk_pixbuf_format_set_disabled(@pointer, disabled)
 
       # Return value handling
     end

@@ -96,7 +96,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_item_apply_attrs(self, iter)
+      LibPango.pango_item_apply_attrs(@pointer, iter)
 
       # Return value handling
     end
@@ -106,7 +106,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_item_copy(self)
+      _retval = LibPango.pango_item_copy(@pointer)
 
       # Return value handling
 
@@ -118,7 +118,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_item_free(self)
+      LibPango.pango_item_free(@pointer)
 
       # Return value handling
     end
@@ -128,7 +128,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_item_split(self, split_index, split_offset)
+      _retval = LibPango.pango_item_split(@pointer, split_index, split_offset)
 
       # Return value handling
 

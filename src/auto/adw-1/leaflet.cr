@@ -58,15 +58,13 @@ module Adw
         sizeof(LibAdw::Leaflet), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Leaflet, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Leaflet`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -466,7 +464,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
-      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractSelectionModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def transition_type=(value : Adw::LeafletTransitionType) : Adw::LeafletTransitionType
@@ -535,7 +533,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_append(self, child)
+      _retval = LibAdw.adw_leaflet_append(@pointer, child)
 
       # Return value handling
 
@@ -555,7 +553,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_adjacent_child(self, direction)
+      _retval = LibAdw.adw_leaflet_get_adjacent_child(@pointer, direction)
 
       # Return value handling
 
@@ -568,7 +566,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_can_navigate_back(self)
+      _retval = LibAdw.adw_leaflet_get_can_navigate_back(@pointer)
 
       # Return value handling
 
@@ -581,7 +579,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_can_navigate_forward(self)
+      _retval = LibAdw.adw_leaflet_get_can_navigate_forward(@pointer)
 
       # Return value handling
 
@@ -594,7 +592,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_can_unfold(self)
+      _retval = LibAdw.adw_leaflet_get_can_unfold(@pointer)
 
       # Return value handling
 
@@ -611,7 +609,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_child_by_name(self, name)
+      _retval = LibAdw.adw_leaflet_get_child_by_name(@pointer, name)
 
       # Return value handling
 
@@ -624,7 +622,7 @@ module Adw
       # Returns: (transfer full)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_child_transition_params(self)
+      _retval = LibAdw.adw_leaflet_get_child_transition_params(@pointer)
 
       # Return value handling
 
@@ -637,7 +635,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_child_transition_running(self)
+      _retval = LibAdw.adw_leaflet_get_child_transition_running(@pointer)
 
       # Return value handling
 
@@ -650,7 +648,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_fold_threshold_policy(self)
+      _retval = LibAdw.adw_leaflet_get_fold_threshold_policy(@pointer)
 
       # Return value handling
 
@@ -663,7 +661,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_folded(self)
+      _retval = LibAdw.adw_leaflet_get_folded(@pointer)
 
       # Return value handling
 
@@ -676,7 +674,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_homogeneous(self)
+      _retval = LibAdw.adw_leaflet_get_homogeneous(@pointer)
 
       # Return value handling
 
@@ -689,7 +687,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_mode_transition_duration(self)
+      _retval = LibAdw.adw_leaflet_get_mode_transition_duration(@pointer)
 
       # Return value handling
 
@@ -702,7 +700,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_page(self, child)
+      _retval = LibAdw.adw_leaflet_get_page(@pointer, child)
 
       # Return value handling
 
@@ -719,11 +717,11 @@ module Adw
       # Returns: (transfer full)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_pages(self)
+      _retval = LibAdw.adw_leaflet_get_pages(@pointer)
 
       # Return value handling
 
-      Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gtk::AbstractSelectionModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the type of animation used for transitions between modes and children.
@@ -732,7 +730,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_transition_type(self)
+      _retval = LibAdw.adw_leaflet_get_transition_type(@pointer)
 
       # Return value handling
 
@@ -745,7 +743,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_visible_child(self)
+      _retval = LibAdw.adw_leaflet_get_visible_child(@pointer)
 
       # Return value handling
 
@@ -758,7 +756,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_get_visible_child_name(self)
+      _retval = LibAdw.adw_leaflet_get_visible_child_name(@pointer)
 
       # Return value handling
 
@@ -781,7 +779,7 @@ module Adw
                 end
 
       # C call
-      _retval = LibAdw.adw_leaflet_insert_child_after(self, child, sibling)
+      _retval = LibAdw.adw_leaflet_insert_child_after(@pointer, child, sibling)
 
       # Return value handling
 
@@ -800,7 +798,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_navigate(self, direction)
+      _retval = LibAdw.adw_leaflet_navigate(@pointer, direction)
 
       # Return value handling
 
@@ -813,7 +811,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_leaflet_prepend(self, child)
+      _retval = LibAdw.adw_leaflet_prepend(@pointer, child)
 
       # Return value handling
 
@@ -826,7 +824,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_remove(self, child)
+      LibAdw.adw_leaflet_remove(@pointer, child)
 
       # Return value handling
     end
@@ -847,7 +845,7 @@ module Adw
                 end
 
       # C call
-      LibAdw.adw_leaflet_reorder_child_after(self, child, sibling)
+      LibAdw.adw_leaflet_reorder_child_after(@pointer, child, sibling)
 
       # Return value handling
     end
@@ -858,7 +856,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_can_navigate_back(self, can_navigate_back)
+      LibAdw.adw_leaflet_set_can_navigate_back(@pointer, can_navigate_back)
 
       # Return value handling
     end
@@ -869,7 +867,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_can_navigate_forward(self, can_navigate_forward)
+      LibAdw.adw_leaflet_set_can_navigate_forward(@pointer, can_navigate_forward)
 
       # Return value handling
     end
@@ -880,7 +878,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_can_unfold(self, can_unfold)
+      LibAdw.adw_leaflet_set_can_unfold(@pointer, can_unfold)
 
       # Return value handling
     end
@@ -891,7 +889,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_child_transition_params(self, params)
+      LibAdw.adw_leaflet_set_child_transition_params(@pointer, params)
 
       # Return value handling
     end
@@ -902,7 +900,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_fold_threshold_policy(self, policy)
+      LibAdw.adw_leaflet_set_fold_threshold_policy(@pointer, policy)
 
       # Return value handling
     end
@@ -916,7 +914,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_homogeneous(self, homogeneous)
+      LibAdw.adw_leaflet_set_homogeneous(@pointer, homogeneous)
 
       # Return value handling
     end
@@ -927,7 +925,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_mode_transition_duration(self, duration)
+      LibAdw.adw_leaflet_set_mode_transition_duration(@pointer, duration)
 
       # Return value handling
     end
@@ -938,7 +936,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_transition_type(self, transition)
+      LibAdw.adw_leaflet_set_transition_type(@pointer, transition)
 
       # Return value handling
     end
@@ -949,7 +947,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_visible_child(self, visible_child)
+      LibAdw.adw_leaflet_set_visible_child(@pointer, visible_child)
 
       # Return value handling
     end
@@ -962,7 +960,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_leaflet_set_visible_child_name(self, name)
+      LibAdw.adw_leaflet_set_visible_child_name(@pointer, name)
 
       # Return value handling
     end

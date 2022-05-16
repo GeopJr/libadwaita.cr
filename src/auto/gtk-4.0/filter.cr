@@ -30,15 +30,13 @@ module Gtk
         sizeof(LibGtk::Filter), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Filter, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Filter`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -68,7 +66,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_filter_changed(self, change)
+      LibGtk.gtk_filter_changed(@pointer, change)
 
       # Return value handling
     end
@@ -87,7 +85,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_filter_get_strictness(self)
+      _retval = LibGtk.gtk_filter_get_strictness(@pointer)
 
       # Return value handling
 
@@ -100,7 +98,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_filter_match(self, item)
+      _retval = LibGtk.gtk_filter_match(@pointer, item)
 
       # Return value handling
 
@@ -144,8 +142,8 @@ module Gtk
       def connect(handler : Proc(Gtk::FilterChange, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          change = Gtk::FilterChange.new(lib_change, :none)
+          # Generator::BuiltInTypeArgPlan
+          change = Gtk::FilterChange.new(lib_change)
           ::Box(Proc(Gtk::FilterChange, Nil)).unbox(_lib_box).call(change)
         }.pointer
 
@@ -156,8 +154,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::FilterChange, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          change = Gtk::FilterChange.new(lib_change, :none)
+          # Generator::BuiltInTypeArgPlan
+          change = Gtk::FilterChange.new(lib_change)
           ::Box(Proc(Gtk::FilterChange, Nil)).unbox(_lib_box).call(change)
         }.pointer
 
@@ -169,8 +167,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Filter.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          change = Gtk::FilterChange.new(lib_change, :none)
+          # Generator::BuiltInTypeArgPlan
+          change = Gtk::FilterChange.new(lib_change)
           ::Box(Proc(Gtk::Filter, Gtk::FilterChange, Nil)).unbox(_lib_box).call(_sender, change)
         }.pointer
 
@@ -182,8 +180,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Filter.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          change = Gtk::FilterChange.new(lib_change, :none)
+          # Generator::BuiltInTypeArgPlan
+          change = Gtk::FilterChange.new(lib_change)
           ::Box(Proc(Gtk::Filter, Gtk::FilterChange, Nil)).unbox(_lib_box).call(_sender, change)
         }.pointer
 

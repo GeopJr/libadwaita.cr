@@ -52,7 +52,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_toplevel_layout_copy(self)
+      _retval = LibGdk.gdk_toplevel_layout_copy(@pointer)
 
       # Return value handling
 
@@ -64,7 +64,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_toplevel_layout_equal(self, other)
+      _retval = LibGdk.gdk_toplevel_layout_equal(@pointer, other)
 
       # Return value handling
 
@@ -77,7 +77,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_toplevel_layout_get_fullscreen(self, fullscreen)
+      _retval = LibGdk.gdk_toplevel_layout_get_fullscreen(@pointer, fullscreen)
 
       # Return value handling
 
@@ -89,7 +89,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_toplevel_layout_get_fullscreen_monitor(self)
+      _retval = LibGdk.gdk_toplevel_layout_get_fullscreen_monitor(@pointer)
 
       # Return value handling
 
@@ -102,7 +102,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_toplevel_layout_get_maximized(self, maximized)
+      _retval = LibGdk.gdk_toplevel_layout_get_maximized(@pointer, maximized)
 
       # Return value handling
 
@@ -114,7 +114,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_toplevel_layout_get_resizable(self)
+      _retval = LibGdk.gdk_toplevel_layout_get_resizable(@pointer)
 
       # Return value handling
 
@@ -126,7 +126,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_toplevel_layout_ref(self)
+      _retval = LibGdk.gdk_toplevel_layout_ref(@pointer)
 
       # Return value handling
 
@@ -146,7 +146,7 @@ module Gdk
                 end
 
       # C call
-      LibGdk.gdk_toplevel_layout_set_fullscreen(self, fullscreen, monitor)
+      LibGdk.gdk_toplevel_layout_set_fullscreen(@pointer, fullscreen, monitor)
 
       # Return value handling
     end
@@ -156,7 +156,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_toplevel_layout_set_maximized(self, maximized)
+      LibGdk.gdk_toplevel_layout_set_maximized(@pointer, maximized)
 
       # Return value handling
     end
@@ -166,7 +166,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_toplevel_layout_set_resizable(self, resizable)
+      LibGdk.gdk_toplevel_layout_set_resizable(@pointer, resizable)
 
       # Return value handling
     end
@@ -176,7 +176,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_toplevel_layout_unref(self)
+      LibGdk.gdk_toplevel_layout_unref(@pointer)
 
       # Return value handling
     end

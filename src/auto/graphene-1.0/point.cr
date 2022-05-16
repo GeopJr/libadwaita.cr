@@ -74,7 +74,7 @@ module Graphene
       d_x = Pointer(Float32).null # Generator::OutArgUsedInReturnPlan
       d_y = Pointer(Float32).null
       # C call
-      _retval = LibGraphene.graphene_point_distance(self, b, d_x, d_y)
+      _retval = LibGraphene.graphene_point_distance(@pointer, b, d_x, d_y)
 
       # Return value handling
 
@@ -86,7 +86,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point_equal(self, b)
+      _retval = LibGraphene.graphene_point_equal(@pointer, b)
 
       # Return value handling
 
@@ -98,7 +98,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_point_free(self)
+      LibGraphene.graphene_point_free(@pointer)
 
       # Return value handling
     end
@@ -108,7 +108,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point_init(self, x, y)
+      _retval = LibGraphene.graphene_point_init(@pointer, x, y)
 
       # Return value handling
 
@@ -120,7 +120,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point_init_from_point(self, src)
+      _retval = LibGraphene.graphene_point_init_from_point(@pointer, src)
 
       # Return value handling
 
@@ -132,7 +132,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point_init_from_vec2(self, src)
+      _retval = LibGraphene.graphene_point_init_from_vec2(@pointer, src)
 
       # Return value handling
 
@@ -147,7 +147,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point.new
       # C call
-      LibGraphene.graphene_point_interpolate(self, b, factor, res)
+      LibGraphene.graphene_point_interpolate(@pointer, b, factor, res)
 
       # Return value handling
 
@@ -159,7 +159,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_point_near(self, b, epsilon)
+      _retval = LibGraphene.graphene_point_near(@pointer, b, epsilon)
 
       # Return value handling
 
@@ -174,7 +174,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       v = Graphene::Vec2.new
       # C call
-      LibGraphene.graphene_point_to_vec2(self, v)
+      LibGraphene.graphene_point_to_vec2(@pointer, v)
 
       # Return value handling
 

@@ -53,7 +53,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_main_loop_get_context(self)
+      _retval = LibGLib.g_main_loop_get_context(@pointer)
 
       # Return value handling
 
@@ -65,7 +65,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_main_loop_is_running(self)
+      _retval = LibGLib.g_main_loop_is_running(@pointer)
 
       # Return value handling
 
@@ -77,7 +77,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_main_loop_quit(self)
+      LibGLib.g_main_loop_quit(@pointer)
 
       # Return value handling
     end
@@ -87,7 +87,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_main_loop_ref(self)
+      _retval = LibGLib.g_main_loop_ref(@pointer)
 
       # Return value handling
 
@@ -99,7 +99,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_main_loop_run(self)
+      LibGLib.g_main_loop_run(@pointer)
 
       # Return value handling
     end
@@ -109,7 +109,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_main_loop_unref(self)
+      LibGLib.g_main_loop_unref(@pointer)
 
       # Return value handling
     end

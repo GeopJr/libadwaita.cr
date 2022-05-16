@@ -94,15 +94,13 @@ module Gtk
         sizeof(LibGtk::Paned), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Paned, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Paned`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -540,7 +538,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paned_get_end_child(self)
+      _retval = LibGtk.gtk_paned_get_end_child(@pointer)
 
       # Return value handling
 
@@ -553,7 +551,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paned_get_position(self)
+      _retval = LibGtk.gtk_paned_get_position(@pointer)
 
       # Return value handling
 
@@ -566,7 +564,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paned_get_resize_end_child(self)
+      _retval = LibGtk.gtk_paned_get_resize_end_child(@pointer)
 
       # Return value handling
 
@@ -579,7 +577,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paned_get_resize_start_child(self)
+      _retval = LibGtk.gtk_paned_get_resize_start_child(@pointer)
 
       # Return value handling
 
@@ -592,7 +590,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paned_get_shrink_end_child(self)
+      _retval = LibGtk.gtk_paned_get_shrink_end_child(@pointer)
 
       # Return value handling
 
@@ -605,7 +603,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paned_get_shrink_start_child(self)
+      _retval = LibGtk.gtk_paned_get_shrink_start_child(@pointer)
 
       # Return value handling
 
@@ -620,7 +618,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paned_get_start_child(self)
+      _retval = LibGtk.gtk_paned_get_start_child(@pointer)
 
       # Return value handling
 
@@ -633,7 +631,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_paned_get_wide_handle(self)
+      _retval = LibGtk.gtk_paned_get_wide_handle(@pointer)
 
       # Return value handling
 
@@ -646,7 +644,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paned_set_end_child(self, child)
+      LibGtk.gtk_paned_set_end_child(@pointer, child)
 
       # Return value handling
     end
@@ -657,7 +655,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paned_set_position(self, position)
+      LibGtk.gtk_paned_set_position(@pointer, position)
 
       # Return value handling
     end
@@ -668,7 +666,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paned_set_resize_end_child(self, resize)
+      LibGtk.gtk_paned_set_resize_end_child(@pointer, resize)
 
       # Return value handling
     end
@@ -679,7 +677,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paned_set_resize_start_child(self, resize)
+      LibGtk.gtk_paned_set_resize_start_child(@pointer, resize)
 
       # Return value handling
     end
@@ -690,7 +688,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paned_set_shrink_end_child(self, resize)
+      LibGtk.gtk_paned_set_shrink_end_child(@pointer, resize)
 
       # Return value handling
     end
@@ -701,7 +699,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paned_set_shrink_start_child(self, resize)
+      LibGtk.gtk_paned_set_shrink_start_child(@pointer, resize)
 
       # Return value handling
     end
@@ -712,7 +710,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paned_set_start_child(self, child)
+      LibGtk.gtk_paned_set_start_child(@pointer, child)
 
       # Return value handling
     end
@@ -723,7 +721,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_paned_set_wide_handle(self, wide)
+      LibGtk.gtk_paned_set_wide_handle(@pointer, wide)
 
       # Return value handling
     end
@@ -1092,8 +1090,8 @@ module Gtk
       def connect(handler : Proc(Gtk::ScrollType, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll_type : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll_type = Gtk::ScrollType.new(lib_scroll_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll_type = Gtk::ScrollType.new(lib_scroll_type)
           ::Box(Proc(Gtk::ScrollType, Bool)).unbox(_lib_box).call(scroll_type)
         }.pointer
 
@@ -1104,8 +1102,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::ScrollType, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll_type : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll_type = Gtk::ScrollType.new(lib_scroll_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll_type = Gtk::ScrollType.new(lib_scroll_type)
           ::Box(Proc(Gtk::ScrollType, Bool)).unbox(_lib_box).call(scroll_type)
         }.pointer
 
@@ -1117,8 +1115,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll_type : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Paned.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll_type = Gtk::ScrollType.new(lib_scroll_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll_type = Gtk::ScrollType.new(lib_scroll_type)
           ::Box(Proc(Gtk::Paned, Gtk::ScrollType, Bool)).unbox(_lib_box).call(_sender, scroll_type)
         }.pointer
 
@@ -1130,8 +1128,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll_type : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Paned.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll_type = Gtk::ScrollType.new(lib_scroll_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll_type = Gtk::ScrollType.new(lib_scroll_type)
           ::Box(Proc(Gtk::Paned, Gtk::ScrollType, Bool)).unbox(_lib_box).call(_sender, scroll_type)
         }.pointer
 

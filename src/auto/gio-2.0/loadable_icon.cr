@@ -19,7 +19,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_loadable_icon_load(self, size, type, cancellable, pointerof(_error))
+      _retval = LibGio.g_loadable_icon_load(@pointer, size, type, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -50,7 +50,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_loadable_icon_load_async(self, size, cancellable, callback, user_data)
+      LibGio.g_loadable_icon_load_async(@pointer, size, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -65,7 +65,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       type = Pointer(Pointer(LibC::Char)).null
       # C call
-      _retval = LibGio.g_loadable_icon_load_finish(self, res, type, pointerof(_error))
+      _retval = LibGio.g_loadable_icon_load_finish(@pointer, res, type, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -80,8 +80,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class LoadableIcon__Impl < GObject::Object
+  class AbstractLoadableIcon < GObject::Object
     include LoadableIcon
+
+    GICrystal.define_new_method(Gio::AbstractLoadableIcon, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

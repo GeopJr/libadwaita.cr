@@ -56,15 +56,13 @@ module Gtk
         sizeof(LibGtk::EntryCompletion), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(EntryCompletion, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `EntryCompletion`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -209,7 +207,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractTreeModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def popup_completion=(value : Bool) : Bool
@@ -312,7 +310,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_completion_complete(self)
+      LibGtk.gtk_entry_completion_complete(@pointer)
 
       # Return value handling
     end
@@ -328,7 +326,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_compute_prefix(self, key)
+      _retval = LibGtk.gtk_entry_completion_compute_prefix(@pointer, key)
 
       # Return value handling
 
@@ -342,7 +340,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_completion_prefix(self)
+      _retval = LibGtk.gtk_entry_completion_get_completion_prefix(@pointer)
 
       # Return value handling
 
@@ -355,7 +353,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_entry(self)
+      _retval = LibGtk.gtk_entry_completion_get_entry(@pointer)
 
       # Return value handling
 
@@ -369,7 +367,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_inline_completion(self)
+      _retval = LibGtk.gtk_entry_completion_get_inline_completion(@pointer)
 
       # Return value handling
 
@@ -382,7 +380,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_inline_selection(self)
+      _retval = LibGtk.gtk_entry_completion_get_inline_selection(@pointer)
 
       # Return value handling
 
@@ -395,7 +393,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_minimum_key_length(self)
+      _retval = LibGtk.gtk_entry_completion_get_minimum_key_length(@pointer)
 
       # Return value handling
 
@@ -410,11 +408,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_model(self)
+      _retval = LibGtk.gtk_entry_completion_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractTreeModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns whether the completions should be presented in a popup window.
@@ -423,7 +421,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_popup_completion(self)
+      _retval = LibGtk.gtk_entry_completion_get_popup_completion(@pointer)
 
       # Return value handling
 
@@ -437,7 +435,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_popup_set_width(self)
+      _retval = LibGtk.gtk_entry_completion_get_popup_set_width(@pointer)
 
       # Return value handling
 
@@ -451,7 +449,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_popup_single_match(self)
+      _retval = LibGtk.gtk_entry_completion_get_popup_single_match(@pointer)
 
       # Return value handling
 
@@ -464,7 +462,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_entry_completion_get_text_column(self)
+      _retval = LibGtk.gtk_entry_completion_get_text_column(@pointer)
 
       # Return value handling
 
@@ -477,7 +475,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_completion_insert_prefix(self)
+      LibGtk.gtk_entry_completion_insert_prefix(@pointer)
 
       # Return value handling
     end
@@ -489,7 +487,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_completion_set_inline_completion(self, inline_completion)
+      LibGtk.gtk_entry_completion_set_inline_completion(@pointer, inline_completion)
 
       # Return value handling
     end
@@ -501,7 +499,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_completion_set_inline_selection(self, inline_selection)
+      LibGtk.gtk_entry_completion_set_inline_selection(@pointer, inline_selection)
 
       # Return value handling
     end
@@ -519,13 +517,13 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_completion : Pointer(Void), lib_key : Pointer(LibC::Char), lib_iter : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           completion = Gtk::EntryCompletion.new(lib_completion, :none)
-          key = lib_key
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::EntryCompletion, ::String, Gtk::TreeIter, Bool)).unbox(user_data).call(completion, key, iter)
+          ::Box(Proc(Gtk::EntryCompletion, ::String, Gtk::TreeIter, Bool)).unbox(lib_user_data).call(completion, key, iter)
         }.pointer
         func_data = GICrystal::ClosureDataManager.register(_box)
         func_notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -534,7 +532,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_entry_completion_set_match_func(self, func, func_data, func_notify)
+      LibGtk.gtk_entry_completion_set_match_func(@pointer, func, func_data, func_notify)
 
       # Return value handling
     end
@@ -550,7 +548,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_completion_set_minimum_key_length(self, length)
+      LibGtk.gtk_entry_completion_set_minimum_key_length(@pointer, length)
 
       # Return value handling
     end
@@ -573,7 +571,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_entry_completion_set_model(self, model)
+      LibGtk.gtk_entry_completion_set_model(@pointer, model)
 
       # Return value handling
     end
@@ -584,7 +582,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_completion_set_popup_completion(self, popup_completion)
+      LibGtk.gtk_entry_completion_set_popup_completion(@pointer, popup_completion)
 
       # Return value handling
     end
@@ -596,7 +594,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_completion_set_popup_set_width(self, popup_set_width)
+      LibGtk.gtk_entry_completion_set_popup_set_width(@pointer, popup_set_width)
 
       # Return value handling
     end
@@ -611,7 +609,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_completion_set_popup_single_match(self, popup_single_match)
+      LibGtk.gtk_entry_completion_set_popup_single_match(@pointer, popup_single_match)
 
       # Return value handling
     end
@@ -632,7 +630,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_entry_completion_set_text_column(self, column)
+      LibGtk.gtk_entry_completion_set_text_column(@pointer, column)
 
       # Return value handling
     end
@@ -672,9 +670,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeModel, Gtk::TreeIter, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(_lib_box).call(model, iter)
         }.pointer
@@ -686,9 +684,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeModel, Gtk::TreeIter, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(_lib_box).call(model, iter)
         }.pointer
@@ -701,9 +699,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::EntryCompletion.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::EntryCompletion, Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(_lib_box).call(_sender, model, iter)
         }.pointer
@@ -716,9 +714,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::EntryCompletion.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::EntryCompletion, Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(_lib_box).call(_sender, model, iter)
         }.pointer
@@ -772,7 +770,8 @@ module Gtk
       def connect(handler : Proc(::String, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_prefix : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          prefix = lib_prefix
+          # Generator::BuiltInTypeArgPlan
+          prefix = ::String.new(lib_prefix)
           ::Box(Proc(::String, Bool)).unbox(_lib_box).call(prefix)
         }.pointer
 
@@ -783,7 +782,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_prefix : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          prefix = lib_prefix
+          # Generator::BuiltInTypeArgPlan
+          prefix = ::String.new(lib_prefix)
           ::Box(Proc(::String, Bool)).unbox(_lib_box).call(prefix)
         }.pointer
 
@@ -795,7 +795,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_prefix : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::EntryCompletion.new(_lib_sender, GICrystal::Transfer::None)
-          prefix = lib_prefix
+          # Generator::BuiltInTypeArgPlan
+          prefix = ::String.new(lib_prefix)
           ::Box(Proc(Gtk::EntryCompletion, ::String, Bool)).unbox(_lib_box).call(_sender, prefix)
         }.pointer
 
@@ -807,7 +808,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_prefix : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::EntryCompletion.new(_lib_sender, GICrystal::Transfer::None)
-          prefix = lib_prefix
+          # Generator::BuiltInTypeArgPlan
+          prefix = ::String.new(lib_prefix)
           ::Box(Proc(Gtk::EntryCompletion, ::String, Bool)).unbox(_lib_box).call(_sender, prefix)
         }.pointer
 
@@ -859,9 +861,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeModel, Gtk::TreeIter, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(_lib_box).call(model, iter)
         }.pointer
@@ -873,9 +875,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeModel, Gtk::TreeIter, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(_lib_box).call(model, iter)
         }.pointer
@@ -888,9 +890,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::EntryCompletion.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::EntryCompletion, Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(_lib_box).call(_sender, model, iter)
         }.pointer
@@ -903,9 +905,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_model : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::EntryCompletion.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::EntryCompletion, Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(_lib_box).call(_sender, model, iter)
         }.pointer

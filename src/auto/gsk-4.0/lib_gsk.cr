@@ -1,5 +1,4 @@
 @[Link("gtk-4", pkg_config: "gtk-4")]
-
 lib LibGsk
   # Flags
 

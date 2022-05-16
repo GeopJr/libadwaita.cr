@@ -45,15 +45,13 @@ module GObject
         sizeof(LibGObject::TypeModule), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TypeModule, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TypeModule`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -80,7 +78,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_type_module_add_interface(self, instance_type, interface_type, interface_info)
+      LibGObject.g_type_module_add_interface(@pointer, instance_type, interface_type, interface_info)
 
       # Return value handling
     end
@@ -100,7 +98,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_type_module_register_enum(self, name, const_static_values)
+      _retval = LibGObject.g_type_module_register_enum(@pointer, name, const_static_values)
 
       # Return value handling
 
@@ -122,7 +120,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_type_module_register_flags(self, name, const_static_values)
+      _retval = LibGObject.g_type_module_register_flags(@pointer, name, const_static_values)
 
       # Return value handling
 
@@ -148,7 +146,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_type_module_register_type(self, parent_type, type_name, type_info, flags)
+      _retval = LibGObject.g_type_module_register_type(@pointer, parent_type, type_name, type_info, flags)
 
       # Return value handling
 
@@ -161,7 +159,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_type_module_set_name(self, name)
+      LibGObject.g_type_module_set_name(@pointer, name)
 
       # Return value handling
     end
@@ -176,7 +174,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_type_module_unuse(self)
+      LibGObject.g_type_module_unuse(@pointer)
 
       # Return value handling
     end
@@ -190,7 +188,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_type_module_use(self)
+      _retval = LibGObject.g_type_module_use(@pointer)
 
       # Return value handling
 

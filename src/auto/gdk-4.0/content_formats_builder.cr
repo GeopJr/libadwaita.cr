@@ -45,7 +45,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_content_formats_builder_add_formats(self, formats)
+      LibGdk.gdk_content_formats_builder_add_formats(@pointer, formats)
 
       # Return value handling
     end
@@ -55,7 +55,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_content_formats_builder_add_gtype(self, type)
+      LibGdk.gdk_content_formats_builder_add_gtype(@pointer, type)
 
       # Return value handling
     end
@@ -65,7 +65,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_content_formats_builder_add_mime_type(self, mime_type)
+      LibGdk.gdk_content_formats_builder_add_mime_type(@pointer, mime_type)
 
       # Return value handling
     end
@@ -75,7 +75,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_builder_ref(self)
+      _retval = LibGdk.gdk_content_formats_builder_ref(@pointer)
 
       # Return value handling
 
@@ -87,7 +87,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_formats_builder_to_formats(self)
+      _retval = LibGdk.gdk_content_formats_builder_to_formats(@pointer)
 
       # Return value handling
 
@@ -99,7 +99,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_content_formats_builder_unref(self)
+      LibGdk.gdk_content_formats_builder_unref(@pointer)
 
       # Return value handling
     end

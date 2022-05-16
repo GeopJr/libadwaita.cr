@@ -21,15 +21,13 @@ module Gio
         sizeof(LibGio::EmblemedIcon), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(EmblemedIcon, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `EmblemedIcon`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -74,7 +72,7 @@ module Gio
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "gicon", pointerof(value), Pointer(Void).null)
-      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractIcon.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     # Creates a new emblemed icon for @icon with the emblem @emblem.
@@ -105,7 +103,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_emblemed_icon_add_emblem(self, emblem)
+      LibGio.g_emblemed_icon_add_emblem(@pointer, emblem)
 
       # Return value handling
     end
@@ -116,7 +114,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_emblemed_icon_clear_emblems(self)
+      LibGio.g_emblemed_icon_clear_emblems(@pointer)
 
       # Return value handling
     end
@@ -127,7 +125,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_emblemed_icon_get_emblems(self)
+      _retval = LibGio.g_emblemed_icon_get_emblems(@pointer)
 
       # Return value handling
 
@@ -140,11 +138,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_emblemed_icon_get_icon(self)
+      _retval = LibGio.g_emblemed_icon_get_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::None)
     end
   end
 end

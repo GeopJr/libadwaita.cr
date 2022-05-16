@@ -43,15 +43,13 @@ module Adw
         sizeof(LibAdw::SpringAnimation), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SpringAnimation, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SpringAnimation`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -273,7 +271,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_animation_get_clamp(self)
+      _retval = LibAdw.adw_spring_animation_get_clamp(@pointer)
 
       # Return value handling
 
@@ -286,7 +284,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_animation_get_epsilon(self)
+      _retval = LibAdw.adw_spring_animation_get_epsilon(@pointer)
 
       # Return value handling
 
@@ -299,7 +297,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_animation_get_estimated_duration(self)
+      _retval = LibAdw.adw_spring_animation_get_estimated_duration(@pointer)
 
       # Return value handling
 
@@ -312,7 +310,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_animation_get_initial_velocity(self)
+      _retval = LibAdw.adw_spring_animation_get_initial_velocity(@pointer)
 
       # Return value handling
 
@@ -325,7 +323,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_animation_get_spring_params(self)
+      _retval = LibAdw.adw_spring_animation_get_spring_params(@pointer)
 
       # Return value handling
 
@@ -338,7 +336,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_animation_get_value_from(self)
+      _retval = LibAdw.adw_spring_animation_get_value_from(@pointer)
 
       # Return value handling
 
@@ -351,7 +349,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_animation_get_value_to(self)
+      _retval = LibAdw.adw_spring_animation_get_value_to(@pointer)
 
       # Return value handling
 
@@ -364,7 +362,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_spring_animation_get_velocity(self)
+      _retval = LibAdw.adw_spring_animation_get_velocity(@pointer)
 
       # Return value handling
 
@@ -377,7 +375,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_spring_animation_set_clamp(self, clamp)
+      LibAdw.adw_spring_animation_set_clamp(@pointer, clamp)
 
       # Return value handling
     end
@@ -388,7 +386,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_spring_animation_set_epsilon(self, epsilon)
+      LibAdw.adw_spring_animation_set_epsilon(@pointer, epsilon)
 
       # Return value handling
     end
@@ -399,7 +397,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_spring_animation_set_initial_velocity(self, velocity)
+      LibAdw.adw_spring_animation_set_initial_velocity(@pointer, velocity)
 
       # Return value handling
     end
@@ -410,7 +408,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_spring_animation_set_spring_params(self, spring_params)
+      LibAdw.adw_spring_animation_set_spring_params(@pointer, spring_params)
 
       # Return value handling
     end
@@ -421,7 +419,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_spring_animation_set_value_from(self, value)
+      LibAdw.adw_spring_animation_set_value_from(@pointer, value)
 
       # Return value handling
     end
@@ -432,7 +430,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_spring_animation_set_value_to(self, value)
+      LibAdw.adw_spring_animation_set_value_to(@pointer, value)
 
       # Return value handling
     end

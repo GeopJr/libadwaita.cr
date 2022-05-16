@@ -52,7 +52,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_shader_args_builder_ref(self)
+      _retval = LibGsk.gsk_shader_args_builder_ref(@pointer)
 
       # Return value handling
 
@@ -64,7 +64,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_shader_args_builder_set_bool(self, idx, value)
+      LibGsk.gsk_shader_args_builder_set_bool(@pointer, idx, value)
 
       # Return value handling
     end
@@ -74,7 +74,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_shader_args_builder_set_float(self, idx, value)
+      LibGsk.gsk_shader_args_builder_set_float(@pointer, idx, value)
 
       # Return value handling
     end
@@ -84,7 +84,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_shader_args_builder_set_int(self, idx, value)
+      LibGsk.gsk_shader_args_builder_set_int(@pointer, idx, value)
 
       # Return value handling
     end
@@ -94,7 +94,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_shader_args_builder_set_uint(self, idx, value)
+      LibGsk.gsk_shader_args_builder_set_uint(@pointer, idx, value)
 
       # Return value handling
     end
@@ -104,7 +104,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_shader_args_builder_set_vec2(self, idx, value)
+      LibGsk.gsk_shader_args_builder_set_vec2(@pointer, idx, value)
 
       # Return value handling
     end
@@ -114,7 +114,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_shader_args_builder_set_vec3(self, idx, value)
+      LibGsk.gsk_shader_args_builder_set_vec3(@pointer, idx, value)
 
       # Return value handling
     end
@@ -124,7 +124,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_shader_args_builder_set_vec4(self, idx, value)
+      LibGsk.gsk_shader_args_builder_set_vec4(@pointer, idx, value)
 
       # Return value handling
     end
@@ -134,7 +134,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_shader_args_builder_to_args(self)
+      _retval = LibGsk.gsk_shader_args_builder_to_args(@pointer)
 
       # Return value handling
 
@@ -146,7 +146,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_shader_args_builder_unref(self)
+      LibGsk.gsk_shader_args_builder_unref(@pointer)
 
       # Return value handling
     end

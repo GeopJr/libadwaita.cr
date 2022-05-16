@@ -42,7 +42,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_get_autohide(self)
+      _retval = LibGdk.gdk_popup_get_autohide(@pointer)
 
       # Return value handling
 
@@ -54,7 +54,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_get_parent(self)
+      _retval = LibGdk.gdk_popup_get_parent(@pointer)
 
       # Return value handling
 
@@ -66,7 +66,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_get_position_x(self)
+      _retval = LibGdk.gdk_popup_get_position_x(@pointer)
 
       # Return value handling
 
@@ -78,7 +78,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_get_position_y(self)
+      _retval = LibGdk.gdk_popup_get_position_y(@pointer)
 
       # Return value handling
 
@@ -90,7 +90,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_get_rect_anchor(self)
+      _retval = LibGdk.gdk_popup_get_rect_anchor(@pointer)
 
       # Return value handling
 
@@ -102,7 +102,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_get_surface_anchor(self)
+      _retval = LibGdk.gdk_popup_get_surface_anchor(@pointer)
 
       # Return value handling
 
@@ -114,7 +114,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_present(self, width, height, layout)
+      _retval = LibGdk.gdk_popup_present(@pointer, width, height, layout)
 
       # Return value handling
 
@@ -126,8 +126,14 @@ module Gdk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Popup__Impl < GObject::Object
+  class AbstractPopup < GObject::Object
     include Popup
+
+    GICrystal.define_new_method(Gdk::AbstractPopup, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

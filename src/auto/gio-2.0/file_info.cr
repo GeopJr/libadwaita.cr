@@ -41,15 +41,13 @@ module Gio
         sizeof(LibGio::FileInfo), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FileInfo, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FileInfo`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -82,7 +80,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_clear_status(self)
+      LibGio.g_file_info_clear_status(@pointer)
 
       # Return value handling
     end
@@ -94,7 +92,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_copy_into(self, dest_info)
+      LibGio.g_file_info_copy_into(@pointer, dest_info)
 
       # Return value handling
     end
@@ -105,7 +103,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_info_dup(self)
+      _retval = LibGio.g_file_info_dup(@pointer)
 
       # Return value handling
 
@@ -123,7 +121,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_info_get_access_date_time(self)
+      _retval = LibGio.g_file_info_get_access_date_time(@pointer)
 
       # Return value handling
 
@@ -138,7 +136,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_as_string(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_as_string(@pointer, attribute)
 
       # Return value handling
 
@@ -152,7 +150,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_boolean(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_boolean(@pointer, attribute)
 
       # Return value handling
 
@@ -166,7 +164,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_byte_string(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_byte_string(@pointer, attribute)
 
       # Return value handling
 
@@ -186,7 +184,7 @@ module Gio
       value_pp = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       status = Pointer(UInt32).null
       # C call
-      _retval = LibGio.g_file_info_get_attribute_data(self, attribute, type, value_pp, status)
+      _retval = LibGio.g_file_info_get_attribute_data(@pointer, attribute, type, value_pp, status)
 
       # Return value handling
 
@@ -201,7 +199,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_int32(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_int32(@pointer, attribute)
 
       # Return value handling
 
@@ -216,7 +214,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_int64(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_int64(@pointer, attribute)
 
       # Return value handling
 
@@ -230,7 +228,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_object(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_object(@pointer, attribute)
 
       # Return value handling
 
@@ -243,7 +241,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_status(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_status(@pointer, attribute)
 
       # Return value handling
 
@@ -257,7 +255,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_string(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_string(@pointer, attribute)
 
       # Return value handling
 
@@ -271,7 +269,7 @@ module Gio
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_stringv(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_stringv(@pointer, attribute)
 
       # Return value handling
 
@@ -284,7 +282,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_type(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_type(@pointer, attribute)
 
       # Return value handling
 
@@ -299,7 +297,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_uint32(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_uint32(@pointer, attribute)
 
       # Return value handling
 
@@ -314,7 +312,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_attribute_uint64(self, attribute)
+      _retval = LibGio.g_file_info_get_attribute_uint64(@pointer, attribute)
 
       # Return value handling
 
@@ -327,7 +325,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_content_type(self)
+      _retval = LibGio.g_file_info_get_content_type(@pointer)
 
       # Return value handling
 
@@ -345,7 +343,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_info_get_creation_date_time(self)
+      _retval = LibGio.g_file_info_get_creation_date_time(@pointer)
 
       # Return value handling
 
@@ -360,7 +358,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_info_get_deletion_date(self)
+      _retval = LibGio.g_file_info_get_deletion_date(@pointer)
 
       # Return value handling
 
@@ -373,7 +371,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_display_name(self)
+      _retval = LibGio.g_file_info_get_display_name(@pointer)
 
       # Return value handling
 
@@ -386,7 +384,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_edit_name(self)
+      _retval = LibGio.g_file_info_get_edit_name(@pointer)
 
       # Return value handling
 
@@ -400,7 +398,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_etag(self)
+      _retval = LibGio.g_file_info_get_etag(@pointer)
 
       # Return value handling
 
@@ -414,7 +412,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_file_type(self)
+      _retval = LibGio.g_file_info_get_file_type(@pointer)
 
       # Return value handling
 
@@ -427,11 +425,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_icon(self)
+      _retval = LibGio.g_file_info_get_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Checks if a file is a backup file.
@@ -440,7 +438,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_is_backup(self)
+      _retval = LibGio.g_file_info_get_is_backup(@pointer)
 
       # Return value handling
 
@@ -453,7 +451,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_is_hidden(self)
+      _retval = LibGio.g_file_info_get_is_hidden(@pointer)
 
       # Return value handling
 
@@ -466,7 +464,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_is_symlink(self)
+      _retval = LibGio.g_file_info_get_is_symlink(@pointer)
 
       # Return value handling
 
@@ -484,7 +482,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_info_get_modification_date_time(self)
+      _retval = LibGio.g_file_info_get_modification_date_time(@pointer)
 
       # Return value handling
 
@@ -501,7 +499,7 @@ module Gio
       # Generator::CallerAllocatesPlan
       result = GLib::TimeVal.new
       # C call
-      LibGio.g_file_info_get_modification_time(self, result)
+      LibGio.g_file_info_get_modification_time(@pointer, result)
 
       # Return value handling
 
@@ -514,7 +512,7 @@ module Gio
       # Returns: (transfer none Filename)
 
       # C call
-      _retval = LibGio.g_file_info_get_name(self)
+      _retval = LibGio.g_file_info_get_name(@pointer)
 
       # Return value handling
 
@@ -529,7 +527,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_size(self)
+      _retval = LibGio.g_file_info_get_size(@pointer)
 
       # Return value handling
 
@@ -543,7 +541,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_sort_order(self)
+      _retval = LibGio.g_file_info_get_sort_order(@pointer)
 
       # Return value handling
 
@@ -556,11 +554,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_symbolic_icon(self)
+      _retval = LibGio.g_file_info_get_symbolic_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the symlink target for a given #GFileInfo.
@@ -569,7 +567,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_get_symlink_target(self)
+      _retval = LibGio.g_file_info_get_symlink_target(@pointer)
 
       # Return value handling
 
@@ -582,7 +580,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_has_attribute(self, attribute)
+      _retval = LibGio.g_file_info_has_attribute(@pointer, attribute)
 
       # Return value handling
 
@@ -596,7 +594,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_has_namespace(self, name_space)
+      _retval = LibGio.g_file_info_has_namespace(@pointer, name_space)
 
       # Return value handling
 
@@ -617,7 +615,7 @@ module Gio
                    end
 
       # C call
-      _retval = LibGio.g_file_info_list_attributes(self, name_space)
+      _retval = LibGio.g_file_info_list_attributes(@pointer, name_space)
 
       # Return value handling
 
@@ -630,7 +628,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_remove_attribute(self, attribute)
+      LibGio.g_file_info_remove_attribute(@pointer, attribute)
 
       # Return value handling
     end
@@ -643,7 +641,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_access_date_time(self, atime)
+      LibGio.g_file_info_set_access_date_time(@pointer, atime)
 
       # Return value handling
     end
@@ -655,7 +653,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute(self, attribute, type, value_p)
+      LibGio.g_file_info_set_attribute(@pointer, attribute, type, value_p)
 
       # Return value handling
     end
@@ -667,7 +665,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute_boolean(self, attribute, attr_value)
+      LibGio.g_file_info_set_attribute_boolean(@pointer, attribute, attr_value)
 
       # Return value handling
     end
@@ -679,7 +677,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute_byte_string(self, attribute, attr_value)
+      LibGio.g_file_info_set_attribute_byte_string(@pointer, attribute, attr_value)
 
       # Return value handling
     end
@@ -691,7 +689,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute_int32(self, attribute, attr_value)
+      LibGio.g_file_info_set_attribute_int32(@pointer, attribute, attr_value)
 
       # Return value handling
     end
@@ -703,7 +701,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute_int64(self, attribute, attr_value)
+      LibGio.g_file_info_set_attribute_int64(@pointer, attribute, attr_value)
 
       # Return value handling
     end
@@ -714,7 +712,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute_mask(self, mask)
+      LibGio.g_file_info_set_attribute_mask(@pointer, mask)
 
       # Return value handling
     end
@@ -726,7 +724,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute_object(self, attribute, attr_value)
+      LibGio.g_file_info_set_attribute_object(@pointer, attribute, attr_value)
 
       # Return value handling
     end
@@ -742,7 +740,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_info_set_attribute_status(self, attribute, status)
+      _retval = LibGio.g_file_info_set_attribute_status(@pointer, attribute, status)
 
       # Return value handling
 
@@ -756,7 +754,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute_string(self, attribute, attr_value)
+      LibGio.g_file_info_set_attribute_string(@pointer, attribute, attr_value)
 
       # Return value handling
     end
@@ -774,7 +772,7 @@ module Gio
       attr_value = attr_value.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGio.g_file_info_set_attribute_stringv(self, attribute, attr_value)
+      LibGio.g_file_info_set_attribute_stringv(@pointer, attribute, attr_value)
 
       # Return value handling
     end
@@ -786,7 +784,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute_uint32(self, attribute, attr_value)
+      LibGio.g_file_info_set_attribute_uint32(@pointer, attribute, attr_value)
 
       # Return value handling
     end
@@ -798,7 +796,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_attribute_uint64(self, attribute, attr_value)
+      LibGio.g_file_info_set_attribute_uint64(@pointer, attribute, attr_value)
 
       # Return value handling
     end
@@ -810,7 +808,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_content_type(self, content_type)
+      LibGio.g_file_info_set_content_type(@pointer, content_type)
 
       # Return value handling
     end
@@ -823,7 +821,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_creation_date_time(self, creation_time)
+      LibGio.g_file_info_set_creation_date_time(@pointer, creation_time)
 
       # Return value handling
     end
@@ -835,7 +833,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_display_name(self, display_name)
+      LibGio.g_file_info_set_display_name(@pointer, display_name)
 
       # Return value handling
     end
@@ -847,7 +845,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_edit_name(self, edit_name)
+      LibGio.g_file_info_set_edit_name(@pointer, edit_name)
 
       # Return value handling
     end
@@ -859,7 +857,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_file_type(self, type)
+      LibGio.g_file_info_set_file_type(@pointer, type)
 
       # Return value handling
     end
@@ -871,7 +869,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_icon(self, icon)
+      LibGio.g_file_info_set_icon(@pointer, icon)
 
       # Return value handling
     end
@@ -883,7 +881,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_is_hidden(self, is_hidden)
+      LibGio.g_file_info_set_is_hidden(@pointer, is_hidden)
 
       # Return value handling
     end
@@ -895,7 +893,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_is_symlink(self, is_symlink)
+      LibGio.g_file_info_set_is_symlink(@pointer, is_symlink)
 
       # Return value handling
     end
@@ -908,7 +906,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_modification_date_time(self, mtime)
+      LibGio.g_file_info_set_modification_date_time(@pointer, mtime)
 
       # Return value handling
     end
@@ -921,7 +919,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_modification_time(self, mtime)
+      LibGio.g_file_info_set_modification_time(@pointer, mtime)
 
       # Return value handling
     end
@@ -933,7 +931,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_name(self, name)
+      LibGio.g_file_info_set_name(@pointer, name)
 
       # Return value handling
     end
@@ -945,7 +943,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_size(self, size)
+      LibGio.g_file_info_set_size(@pointer, size)
 
       # Return value handling
     end
@@ -957,7 +955,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_sort_order(self, sort_order)
+      LibGio.g_file_info_set_sort_order(@pointer, sort_order)
 
       # Return value handling
     end
@@ -969,7 +967,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_symbolic_icon(self, icon)
+      LibGio.g_file_info_set_symbolic_icon(@pointer, icon)
 
       # Return value handling
     end
@@ -981,7 +979,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_set_symlink_target(self, symlink_target)
+      LibGio.g_file_info_set_symlink_target(@pointer, symlink_target)
 
       # Return value handling
     end
@@ -993,7 +991,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_info_unset_attribute_mask(self)
+      LibGio.g_file_info_unset_attribute_mask(@pointer)
 
       # Return value handling
     end

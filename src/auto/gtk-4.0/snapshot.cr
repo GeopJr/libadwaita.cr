@@ -24,15 +24,13 @@ module Gtk
         sizeof(LibGtk::Snapshot), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Snapshot, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Snapshot`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -78,7 +76,7 @@ module Gtk
       border_color = border_color.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_snapshot_append_border(self, outline, border_width, border_color)
+      LibGtk.gtk_snapshot_append_border(@pointer, outline, border_width, border_color)
 
       # Return value handling
     end
@@ -90,7 +88,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_snapshot_append_cairo(self, bounds)
+      _retval = LibGtk.gtk_snapshot_append_cairo(@pointer, bounds)
 
       # Return value handling
 
@@ -108,7 +106,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_append_color(self, color, bounds)
+      LibGtk.gtk_snapshot_append_color(@pointer, color, bounds)
 
       # Return value handling
     end
@@ -124,7 +122,7 @@ module Gtk
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_snapshot_append_conic_gradient(self, bounds, center, rotation, stops, n_stops)
+      LibGtk.gtk_snapshot_append_conic_gradient(@pointer, bounds, center, rotation, stops, n_stops)
 
       # Return value handling
     end
@@ -135,7 +133,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_append_inset_shadow(self, outline, color, dx, dy, spread, blur_radius)
+      LibGtk.gtk_snapshot_append_inset_shadow(@pointer, outline, color, dx, dy, spread, blur_radius)
 
       # Return value handling
     end
@@ -145,7 +143,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_append_layout(self, layout, color)
+      LibGtk.gtk_snapshot_append_layout(@pointer, layout, color)
 
       # Return value handling
     end
@@ -161,7 +159,7 @@ module Gtk
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_snapshot_append_linear_gradient(self, bounds, start_point, end_point, stops, n_stops)
+      LibGtk.gtk_snapshot_append_linear_gradient(@pointer, bounds, start_point, end_point, stops, n_stops)
 
       # Return value handling
     end
@@ -176,7 +174,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_append_node(self, node)
+      LibGtk.gtk_snapshot_append_node(@pointer, node)
 
       # Return value handling
     end
@@ -187,7 +185,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_append_outset_shadow(self, outline, color, dx, dy, spread, blur_radius)
+      LibGtk.gtk_snapshot_append_outset_shadow(@pointer, outline, color, dx, dy, spread, blur_radius)
 
       # Return value handling
     end
@@ -203,7 +201,7 @@ module Gtk
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_snapshot_append_radial_gradient(self, bounds, center, hradius, vradius, start, _end, stops, n_stops)
+      LibGtk.gtk_snapshot_append_radial_gradient(@pointer, bounds, center, hradius, vradius, start, _end, stops, n_stops)
 
       # Return value handling
     end
@@ -219,7 +217,7 @@ module Gtk
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_snapshot_append_repeating_linear_gradient(self, bounds, start_point, end_point, stops, n_stops)
+      LibGtk.gtk_snapshot_append_repeating_linear_gradient(@pointer, bounds, start_point, end_point, stops, n_stops)
 
       # Return value handling
     end
@@ -235,7 +233,7 @@ module Gtk
       stops = stops.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_snapshot_append_repeating_radial_gradient(self, bounds, center, hradius, vradius, start, _end, stops, n_stops)
+      LibGtk.gtk_snapshot_append_repeating_radial_gradient(@pointer, bounds, center, hradius, vradius, start, _end, stops, n_stops)
 
       # Return value handling
     end
@@ -248,7 +246,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_append_texture(self, texture, bounds)
+      LibGtk.gtk_snapshot_append_texture(@pointer, texture, bounds)
 
       # Return value handling
     end
@@ -264,7 +262,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_gl_shader_pop_texture(self)
+      LibGtk.gtk_snapshot_gl_shader_pop_texture(@pointer)
 
       # Return value handling
     end
@@ -277,7 +275,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_perspective(self, depth)
+      LibGtk.gtk_snapshot_perspective(@pointer, depth)
 
       # Return value handling
     end
@@ -289,7 +287,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_pop(self)
+      LibGtk.gtk_snapshot_pop(@pointer)
 
       # Return value handling
     end
@@ -308,7 +306,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_push_blend(self, blend_mode)
+      LibGtk.gtk_snapshot_push_blend(@pointer, blend_mode)
 
       # Return value handling
     end
@@ -321,7 +319,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_push_blur(self, radius)
+      LibGtk.gtk_snapshot_push_blur(@pointer, radius)
 
       # Return value handling
     end
@@ -334,7 +332,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_push_clip(self, bounds)
+      LibGtk.gtk_snapshot_push_clip(@pointer, bounds)
 
       # Return value handling
     end
@@ -348,7 +346,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_push_color_matrix(self, color_matrix, color_offset)
+      LibGtk.gtk_snapshot_push_color_matrix(@pointer, color_matrix, color_offset)
 
       # Return value handling
     end
@@ -367,7 +365,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_push_cross_fade(self, progress)
+      LibGtk.gtk_snapshot_push_cross_fade(@pointer, progress)
 
       # Return value handling
     end
@@ -412,7 +410,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_push_gl_shader(self, shader, bounds, take_args)
+      LibGtk.gtk_snapshot_push_gl_shader(@pointer, shader, bounds, take_args)
 
       # Return value handling
     end
@@ -425,7 +423,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_push_opacity(self, opacity)
+      LibGtk.gtk_snapshot_push_opacity(@pointer, opacity)
 
       # Return value handling
     end
@@ -446,7 +444,7 @@ module Gtk
                      end
 
       # C call
-      LibGtk.gtk_snapshot_push_repeat(self, bounds, child_bounds)
+      LibGtk.gtk_snapshot_push_repeat(@pointer, bounds, child_bounds)
 
       # Return value handling
     end
@@ -459,7 +457,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_push_rounded_clip(self, bounds)
+      LibGtk.gtk_snapshot_push_rounded_clip(@pointer, bounds)
 
       # Return value handling
     end
@@ -477,7 +475,7 @@ module Gtk
       shadow = shadow.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_snapshot_push_shadow(self, shadow, n_shadows)
+      LibGtk.gtk_snapshot_push_shadow(@pointer, shadow, n_shadows)
 
       # Return value handling
     end
@@ -494,7 +492,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_render_background(self, context, x, y, width, height)
+      LibGtk.gtk_snapshot_render_background(@pointer, context, x, y, width, height)
 
       # Return value handling
     end
@@ -507,7 +505,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_render_focus(self, context, x, y, width, height)
+      LibGtk.gtk_snapshot_render_focus(@pointer, context, x, y, width, height)
 
       # Return value handling
     end
@@ -520,7 +518,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_render_frame(self, context, x, y, width, height)
+      LibGtk.gtk_snapshot_render_frame(@pointer, context, x, y, width, height)
 
       # Return value handling
     end
@@ -531,7 +529,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_render_insertion_cursor(self, context, x, y, layout, index, direction)
+      LibGtk.gtk_snapshot_render_insertion_cursor(@pointer, context, x, y, layout, index, direction)
 
       # Return value handling
     end
@@ -544,7 +542,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_render_layout(self, context, x, y, layout)
+      LibGtk.gtk_snapshot_render_layout(@pointer, context, x, y, layout)
 
       # Return value handling
     end
@@ -557,7 +555,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_restore(self)
+      LibGtk.gtk_snapshot_restore(@pointer)
 
       # Return value handling
     end
@@ -571,7 +569,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_rotate(self, angle)
+      LibGtk.gtk_snapshot_rotate(@pointer, angle)
 
       # Return value handling
     end
@@ -584,7 +582,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_rotate_3d(self, angle, axis)
+      LibGtk.gtk_snapshot_rotate_3d(@pointer, angle, axis)
 
       # Return value handling
     end
@@ -605,7 +603,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_save(self)
+      LibGtk.gtk_snapshot_save(@pointer)
 
       # Return value handling
     end
@@ -619,7 +617,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_scale(self, factor_x, factor_y)
+      LibGtk.gtk_snapshot_scale(@pointer, factor_x, factor_y)
 
       # Return value handling
     end
@@ -630,7 +628,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_scale_3d(self, factor_x, factor_y, factor_z)
+      LibGtk.gtk_snapshot_scale_3d(@pointer, factor_x, factor_y, factor_z)
 
       # Return value handling
     end
@@ -646,7 +644,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_snapshot_to_node(self)
+      _retval = LibGtk.gtk_snapshot_to_node(@pointer)
 
       # Return value handling
 
@@ -672,11 +670,11 @@ module Gtk
              end
 
       # C call
-      _retval = LibGtk.gtk_snapshot_to_paintable(self, size)
+      _retval = LibGtk.gtk_snapshot_to_paintable(@pointer, size)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     # Transforms @snapshot's coordinate system with the given @transform.
@@ -693,7 +691,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_snapshot_transform(self, transform)
+      LibGtk.gtk_snapshot_transform(@pointer, transform)
 
       # Return value handling
     end
@@ -704,7 +702,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_transform_matrix(self, matrix)
+      LibGtk.gtk_snapshot_transform_matrix(@pointer, matrix)
 
       # Return value handling
     end
@@ -715,7 +713,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_translate(self, point)
+      LibGtk.gtk_snapshot_translate(@pointer, point)
 
       # Return value handling
     end
@@ -726,7 +724,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_snapshot_translate_3d(self, point)
+      LibGtk.gtk_snapshot_translate_3d(@pointer, point)
 
       # Return value handling
     end

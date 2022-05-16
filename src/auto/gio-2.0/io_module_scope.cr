@@ -25,7 +25,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_io_module_scope_block(self, basename)
+      LibGio.g_io_module_scope_block(@pointer, basename)
 
       # Return value handling
     end
@@ -35,7 +35,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_io_module_scope_free(self)
+      LibGio.g_io_module_scope_free(@pointer)
 
       # Return value handling
     end

@@ -37,7 +37,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_attr_iterator_copy(self)
+      _retval = LibPango.pango_attr_iterator_copy(@pointer)
 
       # Return value handling
 
@@ -49,7 +49,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attr_iterator_destroy(self)
+      LibPango.pango_attr_iterator_destroy(@pointer)
 
       # Return value handling
     end
@@ -59,7 +59,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attr_iterator_get(self, type)
+      _retval = LibPango.pango_attr_iterator_get(@pointer, type)
 
       # Return value handling
 
@@ -71,7 +71,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_attr_iterator_get_attrs(self)
+      _retval = LibPango.pango_attr_iterator_get_attrs(@pointer)
 
       # Return value handling
 
@@ -88,7 +88,7 @@ module Pango
       language = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       extra_attrs = Pointer(Pointer(LibGLib::SList)).null
       # C call
-      LibPango.pango_attr_iterator_get_font(self, desc, language, extra_attrs)
+      LibPango.pango_attr_iterator_get_font(@pointer, desc, language, extra_attrs)
 
       # Return value handling
     end
@@ -98,7 +98,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_attr_iterator_next(self)
+      _retval = LibPango.pango_attr_iterator_next(@pointer)
 
       # Return value handling
 
@@ -112,7 +112,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_attr_iterator_range(self, start, _end)
+      LibPango.pango_attr_iterator_range(@pointer, start, _end)
 
       # Return value handling
     end

@@ -18,15 +18,13 @@ module Gio
         sizeof(LibGio::IOModule), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(IOModule, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `IOModule`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -95,51 +93,6 @@ module Gio
       # Return value handling
 
       GICrystal.transfer_null_ended_array(_retval, GICrystal::Transfer::Full)
-    end
-
-    # Required API for GIO modules to implement.
-    #
-    # This function is run after the module has been loaded into GIO,
-    # to initialize the module. Typically, this function will call
-    # g_io_extension_point_implement().
-    #
-    # Since 2.56, this function should be named `g_io_<modulename>_load`, where
-    # `modulename` is the plugin’s filename with the `lib` or `libgio` prefix and
-    # everything after the first dot removed, and with `-` replaced with `_`
-    # throughout. For example, `libgiognutls-helper.so` becomes `gnutls_helper`.
-    # Using the new symbol names avoids name clashes when building modules
-    # statically. The old symbol names continue to be supported, but cannot be used
-    # for static builds.
-    def load : Nil
-      # g_io_module_load: (Method)
-      # Returns: (transfer none)
-
-      # C call
-      LibGio.g_io_module_load(self)
-
-      # Return value handling
-    end
-
-    # Required API for GIO modules to implement.
-    #
-    # This function is run when the module is being unloaded from GIO,
-    # to finalize the module.
-    #
-    # Since 2.56, this function should be named `g_io_<modulename>_unload`, where
-    # `modulename` is the plugin’s filename with the `lib` or `libgio` prefix and
-    # everything after the first dot removed, and with `-` replaced with `_`
-    # throughout. For example, `libgiognutls-helper.so` becomes `gnutls_helper`.
-    # Using the new symbol names avoids name clashes when building modules
-    # statically. The old symbol names continue to be supported, but cannot be used
-    # for static builds.
-    def unload : Nil
-      # g_io_module_unload: (Method)
-      # Returns: (transfer none)
-
-      # C call
-      LibGio.g_io_module_unload(self)
-
-      # Return value handling
     end
   end
 end

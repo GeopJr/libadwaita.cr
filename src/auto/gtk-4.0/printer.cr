@@ -21,15 +21,13 @@ module Gtk
         sizeof(LibGtk::Printer), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Printer, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Printer`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -236,7 +234,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_accepts_pdf(self)
+      _retval = LibGtk.gtk_printer_accepts_pdf(@pointer)
 
       # Return value handling
 
@@ -250,7 +248,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_accepts_ps(self)
+      _retval = LibGtk.gtk_printer_accepts_ps(@pointer)
 
       # Return value handling
 
@@ -263,7 +261,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_compare(self, b)
+      _retval = LibGtk.gtk_printer_compare(@pointer, b)
 
       # Return value handling
 
@@ -276,7 +274,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_backend(self)
+      _retval = LibGtk.gtk_printer_get_backend(@pointer)
 
       # Return value handling
 
@@ -297,7 +295,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_capabilities(self)
+      _retval = LibGtk.gtk_printer_get_capabilities(@pointer)
 
       # Return value handling
 
@@ -310,7 +308,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_default_page_size(self)
+      _retval = LibGtk.gtk_printer_get_default_page_size(@pointer)
 
       # Return value handling
 
@@ -323,7 +321,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_description(self)
+      _retval = LibGtk.gtk_printer_get_description(@pointer)
 
       # Return value handling
 
@@ -347,7 +345,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_hard_margins(self, top, bottom, left, right)
+      _retval = LibGtk.gtk_printer_get_hard_margins(@pointer, top, bottom, left, right)
 
       # Return value handling
 
@@ -371,7 +369,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_hard_margins_for_paper_size(self, paper_size, top, bottom, left, right)
+      _retval = LibGtk.gtk_printer_get_hard_margins_for_paper_size(@pointer, paper_size, top, bottom, left, right)
 
       # Return value handling
 
@@ -384,7 +382,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_icon_name(self)
+      _retval = LibGtk.gtk_printer_get_icon_name(@pointer)
 
       # Return value handling
 
@@ -397,7 +395,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_job_count(self)
+      _retval = LibGtk.gtk_printer_get_job_count(@pointer)
 
       # Return value handling
 
@@ -410,7 +408,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_location(self)
+      _retval = LibGtk.gtk_printer_get_location(@pointer)
 
       # Return value handling
 
@@ -423,7 +421,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_name(self)
+      _retval = LibGtk.gtk_printer_get_name(@pointer)
 
       # Return value handling
 
@@ -437,7 +435,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_get_state_message(self)
+      _retval = LibGtk.gtk_printer_get_state_message(@pointer)
 
       # Return value handling
 
@@ -450,7 +448,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_has_details(self)
+      _retval = LibGtk.gtk_printer_has_details(@pointer)
 
       # Return value handling
 
@@ -463,7 +461,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_is_accepting_jobs(self)
+      _retval = LibGtk.gtk_printer_is_accepting_jobs(@pointer)
 
       # Return value handling
 
@@ -477,7 +475,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_is_active(self)
+      _retval = LibGtk.gtk_printer_is_active(@pointer)
 
       # Return value handling
 
@@ -490,7 +488,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_is_default(self)
+      _retval = LibGtk.gtk_printer_is_default(@pointer)
 
       # Return value handling
 
@@ -506,7 +504,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_is_paused(self)
+      _retval = LibGtk.gtk_printer_is_paused(@pointer)
 
       # Return value handling
 
@@ -521,7 +519,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_printer_is_virtual(self)
+      _retval = LibGtk.gtk_printer_is_virtual(@pointer)
 
       # Return value handling
 
@@ -538,7 +536,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_printer_list_papers(self)
+      _retval = LibGtk.gtk_printer_list_papers(@pointer)
 
       # Return value handling
 
@@ -555,7 +553,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_printer_request_details(self)
+      LibGtk.gtk_printer_request_details(@pointer)
 
       # Return value handling
     end

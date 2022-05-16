@@ -25,7 +25,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_orientable_get_orientation(self)
+      _retval = LibGtk.gtk_orientable_get_orientation(@pointer)
 
       # Return value handling
 
@@ -37,7 +37,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_orientable_set_orientation(self, orientation)
+      LibGtk.gtk_orientable_set_orientation(@pointer, orientation)
 
       # Return value handling
     end
@@ -47,8 +47,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Orientable__Impl < GObject::Object
+  class AbstractOrientable < GObject::Object
     include Orientable
+
+    GICrystal.define_new_method(Gtk::AbstractOrientable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

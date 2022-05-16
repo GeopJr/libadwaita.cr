@@ -41,15 +41,13 @@ module Gtk
         sizeof(LibGtk::IMContext), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(IMContext, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `IMContext`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -139,7 +137,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_im_context_delete_surrounding(self, offset, n_chars)
+      _retval = LibGtk.gtk_im_context_delete_surrounding(@pointer, offset, n_chars)
 
       # Return value handling
 
@@ -154,7 +152,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_im_context_filter_key(self, press, surface, device, time, keycode, state, group)
+      _retval = LibGtk.gtk_im_context_filter_key(@pointer, press, surface, device, time, keycode, state, group)
 
       # Return value handling
 
@@ -171,7 +169,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_im_context_filter_keypress(self, event)
+      _retval = LibGtk.gtk_im_context_filter_keypress(@pointer, event)
 
       # Return value handling
 
@@ -188,7 +186,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_im_context_focus_in(self)
+      LibGtk.gtk_im_context_focus_in(@pointer)
 
       # Return value handling
     end
@@ -203,7 +201,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_im_context_focus_out(self)
+      LibGtk.gtk_im_context_focus_out(@pointer)
 
       # Return value handling
     end
@@ -220,7 +218,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_im_context_get_preedit_string(self, str, attrs, cursor_pos)
+      LibGtk.gtk_im_context_get_preedit_string(@pointer, str, attrs, cursor_pos)
 
       # Return value handling
     end
@@ -247,7 +245,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_im_context_get_surrounding(self, text, cursor_index)
+      _retval = LibGtk.gtk_im_context_get_surrounding(@pointer, text, cursor_index)
 
       # Return value handling
 
@@ -277,7 +275,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_im_context_get_surrounding_with_selection(self, text, cursor_index, anchor_index)
+      _retval = LibGtk.gtk_im_context_get_surrounding_with_selection(@pointer, text, cursor_index, anchor_index)
 
       # Return value handling
 
@@ -293,7 +291,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_im_context_reset(self)
+      LibGtk.gtk_im_context_reset(@pointer)
 
       # Return value handling
     end
@@ -316,7 +314,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_im_context_set_client_widget(self, widget)
+      LibGtk.gtk_im_context_set_client_widget(@pointer, widget)
 
       # Return value handling
     end
@@ -330,7 +328,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_im_context_set_cursor_location(self, area)
+      LibGtk.gtk_im_context_set_cursor_location(@pointer, area)
 
       # Return value handling
     end
@@ -346,7 +344,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_im_context_set_surrounding(self, text, len, cursor_index)
+      LibGtk.gtk_im_context_set_surrounding(@pointer, text, len, cursor_index)
 
       # Return value handling
     end
@@ -360,7 +358,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_im_context_set_surrounding_with_selection(self, text, len, cursor_index, anchor_index)
+      LibGtk.gtk_im_context_set_surrounding_with_selection(@pointer, text, len, cursor_index, anchor_index)
 
       # Return value handling
     end
@@ -376,7 +374,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_im_context_set_use_preedit(self, use_preedit)
+      LibGtk.gtk_im_context_set_use_preedit(@pointer, use_preedit)
 
       # Return value handling
     end
@@ -416,7 +414,8 @@ module Gtk
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_str : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          str = lib_str
+          # Generator::BuiltInTypeArgPlan
+          str = ::String.new(lib_str)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(str)
         }.pointer
 
@@ -427,7 +426,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_str : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          str = lib_str
+          # Generator::BuiltInTypeArgPlan
+          str = ::String.new(lib_str)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(str)
         }.pointer
 
@@ -439,7 +439,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_str : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::IMContext.new(_lib_sender, GICrystal::Transfer::None)
-          str = lib_str
+          # Generator::BuiltInTypeArgPlan
+          str = ::String.new(lib_str)
           ::Box(Proc(Gtk::IMContext, ::String, Nil)).unbox(_lib_box).call(_sender, str)
         }.pointer
 
@@ -451,7 +452,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_str : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::IMContext.new(_lib_sender, GICrystal::Transfer::None)
-          str = lib_str
+          # Generator::BuiltInTypeArgPlan
+          str = ::String.new(lib_str)
           ::Box(Proc(Gtk::IMContext, ::String, Nil)).unbox(_lib_box).call(_sender, str)
         }.pointer
 

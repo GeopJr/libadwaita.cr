@@ -89,7 +89,7 @@ module HarfBuzz
       buf = buf.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibHarfBuzz.hb_feature_to_string(self, buf, size)
+      LibHarfBuzz.hb_feature_to_string(@pointer, buf, size)
 
       # Return value handling
     end

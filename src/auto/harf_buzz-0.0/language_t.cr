@@ -22,7 +22,7 @@ module HarfBuzz
       # Returns: (transfer none)
 
       # C call
-      _retval = LibHarfBuzz.hb_language_to_string(self)
+      _retval = LibHarfBuzz.hb_language_to_string(@pointer)
 
       # Return value handling
 

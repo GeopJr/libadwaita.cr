@@ -144,7 +144,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_action_activate(self, parameter)
+      LibGio.g_action_activate(@pointer, parameter)
 
       # Return value handling
     end
@@ -161,7 +161,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_action_change_state(self, value)
+      LibGio.g_action_change_state(@pointer, value)
 
       # Return value handling
     end
@@ -171,7 +171,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_action_get_enabled(self)
+      _retval = LibGio.g_action_get_enabled(@pointer)
 
       # Return value handling
 
@@ -183,7 +183,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_action_get_name(self)
+      _retval = LibGio.g_action_get_name(@pointer)
 
       # Return value handling
 
@@ -195,7 +195,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_action_get_parameter_type(self)
+      _retval = LibGio.g_action_get_parameter_type(@pointer)
 
       # Return value handling
 
@@ -207,7 +207,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_action_get_state(self)
+      _retval = LibGio.g_action_get_state(@pointer)
 
       # Return value handling
 
@@ -219,7 +219,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_action_get_state_hint(self)
+      _retval = LibGio.g_action_get_state_hint(@pointer)
 
       # Return value handling
 
@@ -231,7 +231,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_action_get_state_type(self)
+      _retval = LibGio.g_action_get_state_type(@pointer)
 
       # Return value handling
 
@@ -243,8 +243,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Action__Impl < GObject::Object
+  class AbstractAction < GObject::Object
     include Action
+
+    GICrystal.define_new_method(Gio::AbstractAction, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

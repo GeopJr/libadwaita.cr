@@ -69,7 +69,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_size_equal(self, b)
+      _retval = LibGraphene.graphene_size_equal(@pointer, b)
 
       # Return value handling
 
@@ -81,7 +81,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_size_free(self)
+      LibGraphene.graphene_size_free(@pointer)
 
       # Return value handling
     end
@@ -91,7 +91,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_size_init(self, width, height)
+      _retval = LibGraphene.graphene_size_init(@pointer, width, height)
 
       # Return value handling
 
@@ -103,7 +103,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_size_init_from_size(self, src)
+      _retval = LibGraphene.graphene_size_init_from_size(@pointer, src)
 
       # Return value handling
 
@@ -118,7 +118,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Size.new
       # C call
-      LibGraphene.graphene_size_interpolate(self, b, factor, res)
+      LibGraphene.graphene_size_interpolate(@pointer, b, factor, res)
 
       # Return value handling
 
@@ -133,7 +133,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Size.new
       # C call
-      LibGraphene.graphene_size_scale(self, factor, res)
+      LibGraphene.graphene_size_scale(@pointer, factor, res)
 
       # Return value handling
 

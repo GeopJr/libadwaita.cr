@@ -120,7 +120,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_schema_get_id(self)
+      _retval = LibGio.g_settings_schema_get_id(@pointer)
 
       # Return value handling
 
@@ -132,7 +132,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_schema_get_key(self, name)
+      _retval = LibGio.g_settings_schema_get_key(@pointer, name)
 
       # Return value handling
 
@@ -144,7 +144,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_schema_get_path(self)
+      _retval = LibGio.g_settings_schema_get_path(@pointer)
 
       # Return value handling
 
@@ -156,7 +156,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_settings_schema_has_key(self, name)
+      _retval = LibGio.g_settings_schema_has_key(@pointer, name)
 
       # Return value handling
 
@@ -168,7 +168,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_settings_schema_list_children(self)
+      _retval = LibGio.g_settings_schema_list_children(@pointer)
 
       # Return value handling
 
@@ -180,7 +180,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_settings_schema_list_keys(self)
+      _retval = LibGio.g_settings_schema_list_keys(@pointer)
 
       # Return value handling
 
@@ -192,7 +192,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_schema_ref(self)
+      _retval = LibGio.g_settings_schema_ref(@pointer)
 
       # Return value handling
 
@@ -204,7 +204,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_schema_unref(self)
+      LibGio.g_settings_schema_unref(@pointer)
 
       # Return value handling
     end

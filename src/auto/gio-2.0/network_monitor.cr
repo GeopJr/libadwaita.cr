@@ -39,7 +39,7 @@ module Gio
 
       # Return value handling
 
-      Gio::NetworkMonitor__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractNetworkMonitor.new(_retval, GICrystal::Transfer::None)
     end
 
     def can_reach(connectable : Gio::SocketConnectable, cancellable : Gio::Cancellable?) : Bool
@@ -57,7 +57,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_network_monitor_can_reach(self, connectable, cancellable, pointerof(_error))
+      _retval = LibGio.g_network_monitor_can_reach(@pointer, connectable, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -88,7 +88,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_network_monitor_can_reach_async(self, connectable, cancellable, callback, user_data)
+      LibGio.g_network_monitor_can_reach_async(@pointer, connectable, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -100,7 +100,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_network_monitor_can_reach_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_network_monitor_can_reach_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -115,7 +115,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_network_monitor_get_connectivity(self)
+      _retval = LibGio.g_network_monitor_get_connectivity(@pointer)
 
       # Return value handling
 
@@ -127,7 +127,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_network_monitor_get_network_available(self)
+      _retval = LibGio.g_network_monitor_get_network_available(@pointer)
 
       # Return value handling
 
@@ -139,7 +139,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_network_monitor_get_network_metered(self)
+      _retval = LibGio.g_network_monitor_get_network_metered(@pointer)
 
       # Return value handling
 
@@ -195,7 +195,7 @@ module Gio
       def connect(handler : Proc(Gio::NetworkMonitor, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_network_available : LibC::Int, _lib_box : Pointer(Void)) {
-          _sender = Gio::NetworkMonitor__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractNetworkMonitor.new(_lib_sender, GICrystal::Transfer::None)
           network_available = lib_network_available
           ::Box(Proc(Gio::NetworkMonitor, Bool, Nil)).unbox(_lib_box).call(_sender, network_available)
         }.pointer
@@ -207,7 +207,7 @@ module Gio
       def connect_after(handler : Proc(Gio::NetworkMonitor, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_network_available : LibC::Int, _lib_box : Pointer(Void)) {
-          _sender = Gio::NetworkMonitor__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractNetworkMonitor.new(_lib_sender, GICrystal::Transfer::None)
           network_available = lib_network_available
           ::Box(Proc(Gio::NetworkMonitor, Bool, Nil)).unbox(_lib_box).call(_sender, network_available)
         }.pointer
@@ -230,8 +230,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class NetworkMonitor__Impl < GObject::Object
+  class AbstractNetworkMonitor < GObject::Object
     include NetworkMonitor
+
+    GICrystal.define_new_method(Gio::AbstractNetworkMonitor, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

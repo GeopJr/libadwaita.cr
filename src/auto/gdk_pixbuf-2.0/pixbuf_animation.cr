@@ -25,15 +25,13 @@ module GdkPixbuf
         sizeof(LibGdkPixbuf::PixbufAnimation), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(PixbufAnimation, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `PixbufAnimation`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -188,7 +186,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_animation_get_height(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_animation_get_height(@pointer)
 
       # Return value handling
 
@@ -242,7 +240,7 @@ module GdkPixbuf
                    end
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_animation_get_iter(self, start_time)
+      _retval = LibGdkPixbuf.gdk_pixbuf_animation_get_iter(@pointer, start_time)
 
       # Return value handling
 
@@ -265,7 +263,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_animation_get_static_image(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_animation_get_static_image(@pointer)
 
       # Return value handling
 
@@ -278,7 +276,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_animation_get_width(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_animation_get_width(@pointer)
 
       # Return value handling
 
@@ -296,7 +294,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_animation_is_static_image(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_animation_is_static_image(@pointer)
 
       # Return value handling
 

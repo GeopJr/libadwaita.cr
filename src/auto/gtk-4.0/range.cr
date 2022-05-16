@@ -33,15 +33,13 @@ module Gtk
         sizeof(LibGtk::Range), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Range, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Range`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -376,7 +374,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_range_get_adjustment(self)
+      _retval = LibGtk.gtk_range_get_adjustment(@pointer)
 
       # Return value handling
 
@@ -389,7 +387,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_range_get_fill_level(self)
+      _retval = LibGtk.gtk_range_get_fill_level(@pointer)
 
       # Return value handling
 
@@ -404,7 +402,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_range_get_flippable(self)
+      _retval = LibGtk.gtk_range_get_flippable(@pointer)
 
       # Return value handling
 
@@ -419,7 +417,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_range_get_inverted(self)
+      _retval = LibGtk.gtk_range_get_inverted(@pointer)
 
       # Return value handling
 
@@ -438,7 +436,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       range_rect = Gdk::Rectangle.new
       # C call
-      LibGtk.gtk_range_get_range_rect(self, range_rect)
+      LibGtk.gtk_range_get_range_rect(@pointer, range_rect)
 
       # Return value handling
 
@@ -451,7 +449,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_range_get_restrict_to_fill_level(self)
+      _retval = LibGtk.gtk_range_get_restrict_to_fill_level(@pointer)
 
       # Return value handling
 
@@ -467,7 +465,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_range_get_round_digits(self)
+      _retval = LibGtk.gtk_range_get_round_digits(@pointer)
 
       # Return value handling
 
@@ -480,7 +478,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_range_get_show_fill_level(self)
+      _retval = LibGtk.gtk_range_get_show_fill_level(@pointer)
 
       # Return value handling
 
@@ -501,7 +499,7 @@ module Gtk
       slider_start = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       slider_end = Pointer(Int32).null
       # C call
-      LibGtk.gtk_range_get_slider_range(self, slider_start, slider_end)
+      LibGtk.gtk_range_get_slider_range(@pointer, slider_start, slider_end)
 
       # Return value handling
     end
@@ -514,7 +512,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_range_get_slider_size_fixed(self)
+      _retval = LibGtk.gtk_range_get_slider_size_fixed(@pointer)
 
       # Return value handling
 
@@ -527,7 +525,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_range_get_value(self)
+      _retval = LibGtk.gtk_range_get_value(@pointer)
 
       # Return value handling
 
@@ -548,7 +546,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_adjustment(self, adjustment)
+      LibGtk.gtk_range_set_adjustment(@pointer, adjustment)
 
       # Return value handling
     end
@@ -575,7 +573,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_fill_level(self, fill_level)
+      LibGtk.gtk_range_set_fill_level(@pointer, fill_level)
 
       # Return value handling
     end
@@ -591,7 +589,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_flippable(self, flippable)
+      LibGtk.gtk_range_set_flippable(@pointer, flippable)
 
       # Return value handling
     end
@@ -606,7 +604,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_increments(self, step, page)
+      LibGtk.gtk_range_set_increments(@pointer, step, page)
 
       # Return value handling
     end
@@ -622,7 +620,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_inverted(self, setting)
+      LibGtk.gtk_range_set_inverted(@pointer, setting)
 
       # Return value handling
     end
@@ -637,7 +635,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_range(self, min, max)
+      LibGtk.gtk_range_set_range(@pointer, min, max)
 
       # Return value handling
     end
@@ -651,7 +649,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_restrict_to_fill_level(self, restrict_to_fill_level)
+      LibGtk.gtk_range_set_restrict_to_fill_level(@pointer, restrict_to_fill_level)
 
       # Return value handling
     end
@@ -665,7 +663,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_round_digits(self, round_digits)
+      LibGtk.gtk_range_set_round_digits(@pointer, round_digits)
 
       # Return value handling
     end
@@ -679,7 +677,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_show_fill_level(self, show_fill_level)
+      LibGtk.gtk_range_set_show_fill_level(@pointer, show_fill_level)
 
       # Return value handling
     end
@@ -693,7 +691,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_slider_size_fixed(self, size_fixed)
+      LibGtk.gtk_range_set_slider_size_fixed(@pointer, size_fixed)
 
       # Return value handling
     end
@@ -708,7 +706,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_range_set_value(self, value)
+      LibGtk.gtk_range_set_value(@pointer, value)
 
       # Return value handling
     end
@@ -833,8 +831,8 @@ module Gtk
       def connect(handler : Proc(Gtk::ScrollType, Float64, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, lib_value : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           value = lib_value
           ::Box(Proc(Gtk::ScrollType, Float64, Bool)).unbox(_lib_box).call(scroll, value)
         }.pointer
@@ -846,8 +844,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::ScrollType, Float64, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, lib_value : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           value = lib_value
           ::Box(Proc(Gtk::ScrollType, Float64, Bool)).unbox(_lib_box).call(scroll, value)
         }.pointer
@@ -860,8 +858,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, lib_value : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::Range.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           value = lib_value
           ::Box(Proc(Gtk::Range, Gtk::ScrollType, Float64, Bool)).unbox(_lib_box).call(_sender, scroll, value)
         }.pointer
@@ -874,8 +872,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, lib_value : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::Range.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           value = lib_value
           ::Box(Proc(Gtk::Range, Gtk::ScrollType, Float64, Bool)).unbox(_lib_box).call(_sender, scroll, value)
         }.pointer
@@ -923,8 +921,8 @@ module Gtk
       def connect(handler : Proc(Gtk::ScrollType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::ScrollType.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::ScrollType.new(lib_step)
           ::Box(Proc(Gtk::ScrollType, Nil)).unbox(_lib_box).call(step)
         }.pointer
 
@@ -935,8 +933,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::ScrollType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::ScrollType.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::ScrollType.new(lib_step)
           ::Box(Proc(Gtk::ScrollType, Nil)).unbox(_lib_box).call(step)
         }.pointer
 
@@ -948,8 +946,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Range.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::ScrollType.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::ScrollType.new(lib_step)
           ::Box(Proc(Gtk::Range, Gtk::ScrollType, Nil)).unbox(_lib_box).call(_sender, step)
         }.pointer
 
@@ -961,8 +959,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Range.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::ScrollType.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::ScrollType.new(lib_step)
           ::Box(Proc(Gtk::Range, Gtk::ScrollType, Nil)).unbox(_lib_box).call(_sender, step)
         }.pointer
 

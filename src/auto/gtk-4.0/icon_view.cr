@@ -50,15 +50,13 @@ module Gtk
         sizeof(LibGtk::IconView), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(IconView, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `IconView`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -514,7 +512,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractTreeModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def pixbuf_column=(value : Int32) : Int32
@@ -673,11 +671,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_create_drag_icon(self, path)
+      _retval = LibGtk.gtk_icon_view_create_drag_icon(@pointer, path)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     # Turns @icon_view into a drop destination for automatic DND. Calling this
@@ -687,7 +685,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_enable_model_drag_dest(self, formats, actions)
+      LibGtk.gtk_icon_view_enable_model_drag_dest(@pointer, formats, actions)
 
       # Return value handling
     end
@@ -699,7 +697,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_enable_model_drag_source(self, start_button_mask, formats, actions)
+      LibGtk.gtk_icon_view_enable_model_drag_source(@pointer, start_button_mask, formats, actions)
 
       # Return value handling
     end
@@ -710,7 +708,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_activate_on_single_click(self)
+      _retval = LibGtk.gtk_icon_view_get_activate_on_single_click(@pointer)
 
       # Return value handling
 
@@ -736,7 +734,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
       # C call
-      _retval = LibGtk.gtk_icon_view_get_cell_rect(self, path, cell, rect)
+      _retval = LibGtk.gtk_icon_view_get_cell_rect(@pointer, path, cell, rect)
 
       # Return value handling
 
@@ -749,7 +747,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_column_spacing(self)
+      _retval = LibGtk.gtk_icon_view_get_column_spacing(@pointer)
 
       # Return value handling
 
@@ -762,7 +760,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_columns(self)
+      _retval = LibGtk.gtk_icon_view_get_columns(@pointer)
 
       # Return value handling
 
@@ -784,7 +782,7 @@ module Gtk
       path = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       cell = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGtk.gtk_icon_view_get_cursor(self, path, cell)
+      _retval = LibGtk.gtk_icon_view_get_cursor(@pointer, path, cell)
 
       # Return value handling
 
@@ -802,7 +800,7 @@ module Gtk
       path = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       pos = Pointer(UInt32).null
       # C call
-      _retval = LibGtk.gtk_icon_view_get_dest_item_at_pos(self, drag_x, drag_y, path, pos)
+      _retval = LibGtk.gtk_icon_view_get_dest_item_at_pos(@pointer, drag_x, drag_y, path, pos)
 
       # Return value handling
 
@@ -820,7 +818,7 @@ module Gtk
       path = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       pos = Pointer(UInt32).null
       # C call
-      LibGtk.gtk_icon_view_get_drag_dest_item(self, path, pos)
+      LibGtk.gtk_icon_view_get_drag_dest_item(@pointer, path, pos)
 
       # Return value handling
     end
@@ -836,7 +834,7 @@ module Gtk
       path = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       cell = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGtk.gtk_icon_view_get_item_at_pos(self, x, y, path, cell)
+      _retval = LibGtk.gtk_icon_view_get_item_at_pos(@pointer, x, y, path, cell)
 
       # Return value handling
 
@@ -850,7 +848,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_item_column(self, path)
+      _retval = LibGtk.gtk_icon_view_get_item_column(@pointer, path)
 
       # Return value handling
 
@@ -864,7 +862,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_item_orientation(self)
+      _retval = LibGtk.gtk_icon_view_get_item_orientation(@pointer)
 
       # Return value handling
 
@@ -877,7 +875,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_item_padding(self)
+      _retval = LibGtk.gtk_icon_view_get_item_padding(@pointer)
 
       # Return value handling
 
@@ -891,7 +889,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_item_row(self, path)
+      _retval = LibGtk.gtk_icon_view_get_item_row(@pointer, path)
 
       # Return value handling
 
@@ -904,7 +902,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_item_width(self)
+      _retval = LibGtk.gtk_icon_view_get_item_width(@pointer)
 
       # Return value handling
 
@@ -917,7 +915,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_margin(self)
+      _retval = LibGtk.gtk_icon_view_get_margin(@pointer)
 
       # Return value handling
 
@@ -930,7 +928,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_markup_column(self)
+      _retval = LibGtk.gtk_icon_view_get_markup_column(@pointer)
 
       # Return value handling
 
@@ -944,11 +942,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_model(self)
+      _retval = LibGtk.gtk_icon_view_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractTreeModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the path for the icon at the given position.
@@ -957,7 +955,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_path_at_pos(self, x, y)
+      _retval = LibGtk.gtk_icon_view_get_path_at_pos(@pointer, x, y)
 
       # Return value handling
 
@@ -970,7 +968,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_pixbuf_column(self)
+      _retval = LibGtk.gtk_icon_view_get_pixbuf_column(@pointer)
 
       # Return value handling
 
@@ -984,7 +982,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_reorderable(self)
+      _retval = LibGtk.gtk_icon_view_get_reorderable(@pointer)
 
       # Return value handling
 
@@ -997,7 +995,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_row_spacing(self)
+      _retval = LibGtk.gtk_icon_view_get_row_spacing(@pointer)
 
       # Return value handling
 
@@ -1025,7 +1023,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_selected_items(self)
+      _retval = LibGtk.gtk_icon_view_get_selected_items(@pointer)
 
       # Return value handling
 
@@ -1038,7 +1036,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_selection_mode(self)
+      _retval = LibGtk.gtk_icon_view_get_selection_mode(@pointer)
 
       # Return value handling
 
@@ -1051,7 +1049,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_spacing(self)
+      _retval = LibGtk.gtk_icon_view_get_spacing(@pointer)
 
       # Return value handling
 
@@ -1064,7 +1062,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_text_column(self)
+      _retval = LibGtk.gtk_icon_view_get_text_column(@pointer)
 
       # Return value handling
 
@@ -1078,7 +1076,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_get_tooltip_column(self)
+      _retval = LibGtk.gtk_icon_view_get_tooltip_column(@pointer)
 
       # Return value handling
 
@@ -1108,7 +1106,7 @@ module Gtk
       iter = Pointer(Void).null           # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_icon_view_get_tooltip_context(self, x, y, keyboard_tip, model, path, iter)
+      _retval = LibGtk.gtk_icon_view_get_tooltip_context(@pointer, x, y, keyboard_tip, model, path, iter)
 
       # Return value handling
 
@@ -1129,7 +1127,7 @@ module Gtk
       start_path = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       end_path = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGtk.gtk_icon_view_get_visible_range(self, start_path, end_path)
+      _retval = LibGtk.gtk_icon_view_get_visible_range(@pointer, start_path, end_path)
 
       # Return value handling
 
@@ -1142,7 +1140,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_item_activated(self, path)
+      LibGtk.gtk_icon_view_item_activated(@pointer, path)
 
       # Return value handling
     end
@@ -1154,7 +1152,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_icon_view_path_is_selected(self, path)
+      _retval = LibGtk.gtk_icon_view_path_is_selected(@pointer, path)
 
       # Return value handling
 
@@ -1180,7 +1178,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_scroll_to_path(self, path, use_align, row_align, col_align)
+      LibGtk.gtk_icon_view_scroll_to_path(@pointer, path, use_align, row_align, col_align)
 
       # Return value handling
     end
@@ -1192,7 +1190,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_select_all(self)
+      LibGtk.gtk_icon_view_select_all(@pointer)
 
       # Return value handling
     end
@@ -1203,7 +1201,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_select_path(self, path)
+      LibGtk.gtk_icon_view_select_path(@pointer, path)
 
       # Return value handling
     end
@@ -1223,7 +1221,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_icon_view_selected_foreach(self, func, data)
+      LibGtk.gtk_icon_view_selected_foreach(@pointer, func, data)
 
       # Return value handling
     end
@@ -1235,7 +1233,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_activate_on_single_click(self, single)
+      LibGtk.gtk_icon_view_set_activate_on_single_click(@pointer, single)
 
       # Return value handling
     end
@@ -1247,7 +1245,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_column_spacing(self, column_spacing)
+      LibGtk.gtk_icon_view_set_column_spacing(@pointer, column_spacing)
 
       # Return value handling
     end
@@ -1261,7 +1259,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_columns(self, columns)
+      LibGtk.gtk_icon_view_set_columns(@pointer, columns)
 
       # Return value handling
     end
@@ -1288,7 +1286,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_icon_view_set_cursor(self, path, cell, start_editing)
+      LibGtk.gtk_icon_view_set_cursor(@pointer, path, cell, start_editing)
 
       # Return value handling
     end
@@ -1307,7 +1305,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_icon_view_set_drag_dest_item(self, path, pos)
+      LibGtk.gtk_icon_view_set_drag_dest_item(@pointer, path, pos)
 
       # Return value handling
     end
@@ -1319,7 +1317,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_item_orientation(self, orientation)
+      LibGtk.gtk_icon_view_set_item_orientation(@pointer, orientation)
 
       # Return value handling
     end
@@ -1331,7 +1329,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_item_padding(self, item_padding)
+      LibGtk.gtk_icon_view_set_item_padding(@pointer, item_padding)
 
       # Return value handling
     end
@@ -1344,7 +1342,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_item_width(self, item_width)
+      LibGtk.gtk_icon_view_set_item_width(@pointer, item_width)
 
       # Return value handling
     end
@@ -1357,7 +1355,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_margin(self, margin)
+      LibGtk.gtk_icon_view_set_margin(@pointer, margin)
 
       # Return value handling
     end
@@ -1371,7 +1369,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_markup_column(self, column)
+      LibGtk.gtk_icon_view_set_markup_column(@pointer, column)
 
       # Return value handling
     end
@@ -1393,7 +1391,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_icon_view_set_model(self, model)
+      LibGtk.gtk_icon_view_set_model(@pointer, model)
 
       # Return value handling
     end
@@ -1405,7 +1403,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_pixbuf_column(self, column)
+      LibGtk.gtk_icon_view_set_pixbuf_column(@pointer, column)
 
       # Return value handling
     end
@@ -1427,7 +1425,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_reorderable(self, reorderable)
+      LibGtk.gtk_icon_view_set_reorderable(@pointer, reorderable)
 
       # Return value handling
     end
@@ -1439,7 +1437,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_row_spacing(self, row_spacing)
+      LibGtk.gtk_icon_view_set_row_spacing(@pointer, row_spacing)
 
       # Return value handling
     end
@@ -1450,7 +1448,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_selection_mode(self, mode)
+      LibGtk.gtk_icon_view_set_selection_mode(@pointer, mode)
 
       # Return value handling
     end
@@ -1463,7 +1461,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_spacing(self, spacing)
+      LibGtk.gtk_icon_view_set_spacing(@pointer, spacing)
 
       # Return value handling
     end
@@ -1475,7 +1473,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_text_column(self, column)
+      LibGtk.gtk_icon_view_set_text_column(@pointer, column)
 
       # Return value handling
     end
@@ -1497,7 +1495,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_icon_view_set_tooltip_cell(self, tooltip, path, cell)
+      LibGtk.gtk_icon_view_set_tooltip_cell(@pointer, tooltip, path, cell)
 
       # Return value handling
     end
@@ -1517,7 +1515,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_tooltip_column(self, column)
+      LibGtk.gtk_icon_view_set_tooltip_column(@pointer, column)
 
       # Return value handling
     end
@@ -1530,7 +1528,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_set_tooltip_item(self, tooltip, path)
+      LibGtk.gtk_icon_view_set_tooltip_item(@pointer, tooltip, path)
 
       # Return value handling
     end
@@ -1541,7 +1539,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_unselect_all(self)
+      LibGtk.gtk_icon_view_unselect_all(@pointer)
 
       # Return value handling
     end
@@ -1552,7 +1550,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_unselect_path(self, path)
+      LibGtk.gtk_icon_view_unselect_path(@pointer, path)
 
       # Return value handling
     end
@@ -1564,7 +1562,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_unset_model_drag_dest(self)
+      LibGtk.gtk_icon_view_unset_model_drag_dest(@pointer)
 
       # Return value handling
     end
@@ -1576,7 +1574,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_icon_view_unset_model_drag_source(self)
+      LibGtk.gtk_icon_view_unset_model_drag_source(@pointer)
 
       # Return value handling
     end
@@ -1699,7 +1697,7 @@ module Gtk
       def connect(handler : Proc(Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreePath, Nil)).unbox(_lib_box).call(path)
         }.pointer
@@ -1711,7 +1709,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreePath, Nil)).unbox(_lib_box).call(path)
         }.pointer
@@ -1724,7 +1722,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::IconView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::IconView, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, path)
         }.pointer
@@ -1737,7 +1735,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::IconView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::IconView, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, path)
         }.pointer
@@ -1796,8 +1794,8 @@ module Gtk
       def connect(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           modify = lib_modify
@@ -1811,8 +1809,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           modify = lib_modify
@@ -1827,8 +1825,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::IconView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           modify = lib_modify
@@ -1843,8 +1841,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_count : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::IconView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           count = lib_count
           _extend = lib_extend
           modify = lib_modify
@@ -1855,7 +1853,7 @@ module Gtk
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(step : Gtk::MovementStep, count : Int32, _extend : Bool, modify : Bool) : Nil
+      def emit(step : Gtk::MovementStep, count : Int32, extend _extend : Bool, modify : Bool) : Nil
         LibGObject.g_signal_emit_by_name(@source, "move-cursor", step, count, _extend, modify)
       end
     end

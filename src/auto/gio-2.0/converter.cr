@@ -25,7 +25,7 @@ module Gio
       outbuf = outbuf.to_a.to_unsafe
 
       # C call
-      _retval = LibGio.g_converter_convert(self, inbuf, inbuf_size, outbuf, outbuf_size, flags, bytes_read, bytes_written, pointerof(_error))
+      _retval = LibGio.g_converter_convert(@pointer, inbuf, inbuf_size, outbuf, outbuf_size, flags, bytes_read, bytes_written, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -40,7 +40,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_converter_reset(self)
+      LibGio.g_converter_reset(@pointer)
 
       # Return value handling
     end
@@ -50,8 +50,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Converter__Impl < GObject::Object
+  class AbstractConverter < GObject::Object
     include Converter
+
+    GICrystal.define_new_method(Gio::AbstractConverter, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

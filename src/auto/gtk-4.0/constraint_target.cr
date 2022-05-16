@@ -9,8 +9,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class ConstraintTarget__Impl < GObject::Object
+  class AbstractConstraintTarget < GObject::Object
     include ConstraintTarget
+
+    GICrystal.define_new_method(Gtk::AbstractConstraintTarget, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

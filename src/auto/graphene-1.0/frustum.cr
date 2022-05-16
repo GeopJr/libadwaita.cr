@@ -61,7 +61,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_frustum_contains_point(self, point)
+      _retval = LibGraphene.graphene_frustum_contains_point(@pointer, point)
 
       # Return value handling
 
@@ -73,7 +73,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_frustum_equal(self, b)
+      _retval = LibGraphene.graphene_frustum_equal(@pointer, b)
 
       # Return value handling
 
@@ -85,7 +85,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_frustum_free(self)
+      LibGraphene.graphene_frustum_free(@pointer)
 
       # Return value handling
     end
@@ -101,7 +101,7 @@ module Graphene
       planes = planes.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGraphene.graphene_frustum_get_planes(self, planes)
+      LibGraphene.graphene_frustum_get_planes(@pointer, planes)
 
       # Return value handling
     end
@@ -115,7 +115,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_frustum_init(self, p0, p1, p2, p3, p4, p5)
+      _retval = LibGraphene.graphene_frustum_init(@pointer, p0, p1, p2, p3, p4, p5)
 
       # Return value handling
 
@@ -127,7 +127,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_frustum_init_from_frustum(self, src)
+      _retval = LibGraphene.graphene_frustum_init_from_frustum(@pointer, src)
 
       # Return value handling
 
@@ -139,7 +139,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_frustum_init_from_matrix(self, matrix)
+      _retval = LibGraphene.graphene_frustum_init_from_matrix(@pointer, matrix)
 
       # Return value handling
 
@@ -151,7 +151,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_frustum_intersects_box(self, box)
+      _retval = LibGraphene.graphene_frustum_intersects_box(@pointer, box)
 
       # Return value handling
 
@@ -163,7 +163,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_frustum_intersects_sphere(self, sphere)
+      _retval = LibGraphene.graphene_frustum_intersects_sphere(@pointer, sphere)
 
       # Return value handling
 

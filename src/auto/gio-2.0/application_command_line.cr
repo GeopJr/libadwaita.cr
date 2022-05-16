@@ -172,15 +172,13 @@ module Gio
         sizeof(LibGio::ApplicationCommandLine), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ApplicationCommandLine, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ApplicationCommandLine`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -268,11 +266,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_application_command_line_create_file_for_arg(self, arg)
+      _retval = LibGio.g_application_command_line_create_file_for_arg(@pointer, arg)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the list of arguments that was passed on the command line.
@@ -294,7 +292,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       argc = 0
       # C call
-      _retval = LibGio.g_application_command_line_get_arguments(self, pointerof(argc))
+      _retval = LibGio.g_application_command_line_get_arguments(@pointer, pointerof(argc))
 
       # Return value handling
 
@@ -314,7 +312,7 @@ module Gio
       # Returns: (transfer none Filename)
 
       # C call
-      _retval = LibGio.g_application_command_line_get_cwd(self)
+      _retval = LibGio.g_application_command_line_get_cwd(@pointer)
 
       # Return value handling
 
@@ -341,7 +339,7 @@ module Gio
       # Returns: (transfer none) (array zero-terminated=1 element-type Filename)
 
       # C call
-      _retval = LibGio.g_application_command_line_get_environ(self)
+      _retval = LibGio.g_application_command_line_get_environ(@pointer)
 
       # Return value handling
 
@@ -355,7 +353,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_command_line_get_exit_status(self)
+      _retval = LibGio.g_application_command_line_get_exit_status(@pointer)
 
       # Return value handling
 
@@ -368,7 +366,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_command_line_get_is_remote(self)
+      _retval = LibGio.g_application_command_line_get_is_remote(@pointer)
 
       # Return value handling
 
@@ -389,7 +387,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_command_line_get_options_dict(self)
+      _retval = LibGio.g_application_command_line_get_options_dict(@pointer)
 
       # Return value handling
 
@@ -409,7 +407,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_application_command_line_get_platform_data(self)
+      _retval = LibGio.g_application_command_line_get_platform_data(@pointer)
 
       # Return value handling
 
@@ -431,7 +429,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_application_command_line_get_stdin(self)
+      _retval = LibGio.g_application_command_line_get_stdin(@pointer)
 
       # Return value handling
 
@@ -454,7 +452,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_application_command_line_getenv(self, name)
+      _retval = LibGio.g_application_command_line_getenv(@pointer, name)
 
       # Return value handling
 
@@ -487,7 +485,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_application_command_line_set_exit_status(self, exit_status)
+      LibGio.g_application_command_line_set_exit_status(@pointer, exit_status)
 
       # Return value handling
     end

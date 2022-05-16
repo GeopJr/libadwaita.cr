@@ -46,7 +46,7 @@ module PangoCairo
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPangoCairo.pango_cairo_font_map_get_font_type(self)
+      _retval = LibPangoCairo.pango_cairo_font_map_get_font_type(@pointer)
 
       # Return value handling
 
@@ -58,7 +58,7 @@ module PangoCairo
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPangoCairo.pango_cairo_font_map_get_resolution(self)
+      _retval = LibPangoCairo.pango_cairo_font_map_get_resolution(@pointer)
 
       # Return value handling
 
@@ -70,7 +70,7 @@ module PangoCairo
       # Returns: (transfer none)
 
       # C call
-      LibPangoCairo.pango_cairo_font_map_set_default(self)
+      LibPangoCairo.pango_cairo_font_map_set_default(@pointer)
 
       # Return value handling
     end
@@ -80,7 +80,7 @@ module PangoCairo
       # Returns: (transfer none)
 
       # C call
-      LibPangoCairo.pango_cairo_font_map_set_resolution(self, dpi)
+      LibPangoCairo.pango_cairo_font_map_set_resolution(@pointer, dpi)
 
       # Return value handling
     end
@@ -90,8 +90,14 @@ module PangoCairo
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class FontMap__Impl < GObject::Object
+  class AbstractFontMap < GObject::Object
     include FontMap
+
+    GICrystal.define_new_method(PangoCairo::AbstractFontMap, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

@@ -37,15 +37,13 @@ module Gtk
         sizeof(LibGtk::DirectoryList), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DirectoryList, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DirectoryList`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -138,7 +136,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
-      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractFile.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def io_priority=(value : Int32) : Int32
@@ -217,7 +215,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_directory_list_get_attributes(self)
+      _retval = LibGtk.gtk_directory_list_get_attributes(@pointer)
 
       # Return value handling
 
@@ -237,7 +235,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_directory_list_get_error(self)
+      _retval = LibGtk.gtk_directory_list_get_error(@pointer)
 
       # Return value handling
 
@@ -250,11 +248,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_directory_list_get_file(self)
+      _retval = LibGtk.gtk_directory_list_get_file(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the IO priority set via gtk_directory_list_set_io_priority().
@@ -263,7 +261,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_directory_list_get_io_priority(self)
+      _retval = LibGtk.gtk_directory_list_get_io_priority(@pointer)
 
       # Return value handling
 
@@ -277,7 +275,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_directory_list_get_monitored(self)
+      _retval = LibGtk.gtk_directory_list_get_monitored(@pointer)
 
       # Return value handling
 
@@ -295,7 +293,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_directory_list_is_loading(self)
+      _retval = LibGtk.gtk_directory_list_is_loading(@pointer)
 
       # Return value handling
 
@@ -319,7 +317,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_directory_list_set_attributes(self, attributes)
+      LibGtk.gtk_directory_list_set_attributes(@pointer, attributes)
 
       # Return value handling
     end
@@ -340,7 +338,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_directory_list_set_file(self, file)
+      LibGtk.gtk_directory_list_set_file(@pointer, file)
 
       # Return value handling
     end
@@ -359,7 +357,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_directory_list_set_io_priority(self, io_priority)
+      LibGtk.gtk_directory_list_set_io_priority(@pointer, io_priority)
 
       # Return value handling
     end
@@ -380,7 +378,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_directory_list_set_monitored(self, monitored)
+      LibGtk.gtk_directory_list_set_monitored(@pointer, monitored)
 
       # Return value handling
     end

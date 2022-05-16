@@ -80,15 +80,13 @@ module Gtk
         sizeof(LibGtk::AboutDialog), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(AboutDialog, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `AboutDialog`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -609,7 +607,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "logo", pointerof(value), Pointer(Void).null)
-      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gdk::AbstractPaintable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def logo_icon_name=(value : ::String) : ::String
@@ -757,7 +755,7 @@ module Gtk
       people = people.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_about_dialog_add_credit_section(self, section_name, people)
+      LibGtk.gtk_about_dialog_add_credit_section(@pointer, section_name, people)
 
       # Return value handling
     end
@@ -769,7 +767,7 @@ module Gtk
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_artists(self)
+      _retval = LibGtk.gtk_about_dialog_get_artists(@pointer)
 
       # Return value handling
 
@@ -783,7 +781,7 @@ module Gtk
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_authors(self)
+      _retval = LibGtk.gtk_about_dialog_get_authors(@pointer)
 
       # Return value handling
 
@@ -796,7 +794,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_comments(self)
+      _retval = LibGtk.gtk_about_dialog_get_comments(@pointer)
 
       # Return value handling
 
@@ -809,7 +807,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_copyright(self)
+      _retval = LibGtk.gtk_about_dialog_get_copyright(@pointer)
 
       # Return value handling
 
@@ -823,7 +821,7 @@ module Gtk
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_documenters(self)
+      _retval = LibGtk.gtk_about_dialog_get_documenters(@pointer)
 
       # Return value handling
 
@@ -836,7 +834,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_license(self)
+      _retval = LibGtk.gtk_about_dialog_get_license(@pointer)
 
       # Return value handling
 
@@ -849,7 +847,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_license_type(self)
+      _retval = LibGtk.gtk_about_dialog_get_license_type(@pointer)
 
       # Return value handling
 
@@ -862,11 +860,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_logo(self)
+      _retval = LibGtk.gtk_about_dialog_get_logo(@pointer)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns the icon name displayed as logo in the about dialog.
@@ -875,7 +873,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_logo_icon_name(self)
+      _retval = LibGtk.gtk_about_dialog_get_logo_icon_name(@pointer)
 
       # Return value handling
 
@@ -888,7 +886,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_program_name(self)
+      _retval = LibGtk.gtk_about_dialog_get_program_name(@pointer)
 
       # Return value handling
 
@@ -901,7 +899,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_system_information(self)
+      _retval = LibGtk.gtk_about_dialog_get_system_information(@pointer)
 
       # Return value handling
 
@@ -915,7 +913,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_translator_credits(self)
+      _retval = LibGtk.gtk_about_dialog_get_translator_credits(@pointer)
 
       # Return value handling
 
@@ -928,7 +926,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_version(self)
+      _retval = LibGtk.gtk_about_dialog_get_version(@pointer)
 
       # Return value handling
 
@@ -941,7 +939,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_website(self)
+      _retval = LibGtk.gtk_about_dialog_get_website(@pointer)
 
       # Return value handling
 
@@ -954,7 +952,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_website_label(self)
+      _retval = LibGtk.gtk_about_dialog_get_website_label(@pointer)
 
       # Return value handling
 
@@ -968,7 +966,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_about_dialog_get_wrap_license(self)
+      _retval = LibGtk.gtk_about_dialog_get_wrap_license(@pointer)
 
       # Return value handling
 
@@ -986,7 +984,7 @@ module Gtk
       artists = artists.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_about_dialog_set_artists(self, artists)
+      LibGtk.gtk_about_dialog_set_artists(@pointer, artists)
 
       # Return value handling
     end
@@ -1002,7 +1000,7 @@ module Gtk
       authors = authors.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_about_dialog_set_authors(self, authors)
+      LibGtk.gtk_about_dialog_set_authors(@pointer, authors)
 
       # Return value handling
     end
@@ -1023,7 +1021,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_about_dialog_set_comments(self, comments)
+      LibGtk.gtk_about_dialog_set_comments(@pointer, comments)
 
       # Return value handling
     end
@@ -1044,7 +1042,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_about_dialog_set_copyright(self, copyright)
+      LibGtk.gtk_about_dialog_set_copyright(@pointer, copyright)
 
       # Return value handling
     end
@@ -1060,7 +1058,7 @@ module Gtk
       documenters = documenters.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_about_dialog_set_documenters(self, documenters)
+      LibGtk.gtk_about_dialog_set_documenters(@pointer, documenters)
 
       # Return value handling
     end
@@ -1082,7 +1080,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_about_dialog_set_license(self, license)
+      LibGtk.gtk_about_dialog_set_license(@pointer, license)
 
       # Return value handling
     end
@@ -1097,7 +1095,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_about_dialog_set_license_type(self, license_type)
+      LibGtk.gtk_about_dialog_set_license_type(@pointer, license_type)
 
       # Return value handling
     end
@@ -1116,7 +1114,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_about_dialog_set_logo(self, logo)
+      LibGtk.gtk_about_dialog_set_logo(@pointer, logo)
 
       # Return value handling
     end
@@ -1135,7 +1133,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_about_dialog_set_logo_icon_name(self, icon_name)
+      LibGtk.gtk_about_dialog_set_logo_icon_name(@pointer, icon_name)
 
       # Return value handling
     end
@@ -1157,7 +1155,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_about_dialog_set_program_name(self, name)
+      LibGtk.gtk_about_dialog_set_program_name(@pointer, name)
 
       # Return value handling
     end
@@ -1182,7 +1180,7 @@ module Gtk
                            end
 
       # C call
-      LibGtk.gtk_about_dialog_set_system_information(self, system_information)
+      LibGtk.gtk_about_dialog_set_system_information(@pointer, system_information)
 
       # Return value handling
     end
@@ -1221,7 +1219,7 @@ module Gtk
                            end
 
       # C call
-      LibGtk.gtk_about_dialog_set_translator_credits(self, translator_credits)
+      LibGtk.gtk_about_dialog_set_translator_credits(@pointer, translator_credits)
 
       # Return value handling
     end
@@ -1240,7 +1238,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_about_dialog_set_version(self, version)
+      LibGtk.gtk_about_dialog_set_version(@pointer, version)
 
       # Return value handling
     end
@@ -1259,7 +1257,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_about_dialog_set_website(self, website)
+      LibGtk.gtk_about_dialog_set_website(@pointer, website)
 
       # Return value handling
     end
@@ -1270,7 +1268,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_about_dialog_set_website_label(self, website_label)
+      LibGtk.gtk_about_dialog_set_website_label(@pointer, website_label)
 
       # Return value handling
     end
@@ -1282,7 +1280,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_about_dialog_set_wrap_license(self, wrap_license)
+      LibGtk.gtk_about_dialog_set_wrap_license(@pointer, wrap_license)
 
       # Return value handling
     end
@@ -1318,7 +1316,8 @@ module Gtk
       def connect(handler : Proc(::String, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_uri : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          uri = lib_uri
+          # Generator::BuiltInTypeArgPlan
+          uri = ::String.new(lib_uri)
           ::Box(Proc(::String, Bool)).unbox(_lib_box).call(uri)
         }.pointer
 
@@ -1329,7 +1328,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_uri : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          uri = lib_uri
+          # Generator::BuiltInTypeArgPlan
+          uri = ::String.new(lib_uri)
           ::Box(Proc(::String, Bool)).unbox(_lib_box).call(uri)
         }.pointer
 
@@ -1341,7 +1341,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_uri : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::AboutDialog.new(_lib_sender, GICrystal::Transfer::None)
-          uri = lib_uri
+          # Generator::BuiltInTypeArgPlan
+          uri = ::String.new(lib_uri)
           ::Box(Proc(Gtk::AboutDialog, ::String, Bool)).unbox(_lib_box).call(_sender, uri)
         }.pointer
 
@@ -1353,7 +1354,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_uri : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::AboutDialog.new(_lib_sender, GICrystal::Transfer::None)
-          uri = lib_uri
+          # Generator::BuiltInTypeArgPlan
+          uri = ::String.new(lib_uri)
           ::Box(Proc(Gtk::AboutDialog, ::String, Bool)).unbox(_lib_box).call(_sender, uri)
         }.pointer
 

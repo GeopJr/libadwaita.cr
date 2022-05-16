@@ -94,13 +94,12 @@ module PangoCairo
     if func
       _box = ::Box.box(func)
       func = ->(lib_cr : Pointer(Void), lib_attr : Pointer(Void), lib_do_path : LibC::Int, lib_data : Pointer(Void)) {
-        # Generator::GObjectArgPlan
+        # Generator::BuiltInTypeArgPlan
         cr = Cairo::Context.new(lib_cr, :none)
-        # Generator::GObjectArgPlan
+        # Generator::BuiltInTypeArgPlan
         attr = Pango::AttrShape.new(lib_attr, :none)
         do_path = lib_do_path
-        data = lib_data
-        ::Box(Proc(Cairo::Context, Pango::AttrShape, Bool, Nil)).unbox(data).call(cr, attr, do_path)
+        ::Box(Proc(Cairo::Context, Pango::AttrShape, Bool, Nil)).unbox(lib_data).call(cr, attr, do_path)
       }.pointer
       data = GICrystal::ClosureDataManager.register(_box)
       dnotify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer

@@ -89,15 +89,13 @@ module Gtk
         sizeof(LibGtk::ColumnView), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ColumnView, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ColumnView`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -366,7 +364,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "columns", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def enable_rubberband=(value : Bool) : Bool
@@ -396,7 +394,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractSelectionModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def reorderable=(value : Bool) : Bool
@@ -499,7 +497,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_column_view_append_column(self, column)
+      LibGtk.gtk_column_view_append_column(@pointer, column)
 
       # Return value handling
     end
@@ -514,11 +512,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_column_view_get_columns(self)
+      _retval = LibGtk.gtk_column_view_get_columns(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::None)
     end
 
     # Returns whether rows can be selected by dragging with the mouse.
@@ -527,7 +525,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_column_view_get_enable_rubberband(self)
+      _retval = LibGtk.gtk_column_view_get_enable_rubberband(@pointer)
 
       # Return value handling
 
@@ -540,11 +538,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_column_view_get_model(self)
+      _retval = LibGtk.gtk_column_view_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractSelectionModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns whether columns are reorderable.
@@ -553,7 +551,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_column_view_get_reorderable(self)
+      _retval = LibGtk.gtk_column_view_get_reorderable(@pointer)
 
       # Return value handling
 
@@ -567,7 +565,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_column_view_get_show_column_separators(self)
+      _retval = LibGtk.gtk_column_view_get_show_column_separators(@pointer)
 
       # Return value handling
 
@@ -581,7 +579,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_column_view_get_show_row_separators(self)
+      _retval = LibGtk.gtk_column_view_get_show_row_separators(@pointer)
 
       # Return value handling
 
@@ -595,7 +593,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_column_view_get_single_click_activate(self)
+      _retval = LibGtk.gtk_column_view_get_single_click_activate(@pointer)
 
       # Return value handling
 
@@ -629,7 +627,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_column_view_get_sorter(self)
+      _retval = LibGtk.gtk_column_view_get_sorter(@pointer)
 
       # Return value handling
 
@@ -644,7 +642,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_column_view_insert_column(self, position, column)
+      LibGtk.gtk_column_view_insert_column(@pointer, position, column)
 
       # Return value handling
     end
@@ -655,7 +653,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_column_view_remove_column(self, column)
+      LibGtk.gtk_column_view_remove_column(@pointer, column)
 
       # Return value handling
     end
@@ -666,7 +664,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_column_view_set_enable_rubberband(self, enable_rubberband)
+      LibGtk.gtk_column_view_set_enable_rubberband(@pointer, enable_rubberband)
 
       # Return value handling
     end
@@ -687,7 +685,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_column_view_set_model(self, model)
+      LibGtk.gtk_column_view_set_model(@pointer, model)
 
       # Return value handling
     end
@@ -698,7 +696,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_column_view_set_reorderable(self, reorderable)
+      LibGtk.gtk_column_view_set_reorderable(@pointer, reorderable)
 
       # Return value handling
     end
@@ -710,7 +708,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_column_view_set_show_column_separators(self, show_column_separators)
+      LibGtk.gtk_column_view_set_show_column_separators(@pointer, show_column_separators)
 
       # Return value handling
     end
@@ -722,7 +720,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_column_view_set_show_row_separators(self, show_row_separators)
+      LibGtk.gtk_column_view_set_show_row_separators(@pointer, show_row_separators)
 
       # Return value handling
     end
@@ -734,7 +732,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_column_view_set_single_click_activate(self, single_click_activate)
+      LibGtk.gtk_column_view_set_single_click_activate(@pointer, single_click_activate)
 
       # Return value handling
     end
@@ -764,7 +762,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_column_view_sort_by_column(self, column, direction)
+      LibGtk.gtk_column_view_sort_by_column(@pointer, column, direction)
 
       # Return value handling
     end

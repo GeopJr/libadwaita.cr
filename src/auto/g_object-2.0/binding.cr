@@ -90,15 +90,13 @@ module GObject
         sizeof(LibGObject::Binding), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Binding, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Binding`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -236,7 +234,7 @@ module GObject
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGObject.g_binding_dup_source(self)
+      _retval = LibGObject.g_binding_dup_source(@pointer)
 
       # Return value handling
 
@@ -253,7 +251,7 @@ module GObject
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGObject.g_binding_dup_target(self)
+      _retval = LibGObject.g_binding_dup_target(@pointer)
 
       # Return value handling
 
@@ -266,7 +264,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_binding_get_flags(self)
+      _retval = LibGObject.g_binding_get_flags(@pointer)
 
       # Return value handling
 
@@ -287,7 +285,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_binding_get_source(self)
+      _retval = LibGObject.g_binding_get_source(@pointer)
 
       # Return value handling
 
@@ -301,7 +299,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_binding_get_source_property(self)
+      _retval = LibGObject.g_binding_get_source_property(@pointer)
 
       # Return value handling
 
@@ -322,7 +320,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_binding_get_target(self)
+      _retval = LibGObject.g_binding_get_target(@pointer)
 
       # Return value handling
 
@@ -336,7 +334,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_binding_get_target_property(self)
+      _retval = LibGObject.g_binding_get_target_property(@pointer)
 
       # Return value handling
 
@@ -359,7 +357,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      LibGObject.g_binding_unbind(self)
+      LibGObject.g_binding_unbind(@pointer)
 
       # Return value handling
     end

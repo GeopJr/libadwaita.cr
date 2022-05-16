@@ -54,15 +54,13 @@ module Gtk
         sizeof(LibGtk::TreeStore), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TreeStore, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TreeStore`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -129,7 +127,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_tree_store_append(self, iter, parent)
+      LibGtk.gtk_tree_store_append(@pointer, iter, parent)
 
       # Return value handling
 
@@ -142,7 +140,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_store_clear(self)
+      LibGtk.gtk_tree_store_clear(@pointer)
 
       # Return value handling
     end
@@ -169,7 +167,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_tree_store_insert(self, iter, parent, position)
+      LibGtk.gtk_tree_store_insert(@pointer, iter, parent, position)
 
       # Return value handling
 
@@ -207,7 +205,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_tree_store_insert_after(self, iter, parent, sibling)
+      LibGtk.gtk_tree_store_insert_after(@pointer, iter, parent, sibling)
 
       # Return value handling
 
@@ -245,7 +243,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_tree_store_insert_before(self, iter, parent, sibling)
+      LibGtk.gtk_tree_store_insert_before(@pointer, iter, parent, sibling)
 
       # Return value handling
 
@@ -294,7 +292,7 @@ module Gtk
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
-      LibGtk.gtk_tree_store_insert_with_valuesv(self, iter, parent, position, columns, values, n_values)
+      LibGtk.gtk_tree_store_insert_with_valuesv(@pointer, iter, parent, position, columns, values, n_values)
 
       # Return value handling
 
@@ -308,7 +306,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_store_is_ancestor(self, iter, descendant)
+      _retval = LibGtk.gtk_tree_store_is_ancestor(@pointer, iter, descendant)
 
       # Return value handling
 
@@ -322,7 +320,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_store_iter_depth(self, iter)
+      _retval = LibGtk.gtk_tree_store_iter_depth(@pointer, iter)
 
       # Return value handling
 
@@ -338,7 +336,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_store_iter_is_valid(self, iter)
+      _retval = LibGtk.gtk_tree_store_iter_is_valid(@pointer, iter)
 
       # Return value handling
 
@@ -362,7 +360,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_tree_store_move_after(self, iter, position)
+      LibGtk.gtk_tree_store_move_after(@pointer, iter, position)
 
       # Return value handling
     end
@@ -384,7 +382,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_tree_store_move_before(self, iter, position)
+      LibGtk.gtk_tree_store_move_before(@pointer, iter, position)
 
       # Return value handling
     end
@@ -409,7 +407,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_tree_store_prepend(self, iter, parent)
+      LibGtk.gtk_tree_store_prepend(@pointer, iter, parent)
 
       # Return value handling
 
@@ -424,7 +422,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_store_remove(self, iter)
+      _retval = LibGtk.gtk_tree_store_remove(@pointer, iter)
 
       # Return value handling
 
@@ -445,7 +443,7 @@ module Gtk
       types = types.to_a.to_unsafe
 
       # C call
-      LibGtk.gtk_tree_store_set_column_types(self, n_columns, types)
+      LibGtk.gtk_tree_store_set_column_types(@pointer, n_columns, types)
 
       # Return value handling
     end
@@ -465,7 +463,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_tree_store_set_value(self, iter, column, value)
+      LibGtk.gtk_tree_store_set_value(@pointer, iter, column, value)
 
       # Return value handling
     end
@@ -493,7 +491,7 @@ module Gtk
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
-      LibGtk.gtk_tree_store_set_valuesv(self, iter, columns, values, n_values)
+      LibGtk.gtk_tree_store_set_valuesv(@pointer, iter, columns, values, n_values)
 
       # Return value handling
     end
@@ -505,7 +503,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_store_swap(self, a, b)
+      LibGtk.gtk_tree_store_swap(@pointer, a, b)
 
       # Return value handling
     end

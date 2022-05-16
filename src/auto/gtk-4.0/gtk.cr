@@ -3344,7 +3344,7 @@ module Gtk
 
     # Return value handling
 
-    Gtk::Native__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+    Gtk::AbstractNative.new(_retval, GICrystal::Transfer::None) unless _retval.null?
   end
 
   def self.ordering_from_cmpfunc(cmpfunc_result : Int32) : Gtk::Ordering
@@ -4288,4 +4288,5 @@ require "../../../lib/gtk4/src/bindings/gtk/message_dialog.cr"
 require "../../../lib/gtk4/src/bindings/gtk/stack.cr"
 require "../../../lib/gtk4/src/bindings/gtk/tree_store.cr"
 require "../../../lib/gtk4/src/bindings/gtk/tree_view.cr"
+require "../../../lib/gtk4/src/bindings/gtk/widget.cr"
 require "../../../lib/gtk4/src/bindings/gtk/widget_template.cr"

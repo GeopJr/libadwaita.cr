@@ -64,15 +64,13 @@ module Gdk
         sizeof(LibGdk::GLContext), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(GLContext, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `GLContext`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -196,7 +194,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_get_allowed_apis(self)
+      _retval = LibGdk.gdk_gl_context_get_allowed_apis(@pointer)
 
       # Return value handling
 
@@ -211,7 +209,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_get_api(self)
+      _retval = LibGdk.gdk_gl_context_get_api(@pointer)
 
       # Return value handling
 
@@ -226,7 +224,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_get_debug_enabled(self)
+      _retval = LibGdk.gdk_gl_context_get_debug_enabled(@pointer)
 
       # Return value handling
 
@@ -239,7 +237,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_get_display(self)
+      _retval = LibGdk.gdk_gl_context_get_display(@pointer)
 
       # Return value handling
 
@@ -254,7 +252,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_get_forward_compatible(self)
+      _retval = LibGdk.gdk_gl_context_get_forward_compatible(@pointer)
 
       # Return value handling
 
@@ -284,7 +282,7 @@ module Gdk
               end
 
       # C call
-      LibGdk.gdk_gl_context_get_required_version(self, major, minor)
+      LibGdk.gdk_gl_context_get_required_version(@pointer, major, minor)
 
       # Return value handling
     end
@@ -298,7 +296,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_get_shared_context(self)
+      _retval = LibGdk.gdk_gl_context_get_shared_context(@pointer)
 
       # Return value handling
 
@@ -311,7 +309,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_get_surface(self)
+      _retval = LibGdk.gdk_gl_context_get_surface(@pointer)
 
       # Return value handling
 
@@ -324,7 +322,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_get_use_es(self)
+      _retval = LibGdk.gdk_gl_context_get_use_es(@pointer)
 
       # Return value handling
 
@@ -341,7 +339,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_gl_context_get_version(self, major, minor)
+      LibGdk.gdk_gl_context_get_version(@pointer, major, minor)
 
       # Return value handling
     end
@@ -367,7 +365,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_is_legacy(self)
+      _retval = LibGdk.gdk_gl_context_is_legacy(@pointer)
 
       # Return value handling
 
@@ -391,7 +389,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_gl_context_is_shared(self, other)
+      _retval = LibGdk.gdk_gl_context_is_shared(@pointer, other)
 
       # Return value handling
 
@@ -404,7 +402,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_gl_context_make_current(self)
+      LibGdk.gdk_gl_context_make_current(@pointer)
 
       # Return value handling
     end
@@ -419,7 +417,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_gl_context_realize(self, pointerof(_error))
+      _retval = LibGdk.gdk_gl_context_realize(@pointer, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -441,7 +439,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_gl_context_set_allowed_apis(self, apis)
+      LibGdk.gdk_gl_context_set_allowed_apis(@pointer, apis)
 
       # Return value handling
     end
@@ -458,7 +456,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_gl_context_set_debug_enabled(self, enabled)
+      LibGdk.gdk_gl_context_set_debug_enabled(@pointer, enabled)
 
       # Return value handling
     end
@@ -477,7 +475,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_gl_context_set_forward_compatible(self, compatible)
+      LibGdk.gdk_gl_context_set_forward_compatible(@pointer, compatible)
 
       # Return value handling
     end
@@ -493,7 +491,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_gl_context_set_required_version(self, major, minor)
+      LibGdk.gdk_gl_context_set_required_version(@pointer, major, minor)
 
       # Return value handling
     end
@@ -516,7 +514,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_gl_context_set_use_es(self, use_es)
+      LibGdk.gdk_gl_context_set_use_es(@pointer, use_es)
 
       # Return value handling
     end

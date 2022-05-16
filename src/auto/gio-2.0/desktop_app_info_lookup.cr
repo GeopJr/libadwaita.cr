@@ -7,11 +7,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_desktop_app_info_lookup_get_default_for_uri_scheme(self, uri_scheme)
+      _retval = LibGio.g_desktop_app_info_lookup_get_default_for_uri_scheme(@pointer, uri_scheme)
 
       # Return value handling
 
-      Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     abstract def to_unsafe
@@ -19,8 +19,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class DesktopAppInfoLookup__Impl < GObject::Object
+  class AbstractDesktopAppInfoLookup < GObject::Object
     include DesktopAppInfoLookup
+
+    GICrystal.define_new_method(Gio::AbstractDesktopAppInfoLookup, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

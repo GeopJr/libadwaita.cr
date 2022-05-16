@@ -10,7 +10,7 @@ module Gio
 
       # Return value handling
 
-      Gio::TlsBackend__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractTlsBackend.new(_retval, GICrystal::Transfer::None)
     end
 
     def certificate_type : UInt64
@@ -18,7 +18,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_backend_get_certificate_type(self)
+      _retval = LibGio.g_tls_backend_get_certificate_type(@pointer)
 
       # Return value handling
 
@@ -30,7 +30,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_backend_get_client_connection_type(self)
+      _retval = LibGio.g_tls_backend_get_client_connection_type(@pointer)
 
       # Return value handling
 
@@ -42,7 +42,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_tls_backend_get_default_database(self)
+      _retval = LibGio.g_tls_backend_get_default_database(@pointer)
 
       # Return value handling
 
@@ -54,7 +54,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_backend_get_dtls_client_connection_type(self)
+      _retval = LibGio.g_tls_backend_get_dtls_client_connection_type(@pointer)
 
       # Return value handling
 
@@ -66,7 +66,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_backend_get_dtls_server_connection_type(self)
+      _retval = LibGio.g_tls_backend_get_dtls_server_connection_type(@pointer)
 
       # Return value handling
 
@@ -78,7 +78,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_backend_get_file_database_type(self)
+      _retval = LibGio.g_tls_backend_get_file_database_type(@pointer)
 
       # Return value handling
 
@@ -90,7 +90,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_backend_get_server_connection_type(self)
+      _retval = LibGio.g_tls_backend_get_server_connection_type(@pointer)
 
       # Return value handling
 
@@ -110,7 +110,7 @@ module Gio
                  end
 
       # C call
-      LibGio.g_tls_backend_set_default_database(self, database)
+      LibGio.g_tls_backend_set_default_database(@pointer, database)
 
       # Return value handling
     end
@@ -120,7 +120,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_backend_supports_dtls(self)
+      _retval = LibGio.g_tls_backend_supports_dtls(@pointer)
 
       # Return value handling
 
@@ -132,7 +132,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_tls_backend_supports_tls(self)
+      _retval = LibGio.g_tls_backend_supports_tls(@pointer)
 
       # Return value handling
 
@@ -144,8 +144,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class TlsBackend__Impl < GObject::Object
+  class AbstractTlsBackend < GObject::Object
     include TlsBackend
+
+    GICrystal.define_new_method(Gio::AbstractTlsBackend, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

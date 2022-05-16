@@ -108,15 +108,13 @@ module Adw
         sizeof(LibAdw::HeaderBar), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(HeaderBar, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `HeaderBar`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -441,7 +439,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_header_bar_get_centering_policy(self)
+      _retval = LibAdw.adw_header_bar_get_centering_policy(@pointer)
 
       # Return value handling
 
@@ -454,7 +452,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_header_bar_get_decoration_layout(self)
+      _retval = LibAdw.adw_header_bar_get_decoration_layout(@pointer)
 
       # Return value handling
 
@@ -467,7 +465,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_header_bar_get_show_end_title_buttons(self)
+      _retval = LibAdw.adw_header_bar_get_show_end_title_buttons(@pointer)
 
       # Return value handling
 
@@ -480,7 +478,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_header_bar_get_show_start_title_buttons(self)
+      _retval = LibAdw.adw_header_bar_get_show_start_title_buttons(@pointer)
 
       # Return value handling
 
@@ -493,7 +491,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_header_bar_get_title_widget(self)
+      _retval = LibAdw.adw_header_bar_get_title_widget(@pointer)
 
       # Return value handling
 
@@ -506,7 +504,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_header_bar_pack_end(self, child)
+      LibAdw.adw_header_bar_pack_end(@pointer, child)
 
       # Return value handling
     end
@@ -517,7 +515,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_header_bar_pack_start(self, child)
+      LibAdw.adw_header_bar_pack_start(@pointer, child)
 
       # Return value handling
     end
@@ -531,7 +529,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_header_bar_remove(self, child)
+      LibAdw.adw_header_bar_remove(@pointer, child)
 
       # Return value handling
     end
@@ -542,7 +540,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_header_bar_set_centering_policy(self, centering_policy)
+      LibAdw.adw_header_bar_set_centering_policy(@pointer, centering_policy)
 
       # Return value handling
     end
@@ -561,7 +559,7 @@ module Adw
                end
 
       # C call
-      LibAdw.adw_header_bar_set_decoration_layout(self, layout)
+      LibAdw.adw_header_bar_set_decoration_layout(@pointer, layout)
 
       # Return value handling
     end
@@ -572,7 +570,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_header_bar_set_show_end_title_buttons(self, setting)
+      LibAdw.adw_header_bar_set_show_end_title_buttons(@pointer, setting)
 
       # Return value handling
     end
@@ -583,7 +581,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_header_bar_set_show_start_title_buttons(self, setting)
+      LibAdw.adw_header_bar_set_show_start_title_buttons(@pointer, setting)
 
       # Return value handling
     end
@@ -602,7 +600,7 @@ module Adw
                      end
 
       # C call
-      LibAdw.adw_header_bar_set_title_widget(self, title_widget)
+      LibAdw.adw_header_bar_set_title_widget(@pointer, title_widget)
 
       # Return value handling
     end

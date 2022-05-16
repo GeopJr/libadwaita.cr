@@ -24,7 +24,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_can_eject(self)
+      _retval = LibGio.g_mount_can_eject(@pointer)
 
       # Return value handling
 
@@ -36,7 +36,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_can_unmount(self)
+      _retval = LibGio.g_mount_can_unmount(@pointer)
 
       # Return value handling
 
@@ -64,7 +64,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_mount_eject(self, flags, cancellable, callback, user_data)
+      LibGio.g_mount_eject(@pointer, flags, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -76,7 +76,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_mount_eject_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_mount_eject_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -114,7 +114,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_mount_eject_with_operation(self, flags, mount_operation, cancellable, callback, user_data)
+      LibGio.g_mount_eject_with_operation(@pointer, flags, mount_operation, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -126,7 +126,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_mount_eject_with_operation_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_mount_eject_with_operation_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -141,11 +141,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_mount_get_default_location(self)
+      _retval = LibGio.g_mount_get_default_location(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
     end
 
     def drive : Gio::Drive?
@@ -153,11 +153,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_mount_get_drive(self)
+      _retval = LibGio.g_mount_get_drive(@pointer)
 
       # Return value handling
 
-      Gio::Drive__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractDrive.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def icon : Gio::Icon
@@ -165,11 +165,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_mount_get_icon(self)
+      _retval = LibGio.g_mount_get_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     def name : ::String
@@ -177,7 +177,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_mount_get_name(self)
+      _retval = LibGio.g_mount_get_name(@pointer)
 
       # Return value handling
 
@@ -189,11 +189,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_mount_get_root(self)
+      _retval = LibGio.g_mount_get_root(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
     end
 
     def sort_key : ::String?
@@ -201,7 +201,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_get_sort_key(self)
+      _retval = LibGio.g_mount_get_sort_key(@pointer)
 
       # Return value handling
 
@@ -213,11 +213,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_mount_get_symbolic_icon(self)
+      _retval = LibGio.g_mount_get_symbolic_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     def uuid : ::String?
@@ -225,7 +225,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_mount_get_uuid(self)
+      _retval = LibGio.g_mount_get_uuid(@pointer)
 
       # Return value handling
 
@@ -237,11 +237,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_mount_get_volume(self)
+      _retval = LibGio.g_mount_get_volume(@pointer)
 
       # Return value handling
 
-      Gio::Volume__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractVolume.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def guess_content_type(force_rescan : Bool, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?) : Nil
@@ -265,7 +265,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_mount_guess_content_type(self, force_rescan, cancellable, callback, user_data)
+      LibGio.g_mount_guess_content_type(@pointer, force_rescan, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -277,7 +277,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_mount_guess_content_type_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_mount_guess_content_type_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -302,7 +302,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_mount_guess_content_type_sync(self, force_rescan, cancellable, pointerof(_error))
+      _retval = LibGio.g_mount_guess_content_type_sync(@pointer, force_rescan, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -317,7 +317,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_is_shadowed(self)
+      _retval = LibGio.g_mount_is_shadowed(@pointer)
 
       # Return value handling
 
@@ -352,7 +352,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_mount_remount(self, flags, mount_operation, cancellable, callback, user_data)
+      LibGio.g_mount_remount(@pointer, flags, mount_operation, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -364,7 +364,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_mount_remount_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_mount_remount_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -379,7 +379,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_mount_shadow(self)
+      LibGio.g_mount_shadow(@pointer)
 
       # Return value handling
     end
@@ -405,7 +405,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_mount_unmount(self, flags, cancellable, callback, user_data)
+      LibGio.g_mount_unmount(@pointer, flags, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -417,7 +417,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_mount_unmount_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_mount_unmount_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -455,7 +455,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_mount_unmount_with_operation(self, flags, mount_operation, cancellable, callback, user_data)
+      LibGio.g_mount_unmount_with_operation(@pointer, flags, mount_operation, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -467,7 +467,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_mount_unmount_with_operation_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_mount_unmount_with_operation_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -482,7 +482,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_mount_unshadow(self)
+      LibGio.g_mount_unshadow(@pointer)
 
       # Return value handling
     end
@@ -534,7 +534,7 @@ module Gio
       def connect(handler : Proc(Gio::Mount, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractMount.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -545,7 +545,7 @@ module Gio
       def connect_after(handler : Proc(Gio::Mount, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractMount.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -609,7 +609,7 @@ module Gio
       def connect(handler : Proc(Gio::Mount, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractMount.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -620,7 +620,7 @@ module Gio
       def connect_after(handler : Proc(Gio::Mount, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractMount.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -684,7 +684,7 @@ module Gio
       def connect(handler : Proc(Gio::Mount, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractMount.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -695,7 +695,7 @@ module Gio
       def connect_after(handler : Proc(Gio::Mount, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::Mount__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractMount.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gio::Mount, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -717,8 +717,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Mount__Impl < GObject::Object
+  class AbstractMount < GObject::Object
     include Mount
+
+    GICrystal.define_new_method(Gio::AbstractMount, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

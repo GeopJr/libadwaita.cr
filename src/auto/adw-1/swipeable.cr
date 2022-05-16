@@ -10,7 +10,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_swipeable_get_cancel_progress(self)
+      _retval = LibAdw.adw_swipeable_get_cancel_progress(@pointer)
 
       # Return value handling
 
@@ -22,7 +22,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_swipeable_get_distance(self)
+      _retval = LibAdw.adw_swipeable_get_distance(@pointer)
 
       # Return value handling
 
@@ -34,7 +34,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_swipeable_get_progress(self)
+      _retval = LibAdw.adw_swipeable_get_progress(@pointer)
 
       # Return value handling
 
@@ -49,7 +49,7 @@ module Adw
       # Generator::OutArgUsedInReturnPlan
       n_snap_points = 0
       # C call
-      _retval = LibAdw.adw_swipeable_get_snap_points(self, pointerof(n_snap_points))
+      _retval = LibAdw.adw_swipeable_get_snap_points(@pointer, pointerof(n_snap_points))
 
       # Return value handling
 
@@ -64,7 +64,7 @@ module Adw
       # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
       # C call
-      LibAdw.adw_swipeable_get_swipe_area(self, navigation_direction, is_drag, rect)
+      LibAdw.adw_swipeable_get_swipe_area(@pointer, navigation_direction, is_drag, rect)
 
       # Return value handling
 
@@ -76,8 +76,14 @@ module Adw
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Swipeable__Impl < GObject::Object
+  class AbstractSwipeable < GObject::Object
     include Swipeable
+
+    GICrystal.define_new_method(Adw::AbstractSwipeable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

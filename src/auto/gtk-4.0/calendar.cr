@@ -70,15 +70,13 @@ module Gtk
         sizeof(LibGtk::Calendar), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Calendar, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Calendar`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -423,7 +421,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_calendar_clear_marks(self)
+      LibGtk.gtk_calendar_clear_marks(@pointer)
 
       # Return value handling
     end
@@ -437,7 +435,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_calendar_get_date(self)
+      _retval = LibGtk.gtk_calendar_get_date(@pointer)
 
       # Return value handling
 
@@ -450,7 +448,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_calendar_get_day_is_marked(self, day)
+      _retval = LibGtk.gtk_calendar_get_day_is_marked(@pointer, day)
 
       # Return value handling
 
@@ -467,7 +465,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_calendar_get_show_day_names(self)
+      _retval = LibGtk.gtk_calendar_get_show_day_names(@pointer)
 
       # Return value handling
 
@@ -483,7 +481,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_calendar_get_show_heading(self)
+      _retval = LibGtk.gtk_calendar_get_show_heading(@pointer)
 
       # Return value handling
 
@@ -500,7 +498,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_calendar_get_show_week_numbers(self)
+      _retval = LibGtk.gtk_calendar_get_show_week_numbers(@pointer)
 
       # Return value handling
 
@@ -513,7 +511,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_calendar_mark_day(self, day)
+      LibGtk.gtk_calendar_mark_day(@pointer, day)
 
       # Return value handling
     end
@@ -524,7 +522,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_calendar_select_day(self, date)
+      LibGtk.gtk_calendar_select_day(@pointer, date)
 
       # Return value handling
     end
@@ -535,7 +533,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_calendar_set_show_day_names(self, value)
+      LibGtk.gtk_calendar_set_show_day_names(@pointer, value)
 
       # Return value handling
     end
@@ -549,7 +547,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_calendar_set_show_heading(self, value)
+      LibGtk.gtk_calendar_set_show_heading(@pointer, value)
 
       # Return value handling
     end
@@ -560,7 +558,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_calendar_set_show_week_numbers(self, value)
+      LibGtk.gtk_calendar_set_show_week_numbers(@pointer, value)
 
       # Return value handling
     end
@@ -571,7 +569,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_calendar_unmark_day(self, day)
+      LibGtk.gtk_calendar_unmark_day(@pointer, day)
 
       # Return value handling
     end

@@ -43,15 +43,13 @@ module Adw
         sizeof(LibAdw::Carousel), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Carousel, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Carousel`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -447,7 +445,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_append(self, child)
+      LibAdw.adw_carousel_append(@pointer, child)
 
       # Return value handling
     end
@@ -458,7 +456,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_allow_long_swipes(self)
+      _retval = LibAdw.adw_carousel_get_allow_long_swipes(@pointer)
 
       # Return value handling
 
@@ -471,7 +469,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_allow_mouse_drag(self)
+      _retval = LibAdw.adw_carousel_get_allow_mouse_drag(@pointer)
 
       # Return value handling
 
@@ -484,7 +482,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_allow_scroll_wheel(self)
+      _retval = LibAdw.adw_carousel_get_allow_scroll_wheel(@pointer)
 
       # Return value handling
 
@@ -497,7 +495,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_interactive(self)
+      _retval = LibAdw.adw_carousel_get_interactive(@pointer)
 
       # Return value handling
 
@@ -510,7 +508,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_n_pages(self)
+      _retval = LibAdw.adw_carousel_get_n_pages(@pointer)
 
       # Return value handling
 
@@ -523,7 +521,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_nth_page(self, n)
+      _retval = LibAdw.adw_carousel_get_nth_page(@pointer, n)
 
       # Return value handling
 
@@ -538,7 +536,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_position(self)
+      _retval = LibAdw.adw_carousel_get_position(@pointer)
 
       # Return value handling
 
@@ -551,7 +549,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_reveal_duration(self)
+      _retval = LibAdw.adw_carousel_get_reveal_duration(@pointer)
 
       # Return value handling
 
@@ -564,7 +562,7 @@ module Adw
       # Returns: (transfer full)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_scroll_params(self)
+      _retval = LibAdw.adw_carousel_get_scroll_params(@pointer)
 
       # Return value handling
 
@@ -577,7 +575,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_carousel_get_spacing(self)
+      _retval = LibAdw.adw_carousel_get_spacing(@pointer)
 
       # Return value handling
 
@@ -593,7 +591,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_insert(self, child, position)
+      LibAdw.adw_carousel_insert(@pointer, child, position)
 
       # Return value handling
     end
@@ -604,7 +602,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_prepend(self, child)
+      LibAdw.adw_carousel_prepend(@pointer, child)
 
       # Return value handling
     end
@@ -615,7 +613,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_remove(self, child)
+      LibAdw.adw_carousel_remove(@pointer, child)
 
       # Return value handling
     end
@@ -629,7 +627,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_reorder(self, child, position)
+      LibAdw.adw_carousel_reorder(@pointer, child, position)
 
       # Return value handling
     end
@@ -642,7 +640,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_scroll_to(self, widget, animate)
+      LibAdw.adw_carousel_scroll_to(@pointer, widget, animate)
 
       # Return value handling
     end
@@ -653,7 +651,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_set_allow_long_swipes(self, allow_long_swipes)
+      LibAdw.adw_carousel_set_allow_long_swipes(@pointer, allow_long_swipes)
 
       # Return value handling
     end
@@ -664,7 +662,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_set_allow_mouse_drag(self, allow_mouse_drag)
+      LibAdw.adw_carousel_set_allow_mouse_drag(@pointer, allow_mouse_drag)
 
       # Return value handling
     end
@@ -675,7 +673,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_set_allow_scroll_wheel(self, allow_scroll_wheel)
+      LibAdw.adw_carousel_set_allow_scroll_wheel(@pointer, allow_scroll_wheel)
 
       # Return value handling
     end
@@ -686,7 +684,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_set_interactive(self, interactive)
+      LibAdw.adw_carousel_set_interactive(@pointer, interactive)
 
       # Return value handling
     end
@@ -697,7 +695,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_set_reveal_duration(self, reveal_duration)
+      LibAdw.adw_carousel_set_reveal_duration(@pointer, reveal_duration)
 
       # Return value handling
     end
@@ -708,7 +706,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_set_scroll_params(self, params)
+      LibAdw.adw_carousel_set_scroll_params(@pointer, params)
 
       # Return value handling
     end
@@ -719,7 +717,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_carousel_set_spacing(self, spacing)
+      LibAdw.adw_carousel_set_spacing(@pointer, spacing)
 
       # Return value handling
     end

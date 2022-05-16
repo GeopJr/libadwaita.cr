@@ -52,7 +52,7 @@ module GObject
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGObject.g_type_interface_peek_parent(self)
+      _retval = LibGObject.g_type_interface_peek_parent(@pointer)
 
       # Return value handling
 

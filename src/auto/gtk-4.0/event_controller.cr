@@ -24,15 +24,13 @@ module Gtk
         sizeof(LibGtk::EventController), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(EventController, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `EventController`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -141,7 +139,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_event_controller_get_current_event(self)
+      _retval = LibGtk.gtk_event_controller_get_current_event(@pointer)
 
       # Return value handling
 
@@ -157,7 +155,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_event_controller_get_current_event_device(self)
+      _retval = LibGtk.gtk_event_controller_get_current_event_device(@pointer)
 
       # Return value handling
 
@@ -173,7 +171,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_event_controller_get_current_event_state(self)
+      _retval = LibGtk.gtk_event_controller_get_current_event_state(@pointer)
 
       # Return value handling
 
@@ -189,7 +187,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_event_controller_get_current_event_time(self)
+      _retval = LibGtk.gtk_event_controller_get_current_event_time(@pointer)
 
       # Return value handling
 
@@ -202,7 +200,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_event_controller_get_name(self)
+      _retval = LibGtk.gtk_event_controller_get_name(@pointer)
 
       # Return value handling
 
@@ -215,7 +213,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_event_controller_get_propagation_limit(self)
+      _retval = LibGtk.gtk_event_controller_get_propagation_limit(@pointer)
 
       # Return value handling
 
@@ -228,7 +226,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_event_controller_get_propagation_phase(self)
+      _retval = LibGtk.gtk_event_controller_get_propagation_phase(@pointer)
 
       # Return value handling
 
@@ -241,7 +239,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_event_controller_get_widget(self)
+      _retval = LibGtk.gtk_event_controller_get_widget(@pointer)
 
       # Return value handling
 
@@ -254,7 +252,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_event_controller_reset(self)
+      LibGtk.gtk_event_controller_reset(@pointer)
 
       # Return value handling
     end
@@ -273,7 +271,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_event_controller_set_name(self, name)
+      LibGtk.gtk_event_controller_set_name(@pointer, name)
 
       # Return value handling
     end
@@ -288,7 +286,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_event_controller_set_propagation_limit(self, limit)
+      LibGtk.gtk_event_controller_set_propagation_limit(@pointer, limit)
 
       # Return value handling
     end
@@ -302,7 +300,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_event_controller_set_propagation_phase(self, phase)
+      LibGtk.gtk_event_controller_set_propagation_phase(@pointer, phase)
 
       # Return value handling
     end

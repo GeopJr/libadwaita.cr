@@ -39,11 +39,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_get_app_info(self)
+      _retval = LibGtk.gtk_app_chooser_get_app_info(@pointer)
 
       # Return value handling
 
-      Gio::AppInfo__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractAppInfo.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def content_type : ::String
@@ -51,7 +51,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_app_chooser_get_content_type(self)
+      _retval = LibGtk.gtk_app_chooser_get_content_type(@pointer)
 
       # Return value handling
 
@@ -63,7 +63,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_app_chooser_refresh(self)
+      LibGtk.gtk_app_chooser_refresh(@pointer)
 
       # Return value handling
     end
@@ -73,8 +73,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class AppChooser__Impl < GObject::Object
+  class AbstractAppChooser < GObject::Object
     include AppChooser
+
+    GICrystal.define_new_method(Gtk::AbstractAppChooser, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

@@ -20,15 +20,13 @@ module Gio
         sizeof(LibGio::ConverterInputStream), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ConverterInputStream, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ConverterInputStream`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -83,7 +81,7 @@ module Gio
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "converter", pointerof(value), Pointer(Void).null)
-      Gio::Converter__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractConverter.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     # Creates a new converter input stream for the @base_stream.
@@ -106,11 +104,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_converter_input_stream_get_converter(self)
+      _retval = LibGio.g_converter_input_stream_get_converter(@pointer)
 
       # Return value handling
 
-      Gio::Converter__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractConverter.new(_retval, GICrystal::Transfer::None)
     end
   end
 end

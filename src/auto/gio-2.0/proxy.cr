@@ -15,7 +15,7 @@ module Gio
 
       # Return value handling
 
-      Gio::Proxy__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractProxy.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def connect(connection : Gio::IOStream, proxy_address : Gio::ProxyAddress, cancellable : Gio::Cancellable?) : Gio::IOStream
@@ -33,7 +33,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_proxy_connect(self, connection, proxy_address, cancellable, pointerof(_error))
+      _retval = LibGio.g_proxy_connect(@pointer, connection, proxy_address, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -64,7 +64,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_proxy_connect_async(self, connection, proxy_address, cancellable, callback, user_data)
+      LibGio.g_proxy_connect_async(@pointer, connection, proxy_address, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -76,7 +76,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_proxy_connect_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_proxy_connect_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -91,7 +91,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_proxy_supports_hostname(self)
+      _retval = LibGio.g_proxy_supports_hostname(@pointer)
 
       # Return value handling
 
@@ -103,8 +103,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Proxy__Impl < GObject::Object
+  class AbstractProxy < GObject::Object
     include Proxy
+
+    GICrystal.define_new_method(Gio::AbstractProxy, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

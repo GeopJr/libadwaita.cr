@@ -127,7 +127,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_node_info_generate_xml(self, indent, string_builder)
+      LibGio.g_dbus_node_info_generate_xml(@pointer, indent, string_builder)
 
       # Return value handling
     end
@@ -137,7 +137,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_node_info_lookup_interface(self, name)
+      _retval = LibGio.g_dbus_node_info_lookup_interface(@pointer, name)
 
       # Return value handling
 
@@ -149,7 +149,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_node_info_ref(self)
+      _retval = LibGio.g_dbus_node_info_ref(@pointer)
 
       # Return value handling
 
@@ -161,7 +161,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_node_info_unref(self)
+      LibGio.g_dbus_node_info_unref(@pointer)
 
       # Return value handling
     end

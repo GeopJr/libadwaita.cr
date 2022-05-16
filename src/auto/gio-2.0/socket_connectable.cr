@@ -62,7 +62,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_socket_connectable_enumerate(self)
+      _retval = LibGio.g_socket_connectable_enumerate(@pointer)
 
       # Return value handling
 
@@ -74,7 +74,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_socket_connectable_proxy_enumerate(self)
+      _retval = LibGio.g_socket_connectable_proxy_enumerate(@pointer)
 
       # Return value handling
 
@@ -86,7 +86,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_socket_connectable_to_string(self)
+      _retval = LibGio.g_socket_connectable_to_string(@pointer)
 
       # Return value handling
 
@@ -98,8 +98,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class SocketConnectable__Impl < GObject::Object
+  class AbstractSocketConnectable < GObject::Object
     include SocketConnectable
+
+    GICrystal.define_new_method(Gio::AbstractSocketConnectable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

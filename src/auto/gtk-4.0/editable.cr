@@ -307,7 +307,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_delete_selection(self)
+      LibGtk.gtk_editable_delete_selection(@pointer)
 
       # Return value handling
     end
@@ -317,7 +317,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_delete_text(self, start_pos, end_pos)
+      LibGtk.gtk_editable_delete_text(@pointer, start_pos, end_pos)
 
       # Return value handling
     end
@@ -327,7 +327,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_finish_delegate(self)
+      LibGtk.gtk_editable_finish_delegate(@pointer)
 
       # Return value handling
     end
@@ -337,7 +337,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_editable_get_alignment(self)
+      _retval = LibGtk.gtk_editable_get_alignment(@pointer)
 
       # Return value handling
 
@@ -349,7 +349,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_editable_get_chars(self, start_pos, end_pos)
+      _retval = LibGtk.gtk_editable_get_chars(@pointer, start_pos, end_pos)
 
       # Return value handling
 
@@ -361,11 +361,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_editable_get_delegate(self)
+      _retval = LibGtk.gtk_editable_get_delegate(@pointer)
 
       # Return value handling
 
-      Gtk::Editable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractEditable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def editable : Bool
@@ -373,7 +373,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_editable_get_editable(self)
+      _retval = LibGtk.gtk_editable_get_editable(@pointer)
 
       # Return value handling
 
@@ -385,7 +385,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_editable_get_enable_undo(self)
+      _retval = LibGtk.gtk_editable_get_enable_undo(@pointer)
 
       # Return value handling
 
@@ -397,7 +397,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_editable_get_max_width_chars(self)
+      _retval = LibGtk.gtk_editable_get_max_width_chars(@pointer)
 
       # Return value handling
 
@@ -409,7 +409,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_editable_get_position(self)
+      _retval = LibGtk.gtk_editable_get_position(@pointer)
 
       # Return value handling
 
@@ -426,7 +426,7 @@ module Gtk
       start_pos = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       end_pos = Pointer(Int32).null
       # C call
-      _retval = LibGtk.gtk_editable_get_selection_bounds(self, start_pos, end_pos)
+      _retval = LibGtk.gtk_editable_get_selection_bounds(@pointer, start_pos, end_pos)
 
       # Return value handling
 
@@ -438,7 +438,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_editable_get_text(self)
+      _retval = LibGtk.gtk_editable_get_text(@pointer)
 
       # Return value handling
 
@@ -450,7 +450,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_editable_get_width_chars(self)
+      _retval = LibGtk.gtk_editable_get_width_chars(@pointer)
 
       # Return value handling
 
@@ -462,7 +462,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_init_delegate(self)
+      LibGtk.gtk_editable_init_delegate(@pointer)
 
       # Return value handling
     end
@@ -473,7 +473,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_insert_text(self, text, length, position)
+      LibGtk.gtk_editable_insert_text(@pointer, text, length, position)
 
       # Return value handling
     end
@@ -483,7 +483,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_select_region(self, start_pos, end_pos)
+      LibGtk.gtk_editable_select_region(@pointer, start_pos, end_pos)
 
       # Return value handling
     end
@@ -493,7 +493,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_set_alignment(self, xalign)
+      LibGtk.gtk_editable_set_alignment(@pointer, xalign)
 
       # Return value handling
     end
@@ -503,7 +503,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_set_editable(self, is_editable)
+      LibGtk.gtk_editable_set_editable(@pointer, is_editable)
 
       # Return value handling
     end
@@ -513,7 +513,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_set_enable_undo(self, enable_undo)
+      LibGtk.gtk_editable_set_enable_undo(@pointer, enable_undo)
 
       # Return value handling
     end
@@ -523,7 +523,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_set_max_width_chars(self, n_chars)
+      LibGtk.gtk_editable_set_max_width_chars(@pointer, n_chars)
 
       # Return value handling
     end
@@ -533,7 +533,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_set_position(self, position)
+      LibGtk.gtk_editable_set_position(@pointer, position)
 
       # Return value handling
     end
@@ -543,7 +543,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_set_text(self, text)
+      LibGtk.gtk_editable_set_text(@pointer, text)
 
       # Return value handling
     end
@@ -553,7 +553,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_editable_set_width_chars(self, n_chars)
+      LibGtk.gtk_editable_set_width_chars(@pointer, n_chars)
 
       # Return value handling
     end
@@ -605,7 +605,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Editable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::Editable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractEditable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::Editable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -616,7 +616,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Editable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::Editable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractEditable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::Editable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -684,7 +684,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Editable, Int32, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_start_pos : Int32, lib_end_pos : Int32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::Editable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractEditable.new(_lib_sender, GICrystal::Transfer::None)
           start_pos = lib_start_pos
           end_pos = lib_end_pos
           ::Box(Proc(Gtk::Editable, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, start_pos, end_pos)
@@ -697,7 +697,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Editable, Int32, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_start_pos : Int32, lib_end_pos : Int32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::Editable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractEditable.new(_lib_sender, GICrystal::Transfer::None)
           start_pos = lib_start_pos
           end_pos = lib_end_pos
           ::Box(Proc(Gtk::Editable, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, start_pos, end_pos)
@@ -743,7 +743,8 @@ module Gtk
       def connect(handler : Proc(::String, Int32, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_text : Pointer(LibC::Char), lib_length : Int32, lib_position : Int32, _lib_box : Pointer(Void)) {
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           length = lib_length
           position = lib_position
           ::Box(Proc(::String, Int32, Int32, Nil)).unbox(_lib_box).call(text, length, position)
@@ -756,7 +757,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Int32, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_text : Pointer(LibC::Char), lib_length : Int32, lib_position : Int32, _lib_box : Pointer(Void)) {
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           length = lib_length
           position = lib_position
           ::Box(Proc(::String, Int32, Int32, Nil)).unbox(_lib_box).call(text, length, position)
@@ -769,8 +771,9 @@ module Gtk
       def connect(handler : Proc(Gtk::Editable, ::String, Int32, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_text : Pointer(LibC::Char), lib_length : Int32, lib_position : Int32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::Editable__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          text = lib_text
+          _sender = Gtk::AbstractEditable.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           length = lib_length
           position = lib_position
           ::Box(Proc(Gtk::Editable, ::String, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, text, length, position)
@@ -783,8 +786,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Editable, ::String, Int32, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_text : Pointer(LibC::Char), lib_length : Int32, lib_position : Int32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::Editable__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          text = lib_text
+          _sender = Gtk::AbstractEditable.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           length = lib_length
           position = lib_position
           ::Box(Proc(Gtk::Editable, ::String, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, text, length, position)
@@ -808,8 +812,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Editable__Impl < GObject::Object
+  class AbstractEditable < GObject::Object
     include Editable
+
+    GICrystal.define_new_method(Gtk::AbstractEditable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

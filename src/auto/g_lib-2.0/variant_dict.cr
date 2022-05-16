@@ -142,7 +142,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_variant_dict_clear(self)
+      LibGLib.g_variant_dict_clear(@pointer)
 
       # Return value handling
     end
@@ -152,7 +152,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_dict_contains(self, key)
+      _retval = LibGLib.g_variant_dict_contains(@pointer, key)
 
       # Return value handling
 
@@ -164,7 +164,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_dict_end(self)
+      _retval = LibGLib.g_variant_dict_end(@pointer)
 
       # Return value handling
 
@@ -183,7 +183,7 @@ module GLib
               end
 
       # C call
-      LibGLib.g_variant_dict_insert_value(self, key, value)
+      LibGLib.g_variant_dict_insert_value(@pointer, key, value)
 
       # Return value handling
     end
@@ -201,7 +201,7 @@ module GLib
                       end
 
       # C call
-      _retval = LibGLib.g_variant_dict_lookup_value(self, key, expected_type)
+      _retval = LibGLib.g_variant_dict_lookup_value(@pointer, key, expected_type)
 
       # Return value handling
 
@@ -213,7 +213,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_variant_dict_ref(self)
+      _retval = LibGLib.g_variant_dict_ref(@pointer)
 
       # Return value handling
 
@@ -225,7 +225,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_dict_remove(self, key)
+      _retval = LibGLib.g_variant_dict_remove(@pointer, key)
 
       # Return value handling
 
@@ -237,7 +237,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_variant_dict_unref(self)
+      LibGLib.g_variant_dict_unref(@pointer)
 
       # Return value handling
     end

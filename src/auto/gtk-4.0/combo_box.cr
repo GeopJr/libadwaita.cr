@@ -87,15 +87,13 @@ module Gtk
         sizeof(LibGtk::ComboBox), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ComboBox, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ComboBox`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -491,7 +489,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractTreeModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def popup_fixed_width=(value : Bool) : Bool
@@ -591,7 +589,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_combo_box_get_active(self)
+      _retval = LibGtk.gtk_combo_box_get_active(@pointer)
 
       # Return value handling
 
@@ -616,7 +614,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_combo_box_get_active_id(self)
+      _retval = LibGtk.gtk_combo_box_get_active_id(@pointer)
 
       # Return value handling
 
@@ -634,7 +632,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_combo_box_get_active_iter(self, iter)
+      _retval = LibGtk.gtk_combo_box_get_active_iter(@pointer, iter)
 
       # Return value handling
 
@@ -648,7 +646,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_combo_box_get_button_sensitivity(self)
+      _retval = LibGtk.gtk_combo_box_get_button_sensitivity(@pointer)
 
       # Return value handling
 
@@ -661,7 +659,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_combo_box_get_child(self)
+      _retval = LibGtk.gtk_combo_box_get_child(@pointer)
 
       # Return value handling
 
@@ -675,7 +673,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_combo_box_get_entry_text_column(self)
+      _retval = LibGtk.gtk_combo_box_get_entry_text_column(@pointer)
 
       # Return value handling
 
@@ -688,7 +686,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_combo_box_get_has_entry(self)
+      _retval = LibGtk.gtk_combo_box_get_has_entry(@pointer)
 
       # Return value handling
 
@@ -702,7 +700,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_combo_box_get_id_column(self)
+      _retval = LibGtk.gtk_combo_box_get_id_column(@pointer)
 
       # Return value handling
 
@@ -715,11 +713,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_combo_box_get_model(self)
+      _retval = LibGtk.gtk_combo_box_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractTreeModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets whether the popup uses a fixed width.
@@ -728,7 +726,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_combo_box_get_popup_fixed_width(self)
+      _retval = LibGtk.gtk_combo_box_get_popup_fixed_width(@pointer)
 
       # Return value handling
 
@@ -744,7 +742,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_combo_box_popdown(self)
+      LibGtk.gtk_combo_box_popdown(@pointer)
 
       # Return value handling
     end
@@ -760,7 +758,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_combo_box_popup(self)
+      LibGtk.gtk_combo_box_popup(@pointer)
 
       # Return value handling
     end
@@ -776,7 +774,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_combo_box_popup_for_device(self, device)
+      LibGtk.gtk_combo_box_popup_for_device(@pointer, device)
 
       # Return value handling
     end
@@ -787,7 +785,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_combo_box_set_active(self, index_)
+      LibGtk.gtk_combo_box_set_active(@pointer, index_)
 
       # Return value handling
     end
@@ -814,7 +812,7 @@ module Gtk
                   end
 
       # C call
-      _retval = LibGtk.gtk_combo_box_set_active_id(self, active_id)
+      _retval = LibGtk.gtk_combo_box_set_active_id(@pointer, active_id)
 
       # Return value handling
 
@@ -837,7 +835,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_combo_box_set_active_iter(self, iter)
+      LibGtk.gtk_combo_box_set_active_iter(@pointer, iter)
 
       # Return value handling
     end
@@ -849,7 +847,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_combo_box_set_button_sensitivity(self, sensitivity)
+      LibGtk.gtk_combo_box_set_button_sensitivity(@pointer, sensitivity)
 
       # Return value handling
     end
@@ -868,7 +866,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_combo_box_set_child(self, child)
+      LibGtk.gtk_combo_box_set_child(@pointer, child)
 
       # Return value handling
     end
@@ -889,7 +887,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_combo_box_set_entry_text_column(self, text_column)
+      LibGtk.gtk_combo_box_set_entry_text_column(@pointer, text_column)
 
       # Return value handling
     end
@@ -904,7 +902,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_combo_box_set_id_column(self, id_column)
+      LibGtk.gtk_combo_box_set_id_column(@pointer, id_column)
 
       # Return value handling
     end
@@ -930,7 +928,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_combo_box_set_model(self, model)
+      LibGtk.gtk_combo_box_set_model(@pointer, model)
 
       # Return value handling
     end
@@ -944,7 +942,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_combo_box_set_popup_fixed_width(self, fixed)
+      LibGtk.gtk_combo_box_set_popup_fixed_width(@pointer, fixed)
 
       # Return value handling
     end
@@ -965,12 +963,11 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          data = lib_data
-          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(data).call(model, iter)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(lib_data).call(model, iter)
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -979,7 +976,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_combo_box_set_row_separator_func(self, func, data, destroy)
+      LibGtk.gtk_combo_box_set_row_separator_func(@pointer, func, data, destroy)
 
       # Return value handling
     end
@@ -1204,7 +1201,8 @@ module Gtk
       def connect(handler : Proc(::String, ::String))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(::String, ::String)).unbox(_lib_box).call(path)
         }.pointer
 
@@ -1215,7 +1213,8 @@ module Gtk
       def connect_after(handler : Proc(::String, ::String))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(::String, ::String)).unbox(_lib_box).call(path)
         }.pointer
 
@@ -1227,7 +1226,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::ComboBox.new(_lib_sender, GICrystal::Transfer::None)
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(Gtk::ComboBox, ::String, ::String)).unbox(_lib_box).call(_sender, path)
         }.pointer
 
@@ -1239,7 +1239,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::ComboBox.new(_lib_sender, GICrystal::Transfer::None)
-          path = lib_path
+          # Generator::BuiltInTypeArgPlan
+          path = ::String.new(lib_path)
           ::Box(Proc(Gtk::ComboBox, ::String, ::String)).unbox(_lib_box).call(_sender, path)
         }.pointer
 
@@ -1286,8 +1287,8 @@ module Gtk
       def connect(handler : Proc(Gtk::ScrollType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll_type : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll_type = Gtk::ScrollType.new(lib_scroll_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll_type = Gtk::ScrollType.new(lib_scroll_type)
           ::Box(Proc(Gtk::ScrollType, Nil)).unbox(_lib_box).call(scroll_type)
         }.pointer
 
@@ -1298,8 +1299,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::ScrollType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll_type : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll_type = Gtk::ScrollType.new(lib_scroll_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll_type = Gtk::ScrollType.new(lib_scroll_type)
           ::Box(Proc(Gtk::ScrollType, Nil)).unbox(_lib_box).call(scroll_type)
         }.pointer
 
@@ -1311,8 +1312,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll_type : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::ComboBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll_type = Gtk::ScrollType.new(lib_scroll_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll_type = Gtk::ScrollType.new(lib_scroll_type)
           ::Box(Proc(Gtk::ComboBox, Gtk::ScrollType, Nil)).unbox(_lib_box).call(_sender, scroll_type)
         }.pointer
 
@@ -1324,8 +1325,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll_type : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::ComboBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll_type = Gtk::ScrollType.new(lib_scroll_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll_type = Gtk::ScrollType.new(lib_scroll_type)
           ::Box(Proc(Gtk::ComboBox, Gtk::ScrollType, Nil)).unbox(_lib_box).call(_sender, scroll_type)
         }.pointer
 

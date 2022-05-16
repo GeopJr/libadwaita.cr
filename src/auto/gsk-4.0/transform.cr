@@ -60,7 +60,7 @@ module Gsk
                end
 
       # C call
-      _retval = LibGsk.gsk_transform_equal(self, second)
+      _retval = LibGsk.gsk_transform_equal(@pointer, second)
 
       # Return value handling
 
@@ -72,7 +72,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_transform_get_category(self)
+      _retval = LibGsk.gsk_transform_get_category(@pointer)
 
       # Return value handling
 
@@ -84,7 +84,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_invert(self)
+      _retval = LibGsk.gsk_transform_invert(@pointer)
 
       # Return value handling
 
@@ -96,7 +96,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_matrix(self, matrix)
+      _retval = LibGsk.gsk_transform_matrix(@pointer, matrix)
 
       # Return value handling
 
@@ -108,7 +108,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_perspective(self, depth)
+      _retval = LibGsk.gsk_transform_perspective(@pointer, depth)
 
       # Return value handling
 
@@ -120,7 +120,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_transform_print(self, string)
+      LibGsk.gsk_transform_print(@pointer, string)
 
       # Return value handling
     end
@@ -130,7 +130,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGsk.gsk_transform_ref(self)
+      _retval = LibGsk.gsk_transform_ref(@pointer)
 
       # Return value handling
 
@@ -142,7 +142,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_rotate(self, angle)
+      _retval = LibGsk.gsk_transform_rotate(@pointer, angle)
 
       # Return value handling
 
@@ -154,7 +154,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_rotate_3d(self, angle, axis)
+      _retval = LibGsk.gsk_transform_rotate_3d(@pointer, angle, axis)
 
       # Return value handling
 
@@ -166,7 +166,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_scale(self, factor_x, factor_y)
+      _retval = LibGsk.gsk_transform_scale(@pointer, factor_x, factor_y)
 
       # Return value handling
 
@@ -178,7 +178,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_scale_3d(self, factor_x, factor_y, factor_z)
+      _retval = LibGsk.gsk_transform_scale_3d(@pointer, factor_x, factor_y, factor_z)
 
       # Return value handling
 
@@ -190,7 +190,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_skew(self, skew_x, skew_y)
+      _retval = LibGsk.gsk_transform_skew(@pointer, skew_x, skew_y)
 
       # Return value handling
 
@@ -208,7 +208,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_transform_to_2d(self, out_xx, out_yx, out_xy, out_yy, out_dx, out_dy)
+      LibGsk.gsk_transform_to_2d(@pointer, out_xx, out_yx, out_xy, out_yy, out_dx, out_dy)
 
       # Return value handling
     end
@@ -225,7 +225,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_transform_to_2d_components(self, out_skew_x, out_skew_y, out_scale_x, out_scale_y, out_angle, out_dx, out_dy)
+      LibGsk.gsk_transform_to_2d_components(@pointer, out_skew_x, out_skew_y, out_scale_x, out_scale_y, out_angle, out_dx, out_dy)
 
       # Return value handling
     end
@@ -239,7 +239,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_transform_to_affine(self, out_scale_x, out_scale_y, out_dx, out_dy)
+      LibGsk.gsk_transform_to_affine(@pointer, out_scale_x, out_scale_y, out_dx, out_dy)
 
       # Return value handling
     end
@@ -252,7 +252,7 @@ module Gsk
       # Generator::CallerAllocatesPlan
       out_matrix = Graphene::Matrix.new
       # C call
-      LibGsk.gsk_transform_to_matrix(self, out_matrix)
+      LibGsk.gsk_transform_to_matrix(@pointer, out_matrix)
 
       # Return value handling
 
@@ -264,7 +264,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_to_string(self)
+      _retval = LibGsk.gsk_transform_to_string(@pointer)
 
       # Return value handling
 
@@ -278,7 +278,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_transform_to_translate(self, out_dx, out_dy)
+      LibGsk.gsk_transform_to_translate(@pointer, out_dx, out_dy)
 
       # Return value handling
     end
@@ -296,7 +296,7 @@ module Gsk
               end
 
       # C call
-      _retval = LibGsk.gsk_transform_transform(self, other)
+      _retval = LibGsk.gsk_transform_transform(@pointer, other)
 
       # Return value handling
 
@@ -311,7 +311,7 @@ module Gsk
       # Generator::CallerAllocatesPlan
       out_rect = Graphene::Rect.new
       # C call
-      LibGsk.gsk_transform_transform_bounds(self, rect, out_rect)
+      LibGsk.gsk_transform_transform_bounds(@pointer, rect, out_rect)
 
       # Return value handling
 
@@ -326,7 +326,7 @@ module Gsk
       # Generator::CallerAllocatesPlan
       out_point = Graphene::Point.new
       # C call
-      LibGsk.gsk_transform_transform_point(self, point, out_point)
+      LibGsk.gsk_transform_transform_point(@pointer, point, out_point)
 
       # Return value handling
 
@@ -338,7 +338,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_translate(self, point)
+      _retval = LibGsk.gsk_transform_translate(@pointer, point)
 
       # Return value handling
 
@@ -350,7 +350,7 @@ module Gsk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGsk.gsk_transform_translate_3d(self, point)
+      _retval = LibGsk.gsk_transform_translate_3d(@pointer, point)
 
       # Return value handling
 
@@ -362,7 +362,7 @@ module Gsk
       # Returns: (transfer none)
 
       # C call
-      LibGsk.gsk_transform_unref(self)
+      LibGsk.gsk_transform_unref(@pointer)
 
       # Return value handling
     end

@@ -72,7 +72,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_requisition_copy(self)
+      _retval = LibGtk.gtk_requisition_copy(@pointer)
 
       # Return value handling
 
@@ -84,7 +84,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_requisition_free(self)
+      LibGtk.gtk_requisition_free(@pointer)
 
       # Return value handling
     end

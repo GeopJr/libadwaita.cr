@@ -69,15 +69,13 @@ module Gio
         sizeof(LibGio::Socket), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Socket, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Socket`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -457,7 +455,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_accept(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_accept(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -497,7 +495,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_bind(self, address, allow_reuse, pointerof(_error))
+      _retval = LibGio.g_socket_bind(@pointer, address, allow_reuse, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -517,7 +515,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_check_connect_result(self, pointerof(_error))
+      _retval = LibGio.g_socket_check_connect_result(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -563,7 +561,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_close(self, pointerof(_error))
+      _retval = LibGio.g_socket_close(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -595,7 +593,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_condition_check(self, condition)
+      _retval = LibGio.g_socket_condition_check(@pointer, condition)
 
       # Return value handling
 
@@ -633,7 +631,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_condition_timed_wait(self, condition, timeout_us, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_condition_timed_wait(@pointer, condition, timeout_us, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -668,7 +666,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_condition_wait(self, condition, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_condition_wait(@pointer, condition, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -709,7 +707,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_connect(self, address, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_connect(@pointer, address, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -726,7 +724,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_socket_connection_factory_create_connection(self)
+      _retval = LibGio.g_socket_connection_factory_create_connection(@pointer)
 
       # Return value handling
 
@@ -750,7 +748,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_available_bytes(self)
+      _retval = LibGio.g_socket_get_available_bytes(@pointer)
 
       # Return value handling
 
@@ -764,7 +762,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_blocking(self)
+      _retval = LibGio.g_socket_get_blocking(@pointer)
 
       # Return value handling
 
@@ -779,7 +777,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_broadcast(self)
+      _retval = LibGio.g_socket_get_broadcast(@pointer)
 
       # Return value handling
 
@@ -813,7 +811,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_get_credentials(self, pointerof(_error))
+      _retval = LibGio.g_socket_get_credentials(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -829,7 +827,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_family(self)
+      _retval = LibGio.g_socket_get_family(@pointer)
 
       # Return value handling
 
@@ -846,7 +844,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_fd(self)
+      _retval = LibGio.g_socket_get_fd(@pointer)
 
       # Return value handling
 
@@ -860,7 +858,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_keepalive(self)
+      _retval = LibGio.g_socket_get_keepalive(@pointer)
 
       # Return value handling
 
@@ -874,7 +872,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_listen_backlog(self)
+      _retval = LibGio.g_socket_get_listen_backlog(@pointer)
 
       # Return value handling
 
@@ -891,7 +889,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_get_local_address(self, pointerof(_error))
+      _retval = LibGio.g_socket_get_local_address(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -909,7 +907,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_multicast_loopback(self)
+      _retval = LibGio.g_socket_get_multicast_loopback(@pointer)
 
       # Return value handling
 
@@ -923,7 +921,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_multicast_ttl(self)
+      _retval = LibGio.g_socket_get_multicast_ttl(@pointer)
 
       # Return value handling
 
@@ -951,7 +949,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_get_option(self, level, optname, value, pointerof(_error))
+      _retval = LibGio.g_socket_get_option(@pointer, level, optname, value, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -968,7 +966,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_protocol(self)
+      _retval = LibGio.g_socket_get_protocol(@pointer)
 
       # Return value handling
 
@@ -984,7 +982,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_get_remote_address(self, pointerof(_error))
+      _retval = LibGio.g_socket_get_remote_address(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1000,7 +998,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_socket_type(self)
+      _retval = LibGio.g_socket_get_socket_type(@pointer)
 
       # Return value handling
 
@@ -1014,7 +1012,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_timeout(self)
+      _retval = LibGio.g_socket_get_timeout(@pointer)
 
       # Return value handling
 
@@ -1028,7 +1026,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_get_ttl(self)
+      _retval = LibGio.g_socket_get_ttl(@pointer)
 
       # Return value handling
 
@@ -1041,7 +1039,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_is_closed(self)
+      _retval = LibGio.g_socket_is_closed(@pointer)
 
       # Return value handling
 
@@ -1060,7 +1058,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_is_connected(self)
+      _retval = LibGio.g_socket_is_connected(@pointer)
 
       # Return value handling
 
@@ -1096,7 +1094,7 @@ module Gio
               end
 
       # C call
-      _retval = LibGio.g_socket_join_multicast_group(self, group, source_specific, iface, pointerof(_error))
+      _retval = LibGio.g_socket_join_multicast_group(@pointer, group, source_specific, iface, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1143,7 +1141,7 @@ module Gio
               end
 
       # C call
-      _retval = LibGio.g_socket_join_multicast_group_ssm(self, group, source_specific, iface, pointerof(_error))
+      _retval = LibGio.g_socket_join_multicast_group_ssm(@pointer, group, source_specific, iface, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1177,7 +1175,7 @@ module Gio
               end
 
       # C call
-      _retval = LibGio.g_socket_leave_multicast_group(self, group, source_specific, iface, pointerof(_error))
+      _retval = LibGio.g_socket_leave_multicast_group(@pointer, group, source_specific, iface, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1215,7 +1213,7 @@ module Gio
               end
 
       # C call
-      _retval = LibGio.g_socket_leave_multicast_group_ssm(self, group, source_specific, iface, pointerof(_error))
+      _retval = LibGio.g_socket_leave_multicast_group_ssm(@pointer, group, source_specific, iface, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1240,7 +1238,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_listen(self, pointerof(_error))
+      _retval = LibGio.g_socket_listen(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1293,7 +1291,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_receive(self, buffer, size, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_receive(@pointer, buffer, size, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1332,7 +1330,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_receive_from(self, address, buffer, size, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_receive_from(@pointer, address, buffer, size, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1427,7 +1425,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_receive_message(self, address, vectors, num_vectors, messages, num_messages, flags, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_receive_message(@pointer, address, vectors, num_vectors, messages, num_messages, flags, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1504,7 +1502,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_receive_messages(self, messages, num_messages, flags, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_receive_messages(@pointer, messages, num_messages, flags, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1537,7 +1535,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_receive_with_blocking(self, buffer, size, blocking, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_receive_with_blocking(@pointer, buffer, size, blocking, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1580,7 +1578,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_send(self, buffer, size, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_send(@pointer, buffer, size, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1666,7 +1664,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_send_message(self, address, vectors, num_vectors, messages, num_messages, flags, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_send_message(@pointer, address, vectors, num_vectors, messages, num_messages, flags, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1719,7 +1717,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_send_message_with_timeout(self, address, vectors, num_vectors, messages, num_messages, flags, timeout_us, bytes_written, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_send_message_with_timeout(@pointer, address, vectors, num_vectors, messages, num_messages, flags, timeout_us, bytes_written, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1782,7 +1780,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_send_messages(self, messages, num_messages, flags, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_send_messages(@pointer, messages, num_messages, flags, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1823,7 +1821,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_send_to(self, address, buffer, size, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_send_to(@pointer, address, buffer, size, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1855,7 +1853,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_send_with_blocking(self, buffer, size, blocking, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_send_with_blocking(@pointer, buffer, size, blocking, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1879,7 +1877,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_set_blocking(self, blocking)
+      LibGio.g_socket_set_blocking(@pointer, blocking)
 
       # Return value handling
     end
@@ -1891,7 +1889,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_set_broadcast(self, broadcast)
+      LibGio.g_socket_set_broadcast(@pointer, broadcast)
 
       # Return value handling
     end
@@ -1916,7 +1914,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_set_keepalive(self, keepalive)
+      LibGio.g_socket_set_keepalive(@pointer, keepalive)
 
       # Return value handling
     end
@@ -1933,7 +1931,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_set_listen_backlog(self, backlog)
+      LibGio.g_socket_set_listen_backlog(@pointer, backlog)
 
       # Return value handling
     end
@@ -1946,7 +1944,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_set_multicast_loopback(self, loopback)
+      LibGio.g_socket_set_multicast_loopback(@pointer, loopback)
 
       # Return value handling
     end
@@ -1959,7 +1957,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_set_multicast_ttl(self, ttl)
+      LibGio.g_socket_set_multicast_ttl(@pointer, ttl)
 
       # Return value handling
     end
@@ -1980,7 +1978,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_set_option(self, level, optname, value, pointerof(_error))
+      _retval = LibGio.g_socket_set_option(@pointer, level, optname, value, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -2015,7 +2013,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_set_timeout(self, timeout)
+      LibGio.g_socket_set_timeout(@pointer, timeout)
 
       # Return value handling
     end
@@ -2027,7 +2025,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_set_ttl(self, ttl)
+      LibGio.g_socket_set_ttl(@pointer, ttl)
 
       # Return value handling
     end
@@ -2053,7 +2051,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_shutdown(self, shutdown_read, shutdown_write, pointerof(_error))
+      _retval = LibGio.g_socket_shutdown(@pointer, shutdown_read, shutdown_write, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -2077,7 +2075,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_speaks_ipv4(self)
+      _retval = LibGio.g_socket_speaks_ipv4(@pointer)
 
       # Return value handling
 

@@ -57,15 +57,13 @@ module Gtk
         sizeof(LibGtk::Statusbar), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Statusbar, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Statusbar`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -293,7 +291,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_statusbar_get_context_id(self, context_description)
+      _retval = LibGtk.gtk_statusbar_get_context_id(@pointer, context_description)
 
       # Return value handling
 
@@ -311,7 +309,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_statusbar_pop(self, context_id)
+      LibGtk.gtk_statusbar_pop(@pointer, context_id)
 
       # Return value handling
     end
@@ -322,7 +320,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_statusbar_push(self, context_id, text)
+      _retval = LibGtk.gtk_statusbar_push(@pointer, context_id, text)
 
       # Return value handling
 
@@ -336,7 +334,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_statusbar_remove(self, context_id, message_id)
+      LibGtk.gtk_statusbar_remove(@pointer, context_id, message_id)
 
       # Return value handling
     end
@@ -348,7 +346,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_statusbar_remove_all(self, context_id)
+      LibGtk.gtk_statusbar_remove_all(@pointer, context_id)
 
       # Return value handling
     end
@@ -382,7 +380,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           context_id = lib_context_id
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           ::Box(Proc(UInt32, ::String, Nil)).unbox(_lib_box).call(context_id, text)
         }.pointer
 
@@ -394,7 +393,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           context_id = lib_context_id
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           ::Box(Proc(UInt32, ::String, Nil)).unbox(_lib_box).call(context_id, text)
         }.pointer
 
@@ -407,7 +407,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Statusbar.new(_lib_sender, GICrystal::Transfer::None)
           context_id = lib_context_id
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           ::Box(Proc(Gtk::Statusbar, UInt32, ::String, Nil)).unbox(_lib_box).call(_sender, context_id, text)
         }.pointer
 
@@ -420,7 +421,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Statusbar.new(_lib_sender, GICrystal::Transfer::None)
           context_id = lib_context_id
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           ::Box(Proc(Gtk::Statusbar, UInt32, ::String, Nil)).unbox(_lib_box).call(_sender, context_id, text)
         }.pointer
 
@@ -466,7 +468,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           context_id = lib_context_id
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           ::Box(Proc(UInt32, ::String, Nil)).unbox(_lib_box).call(context_id, text)
         }.pointer
 
@@ -478,7 +481,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           context_id = lib_context_id
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           ::Box(Proc(UInt32, ::String, Nil)).unbox(_lib_box).call(context_id, text)
         }.pointer
 
@@ -491,7 +495,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Statusbar.new(_lib_sender, GICrystal::Transfer::None)
           context_id = lib_context_id
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           ::Box(Proc(Gtk::Statusbar, UInt32, ::String, Nil)).unbox(_lib_box).call(_sender, context_id, text)
         }.pointer
 
@@ -504,7 +509,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Statusbar.new(_lib_sender, GICrystal::Transfer::None)
           context_id = lib_context_id
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           ::Box(Proc(Gtk::Statusbar, UInt32, ::String, Nil)).unbox(_lib_box).call(_sender, context_id, text)
         }.pointer
 

@@ -21,15 +21,13 @@ module Gdk
         sizeof(LibGdk::Surface), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Surface, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Surface`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -207,7 +205,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_surface_beep(self)
+      LibGdk.gdk_surface_beep(@pointer)
 
       # Return value handling
     end
@@ -218,7 +216,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_surface_create_cairo_context(self)
+      _retval = LibGdk.gdk_surface_create_cairo_context(@pointer)
 
       # Return value handling
 
@@ -238,7 +236,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_surface_create_gl_context(self, pointerof(_error))
+      _retval = LibGdk.gdk_surface_create_gl_context(@pointer, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -268,7 +266,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_surface_create_similar_surface(self, content, width, height)
+      _retval = LibGdk.gdk_surface_create_similar_surface(@pointer, content, width, height)
 
       # Return value handling
 
@@ -285,7 +283,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_surface_create_vulkan_context(self, pointerof(_error))
+      _retval = LibGdk.gdk_surface_create_vulkan_context(@pointer, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -309,7 +307,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_surface_destroy(self)
+      LibGdk.gdk_surface_destroy(@pointer)
 
       # Return value handling
     end
@@ -326,7 +324,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_get_cursor(self)
+      _retval = LibGdk.gdk_surface_get_cursor(@pointer)
 
       # Return value handling
 
@@ -345,7 +343,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_get_device_cursor(self, device)
+      _retval = LibGdk.gdk_surface_get_device_cursor(@pointer, device)
 
       # Return value handling
 
@@ -368,7 +366,7 @@ module Gdk
       y = Pointer(Float64).null # Generator::OutArgUsedInReturnPlan
       mask = Pointer(UInt32).null
       # C call
-      _retval = LibGdk.gdk_surface_get_device_position(self, device, x, y, mask)
+      _retval = LibGdk.gdk_surface_get_device_position(@pointer, device, x, y, mask)
 
       # Return value handling
 
@@ -381,7 +379,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_get_display(self)
+      _retval = LibGdk.gdk_surface_get_display(@pointer)
 
       # Return value handling
 
@@ -397,7 +395,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_get_frame_clock(self)
+      _retval = LibGdk.gdk_surface_get_frame_clock(@pointer)
 
       # Return value handling
 
@@ -413,7 +411,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_get_height(self)
+      _retval = LibGdk.gdk_surface_get_height(@pointer)
 
       # Return value handling
 
@@ -429,7 +427,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_get_mapped(self)
+      _retval = LibGdk.gdk_surface_get_mapped(@pointer)
 
       # Return value handling
 
@@ -452,7 +450,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_get_scale_factor(self)
+      _retval = LibGdk.gdk_surface_get_scale_factor(@pointer)
 
       # Return value handling
 
@@ -468,7 +466,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_get_width(self)
+      _retval = LibGdk.gdk_surface_get_width(@pointer)
 
       # Return value handling
 
@@ -486,7 +484,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_surface_hide(self)
+      LibGdk.gdk_surface_hide(@pointer)
 
       # Return value handling
     end
@@ -497,7 +495,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_is_destroyed(self)
+      _retval = LibGdk.gdk_surface_is_destroyed(@pointer)
 
       # Return value handling
 
@@ -514,7 +512,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_surface_queue_render(self)
+      LibGdk.gdk_surface_queue_render(@pointer)
 
       # Return value handling
     end
@@ -527,7 +525,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_surface_request_layout(self)
+      LibGdk.gdk_surface_request_layout(@pointer)
 
       # Return value handling
     end
@@ -553,7 +551,7 @@ module Gdk
                end
 
       # C call
-      LibGdk.gdk_surface_set_cursor(self, cursor)
+      LibGdk.gdk_surface_set_cursor(@pointer, cursor)
 
       # Return value handling
     end
@@ -570,7 +568,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_surface_set_device_cursor(self, device, cursor)
+      LibGdk.gdk_surface_set_device_cursor(@pointer, device, cursor)
 
       # Return value handling
     end
@@ -594,7 +592,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_surface_set_input_region(self, region)
+      LibGdk.gdk_surface_set_input_region(@pointer, region)
 
       # Return value handling
     end
@@ -627,7 +625,7 @@ module Gdk
                end
 
       # C call
-      LibGdk.gdk_surface_set_opaque_region(self, region)
+      LibGdk.gdk_surface_set_opaque_region(@pointer, region)
 
       # Return value handling
     end
@@ -643,7 +641,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_surface_translate_coordinates(self, to, x, y)
+      _retval = LibGdk.gdk_surface_translate_coordinates(@pointer, to, x, y)
 
       # Return value handling
 
@@ -678,7 +676,7 @@ module Gdk
       def connect(handler : Proc(Gdk::Monitor, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_monitor : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           monitor = Gdk::Monitor.new(lib_monitor, :none)
           ::Box(Proc(Gdk::Monitor, Nil)).unbox(_lib_box).call(monitor)
         }.pointer
@@ -690,7 +688,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::Monitor, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_monitor : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           monitor = Gdk::Monitor.new(lib_monitor, :none)
           ::Box(Proc(Gdk::Monitor, Nil)).unbox(_lib_box).call(monitor)
         }.pointer
@@ -703,7 +701,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_monitor : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Surface.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           monitor = Gdk::Monitor.new(lib_monitor, :none)
           ::Box(Proc(Gdk::Surface, Gdk::Monitor, Nil)).unbox(_lib_box).call(_sender, monitor)
         }.pointer
@@ -716,7 +714,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_monitor : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Surface.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           monitor = Gdk::Monitor.new(lib_monitor, :none)
           ::Box(Proc(Gdk::Surface, Gdk::Monitor, Nil)).unbox(_lib_box).call(_sender, monitor)
         }.pointer
@@ -762,7 +760,7 @@ module Gdk
       def connect(handler : Proc(Gdk::Event, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           event = Gdk::Event.new(lib_event, :none)
           ::Box(Proc(Gdk::Event, Bool)).unbox(_lib_box).call(event)
         }.pointer
@@ -774,7 +772,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::Event, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           event = Gdk::Event.new(lib_event, :none)
           ::Box(Proc(Gdk::Event, Bool)).unbox(_lib_box).call(event)
         }.pointer
@@ -787,7 +785,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Surface.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           event = Gdk::Event.new(lib_event, :none)
           ::Box(Proc(Gdk::Surface, Gdk::Event, Bool)).unbox(_lib_box).call(_sender, event)
         }.pointer
@@ -800,7 +798,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Surface.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           event = Gdk::Event.new(lib_event, :none)
           ::Box(Proc(Gdk::Surface, Gdk::Event, Bool)).unbox(_lib_box).call(_sender, event)
         }.pointer
@@ -934,7 +932,7 @@ module Gdk
       def connect(handler : Proc(Gdk::Monitor, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_monitor : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           monitor = Gdk::Monitor.new(lib_monitor, :none)
           ::Box(Proc(Gdk::Monitor, Nil)).unbox(_lib_box).call(monitor)
         }.pointer
@@ -946,7 +944,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::Monitor, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_monitor : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           monitor = Gdk::Monitor.new(lib_monitor, :none)
           ::Box(Proc(Gdk::Monitor, Nil)).unbox(_lib_box).call(monitor)
         }.pointer
@@ -959,7 +957,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_monitor : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Surface.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           monitor = Gdk::Monitor.new(lib_monitor, :none)
           ::Box(Proc(Gdk::Surface, Gdk::Monitor, Nil)).unbox(_lib_box).call(_sender, monitor)
         }.pointer
@@ -972,7 +970,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_monitor : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Surface.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           monitor = Gdk::Monitor.new(lib_monitor, :none)
           ::Box(Proc(Gdk::Surface, Gdk::Monitor, Nil)).unbox(_lib_box).call(_sender, monitor)
         }.pointer
@@ -1018,7 +1016,7 @@ module Gdk
       def connect(handler : Proc(Cairo::Region, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_region : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           region = Cairo::Region.new(lib_region, :none)
           ::Box(Proc(Cairo::Region, Bool)).unbox(_lib_box).call(region)
         }.pointer
@@ -1030,7 +1028,7 @@ module Gdk
       def connect_after(handler : Proc(Cairo::Region, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_region : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           region = Cairo::Region.new(lib_region, :none)
           ::Box(Proc(Cairo::Region, Bool)).unbox(_lib_box).call(region)
         }.pointer
@@ -1043,7 +1041,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_region : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Surface.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           region = Cairo::Region.new(lib_region, :none)
           ::Box(Proc(Gdk::Surface, Cairo::Region, Bool)).unbox(_lib_box).call(_sender, region)
         }.pointer
@@ -1056,7 +1054,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_region : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Surface.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           region = Cairo::Region.new(lib_region, :none)
           ::Box(Proc(Gdk::Surface, Cairo::Region, Bool)).unbox(_lib_box).call(_sender, region)
         }.pointer

@@ -58,7 +58,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_row_reference_copy(self)
+      _retval = LibGtk.gtk_tree_row_reference_copy(@pointer)
 
       # Return value handling
 
@@ -70,7 +70,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_row_reference_free(self)
+      LibGtk.gtk_tree_row_reference_free(@pointer)
 
       # Return value handling
     end
@@ -80,11 +80,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_row_reference_get_model(self)
+      _retval = LibGtk.gtk_tree_row_reference_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None)
+      Gtk::AbstractTreeModel.new(_retval, GICrystal::Transfer::None)
     end
 
     def path : Gtk::TreePath?
@@ -92,7 +92,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_row_reference_get_path(self)
+      _retval = LibGtk.gtk_tree_row_reference_get_path(@pointer)
 
       # Return value handling
 
@@ -104,7 +104,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_row_reference_valid(self)
+      _retval = LibGtk.gtk_tree_row_reference_valid(@pointer)
 
       # Return value handling
 

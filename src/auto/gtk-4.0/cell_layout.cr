@@ -125,7 +125,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_layout_add_attribute(self, cell, attribute, column)
+      LibGtk.gtk_cell_layout_add_attribute(@pointer, cell, attribute, column)
 
       # Return value handling
     end
@@ -135,7 +135,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_layout_clear(self)
+      LibGtk.gtk_cell_layout_clear(@pointer)
 
       # Return value handling
     end
@@ -145,7 +145,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_layout_clear_attributes(self, cell)
+      LibGtk.gtk_cell_layout_clear_attributes(@pointer, cell)
 
       # Return value handling
     end
@@ -155,7 +155,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_cell_layout_get_area(self)
+      _retval = LibGtk.gtk_cell_layout_get_area(@pointer)
 
       # Return value handling
 
@@ -167,7 +167,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_cell_layout_get_cells(self)
+      _retval = LibGtk.gtk_cell_layout_get_cells(@pointer)
 
       # Return value handling
 
@@ -179,7 +179,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_layout_pack_end(self, cell, expand)
+      LibGtk.gtk_cell_layout_pack_end(@pointer, cell, expand)
 
       # Return value handling
     end
@@ -189,7 +189,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_layout_pack_start(self, cell, expand)
+      LibGtk.gtk_cell_layout_pack_start(@pointer, cell, expand)
 
       # Return value handling
     end
@@ -199,7 +199,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_layout_reorder(self, cell, position)
+      LibGtk.gtk_cell_layout_reorder(@pointer, cell, position)
 
       # Return value handling
     end
@@ -214,16 +214,15 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_cell_layout : Pointer(Void), lib_cell : Pointer(Void), lib_tree_model : Pointer(Void), lib_iter : Pointer(Void), lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           cell_layout = Gtk::CellLayout.new(lib_cell_layout, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           cell = Gtk::CellRenderer.new(lib_cell, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tree_model = Gtk::TreeModel.new(lib_tree_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          data = lib_data
-          ::Box(Proc(Gtk::CellLayout, Gtk::CellRenderer, Gtk::TreeModel, Gtk::TreeIter, Nil)).unbox(data).call(cell_layout, cell, tree_model, iter)
+          ::Box(Proc(Gtk::CellLayout, Gtk::CellRenderer, Gtk::TreeModel, Gtk::TreeIter, Nil)).unbox(lib_data).call(cell_layout, cell, tree_model, iter)
         }.pointer
         func_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -232,7 +231,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_cell_layout_set_cell_data_func(self, cell, func, func_data, destroy)
+      LibGtk.gtk_cell_layout_set_cell_data_func(@pointer, cell, func, func_data, destroy)
 
       # Return value handling
     end
@@ -242,8 +241,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class CellLayout__Impl < GObject::Object
+  class AbstractCellLayout < GObject::Object
     include CellLayout
+
+    GICrystal.define_new_method(Gtk::AbstractCellLayout, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

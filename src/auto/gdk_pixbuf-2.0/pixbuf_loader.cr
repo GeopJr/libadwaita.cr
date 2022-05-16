@@ -57,15 +57,13 @@ module GdkPixbuf
         sizeof(LibGdkPixbuf::PixbufLoader), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(PixbufLoader, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `PixbufLoader`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -177,7 +175,7 @@ module GdkPixbuf
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_loader_close(self, pointerof(_error))
+      _retval = LibGdkPixbuf.gdk_pixbuf_loader_close(@pointer, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
@@ -200,7 +198,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_loader_get_animation(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_loader_get_animation(@pointer)
 
       # Return value handling
 
@@ -214,7 +212,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_loader_get_format(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_loader_get_format(@pointer)
 
       # Return value handling
 
@@ -241,7 +239,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_loader_get_pixbuf(self)
+      _retval = LibGdkPixbuf.gdk_pixbuf_loader_get_pixbuf(@pointer)
 
       # Return value handling
 
@@ -261,7 +259,7 @@ module GdkPixbuf
       # Returns: (transfer none)
 
       # C call
-      LibGdkPixbuf.gdk_pixbuf_loader_set_size(self, width, height)
+      LibGdkPixbuf.gdk_pixbuf_loader_set_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -279,7 +277,7 @@ module GdkPixbuf
       buf = buf.to_a.to_unsafe
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_loader_write(self, buf, count, pointerof(_error))
+      _retval = LibGdkPixbuf.gdk_pixbuf_loader_write(@pointer, buf, count, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?
@@ -301,7 +299,7 @@ module GdkPixbuf
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_loader_write_bytes(self, buffer, pointerof(_error))
+      _retval = LibGdkPixbuf.gdk_pixbuf_loader_write_bytes(@pointer, buffer, pointerof(_error))
 
       # Error check
       GdkPixbuf.raise_exception(_error) unless _error.null?

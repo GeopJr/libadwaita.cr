@@ -23,7 +23,7 @@ module GModule
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGModule.g_module_close(self)
+      _retval = LibGModule.g_module_close(@pointer)
 
       # Return value handling
 
@@ -35,7 +35,7 @@ module GModule
       # Returns: (transfer none)
 
       # C call
-      LibGModule.g_module_make_resident(self)
+      LibGModule.g_module_make_resident(@pointer)
 
       # Return value handling
     end
@@ -45,7 +45,7 @@ module GModule
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGModule.g_module_name(self)
+      _retval = LibGModule.g_module_name(@pointer)
 
       # Return value handling
 
@@ -65,7 +65,7 @@ module GModule
                end
 
       # C call
-      _retval = LibGModule.g_module_symbol(self, symbol_name, symbol)
+      _retval = LibGModule.g_module_symbol(@pointer, symbol_name, symbol)
 
       # Return value handling
 

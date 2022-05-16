@@ -109,7 +109,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_font(self)
+      _retval = LibGtk.gtk_font_chooser_get_font(@pointer)
 
       # Return value handling
 
@@ -121,7 +121,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_font_desc(self)
+      _retval = LibGtk.gtk_font_chooser_get_font_desc(@pointer)
 
       # Return value handling
 
@@ -133,7 +133,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_font_face(self)
+      _retval = LibGtk.gtk_font_chooser_get_font_face(@pointer)
 
       # Return value handling
 
@@ -145,7 +145,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_font_family(self)
+      _retval = LibGtk.gtk_font_chooser_get_font_family(@pointer)
 
       # Return value handling
 
@@ -157,7 +157,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_font_features(self)
+      _retval = LibGtk.gtk_font_chooser_get_font_features(@pointer)
 
       # Return value handling
 
@@ -169,7 +169,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_font_map(self)
+      _retval = LibGtk.gtk_font_chooser_get_font_map(@pointer)
 
       # Return value handling
 
@@ -181,7 +181,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_font_size(self)
+      _retval = LibGtk.gtk_font_chooser_get_font_size(@pointer)
 
       # Return value handling
 
@@ -193,7 +193,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_language(self)
+      _retval = LibGtk.gtk_font_chooser_get_language(@pointer)
 
       # Return value handling
 
@@ -205,7 +205,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_level(self)
+      _retval = LibGtk.gtk_font_chooser_get_level(@pointer)
 
       # Return value handling
 
@@ -217,7 +217,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_preview_text(self)
+      _retval = LibGtk.gtk_font_chooser_get_preview_text(@pointer)
 
       # Return value handling
 
@@ -229,7 +229,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_font_chooser_get_show_preview_entry(self)
+      _retval = LibGtk.gtk_font_chooser_get_show_preview_entry(@pointer)
 
       # Return value handling
 
@@ -246,12 +246,11 @@ module Gtk
       if filter
         _box = ::Box.box(filter)
         filter = ->(lib_family : Pointer(Void), lib_face : Pointer(Void), lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           family = Pango::FontFamily.new(lib_family, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           face = Pango::FontFace.new(lib_face, :none)
-          data = lib_data
-          ::Box(Proc(Pango::FontFamily, Pango::FontFace, Bool)).unbox(data).call(family, face)
+          ::Box(Proc(Pango::FontFamily, Pango::FontFace, Bool)).unbox(lib_data).call(family, face)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -260,7 +259,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_font_chooser_set_filter_func(self, filter, user_data, destroy)
+      LibGtk.gtk_font_chooser_set_filter_func(@pointer, filter, user_data, destroy)
 
       # Return value handling
     end
@@ -270,7 +269,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_chooser_set_font(self, fontname)
+      LibGtk.gtk_font_chooser_set_font(@pointer, fontname)
 
       # Return value handling
     end
@@ -280,7 +279,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_chooser_set_font_desc(self, font_desc)
+      LibGtk.gtk_font_chooser_set_font_desc(@pointer, font_desc)
 
       # Return value handling
     end
@@ -298,7 +297,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_font_chooser_set_font_map(self, fontmap)
+      LibGtk.gtk_font_chooser_set_font_map(@pointer, fontmap)
 
       # Return value handling
     end
@@ -308,7 +307,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_chooser_set_language(self, language)
+      LibGtk.gtk_font_chooser_set_language(@pointer, language)
 
       # Return value handling
     end
@@ -318,7 +317,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_chooser_set_level(self, level)
+      LibGtk.gtk_font_chooser_set_level(@pointer, level)
 
       # Return value handling
     end
@@ -328,7 +327,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_chooser_set_preview_text(self, text)
+      LibGtk.gtk_font_chooser_set_preview_text(@pointer, text)
 
       # Return value handling
     end
@@ -338,7 +337,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_chooser_set_show_preview_entry(self, show_preview_entry)
+      LibGtk.gtk_font_chooser_set_show_preview_entry(@pointer, show_preview_entry)
 
       # Return value handling
     end
@@ -370,7 +369,8 @@ module Gtk
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_fontname : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          fontname = lib_fontname
+          # Generator::BuiltInTypeArgPlan
+          fontname = ::String.new(lib_fontname)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(fontname)
         }.pointer
 
@@ -381,7 +381,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_fontname : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          fontname = lib_fontname
+          # Generator::BuiltInTypeArgPlan
+          fontname = ::String.new(lib_fontname)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(fontname)
         }.pointer
 
@@ -392,8 +393,9 @@ module Gtk
       def connect(handler : Proc(Gtk::FontChooser, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_fontname : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gtk::FontChooser__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          fontname = lib_fontname
+          _sender = Gtk::AbstractFontChooser.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          fontname = ::String.new(lib_fontname)
           ::Box(Proc(Gtk::FontChooser, ::String, Nil)).unbox(_lib_box).call(_sender, fontname)
         }.pointer
 
@@ -404,8 +406,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::FontChooser, ::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_fontname : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gtk::FontChooser__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          fontname = lib_fontname
+          _sender = Gtk::AbstractFontChooser.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          fontname = ::String.new(lib_fontname)
           ::Box(Proc(Gtk::FontChooser, ::String, Nil)).unbox(_lib_box).call(_sender, fontname)
         }.pointer
 
@@ -427,8 +430,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class FontChooser__Impl < GObject::Object
+  class AbstractFontChooser < GObject::Object
     include FontChooser
+
+    GICrystal.define_new_method(Gtk::AbstractFontChooser, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

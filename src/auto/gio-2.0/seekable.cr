@@ -19,7 +19,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_seekable_can_seek(self)
+      _retval = LibGio.g_seekable_can_seek(@pointer)
 
       # Return value handling
 
@@ -31,7 +31,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_seekable_can_truncate(self)
+      _retval = LibGio.g_seekable_can_truncate(@pointer)
 
       # Return value handling
 
@@ -53,7 +53,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_seekable_seek(self, offset, type, cancellable, pointerof(_error))
+      _retval = LibGio.g_seekable_seek(@pointer, offset, type, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -68,7 +68,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_seekable_tell(self)
+      _retval = LibGio.g_seekable_tell(@pointer)
 
       # Return value handling
 
@@ -90,7 +90,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_seekable_truncate(self, offset, cancellable, pointerof(_error))
+      _retval = LibGio.g_seekable_truncate(@pointer, offset, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -105,8 +105,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Seekable__Impl < GObject::Object
+  class AbstractSeekable < GObject::Object
     include Seekable
+
+    GICrystal.define_new_method(Gio::AbstractSeekable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

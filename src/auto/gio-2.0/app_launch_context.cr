@@ -15,15 +15,13 @@ module Gio
         sizeof(LibGio::AppLaunchContext), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(AppLaunchContext, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `AppLaunchContext`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -59,7 +57,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_app_launch_context_get_display(self, info, files)
+      _retval = LibGio.g_app_launch_context_get_display(@pointer, info, files)
 
       # Return value handling
 
@@ -75,7 +73,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Filename)
 
       # C call
-      _retval = LibGio.g_app_launch_context_get_environment(self)
+      _retval = LibGio.g_app_launch_context_get_environment(@pointer)
 
       # Return value handling
 
@@ -92,7 +90,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_app_launch_context_get_startup_notify_id(self, info, files)
+      _retval = LibGio.g_app_launch_context_get_startup_notify_id(@pointer, info, files)
 
       # Return value handling
 
@@ -106,7 +104,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_app_launch_context_launch_failed(self, startup_notify_id)
+      LibGio.g_app_launch_context_launch_failed(@pointer, startup_notify_id)
 
       # Return value handling
     end
@@ -118,7 +116,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_app_launch_context_setenv(self, variable, value)
+      LibGio.g_app_launch_context_setenv(@pointer, variable, value)
 
       # Return value handling
     end
@@ -130,7 +128,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_app_launch_context_unsetenv(self, variable)
+      LibGio.g_app_launch_context_unsetenv(@pointer, variable)
 
       # Return value handling
     end
@@ -165,7 +163,8 @@ module Gio
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_startup_notify_id : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          startup_notify_id = lib_startup_notify_id
+          # Generator::BuiltInTypeArgPlan
+          startup_notify_id = ::String.new(lib_startup_notify_id)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(startup_notify_id)
         }.pointer
 
@@ -176,7 +175,8 @@ module Gio
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_startup_notify_id : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          startup_notify_id = lib_startup_notify_id
+          # Generator::BuiltInTypeArgPlan
+          startup_notify_id = ::String.new(lib_startup_notify_id)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(startup_notify_id)
         }.pointer
 
@@ -188,7 +188,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_startup_notify_id : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::AppLaunchContext.new(_lib_sender, GICrystal::Transfer::None)
-          startup_notify_id = lib_startup_notify_id
+          # Generator::BuiltInTypeArgPlan
+          startup_notify_id = ::String.new(lib_startup_notify_id)
           ::Box(Proc(Gio::AppLaunchContext, ::String, Nil)).unbox(_lib_box).call(_sender, startup_notify_id)
         }.pointer
 
@@ -200,7 +201,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_startup_notify_id : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gio::AppLaunchContext.new(_lib_sender, GICrystal::Transfer::None)
-          startup_notify_id = lib_startup_notify_id
+          # Generator::BuiltInTypeArgPlan
+          startup_notify_id = ::String.new(lib_startup_notify_id)
           ::Box(Proc(Gio::AppLaunchContext, ::String, Nil)).unbox(_lib_box).call(_sender, startup_notify_id)
         }.pointer
 
@@ -215,6 +217,120 @@ module Gio
 
     def launch_failed_signal
       LaunchFailedSignal.new(self)
+    end
+
+    # The #GAppLaunchContext::launch-started signal is emitted when a #GAppInfo is
+    # about to be launched. If non-null the @platform_data is an
+    # GVariant dictionary mapping strings to variants (ie `a{sv}`), which
+    # contains additional, platform-specific data about this launch. On
+    # UNIX, at least the `startup-notification-id` keys will be
+    # present.
+    #
+    # The value of the `startup-notification-id` key (type `s`) is a startup
+    # notification ID corresponding to the format from the [startup-notification
+    # specification](https://specifications.freedesktop.org/startup-notification-spec/startup-notification-0.1.txt).
+    # It allows tracking the progress of the launchee through startup.
+    #
+    # It is guaranteed that this signal is followed by either a #GAppLaunchContext::launched or
+    # #GAppLaunchContext::launch-failed signal.
+    struct LaunchStartedSignal
+      @source : GObject::Object
+      @detail : String?
+
+      def initialize(@source, @detail = nil)
+      end
+
+      def [](detail : String) : self
+        raise ArgumentError.new("This signal already have a detail") if @detail
+        self.class.new(@source, detail)
+      end
+
+      def name
+        @detail ? "launch-started::#{@detail}" : "launch-started"
+      end
+
+      def connect(&block : Proc(Gio::AppInfo, GLib::Variant?, Nil))
+        connect(block)
+      end
+
+      def connect_after(&block : Proc(Gio::AppInfo, GLib::Variant?, Nil))
+        connect(block)
+      end
+
+      def connect(handler : Proc(Gio::AppInfo, GLib::Variant?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_info : Pointer(Void), lib_platform_data : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::BuiltInTypeArgPlan
+          info = Gio::AppInfo.new(lib_info, :none)
+          # Generator::HandmadeArgPlan
+          platform_data = GLib::Variant.new(lib_platform_data, :none)
+          ::Box(Proc(Gio::AppInfo, GLib::Variant?, Nil)).unbox(_lib_box).call(info, platform_data)
+        }.pointer
+
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(handler : Proc(Gio::AppInfo, GLib::Variant?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_info : Pointer(Void), lib_platform_data : Pointer(Void), _lib_box : Pointer(Void)) {
+          # Generator::BuiltInTypeArgPlan
+          info = Gio::AppInfo.new(lib_info, :none)
+          # Generator::HandmadeArgPlan
+          platform_data = GLib::Variant.new(lib_platform_data, :none)
+          ::Box(Proc(Gio::AppInfo, GLib::Variant?, Nil)).unbox(_lib_box).call(info, platform_data)
+        }.pointer
+
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def connect(handler : Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_info : Pointer(Void), lib_platform_data : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::AppLaunchContext.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          info = Gio::AppInfo.new(lib_info, :none)
+          # Generator::HandmadeArgPlan
+          platform_data = GLib::Variant.new(lib_platform_data, :none)
+          ::Box(Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, info, platform_data)
+        }.pointer
+
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+      end
+
+      def connect_after(handler : Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant?, Nil))
+        _box = ::Box.box(handler)
+        handler = ->(_lib_sender : Pointer(Void), lib_info : Pointer(Void), lib_platform_data : Pointer(Void), _lib_box : Pointer(Void)) {
+          _sender = Gio::AppLaunchContext.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
+          info = Gio::AppInfo.new(lib_info, :none)
+          # Generator::HandmadeArgPlan
+          platform_data = GLib::Variant.new(lib_platform_data, :none)
+          ::Box(Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, info, platform_data)
+        }.pointer
+
+        LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+      end
+
+      def emit(info : Gio::AppInfo, platform_data : _?) : Nil
+        # Generator::HandmadeArgPlan
+        platform_data = if platform_data.nil?
+                          Pointer(Void).null
+                        elsif !platform_data.is_a?(GLib::Variant)
+                          GLib::Variant.new(platform_data).to_unsafe
+                        else
+                          platform_data.to_unsafe
+                        end
+
+        LibGObject.g_signal_emit_by_name(@source, "launch-started", info, platform_data)
+      end
+    end
+
+    def launch_started_signal
+      LaunchStartedSignal.new(self)
     end
 
     # The #GAppLaunchContext::launched signal is emitted when a #GAppInfo is successfully
@@ -253,11 +369,9 @@ module Gio
       def connect(handler : Proc(Gio::AppInfo, GLib::Variant, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_info : Pointer(Void), lib_platform_data : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           info = Gio::AppInfo.new(lib_info, :none)
           # Generator::HandmadeArgPlan
-          platform_data = GLib::Variant.new(lib_platform_data, :none)
-          # Generator::GObjectArgPlan
           platform_data = GLib::Variant.new(lib_platform_data, :none)
           ::Box(Proc(Gio::AppInfo, GLib::Variant, Nil)).unbox(_lib_box).call(info, platform_data)
         }.pointer
@@ -269,11 +383,9 @@ module Gio
       def connect_after(handler : Proc(Gio::AppInfo, GLib::Variant, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_info : Pointer(Void), lib_platform_data : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           info = Gio::AppInfo.new(lib_info, :none)
           # Generator::HandmadeArgPlan
-          platform_data = GLib::Variant.new(lib_platform_data, :none)
-          # Generator::GObjectArgPlan
           platform_data = GLib::Variant.new(lib_platform_data, :none)
           ::Box(Proc(Gio::AppInfo, GLib::Variant, Nil)).unbox(_lib_box).call(info, platform_data)
         }.pointer
@@ -286,11 +398,9 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_info : Pointer(Void), lib_platform_data : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::AppLaunchContext.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           info = Gio::AppInfo.new(lib_info, :none)
           # Generator::HandmadeArgPlan
-          platform_data = GLib::Variant.new(lib_platform_data, :none)
-          # Generator::GObjectArgPlan
           platform_data = GLib::Variant.new(lib_platform_data, :none)
           ::Box(Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, info, platform_data)
         }.pointer
@@ -303,11 +413,9 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_info : Pointer(Void), lib_platform_data : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::AppLaunchContext.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           info = Gio::AppInfo.new(lib_info, :none)
           # Generator::HandmadeArgPlan
-          platform_data = GLib::Variant.new(lib_platform_data, :none)
-          # Generator::GObjectArgPlan
           platform_data = GLib::Variant.new(lib_platform_data, :none)
           ::Box(Proc(Gio::AppLaunchContext, Gio::AppInfo, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, info, platform_data)
         }.pointer
@@ -317,7 +425,13 @@ module Gio
       end
 
       def emit(info : Gio::AppInfo, platform_data : _) : Nil
-        platform_data = GLib::Variant.new(platform_data) unless platform_data.is_a?(GLib::Variant)
+        # Generator::HandmadeArgPlan
+        platform_data = if !platform_data.is_a?(GLib::Variant)
+                          GLib::Variant.new(platform_data).to_unsafe
+                        else
+                          platform_data.to_unsafe
+                        end
+
         LibGObject.g_signal_emit_by_name(@source, "launched", info, platform_data)
       end
     end

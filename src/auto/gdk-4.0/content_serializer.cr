@@ -27,15 +27,13 @@ module Gdk
         sizeof(LibGdk::ContentSerializer), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ContentSerializer, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ContentSerializer`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -56,7 +54,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_serializer_get_cancellable(self)
+      _retval = LibGdk.gdk_content_serializer_get_cancellable(@pointer)
 
       # Return value handling
 
@@ -69,7 +67,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_serializer_get_gtype(self)
+      _retval = LibGdk.gdk_content_serializer_get_gtype(@pointer)
 
       # Return value handling
 
@@ -82,7 +80,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_serializer_get_mime_type(self)
+      _retval = LibGdk.gdk_content_serializer_get_mime_type(@pointer)
 
       # Return value handling
 
@@ -97,7 +95,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_serializer_get_output_stream(self)
+      _retval = LibGdk.gdk_content_serializer_get_output_stream(@pointer)
 
       # Return value handling
 
@@ -112,7 +110,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_serializer_get_priority(self)
+      _retval = LibGdk.gdk_content_serializer_get_priority(@pointer)
 
       # Return value handling
 
@@ -127,7 +125,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_serializer_get_task_data(self)
+      _retval = LibGdk.gdk_content_serializer_get_task_data(@pointer)
 
       # Return value handling
 
@@ -140,7 +138,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_serializer_get_user_data(self)
+      _retval = LibGdk.gdk_content_serializer_get_user_data(@pointer)
 
       # Return value handling
 
@@ -153,7 +151,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_content_serializer_get_value(self)
+      _retval = LibGdk.gdk_content_serializer_get_value(@pointer)
 
       # Return value handling
 
@@ -169,7 +167,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_content_serializer_return_error(self, error)
+      LibGdk.gdk_content_serializer_return_error(@pointer, error)
 
       # Return value handling
     end
@@ -180,7 +178,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_content_serializer_return_success(self)
+      LibGdk.gdk_content_serializer_return_success(@pointer)
 
       # Return value handling
     end
@@ -199,7 +197,7 @@ module Gdk
              end
 
       # C call
-      LibGdk.gdk_content_serializer_set_task_data(self, data, notify)
+      LibGdk.gdk_content_serializer_set_task_data(@pointer, data, notify)
 
       # Return value handling
     end

@@ -85,15 +85,13 @@ module Gtk
         sizeof(LibGtk::TreeModelFilter), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TreeModelFilter, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TreeModelFilter`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -143,7 +141,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "child-model", pointerof(value), Pointer(Void).null)
-      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractTreeModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def virtual_root=(value : Gtk::TreePath?) : Gtk::TreePath?
@@ -172,7 +170,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_filter_clear_cache(self)
+      LibGtk.gtk_tree_model_filter_clear_cache(@pointer)
 
       # Return value handling
     end
@@ -188,7 +186,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       filter_iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_tree_model_filter_convert_child_iter_to_iter(self, filter_iter, child_iter)
+      _retval = LibGtk.gtk_tree_model_filter_convert_child_iter_to_iter(@pointer, filter_iter, child_iter)
 
       # Return value handling
 
@@ -205,7 +203,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_filter_convert_child_path_to_path(self, child_path)
+      _retval = LibGtk.gtk_tree_model_filter_convert_child_path_to_path(@pointer, child_path)
 
       # Return value handling
 
@@ -221,7 +219,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       child_iter = Gtk::TreeIter.new
       # C call
-      LibGtk.gtk_tree_model_filter_convert_iter_to_child_iter(self, child_iter, filter_iter)
+      LibGtk.gtk_tree_model_filter_convert_iter_to_child_iter(@pointer, child_iter, filter_iter)
 
       # Return value handling
 
@@ -237,7 +235,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_filter_convert_path_to_child_path(self, filter_path)
+      _retval = LibGtk.gtk_tree_model_filter_convert_path_to_child_path(@pointer, filter_path)
 
       # Return value handling
 
@@ -250,11 +248,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_filter_get_model(self)
+      _retval = LibGtk.gtk_tree_model_filter_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None)
+      Gtk::AbstractTreeModel.new(_retval, GICrystal::Transfer::None)
     end
 
     # Emits ::row_changed for each row in the child model, which causes
@@ -264,7 +262,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_filter_refilter(self)
+      LibGtk.gtk_tree_model_filter_refilter(@pointer)
 
       # Return value handling
     end
@@ -293,16 +291,13 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_value : Void, lib_column : Int32, lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           # Generator::CallerAllocatesPlan
-          # Generator::GObjectArgPlan
-          value = GObject::Value.new(lib_value, :none)
           column = lib_column
-          data = lib_data
-          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, GObject::Value, Int32, Nil)).unbox(data).call(model, iter, column)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Int32, Nil)).unbox(lib_data).call(model, iter, column)
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -311,7 +306,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_tree_model_filter_set_modify_func(self, n_columns, types, func, data, destroy)
+      LibGtk.gtk_tree_model_filter_set_modify_func(@pointer, n_columns, types, func, data, destroy)
 
       # Return value handling
     end
@@ -329,7 +324,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_filter_set_visible_column(self, column)
+      LibGtk.gtk_tree_model_filter_set_visible_column(@pointer, column)
 
       # Return value handling
     end
@@ -379,12 +374,11 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          data = lib_data
-          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(data).call(model, iter)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(lib_data).call(model, iter)
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -393,7 +387,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_tree_model_filter_set_visible_func(self, func, data, destroy)
+      LibGtk.gtk_tree_model_filter_set_visible_func(@pointer, func, data, destroy)
 
       # Return value handling
     end

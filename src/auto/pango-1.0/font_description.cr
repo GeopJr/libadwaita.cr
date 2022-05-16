@@ -57,7 +57,7 @@ module Pango
                   end
 
       # C call
-      _retval = LibPango.pango_font_description_better_match(self, old_match, new_match)
+      _retval = LibPango.pango_font_description_better_match(@pointer, old_match, new_match)
 
       # Return value handling
 
@@ -69,7 +69,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_description_copy(self)
+      _retval = LibPango.pango_font_description_copy(@pointer)
 
       # Return value handling
 
@@ -81,7 +81,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_description_copy_static(self)
+      _retval = LibPango.pango_font_description_copy_static(@pointer)
 
       # Return value handling
 
@@ -93,7 +93,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_equal(self, desc2)
+      _retval = LibPango.pango_font_description_equal(@pointer, desc2)
 
       # Return value handling
 
@@ -105,7 +105,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_free(self)
+      LibPango.pango_font_description_free(@pointer)
 
       # Return value handling
     end
@@ -115,7 +115,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_family(self)
+      _retval = LibPango.pango_font_description_get_family(@pointer)
 
       # Return value handling
 
@@ -127,7 +127,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_gravity(self)
+      _retval = LibPango.pango_font_description_get_gravity(@pointer)
 
       # Return value handling
 
@@ -139,7 +139,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_set_fields(self)
+      _retval = LibPango.pango_font_description_get_set_fields(@pointer)
 
       # Return value handling
 
@@ -151,7 +151,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_size(self)
+      _retval = LibPango.pango_font_description_get_size(@pointer)
 
       # Return value handling
 
@@ -163,7 +163,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_size_is_absolute(self)
+      _retval = LibPango.pango_font_description_get_size_is_absolute(@pointer)
 
       # Return value handling
 
@@ -175,7 +175,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_stretch(self)
+      _retval = LibPango.pango_font_description_get_stretch(@pointer)
 
       # Return value handling
 
@@ -187,7 +187,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_style(self)
+      _retval = LibPango.pango_font_description_get_style(@pointer)
 
       # Return value handling
 
@@ -199,7 +199,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_variant(self)
+      _retval = LibPango.pango_font_description_get_variant(@pointer)
 
       # Return value handling
 
@@ -211,7 +211,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_variations(self)
+      _retval = LibPango.pango_font_description_get_variations(@pointer)
 
       # Return value handling
 
@@ -223,7 +223,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_get_weight(self)
+      _retval = LibPango.pango_font_description_get_weight(@pointer)
 
       # Return value handling
 
@@ -235,7 +235,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_font_description_hash(self)
+      _retval = LibPango.pango_font_description_hash(@pointer)
 
       # Return value handling
 
@@ -255,7 +255,7 @@ module Pango
                       end
 
       # C call
-      LibPango.pango_font_description_merge(self, desc_to_merge, replace_existing)
+      LibPango.pango_font_description_merge(@pointer, desc_to_merge, replace_existing)
 
       # Return value handling
     end
@@ -265,7 +265,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_merge_static(self, desc_to_merge, replace_existing)
+      LibPango.pango_font_description_merge_static(@pointer, desc_to_merge, replace_existing)
 
       # Return value handling
     end
@@ -275,7 +275,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_absolute_size(self, size)
+      LibPango.pango_font_description_set_absolute_size(@pointer, size)
 
       # Return value handling
     end
@@ -285,7 +285,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_family(self, family)
+      LibPango.pango_font_description_set_family(@pointer, family)
 
       # Return value handling
     end
@@ -295,7 +295,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_family_static(self, family)
+      LibPango.pango_font_description_set_family_static(@pointer, family)
 
       # Return value handling
     end
@@ -305,7 +305,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_gravity(self, gravity)
+      LibPango.pango_font_description_set_gravity(@pointer, gravity)
 
       # Return value handling
     end
@@ -315,7 +315,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_size(self, size)
+      LibPango.pango_font_description_set_size(@pointer, size)
 
       # Return value handling
     end
@@ -325,7 +325,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_stretch(self, stretch)
+      LibPango.pango_font_description_set_stretch(@pointer, stretch)
 
       # Return value handling
     end
@@ -335,7 +335,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_style(self, style)
+      LibPango.pango_font_description_set_style(@pointer, style)
 
       # Return value handling
     end
@@ -345,7 +345,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_variant(self, variant)
+      LibPango.pango_font_description_set_variant(@pointer, variant)
 
       # Return value handling
     end
@@ -363,7 +363,7 @@ module Pango
                    end
 
       # C call
-      LibPango.pango_font_description_set_variations(self, variations)
+      LibPango.pango_font_description_set_variations(@pointer, variations)
 
       # Return value handling
     end
@@ -373,7 +373,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_variations_static(self, variations)
+      LibPango.pango_font_description_set_variations_static(@pointer, variations)
 
       # Return value handling
     end
@@ -383,7 +383,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_set_weight(self, weight)
+      LibPango.pango_font_description_set_weight(@pointer, weight)
 
       # Return value handling
     end
@@ -393,7 +393,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_description_to_filename(self)
+      _retval = LibPango.pango_font_description_to_filename(@pointer)
 
       # Return value handling
 
@@ -405,7 +405,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_font_description_to_string(self)
+      _retval = LibPango.pango_font_description_to_string(@pointer)
 
       # Return value handling
 
@@ -417,7 +417,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_font_description_unset_fields(self, to_unset)
+      LibPango.pango_font_description_unset_fields(@pointer, to_unset)
 
       # Return value handling
     end

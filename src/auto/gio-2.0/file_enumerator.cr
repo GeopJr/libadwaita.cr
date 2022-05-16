@@ -38,15 +38,13 @@ module Gio
         sizeof(LibGio::FileEnumerator), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FileEnumerator, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FileEnumerator`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -107,7 +105,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_file_enumerator_close(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_file_enumerator_close(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -144,7 +142,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_file_enumerator_close_async(self, io_priority, cancellable, callback, user_data)
+      LibGio.g_file_enumerator_close_async(@pointer, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -166,7 +164,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_file_enumerator_close_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_file_enumerator_close_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -194,11 +192,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_enumerator_get_child(self, info)
+      _retval = LibGio.g_file_enumerator_get_child(@pointer, info)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Get the #GFile container which is being enumerated.
@@ -207,11 +205,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_enumerator_get_container(self)
+      _retval = LibGio.g_file_enumerator_get_container(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::None)
     end
 
     # Checks if the file enumerator has pending operations.
@@ -220,7 +218,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_enumerator_has_pending(self)
+      _retval = LibGio.g_file_enumerator_has_pending(@pointer)
 
       # Return value handling
 
@@ -233,7 +231,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_enumerator_is_closed(self)
+      _retval = LibGio.g_file_enumerator_is_closed(@pointer)
 
       # Return value handling
 
@@ -297,7 +295,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_file_enumerator_iterate(self, out_info, out_child, cancellable, pointerof(_error))
+      _retval = LibGio.g_file_enumerator_iterate(@pointer, out_info, out_child, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -333,7 +331,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_file_enumerator_next_file(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_file_enumerator_next_file(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -383,7 +381,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_file_enumerator_next_files_async(self, num_files, io_priority, cancellable, callback, user_data)
+      LibGio.g_file_enumerator_next_files_async(@pointer, num_files, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -396,7 +394,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_file_enumerator_next_files_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_file_enumerator_next_files_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -412,7 +410,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_enumerator_set_pending(self, pending)
+      LibGio.g_file_enumerator_set_pending(@pointer, pending)
 
       # Return value handling
     end

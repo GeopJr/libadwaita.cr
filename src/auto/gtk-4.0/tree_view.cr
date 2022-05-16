@@ -113,15 +113,13 @@ module Gtk
         sizeof(LibGtk::TreeView), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TreeView, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TreeView`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -607,7 +605,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractTreeModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def reorderable=(value : Bool) : Bool
@@ -722,7 +720,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_append_column(self, column)
+      _retval = LibGtk.gtk_tree_view_append_column(@pointer, column)
 
       # Return value handling
 
@@ -735,7 +733,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_collapse_all(self)
+      LibGtk.gtk_tree_view_collapse_all(@pointer)
 
       # Return value handling
     end
@@ -746,7 +744,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_collapse_row(self, path)
+      _retval = LibGtk.gtk_tree_view_collapse_row(@pointer, path)
 
       # Return value handling
 
@@ -760,7 +758,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_columns_autosize(self)
+      LibGtk.gtk_tree_view_columns_autosize(@pointer)
 
       # Return value handling
     end
@@ -774,7 +772,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_convert_bin_window_to_tree_coords(self, bx, by, tx, ty)
+      LibGtk.gtk_tree_view_convert_bin_window_to_tree_coords(@pointer, bx, by, tx, ty)
 
       # Return value handling
     end
@@ -787,7 +785,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_convert_bin_window_to_widget_coords(self, bx, by, wx, wy)
+      LibGtk.gtk_tree_view_convert_bin_window_to_widget_coords(@pointer, bx, by, wx, wy)
 
       # Return value handling
     end
@@ -801,7 +799,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_convert_tree_to_bin_window_coords(self, tx, ty, bx, by)
+      LibGtk.gtk_tree_view_convert_tree_to_bin_window_coords(@pointer, tx, ty, bx, by)
 
       # Return value handling
     end
@@ -815,7 +813,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_convert_tree_to_widget_coords(self, tx, ty, wx, wy)
+      LibGtk.gtk_tree_view_convert_tree_to_widget_coords(@pointer, tx, ty, wx, wy)
 
       # Return value handling
     end
@@ -828,7 +826,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_convert_widget_to_bin_window_coords(self, wx, wy, bx, by)
+      LibGtk.gtk_tree_view_convert_widget_to_bin_window_coords(@pointer, wx, wy, bx, by)
 
       # Return value handling
     end
@@ -842,7 +840,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_convert_widget_to_tree_coords(self, wx, wy, tx, ty)
+      LibGtk.gtk_tree_view_convert_widget_to_tree_coords(@pointer, wx, wy, tx, ty)
 
       # Return value handling
     end
@@ -854,11 +852,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_create_row_drag_icon(self, path)
+      _retval = LibGtk.gtk_tree_view_create_row_drag_icon(@pointer, path)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     # Turns @tree_view into a drop destination for automatic DND. Calling
@@ -868,7 +866,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_enable_model_drag_dest(self, formats, actions)
+      LibGtk.gtk_tree_view_enable_model_drag_dest(@pointer, formats, actions)
 
       # Return value handling
     end
@@ -880,7 +878,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_enable_model_drag_source(self, start_button_mask, formats, actions)
+      LibGtk.gtk_tree_view_enable_model_drag_source(@pointer, start_button_mask, formats, actions)
 
       # Return value handling
     end
@@ -891,7 +889,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_expand_all(self)
+      LibGtk.gtk_tree_view_expand_all(@pointer)
 
       # Return value handling
     end
@@ -902,7 +900,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_expand_row(self, path, open_all)
+      _retval = LibGtk.gtk_tree_view_expand_row(@pointer, path, open_all)
 
       # Return value handling
 
@@ -916,7 +914,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_expand_to_path(self, path)
+      LibGtk.gtk_tree_view_expand_to_path(@pointer, path)
 
       # Return value handling
     end
@@ -927,7 +925,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_activate_on_single_click(self)
+      _retval = LibGtk.gtk_tree_view_get_activate_on_single_click(@pointer)
 
       # Return value handling
 
@@ -965,7 +963,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
       # C call
-      LibGtk.gtk_tree_view_get_background_area(self, path, column, rect)
+      LibGtk.gtk_tree_view_get_background_area(@pointer, path, column, rect)
 
       # Return value handling
 
@@ -1003,7 +1001,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
       # C call
-      LibGtk.gtk_tree_view_get_cell_area(self, path, column, rect)
+      LibGtk.gtk_tree_view_get_cell_area(@pointer, path, column, rect)
 
       # Return value handling
 
@@ -1016,7 +1014,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_column(self, n)
+      _retval = LibGtk.gtk_tree_view_get_column(@pointer, n)
 
       # Return value handling
 
@@ -1030,7 +1028,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_columns(self)
+      _retval = LibGtk.gtk_tree_view_get_columns(@pointer)
 
       # Return value handling
 
@@ -1053,7 +1051,7 @@ module Gtk
       path = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       focus_column = Pointer(Pointer(Void)).null
       # C call
-      LibGtk.gtk_tree_view_get_cursor(self, path, focus_column)
+      LibGtk.gtk_tree_view_get_cursor(@pointer, path, focus_column)
 
       # Return value handling
     end
@@ -1072,7 +1070,7 @@ module Gtk
       path = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       pos = Pointer(UInt32).null
       # C call
-      _retval = LibGtk.gtk_tree_view_get_dest_row_at_pos(self, drag_x, drag_y, path, pos)
+      _retval = LibGtk.gtk_tree_view_get_dest_row_at_pos(@pointer, drag_x, drag_y, path, pos)
 
       # Return value handling
 
@@ -1090,7 +1088,7 @@ module Gtk
       path = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       pos = Pointer(UInt32).null
       # C call
-      LibGtk.gtk_tree_view_get_drag_dest_row(self, path, pos)
+      LibGtk.gtk_tree_view_get_drag_dest_row(@pointer, path, pos)
 
       # Return value handling
     end
@@ -1102,7 +1100,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_enable_search(self)
+      _retval = LibGtk.gtk_tree_view_get_enable_search(@pointer)
 
       # Return value handling
 
@@ -1115,7 +1113,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_enable_tree_lines(self)
+      _retval = LibGtk.gtk_tree_view_get_enable_tree_lines(@pointer)
 
       # Return value handling
 
@@ -1130,7 +1128,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_expander_column(self)
+      _retval = LibGtk.gtk_tree_view_get_expander_column(@pointer)
 
       # Return value handling
 
@@ -1143,7 +1141,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_fixed_height_mode(self)
+      _retval = LibGtk.gtk_tree_view_get_fixed_height_mode(@pointer)
 
       # Return value handling
 
@@ -1156,7 +1154,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_grid_lines(self)
+      _retval = LibGtk.gtk_tree_view_get_grid_lines(@pointer)
 
       # Return value handling
 
@@ -1169,7 +1167,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_headers_clickable(self)
+      _retval = LibGtk.gtk_tree_view_get_headers_clickable(@pointer)
 
       # Return value handling
 
@@ -1182,7 +1180,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_headers_visible(self)
+      _retval = LibGtk.gtk_tree_view_get_headers_visible(@pointer)
 
       # Return value handling
 
@@ -1195,7 +1193,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_hover_expand(self)
+      _retval = LibGtk.gtk_tree_view_get_hover_expand(@pointer)
 
       # Return value handling
 
@@ -1208,7 +1206,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_hover_selection(self)
+      _retval = LibGtk.gtk_tree_view_get_hover_selection(@pointer)
 
       # Return value handling
 
@@ -1222,7 +1220,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_level_indentation(self)
+      _retval = LibGtk.gtk_tree_view_get_level_indentation(@pointer)
 
       # Return value handling
 
@@ -1236,11 +1234,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_model(self)
+      _retval = LibGtk.gtk_tree_view_get_model(@pointer)
 
       # Return value handling
 
-      Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractTreeModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Queries the number of columns in the given @tree_view.
@@ -1249,7 +1247,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_n_columns(self)
+      _retval = LibGtk.gtk_tree_view_get_n_columns(@pointer)
 
       # Return value handling
 
@@ -1286,7 +1284,7 @@ module Gtk
       cell_x = Pointer(Int32).null         # Generator::OutArgUsedInReturnPlan
       cell_y = Pointer(Int32).null
       # C call
-      _retval = LibGtk.gtk_tree_view_get_path_at_pos(self, x, y, path, column, cell_x, cell_y)
+      _retval = LibGtk.gtk_tree_view_get_path_at_pos(@pointer, x, y, path, column, cell_x, cell_y)
 
       # Return value handling
 
@@ -1300,7 +1298,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_reorderable(self)
+      _retval = LibGtk.gtk_tree_view_get_reorderable(@pointer)
 
       # Return value handling
 
@@ -1315,7 +1313,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_rubber_banding(self)
+      _retval = LibGtk.gtk_tree_view_get_rubber_banding(@pointer)
 
       # Return value handling
 
@@ -1328,7 +1326,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_search_column(self)
+      _retval = LibGtk.gtk_tree_view_get_search_column(@pointer)
 
       # Return value handling
 
@@ -1343,11 +1341,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_search_entry(self)
+      _retval = LibGtk.gtk_tree_view_get_search_entry(@pointer)
 
       # Return value handling
 
-      Gtk::Editable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractEditable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Gets the `GtkTreeSelection` associated with @tree_view.
@@ -1356,7 +1354,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_selection(self)
+      _retval = LibGtk.gtk_tree_view_get_selection(@pointer)
 
       # Return value handling
 
@@ -1369,7 +1367,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_show_expanders(self)
+      _retval = LibGtk.gtk_tree_view_get_show_expanders(@pointer)
 
       # Return value handling
 
@@ -1383,7 +1381,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_get_tooltip_column(self)
+      _retval = LibGtk.gtk_tree_view_get_tooltip_column(@pointer)
 
       # Return value handling
 
@@ -1414,7 +1412,7 @@ module Gtk
       iter = Pointer(Void).null           # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_tree_view_get_tooltip_context(self, x, y, keyboard_tip, model, path, iter)
+      _retval = LibGtk.gtk_tree_view_get_tooltip_context(@pointer, x, y, keyboard_tip, model, path, iter)
 
       # Return value handling
 
@@ -1435,7 +1433,7 @@ module Gtk
       start_path = Pointer(Pointer(Void)).null # Generator::OutArgUsedInReturnPlan
       end_path = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGtk.gtk_tree_view_get_visible_range(self, start_path, end_path)
+      _retval = LibGtk.gtk_tree_view_get_visible_range(@pointer, start_path, end_path)
 
       # Return value handling
 
@@ -1455,7 +1453,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       visible_rect = Gdk::Rectangle.new
       # C call
-      LibGtk.gtk_tree_view_get_visible_rect(self, visible_rect)
+      LibGtk.gtk_tree_view_get_visible_rect(@pointer, visible_rect)
 
       # Return value handling
 
@@ -1471,7 +1469,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_insert_column(self, column, position)
+      _retval = LibGtk.gtk_tree_view_insert_column(@pointer, column, position)
 
       # Return value handling
 
@@ -1493,16 +1491,15 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_tree_column : Pointer(Void), lib_cell : Pointer(Void), lib_tree_model : Pointer(Void), lib_iter : Pointer(Void), lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tree_column = Gtk::TreeViewColumn.new(lib_tree_column, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           cell = Gtk::CellRenderer.new(lib_cell, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tree_model = Gtk::TreeModel.new(lib_tree_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          data = lib_data
-          ::Box(Proc(Gtk::TreeViewColumn, Gtk::CellRenderer, Gtk::TreeModel, Gtk::TreeIter, Nil)).unbox(data).call(tree_column, cell, tree_model, iter)
+          ::Box(Proc(Gtk::TreeViewColumn, Gtk::CellRenderer, Gtk::TreeModel, Gtk::TreeIter, Nil)).unbox(lib_data).call(tree_column, cell, tree_model, iter)
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
         dnotify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -1511,7 +1508,7 @@ module Gtk
       end
 
       # C call
-      _retval = LibGtk.gtk_tree_view_insert_column_with_data_func(self, position, title, cell, func, data, dnotify)
+      _retval = LibGtk.gtk_tree_view_insert_column_with_data_func(@pointer, position, title, cell, func, data, dnotify)
 
       # Return value handling
 
@@ -1549,7 +1546,7 @@ module Gtk
       cell_x = Pointer(Int32).null         # Generator::OutArgUsedInReturnPlan
       cell_y = Pointer(Int32).null
       # C call
-      _retval = LibGtk.gtk_tree_view_is_blank_at_pos(self, x, y, path, column, cell_x, cell_y)
+      _retval = LibGtk.gtk_tree_view_is_blank_at_pos(@pointer, x, y, path, column, cell_x, cell_y)
 
       # Return value handling
 
@@ -1563,7 +1560,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_is_rubber_banding_active(self)
+      _retval = LibGtk.gtk_tree_view_is_rubber_banding_active(@pointer)
 
       # Return value handling
 
@@ -1584,7 +1581,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_tree_view_map_expanded_rows(self, func, data)
+      LibGtk.gtk_tree_view_map_expanded_rows(@pointer, func, data)
 
       # Return value handling
     end
@@ -1604,7 +1601,7 @@ module Gtk
                     end
 
       # C call
-      LibGtk.gtk_tree_view_move_column_after(self, column, base_column)
+      LibGtk.gtk_tree_view_move_column_after(@pointer, column, base_column)
 
       # Return value handling
     end
@@ -1615,7 +1612,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_remove_column(self, column)
+      _retval = LibGtk.gtk_tree_view_remove_column(@pointer, column)
 
       # Return value handling
 
@@ -1636,7 +1633,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_tree_view_row_activated(self, path, column)
+      LibGtk.gtk_tree_view_row_activated(@pointer, path, column)
 
       # Return value handling
     end
@@ -1647,7 +1644,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_view_row_expanded(self, path)
+      _retval = LibGtk.gtk_tree_view_row_expanded(@pointer, path)
 
       # Return value handling
 
@@ -1690,7 +1687,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_tree_view_scroll_to_cell(self, path, column, use_align, row_align, col_align)
+      LibGtk.gtk_tree_view_scroll_to_cell(@pointer, path, column, use_align, row_align, col_align)
 
       # Return value handling
     end
@@ -1707,7 +1704,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_scroll_to_point(self, tree_x, tree_y)
+      LibGtk.gtk_tree_view_scroll_to_point(@pointer, tree_x, tree_y)
 
       # Return value handling
     end
@@ -1719,7 +1716,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_activate_on_single_click(self, single)
+      LibGtk.gtk_tree_view_set_activate_on_single_click(@pointer, single)
 
       # Return value handling
     end
@@ -1744,16 +1741,15 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_tree_view : Pointer(Void), lib_column : Pointer(Void), lib_prev_column : Pointer(Void), lib_next_column : Pointer(Void), lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tree_view = Gtk::TreeView.new(lib_tree_view, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           column = Gtk::TreeViewColumn.new(lib_column, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           prev_column = Gtk::TreeViewColumn.new(lib_prev_column, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           next_column = Gtk::TreeViewColumn.new(lib_next_column, :none)
-          data = lib_data
-          ::Box(Proc(Gtk::TreeView, Gtk::TreeViewColumn, Gtk::TreeViewColumn, Gtk::TreeViewColumn, Bool)).unbox(data).call(tree_view, column, prev_column, next_column)
+          ::Box(Proc(Gtk::TreeView, Gtk::TreeViewColumn, Gtk::TreeViewColumn, Gtk::TreeViewColumn, Bool)).unbox(lib_data).call(tree_view, column, prev_column, next_column)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -1762,7 +1758,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_tree_view_set_column_drag_function(self, func, user_data, destroy)
+      LibGtk.gtk_tree_view_set_column_drag_function(@pointer, func, user_data, destroy)
 
       # Return value handling
     end
@@ -1791,7 +1787,7 @@ module Gtk
                      end
 
       # C call
-      LibGtk.gtk_tree_view_set_cursor(self, path, focus_column, start_editing)
+      LibGtk.gtk_tree_view_set_cursor(@pointer, path, focus_column, start_editing)
 
       # Return value handling
     end
@@ -1830,7 +1826,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_tree_view_set_cursor_on_cell(self, path, focus_column, focus_cell, start_editing)
+      LibGtk.gtk_tree_view_set_cursor_on_cell(@pointer, path, focus_column, focus_cell, start_editing)
 
       # Return value handling
     end
@@ -1850,7 +1846,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_tree_view_set_drag_dest_row(self, path, pos)
+      LibGtk.gtk_tree_view_set_drag_dest_row(@pointer, path, pos)
 
       # Return value handling
     end
@@ -1865,7 +1861,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_enable_search(self, enable_search)
+      LibGtk.gtk_tree_view_set_enable_search(@pointer, enable_search)
 
       # Return value handling
     end
@@ -1877,7 +1873,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_enable_tree_lines(self, enabled)
+      LibGtk.gtk_tree_view_set_enable_tree_lines(@pointer, enabled)
 
       # Return value handling
     end
@@ -1901,7 +1897,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_tree_view_set_expander_column(self, column)
+      LibGtk.gtk_tree_view_set_expander_column(@pointer, column)
 
       # Return value handling
     end
@@ -1916,7 +1912,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_fixed_height_mode(self, enable)
+      LibGtk.gtk_tree_view_set_fixed_height_mode(@pointer, enable)
 
       # Return value handling
     end
@@ -1927,7 +1923,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_grid_lines(self, grid_lines)
+      LibGtk.gtk_tree_view_set_grid_lines(@pointer, grid_lines)
 
       # Return value handling
     end
@@ -1938,7 +1934,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_headers_clickable(self, setting)
+      LibGtk.gtk_tree_view_set_headers_clickable(@pointer, setting)
 
       # Return value handling
     end
@@ -1949,7 +1945,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_headers_visible(self, headers_visible)
+      LibGtk.gtk_tree_view_set_headers_visible(@pointer, headers_visible)
 
       # Return value handling
     end
@@ -1962,7 +1958,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_hover_expand(self, expand)
+      LibGtk.gtk_tree_view_set_hover_expand(@pointer, expand)
 
       # Return value handling
     end
@@ -1976,7 +1972,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_hover_selection(self, hover)
+      LibGtk.gtk_tree_view_set_hover_selection(@pointer, hover)
 
       # Return value handling
     end
@@ -1991,7 +1987,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_level_indentation(self, indentation)
+      LibGtk.gtk_tree_view_set_level_indentation(@pointer, indentation)
 
       # Return value handling
     end
@@ -2012,7 +2008,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_tree_view_set_model(self, model)
+      LibGtk.gtk_tree_view_set_model(@pointer, model)
 
       # Return value handling
     end
@@ -2036,7 +2032,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_reorderable(self, reorderable)
+      LibGtk.gtk_tree_view_set_reorderable(@pointer, reorderable)
 
       # Return value handling
     end
@@ -2055,12 +2051,11 @@ module Gtk
       if func
         _box = ::Box.box(func)
         func = ->(lib_model : Pointer(Void), lib_iter : Pointer(Void), lib_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          data = lib_data
-          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(data).call(model, iter)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Bool)).unbox(lib_data).call(model, iter)
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -2069,7 +2064,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_tree_view_set_row_separator_func(self, func, data, destroy)
+      LibGtk.gtk_tree_view_set_row_separator_func(@pointer, func, data, destroy)
 
       # Return value handling
     end
@@ -2082,7 +2077,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_rubber_banding(self, enable)
+      LibGtk.gtk_tree_view_set_rubber_banding(@pointer, enable)
 
       # Return value handling
     end
@@ -2101,7 +2096,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_search_column(self, column)
+      LibGtk.gtk_tree_view_set_search_column(@pointer, column)
 
       # Return value handling
     end
@@ -2124,7 +2119,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_tree_view_set_search_entry(self, entry)
+      LibGtk.gtk_tree_view_set_search_entry(@pointer, entry)
 
       # Return value handling
     end
@@ -2142,14 +2137,14 @@ module Gtk
       if search_equal_func
         _box = ::Box.box(search_equal_func)
         search_equal_func = ->(lib_model : Pointer(Void), lib_column : Int32, lib_key : Pointer(LibC::Char), lib_iter : Pointer(Void), lib_search_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
           column = lib_column
-          key = lib_key
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          key = ::String.new(lib_key)
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          search_data = lib_search_data
-          ::Box(Proc(Gtk::TreeModel, Int32, ::String, Gtk::TreeIter, Bool)).unbox(search_data).call(model, column, key, iter)
+          ::Box(Proc(Gtk::TreeModel, Int32, ::String, Gtk::TreeIter, Bool)).unbox(lib_search_data).call(model, column, key, iter)
         }.pointer
         search_user_data = GICrystal::ClosureDataManager.register(_box)
         search_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -2158,7 +2153,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_tree_view_set_search_equal_func(self, search_equal_func, search_user_data, search_destroy)
+      LibGtk.gtk_tree_view_set_search_equal_func(@pointer, search_equal_func, search_user_data, search_destroy)
 
       # Return value handling
     end
@@ -2175,7 +2170,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_show_expanders(self, enabled)
+      LibGtk.gtk_tree_view_set_show_expanders(@pointer, enabled)
 
       # Return value handling
     end
@@ -2218,7 +2213,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_tree_view_set_tooltip_cell(self, tooltip, path, column, cell)
+      LibGtk.gtk_tree_view_set_tooltip_cell(@pointer, tooltip, path, column, cell)
 
       # Return value handling
     end
@@ -2238,7 +2233,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_tooltip_column(self, column)
+      LibGtk.gtk_tree_view_set_tooltip_column(@pointer, column)
 
       # Return value handling
     end
@@ -2251,7 +2246,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_set_tooltip_row(self, tooltip, path)
+      LibGtk.gtk_tree_view_set_tooltip_row(@pointer, tooltip, path)
 
       # Return value handling
     end
@@ -2264,7 +2259,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_unset_rows_drag_dest(self)
+      LibGtk.gtk_tree_view_unset_rows_drag_dest(@pointer)
 
       # Return value handling
     end
@@ -2277,7 +2272,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_view_unset_rows_drag_source(self)
+      LibGtk.gtk_tree_view_unset_rows_drag_source(@pointer)
 
       # Return value handling
     end
@@ -2557,8 +2552,8 @@ module Gtk
       def connect(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_direction : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           direction = lib_direction
           _extend = lib_extend
           modify = lib_modify
@@ -2572,8 +2567,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_direction : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           direction = lib_direction
           _extend = lib_extend
           modify = lib_modify
@@ -2588,8 +2583,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_direction : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           direction = lib_direction
           _extend = lib_extend
           modify = lib_modify
@@ -2604,8 +2599,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_direction : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          step = Gtk::MovementStep.new(lib_step, :none)
+          # Generator::BuiltInTypeArgPlan
+          step = Gtk::MovementStep.new(lib_step)
           direction = lib_direction
           _extend = lib_extend
           modify = lib_modify
@@ -2616,7 +2611,7 @@ module Gtk
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(step : Gtk::MovementStep, direction : Int32, _extend : Bool, modify : Bool) : Nil
+      def emit(step : Gtk::MovementStep, direction : Int32, extend _extend : Bool, modify : Bool) : Nil
         LibGObject.g_signal_emit_by_name(@source, "move-cursor", step, direction, _extend, modify)
       end
     end
@@ -2666,12 +2661,12 @@ module Gtk
       def connect(handler : Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_column : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           # Generator::NullableArrayPlan
           column = (lib_column.null? ? nil : Gtk::TreeViewColumn.new(lib_column, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          column = Gtk::TreeViewColumn.new(lib_column, :none)
+          # Generator::BuiltInTypeArgPlan
+          column = Gtk::TreeViewColumn.new(lib_column, :none) unless lib_column.null?
           ::Box(Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil)).unbox(_lib_box).call(path, column)
         }.pointer
 
@@ -2682,12 +2677,12 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_column : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           # Generator::NullableArrayPlan
           column = (lib_column.null? ? nil : Gtk::TreeViewColumn.new(lib_column, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          column = Gtk::TreeViewColumn.new(lib_column, :none)
+          # Generator::BuiltInTypeArgPlan
+          column = Gtk::TreeViewColumn.new(lib_column, :none) unless lib_column.null?
           ::Box(Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil)).unbox(_lib_box).call(path, column)
         }.pointer
 
@@ -2699,12 +2694,12 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_column : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           # Generator::NullableArrayPlan
           column = (lib_column.null? ? nil : Gtk::TreeViewColumn.new(lib_column, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          column = Gtk::TreeViewColumn.new(lib_column, :none)
+          # Generator::BuiltInTypeArgPlan
+          column = Gtk::TreeViewColumn.new(lib_column, :none) unless lib_column.null?
           ::Box(Proc(Gtk::TreeView, Gtk::TreePath, Gtk::TreeViewColumn?, Nil)).unbox(_lib_box).call(_sender, path, column)
         }.pointer
 
@@ -2716,12 +2711,12 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_column : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           # Generator::NullableArrayPlan
           column = (lib_column.null? ? nil : Gtk::TreeViewColumn.new(lib_column, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          column = Gtk::TreeViewColumn.new(lib_column, :none)
+          # Generator::BuiltInTypeArgPlan
+          column = Gtk::TreeViewColumn.new(lib_column, :none) unless lib_column.null?
           ::Box(Proc(Gtk::TreeView, Gtk::TreePath, Gtk::TreeViewColumn?, Nil)).unbox(_lib_box).call(_sender, path, column)
         }.pointer
 
@@ -2730,6 +2725,13 @@ module Gtk
       end
 
       def emit(path : Gtk::TreePath, column : Gtk::TreeViewColumn?) : Nil
+        # Generator::NullableArrayPlan
+        column = if column.nil?
+                   Void.null
+                 else
+                   column.to_unsafe
+                 end
+
         LibGObject.g_signal_emit_by_name(@source, "row-activated", path, column)
       end
     end
@@ -2766,9 +2768,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(iter, path)
         }.pointer
@@ -2780,9 +2782,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(iter, path)
         }.pointer
@@ -2795,9 +2797,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
@@ -2810,9 +2812,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
@@ -2858,9 +2860,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(iter, path)
         }.pointer
@@ -2872,9 +2874,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(iter, path)
         }.pointer
@@ -2887,9 +2889,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
@@ -2902,9 +2904,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
@@ -3255,9 +3257,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(iter, path)
         }.pointer
@@ -3269,9 +3271,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(iter, path)
         }.pointer
@@ -3284,9 +3286,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
@@ -3299,9 +3301,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
@@ -3348,9 +3350,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(iter, path)
         }.pointer
@@ -3362,9 +3364,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(iter, path)
         }.pointer
@@ -3377,9 +3379,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
@@ -3392,9 +3394,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer

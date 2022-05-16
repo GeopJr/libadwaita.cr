@@ -6,7 +6,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_drag_source_drag_data_delete(self, path)
+      _retval = LibGtk.gtk_tree_drag_source_drag_data_delete(@pointer, path)
 
       # Return value handling
 
@@ -18,7 +18,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_drag_source_drag_data_get(self, path)
+      _retval = LibGtk.gtk_tree_drag_source_drag_data_get(@pointer, path)
 
       # Return value handling
 
@@ -30,7 +30,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_drag_source_row_draggable(self, path)
+      _retval = LibGtk.gtk_tree_drag_source_row_draggable(@pointer, path)
 
       # Return value handling
 
@@ -42,8 +42,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class TreeDragSource__Impl < GObject::Object
+  class AbstractTreeDragSource < GObject::Object
     include TreeDragSource
+
+    GICrystal.define_new_method(Gtk::AbstractTreeDragSource, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

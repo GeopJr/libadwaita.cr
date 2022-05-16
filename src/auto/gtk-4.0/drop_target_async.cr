@@ -46,15 +46,13 @@ module Gtk
         sizeof(LibGtk::DropTargetAsync), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DropTargetAsync, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DropTargetAsync`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -170,7 +168,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_target_async_get_actions(self)
+      _retval = LibGtk.gtk_drop_target_async_get_actions(@pointer)
 
       # Return value handling
 
@@ -185,7 +183,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_drop_target_async_get_formats(self)
+      _retval = LibGtk.gtk_drop_target_async_get_formats(@pointer)
 
       # Return value handling
 
@@ -202,7 +200,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drop_target_async_reject_drop(self, drop)
+      LibGtk.gtk_drop_target_async_reject_drop(@pointer, drop)
 
       # Return value handling
     end
@@ -213,7 +211,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drop_target_async_set_actions(self, actions)
+      LibGtk.gtk_drop_target_async_set_actions(@pointer, actions)
 
       # Return value handling
     end
@@ -232,7 +230,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_drop_target_async_set_formats(self, formats)
+      LibGtk.gtk_drop_target_async_set_formats(@pointer, formats)
 
       # Return value handling
     end
@@ -279,7 +277,7 @@ module Gtk
       def connect(handler : Proc(Gdk::Drop, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gdk::Drop, Bool)).unbox(_lib_box).call(drop)
         }.pointer
@@ -291,7 +289,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Drop, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gdk::Drop, Bool)).unbox(_lib_box).call(drop)
         }.pointer
@@ -304,7 +302,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gtk::DropTargetAsync, Gdk::Drop, Bool)).unbox(_lib_box).call(_sender, drop)
         }.pointer
@@ -317,7 +315,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gtk::DropTargetAsync, Gdk::Drop, Bool)).unbox(_lib_box).call(_sender, drop)
         }.pointer
@@ -365,7 +363,7 @@ module Gtk
       def connect(handler : Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -379,7 +377,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -394,7 +392,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -409,7 +407,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -460,7 +458,7 @@ module Gtk
       def connect(handler : Proc(Gdk::Drop, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gdk::Drop, Nil)).unbox(_lib_box).call(drop)
         }.pointer
@@ -472,7 +470,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Drop, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gdk::Drop, Nil)).unbox(_lib_box).call(drop)
         }.pointer
@@ -485,7 +483,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gtk::DropTargetAsync, Gdk::Drop, Nil)).unbox(_lib_box).call(_sender, drop)
         }.pointer
@@ -498,7 +496,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gtk::DropTargetAsync, Gdk::Drop, Nil)).unbox(_lib_box).call(_sender, drop)
         }.pointer
@@ -544,7 +542,7 @@ module Gtk
       def connect(handler : Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -558,7 +556,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Drop, Float64, Float64, Gdk::DragAction))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -573,7 +571,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -588,7 +586,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -649,7 +647,7 @@ module Gtk
       def connect(handler : Proc(Gdk::Drop, Float64, Float64, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -663,7 +661,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Drop, Float64, Float64, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -678,7 +676,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y
@@ -693,7 +691,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTargetAsync.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           x = lib_x
           y = lib_y

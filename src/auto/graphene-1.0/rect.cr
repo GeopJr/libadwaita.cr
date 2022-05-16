@@ -70,7 +70,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_contains_point(self, p)
+      _retval = LibGraphene.graphene_rect_contains_point(@pointer, p)
 
       # Return value handling
 
@@ -82,7 +82,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_contains_rect(self, b)
+      _retval = LibGraphene.graphene_rect_contains_rect(@pointer, b)
 
       # Return value handling
 
@@ -94,7 +94,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_equal(self, b)
+      _retval = LibGraphene.graphene_rect_equal(@pointer, b)
 
       # Return value handling
 
@@ -109,7 +109,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_rect_expand(self, p, res)
+      LibGraphene.graphene_rect_expand(@pointer, p, res)
 
       # Return value handling
 
@@ -121,7 +121,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_rect_free(self)
+      LibGraphene.graphene_rect_free(@pointer)
 
       # Return value handling
     end
@@ -131,7 +131,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_get_area(self)
+      _retval = LibGraphene.graphene_rect_get_area(@pointer)
 
       # Return value handling
 
@@ -146,7 +146,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
       # C call
-      LibGraphene.graphene_rect_get_bottom_left(self, p)
+      LibGraphene.graphene_rect_get_bottom_left(@pointer, p)
 
       # Return value handling
 
@@ -161,7 +161,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
       # C call
-      LibGraphene.graphene_rect_get_bottom_right(self, p)
+      LibGraphene.graphene_rect_get_bottom_right(@pointer, p)
 
       # Return value handling
 
@@ -176,7 +176,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
       # C call
-      LibGraphene.graphene_rect_get_center(self, p)
+      LibGraphene.graphene_rect_get_center(@pointer, p)
 
       # Return value handling
 
@@ -188,7 +188,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_get_height(self)
+      _retval = LibGraphene.graphene_rect_get_height(@pointer)
 
       # Return value handling
 
@@ -203,7 +203,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
       # C call
-      LibGraphene.graphene_rect_get_top_left(self, p)
+      LibGraphene.graphene_rect_get_top_left(@pointer, p)
 
       # Return value handling
 
@@ -218,7 +218,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       p = Graphene::Point.new
       # C call
-      LibGraphene.graphene_rect_get_top_right(self, p)
+      LibGraphene.graphene_rect_get_top_right(@pointer, p)
 
       # Return value handling
 
@@ -236,7 +236,7 @@ module Graphene
       vertices = vertices.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGraphene.graphene_rect_get_vertices(self, vertices)
+      LibGraphene.graphene_rect_get_vertices(@pointer, vertices)
 
       # Return value handling
     end
@@ -250,7 +250,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_get_width(self)
+      _retval = LibGraphene.graphene_rect_get_width(@pointer)
 
       # Return value handling
 
@@ -262,7 +262,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_get_x(self)
+      _retval = LibGraphene.graphene_rect_get_x(@pointer)
 
       # Return value handling
 
@@ -274,7 +274,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_get_y(self)
+      _retval = LibGraphene.graphene_rect_get_y(@pointer)
 
       # Return value handling
 
@@ -286,7 +286,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_init(self, x, y, width, height)
+      _retval = LibGraphene.graphene_rect_init(@pointer, x, y, width, height)
 
       # Return value handling
 
@@ -298,7 +298,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_init_from_rect(self, src)
+      _retval = LibGraphene.graphene_rect_init_from_rect(@pointer, src)
 
       # Return value handling
 
@@ -310,7 +310,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_inset(self, d_x, d_y)
+      _retval = LibGraphene.graphene_rect_inset(@pointer, d_x, d_y)
 
       # Return value handling
 
@@ -325,7 +325,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_rect_inset_r(self, d_x, d_y, res)
+      LibGraphene.graphene_rect_inset_r(@pointer, d_x, d_y, res)
 
       # Return value handling
 
@@ -340,7 +340,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_rect_interpolate(self, b, factor, res)
+      LibGraphene.graphene_rect_interpolate(@pointer, b, factor, res)
 
       # Return value handling
 
@@ -356,7 +356,7 @@ module Graphene
       res = Pointer(Void).null # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      _retval = LibGraphene.graphene_rect_intersection(self, b, res)
+      _retval = LibGraphene.graphene_rect_intersection(@pointer, b, res)
 
       # Return value handling
 
@@ -368,7 +368,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_normalize(self)
+      _retval = LibGraphene.graphene_rect_normalize(@pointer)
 
       # Return value handling
 
@@ -383,7 +383,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_rect_normalize_r(self, res)
+      LibGraphene.graphene_rect_normalize_r(@pointer, res)
 
       # Return value handling
 
@@ -395,7 +395,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_offset(self, d_x, d_y)
+      _retval = LibGraphene.graphene_rect_offset(@pointer, d_x, d_y)
 
       # Return value handling
 
@@ -410,7 +410,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_rect_offset_r(self, d_x, d_y, res)
+      LibGraphene.graphene_rect_offset_r(@pointer, d_x, d_y, res)
 
       # Return value handling
 
@@ -425,7 +425,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_rect_round(self, res)
+      LibGraphene.graphene_rect_round(@pointer, res)
 
       # Return value handling
 
@@ -440,7 +440,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_rect_round_extents(self, res)
+      LibGraphene.graphene_rect_round_extents(@pointer, res)
 
       # Return value handling
 
@@ -452,7 +452,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_rect_round_to_pixel(self)
+      _retval = LibGraphene.graphene_rect_round_to_pixel(@pointer)
 
       # Return value handling
 
@@ -467,7 +467,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_rect_scale(self, s_h, s_v, res)
+      LibGraphene.graphene_rect_scale(@pointer, s_h, s_v, res)
 
       # Return value handling
 
@@ -482,7 +482,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_rect_union(self, b, res)
+      LibGraphene.graphene_rect_union(@pointer, b, res)
 
       # Return value handling
 

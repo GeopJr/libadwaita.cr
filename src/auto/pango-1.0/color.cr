@@ -69,7 +69,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_color_copy(self)
+      _retval = LibPango.pango_color_copy(@pointer)
 
       # Return value handling
 
@@ -81,7 +81,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_color_free(self)
+      LibPango.pango_color_free(@pointer)
 
       # Return value handling
     end
@@ -91,7 +91,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_color_parse(self, spec)
+      _retval = LibPango.pango_color_parse(@pointer, spec)
 
       # Return value handling
 
@@ -106,7 +106,7 @@ module Pango
       # Generator::OutArgUsedInReturnPlan
       alpha = Pointer(UInt16).null
       # C call
-      _retval = LibPango.pango_color_parse_with_alpha(self, alpha, spec)
+      _retval = LibPango.pango_color_parse_with_alpha(@pointer, alpha, spec)
 
       # Return value handling
 
@@ -118,7 +118,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_color_to_string(self)
+      _retval = LibPango.pango_color_to_string(@pointer)
 
       # Return value handling
 

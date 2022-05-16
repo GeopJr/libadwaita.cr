@@ -98,15 +98,13 @@ module Gtk
         sizeof(LibGtk::ToggleButton), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ToggleButton, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ToggleButton`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -434,7 +432,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_toggle_button_get_active(self)
+      _retval = LibGtk.gtk_toggle_button_get_active(@pointer)
 
       # Return value handling
 
@@ -453,7 +451,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_toggle_button_set_active(self, is_active)
+      LibGtk.gtk_toggle_button_set_active(@pointer, is_active)
 
       # Return value handling
     end
@@ -482,7 +480,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_toggle_button_set_group(self, group)
+      LibGtk.gtk_toggle_button_set_group(@pointer, group)
 
       # Return value handling
     end
@@ -495,7 +493,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_toggle_button_toggled(self)
+      LibGtk.gtk_toggle_button_toggled(@pointer)
 
       # Return value handling
     end

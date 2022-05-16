@@ -45,15 +45,13 @@ module Gtk
         sizeof(LibGtk::MapListModel), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(MapListModel, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `MapListModel`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -111,7 +109,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     # Creates a new `GtkMapListModel` for the given arguments.
@@ -133,10 +131,9 @@ module Gtk
         _box = ::Box.box(map_func)
         map_func = ->(lib_item : Pointer(Void), lib_user_data : Pointer(Void)) {
           # Generator::TransferFullArgPlan
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           item = GObject::Object.new(lib_item, :none)
-          user_data = lib_user_data
-          ::Box(Proc(GObject::Object, GObject::Object)).unbox(user_data).call(item)
+          ::Box(Proc(GObject::Object, GObject::Object)).unbox(lib_user_data).call(item)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -159,11 +156,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_map_list_model_get_model(self)
+      _retval = LibGtk.gtk_map_list_model_get_model(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Checks if a map function is currently set on @self.
@@ -172,7 +169,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_map_list_model_has_map(self)
+      _retval = LibGtk.gtk_map_list_model_has_map(@pointer)
 
       # Return value handling
 
@@ -201,10 +198,9 @@ module Gtk
         _box = ::Box.box(map_func)
         map_func = ->(lib_item : Pointer(Void), lib_user_data : Pointer(Void)) {
           # Generator::TransferFullArgPlan
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           item = GObject::Object.new(lib_item, :none)
-          user_data = lib_user_data
-          ::Box(Proc(GObject::Object, GObject::Object)).unbox(user_data).call(item)
+          ::Box(Proc(GObject::Object, GObject::Object)).unbox(lib_user_data).call(item)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -213,7 +209,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_map_list_model_set_map_func(self, map_func, user_data, user_destroy)
+      LibGtk.gtk_map_list_model_set_map_func(@pointer, map_func, user_data, user_destroy)
 
       # Return value handling
     end
@@ -236,7 +232,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_map_list_model_set_model(self, model)
+      LibGtk.gtk_map_list_model_set_model(@pointer, model)
 
       # Return value handling
     end

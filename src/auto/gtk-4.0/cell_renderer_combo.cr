@@ -24,15 +24,13 @@ module Gtk
         sizeof(LibGtk::CellRendererCombo), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CellRendererCombo, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CellRendererCombo`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -408,7 +406,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gtk::TreeModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractTreeModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def text_column=(value : Int32) : Int32
@@ -485,8 +483,9 @@ module Gtk
       def connect(handler : Proc(::String, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_new_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          path_string = lib_path_string
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
+          # Generator::BuiltInTypeArgPlan
           new_iter = Gtk::TreeIter.new(lib_new_iter, :none)
           ::Box(Proc(::String, Gtk::TreeIter, Nil)).unbox(_lib_box).call(path_string, new_iter)
         }.pointer
@@ -498,8 +497,9 @@ module Gtk
       def connect_after(handler : Proc(::String, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_new_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          path_string = lib_path_string
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
+          # Generator::BuiltInTypeArgPlan
           new_iter = Gtk::TreeIter.new(lib_new_iter, :none)
           ::Box(Proc(::String, Gtk::TreeIter, Nil)).unbox(_lib_box).call(path_string, new_iter)
         }.pointer
@@ -512,8 +512,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_new_iter : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererCombo.new(_lib_sender, GICrystal::Transfer::None)
-          path_string = lib_path_string
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
+          # Generator::BuiltInTypeArgPlan
           new_iter = Gtk::TreeIter.new(lib_new_iter, :none)
           ::Box(Proc(Gtk::CellRendererCombo, ::String, Gtk::TreeIter, Nil)).unbox(_lib_box).call(_sender, path_string, new_iter)
         }.pointer
@@ -526,8 +527,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_new_iter : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererCombo.new(_lib_sender, GICrystal::Transfer::None)
-          path_string = lib_path_string
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
+          # Generator::BuiltInTypeArgPlan
           new_iter = Gtk::TreeIter.new(lib_new_iter, :none)
           ::Box(Proc(Gtk::CellRendererCombo, ::String, Gtk::TreeIter, Nil)).unbox(_lib_box).call(_sender, path_string, new_iter)
         }.pointer

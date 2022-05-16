@@ -26,15 +26,13 @@ module Gio
         sizeof(LibGio::FileMonitor), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FileMonitor, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FileMonitor`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -101,7 +99,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_monitor_cancel(self)
+      _retval = LibGio.g_file_monitor_cancel(@pointer)
 
       # Return value handling
 
@@ -120,7 +118,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_monitor_emit_event(self, child, other_file, event_type)
+      LibGio.g_file_monitor_emit_event(@pointer, child, other_file, event_type)
 
       # Return value handling
     end
@@ -131,7 +129,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_monitor_is_cancelled(self)
+      _retval = LibGio.g_file_monitor_is_cancelled(@pointer)
 
       # Return value handling
 
@@ -145,7 +143,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_monitor_set_rate_limit(self, limit_msecs)
+      LibGio.g_file_monitor_set_rate_limit(@pointer, limit_msecs)
 
       # Return value handling
     end
@@ -205,14 +203,14 @@ module Gio
       def connect(handler : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           file = Gio::File.new(lib_file, :none)
           # Generator::NullableArrayPlan
-          other_file = (lib_other_file.null? ? nil : Gio::File__Impl.new(lib_other_file, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          other_file = Gio::File.new(lib_other_file, :none)
-          # Generator::GObjectArgPlan
-          event_type = Gio::FileMonitorEvent.new(lib_event_type, :none)
+          other_file = (lib_other_file.null? ? nil : Gio::AbstractFile.new(lib_other_file, GICrystal::Transfer::None))
+          # Generator::BuiltInTypeArgPlan
+          other_file = Gio::File.new(lib_other_file, :none) unless lib_other_file.null?
+          # Generator::BuiltInTypeArgPlan
+          event_type = Gio::FileMonitorEvent.new(lib_event_type)
           ::Box(Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(file, other_file, event_type)
         }.pointer
 
@@ -223,14 +221,14 @@ module Gio
       def connect_after(handler : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           file = Gio::File.new(lib_file, :none)
           # Generator::NullableArrayPlan
-          other_file = (lib_other_file.null? ? nil : Gio::File__Impl.new(lib_other_file, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          other_file = Gio::File.new(lib_other_file, :none)
-          # Generator::GObjectArgPlan
-          event_type = Gio::FileMonitorEvent.new(lib_event_type, :none)
+          other_file = (lib_other_file.null? ? nil : Gio::AbstractFile.new(lib_other_file, GICrystal::Transfer::None))
+          # Generator::BuiltInTypeArgPlan
+          other_file = Gio::File.new(lib_other_file, :none) unless lib_other_file.null?
+          # Generator::BuiltInTypeArgPlan
+          event_type = Gio::FileMonitorEvent.new(lib_event_type)
           ::Box(Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(file, other_file, event_type)
         }.pointer
 
@@ -242,14 +240,14 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gio::FileMonitor.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           file = Gio::File.new(lib_file, :none)
           # Generator::NullableArrayPlan
-          other_file = (lib_other_file.null? ? nil : Gio::File__Impl.new(lib_other_file, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          other_file = Gio::File.new(lib_other_file, :none)
-          # Generator::GObjectArgPlan
-          event_type = Gio::FileMonitorEvent.new(lib_event_type, :none)
+          other_file = (lib_other_file.null? ? nil : Gio::AbstractFile.new(lib_other_file, GICrystal::Transfer::None))
+          # Generator::BuiltInTypeArgPlan
+          other_file = Gio::File.new(lib_other_file, :none) unless lib_other_file.null?
+          # Generator::BuiltInTypeArgPlan
+          event_type = Gio::FileMonitorEvent.new(lib_event_type)
           ::Box(Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(_sender, file, other_file, event_type)
         }.pointer
 
@@ -261,14 +259,14 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gio::FileMonitor.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           file = Gio::File.new(lib_file, :none)
           # Generator::NullableArrayPlan
-          other_file = (lib_other_file.null? ? nil : Gio::File__Impl.new(lib_other_file, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          other_file = Gio::File.new(lib_other_file, :none)
-          # Generator::GObjectArgPlan
-          event_type = Gio::FileMonitorEvent.new(lib_event_type, :none)
+          other_file = (lib_other_file.null? ? nil : Gio::AbstractFile.new(lib_other_file, GICrystal::Transfer::None))
+          # Generator::BuiltInTypeArgPlan
+          other_file = Gio::File.new(lib_other_file, :none) unless lib_other_file.null?
+          # Generator::BuiltInTypeArgPlan
+          event_type = Gio::FileMonitorEvent.new(lib_event_type)
           ::Box(Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(_sender, file, other_file, event_type)
         }.pointer
 
@@ -277,6 +275,13 @@ module Gio
       end
 
       def emit(file : Gio::File, other_file : Gio::File?, event_type : Gio::FileMonitorEvent) : Nil
+        # Generator::NullableArrayPlan
+        other_file = if other_file.nil?
+                       Void.null
+                     else
+                       other_file.to_unsafe
+                     end
+
         LibGObject.g_signal_emit_by_name(@source, "changed", file, other_file, event_type)
       end
     end

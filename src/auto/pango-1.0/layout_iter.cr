@@ -36,7 +36,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_at_last_line(self)
+      _retval = LibPango.pango_layout_iter_at_last_line(@pointer)
 
       # Return value handling
 
@@ -48,7 +48,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_layout_iter_copy(self)
+      _retval = LibPango.pango_layout_iter_copy(@pointer)
 
       # Return value handling
 
@@ -60,7 +60,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_layout_iter_free(self)
+      LibPango.pango_layout_iter_free(@pointer)
 
       # Return value handling
     end
@@ -70,7 +70,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_get_baseline(self)
+      _retval = LibPango.pango_layout_iter_get_baseline(@pointer)
 
       # Return value handling
 
@@ -85,7 +85,7 @@ module Pango
       # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_iter_get_char_extents(self, logical_rect)
+      LibPango.pango_layout_iter_get_char_extents(@pointer, logical_rect)
 
       # Return value handling
 
@@ -104,7 +104,7 @@ module Pango
       logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_iter_get_cluster_extents(self, ink_rect, logical_rect)
+      LibPango.pango_layout_iter_get_cluster_extents(@pointer, ink_rect, logical_rect)
 
       # Return value handling
 
@@ -116,7 +116,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_get_index(self)
+      _retval = LibPango.pango_layout_iter_get_index(@pointer)
 
       # Return value handling
 
@@ -128,7 +128,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_get_layout(self)
+      _retval = LibPango.pango_layout_iter_get_layout(@pointer)
 
       # Return value handling
 
@@ -147,7 +147,7 @@ module Pango
       logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_iter_get_layout_extents(self, ink_rect, logical_rect)
+      LibPango.pango_layout_iter_get_layout_extents(@pointer, ink_rect, logical_rect)
 
       # Return value handling
 
@@ -159,7 +159,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_get_line(self)
+      _retval = LibPango.pango_layout_iter_get_line(@pointer)
 
       # Return value handling
 
@@ -178,7 +178,7 @@ module Pango
       logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_iter_get_line_extents(self, ink_rect, logical_rect)
+      LibPango.pango_layout_iter_get_line_extents(@pointer, ink_rect, logical_rect)
 
       # Return value handling
 
@@ -190,7 +190,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_get_line_readonly(self)
+      _retval = LibPango.pango_layout_iter_get_line_readonly(@pointer)
 
       # Return value handling
 
@@ -207,7 +207,7 @@ module Pango
       y0_ = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       y1_ = Pointer(Int32).null
       # C call
-      LibPango.pango_layout_iter_get_line_yrange(self, y0_, y1_)
+      LibPango.pango_layout_iter_get_line_yrange(@pointer, y0_, y1_)
 
       # Return value handling
     end
@@ -217,7 +217,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_get_run(self)
+      _retval = LibPango.pango_layout_iter_get_run(@pointer)
 
       # Return value handling
 
@@ -229,7 +229,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_get_run_baseline(self)
+      _retval = LibPango.pango_layout_iter_get_run_baseline(@pointer)
 
       # Return value handling
 
@@ -248,7 +248,7 @@ module Pango
       logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_layout_iter_get_run_extents(self, ink_rect, logical_rect)
+      LibPango.pango_layout_iter_get_run_extents(@pointer, ink_rect, logical_rect)
 
       # Return value handling
 
@@ -260,7 +260,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_get_run_readonly(self)
+      _retval = LibPango.pango_layout_iter_get_run_readonly(@pointer)
 
       # Return value handling
 
@@ -272,7 +272,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_next_char(self)
+      _retval = LibPango.pango_layout_iter_next_char(@pointer)
 
       # Return value handling
 
@@ -284,7 +284,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_next_cluster(self)
+      _retval = LibPango.pango_layout_iter_next_cluster(@pointer)
 
       # Return value handling
 
@@ -296,7 +296,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_next_line(self)
+      _retval = LibPango.pango_layout_iter_next_line(@pointer)
 
       # Return value handling
 
@@ -308,7 +308,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_layout_iter_next_run(self)
+      _retval = LibPango.pango_layout_iter_next_run(@pointer)
 
       # Return value handling
 

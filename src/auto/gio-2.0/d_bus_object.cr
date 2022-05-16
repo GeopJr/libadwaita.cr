@@ -9,11 +9,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_object_get_interface(self, interface_name)
+      _retval = LibGio.g_dbus_object_get_interface(@pointer, interface_name)
 
       # Return value handling
 
-      Gio::DBusInterface__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractDBusInterface.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def interfaces : GLib::List
@@ -21,7 +21,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_object_get_interfaces(self)
+      _retval = LibGio.g_dbus_object_get_interfaces(@pointer)
 
       # Return value handling
 
@@ -33,7 +33,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_object_get_object_path(self)
+      _retval = LibGio.g_dbus_object_get_object_path(@pointer)
 
       # Return value handling
 
@@ -67,7 +67,7 @@ module Gio
       def connect(handler : Proc(Gio::DBusInterface, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface = Gio::DBusInterface.new(lib_interface, :none)
           ::Box(Proc(Gio::DBusInterface, Nil)).unbox(_lib_box).call(interface)
         }.pointer
@@ -79,7 +79,7 @@ module Gio
       def connect_after(handler : Proc(Gio::DBusInterface, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface = Gio::DBusInterface.new(lib_interface, :none)
           ::Box(Proc(Gio::DBusInterface, Nil)).unbox(_lib_box).call(interface)
         }.pointer
@@ -91,8 +91,8 @@ module Gio
       def connect(handler : Proc(Gio::DBusObject, Gio::DBusInterface, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::DBusObject__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gio::AbstractDBusObject.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           interface = Gio::DBusInterface.new(lib_interface, :none)
           ::Box(Proc(Gio::DBusObject, Gio::DBusInterface, Nil)).unbox(_lib_box).call(_sender, interface)
         }.pointer
@@ -104,8 +104,8 @@ module Gio
       def connect_after(handler : Proc(Gio::DBusObject, Gio::DBusInterface, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::DBusObject__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gio::AbstractDBusObject.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           interface = Gio::DBusInterface.new(lib_interface, :none)
           ::Box(Proc(Gio::DBusObject, Gio::DBusInterface, Nil)).unbox(_lib_box).call(_sender, interface)
         }.pointer
@@ -150,7 +150,7 @@ module Gio
       def connect(handler : Proc(Gio::DBusInterface, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface = Gio::DBusInterface.new(lib_interface, :none)
           ::Box(Proc(Gio::DBusInterface, Nil)).unbox(_lib_box).call(interface)
         }.pointer
@@ -162,7 +162,7 @@ module Gio
       def connect_after(handler : Proc(Gio::DBusInterface, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface = Gio::DBusInterface.new(lib_interface, :none)
           ::Box(Proc(Gio::DBusInterface, Nil)).unbox(_lib_box).call(interface)
         }.pointer
@@ -174,8 +174,8 @@ module Gio
       def connect(handler : Proc(Gio::DBusObject, Gio::DBusInterface, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::DBusObject__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gio::AbstractDBusObject.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           interface = Gio::DBusInterface.new(lib_interface, :none)
           ::Box(Proc(Gio::DBusObject, Gio::DBusInterface, Nil)).unbox(_lib_box).call(_sender, interface)
         }.pointer
@@ -187,8 +187,8 @@ module Gio
       def connect_after(handler : Proc(Gio::DBusObject, Gio::DBusInterface, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::DBusObject__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gio::AbstractDBusObject.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           interface = Gio::DBusInterface.new(lib_interface, :none)
           ::Box(Proc(Gio::DBusObject, Gio::DBusInterface, Nil)).unbox(_lib_box).call(_sender, interface)
         }.pointer
@@ -211,8 +211,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class DBusObject__Impl < GObject::Object
+  class AbstractDBusObject < GObject::Object
     include DBusObject
+
+    GICrystal.define_new_method(Gio::AbstractDBusObject, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

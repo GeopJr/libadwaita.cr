@@ -215,11 +215,11 @@ module Gtk
              end
 
       # C call
-      _retval = LibGtk.gtk_tree_model_filter_new(self, root)
+      _retval = LibGtk.gtk_tree_model_filter_new(@pointer, root)
 
       # Return value handling
 
-      Gtk::TreeModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gtk::AbstractTreeModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     def foreach(func : Gtk::TreeModelForeachFunc, user_data : Pointer(Void)?) : Nil
@@ -235,7 +235,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_tree_model_foreach(self, func, user_data)
+      LibGtk.gtk_tree_model_foreach(@pointer, func, user_data)
 
       # Return value handling
     end
@@ -245,7 +245,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_get_column_type(self, index_)
+      _retval = LibGtk.gtk_tree_model_get_column_type(@pointer, index_)
 
       # Return value handling
 
@@ -257,7 +257,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_get_flags(self)
+      _retval = LibGtk.gtk_tree_model_get_flags(@pointer)
 
       # Return value handling
 
@@ -272,7 +272,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_tree_model_get_iter(self, iter, path)
+      _retval = LibGtk.gtk_tree_model_get_iter(@pointer, iter, path)
 
       # Return value handling
 
@@ -287,7 +287,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_tree_model_get_iter_first(self, iter)
+      _retval = LibGtk.gtk_tree_model_get_iter_first(@pointer, iter)
 
       # Return value handling
 
@@ -302,7 +302,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_tree_model_get_iter_from_string(self, iter, path_string)
+      _retval = LibGtk.gtk_tree_model_get_iter_from_string(@pointer, iter, path_string)
 
       # Return value handling
 
@@ -314,7 +314,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_get_n_columns(self)
+      _retval = LibGtk.gtk_tree_model_get_n_columns(@pointer)
 
       # Return value handling
 
@@ -326,7 +326,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_get_path(self, iter)
+      _retval = LibGtk.gtk_tree_model_get_path(@pointer, iter)
 
       # Return value handling
 
@@ -338,7 +338,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_get_string_from_iter(self, iter)
+      _retval = LibGtk.gtk_tree_model_get_string_from_iter(@pointer, iter)
 
       # Return value handling
 
@@ -353,7 +353,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       value = GObject::Value.new
       # C call
-      LibGtk.gtk_tree_model_get_value(self, iter, column, value)
+      LibGtk.gtk_tree_model_get_value(@pointer, iter, column, value)
 
       # Return value handling
 
@@ -375,7 +375,7 @@ module Gtk
                end
 
       # C call
-      _retval = LibGtk.gtk_tree_model_iter_children(self, iter, parent)
+      _retval = LibGtk.gtk_tree_model_iter_children(@pointer, iter, parent)
 
       # Return value handling
 
@@ -387,7 +387,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_iter_has_child(self, iter)
+      _retval = LibGtk.gtk_tree_model_iter_has_child(@pointer, iter)
 
       # Return value handling
 
@@ -407,7 +407,7 @@ module Gtk
              end
 
       # C call
-      _retval = LibGtk.gtk_tree_model_iter_n_children(self, iter)
+      _retval = LibGtk.gtk_tree_model_iter_n_children(@pointer, iter)
 
       # Return value handling
 
@@ -419,7 +419,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_iter_next(self, iter)
+      _retval = LibGtk.gtk_tree_model_iter_next(@pointer, iter)
 
       # Return value handling
 
@@ -441,7 +441,7 @@ module Gtk
                end
 
       # C call
-      _retval = LibGtk.gtk_tree_model_iter_nth_child(self, iter, parent, n)
+      _retval = LibGtk.gtk_tree_model_iter_nth_child(@pointer, iter, parent, n)
 
       # Return value handling
 
@@ -456,7 +456,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TreeIter.new
       # C call
-      _retval = LibGtk.gtk_tree_model_iter_parent(self, iter, child)
+      _retval = LibGtk.gtk_tree_model_iter_parent(@pointer, iter, child)
 
       # Return value handling
 
@@ -468,7 +468,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_model_iter_previous(self, iter)
+      _retval = LibGtk.gtk_tree_model_iter_previous(@pointer, iter)
 
       # Return value handling
 
@@ -480,7 +480,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_ref_node(self, iter)
+      LibGtk.gtk_tree_model_ref_node(@pointer, iter)
 
       # Return value handling
     end
@@ -490,7 +490,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_row_changed(self, path, iter)
+      LibGtk.gtk_tree_model_row_changed(@pointer, path, iter)
 
       # Return value handling
     end
@@ -500,7 +500,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_row_deleted(self, path)
+      LibGtk.gtk_tree_model_row_deleted(@pointer, path)
 
       # Return value handling
     end
@@ -510,7 +510,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_row_has_child_toggled(self, path, iter)
+      LibGtk.gtk_tree_model_row_has_child_toggled(@pointer, path, iter)
 
       # Return value handling
     end
@@ -520,7 +520,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_row_inserted(self, path, iter)
+      LibGtk.gtk_tree_model_row_inserted(@pointer, path, iter)
 
       # Return value handling
     end
@@ -542,7 +542,7 @@ module Gtk
       new_order = new_order.to_a.to_unsafe
 
       # C call
-      LibGtk.gtk_tree_model_rows_reordered_with_length(self, path, iter, new_order, length)
+      LibGtk.gtk_tree_model_rows_reordered_with_length(@pointer, path, iter, new_order, length)
 
       # Return value handling
     end
@@ -552,7 +552,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_model_unref_node(self, iter)
+      LibGtk.gtk_tree_model_unref_node(@pointer, iter)
 
       # Return value handling
     end
@@ -584,9 +584,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(path, iter)
         }.pointer
@@ -598,9 +598,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(path, iter)
         }.pointer
@@ -612,10 +612,10 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractTreeModel.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(_sender, path, iter)
         }.pointer
@@ -627,10 +627,10 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractTreeModel.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(_sender, path, iter)
         }.pointer
@@ -675,7 +675,7 @@ module Gtk
       def connect(handler : Proc(Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreePath, Nil)).unbox(_lib_box).call(path)
         }.pointer
@@ -687,7 +687,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreePath, Nil)).unbox(_lib_box).call(path)
         }.pointer
@@ -699,8 +699,8 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeModel, Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractTreeModel.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, path)
         }.pointer
@@ -712,8 +712,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeModel, Gtk::TreePath, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractTreeModel.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, path)
         }.pointer
@@ -758,9 +758,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(path, iter)
         }.pointer
@@ -772,9 +772,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(path, iter)
         }.pointer
@@ -786,10 +786,10 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractTreeModel.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(_sender, path, iter)
         }.pointer
@@ -801,10 +801,10 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractTreeModel.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(_sender, path, iter)
         }.pointer
@@ -849,9 +849,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(path, iter)
         }.pointer
@@ -863,9 +863,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(path, iter)
         }.pointer
@@ -877,10 +877,10 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractTreeModel.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(_sender, path, iter)
         }.pointer
@@ -892,10 +892,10 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_iter : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractTreeModel.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           iter = Gtk::TreeIter.new(lib_iter, :none)
           ::Box(Proc(Gtk::TreeModel, Gtk::TreePath, Gtk::TreeIter, Nil)).unbox(_lib_box).call(_sender, path, iter)
         }.pointer
@@ -918,8 +918,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class TreeModel__Impl < GObject::Object
+  class AbstractTreeModel < GObject::Object
     include TreeModel
+
+    GICrystal.define_new_method(Gtk::AbstractTreeModel, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

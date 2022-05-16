@@ -1,5 +1,4 @@
 @[Link("harfbuzz-gobject", pkg_config: "harfbuzz-gobject")]
-
 lib LibHarfBuzz
   # Flags
   type BufferDiffFlagsT = UInt32

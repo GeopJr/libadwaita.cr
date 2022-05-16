@@ -8,11 +8,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_interface_dup_object(self)
+      _retval = LibGio.g_dbus_interface_dup_object(@pointer)
 
       # Return value handling
 
-      Gio::DBusObject__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractDBusObject.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def info : Gio::DBusInterfaceInfo
@@ -20,7 +20,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_interface_get_info(self)
+      _retval = LibGio.g_dbus_interface_get_info(@pointer)
 
       # Return value handling
 
@@ -40,7 +40,7 @@ module Gio
                end
 
       # C call
-      LibGio.g_dbus_interface_set_object(self, object)
+      LibGio.g_dbus_interface_set_object(@pointer, object)
 
       # Return value handling
     end
@@ -50,8 +50,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class DBusInterface__Impl < GObject::Object
+  class AbstractDBusInterface < GObject::Object
     include DBusInterface
+
+    GICrystal.define_new_method(Gio::AbstractDBusInterface, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

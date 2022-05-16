@@ -85,15 +85,13 @@ module Gtk
         sizeof(LibGtk::Window), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Window, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Window`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -819,7 +817,7 @@ module Gtk
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::None)
     end
 
     # Returns a list of all existing toplevel windows.
@@ -904,7 +902,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_close(self)
+      LibGtk.gtk_window_close(@pointer)
 
       # Return value handling
     end
@@ -915,7 +913,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_destroy(self)
+      LibGtk.gtk_window_destroy(@pointer)
 
       # Return value handling
     end
@@ -935,7 +933,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_fullscreen(self)
+      LibGtk.gtk_window_fullscreen(@pointer)
 
       # Return value handling
     end
@@ -954,7 +952,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_fullscreen_on_monitor(self, monitor)
+      LibGtk.gtk_window_fullscreen_on_monitor(@pointer, monitor)
 
       # Return value handling
     end
@@ -965,7 +963,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_application(self)
+      _retval = LibGtk.gtk_window_get_application(@pointer)
 
       # Return value handling
 
@@ -978,7 +976,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_child(self)
+      _retval = LibGtk.gtk_window_get_child(@pointer)
 
       # Return value handling
 
@@ -991,7 +989,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_decorated(self)
+      _retval = LibGtk.gtk_window_get_decorated(@pointer)
 
       # Return value handling
 
@@ -1013,7 +1011,7 @@ module Gtk
       width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_window_get_default_size(self, width, height)
+      LibGtk.gtk_window_get_default_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -1024,7 +1022,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_default_widget(self)
+      _retval = LibGtk.gtk_window_get_default_widget(@pointer)
 
       # Return value handling
 
@@ -1037,7 +1035,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_deletable(self)
+      _retval = LibGtk.gtk_window_get_deletable(@pointer)
 
       # Return value handling
 
@@ -1050,7 +1048,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_destroy_with_parent(self)
+      _retval = LibGtk.gtk_window_get_destroy_with_parent(@pointer)
 
       # Return value handling
 
@@ -1068,7 +1066,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_focus(self)
+      _retval = LibGtk.gtk_window_get_focus(@pointer)
 
       # Return value handling
 
@@ -1081,7 +1079,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_focus_visible(self)
+      _retval = LibGtk.gtk_window_get_focus_visible(@pointer)
 
       # Return value handling
 
@@ -1096,7 +1094,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_group(self)
+      _retval = LibGtk.gtk_window_get_group(@pointer)
 
       # Return value handling
 
@@ -1110,7 +1108,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_handle_menubar_accel(self)
+      _retval = LibGtk.gtk_window_get_handle_menubar_accel(@pointer)
 
       # Return value handling
 
@@ -1123,7 +1121,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_hide_on_close(self)
+      _retval = LibGtk.gtk_window_get_hide_on_close(@pointer)
 
       # Return value handling
 
@@ -1136,7 +1134,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_icon_name(self)
+      _retval = LibGtk.gtk_window_get_icon_name(@pointer)
 
       # Return value handling
 
@@ -1149,7 +1147,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_mnemonics_visible(self)
+      _retval = LibGtk.gtk_window_get_mnemonics_visible(@pointer)
 
       # Return value handling
 
@@ -1162,7 +1160,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_modal(self)
+      _retval = LibGtk.gtk_window_get_modal(@pointer)
 
       # Return value handling
 
@@ -1175,7 +1173,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_resizable(self)
+      _retval = LibGtk.gtk_window_get_resizable(@pointer)
 
       # Return value handling
 
@@ -1188,7 +1186,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_title(self)
+      _retval = LibGtk.gtk_window_get_title(@pointer)
 
       # Return value handling
 
@@ -1202,7 +1200,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_titlebar(self)
+      _retval = LibGtk.gtk_window_get_titlebar(@pointer)
 
       # Return value handling
 
@@ -1215,7 +1213,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_get_transient_for(self)
+      _retval = LibGtk.gtk_window_get_transient_for(@pointer)
 
       # Return value handling
 
@@ -1228,7 +1226,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_has_group(self)
+      _retval = LibGtk.gtk_window_has_group(@pointer)
 
       # Return value handling
 
@@ -1247,7 +1245,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_is_active(self)
+      _retval = LibGtk.gtk_window_is_active(@pointer)
 
       # Return value handling
 
@@ -1269,7 +1267,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_is_fullscreen(self)
+      _retval = LibGtk.gtk_window_is_fullscreen(@pointer)
 
       # Return value handling
 
@@ -1291,7 +1289,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_window_is_maximized(self)
+      _retval = LibGtk.gtk_window_is_maximized(@pointer)
 
       # Return value handling
 
@@ -1318,7 +1316,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_maximize(self)
+      LibGtk.gtk_window_maximize(@pointer)
 
       # Return value handling
     end
@@ -1342,7 +1340,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_minimize(self)
+      LibGtk.gtk_window_minimize(@pointer)
 
       # Return value handling
     end
@@ -1357,7 +1355,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_present(self)
+      LibGtk.gtk_window_present(@pointer)
 
       # Return value handling
     end
@@ -1387,7 +1385,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_present_with_time(self, timestamp)
+      LibGtk.gtk_window_present_with_time(@pointer, timestamp)
 
       # Return value handling
     end
@@ -1418,7 +1416,7 @@ module Gtk
                     end
 
       # C call
-      LibGtk.gtk_window_set_application(self, application)
+      LibGtk.gtk_window_set_application(@pointer, application)
 
       # Return value handling
     end
@@ -1437,7 +1435,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_window_set_child(self, child)
+      LibGtk.gtk_window_set_child(@pointer, child)
 
       # Return value handling
     end
@@ -1460,7 +1458,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_decorated(self, setting)
+      LibGtk.gtk_window_set_decorated(@pointer, setting)
 
       # Return value handling
     end
@@ -1495,7 +1493,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_default_size(self, width, height)
+      LibGtk.gtk_window_set_default_size(@pointer, width, height)
 
       # Return value handling
     end
@@ -1517,7 +1515,7 @@ module Gtk
                        end
 
       # C call
-      LibGtk.gtk_window_set_default_widget(self, default_widget)
+      LibGtk.gtk_window_set_default_widget(@pointer, default_widget)
 
       # Return value handling
     end
@@ -1539,7 +1537,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_deletable(self, setting)
+      LibGtk.gtk_window_set_deletable(@pointer, setting)
 
       # Return value handling
     end
@@ -1554,7 +1552,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_destroy_with_parent(self, setting)
+      LibGtk.gtk_window_set_destroy_with_parent(@pointer, setting)
 
       # Return value handling
     end
@@ -1568,7 +1566,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_display(self, display)
+      LibGtk.gtk_window_set_display(@pointer, display)
 
       # Return value handling
     end
@@ -1593,7 +1591,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_window_set_focus(self, focus)
+      LibGtk.gtk_window_set_focus(@pointer, focus)
 
       # Return value handling
     end
@@ -1604,7 +1602,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_focus_visible(self, setting)
+      LibGtk.gtk_window_set_focus_visible(@pointer, setting)
 
       # Return value handling
     end
@@ -1616,7 +1614,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_handle_menubar_accel(self, handle_menubar_accel)
+      LibGtk.gtk_window_set_handle_menubar_accel(@pointer, handle_menubar_accel)
 
       # Return value handling
     end
@@ -1628,7 +1626,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_hide_on_close(self, setting)
+      LibGtk.gtk_window_set_hide_on_close(@pointer, setting)
 
       # Return value handling
     end
@@ -1653,7 +1651,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_window_set_icon_name(self, name)
+      LibGtk.gtk_window_set_icon_name(@pointer, name)
 
       # Return value handling
     end
@@ -1664,7 +1662,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_mnemonics_visible(self, setting)
+      LibGtk.gtk_window_set_mnemonics_visible(@pointer, setting)
 
       # Return value handling
     end
@@ -1681,7 +1679,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_modal(self, modal)
+      LibGtk.gtk_window_set_modal(@pointer, modal)
 
       # Return value handling
     end
@@ -1694,7 +1692,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_resizable(self, resizable)
+      LibGtk.gtk_window_set_resizable(@pointer, resizable)
 
       # Return value handling
     end
@@ -1718,7 +1716,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_set_startup_id(self, startup_id)
+      LibGtk.gtk_window_set_startup_id(@pointer, startup_id)
 
       # Return value handling
     end
@@ -1746,7 +1744,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_window_set_title(self, title)
+      LibGtk.gtk_window_set_title(@pointer, title)
 
       # Return value handling
     end
@@ -1775,7 +1773,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_window_set_titlebar(self, titlebar)
+      LibGtk.gtk_window_set_titlebar(@pointer, titlebar)
 
       # Return value handling
     end
@@ -1804,7 +1802,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_window_set_transient_for(self, parent)
+      LibGtk.gtk_window_set_transient_for(@pointer, parent)
 
       # Return value handling
     end
@@ -1827,7 +1825,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_unfullscreen(self)
+      LibGtk.gtk_window_unfullscreen(@pointer)
 
       # Return value handling
     end
@@ -1847,7 +1845,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_unmaximize(self)
+      LibGtk.gtk_window_unmaximize(@pointer)
 
       # Return value handling
     end
@@ -1867,7 +1865,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_window_unminimize(self)
+      LibGtk.gtk_window_unminimize(@pointer)
 
       # Return value handling
     end

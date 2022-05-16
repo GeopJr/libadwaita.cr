@@ -29,15 +29,13 @@ module Gtk
         sizeof(LibGtk::NativeDialog), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(NativeDialog, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `NativeDialog`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -161,7 +159,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_native_dialog_destroy(self)
+      LibGtk.gtk_native_dialog_destroy(@pointer)
 
       # Return value handling
     end
@@ -172,7 +170,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_native_dialog_get_modal(self)
+      _retval = LibGtk.gtk_native_dialog_get_modal(@pointer)
 
       # Return value handling
 
@@ -185,7 +183,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_native_dialog_get_title(self)
+      _retval = LibGtk.gtk_native_dialog_get_title(@pointer)
 
       # Return value handling
 
@@ -198,7 +196,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_native_dialog_get_transient_for(self)
+      _retval = LibGtk.gtk_native_dialog_get_transient_for(@pointer)
 
       # Return value handling
 
@@ -211,7 +209,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_native_dialog_get_visible(self)
+      _retval = LibGtk.gtk_native_dialog_get_visible(@pointer)
 
       # Return value handling
 
@@ -230,7 +228,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_native_dialog_hide(self)
+      LibGtk.gtk_native_dialog_hide(@pointer)
 
       # Return value handling
     end
@@ -247,7 +245,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_native_dialog_set_modal(self, modal)
+      LibGtk.gtk_native_dialog_set_modal(@pointer, modal)
 
       # Return value handling
     end
@@ -258,7 +256,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_native_dialog_set_title(self, title)
+      LibGtk.gtk_native_dialog_set_title(@pointer, title)
 
       # Return value handling
     end
@@ -283,7 +281,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_native_dialog_set_transient_for(self, parent)
+      LibGtk.gtk_native_dialog_set_transient_for(@pointer, parent)
 
       # Return value handling
     end
@@ -300,7 +298,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_native_dialog_show(self)
+      LibGtk.gtk_native_dialog_show(@pointer)
 
       # Return value handling
     end

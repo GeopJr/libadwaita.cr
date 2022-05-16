@@ -27,15 +27,13 @@ module Gtk
         sizeof(LibGtk::Constraint), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Constraint, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Constraint`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -160,7 +158,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "source", pointerof(value), Pointer(Void).null)
-      Gtk::ConstraintTarget__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractConstraintTarget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def source_attribute=(value : Gtk::ConstraintAttribute) : Gtk::ConstraintAttribute
@@ -205,7 +203,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "target", pointerof(value), Pointer(Void).null)
-      Gtk::ConstraintTarget__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractConstraintTarget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def target_attribute=(value : Gtk::ConstraintAttribute) : Gtk::ConstraintAttribute
@@ -281,7 +279,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_get_constant(self)
+      _retval = LibGtk.gtk_constraint_get_constant(@pointer)
 
       # Return value handling
 
@@ -295,7 +293,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_get_multiplier(self)
+      _retval = LibGtk.gtk_constraint_get_multiplier(@pointer)
 
       # Return value handling
 
@@ -308,7 +306,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_get_relation(self)
+      _retval = LibGtk.gtk_constraint_get_relation(@pointer)
 
       # Return value handling
 
@@ -325,11 +323,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_get_source(self)
+      _retval = LibGtk.gtk_constraint_get_source(@pointer)
 
       # Return value handling
 
-      Gtk::ConstraintTarget__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractConstraintTarget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Retrieves the attribute of the source to be read by the constraint.
@@ -338,7 +336,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_get_source_attribute(self)
+      _retval = LibGtk.gtk_constraint_get_source_attribute(@pointer)
 
       # Return value handling
 
@@ -351,7 +349,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_get_strength(self)
+      _retval = LibGtk.gtk_constraint_get_strength(@pointer)
 
       # Return value handling
 
@@ -368,11 +366,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_get_target(self)
+      _retval = LibGtk.gtk_constraint_get_target(@pointer)
 
       # Return value handling
 
-      Gtk::ConstraintTarget__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractConstraintTarget.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Retrieves the attribute of the target to be set by the constraint.
@@ -381,7 +379,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_get_target_attribute(self)
+      _retval = LibGtk.gtk_constraint_get_target_attribute(@pointer)
 
       # Return value handling
 
@@ -395,7 +393,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_is_attached(self)
+      _retval = LibGtk.gtk_constraint_is_attached(@pointer)
 
       # Return value handling
 
@@ -409,7 +407,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_is_constant(self)
+      _retval = LibGtk.gtk_constraint_is_constant(@pointer)
 
       # Return value handling
 
@@ -423,7 +421,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_constraint_is_required(self)
+      _retval = LibGtk.gtk_constraint_is_required(@pointer)
 
       # Return value handling
 

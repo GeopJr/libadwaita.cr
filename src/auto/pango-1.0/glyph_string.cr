@@ -106,7 +106,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_glyph_string_copy(self)
+      _retval = LibPango.pango_glyph_string_copy(@pointer)
 
       # Return value handling
 
@@ -125,7 +125,7 @@ module Pango
       logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_glyph_string_extents(self, font, ink_rect, logical_rect)
+      LibPango.pango_glyph_string_extents(@pointer, font, ink_rect, logical_rect)
 
       # Return value handling
 
@@ -144,7 +144,7 @@ module Pango
       logical_rect = Pointer(Void).null # Generator::CallerAllocatesPlan
       logical_rect = Pango::Rectangle.new
       # C call
-      LibPango.pango_glyph_string_extents_range(self, start, _end, font, ink_rect, logical_rect)
+      LibPango.pango_glyph_string_extents_range(@pointer, start, _end, font, ink_rect, logical_rect)
 
       # Return value handling
 
@@ -156,7 +156,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_glyph_string_free(self)
+      LibPango.pango_glyph_string_free(@pointer)
 
       # Return value handling
     end
@@ -170,7 +170,7 @@ module Pango
       logical_widths = logical_widths.to_a.to_unsafe
 
       # C call
-      LibPango.pango_glyph_string_get_logical_widths(self, text, length, embedding_level, logical_widths)
+      LibPango.pango_glyph_string_get_logical_widths(@pointer, text, length, embedding_level, logical_widths)
 
       # Return value handling
     end
@@ -180,7 +180,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_glyph_string_get_width(self)
+      _retval = LibPango.pango_glyph_string_get_width(@pointer)
 
       # Return value handling
 
@@ -193,7 +193,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_glyph_string_index_to_x(self, text, length, analysis, index_, trailing, x_pos)
+      LibPango.pango_glyph_string_index_to_x(@pointer, text, length, analysis, index_, trailing, x_pos)
 
       # Return value handling
     end
@@ -212,7 +212,7 @@ module Pango
               end
 
       # C call
-      LibPango.pango_glyph_string_index_to_x_full(self, text, length, analysis, attrs, index_, trailing, x_pos)
+      LibPango.pango_glyph_string_index_to_x_full(@pointer, text, length, analysis, attrs, index_, trailing, x_pos)
 
       # Return value handling
     end
@@ -222,7 +222,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_glyph_string_set_size(self, new_len)
+      LibPango.pango_glyph_string_set_size(@pointer, new_len)
 
       # Return value handling
     end
@@ -234,7 +234,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_glyph_string_x_to_index(self, text, length, analysis, x_pos, index_, trailing)
+      LibPango.pango_glyph_string_x_to_index(@pointer, text, length, analysis, x_pos, index_, trailing)
 
       # Return value handling
     end

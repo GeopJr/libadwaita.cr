@@ -146,7 +146,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_async_initable_init_async(self, io_priority, cancellable, callback, user_data)
+      LibGio.g_async_initable_init_async(@pointer, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -158,7 +158,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_async_initable_init_finish(self, res, pointerof(_error))
+      _retval = LibGio.g_async_initable_init_finish(@pointer, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -175,7 +175,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_async_initable_new_finish(self, res, pointerof(_error))
+      _retval = LibGio.g_async_initable_new_finish(@pointer, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -190,8 +190,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class AsyncInitable__Impl < GObject::Object
+  class AbstractAsyncInitable < GObject::Object
     include AsyncInitable
+
+    GICrystal.define_new_method(Gio::AbstractAsyncInitable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

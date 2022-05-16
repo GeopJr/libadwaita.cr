@@ -18,7 +18,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_buildable_get_buildable_id(self)
+      _retval = LibGtk.gtk_buildable_get_buildable_id(@pointer)
 
       # Return value handling
 
@@ -30,8 +30,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Buildable__Impl < GObject::Object
+  class AbstractBuildable < GObject::Object
     include Buildable
+
+    GICrystal.define_new_method(Gtk::AbstractBuildable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

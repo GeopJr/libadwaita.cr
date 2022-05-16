@@ -172,7 +172,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_glyph_item_iter_copy(self)
+      _retval = LibPango.pango_glyph_item_iter_copy(@pointer)
 
       # Return value handling
 
@@ -184,7 +184,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_glyph_item_iter_free(self)
+      LibPango.pango_glyph_item_iter_free(@pointer)
 
       # Return value handling
     end
@@ -194,7 +194,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_glyph_item_iter_init_end(self, glyph_item, text)
+      _retval = LibPango.pango_glyph_item_iter_init_end(@pointer, glyph_item, text)
 
       # Return value handling
 
@@ -206,7 +206,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_glyph_item_iter_init_start(self, glyph_item, text)
+      _retval = LibPango.pango_glyph_item_iter_init_start(@pointer, glyph_item, text)
 
       # Return value handling
 
@@ -218,7 +218,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_glyph_item_iter_next_cluster(self)
+      _retval = LibPango.pango_glyph_item_iter_next_cluster(@pointer)
 
       # Return value handling
 
@@ -230,7 +230,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_glyph_item_iter_prev_cluster(self)
+      _retval = LibPango.pango_glyph_item_iter_prev_cluster(@pointer)
 
       # Return value handling
 

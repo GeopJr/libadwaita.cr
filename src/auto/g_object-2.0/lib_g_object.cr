@@ -1,5 +1,4 @@
 @[Link("gobject-2.0", pkg_config: "gobject-2.0")]
-
 lib LibGObject
   # Functions not declared by GObj Introspection
 
@@ -324,6 +323,8 @@ lib LibGObject
   # Objects
   type Binding = Void # Object struct with no fields
 
+  type BindingGroup = Void # Object struct with no fields
+
   struct InitiallyUnowned
     g_type_instance : LibGObject::TypeInstance
     ref_count : UInt32
@@ -492,6 +493,8 @@ lib LibGObject
     padding : Pointer(Void)[4]
   end
 
+  type SignalGroup = Void # Object struct with no fields
+
   struct TypeModule
     parent_instance : LibGObject::Object
     use_count : UInt32
@@ -509,6 +512,12 @@ lib LibGObject
   fun g_binding_get_target(this : Void*) : Pointer(Void)
   fun g_binding_get_target_property(this : Void*) : Pointer(LibC::Char)
   fun g_binding_get_type : UInt64
+  fun g_binding_group_bind(this : Void*, source_property : Pointer(LibC::Char), target : Pointer(Void), target_property : Pointer(LibC::Char), flags : UInt32) : Void
+  fun g_binding_group_bind_with_closures(this : Void*, source_property : Pointer(LibC::Char), target : Pointer(Void), target_property : Pointer(LibC::Char), flags : UInt32, transform_to : Pointer(Void), transform_from : Pointer(Void)) : Void
+  fun g_binding_group_dup_source(this : Void*) : Pointer(Void)
+  fun g_binding_group_get_type : UInt64
+  fun g_binding_group_new : Pointer(Void)
+  fun g_binding_group_set_source(this : Void*, source : Pointer(Void)) : Void
   fun g_binding_unbind(this : Void*) : Void
   fun g_boxed_copy(boxed_type : UInt64, src_boxed : Pointer(Void)) : Pointer(Void)
   fun g_boxed_free(boxed_type : UInt64, boxed : Pointer(Void)) : Void
@@ -667,6 +676,14 @@ lib LibGObject
   @[Raises]
   fun g_signal_emitv(instance_and_params : Pointer(Void), signal_id : UInt32, detail : UInt32, return_value : Pointer(Void)) : Void
   fun g_signal_get_invocation_hint(instance : Pointer(Void)) : Pointer(Void)
+  fun g_signal_group_block(this : Void*) : Void
+  fun g_signal_group_connect_data(this : Void*, detailed_signal : Pointer(LibC::Char), c_handler : Void*, data : Pointer(Void), notify : Void*, flags : UInt32) : Void
+  fun g_signal_group_connect_swapped(this : Void*, detailed_signal : Pointer(LibC::Char), c_handler : Void*, data : Pointer(Void)) : Void
+  fun g_signal_group_dup_target(this : Void*) : Pointer(Void)
+  fun g_signal_group_get_type : UInt64
+  fun g_signal_group_new(target_type : UInt64) : Pointer(Void)
+  fun g_signal_group_set_target(this : Void*, target : Pointer(Void)) : Void
+  fun g_signal_group_unblock(this : Void*) : Void
   fun g_signal_handler_block(instance : Pointer(Void), handler_id : UInt64) : Void
   fun g_signal_handler_disconnect(instance : Pointer(Void), handler_id : UInt64) : Void
   fun g_signal_handler_find(instance : Pointer(Void), mask : UInt32, signal_id : UInt32, detail : UInt32, closure : Pointer(Void), func : Pointer(Void), data : Pointer(Void)) : UInt64

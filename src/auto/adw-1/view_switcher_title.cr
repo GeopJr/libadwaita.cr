@@ -84,15 +84,13 @@ module Adw
         sizeof(LibAdw::ViewSwitcherTitle), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ViewSwitcherTitle, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ViewSwitcherTitle`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -410,7 +408,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_switcher_title_get_stack(self)
+      _retval = LibAdw.adw_view_switcher_title_get_stack(@pointer)
 
       # Return value handling
 
@@ -423,7 +421,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_switcher_title_get_subtitle(self)
+      _retval = LibAdw.adw_view_switcher_title_get_subtitle(@pointer)
 
       # Return value handling
 
@@ -436,7 +434,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_switcher_title_get_title(self)
+      _retval = LibAdw.adw_view_switcher_title_get_title(@pointer)
 
       # Return value handling
 
@@ -449,7 +447,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_switcher_title_get_title_visible(self)
+      _retval = LibAdw.adw_view_switcher_title_get_title_visible(@pointer)
 
       # Return value handling
 
@@ -462,7 +460,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_switcher_title_get_view_switcher_enabled(self)
+      _retval = LibAdw.adw_view_switcher_title_get_view_switcher_enabled(@pointer)
 
       # Return value handling
 
@@ -483,7 +481,7 @@ module Adw
               end
 
       # C call
-      LibAdw.adw_view_switcher_title_set_stack(self, stack)
+      LibAdw.adw_view_switcher_title_set_stack(@pointer, stack)
 
       # Return value handling
     end
@@ -494,7 +492,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_view_switcher_title_set_subtitle(self, subtitle)
+      LibAdw.adw_view_switcher_title_set_subtitle(@pointer, subtitle)
 
       # Return value handling
     end
@@ -505,7 +503,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_view_switcher_title_set_title(self, title)
+      LibAdw.adw_view_switcher_title_set_title(@pointer, title)
 
       # Return value handling
     end
@@ -516,7 +514,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_view_switcher_title_set_view_switcher_enabled(self, enabled)
+      LibAdw.adw_view_switcher_title_set_view_switcher_enabled(@pointer, enabled)
 
       # Return value handling
     end

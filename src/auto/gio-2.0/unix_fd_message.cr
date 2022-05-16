@@ -25,15 +25,13 @@ module Gio
         sizeof(LibGio::UnixFDMessage), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(UnixFDMessage, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `UnixFDMessage`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -124,7 +122,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_unix_fd_message_append_fd(self, fd, pointerof(_error))
+      _retval = LibGio.g_unix_fd_message_append_fd(@pointer, fd, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -142,7 +140,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_fd_message_get_fd_list(self)
+      _retval = LibGio.g_unix_fd_message_get_fd_list(@pointer)
 
       # Return value handling
 

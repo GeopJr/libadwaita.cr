@@ -15,15 +15,13 @@ module Gio
         sizeof(LibGio::FilenameCompleter), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FilenameCompleter, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FilenameCompleter`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -56,7 +54,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_filename_completer_get_completion_suffix(self, initial_text)
+      _retval = LibGio.g_filename_completer_get_completion_suffix(@pointer, initial_text)
 
       # Return value handling
 
@@ -69,7 +67,7 @@ module Gio
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGio.g_filename_completer_get_completions(self, initial_text)
+      _retval = LibGio.g_filename_completer_get_completions(@pointer, initial_text)
 
       # Return value handling
 
@@ -83,7 +81,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_filename_completer_set_dirs_only(self, dirs_only)
+      LibGio.g_filename_completer_set_dirs_only(@pointer, dirs_only)
 
       # Return value handling
     end

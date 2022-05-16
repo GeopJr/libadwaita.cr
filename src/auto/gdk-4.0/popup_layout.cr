@@ -76,7 +76,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_popup_layout_copy(self)
+      _retval = LibGdk.gdk_popup_layout_copy(@pointer)
 
       # Return value handling
 
@@ -88,7 +88,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_layout_equal(self, other)
+      _retval = LibGdk.gdk_popup_layout_equal(@pointer, other)
 
       # Return value handling
 
@@ -100,7 +100,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_layout_get_anchor_hints(self)
+      _retval = LibGdk.gdk_popup_layout_get_anchor_hints(@pointer)
 
       # Return value handling
 
@@ -112,7 +112,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_layout_get_anchor_rect(self)
+      _retval = LibGdk.gdk_popup_layout_get_anchor_rect(@pointer)
 
       # Return value handling
 
@@ -126,7 +126,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_popup_layout_get_offset(self, dx, dy)
+      LibGdk.gdk_popup_layout_get_offset(@pointer, dx, dy)
 
       # Return value handling
     end
@@ -136,7 +136,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_layout_get_rect_anchor(self)
+      _retval = LibGdk.gdk_popup_layout_get_rect_anchor(@pointer)
 
       # Return value handling
 
@@ -152,7 +152,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_popup_layout_get_shadow_width(self, left, right, top, bottom)
+      LibGdk.gdk_popup_layout_get_shadow_width(@pointer, left, right, top, bottom)
 
       # Return value handling
     end
@@ -162,7 +162,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_popup_layout_get_surface_anchor(self)
+      _retval = LibGdk.gdk_popup_layout_get_surface_anchor(@pointer)
 
       # Return value handling
 
@@ -174,7 +174,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_popup_layout_ref(self)
+      _retval = LibGdk.gdk_popup_layout_ref(@pointer)
 
       # Return value handling
 
@@ -186,7 +186,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_popup_layout_set_anchor_hints(self, anchor_hints)
+      LibGdk.gdk_popup_layout_set_anchor_hints(@pointer, anchor_hints)
 
       # Return value handling
     end
@@ -196,7 +196,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_popup_layout_set_anchor_rect(self, anchor_rect)
+      LibGdk.gdk_popup_layout_set_anchor_rect(@pointer, anchor_rect)
 
       # Return value handling
     end
@@ -206,7 +206,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_popup_layout_set_offset(self, dx, dy)
+      LibGdk.gdk_popup_layout_set_offset(@pointer, dx, dy)
 
       # Return value handling
     end
@@ -216,7 +216,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_popup_layout_set_rect_anchor(self, anchor)
+      LibGdk.gdk_popup_layout_set_rect_anchor(@pointer, anchor)
 
       # Return value handling
     end
@@ -226,7 +226,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_popup_layout_set_shadow_width(self, left, right, top, bottom)
+      LibGdk.gdk_popup_layout_set_shadow_width(@pointer, left, right, top, bottom)
 
       # Return value handling
     end
@@ -236,7 +236,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_popup_layout_set_surface_anchor(self, anchor)
+      LibGdk.gdk_popup_layout_set_surface_anchor(@pointer, anchor)
 
       # Return value handling
     end
@@ -246,7 +246,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_popup_layout_unref(self)
+      LibGdk.gdk_popup_layout_unref(@pointer)
 
       # Return value handling
     end

@@ -64,15 +64,13 @@ module Gtk
         sizeof(LibGtk::FileFilter), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FileFilter, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FileFilter`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -179,7 +177,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_filter_add_mime_type(self, mime_type)
+      LibGtk.gtk_file_filter_add_mime_type(@pointer, mime_type)
 
       # Return value handling
     end
@@ -194,7 +192,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_filter_add_pattern(self, pattern)
+      LibGtk.gtk_file_filter_add_pattern(@pointer, pattern)
 
       # Return value handling
     end
@@ -209,7 +207,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_filter_add_pixbuf_formats(self)
+      LibGtk.gtk_file_filter_add_pixbuf_formats(@pointer)
 
       # Return value handling
     end
@@ -226,7 +224,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_filter_add_suffix(self, suffix)
+      LibGtk.gtk_file_filter_add_suffix(@pointer, suffix)
 
       # Return value handling
     end
@@ -242,7 +240,7 @@ module Gtk
       # Returns: (transfer none) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_file_filter_get_attributes(self)
+      _retval = LibGtk.gtk_file_filter_get_attributes(@pointer)
 
       # Return value handling
 
@@ -257,7 +255,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_file_filter_get_name(self)
+      _retval = LibGtk.gtk_file_filter_get_name(@pointer)
 
       # Return value handling
 
@@ -281,7 +279,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_file_filter_set_name(self, name)
+      LibGtk.gtk_file_filter_set_name(@pointer, name)
 
       # Return value handling
     end
@@ -292,7 +290,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_file_filter_to_gvariant(self)
+      _retval = LibGtk.gtk_file_filter_to_gvariant(@pointer)
 
       # Return value handling
 

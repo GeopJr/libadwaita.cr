@@ -24,15 +24,13 @@ module Gio
         sizeof(LibGio::UnixConnection), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(UnixConnection, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `UnixConnection`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -113,7 +111,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_unix_connection_receive_credentials(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_unix_connection_receive_credentials(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -151,7 +149,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_unix_connection_receive_credentials_async(self, cancellable, callback, user_data)
+      LibGio.g_unix_connection_receive_credentials_async(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -165,7 +163,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_unix_connection_receive_credentials_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_unix_connection_receive_credentials_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -197,7 +195,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_unix_connection_receive_fd(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_unix_connection_receive_fd(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -241,7 +239,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_unix_connection_send_credentials(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_unix_connection_send_credentials(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -279,7 +277,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_unix_connection_send_credentials_async(self, cancellable, callback, user_data)
+      LibGio.g_unix_connection_send_credentials_async(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -293,7 +291,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_unix_connection_send_credentials_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_unix_connection_send_credentials_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -325,7 +323,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_unix_connection_send_fd(self, fd, cancellable, pointerof(_error))
+      _retval = LibGio.g_unix_connection_send_fd(@pointer, fd, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?

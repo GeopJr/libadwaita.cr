@@ -25,15 +25,13 @@ module Gio
         sizeof(LibGio::SocketClient), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SocketClient, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SocketClient`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -178,7 +176,7 @@ module Gio
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "proxy-resolver", pointerof(value), Pointer(Void).null)
-      Gio::ProxyResolver__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractProxyResolver.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def timeout=(value : UInt32) : UInt32
@@ -279,7 +277,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_client_add_application_proxy(self, protocol)
+      LibGio.g_socket_client_add_application_proxy(@pointer, protocol)
 
       # Return value handling
     end
@@ -317,7 +315,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_client_connect(self, connectable, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_client_connect(@pointer, connectable, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -362,7 +360,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_socket_client_connect_async(self, connectable, cancellable, callback, user_data)
+      LibGio.g_socket_client_connect_async(@pointer, connectable, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -375,7 +373,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_client_connect_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_socket_client_connect_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -430,7 +428,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_client_connect_to_host(self, host_and_port, default_port, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_client_connect_to_host(@pointer, host_and_port, default_port, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -466,7 +464,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_socket_client_connect_to_host_async(self, host_and_port, default_port, cancellable, callback, user_data)
+      LibGio.g_socket_client_connect_to_host_async(@pointer, host_and_port, default_port, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -479,7 +477,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_client_connect_to_host_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_socket_client_connect_to_host_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -518,7 +516,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_client_connect_to_service(self, domain, service, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_client_connect_to_service(@pointer, domain, service, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -551,7 +549,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_socket_client_connect_to_service_async(self, domain, service, cancellable, callback, user_data)
+      LibGio.g_socket_client_connect_to_service_async(@pointer, domain, service, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -564,7 +562,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_client_connect_to_service_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_socket_client_connect_to_service_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -610,7 +608,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_socket_client_connect_to_uri(self, uri, default_port, cancellable, pointerof(_error))
+      _retval = LibGio.g_socket_client_connect_to_uri(@pointer, uri, default_port, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -646,7 +644,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_socket_client_connect_to_uri_async(self, uri, default_port, cancellable, callback, user_data)
+      LibGio.g_socket_client_connect_to_uri_async(@pointer, uri, default_port, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -659,7 +657,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_socket_client_connect_to_uri_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_socket_client_connect_to_uri_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -675,7 +673,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_client_get_enable_proxy(self)
+      _retval = LibGio.g_socket_client_get_enable_proxy(@pointer)
 
       # Return value handling
 
@@ -690,7 +688,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_client_get_family(self)
+      _retval = LibGio.g_socket_client_get_family(@pointer)
 
       # Return value handling
 
@@ -705,7 +703,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_client_get_local_address(self)
+      _retval = LibGio.g_socket_client_get_local_address(@pointer)
 
       # Return value handling
 
@@ -720,7 +718,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_client_get_protocol(self)
+      _retval = LibGio.g_socket_client_get_protocol(@pointer)
 
       # Return value handling
 
@@ -735,11 +733,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_client_get_proxy_resolver(self)
+      _retval = LibGio.g_socket_client_get_proxy_resolver(@pointer)
 
       # Return value handling
 
-      Gio::ProxyResolver__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractProxyResolver.new(_retval, GICrystal::Transfer::None)
     end
 
     # Gets the socket type of the socket client.
@@ -750,7 +748,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_client_get_socket_type(self)
+      _retval = LibGio.g_socket_client_get_socket_type(@pointer)
 
       # Return value handling
 
@@ -765,7 +763,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_client_get_timeout(self)
+      _retval = LibGio.g_socket_client_get_timeout(@pointer)
 
       # Return value handling
 
@@ -779,7 +777,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_client_get_tls(self)
+      _retval = LibGio.g_socket_client_get_tls(@pointer)
 
       # Return value handling
 
@@ -797,7 +795,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_socket_client_get_tls_validation_flags(self)
+      _retval = LibGio.g_socket_client_get_tls_validation_flags(@pointer)
 
       # Return value handling
 
@@ -815,7 +813,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_client_set_enable_proxy(self, enable)
+      LibGio.g_socket_client_set_enable_proxy(@pointer, enable)
 
       # Return value handling
     end
@@ -833,7 +831,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_client_set_family(self, family)
+      LibGio.g_socket_client_set_family(@pointer, family)
 
       # Return value handling
     end
@@ -858,7 +856,7 @@ module Gio
                 end
 
       # C call
-      LibGio.g_socket_client_set_local_address(self, address)
+      LibGio.g_socket_client_set_local_address(@pointer, address)
 
       # Return value handling
     end
@@ -874,7 +872,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_client_set_protocol(self, protocol)
+      LibGio.g_socket_client_set_protocol(@pointer, protocol)
 
       # Return value handling
     end
@@ -899,7 +897,7 @@ module Gio
                        end
 
       # C call
-      LibGio.g_socket_client_set_proxy_resolver(self, proxy_resolver)
+      LibGio.g_socket_client_set_proxy_resolver(@pointer, proxy_resolver)
 
       # Return value handling
     end
@@ -915,7 +913,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_client_set_socket_type(self, type)
+      LibGio.g_socket_client_set_socket_type(@pointer, type)
 
       # Return value handling
     end
@@ -931,7 +929,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_client_set_timeout(self, timeout)
+      LibGio.g_socket_client_set_timeout(@pointer, timeout)
 
       # Return value handling
     end
@@ -959,7 +957,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_client_set_tls(self, tls)
+      LibGio.g_socket_client_set_tls(@pointer, tls)
 
       # Return value handling
     end
@@ -975,7 +973,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_socket_client_set_tls_validation_flags(self, flags)
+      LibGio.g_socket_client_set_tls_validation_flags(@pointer, flags)
 
       # Return value handling
     end
@@ -1056,14 +1054,14 @@ module Gio
       def connect(handler : Proc(Gio::SocketClientEvent, Gio::SocketConnectable, Gio::IOStream?, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_connectable : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          event = Gio::SocketClientEvent.new(lib_event, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          event = Gio::SocketClientEvent.new(lib_event)
+          # Generator::BuiltInTypeArgPlan
           connectable = Gio::SocketConnectable.new(lib_connectable, :none)
           # Generator::NullableArrayPlan
           connection = (lib_connection.null? ? nil : Gio::IOStream.new(lib_connection, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          connection = Gio::IOStream.new(lib_connection, :none)
+          # Generator::BuiltInTypeArgPlan
+          connection = Gio::IOStream.new(lib_connection, :none) unless lib_connection.null?
           ::Box(Proc(Gio::SocketClientEvent, Gio::SocketConnectable, Gio::IOStream?, Nil)).unbox(_lib_box).call(event, connectable, connection)
         }.pointer
 
@@ -1074,14 +1072,14 @@ module Gio
       def connect_after(handler : Proc(Gio::SocketClientEvent, Gio::SocketConnectable, Gio::IOStream?, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_connectable : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          event = Gio::SocketClientEvent.new(lib_event, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          event = Gio::SocketClientEvent.new(lib_event)
+          # Generator::BuiltInTypeArgPlan
           connectable = Gio::SocketConnectable.new(lib_connectable, :none)
           # Generator::NullableArrayPlan
           connection = (lib_connection.null? ? nil : Gio::IOStream.new(lib_connection, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          connection = Gio::IOStream.new(lib_connection, :none)
+          # Generator::BuiltInTypeArgPlan
+          connection = Gio::IOStream.new(lib_connection, :none) unless lib_connection.null?
           ::Box(Proc(Gio::SocketClientEvent, Gio::SocketConnectable, Gio::IOStream?, Nil)).unbox(_lib_box).call(event, connectable, connection)
         }.pointer
 
@@ -1093,14 +1091,14 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_connectable : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::SocketClient.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          event = Gio::SocketClientEvent.new(lib_event, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          event = Gio::SocketClientEvent.new(lib_event)
+          # Generator::BuiltInTypeArgPlan
           connectable = Gio::SocketConnectable.new(lib_connectable, :none)
           # Generator::NullableArrayPlan
           connection = (lib_connection.null? ? nil : Gio::IOStream.new(lib_connection, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          connection = Gio::IOStream.new(lib_connection, :none)
+          # Generator::BuiltInTypeArgPlan
+          connection = Gio::IOStream.new(lib_connection, :none) unless lib_connection.null?
           ::Box(Proc(Gio::SocketClient, Gio::SocketClientEvent, Gio::SocketConnectable, Gio::IOStream?, Nil)).unbox(_lib_box).call(_sender, event, connectable, connection)
         }.pointer
 
@@ -1112,14 +1110,14 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_event : UInt32, lib_connectable : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::SocketClient.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          event = Gio::SocketClientEvent.new(lib_event, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
+          event = Gio::SocketClientEvent.new(lib_event)
+          # Generator::BuiltInTypeArgPlan
           connectable = Gio::SocketConnectable.new(lib_connectable, :none)
           # Generator::NullableArrayPlan
           connection = (lib_connection.null? ? nil : Gio::IOStream.new(lib_connection, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          connection = Gio::IOStream.new(lib_connection, :none)
+          # Generator::BuiltInTypeArgPlan
+          connection = Gio::IOStream.new(lib_connection, :none) unless lib_connection.null?
           ::Box(Proc(Gio::SocketClient, Gio::SocketClientEvent, Gio::SocketConnectable, Gio::IOStream?, Nil)).unbox(_lib_box).call(_sender, event, connectable, connection)
         }.pointer
 
@@ -1128,6 +1126,13 @@ module Gio
       end
 
       def emit(event : Gio::SocketClientEvent, connectable : Gio::SocketConnectable, connection : Gio::IOStream?) : Nil
+        # Generator::NullableArrayPlan
+        connection = if connection.nil?
+                       Void.null
+                     else
+                       connection.to_unsafe
+                     end
+
         LibGObject.g_signal_emit_by_name(@source, "event", event, connectable, connection)
       end
     end

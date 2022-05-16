@@ -63,7 +63,7 @@ module Gio
       relocatable = relocatable.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGio.g_settings_schema_source_list_schemas(self, recursive, non_relocatable, relocatable)
+      LibGio.g_settings_schema_source_list_schemas(@pointer, recursive, non_relocatable, relocatable)
 
       # Return value handling
     end
@@ -73,7 +73,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_schema_source_lookup(self, schema_id, recursive)
+      _retval = LibGio.g_settings_schema_source_lookup(@pointer, schema_id, recursive)
 
       # Return value handling
 
@@ -85,7 +85,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_settings_schema_source_ref(self)
+      _retval = LibGio.g_settings_schema_source_ref(@pointer)
 
       # Return value handling
 
@@ -97,7 +97,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_settings_schema_source_unref(self)
+      LibGio.g_settings_schema_source_unref(@pointer)
 
       # Return value handling
     end

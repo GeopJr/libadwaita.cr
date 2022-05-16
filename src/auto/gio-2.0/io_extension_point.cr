@@ -22,7 +22,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_io_extension_point_get_extension_by_name(self, name)
+      _retval = LibGio.g_io_extension_point_get_extension_by_name(@pointer, name)
 
       # Return value handling
 
@@ -34,7 +34,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_io_extension_point_get_extensions(self)
+      _retval = LibGio.g_io_extension_point_get_extensions(@pointer)
 
       # Return value handling
 
@@ -46,7 +46,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_io_extension_point_get_required_type(self)
+      _retval = LibGio.g_io_extension_point_get_required_type(@pointer)
 
       # Return value handling
 
@@ -58,7 +58,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_io_extension_point_set_required_type(self, type)
+      LibGio.g_io_extension_point_set_required_type(@pointer, type)
 
       # Return value handling
     end

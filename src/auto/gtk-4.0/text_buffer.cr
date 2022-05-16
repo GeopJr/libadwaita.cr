@@ -21,15 +21,13 @@ module Gtk
         sizeof(LibGtk::TextBuffer), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TextBuffer, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TextBuffer`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -204,7 +202,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_add_mark(self, mark, where)
+      LibGtk.gtk_text_buffer_add_mark(@pointer, mark, where)
 
       # Return value handling
     end
@@ -219,7 +217,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_add_selection_clipboard(self, clipboard)
+      LibGtk.gtk_text_buffer_add_selection_clipboard(@pointer, clipboard)
 
       # Return value handling
     end
@@ -234,7 +232,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_apply_tag(self, tag, start, _end)
+      LibGtk.gtk_text_buffer_apply_tag(@pointer, tag, start, _end)
 
       # Return value handling
     end
@@ -249,7 +247,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_apply_tag_by_name(self, name, start, _end)
+      LibGtk.gtk_text_buffer_apply_tag_by_name(@pointer, name, start, _end)
 
       # Return value handling
     end
@@ -270,7 +268,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_backspace(self, iter, interactive, default_editable)
+      _retval = LibGtk.gtk_text_buffer_backspace(@pointer, iter, interactive, default_editable)
 
       # Return value handling
 
@@ -293,7 +291,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_begin_irreversible_action(self)
+      LibGtk.gtk_text_buffer_begin_irreversible_action(@pointer)
 
       # Return value handling
     end
@@ -321,7 +319,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_begin_user_action(self)
+      LibGtk.gtk_text_buffer_begin_user_action(@pointer)
 
       # Return value handling
     end
@@ -332,7 +330,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_copy_clipboard(self, clipboard)
+      LibGtk.gtk_text_buffer_copy_clipboard(@pointer, clipboard)
 
       # Return value handling
     end
@@ -350,7 +348,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_create_child_anchor(self, iter)
+      _retval = LibGtk.gtk_text_buffer_create_child_anchor(@pointer, iter)
 
       # Return value handling
 
@@ -389,7 +387,7 @@ module Gtk
                   end
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_create_mark(self, mark_name, where, left_gravity)
+      _retval = LibGtk.gtk_text_buffer_create_mark(@pointer, mark_name, where, left_gravity)
 
       # Return value handling
 
@@ -403,7 +401,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_cut_clipboard(self, clipboard, default_editable)
+      LibGtk.gtk_text_buffer_cut_clipboard(@pointer, clipboard, default_editable)
 
       # Return value handling
     end
@@ -423,7 +421,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_delete(self, start, _end)
+      LibGtk.gtk_text_buffer_delete(@pointer, start, _end)
 
       # Return value handling
     end
@@ -439,7 +437,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_delete_interactive(self, start_iter, end_iter, default_editable)
+      _retval = LibGtk.gtk_text_buffer_delete_interactive(@pointer, start_iter, end_iter, default_editable)
 
       # Return value handling
 
@@ -463,7 +461,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_delete_mark(self, mark)
+      LibGtk.gtk_text_buffer_delete_mark(@pointer, mark)
 
       # Return value handling
     end
@@ -476,7 +474,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_delete_mark_by_name(self, name)
+      LibGtk.gtk_text_buffer_delete_mark_by_name(@pointer, name)
 
       # Return value handling
     end
@@ -491,7 +489,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_delete_selection(self, interactive, default_editable)
+      _retval = LibGtk.gtk_text_buffer_delete_selection(@pointer, interactive, default_editable)
 
       # Return value handling
 
@@ -514,7 +512,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_end_irreversible_action(self)
+      LibGtk.gtk_text_buffer_end_irreversible_action(@pointer)
 
       # Return value handling
     end
@@ -529,7 +527,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_end_user_action(self)
+      LibGtk.gtk_text_buffer_end_user_action(@pointer)
 
       # Return value handling
     end
@@ -546,7 +544,7 @@ module Gtk
       start = Gtk::TextIter.new # Generator::CallerAllocatesPlan
       _end = Gtk::TextIter.new
       # C call
-      LibGtk.gtk_text_buffer_get_bounds(self, start, _end)
+      LibGtk.gtk_text_buffer_get_bounds(@pointer, start, _end)
 
       # Return value handling
 
@@ -559,7 +557,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_can_redo(self)
+      _retval = LibGtk.gtk_text_buffer_get_can_redo(@pointer)
 
       # Return value handling
 
@@ -572,7 +570,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_can_undo(self)
+      _retval = LibGtk.gtk_text_buffer_get_can_undo(@pointer)
 
       # Return value handling
 
@@ -591,7 +589,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_char_count(self)
+      _retval = LibGtk.gtk_text_buffer_get_char_count(@pointer)
 
       # Return value handling
 
@@ -609,7 +607,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_enable_undo(self)
+      _retval = LibGtk.gtk_text_buffer_get_enable_undo(@pointer)
 
       # Return value handling
 
@@ -632,7 +630,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TextIter.new
       # C call
-      LibGtk.gtk_text_buffer_get_end_iter(self, iter)
+      LibGtk.gtk_text_buffer_get_end_iter(@pointer, iter)
 
       # Return value handling
 
@@ -645,7 +643,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_has_selection(self)
+      _retval = LibGtk.gtk_text_buffer_get_has_selection(@pointer)
 
       # Return value handling
 
@@ -662,7 +660,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_insert(self)
+      _retval = LibGtk.gtk_text_buffer_get_insert(@pointer)
 
       # Return value handling
 
@@ -678,7 +676,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TextIter.new
       # C call
-      LibGtk.gtk_text_buffer_get_iter_at_child_anchor(self, iter, anchor)
+      LibGtk.gtk_text_buffer_get_iter_at_child_anchor(@pointer, iter, anchor)
 
       # Return value handling
 
@@ -697,7 +695,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TextIter.new
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_iter_at_line(self, iter, line_number)
+      _retval = LibGtk.gtk_text_buffer_get_iter_at_line(@pointer, iter, line_number)
 
       # Return value handling
 
@@ -720,7 +718,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TextIter.new
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_iter_at_line_index(self, iter, line_number, byte_index)
+      _retval = LibGtk.gtk_text_buffer_get_iter_at_line_index(@pointer, iter, line_number, byte_index)
 
       # Return value handling
 
@@ -743,7 +741,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TextIter.new
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_iter_at_line_offset(self, iter, line_number, char_offset)
+      _retval = LibGtk.gtk_text_buffer_get_iter_at_line_offset(@pointer, iter, line_number, char_offset)
 
       # Return value handling
 
@@ -759,7 +757,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TextIter.new
       # C call
-      LibGtk.gtk_text_buffer_get_iter_at_mark(self, iter, mark)
+      LibGtk.gtk_text_buffer_get_iter_at_mark(@pointer, iter, mark)
 
       # Return value handling
 
@@ -780,7 +778,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TextIter.new
       # C call
-      LibGtk.gtk_text_buffer_get_iter_at_offset(self, iter, char_offset)
+      LibGtk.gtk_text_buffer_get_iter_at_offset(@pointer, iter, char_offset)
 
       # Return value handling
 
@@ -795,7 +793,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_line_count(self)
+      _retval = LibGtk.gtk_text_buffer_get_line_count(@pointer)
 
       # Return value handling
 
@@ -809,7 +807,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_mark(self, name)
+      _retval = LibGtk.gtk_text_buffer_get_mark(@pointer, name)
 
       # Return value handling
 
@@ -826,7 +824,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_max_undo_levels(self)
+      _retval = LibGtk.gtk_text_buffer_get_max_undo_levels(@pointer)
 
       # Return value handling
 
@@ -843,7 +841,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_modified(self)
+      _retval = LibGtk.gtk_text_buffer_get_modified(@pointer)
 
       # Return value handling
 
@@ -867,7 +865,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_selection_bound(self)
+      _retval = LibGtk.gtk_text_buffer_get_selection_bound(@pointer)
 
       # Return value handling
 
@@ -891,7 +889,7 @@ module Gtk
       start = Gtk::TextIter.new # Generator::CallerAllocatesPlan
       _end = Gtk::TextIter.new
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_selection_bounds(self, start, _end)
+      _retval = LibGtk.gtk_text_buffer_get_selection_bounds(@pointer, start, _end)
 
       # Return value handling
 
@@ -907,7 +905,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_selection_content(self)
+      _retval = LibGtk.gtk_text_buffer_get_selection_content(@pointer)
 
       # Return value handling
 
@@ -929,7 +927,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_slice(self, start, _end, include_hidden_chars)
+      _retval = LibGtk.gtk_text_buffer_get_slice(@pointer, start, _end, include_hidden_chars)
 
       # Return value handling
 
@@ -948,7 +946,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       iter = Gtk::TextIter.new
       # C call
-      LibGtk.gtk_text_buffer_get_start_iter(self, iter)
+      LibGtk.gtk_text_buffer_get_start_iter(@pointer, iter)
 
       # Return value handling
 
@@ -961,7 +959,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_tag_table(self)
+      _retval = LibGtk.gtk_text_buffer_get_tag_table(@pointer)
 
       # Return value handling
 
@@ -981,7 +979,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_get_text(self, start, _end, include_hidden_chars)
+      _retval = LibGtk.gtk_text_buffer_get_text(@pointer, start, _end, include_hidden_chars)
 
       # Return value handling
 
@@ -1001,7 +999,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_insert(self, iter, text, len)
+      LibGtk.gtk_text_buffer_insert(@pointer, iter, text, len)
 
       # Return value handling
     end
@@ -1015,7 +1013,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_insert_at_cursor(self, text, len)
+      LibGtk.gtk_text_buffer_insert_at_cursor(@pointer, text, len)
 
       # Return value handling
     end
@@ -1038,7 +1036,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_insert_child_anchor(self, iter, anchor)
+      LibGtk.gtk_text_buffer_insert_child_anchor(@pointer, iter, anchor)
 
       # Return value handling
     end
@@ -1058,7 +1056,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_insert_interactive(self, iter, text, len, default_editable)
+      _retval = LibGtk.gtk_text_buffer_insert_interactive(@pointer, iter, text, len, default_editable)
 
       # Return value handling
 
@@ -1078,7 +1076,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_insert_interactive_at_cursor(self, text, len, default_editable)
+      _retval = LibGtk.gtk_text_buffer_insert_interactive_at_cursor(@pointer, text, len, default_editable)
 
       # Return value handling
 
@@ -1096,7 +1094,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_insert_markup(self, iter, markup, len)
+      LibGtk.gtk_text_buffer_insert_markup(@pointer, iter, markup, len)
 
       # Return value handling
     end
@@ -1115,7 +1113,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_insert_paintable(self, iter, paintable)
+      LibGtk.gtk_text_buffer_insert_paintable(@pointer, iter, paintable)
 
       # Return value handling
     end
@@ -1136,7 +1134,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_insert_range(self, iter, start, _end)
+      LibGtk.gtk_text_buffer_insert_range(@pointer, iter, start, _end)
 
       # Return value handling
     end
@@ -1154,7 +1152,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_buffer_insert_range_interactive(self, iter, start, _end, default_editable)
+      _retval = LibGtk.gtk_text_buffer_insert_range_interactive(@pointer, iter, start, _end, default_editable)
 
       # Return value handling
 
@@ -1170,7 +1168,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_move_mark(self, mark, where)
+      LibGtk.gtk_text_buffer_move_mark(@pointer, mark, where)
 
       # Return value handling
     end
@@ -1183,7 +1181,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_move_mark_by_name(self, name, where)
+      LibGtk.gtk_text_buffer_move_mark_by_name(@pointer, name, where)
 
       # Return value handling
     end
@@ -1210,7 +1208,7 @@ module Gtk
                           end
 
       # C call
-      LibGtk.gtk_text_buffer_paste_clipboard(self, clipboard, override_location, default_editable)
+      LibGtk.gtk_text_buffer_paste_clipboard(@pointer, clipboard, override_location, default_editable)
 
       # Return value handling
     end
@@ -1229,7 +1227,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_place_cursor(self, where)
+      LibGtk.gtk_text_buffer_place_cursor(@pointer, where)
 
       # Return value handling
     end
@@ -1240,7 +1238,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_redo(self)
+      LibGtk.gtk_text_buffer_redo(@pointer)
 
       # Return value handling
     end
@@ -1256,7 +1254,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_remove_all_tags(self, start, _end)
+      LibGtk.gtk_text_buffer_remove_all_tags(@pointer, start, _end)
 
       # Return value handling
     end
@@ -1268,7 +1266,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_remove_selection_clipboard(self, clipboard)
+      LibGtk.gtk_text_buffer_remove_selection_clipboard(@pointer, clipboard)
 
       # Return value handling
     end
@@ -1283,7 +1281,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_remove_tag(self, tag, start, _end)
+      LibGtk.gtk_text_buffer_remove_tag(@pointer, tag, start, _end)
 
       # Return value handling
     end
@@ -1298,7 +1296,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_remove_tag_by_name(self, name, start, _end)
+      LibGtk.gtk_text_buffer_remove_tag_by_name(@pointer, name, start, _end)
 
       # Return value handling
     end
@@ -1317,7 +1315,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_select_range(self, ins, bound)
+      LibGtk.gtk_text_buffer_select_range(@pointer, ins, bound)
 
       # Return value handling
     end
@@ -1338,7 +1336,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_set_enable_undo(self, enable_undo)
+      LibGtk.gtk_text_buffer_set_enable_undo(@pointer, enable_undo)
 
       # Return value handling
     end
@@ -1353,7 +1351,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_set_max_undo_levels(self, max_undo_levels)
+      LibGtk.gtk_text_buffer_set_max_undo_levels(@pointer, max_undo_levels)
 
       # Return value handling
     end
@@ -1372,7 +1370,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_set_modified(self, setting)
+      LibGtk.gtk_text_buffer_set_modified(@pointer, setting)
 
       # Return value handling
     end
@@ -1386,7 +1384,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_set_text(self, text, len)
+      LibGtk.gtk_text_buffer_set_text(@pointer, text, len)
 
       # Return value handling
     end
@@ -1397,7 +1395,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_buffer_undo(self)
+      LibGtk.gtk_text_buffer_undo(@pointer)
 
       # Return value handling
     end
@@ -1441,11 +1439,11 @@ module Gtk
       def connect(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(tag, start, _end)
         }.pointer
@@ -1457,11 +1455,11 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(tag, start, _end)
         }.pointer
@@ -1474,11 +1472,11 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, tag, start, _end)
         }.pointer
@@ -1491,11 +1489,11 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, tag, start, _end)
         }.pointer
@@ -1504,7 +1502,7 @@ module Gtk
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(tag : Gtk::TextTag, start : Gtk::TextIter, _end : Gtk::TextIter) : Nil
+      def emit(tag : Gtk::TextTag, start : Gtk::TextIter, end _end : Gtk::TextIter) : Nil
         LibGObject.g_signal_emit_by_name(@source, "apply-tag", tag, start, _end)
       end
     end
@@ -1712,9 +1710,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TextIter, Gtk::TextIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(start, _end)
         }.pointer
@@ -1726,9 +1724,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextIter, Gtk::TextIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(start, _end)
         }.pointer
@@ -1741,9 +1739,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, start, _end)
         }.pointer
@@ -1756,9 +1754,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, start, _end)
         }.pointer
@@ -1767,7 +1765,7 @@ module Gtk
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(start : Gtk::TextIter, _end : Gtk::TextIter) : Nil
+      def emit(start : Gtk::TextIter, end _end : Gtk::TextIter) : Nil
         LibGObject.g_signal_emit_by_name(@source, "delete-range", start, _end)
       end
     end
@@ -1899,9 +1897,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_anchor : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           anchor = Gtk::TextChildAnchor.new(lib_anchor, :none)
           ::Box(Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil)).unbox(_lib_box).call(location, anchor)
         }.pointer
@@ -1913,9 +1911,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_anchor : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           anchor = Gtk::TextChildAnchor.new(lib_anchor, :none)
           ::Box(Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil)).unbox(_lib_box).call(location, anchor)
         }.pointer
@@ -1928,9 +1926,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_anchor : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           anchor = Gtk::TextChildAnchor.new(lib_anchor, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextChildAnchor, Nil)).unbox(_lib_box).call(_sender, location, anchor)
         }.pointer
@@ -1943,9 +1941,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_anchor : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           anchor = Gtk::TextChildAnchor.new(lib_anchor, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextChildAnchor, Nil)).unbox(_lib_box).call(_sender, location, anchor)
         }.pointer
@@ -2000,9 +1998,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TextIter, Gdk::Paintable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_paintable : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           paintable = Gdk::Paintable.new(lib_paintable, :none)
           ::Box(Proc(Gtk::TextIter, Gdk::Paintable, Nil)).unbox(_lib_box).call(location, paintable)
         }.pointer
@@ -2014,9 +2012,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextIter, Gdk::Paintable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_paintable : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           paintable = Gdk::Paintable.new(lib_paintable, :none)
           ::Box(Proc(Gtk::TextIter, Gdk::Paintable, Nil)).unbox(_lib_box).call(location, paintable)
         }.pointer
@@ -2029,9 +2027,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_paintable : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           paintable = Gdk::Paintable.new(lib_paintable, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gdk::Paintable, Nil)).unbox(_lib_box).call(_sender, location, paintable)
         }.pointer
@@ -2044,9 +2042,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_paintable : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           paintable = Gdk::Paintable.new(lib_paintable, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gdk::Paintable, Nil)).unbox(_lib_box).call(_sender, location, paintable)
         }.pointer
@@ -2102,9 +2100,10 @@ module Gtk
       def connect(handler : Proc(Gtk::TextIter, ::String, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_text : Pointer(LibC::Char), lib_len : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           len = lib_len
           ::Box(Proc(Gtk::TextIter, ::String, Int32, Nil)).unbox(_lib_box).call(location, text, len)
         }.pointer
@@ -2116,9 +2115,10 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextIter, ::String, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_text : Pointer(LibC::Char), lib_len : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           len = lib_len
           ::Box(Proc(Gtk::TextIter, ::String, Int32, Nil)).unbox(_lib_box).call(location, text, len)
         }.pointer
@@ -2131,9 +2131,10 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_text : Pointer(LibC::Char), lib_len : Int32, _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           len = lib_len
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, ::String, Int32, Nil)).unbox(_lib_box).call(_sender, location, text, len)
         }.pointer
@@ -2146,9 +2147,10 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_text : Pointer(LibC::Char), lib_len : Int32, _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          text = lib_text
+          # Generator::BuiltInTypeArgPlan
+          text = ::String.new(lib_text)
           len = lib_len
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, ::String, Int32, Nil)).unbox(_lib_box).call(_sender, location, text, len)
         }.pointer
@@ -2196,7 +2198,7 @@ module Gtk
       def connect(handler : Proc(Gtk::TextMark, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           mark = Gtk::TextMark.new(lib_mark, :none)
           ::Box(Proc(Gtk::TextMark, Nil)).unbox(_lib_box).call(mark)
         }.pointer
@@ -2208,7 +2210,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextMark, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           mark = Gtk::TextMark.new(lib_mark, :none)
           ::Box(Proc(Gtk::TextMark, Nil)).unbox(_lib_box).call(mark)
         }.pointer
@@ -2221,7 +2223,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           mark = Gtk::TextMark.new(lib_mark, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextMark, Nil)).unbox(_lib_box).call(_sender, mark)
         }.pointer
@@ -2234,7 +2236,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           mark = Gtk::TextMark.new(lib_mark, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextMark, Nil)).unbox(_lib_box).call(_sender, mark)
         }.pointer
@@ -2284,9 +2286,9 @@ module Gtk
       def connect(handler : Proc(Gtk::TextIter, Gtk::TextMark, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           mark = Gtk::TextMark.new(lib_mark, :none)
           ::Box(Proc(Gtk::TextIter, Gtk::TextMark, Nil)).unbox(_lib_box).call(location, mark)
         }.pointer
@@ -2298,9 +2300,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextIter, Gtk::TextMark, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           mark = Gtk::TextMark.new(lib_mark, :none)
           ::Box(Proc(Gtk::TextIter, Gtk::TextMark, Nil)).unbox(_lib_box).call(location, mark)
         }.pointer
@@ -2313,9 +2315,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           mark = Gtk::TextMark.new(lib_mark, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextMark, Nil)).unbox(_lib_box).call(_sender, location, mark)
         }.pointer
@@ -2328,9 +2330,9 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           mark = Gtk::TextMark.new(lib_mark, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextMark, Nil)).unbox(_lib_box).call(_sender, location, mark)
         }.pointer
@@ -2458,7 +2460,7 @@ module Gtk
       def connect(handler : Proc(Gdk::Clipboard, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_clipboard : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           clipboard = Gdk::Clipboard.new(lib_clipboard, :none)
           ::Box(Proc(Gdk::Clipboard, Nil)).unbox(_lib_box).call(clipboard)
         }.pointer
@@ -2470,7 +2472,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Clipboard, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_clipboard : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           clipboard = Gdk::Clipboard.new(lib_clipboard, :none)
           ::Box(Proc(Gdk::Clipboard, Nil)).unbox(_lib_box).call(clipboard)
         }.pointer
@@ -2483,7 +2485,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_clipboard : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           clipboard = Gdk::Clipboard.new(lib_clipboard, :none)
           ::Box(Proc(Gtk::TextBuffer, Gdk::Clipboard, Nil)).unbox(_lib_box).call(_sender, clipboard)
         }.pointer
@@ -2496,7 +2498,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_clipboard : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           clipboard = Gdk::Clipboard.new(lib_clipboard, :none)
           ::Box(Proc(Gtk::TextBuffer, Gdk::Clipboard, Nil)).unbox(_lib_box).call(_sender, clipboard)
         }.pointer
@@ -2628,11 +2630,11 @@ module Gtk
       def connect(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(tag, start, _end)
         }.pointer
@@ -2644,11 +2646,11 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(tag, start, _end)
         }.pointer
@@ -2661,11 +2663,11 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, tag, start, _end)
         }.pointer
@@ -2678,11 +2680,11 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           _end = Gtk::TextIter.new(lib__end, :none)
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, tag, start, _end)
         }.pointer
@@ -2691,7 +2693,7 @@ module Gtk
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(tag : Gtk::TextTag, start : Gtk::TextIter, _end : Gtk::TextIter) : Nil
+      def emit(tag : Gtk::TextTag, start : Gtk::TextIter, end _end : Gtk::TextIter) : Nil
         LibGObject.g_signal_emit_by_name(@source, "remove-tag", tag, start, _end)
       end
     end

@@ -20,15 +20,13 @@ module Pango
         sizeof(LibPango::Context), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Context, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Context`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -77,7 +75,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_context_changed(self)
+      LibPango.pango_context_changed(@pointer)
 
       # Return value handling
     end
@@ -90,7 +88,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_context_get_base_dir(self)
+      _retval = LibPango.pango_context_get_base_dir(@pointer)
 
       # Return value handling
 
@@ -105,7 +103,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_context_get_base_gravity(self)
+      _retval = LibPango.pango_context_get_base_gravity(@pointer)
 
       # Return value handling
 
@@ -118,7 +116,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_context_get_font_description(self)
+      _retval = LibPango.pango_context_get_font_description(@pointer)
 
       # Return value handling
 
@@ -131,7 +129,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_context_get_font_map(self)
+      _retval = LibPango.pango_context_get_font_map(@pointer)
 
       # Return value handling
 
@@ -149,7 +147,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_context_get_gravity(self)
+      _retval = LibPango.pango_context_get_gravity(@pointer)
 
       # Return value handling
 
@@ -164,7 +162,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_context_get_gravity_hint(self)
+      _retval = LibPango.pango_context_get_gravity_hint(@pointer)
 
       # Return value handling
 
@@ -177,7 +175,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_context_get_language(self)
+      _retval = LibPango.pango_context_get_language(@pointer)
 
       # Return value handling
 
@@ -193,7 +191,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_context_get_matrix(self)
+      _retval = LibPango.pango_context_get_matrix(@pointer)
 
       # Return value handling
 
@@ -231,7 +229,7 @@ module Pango
                  end
 
       # C call
-      _retval = LibPango.pango_context_get_metrics(self, desc, language)
+      _retval = LibPango.pango_context_get_metrics(@pointer, desc, language)
 
       # Return value handling
 
@@ -245,7 +243,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_context_get_round_glyph_positions(self)
+      _retval = LibPango.pango_context_get_round_glyph_positions(@pointer)
 
       # Return value handling
 
@@ -269,7 +267,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_context_get_serial(self)
+      _retval = LibPango.pango_context_get_serial(@pointer)
 
       # Return value handling
 
@@ -288,7 +286,7 @@ module Pango
       families = families.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibPango.pango_context_list_families(self, families, n_families)
+      LibPango.pango_context_list_families(@pointer, families, n_families)
 
       # Return value handling
     end
@@ -304,7 +302,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_context_load_font(self, desc)
+      _retval = LibPango.pango_context_load_font(@pointer, desc)
 
       # Return value handling
 
@@ -318,7 +316,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_context_load_fontset(self, desc, language)
+      _retval = LibPango.pango_context_load_fontset(@pointer, desc, language)
 
       # Return value handling
 
@@ -338,7 +336,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_context_set_base_dir(self, direction)
+      LibPango.pango_context_set_base_dir(@pointer, direction)
 
       # Return value handling
     end
@@ -351,7 +349,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_context_set_base_gravity(self, gravity)
+      LibPango.pango_context_set_base_gravity(@pointer, gravity)
 
       # Return value handling
     end
@@ -362,7 +360,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_context_set_font_description(self, desc)
+      LibPango.pango_context_set_font_description(@pointer, desc)
 
       # Return value handling
     end
@@ -378,7 +376,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_context_set_font_map(self, font_map)
+      LibPango.pango_context_set_font_map(@pointer, font_map)
 
       # Return value handling
     end
@@ -394,7 +392,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_context_set_gravity_hint(self, hint)
+      LibPango.pango_context_set_gravity_hint(@pointer, hint)
 
       # Return value handling
     end
@@ -408,7 +406,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_context_set_language(self, language)
+      LibPango.pango_context_set_language(@pointer, language)
 
       # Return value handling
     end
@@ -434,7 +432,7 @@ module Pango
                end
 
       # C call
-      LibPango.pango_context_set_matrix(self, matrix)
+      LibPango.pango_context_set_matrix(@pointer, matrix)
 
       # Return value handling
     end
@@ -453,7 +451,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_context_set_round_glyph_positions(self, round_positions)
+      LibPango.pango_context_set_round_glyph_positions(@pointer, round_positions)
 
       # Return value handling
     end

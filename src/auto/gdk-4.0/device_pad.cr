@@ -22,7 +22,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_pad_get_feature_group(self, feature, feature_idx)
+      _retval = LibGdk.gdk_device_pad_get_feature_group(@pointer, feature, feature_idx)
 
       # Return value handling
 
@@ -34,7 +34,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_pad_get_group_n_modes(self, group_idx)
+      _retval = LibGdk.gdk_device_pad_get_group_n_modes(@pointer, group_idx)
 
       # Return value handling
 
@@ -46,7 +46,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_pad_get_n_features(self, feature)
+      _retval = LibGdk.gdk_device_pad_get_n_features(@pointer, feature)
 
       # Return value handling
 
@@ -58,7 +58,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_pad_get_n_groups(self)
+      _retval = LibGdk.gdk_device_pad_get_n_groups(@pointer)
 
       # Return value handling
 
@@ -70,8 +70,14 @@ module Gdk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class DevicePad__Impl < GObject::Object
+  class AbstractDevicePad < GObject::Object
     include DevicePad
+
+    GICrystal.define_new_method(Gdk::AbstractDevicePad, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

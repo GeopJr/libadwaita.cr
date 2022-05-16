@@ -126,7 +126,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_interface_info_cache_build(self)
+      LibGio.g_dbus_interface_info_cache_build(@pointer)
 
       # Return value handling
     end
@@ -136,7 +136,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_interface_info_cache_release(self)
+      LibGio.g_dbus_interface_info_cache_release(@pointer)
 
       # Return value handling
     end
@@ -146,7 +146,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_interface_info_generate_xml(self, indent, string_builder)
+      LibGio.g_dbus_interface_info_generate_xml(@pointer, indent, string_builder)
 
       # Return value handling
     end
@@ -156,7 +156,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_interface_info_lookup_method(self, name)
+      _retval = LibGio.g_dbus_interface_info_lookup_method(@pointer, name)
 
       # Return value handling
 
@@ -168,7 +168,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_interface_info_lookup_property(self, name)
+      _retval = LibGio.g_dbus_interface_info_lookup_property(@pointer, name)
 
       # Return value handling
 
@@ -180,7 +180,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_interface_info_lookup_signal(self, name)
+      _retval = LibGio.g_dbus_interface_info_lookup_signal(@pointer, name)
 
       # Return value handling
 
@@ -192,7 +192,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_interface_info_ref(self)
+      _retval = LibGio.g_dbus_interface_info_ref(@pointer)
 
       # Return value handling
 
@@ -204,7 +204,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_interface_info_unref(self)
+      LibGio.g_dbus_interface_info_unref(@pointer)
 
       # Return value handling
     end

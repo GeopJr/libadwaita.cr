@@ -20,15 +20,13 @@ module Gio
         sizeof(LibGio::SimpleActionGroup), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SimpleActionGroup, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SimpleActionGroup`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -74,7 +72,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_simple_action_group_add_entries(self, entries, n_entries, user_data)
+      LibGio.g_simple_action_group_add_entries(@pointer, entries, n_entries, user_data)
 
       # Return value handling
     end
@@ -90,7 +88,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_action_group_insert(self, action)
+      LibGio.g_simple_action_group_insert(@pointer, action)
 
       # Return value handling
     end
@@ -103,11 +101,11 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_simple_action_group_lookup(self, action_name)
+      _retval = LibGio.g_simple_action_group_lookup(@pointer, action_name)
 
       # Return value handling
 
-      Gio::Action__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractAction.new(_retval, GICrystal::Transfer::None)
     end
 
     # Removes the named action from the action group.
@@ -118,7 +116,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_simple_action_group_remove(self, action_name)
+      LibGio.g_simple_action_group_remove(@pointer, action_name)
 
       # Return value handling
     end

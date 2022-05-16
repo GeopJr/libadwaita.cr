@@ -73,7 +73,7 @@ module Graphene
       shear = Graphene::Vec3.new        # Generator::CallerAllocatesPlan
       perspective = Graphene::Vec4.new
       # C call
-      _retval = LibGraphene.graphene_matrix_decompose(self, translate, scale, rotate, shear, perspective)
+      _retval = LibGraphene.graphene_matrix_decompose(@pointer, translate, scale, rotate, shear, perspective)
 
       # Return value handling
 
@@ -85,7 +85,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_determinant(self)
+      _retval = LibGraphene.graphene_matrix_determinant(@pointer)
 
       # Return value handling
 
@@ -97,7 +97,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_equal(self, b)
+      _retval = LibGraphene.graphene_matrix_equal(@pointer, b)
 
       # Return value handling
 
@@ -109,7 +109,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_equal_fast(self, b)
+      _retval = LibGraphene.graphene_matrix_equal_fast(@pointer, b)
 
       # Return value handling
 
@@ -121,7 +121,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_free(self)
+      LibGraphene.graphene_matrix_free(@pointer)
 
       # Return value handling
     end
@@ -134,7 +134,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
       # C call
-      LibGraphene.graphene_matrix_get_row(self, index_, res)
+      LibGraphene.graphene_matrix_get_row(@pointer, index_, res)
 
       # Return value handling
 
@@ -146,7 +146,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_get_value(self, row, col)
+      _retval = LibGraphene.graphene_matrix_get_value(@pointer, row, col)
 
       # Return value handling
 
@@ -158,7 +158,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_get_x_scale(self)
+      _retval = LibGraphene.graphene_matrix_get_x_scale(@pointer)
 
       # Return value handling
 
@@ -170,7 +170,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_get_x_translation(self)
+      _retval = LibGraphene.graphene_matrix_get_x_translation(@pointer)
 
       # Return value handling
 
@@ -182,7 +182,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_get_y_scale(self)
+      _retval = LibGraphene.graphene_matrix_get_y_scale(@pointer)
 
       # Return value handling
 
@@ -194,7 +194,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_get_y_translation(self)
+      _retval = LibGraphene.graphene_matrix_get_y_translation(@pointer)
 
       # Return value handling
 
@@ -206,7 +206,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_get_z_scale(self)
+      _retval = LibGraphene.graphene_matrix_get_z_scale(@pointer)
 
       # Return value handling
 
@@ -218,7 +218,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_get_z_translation(self)
+      _retval = LibGraphene.graphene_matrix_get_z_translation(@pointer)
 
       # Return value handling
 
@@ -230,7 +230,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_from_2d(self, xx, yx, xy, yy, x_0, y_0)
+      _retval = LibGraphene.graphene_matrix_init_from_2d(@pointer, xx, yx, xy, yy, x_0, y_0)
 
       # Return value handling
 
@@ -248,7 +248,7 @@ module Graphene
       v = v.to_a.to_unsafe
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_from_float(self, v)
+      _retval = LibGraphene.graphene_matrix_init_from_float(@pointer, v)
 
       # Return value handling
 
@@ -264,7 +264,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_from_matrix(self, src)
+      _retval = LibGraphene.graphene_matrix_init_from_matrix(@pointer, src)
 
       # Return value handling
 
@@ -276,7 +276,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_from_vec4(self, v0, v1, v2, v3)
+      _retval = LibGraphene.graphene_matrix_init_from_vec4(@pointer, v0, v1, v2, v3)
 
       # Return value handling
 
@@ -288,7 +288,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_frustum(self, left, right, bottom, top, z_near, z_far)
+      _retval = LibGraphene.graphene_matrix_init_frustum(@pointer, left, right, bottom, top, z_near, z_far)
 
       # Return value handling
 
@@ -300,7 +300,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_identity(self)
+      _retval = LibGraphene.graphene_matrix_init_identity(@pointer)
 
       # Return value handling
 
@@ -312,7 +312,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_look_at(self, eye, center, up)
+      _retval = LibGraphene.graphene_matrix_init_look_at(@pointer, eye, center, up)
 
       # Return value handling
 
@@ -324,7 +324,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_ortho(self, left, right, top, bottom, z_near, z_far)
+      _retval = LibGraphene.graphene_matrix_init_ortho(@pointer, left, right, top, bottom, z_near, z_far)
 
       # Return value handling
 
@@ -336,7 +336,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_perspective(self, fovy, aspect, z_near, z_far)
+      _retval = LibGraphene.graphene_matrix_init_perspective(@pointer, fovy, aspect, z_near, z_far)
 
       # Return value handling
 
@@ -348,7 +348,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_rotate(self, angle, axis)
+      _retval = LibGraphene.graphene_matrix_init_rotate(@pointer, angle, axis)
 
       # Return value handling
 
@@ -360,7 +360,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_scale(self, x, y, z)
+      _retval = LibGraphene.graphene_matrix_init_scale(@pointer, x, y, z)
 
       # Return value handling
 
@@ -372,7 +372,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_skew(self, x_skew, y_skew)
+      _retval = LibGraphene.graphene_matrix_init_skew(@pointer, x_skew, y_skew)
 
       # Return value handling
 
@@ -384,7 +384,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_init_translate(self, p)
+      _retval = LibGraphene.graphene_matrix_init_translate(@pointer, p)
 
       # Return value handling
 
@@ -399,7 +399,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
       # C call
-      LibGraphene.graphene_matrix_interpolate(self, b, factor, res)
+      LibGraphene.graphene_matrix_interpolate(@pointer, b, factor, res)
 
       # Return value handling
 
@@ -414,7 +414,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
       # C call
-      _retval = LibGraphene.graphene_matrix_inverse(self, res)
+      _retval = LibGraphene.graphene_matrix_inverse(@pointer, res)
 
       # Return value handling
 
@@ -426,7 +426,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_is_2d(self)
+      _retval = LibGraphene.graphene_matrix_is_2d(@pointer)
 
       # Return value handling
 
@@ -438,7 +438,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_is_backface_visible(self)
+      _retval = LibGraphene.graphene_matrix_is_backface_visible(@pointer)
 
       # Return value handling
 
@@ -450,7 +450,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_is_identity(self)
+      _retval = LibGraphene.graphene_matrix_is_identity(@pointer)
 
       # Return value handling
 
@@ -462,7 +462,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_is_singular(self)
+      _retval = LibGraphene.graphene_matrix_is_singular(@pointer)
 
       # Return value handling
 
@@ -477,7 +477,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
       # C call
-      LibGraphene.graphene_matrix_multiply(self, b, res)
+      LibGraphene.graphene_matrix_multiply(@pointer, b, res)
 
       # Return value handling
 
@@ -489,7 +489,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_near(self, b, epsilon)
+      _retval = LibGraphene.graphene_matrix_near(@pointer, b, epsilon)
 
       # Return value handling
 
@@ -504,7 +504,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
       # C call
-      LibGraphene.graphene_matrix_normalize(self, res)
+      LibGraphene.graphene_matrix_normalize(@pointer, res)
 
       # Return value handling
 
@@ -519,7 +519,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
       # C call
-      LibGraphene.graphene_matrix_perspective(self, depth, res)
+      LibGraphene.graphene_matrix_perspective(@pointer, depth, res)
 
       # Return value handling
 
@@ -531,7 +531,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_print(self)
+      LibGraphene.graphene_matrix_print(@pointer)
 
       # Return value handling
     end
@@ -544,7 +544,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point.new
       # C call
-      LibGraphene.graphene_matrix_project_point(self, p, res)
+      LibGraphene.graphene_matrix_project_point(@pointer, p, res)
 
       # Return value handling
 
@@ -559,7 +559,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Quad.new
       # C call
-      LibGraphene.graphene_matrix_project_rect(self, r, res)
+      LibGraphene.graphene_matrix_project_rect(@pointer, r, res)
 
       # Return value handling
 
@@ -574,7 +574,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_matrix_project_rect_bounds(self, r, res)
+      LibGraphene.graphene_matrix_project_rect_bounds(@pointer, r, res)
 
       # Return value handling
 
@@ -586,7 +586,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_rotate(self, angle, axis)
+      LibGraphene.graphene_matrix_rotate(@pointer, angle, axis)
 
       # Return value handling
     end
@@ -596,7 +596,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_rotate_euler(self, e)
+      LibGraphene.graphene_matrix_rotate_euler(@pointer, e)
 
       # Return value handling
     end
@@ -606,7 +606,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_rotate_quaternion(self, q)
+      LibGraphene.graphene_matrix_rotate_quaternion(@pointer, q)
 
       # Return value handling
     end
@@ -616,7 +616,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_rotate_x(self, angle)
+      LibGraphene.graphene_matrix_rotate_x(@pointer, angle)
 
       # Return value handling
     end
@@ -626,7 +626,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_rotate_y(self, angle)
+      LibGraphene.graphene_matrix_rotate_y(@pointer, angle)
 
       # Return value handling
     end
@@ -636,7 +636,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_rotate_z(self, angle)
+      LibGraphene.graphene_matrix_rotate_z(@pointer, angle)
 
       # Return value handling
     end
@@ -646,7 +646,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_scale(self, factor_x, factor_y, factor_z)
+      LibGraphene.graphene_matrix_scale(@pointer, factor_x, factor_y, factor_z)
 
       # Return value handling
     end
@@ -656,7 +656,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_skew_xy(self, factor)
+      LibGraphene.graphene_matrix_skew_xy(@pointer, factor)
 
       # Return value handling
     end
@@ -666,7 +666,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_skew_xz(self, factor)
+      LibGraphene.graphene_matrix_skew_xz(@pointer, factor)
 
       # Return value handling
     end
@@ -676,7 +676,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_skew_yz(self, factor)
+      LibGraphene.graphene_matrix_skew_yz(@pointer, factor)
 
       # Return value handling
     end
@@ -692,7 +692,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_matrix_to_2d(self, xx, yx, xy, yy, x_0, y_0)
+      _retval = LibGraphene.graphene_matrix_to_2d(@pointer, xx, yx, xy, yy, x_0, y_0)
 
       # Return value handling
 
@@ -710,7 +710,7 @@ module Graphene
       v = v.to_a.to_unsafe
 
       # C call
-      LibGraphene.graphene_matrix_to_float(self, v)
+      LibGraphene.graphene_matrix_to_float(@pointer, v)
 
       # Return value handling
     end
@@ -727,7 +727,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_matrix_transform_bounds(self, r, res)
+      LibGraphene.graphene_matrix_transform_bounds(@pointer, r, res)
 
       # Return value handling
 
@@ -742,7 +742,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
       # C call
-      LibGraphene.graphene_matrix_transform_box(self, b, res)
+      LibGraphene.graphene_matrix_transform_box(@pointer, b, res)
 
       # Return value handling
 
@@ -757,7 +757,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point.new
       # C call
-      LibGraphene.graphene_matrix_transform_point(self, p, res)
+      LibGraphene.graphene_matrix_transform_point(@pointer, p, res)
 
       # Return value handling
 
@@ -772,7 +772,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_matrix_transform_point3d(self, p, res)
+      LibGraphene.graphene_matrix_transform_point3d(@pointer, p, res)
 
       # Return value handling
 
@@ -787,7 +787,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Ray.new
       # C call
-      LibGraphene.graphene_matrix_transform_ray(self, r, res)
+      LibGraphene.graphene_matrix_transform_ray(@pointer, r, res)
 
       # Return value handling
 
@@ -802,7 +802,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Quad.new
       # C call
-      LibGraphene.graphene_matrix_transform_rect(self, r, res)
+      LibGraphene.graphene_matrix_transform_rect(@pointer, r, res)
 
       # Return value handling
 
@@ -817,7 +817,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Sphere.new
       # C call
-      LibGraphene.graphene_matrix_transform_sphere(self, s, res)
+      LibGraphene.graphene_matrix_transform_sphere(@pointer, s, res)
 
       # Return value handling
 
@@ -832,7 +832,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_matrix_transform_vec3(self, v, res)
+      LibGraphene.graphene_matrix_transform_vec3(@pointer, v, res)
 
       # Return value handling
 
@@ -847,7 +847,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec4.new
       # C call
-      LibGraphene.graphene_matrix_transform_vec4(self, v, res)
+      LibGraphene.graphene_matrix_transform_vec4(@pointer, v, res)
 
       # Return value handling
 
@@ -859,7 +859,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_matrix_translate(self, pos)
+      LibGraphene.graphene_matrix_translate(@pointer, pos)
 
       # Return value handling
     end
@@ -872,7 +872,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Matrix.new
       # C call
-      LibGraphene.graphene_matrix_transpose(self, res)
+      LibGraphene.graphene_matrix_transpose(@pointer, res)
 
       # Return value handling
 
@@ -887,7 +887,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_matrix_unproject_point3d(self, modelview, point, res)
+      LibGraphene.graphene_matrix_unproject_point3d(@pointer, modelview, point, res)
 
       # Return value handling
 
@@ -902,7 +902,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Rect.new
       # C call
-      LibGraphene.graphene_matrix_untransform_bounds(self, r, bounds, res)
+      LibGraphene.graphene_matrix_untransform_bounds(@pointer, r, bounds, res)
 
       # Return value handling
 
@@ -917,7 +917,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point.new
       # C call
-      _retval = LibGraphene.graphene_matrix_untransform_point(self, p, bounds, res)
+      _retval = LibGraphene.graphene_matrix_untransform_point(@pointer, p, bounds, res)
 
       # Return value handling
 

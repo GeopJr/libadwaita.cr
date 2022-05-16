@@ -17,15 +17,13 @@ module Gdk
         sizeof(LibGdk::Device), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Device, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Device`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -325,7 +323,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_caps_lock_state(self)
+      _retval = LibGdk.gdk_device_get_caps_lock_state(@pointer)
 
       # Return value handling
 
@@ -338,7 +336,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_device_tool(self)
+      _retval = LibGdk.gdk_device_get_device_tool(@pointer)
 
       # Return value handling
 
@@ -356,7 +354,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_direction(self)
+      _retval = LibGdk.gdk_device_get_direction(@pointer)
 
       # Return value handling
 
@@ -369,7 +367,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_display(self)
+      _retval = LibGdk.gdk_device_get_display(@pointer)
 
       # Return value handling
 
@@ -385,7 +383,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_has_cursor(self)
+      _retval = LibGdk.gdk_device_get_has_cursor(@pointer)
 
       # Return value handling
 
@@ -400,7 +398,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_modifier_state(self)
+      _retval = LibGdk.gdk_device_get_modifier_state(@pointer)
 
       # Return value handling
 
@@ -413,7 +411,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_name(self)
+      _retval = LibGdk.gdk_device_get_name(@pointer)
 
       # Return value handling
 
@@ -428,7 +426,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_num_lock_state(self)
+      _retval = LibGdk.gdk_device_get_num_lock_state(@pointer)
 
       # Return value handling
 
@@ -441,7 +439,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_num_touches(self)
+      _retval = LibGdk.gdk_device_get_num_touches(@pointer)
 
       # Return value handling
 
@@ -457,7 +455,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_product_id(self)
+      _retval = LibGdk.gdk_device_get_product_id(@pointer)
 
       # Return value handling
 
@@ -472,7 +470,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_scroll_lock_state(self)
+      _retval = LibGdk.gdk_device_get_scroll_lock_state(@pointer)
 
       # Return value handling
 
@@ -485,7 +483,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_seat(self)
+      _retval = LibGdk.gdk_device_get_seat(@pointer)
 
       # Return value handling
 
@@ -498,7 +496,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_source(self)
+      _retval = LibGdk.gdk_device_get_source(@pointer)
 
       # Return value handling
 
@@ -520,7 +518,7 @@ module Gdk
       win_x = Pointer(Float64).null # Generator::OutArgUsedInReturnPlan
       win_y = Pointer(Float64).null
       # C call
-      _retval = LibGdk.gdk_device_get_surface_at_position(self, win_x, win_y)
+      _retval = LibGdk.gdk_device_get_surface_at_position(@pointer, win_x, win_y)
 
       # Return value handling
 
@@ -538,7 +536,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_timestamp(self)
+      _retval = LibGdk.gdk_device_get_timestamp(@pointer)
 
       # Return value handling
 
@@ -580,7 +578,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_get_vendor_id(self)
+      _retval = LibGdk.gdk_device_get_vendor_id(@pointer)
 
       # Return value handling
 
@@ -596,7 +594,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_device_has_bidi_layouts(self)
+      _retval = LibGdk.gdk_device_has_bidi_layouts(@pointer)
 
       # Return value handling
 
@@ -713,7 +711,7 @@ module Gdk
       def connect(handler : Proc(Gdk::DeviceTool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
         }.pointer
@@ -725,7 +723,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::DeviceTool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::DeviceTool, Nil)).unbox(_lib_box).call(tool)
         }.pointer
@@ -738,7 +736,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Device.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::Device, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
         }.pointer
@@ -751,7 +749,7 @@ module Gdk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tool : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gdk::Device.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tool = Gdk::DeviceTool.new(lib_tool, :none)
           ::Box(Proc(Gdk::Device, Gdk::DeviceTool, Nil)).unbox(_lib_box).call(_sender, tool)
         }.pointer

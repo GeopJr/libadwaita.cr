@@ -35,15 +35,13 @@ module Gtk
         sizeof(LibGtk::Video), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Video, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Video`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -294,7 +292,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
-      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractFile.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def loop=(value : Bool) : Bool
@@ -442,7 +440,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_video_get_autoplay(self)
+      _retval = LibGtk.gtk_video_get_autoplay(@pointer)
 
       # Return value handling
 
@@ -456,11 +454,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_video_get_file(self)
+      _retval = LibGtk.gtk_video_get_file(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns %TRUE if videos have been set to loop.
@@ -469,7 +467,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_video_get_loop(self)
+      _retval = LibGtk.gtk_video_get_loop(@pointer)
 
       # Return value handling
 
@@ -482,7 +480,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_video_get_media_stream(self)
+      _retval = LibGtk.gtk_video_get_media_stream(@pointer)
 
       # Return value handling
 
@@ -496,7 +494,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_video_set_autoplay(self, autoplay)
+      LibGtk.gtk_video_set_autoplay(@pointer, autoplay)
 
       # Return value handling
     end
@@ -515,7 +513,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_video_set_file(self, file)
+      LibGtk.gtk_video_set_file(@pointer, file)
 
       # Return value handling
     end
@@ -536,7 +534,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_video_set_filename(self, filename)
+      LibGtk.gtk_video_set_filename(@pointer, filename)
 
       # Return value handling
     end
@@ -547,7 +545,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_video_set_loop(self, loop)
+      LibGtk.gtk_video_set_loop(@pointer, loop)
 
       # Return value handling
     end
@@ -573,7 +571,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_video_set_media_stream(self, stream)
+      LibGtk.gtk_video_set_media_stream(@pointer, stream)
 
       # Return value handling
     end
@@ -594,7 +592,7 @@ module Gtk
                       end
 
       # C call
-      LibGtk.gtk_video_set_resource(self, resource_path)
+      LibGtk.gtk_video_set_resource(@pointer, resource_path)
 
       # Return value handling
     end

@@ -10,7 +10,7 @@ module PangoCairo
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPangoCairo.pango_cairo_font_get_scaled_font(self)
+      _retval = LibPangoCairo.pango_cairo_font_get_scaled_font(@pointer)
 
       # Return value handling
 
@@ -22,8 +22,14 @@ module PangoCairo
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Font__Impl < GObject::Object
+  class AbstractFont < GObject::Object
     include Font
+
+    GICrystal.define_new_method(PangoCairo::AbstractFont, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

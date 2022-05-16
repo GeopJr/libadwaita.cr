@@ -71,15 +71,13 @@ module Gtk
         sizeof(LibGtk::Stack), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Stack, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Stack`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -363,7 +361,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
-      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractSelectionModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def transition_duration=(value : UInt32) : UInt32
@@ -470,7 +468,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_add_child(self, child)
+      _retval = LibGtk.gtk_stack_add_child(@pointer, child)
 
       # Return value handling
 
@@ -493,7 +491,7 @@ module Gtk
              end
 
       # C call
-      _retval = LibGtk.gtk_stack_add_named(self, child, name)
+      _retval = LibGtk.gtk_stack_add_named(@pointer, child, name)
 
       # Return value handling
 
@@ -518,7 +516,7 @@ module Gtk
              end
 
       # C call
-      _retval = LibGtk.gtk_stack_add_titled(self, child, name, title)
+      _retval = LibGtk.gtk_stack_add_titled(@pointer, child, name, title)
 
       # Return value handling
 
@@ -533,7 +531,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_child_by_name(self, name)
+      _retval = LibGtk.gtk_stack_get_child_by_name(@pointer, name)
 
       # Return value handling
 
@@ -546,7 +544,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_hhomogeneous(self)
+      _retval = LibGtk.gtk_stack_get_hhomogeneous(@pointer)
 
       # Return value handling
 
@@ -560,7 +558,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_interpolate_size(self)
+      _retval = LibGtk.gtk_stack_get_interpolate_size(@pointer)
 
       # Return value handling
 
@@ -573,7 +571,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_page(self, child)
+      _retval = LibGtk.gtk_stack_get_page(@pointer, child)
 
       # Return value handling
 
@@ -590,11 +588,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_pages(self)
+      _retval = LibGtk.gtk_stack_get_pages(@pointer)
 
       # Return value handling
 
-      Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gtk::AbstractSelectionModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns the amount of time (in milliseconds) that
@@ -604,7 +602,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_transition_duration(self)
+      _retval = LibGtk.gtk_stack_get_transition_duration(@pointer)
 
       # Return value handling
 
@@ -618,7 +616,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_transition_running(self)
+      _retval = LibGtk.gtk_stack_get_transition_running(@pointer)
 
       # Return value handling
 
@@ -632,7 +630,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_transition_type(self)
+      _retval = LibGtk.gtk_stack_get_transition_type(@pointer)
 
       # Return value handling
 
@@ -645,7 +643,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_vhomogeneous(self)
+      _retval = LibGtk.gtk_stack_get_vhomogeneous(@pointer)
 
       # Return value handling
 
@@ -660,7 +658,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_visible_child(self)
+      _retval = LibGtk.gtk_stack_get_visible_child(@pointer)
 
       # Return value handling
 
@@ -675,7 +673,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_stack_get_visible_child_name(self)
+      _retval = LibGtk.gtk_stack_get_visible_child_name(@pointer)
 
       # Return value handling
 
@@ -688,7 +686,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_stack_remove(self, child)
+      LibGtk.gtk_stack_remove(@pointer, child)
 
       # Return value handling
     end
@@ -703,7 +701,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_stack_set_hhomogeneous(self, hhomogeneous)
+      LibGtk.gtk_stack_set_hhomogeneous(@pointer, hhomogeneous)
 
       # Return value handling
     end
@@ -720,7 +718,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_stack_set_interpolate_size(self, interpolate_size)
+      LibGtk.gtk_stack_set_interpolate_size(@pointer, interpolate_size)
 
       # Return value handling
     end
@@ -732,7 +730,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_stack_set_transition_duration(self, duration)
+      LibGtk.gtk_stack_set_transition_duration(@pointer, duration)
 
       # Return value handling
     end
@@ -750,7 +748,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_stack_set_transition_type(self, transition)
+      LibGtk.gtk_stack_set_transition_type(@pointer, transition)
 
       # Return value handling
     end
@@ -765,7 +763,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_stack_set_vhomogeneous(self, vhomogeneous)
+      LibGtk.gtk_stack_set_vhomogeneous(@pointer, vhomogeneous)
 
       # Return value handling
     end
@@ -784,7 +782,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_stack_set_visible_child(self, child)
+      LibGtk.gtk_stack_set_visible_child(@pointer, child)
 
       # Return value handling
     end
@@ -799,7 +797,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_stack_set_visible_child_full(self, name, transition)
+      LibGtk.gtk_stack_set_visible_child_full(@pointer, name, transition)
 
       # Return value handling
     end
@@ -818,7 +816,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_stack_set_visible_child_name(self, name)
+      LibGtk.gtk_stack_set_visible_child_name(@pointer, name)
 
       # Return value handling
     end

@@ -83,7 +83,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_triangle_contains_point(self, p)
+      _retval = LibGraphene.graphene_triangle_contains_point(@pointer, p)
 
       # Return value handling
 
@@ -95,7 +95,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_triangle_equal(self, b)
+      _retval = LibGraphene.graphene_triangle_equal(@pointer, b)
 
       # Return value handling
 
@@ -107,7 +107,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_triangle_free(self)
+      LibGraphene.graphene_triangle_free(@pointer)
 
       # Return value handling
     end
@@ -117,7 +117,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_triangle_get_area(self)
+      _retval = LibGraphene.graphene_triangle_get_area(@pointer)
 
       # Return value handling
 
@@ -139,7 +139,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
       # C call
-      _retval = LibGraphene.graphene_triangle_get_barycoords(self, p, res)
+      _retval = LibGraphene.graphene_triangle_get_barycoords(@pointer, p, res)
 
       # Return value handling
 
@@ -154,7 +154,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
       # C call
-      LibGraphene.graphene_triangle_get_bounding_box(self, res)
+      LibGraphene.graphene_triangle_get_bounding_box(@pointer, res)
 
       # Return value handling
 
@@ -169,7 +169,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_triangle_get_midpoint(self, res)
+      LibGraphene.graphene_triangle_get_midpoint(@pointer, res)
 
       # Return value handling
 
@@ -184,7 +184,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_triangle_get_normal(self, res)
+      LibGraphene.graphene_triangle_get_normal(@pointer, res)
 
       # Return value handling
 
@@ -199,7 +199,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Plane.new
       # C call
-      LibGraphene.graphene_triangle_get_plane(self, res)
+      LibGraphene.graphene_triangle_get_plane(@pointer, res)
 
       # Return value handling
 
@@ -221,7 +221,7 @@ module Graphene
       c = Pointer(Void).null    # Generator::CallerAllocatesPlan
       c = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_triangle_get_points(self, a, b, c)
+      LibGraphene.graphene_triangle_get_points(@pointer, a, b, c)
 
       # Return value handling
 
@@ -243,7 +243,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Vec2.new
       # C call
-      _retval = LibGraphene.graphene_triangle_get_uv(self, p, uv_a, uv_b, uv_c, res)
+      _retval = LibGraphene.graphene_triangle_get_uv(@pointer, p, uv_a, uv_b, uv_c, res)
 
       # Return value handling
 
@@ -265,7 +265,7 @@ module Graphene
       c = Pointer(Void).null # Generator::CallerAllocatesPlan
       c = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_triangle_get_vertices(self, a, b, c)
+      LibGraphene.graphene_triangle_get_vertices(@pointer, a, b, c)
 
       # Return value handling
 
@@ -293,7 +293,7 @@ module Graphene
       c = c.to_a.to_unsafe
 
       # C call
-      _retval = LibGraphene.graphene_triangle_init_from_float(self, a, b, c)
+      _retval = LibGraphene.graphene_triangle_init_from_float(@pointer, a, b, c)
 
       # Return value handling
 
@@ -327,7 +327,7 @@ module Graphene
           end
 
       # C call
-      _retval = LibGraphene.graphene_triangle_init_from_point3d(self, a, b, c)
+      _retval = LibGraphene.graphene_triangle_init_from_point3d(@pointer, a, b, c)
 
       # Return value handling
 
@@ -361,7 +361,7 @@ module Graphene
           end
 
       # C call
-      _retval = LibGraphene.graphene_triangle_init_from_vec3(self, a, b, c)
+      _retval = LibGraphene.graphene_triangle_init_from_vec3(@pointer, a, b, c)
 
       # Return value handling
 

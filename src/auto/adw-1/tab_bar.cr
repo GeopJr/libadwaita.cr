@@ -41,15 +41,13 @@ module Adw
         sizeof(LibAdw::TabBar), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TabBar, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TabBar`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -420,7 +418,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_bar_get_autohide(self)
+      _retval = LibAdw.adw_tab_bar_get_autohide(@pointer)
 
       # Return value handling
 
@@ -433,7 +431,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_bar_get_end_action_widget(self)
+      _retval = LibAdw.adw_tab_bar_get_end_action_widget(@pointer)
 
       # Return value handling
 
@@ -446,7 +444,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_bar_get_expand_tabs(self)
+      _retval = LibAdw.adw_tab_bar_get_expand_tabs(@pointer)
 
       # Return value handling
 
@@ -459,7 +457,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_bar_get_inverted(self)
+      _retval = LibAdw.adw_tab_bar_get_inverted(@pointer)
 
       # Return value handling
 
@@ -472,7 +470,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_bar_get_is_overflowing(self)
+      _retval = LibAdw.adw_tab_bar_get_is_overflowing(@pointer)
 
       # Return value handling
 
@@ -485,7 +483,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_bar_get_start_action_widget(self)
+      _retval = LibAdw.adw_tab_bar_get_start_action_widget(@pointer)
 
       # Return value handling
 
@@ -498,7 +496,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_bar_get_tabs_revealed(self)
+      _retval = LibAdw.adw_tab_bar_get_tabs_revealed(@pointer)
 
       # Return value handling
 
@@ -511,7 +509,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_bar_get_view(self)
+      _retval = LibAdw.adw_tab_bar_get_view(@pointer)
 
       # Return value handling
 
@@ -524,7 +522,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_bar_set_autohide(self, autohide)
+      LibAdw.adw_tab_bar_set_autohide(@pointer, autohide)
 
       # Return value handling
     end
@@ -543,7 +541,7 @@ module Adw
                end
 
       # C call
-      LibAdw.adw_tab_bar_set_end_action_widget(self, widget)
+      LibAdw.adw_tab_bar_set_end_action_widget(@pointer, widget)
 
       # Return value handling
     end
@@ -554,7 +552,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_bar_set_expand_tabs(self, expand_tabs)
+      LibAdw.adw_tab_bar_set_expand_tabs(@pointer, expand_tabs)
 
       # Return value handling
     end
@@ -565,7 +563,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_bar_set_inverted(self, inverted)
+      LibAdw.adw_tab_bar_set_inverted(@pointer, inverted)
 
       # Return value handling
     end
@@ -584,7 +582,7 @@ module Adw
                end
 
       # C call
-      LibAdw.adw_tab_bar_set_start_action_widget(self, widget)
+      LibAdw.adw_tab_bar_set_start_action_widget(@pointer, widget)
 
       # Return value handling
     end
@@ -603,7 +601,7 @@ module Adw
              end
 
       # C call
-      LibAdw.adw_tab_bar_set_view(self, view)
+      LibAdw.adw_tab_bar_set_view(@pointer, view)
 
       # Return value handling
     end
@@ -633,7 +631,7 @@ module Adw
               end
 
       # C call
-      LibAdw.adw_tab_bar_setup_extra_drop_target(self, actions, types, n_types)
+      LibAdw.adw_tab_bar_setup_extra_drop_target(@pointer, actions, types, n_types)
 
       # Return value handling
     end
@@ -671,11 +669,9 @@ module Adw
       def connect(handler : Proc(Adw::TabPage, GObject::Value, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           # Generator::HandmadeArgPlan
-          value = GObject::Value.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GObject::Value.new(lib_value, :none)
           ::Box(Proc(Adw::TabPage, GObject::Value, Bool)).unbox(_lib_box).call(page, value)
         }.pointer
@@ -687,11 +683,9 @@ module Adw
       def connect_after(handler : Proc(Adw::TabPage, GObject::Value, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           # Generator::HandmadeArgPlan
-          value = GObject::Value.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GObject::Value.new(lib_value, :none)
           ::Box(Proc(Adw::TabPage, GObject::Value, Bool)).unbox(_lib_box).call(page, value)
         }.pointer
@@ -704,11 +698,9 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabBar.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           # Generator::HandmadeArgPlan
-          value = GObject::Value.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GObject::Value.new(lib_value, :none)
           ::Box(Proc(Adw::TabBar, Adw::TabPage, GObject::Value, Bool)).unbox(_lib_box).call(_sender, page, value)
         }.pointer
@@ -721,11 +713,9 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabBar.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           # Generator::HandmadeArgPlan
-          value = GObject::Value.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GObject::Value.new(lib_value, :none)
           ::Box(Proc(Adw::TabBar, Adw::TabPage, GObject::Value, Bool)).unbox(_lib_box).call(_sender, page, value)
         }.pointer
@@ -735,7 +725,13 @@ module Adw
       end
 
       def emit(page : Adw::TabPage, value : _) : Nil
-        value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+        # Generator::HandmadeArgPlan
+        value = if !value.is_a?(GObject::Value)
+                  GObject::Value.new(value).to_unsafe
+                else
+                  value.to_unsafe
+                end
+
         LibGObject.g_signal_emit_by_name(@source, "extra-drag-drop", page, value)
       end
     end

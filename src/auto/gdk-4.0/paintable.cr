@@ -54,7 +54,7 @@ module Gdk
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::Full)
     end
 
     def compute_concrete_size(specified_width : Float64, specified_height : Float64, default_width : Float64, default_height : Float64, concrete_width : Float64, concrete_height : Float64) : Nil
@@ -64,7 +64,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_paintable_compute_concrete_size(self, specified_width, specified_height, default_width, default_height, concrete_width, concrete_height)
+      LibGdk.gdk_paintable_compute_concrete_size(@pointer, specified_width, specified_height, default_width, default_height, concrete_width, concrete_height)
 
       # Return value handling
     end
@@ -74,11 +74,11 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_paintable_get_current_image(self)
+      _retval = LibGdk.gdk_paintable_get_current_image(@pointer)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::Full)
     end
 
     def flags : Gdk::PaintableFlags
@@ -86,7 +86,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_paintable_get_flags(self)
+      _retval = LibGdk.gdk_paintable_get_flags(@pointer)
 
       # Return value handling
 
@@ -98,7 +98,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_paintable_get_intrinsic_aspect_ratio(self)
+      _retval = LibGdk.gdk_paintable_get_intrinsic_aspect_ratio(@pointer)
 
       # Return value handling
 
@@ -110,7 +110,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_paintable_get_intrinsic_height(self)
+      _retval = LibGdk.gdk_paintable_get_intrinsic_height(@pointer)
 
       # Return value handling
 
@@ -122,7 +122,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_paintable_get_intrinsic_width(self)
+      _retval = LibGdk.gdk_paintable_get_intrinsic_width(@pointer)
 
       # Return value handling
 
@@ -134,7 +134,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_paintable_invalidate_contents(self)
+      LibGdk.gdk_paintable_invalidate_contents(@pointer)
 
       # Return value handling
     end
@@ -144,7 +144,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_paintable_invalidate_size(self)
+      LibGdk.gdk_paintable_invalidate_size(@pointer)
 
       # Return value handling
     end
@@ -154,7 +154,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_paintable_snapshot(self, snapshot, width, height)
+      LibGdk.gdk_paintable_snapshot(@pointer, snapshot, width, height)
 
       # Return value handling
     end
@@ -206,7 +206,7 @@ module Gdk
       def connect(handler : Proc(Gdk::Paintable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gdk::Paintable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gdk::AbstractPaintable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gdk::Paintable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -217,7 +217,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::Paintable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gdk::Paintable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gdk::AbstractPaintable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gdk::Paintable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -281,7 +281,7 @@ module Gdk
       def connect(handler : Proc(Gdk::Paintable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gdk::Paintable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gdk::AbstractPaintable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gdk::Paintable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -292,7 +292,7 @@ module Gdk
       def connect_after(handler : Proc(Gdk::Paintable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gdk::Paintable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gdk::AbstractPaintable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gdk::Paintable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -314,8 +314,14 @@ module Gdk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Paintable__Impl < GObject::Object
+  class AbstractPaintable < GObject::Object
     include Paintable
+
+    GICrystal.define_new_method(Gdk::AbstractPaintable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

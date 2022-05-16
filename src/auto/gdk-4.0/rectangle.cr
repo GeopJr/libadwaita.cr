@@ -93,7 +93,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_rectangle_contains_point(self, x, y)
+      _retval = LibGdk.gdk_rectangle_contains_point(@pointer, x, y)
 
       # Return value handling
 
@@ -105,7 +105,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_rectangle_equal(self, rect2)
+      _retval = LibGdk.gdk_rectangle_equal(@pointer, rect2)
 
       # Return value handling
 
@@ -121,7 +121,7 @@ module Gdk
       dest = Pointer(Void).null # Generator::CallerAllocatesPlan
       dest = Gdk::Rectangle.new
       # C call
-      _retval = LibGdk.gdk_rectangle_intersect(self, src2, dest)
+      _retval = LibGdk.gdk_rectangle_intersect(@pointer, src2, dest)
 
       # Return value handling
 
@@ -136,7 +136,7 @@ module Gdk
       # Generator::CallerAllocatesPlan
       dest = Gdk::Rectangle.new
       # C call
-      LibGdk.gdk_rectangle_union(self, src2, dest)
+      LibGdk.gdk_rectangle_union(@pointer, src2, dest)
 
       # Return value handling
 

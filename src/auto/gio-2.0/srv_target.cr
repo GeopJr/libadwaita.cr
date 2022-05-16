@@ -57,7 +57,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_srv_target_copy(self)
+      _retval = LibGio.g_srv_target_copy(@pointer)
 
       # Return value handling
 
@@ -69,7 +69,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_srv_target_free(self)
+      LibGio.g_srv_target_free(@pointer)
 
       # Return value handling
     end
@@ -79,7 +79,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_srv_target_get_hostname(self)
+      _retval = LibGio.g_srv_target_get_hostname(@pointer)
 
       # Return value handling
 
@@ -91,7 +91,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_srv_target_get_port(self)
+      _retval = LibGio.g_srv_target_get_port(@pointer)
 
       # Return value handling
 
@@ -103,7 +103,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_srv_target_get_priority(self)
+      _retval = LibGio.g_srv_target_get_priority(@pointer)
 
       # Return value handling
 
@@ -115,7 +115,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_srv_target_get_weight(self)
+      _retval = LibGio.g_srv_target_get_weight(@pointer)
 
       # Return value handling
 

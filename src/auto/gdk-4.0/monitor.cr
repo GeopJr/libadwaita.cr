@@ -19,15 +19,13 @@ module Gdk
         sizeof(LibGdk::Monitor), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Monitor, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Monitor`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -211,7 +209,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_get_connector(self)
+      _retval = LibGdk.gdk_monitor_get_connector(@pointer)
 
       # Return value handling
 
@@ -224,7 +222,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_get_display(self)
+      _retval = LibGdk.gdk_monitor_get_display(@pointer)
 
       # Return value handling
 
@@ -244,7 +242,7 @@ module Gdk
       # Generator::CallerAllocatesPlan
       geometry = Gdk::Rectangle.new
       # C call
-      LibGdk.gdk_monitor_get_geometry(self, geometry)
+      LibGdk.gdk_monitor_get_geometry(@pointer, geometry)
 
       # Return value handling
 
@@ -257,7 +255,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_get_height_mm(self)
+      _retval = LibGdk.gdk_monitor_get_height_mm(@pointer)
 
       # Return value handling
 
@@ -276,7 +274,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_get_manufacturer(self)
+      _retval = LibGdk.gdk_monitor_get_manufacturer(@pointer)
 
       # Return value handling
 
@@ -289,7 +287,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_get_model(self)
+      _retval = LibGdk.gdk_monitor_get_model(@pointer)
 
       # Return value handling
 
@@ -305,7 +303,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_get_refresh_rate(self)
+      _retval = LibGdk.gdk_monitor_get_refresh_rate(@pointer)
 
       # Return value handling
 
@@ -326,7 +324,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_get_scale_factor(self)
+      _retval = LibGdk.gdk_monitor_get_scale_factor(@pointer)
 
       # Return value handling
 
@@ -340,7 +338,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_get_subpixel_layout(self)
+      _retval = LibGdk.gdk_monitor_get_subpixel_layout(@pointer)
 
       # Return value handling
 
@@ -353,7 +351,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_get_width_mm(self)
+      _retval = LibGdk.gdk_monitor_get_width_mm(@pointer)
 
       # Return value handling
 
@@ -370,7 +368,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_monitor_is_valid(self)
+      _retval = LibGdk.gdk_monitor_is_valid(@pointer)
 
       # Return value handling
 

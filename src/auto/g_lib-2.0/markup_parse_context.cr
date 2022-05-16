@@ -58,7 +58,7 @@ module GLib
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGLib.g_markup_parse_context_end_parse(self, pointerof(_error))
+      _retval = LibGLib.g_markup_parse_context_end_parse(@pointer, pointerof(_error))
 
       # Error check
       GLib.raise_exception(_error) unless _error.null?
@@ -73,7 +73,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_markup_parse_context_free(self)
+      LibGLib.g_markup_parse_context_free(@pointer)
 
       # Return value handling
     end
@@ -83,7 +83,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_markup_parse_context_get_element(self)
+      _retval = LibGLib.g_markup_parse_context_get_element(@pointer)
 
       # Return value handling
 
@@ -100,7 +100,7 @@ module GLib
       line_number = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       char_number = Pointer(Int32).null
       # C call
-      LibGLib.g_markup_parse_context_get_position(self, line_number, char_number)
+      LibGLib.g_markup_parse_context_get_position(@pointer, line_number, char_number)
 
       # Return value handling
     end
@@ -110,7 +110,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_markup_parse_context_get_user_data(self)
+      _retval = LibGLib.g_markup_parse_context_get_user_data(@pointer)
 
       # Return value handling
 
@@ -124,7 +124,7 @@ module GLib
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGLib.g_markup_parse_context_parse(self, text, text_len, pointerof(_error))
+      _retval = LibGLib.g_markup_parse_context_parse(@pointer, text, text_len, pointerof(_error))
 
       # Error check
       GLib.raise_exception(_error) unless _error.null?
@@ -139,7 +139,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_markup_parse_context_pop(self)
+      _retval = LibGLib.g_markup_parse_context_pop(@pointer)
 
       # Return value handling
 
@@ -159,7 +159,7 @@ module GLib
                   end
 
       # C call
-      LibGLib.g_markup_parse_context_push(self, parser, user_data)
+      LibGLib.g_markup_parse_context_push(@pointer, parser, user_data)
 
       # Return value handling
     end
@@ -169,7 +169,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_markup_parse_context_ref(self)
+      _retval = LibGLib.g_markup_parse_context_ref(@pointer)
 
       # Return value handling
 
@@ -181,7 +181,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_markup_parse_context_unref(self)
+      LibGLib.g_markup_parse_context_unref(@pointer)
 
       # Return value handling
     end

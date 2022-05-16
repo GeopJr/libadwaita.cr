@@ -36,7 +36,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_accessible_get_accessible_role(self)
+      _retval = LibGtk.gtk_accessible_get_accessible_role(@pointer)
 
       # Return value handling
 
@@ -48,7 +48,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_accessible_reset_property(self, property)
+      LibGtk.gtk_accessible_reset_property(@pointer, property)
 
       # Return value handling
     end
@@ -58,7 +58,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_accessible_reset_relation(self, relation)
+      LibGtk.gtk_accessible_reset_relation(@pointer, relation)
 
       # Return value handling
     end
@@ -68,7 +68,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_accessible_reset_state(self, state)
+      LibGtk.gtk_accessible_reset_state(@pointer, state)
 
       # Return value handling
     end
@@ -87,7 +87,7 @@ module Gtk
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
-      LibGtk.gtk_accessible_update_property_value(self, n_properties, properties, values)
+      LibGtk.gtk_accessible_update_property_value(@pointer, n_properties, properties, values)
 
       # Return value handling
     end
@@ -106,7 +106,7 @@ module Gtk
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
-      LibGtk.gtk_accessible_update_relation_value(self, n_relations, relations, values)
+      LibGtk.gtk_accessible_update_relation_value(@pointer, n_relations, relations, values)
 
       # Return value handling
     end
@@ -125,7 +125,7 @@ module Gtk
       values = values.to_a.map { |_i| GObject::Value.new(_i).to_unsafe.as(Pointer(LibGObject::Value)).value }.to_unsafe
 
       # C call
-      LibGtk.gtk_accessible_update_state_value(self, n_states, states, values)
+      LibGtk.gtk_accessible_update_state_value(@pointer, n_states, states, values)
 
       # Return value handling
     end
@@ -135,8 +135,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Accessible__Impl < GObject::Object
+  class AbstractAccessible < GObject::Object
     include Accessible
+
+    GICrystal.define_new_method(Gtk::AbstractAccessible, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

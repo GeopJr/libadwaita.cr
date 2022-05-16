@@ -105,15 +105,13 @@ module Gtk
         sizeof(LibGtk::DrawingArea), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DrawingArea, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DrawingArea`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -378,7 +376,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drawing_area_get_content_height(self)
+      _retval = LibGtk.gtk_drawing_area_get_content_height(@pointer)
 
       # Return value handling
 
@@ -391,7 +389,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drawing_area_get_content_width(self)
+      _retval = LibGtk.gtk_drawing_area_get_content_width(@pointer)
 
       # Return value handling
 
@@ -411,7 +409,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drawing_area_set_content_height(self, height)
+      LibGtk.gtk_drawing_area_set_content_height(@pointer, height)
 
       # Return value handling
     end
@@ -429,7 +427,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drawing_area_set_content_width(self, width)
+      LibGtk.gtk_drawing_area_set_content_width(@pointer, width)
 
       # Return value handling
     end
@@ -458,14 +456,13 @@ module Gtk
       if draw_func
         _box = ::Box.box(draw_func)
         draw_func = ->(lib_drawing_area : Pointer(Void), lib_cr : Pointer(Void), lib_width : Int32, lib_height : Int32, lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drawing_area = Gtk::DrawingArea.new(lib_drawing_area, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           cr = Cairo::Context.new(lib_cr, :none)
           width = lib_width
           height = lib_height
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::DrawingArea, Cairo::Context, Int32, Int32, Nil)).unbox(user_data).call(drawing_area, cr, width, height)
+          ::Box(Proc(Gtk::DrawingArea, Cairo::Context, Int32, Int32, Nil)).unbox(lib_user_data).call(drawing_area, cr, width, height)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -474,7 +471,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_drawing_area_set_draw_func(self, draw_func, user_data, destroy)
+      LibGtk.gtk_drawing_area_set_draw_func(@pointer, draw_func, user_data, destroy)
 
       # Return value handling
     end

@@ -57,7 +57,7 @@ module GLib
               end
 
       # C call
-      LibGLib.g_variant_builder_add_value(self, value)
+      LibGLib.g_variant_builder_add_value(@pointer, value)
 
       # Return value handling
     end
@@ -67,7 +67,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_variant_builder_close(self)
+      LibGLib.g_variant_builder_close(@pointer)
 
       # Return value handling
     end
@@ -77,7 +77,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_variant_builder_end(self)
+      _retval = LibGLib.g_variant_builder_end(@pointer)
 
       # Return value handling
 
@@ -89,7 +89,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_variant_builder_open(self, type)
+      LibGLib.g_variant_builder_open(@pointer, type)
 
       # Return value handling
     end
@@ -99,7 +99,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_variant_builder_ref(self)
+      _retval = LibGLib.g_variant_builder_ref(@pointer)
 
       # Return value handling
 
@@ -111,7 +111,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_variant_builder_unref(self)
+      LibGLib.g_variant_builder_unref(@pointer)
 
       # Return value handling
     end

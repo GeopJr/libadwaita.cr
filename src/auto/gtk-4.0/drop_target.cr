@@ -86,15 +86,13 @@ module Gtk
         sizeof(LibGtk::DropTarget), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DropTarget, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DropTarget`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -252,7 +250,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_target_get_actions(self)
+      _retval = LibGtk.gtk_drop_target_get_actions(@pointer)
 
       # Return value handling
 
@@ -267,7 +265,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_target_get_current_drop(self)
+      _retval = LibGtk.gtk_drop_target_get_current_drop(@pointer)
 
       # Return value handling
 
@@ -282,7 +280,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_target_get_drop(self)
+      _retval = LibGtk.gtk_drop_target_get_drop(@pointer)
 
       # Return value handling
 
@@ -297,7 +295,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_target_get_formats(self)
+      _retval = LibGtk.gtk_drop_target_get_formats(@pointer)
 
       # Return value handling
 
@@ -315,7 +313,7 @@ module Gtk
       # Generator::OutArgUsedInReturnPlan
       n_types = 0_u64
       # C call
-      _retval = LibGtk.gtk_drop_target_get_gtypes(self, pointerof(n_types))
+      _retval = LibGtk.gtk_drop_target_get_gtypes(@pointer, pointerof(n_types))
 
       # Return value handling
 
@@ -328,7 +326,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_target_get_preload(self)
+      _retval = LibGtk.gtk_drop_target_get_preload(@pointer)
 
       # Return value handling
 
@@ -341,7 +339,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drop_target_get_value(self)
+      _retval = LibGtk.gtk_drop_target_get_value(@pointer)
 
       # Return value handling
 
@@ -361,7 +359,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drop_target_reject(self)
+      LibGtk.gtk_drop_target_reject(@pointer)
 
       # Return value handling
     end
@@ -372,7 +370,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drop_target_set_actions(self, actions)
+      LibGtk.gtk_drop_target_set_actions(@pointer, actions)
 
       # Return value handling
     end
@@ -392,7 +390,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_drop_target_set_gtypes(self, types, n_types)
+      LibGtk.gtk_drop_target_set_gtypes(@pointer, types, n_types)
 
       # Return value handling
     end
@@ -403,7 +401,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_drop_target_set_preload(self, preload)
+      LibGtk.gtk_drop_target_set_preload(@pointer, preload)
 
       # Return value handling
     end
@@ -451,7 +449,7 @@ module Gtk
       def connect(handler : Proc(Gdk::Drop, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gdk::Drop, Bool)).unbox(_lib_box).call(drop)
         }.pointer
@@ -463,7 +461,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::Drop, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gdk::Drop, Bool)).unbox(_lib_box).call(drop)
         }.pointer
@@ -476,7 +474,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTarget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gtk::DropTarget, Gdk::Drop, Bool)).unbox(_lib_box).call(_sender, drop)
         }.pointer
@@ -489,7 +487,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_drop : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::DropTarget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           drop = Gdk::Drop.new(lib_drop, :none)
           ::Box(Proc(Gtk::DropTarget, Gdk::Drop, Bool)).unbox(_lib_box).call(_sender, drop)
         }.pointer
@@ -545,8 +543,6 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_value : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
           value = GObject::Value.new(lib_value, :none)
-          # Generator::GObjectArgPlan
-          value = GObject::Value.new(lib_value, :none)
           x = lib_x
           y = lib_y
           ::Box(Proc(GObject::Value, Float64, Float64, Bool)).unbox(_lib_box).call(value, x, y)
@@ -560,8 +556,6 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_value : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
-          value = GObject::Value.new(lib_value, :none)
-          # Generator::GObjectArgPlan
           value = GObject::Value.new(lib_value, :none)
           x = lib_x
           y = lib_y
@@ -578,8 +572,6 @@ module Gtk
           _sender = Gtk::DropTarget.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
           value = GObject::Value.new(lib_value, :none)
-          # Generator::GObjectArgPlan
-          value = GObject::Value.new(lib_value, :none)
           x = lib_x
           y = lib_y
           ::Box(Proc(Gtk::DropTarget, GObject::Value, Float64, Float64, Bool)).unbox(_lib_box).call(_sender, value, x, y)
@@ -595,8 +587,6 @@ module Gtk
           _sender = Gtk::DropTarget.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
           value = GObject::Value.new(lib_value, :none)
-          # Generator::GObjectArgPlan
-          value = GObject::Value.new(lib_value, :none)
           x = lib_x
           y = lib_y
           ::Box(Proc(Gtk::DropTarget, GObject::Value, Float64, Float64, Bool)).unbox(_lib_box).call(_sender, value, x, y)
@@ -607,7 +597,13 @@ module Gtk
       end
 
       def emit(value : _, x : Float64, y : Float64) : Nil
-        value = GObject::Value.new(value) unless value.is_a?(GObject::Value)
+        # Generator::HandmadeArgPlan
+        value = if !value.is_a?(GObject::Value)
+                  GObject::Value.new(value).to_unsafe
+                else
+                  value.to_unsafe
+                end
+
         LibGObject.g_signal_emit_by_name(@source, "drop", value, x, y)
       end
     end

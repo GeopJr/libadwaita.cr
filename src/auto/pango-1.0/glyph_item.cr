@@ -105,7 +105,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_glyph_item_apply_attrs(self, text, list)
+      _retval = LibPango.pango_glyph_item_apply_attrs(@pointer, text, list)
 
       # Return value handling
 
@@ -117,7 +117,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_glyph_item_copy(self)
+      _retval = LibPango.pango_glyph_item_copy(@pointer)
 
       # Return value handling
 
@@ -129,7 +129,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_glyph_item_free(self)
+      LibPango.pango_glyph_item_free(@pointer)
 
       # Return value handling
     end
@@ -143,7 +143,7 @@ module Pango
       logical_widths = logical_widths.to_a.to_unsafe
 
       # C call
-      LibPango.pango_glyph_item_get_logical_widths(self, text, logical_widths)
+      LibPango.pango_glyph_item_get_logical_widths(@pointer, text, logical_widths)
 
       # Return value handling
     end
@@ -157,7 +157,7 @@ module Pango
       log_attrs = log_attrs.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibPango.pango_glyph_item_letter_space(self, text, log_attrs, letter_spacing)
+      LibPango.pango_glyph_item_letter_space(@pointer, text, log_attrs, letter_spacing)
 
       # Return value handling
     end
@@ -167,7 +167,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_glyph_item_split(self, text, split_index)
+      _retval = LibPango.pango_glyph_item_split(@pointer, text, split_index)
 
       # Return value handling
 

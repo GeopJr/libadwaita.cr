@@ -41,7 +41,7 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_expression_watch_evaluate(self, value)
+      _retval = LibGtk.gtk_expression_watch_evaluate(@pointer, value)
 
       # Return value handling
 
@@ -53,7 +53,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_expression_watch_ref(self)
+      _retval = LibGtk.gtk_expression_watch_ref(@pointer)
 
       # Return value handling
 
@@ -65,7 +65,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_expression_watch_unref(self)
+      LibGtk.gtk_expression_watch_unref(@pointer)
 
       # Return value handling
     end
@@ -75,7 +75,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_expression_watch_unwatch(self)
+      LibGtk.gtk_expression_watch_unwatch(@pointer)
 
       # Return value handling
     end

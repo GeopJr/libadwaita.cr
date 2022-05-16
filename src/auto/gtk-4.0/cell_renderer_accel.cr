@@ -17,15 +17,13 @@ module Gtk
         sizeof(LibGtk::CellRendererAccel), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CellRendererAccel, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CellRendererAccel`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -482,7 +480,8 @@ module Gtk
       def connect(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          path_string = lib_path_string
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(path_string)
         }.pointer
 
@@ -493,7 +492,8 @@ module Gtk
       def connect_after(handler : Proc(::String, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          path_string = lib_path_string
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(path_string)
         }.pointer
 
@@ -505,7 +505,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererAccel.new(_lib_sender, GICrystal::Transfer::None)
-          path_string = lib_path_string
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
           ::Box(Proc(Gtk::CellRendererAccel, ::String, Nil)).unbox(_lib_box).call(_sender, path_string)
         }.pointer
 
@@ -517,7 +518,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererAccel.new(_lib_sender, GICrystal::Transfer::None)
-          path_string = lib_path_string
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
           ::Box(Proc(Gtk::CellRendererAccel, ::String, Nil)).unbox(_lib_box).call(_sender, path_string)
         }.pointer
 
@@ -562,10 +564,11 @@ module Gtk
       def connect(handler : Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_accel_key : UInt32, lib_accel_mods : UInt32, lib_hardware_keycode : UInt32, _lib_box : Pointer(Void)) {
-          path_string = lib_path_string
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
           accel_key = lib_accel_key
-          # Generator::GObjectArgPlan
-          accel_mods = Gdk::ModifierType.new(lib_accel_mods, :none)
+          # Generator::BuiltInTypeArgPlan
+          accel_mods = Gdk::ModifierType.new(lib_accel_mods)
           hardware_keycode = lib_hardware_keycode
           ::Box(Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil)).unbox(_lib_box).call(path_string, accel_key, accel_mods, hardware_keycode)
         }.pointer
@@ -577,10 +580,11 @@ module Gtk
       def connect_after(handler : Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_accel_key : UInt32, lib_accel_mods : UInt32, lib_hardware_keycode : UInt32, _lib_box : Pointer(Void)) {
-          path_string = lib_path_string
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
           accel_key = lib_accel_key
-          # Generator::GObjectArgPlan
-          accel_mods = Gdk::ModifierType.new(lib_accel_mods, :none)
+          # Generator::BuiltInTypeArgPlan
+          accel_mods = Gdk::ModifierType.new(lib_accel_mods)
           hardware_keycode = lib_hardware_keycode
           ::Box(Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil)).unbox(_lib_box).call(path_string, accel_key, accel_mods, hardware_keycode)
         }.pointer
@@ -593,10 +597,11 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_accel_key : UInt32, lib_accel_mods : UInt32, lib_hardware_keycode : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererAccel.new(_lib_sender, GICrystal::Transfer::None)
-          path_string = lib_path_string
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
           accel_key = lib_accel_key
-          # Generator::GObjectArgPlan
-          accel_mods = Gdk::ModifierType.new(lib_accel_mods, :none)
+          # Generator::BuiltInTypeArgPlan
+          accel_mods = Gdk::ModifierType.new(lib_accel_mods)
           hardware_keycode = lib_hardware_keycode
           ::Box(Proc(Gtk::CellRendererAccel, ::String, UInt32, Gdk::ModifierType, UInt32, Nil)).unbox(_lib_box).call(_sender, path_string, accel_key, accel_mods, hardware_keycode)
         }.pointer
@@ -609,10 +614,11 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_accel_key : UInt32, lib_accel_mods : UInt32, lib_hardware_keycode : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererAccel.new(_lib_sender, GICrystal::Transfer::None)
-          path_string = lib_path_string
+          # Generator::BuiltInTypeArgPlan
+          path_string = ::String.new(lib_path_string)
           accel_key = lib_accel_key
-          # Generator::GObjectArgPlan
-          accel_mods = Gdk::ModifierType.new(lib_accel_mods, :none)
+          # Generator::BuiltInTypeArgPlan
+          accel_mods = Gdk::ModifierType.new(lib_accel_mods)
           hardware_keycode = lib_hardware_keycode
           ::Box(Proc(Gtk::CellRendererAccel, ::String, UInt32, Gdk::ModifierType, UInt32, Nil)).unbox(_lib_box).call(_sender, path_string, accel_key, accel_mods, hardware_keycode)
         }.pointer

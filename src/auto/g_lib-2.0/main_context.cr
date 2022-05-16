@@ -40,12 +40,24 @@ module GLib
       LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
+    def self.new_with_flags(flags : GLib::MainContextFlags) : self
+      # g_main_context_new_with_flags: (Constructor)
+      # Returns: (transfer full)
+
+      # C call
+      _retval = LibGLib.g_main_context_new_with_flags(flags)
+
+      # Return value handling
+
+      GLib::MainContext.new(_retval, GICrystal::Transfer::Full)
+    end
+
     def acquire : Bool
       # g_main_context_acquire: (Method)
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_main_context_acquire(self)
+      _retval = LibGLib.g_main_context_acquire(@pointer)
 
       # Return value handling
 
@@ -62,7 +74,7 @@ module GLib
       fds = fds.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGLib.g_main_context_check(self, max_priority, fds, n_fds)
+      _retval = LibGLib.g_main_context_check(@pointer, max_priority, fds, n_fds)
 
       # Return value handling
 
@@ -74,7 +86,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_main_context_dispatch(self)
+      LibGLib.g_main_context_dispatch(@pointer)
 
       # Return value handling
     end
@@ -92,7 +104,7 @@ module GLib
                   end
 
       # C call
-      _retval = LibGLib.g_main_context_find_source_by_funcs_user_data(self, funcs, user_data)
+      _retval = LibGLib.g_main_context_find_source_by_funcs_user_data(@pointer, funcs, user_data)
 
       # Return value handling
 
@@ -104,7 +116,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_main_context_find_source_by_id(self, source_id)
+      _retval = LibGLib.g_main_context_find_source_by_id(@pointer, source_id)
 
       # Return value handling
 
@@ -124,7 +136,7 @@ module GLib
                   end
 
       # C call
-      _retval = LibGLib.g_main_context_find_source_by_user_data(self, user_data)
+      _retval = LibGLib.g_main_context_find_source_by_user_data(@pointer, user_data)
 
       # Return value handling
 
@@ -141,8 +153,7 @@ module GLib
       if function
         _box = ::Box.box(function)
         function = ->(lib_user_data : Pointer(Void)) {
-          user_data = lib_user_data
-          ::Box(Proc(Bool)).unbox(user_data).call
+          ::Box(Proc(Bool)).unbox(lib_user_data).call
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
         notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -151,7 +162,7 @@ module GLib
       end
 
       # C call
-      LibGLib.g_main_context_invoke_full(self, priority, function, data, notify)
+      LibGLib.g_main_context_invoke_full(@pointer, priority, function, data, notify)
 
       # Return value handling
     end
@@ -161,7 +172,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_main_context_is_owner(self)
+      _retval = LibGLib.g_main_context_is_owner(@pointer)
 
       # Return value handling
 
@@ -173,7 +184,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_main_context_iteration(self, may_block)
+      _retval = LibGLib.g_main_context_iteration(@pointer, may_block)
 
       # Return value handling
 
@@ -185,7 +196,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_main_context_pending(self)
+      _retval = LibGLib.g_main_context_pending(@pointer)
 
       # Return value handling
 
@@ -197,7 +208,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_main_context_pop_thread_default(self)
+      LibGLib.g_main_context_pop_thread_default(@pointer)
 
       # Return value handling
     end
@@ -210,7 +221,7 @@ module GLib
       # Generator::OutArgUsedInReturnPlan
       priority = Pointer(Int32).null
       # C call
-      _retval = LibGLib.g_main_context_prepare(self, priority)
+      _retval = LibGLib.g_main_context_prepare(@pointer, priority)
 
       # Return value handling
 
@@ -222,7 +233,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_main_context_push_thread_default(self)
+      LibGLib.g_main_context_push_thread_default(@pointer)
 
       # Return value handling
     end
@@ -238,7 +249,7 @@ module GLib
       fds = fds.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGLib.g_main_context_query(self, max_priority, timeout_, fds, n_fds)
+      _retval = LibGLib.g_main_context_query(@pointer, max_priority, timeout_, fds, n_fds)
 
       # Return value handling
 
@@ -250,7 +261,7 @@ module GLib
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGLib.g_main_context_ref(self)
+      _retval = LibGLib.g_main_context_ref(@pointer)
 
       # Return value handling
 
@@ -262,7 +273,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_main_context_release(self)
+      LibGLib.g_main_context_release(@pointer)
 
       # Return value handling
     end
@@ -272,7 +283,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_main_context_unref(self)
+      LibGLib.g_main_context_unref(@pointer)
 
       # Return value handling
     end
@@ -282,7 +293,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGLib.g_main_context_wait(self, cond, mutex)
+      _retval = LibGLib.g_main_context_wait(@pointer, cond, mutex)
 
       # Return value handling
 
@@ -294,7 +305,7 @@ module GLib
       # Returns: (transfer none)
 
       # C call
-      LibGLib.g_main_context_wakeup(self)
+      LibGLib.g_main_context_wakeup(@pointer)
 
       # Return value handling
     end

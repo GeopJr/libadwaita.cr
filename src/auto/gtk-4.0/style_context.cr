@@ -49,15 +49,13 @@ module Gtk
         sizeof(LibGtk::StyleContext), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(StyleContext, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `StyleContext`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -161,7 +159,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_style_context_add_class(self, class_name)
+      LibGtk.gtk_style_context_add_class(@pointer, class_name)
 
       # Return value handling
     end
@@ -181,7 +179,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_style_context_add_provider(self, provider, priority)
+      LibGtk.gtk_style_context_add_provider(@pointer, provider, priority)
 
       # Return value handling
     end
@@ -195,7 +193,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       border = Gtk::Border.new
       # C call
-      LibGtk.gtk_style_context_get_border(self, border)
+      LibGtk.gtk_style_context_get_border(@pointer, border)
 
       # Return value handling
 
@@ -211,7 +209,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       color = Gdk::RGBA.new
       # C call
-      LibGtk.gtk_style_context_get_color(self, color)
+      LibGtk.gtk_style_context_get_color(@pointer, color)
 
       # Return value handling
 
@@ -224,7 +222,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_style_context_get_display(self)
+      _retval = LibGtk.gtk_style_context_get_display(@pointer)
 
       # Return value handling
 
@@ -240,7 +238,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       margin = Gtk::Border.new
       # C call
-      LibGtk.gtk_style_context_get_margin(self, margin)
+      LibGtk.gtk_style_context_get_margin(@pointer, margin)
 
       # Return value handling
 
@@ -256,7 +254,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       padding = Gtk::Border.new
       # C call
-      LibGtk.gtk_style_context_get_padding(self, padding)
+      LibGtk.gtk_style_context_get_padding(@pointer, padding)
 
       # Return value handling
 
@@ -269,7 +267,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_style_context_get_scale(self)
+      _retval = LibGtk.gtk_style_context_get_scale(@pointer)
 
       # Return value handling
 
@@ -288,7 +286,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_style_context_get_state(self)
+      _retval = LibGtk.gtk_style_context_get_state(@pointer)
 
       # Return value handling
 
@@ -302,7 +300,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_style_context_has_class(self, class_name)
+      _retval = LibGtk.gtk_style_context_has_class(@pointer, class_name)
 
       # Return value handling
 
@@ -318,7 +316,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       color = Gdk::RGBA.new
       # C call
-      _retval = LibGtk.gtk_style_context_lookup_color(self, color_name, color)
+      _retval = LibGtk.gtk_style_context_lookup_color(@pointer, color_name, color)
 
       # Return value handling
 
@@ -331,7 +329,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_style_context_remove_class(self, class_name)
+      LibGtk.gtk_style_context_remove_class(@pointer, class_name)
 
       # Return value handling
     end
@@ -342,7 +340,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_style_context_remove_provider(self, provider)
+      LibGtk.gtk_style_context_remove_provider(@pointer, provider)
 
       # Return value handling
     end
@@ -355,7 +353,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_style_context_restore(self)
+      LibGtk.gtk_style_context_restore(@pointer)
 
       # Return value handling
     end
@@ -375,7 +373,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_style_context_save(self)
+      LibGtk.gtk_style_context_save(@pointer)
 
       # Return value handling
     end
@@ -393,7 +391,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_style_context_set_display(self, display)
+      LibGtk.gtk_style_context_set_display(@pointer, display)
 
       # Return value handling
     end
@@ -404,7 +402,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_style_context_set_scale(self, scale)
+      LibGtk.gtk_style_context_set_scale(@pointer, scale)
 
       # Return value handling
     end
@@ -415,7 +413,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_style_context_set_state(self, flags)
+      LibGtk.gtk_style_context_set_state(@pointer, flags)
 
       # Return value handling
     end
@@ -435,7 +433,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_style_context_to_string(self, flags)
+      _retval = LibGtk.gtk_style_context_to_string(@pointer, flags)
 
       # Return value handling
 

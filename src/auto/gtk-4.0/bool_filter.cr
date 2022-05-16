@@ -14,15 +14,13 @@ module Gtk
         sizeof(LibGtk::BoolFilter), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(BoolFilter, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `BoolFilter`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -120,7 +118,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bool_filter_get_expression(self)
+      _retval = LibGtk.gtk_bool_filter_get_expression(@pointer)
 
       # Return value handling
 
@@ -133,7 +131,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bool_filter_get_invert(self)
+      _retval = LibGtk.gtk_bool_filter_get_invert(@pointer)
 
       # Return value handling
 
@@ -157,7 +155,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_bool_filter_set_expression(self, expression)
+      LibGtk.gtk_bool_filter_set_expression(@pointer, expression)
 
       # Return value handling
     end
@@ -168,7 +166,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bool_filter_set_invert(self, invert)
+      LibGtk.gtk_bool_filter_set_invert(@pointer, invert)
 
       # Return value handling
     end

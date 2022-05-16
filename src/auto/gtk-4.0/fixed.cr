@@ -58,15 +58,13 @@ module Gtk
         sizeof(LibGtk::Fixed), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Fixed, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Fixed`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -296,7 +294,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_fixed_get_child_position(self, widget, x, y)
+      LibGtk.gtk_fixed_get_child_position(@pointer, widget, x, y)
 
       # Return value handling
     end
@@ -308,7 +306,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_fixed_get_child_transform(self, widget)
+      _retval = LibGtk.gtk_fixed_get_child_transform(@pointer, widget)
 
       # Return value handling
 
@@ -322,7 +320,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_fixed_move(self, widget, x, y)
+      LibGtk.gtk_fixed_move(@pointer, widget, x, y)
 
       # Return value handling
     end
@@ -333,7 +331,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_fixed_put(self, widget, x, y)
+      LibGtk.gtk_fixed_put(@pointer, widget, x, y)
 
       # Return value handling
     end
@@ -344,7 +342,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_fixed_remove(self, widget)
+      LibGtk.gtk_fixed_remove(@pointer, widget)
 
       # Return value handling
     end
@@ -367,7 +365,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_fixed_set_child_transform(self, widget, transform)
+      LibGtk.gtk_fixed_set_child_transform(@pointer, widget, transform)
 
       # Return value handling
     end

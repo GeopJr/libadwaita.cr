@@ -21,15 +21,13 @@ module Gdk
         sizeof(LibGdk::ContentProvider), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ContentProvider, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ContentProvider`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -166,7 +164,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_content_provider_content_changed(self)
+      LibGdk.gdk_content_provider_content_changed(@pointer)
 
       # Return value handling
     end
@@ -188,7 +186,7 @@ module Gdk
       # Generator::CallerAllocatesPlan
       value = GObject::Value.new
       # C call
-      _retval = LibGdk.gdk_content_provider_get_value(self, value, pointerof(_error))
+      _retval = LibGdk.gdk_content_provider_get_value(@pointer, value, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -204,7 +202,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_provider_ref_formats(self)
+      _retval = LibGdk.gdk_content_provider_ref_formats(@pointer)
 
       # Return value handling
 
@@ -222,7 +220,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_content_provider_ref_storable_formats(self)
+      _retval = LibGdk.gdk_content_provider_ref_storable_formats(@pointer)
 
       # Return value handling
 
@@ -262,7 +260,7 @@ module Gdk
                   end
 
       # C call
-      LibGdk.gdk_content_provider_write_mime_type_async(self, mime_type, stream, io_priority, cancellable, callback, user_data)
+      LibGdk.gdk_content_provider_write_mime_type_async(@pointer, mime_type, stream, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -277,7 +275,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_content_provider_write_mime_type_finish(self, result, pointerof(_error))
+      _retval = LibGdk.gdk_content_provider_write_mime_type_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?

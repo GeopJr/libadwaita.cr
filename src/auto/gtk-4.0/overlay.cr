@@ -53,15 +53,13 @@ module Gtk
         sizeof(LibGtk::Overlay), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Overlay, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Overlay`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -313,7 +311,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_overlay_add_overlay(self, widget)
+      LibGtk.gtk_overlay_add_overlay(@pointer, widget)
 
       # Return value handling
     end
@@ -324,7 +322,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_overlay_get_child(self)
+      _retval = LibGtk.gtk_overlay_get_child(@pointer)
 
       # Return value handling
 
@@ -337,7 +335,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_overlay_get_clip_overlay(self, widget)
+      _retval = LibGtk.gtk_overlay_get_clip_overlay(@pointer, widget)
 
       # Return value handling
 
@@ -351,7 +349,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_overlay_get_measure_overlay(self, widget)
+      _retval = LibGtk.gtk_overlay_get_measure_overlay(@pointer, widget)
 
       # Return value handling
 
@@ -364,7 +362,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_overlay_remove_overlay(self, widget)
+      LibGtk.gtk_overlay_remove_overlay(@pointer, widget)
 
       # Return value handling
     end
@@ -383,7 +381,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_overlay_set_child(self, child)
+      LibGtk.gtk_overlay_set_child(@pointer, child)
 
       # Return value handling
     end
@@ -394,7 +392,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_overlay_set_clip_overlay(self, widget, clip_overlay)
+      LibGtk.gtk_overlay_set_clip_overlay(@pointer, widget, clip_overlay)
 
       # Return value handling
     end
@@ -409,7 +407,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_overlay_set_measure_overlay(self, widget, measure)
+      LibGtk.gtk_overlay_set_measure_overlay(@pointer, widget, measure)
 
       # Return value handling
     end
@@ -444,77 +442,71 @@ module Gtk
         @detail ? "get-child-position::#{@detail}" : "get-child-position"
       end
 
-      def connect(&block : Proc(Gtk::Widget, Gdk::Rectangle, Bool))
+      def connect(&block : Proc(Gtk::Widget, Bool))
         connect(block)
       end
 
-      def connect_after(&block : Proc(Gtk::Widget, Gdk::Rectangle, Bool))
+      def connect_after(&block : Proc(Gtk::Widget, Bool))
         connect(block)
       end
 
-      def connect(handler : Proc(Gtk::Widget, Gdk::Rectangle, Bool))
+      def connect(handler : Proc(Gtk::Widget, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_widget : Pointer(Void), lib_allocation : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           widget = Gtk::Widget.new(lib_widget, :none)
           # Generator::CallerAllocatesPlan
-          # Generator::GObjectArgPlan
-          allocation = Gdk::Rectangle.new(lib_allocation, :none)
-          ::Box(Proc(Gtk::Widget, Gdk::Rectangle, Bool)).unbox(_lib_box).call(widget)
+          ::Box(Proc(Gtk::Widget, Bool)).unbox(_lib_box).call(widget)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(handler : Proc(Gtk::Widget, Gdk::Rectangle, Bool))
+      def connect_after(handler : Proc(Gtk::Widget, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_widget : Pointer(Void), lib_allocation : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           widget = Gtk::Widget.new(lib_widget, :none)
           # Generator::CallerAllocatesPlan
-          # Generator::GObjectArgPlan
-          allocation = Gdk::Rectangle.new(lib_allocation, :none)
-          ::Box(Proc(Gtk::Widget, Gdk::Rectangle, Bool)).unbox(_lib_box).call(widget)
+          ::Box(Proc(Gtk::Widget, Bool)).unbox(_lib_box).call(widget)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def connect(handler : Proc(Gtk::Overlay, Gtk::Widget, Gdk::Rectangle, Bool))
+      def connect(handler : Proc(Gtk::Overlay, Gtk::Widget, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_widget : Pointer(Void), lib_allocation : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Overlay.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           widget = Gtk::Widget.new(lib_widget, :none)
           # Generator::CallerAllocatesPlan
-          # Generator::GObjectArgPlan
-          allocation = Gdk::Rectangle.new(lib_allocation, :none)
-          ::Box(Proc(Gtk::Overlay, Gtk::Widget, Gdk::Rectangle, Bool)).unbox(_lib_box).call(_sender, widget)
+          ::Box(Proc(Gtk::Overlay, Gtk::Widget, Bool)).unbox(_lib_box).call(_sender, widget)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
       end
 
-      def connect_after(handler : Proc(Gtk::Overlay, Gtk::Widget, Gdk::Rectangle, Bool))
+      def connect_after(handler : Proc(Gtk::Overlay, Gtk::Widget, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_widget : Pointer(Void), lib_allocation : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Overlay.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           widget = Gtk::Widget.new(lib_widget, :none)
           # Generator::CallerAllocatesPlan
-          # Generator::GObjectArgPlan
-          allocation = Gdk::Rectangle.new(lib_allocation, :none)
-          ::Box(Proc(Gtk::Overlay, Gtk::Widget, Gdk::Rectangle, Bool)).unbox(_lib_box).call(_sender, widget)
+          ::Box(Proc(Gtk::Overlay, Gtk::Widget, Bool)).unbox(_lib_box).call(_sender, widget)
         }.pointer
 
         LibGObject.g_signal_connect_data(@source, name, handler,
           GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
       end
 
-      def emit(widget : Gtk::Widget, allocation : Gdk::Rectangle) : Nil
+      def emit(widget : Gtk::Widget) : Nil
+        # Generator::CallerAllocatesPlan
+        allocation = Gdk::Rectangle.new
         LibGObject.g_signal_emit_by_name(@source, "get-child-position", widget, allocation)
       end
     end

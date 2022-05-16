@@ -71,15 +71,13 @@ module Gtk
         sizeof(LibGtk::ListBox), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ListBox, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ListBox`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -387,7 +385,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_append(self, child)
+      LibGtk.gtk_list_box_append(@pointer, child)
 
       # Return value handling
     end
@@ -424,10 +422,9 @@ module Gtk
       if create_widget_func
         _box = ::Box.box(create_widget_func)
         create_widget_func = ->(lib_item : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           item = GObject::Object.new(lib_item, :none)
-          user_data = lib_user_data
-          ::Box(Proc(GObject::Object, Gtk::Widget)).unbox(user_data).call(item)
+          ::Box(Proc(GObject::Object, Gtk::Widget)).unbox(lib_user_data).call(item)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_data_free_func = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -436,7 +433,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_list_box_bind_model(self, model, create_widget_func, user_data, user_data_free_func)
+      LibGtk.gtk_list_box_bind_model(@pointer, model, create_widget_func, user_data, user_data_free_func)
 
       # Return value handling
     end
@@ -455,7 +452,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_drag_highlight_row(self, row)
+      LibGtk.gtk_list_box_drag_highlight_row(@pointer, row)
 
       # Return value handling
     end
@@ -467,7 +464,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_drag_unhighlight_row(self)
+      LibGtk.gtk_list_box_drag_unhighlight_row(@pointer)
 
       # Return value handling
     end
@@ -478,7 +475,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_box_get_activate_on_single_click(self)
+      _retval = LibGtk.gtk_list_box_get_activate_on_single_click(@pointer)
 
       # Return value handling
 
@@ -492,7 +489,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_box_get_adjustment(self)
+      _retval = LibGtk.gtk_list_box_get_adjustment(@pointer)
 
       # Return value handling
 
@@ -508,7 +505,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_box_get_row_at_index(self, index_)
+      _retval = LibGtk.gtk_list_box_get_row_at_index(@pointer, index_)
 
       # Return value handling
 
@@ -521,7 +518,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_box_get_row_at_y(self, y)
+      _retval = LibGtk.gtk_list_box_get_row_at_y(@pointer, y)
 
       # Return value handling
 
@@ -538,7 +535,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_box_get_selected_row(self)
+      _retval = LibGtk.gtk_list_box_get_selected_row(@pointer)
 
       # Return value handling
 
@@ -551,7 +548,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_list_box_get_selected_rows(self)
+      _retval = LibGtk.gtk_list_box_get_selected_rows(@pointer)
 
       # Return value handling
 
@@ -564,7 +561,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_box_get_selection_mode(self)
+      _retval = LibGtk.gtk_list_box_get_selection_mode(@pointer)
 
       # Return value handling
 
@@ -578,7 +575,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_list_box_get_show_separators(self)
+      _retval = LibGtk.gtk_list_box_get_show_separators(@pointer)
 
       # Return value handling
 
@@ -597,7 +594,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_insert(self, child, position)
+      LibGtk.gtk_list_box_insert(@pointer, child, position)
 
       # Return value handling
     end
@@ -614,7 +611,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_invalidate_filter(self)
+      LibGtk.gtk_list_box_invalidate_filter(@pointer)
 
       # Return value handling
     end
@@ -629,7 +626,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_invalidate_headers(self)
+      LibGtk.gtk_list_box_invalidate_headers(@pointer)
 
       # Return value handling
     end
@@ -644,7 +641,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_invalidate_sort(self)
+      LibGtk.gtk_list_box_invalidate_sort(@pointer)
 
       # Return value handling
     end
@@ -658,7 +655,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_prepend(self, child)
+      LibGtk.gtk_list_box_prepend(@pointer, child)
 
       # Return value handling
     end
@@ -669,7 +666,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_remove(self, child)
+      LibGtk.gtk_list_box_remove(@pointer, child)
 
       # Return value handling
     end
@@ -680,7 +677,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_select_all(self)
+      LibGtk.gtk_list_box_select_all(@pointer)
 
       # Return value handling
     end
@@ -699,7 +696,7 @@ module Gtk
             end
 
       # C call
-      LibGtk.gtk_list_box_select_row(self, row)
+      LibGtk.gtk_list_box_select_row(@pointer, row)
 
       # Return value handling
     end
@@ -720,7 +717,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_list_box_selected_foreach(self, func, data)
+      LibGtk.gtk_list_box_selected_foreach(@pointer, func, data)
 
       # Return value handling
     end
@@ -732,7 +729,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_set_activate_on_single_click(self, single)
+      LibGtk.gtk_list_box_set_activate_on_single_click(@pointer, single)
 
       # Return value handling
     end
@@ -760,7 +757,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_list_box_set_adjustment(self, adjustment)
+      LibGtk.gtk_list_box_set_adjustment(@pointer, adjustment)
 
       # Return value handling
     end
@@ -788,10 +785,9 @@ module Gtk
       if filter_func
         _box = ::Box.box(filter_func)
         filter_func = ->(lib_row : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           row = Gtk::ListBoxRow.new(lib_row, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::ListBoxRow, Bool)).unbox(user_data).call(row)
+          ::Box(Proc(Gtk::ListBoxRow, Bool)).unbox(lib_user_data).call(row)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -800,7 +796,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_list_box_set_filter_func(self, filter_func, user_data, destroy)
+      LibGtk.gtk_list_box_set_filter_func(@pointer, filter_func, user_data, destroy)
 
       # Return value handling
     end
@@ -840,14 +836,13 @@ module Gtk
       if update_header
         _box = ::Box.box(update_header)
         update_header = ->(lib_row : Pointer(Void), lib_before : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           row = Gtk::ListBoxRow.new(lib_row, :none)
           # Generator::NullableArrayPlan
           before = (lib_before.null? ? nil : Gtk::ListBoxRow.new(lib_before, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          before = Gtk::ListBoxRow.new(lib_before, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::ListBoxRow, Gtk::ListBoxRow?, Nil)).unbox(user_data).call(row, before)
+          # Generator::BuiltInTypeArgPlan
+          before = Gtk::ListBoxRow.new(lib_before, :none) unless lib_before.null?
+          ::Box(Proc(Gtk::ListBoxRow, Gtk::ListBoxRow?, Nil)).unbox(lib_user_data).call(row, before)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -856,7 +851,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_list_box_set_header_func(self, update_header, user_data, destroy)
+      LibGtk.gtk_list_box_set_header_func(@pointer, update_header, user_data, destroy)
 
       # Return value handling
     end
@@ -876,7 +871,7 @@ module Gtk
                     end
 
       # C call
-      LibGtk.gtk_list_box_set_placeholder(self, placeholder)
+      LibGtk.gtk_list_box_set_placeholder(@pointer, placeholder)
 
       # Return value handling
     end
@@ -887,7 +882,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_set_selection_mode(self, mode)
+      LibGtk.gtk_list_box_set_selection_mode(@pointer, mode)
 
       # Return value handling
     end
@@ -899,7 +894,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_set_show_separators(self, show_separators)
+      LibGtk.gtk_list_box_set_show_separators(@pointer, show_separators)
 
       # Return value handling
     end
@@ -926,12 +921,11 @@ module Gtk
       if sort_func
         _box = ::Box.box(sort_func)
         sort_func = ->(lib_row1 : Pointer(Void), lib_row2 : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           row1 = Gtk::ListBoxRow.new(lib_row1, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           row2 = Gtk::ListBoxRow.new(lib_row2, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::ListBoxRow, Gtk::ListBoxRow, Int32)).unbox(user_data).call(row1, row2)
+          ::Box(Proc(Gtk::ListBoxRow, Gtk::ListBoxRow, Int32)).unbox(lib_user_data).call(row1, row2)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -940,7 +934,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_list_box_set_sort_func(self, sort_func, user_data, destroy)
+      LibGtk.gtk_list_box_set_sort_func(@pointer, sort_func, user_data, destroy)
 
       # Return value handling
     end
@@ -951,7 +945,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_unselect_all(self)
+      LibGtk.gtk_list_box_unselect_all(@pointer)
 
       # Return value handling
     end
@@ -962,7 +956,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_list_box_unselect_row(self, row)
+      LibGtk.gtk_list_box_unselect_row(@pointer, row)
 
       # Return value handling
     end
@@ -1069,8 +1063,8 @@ module Gtk
       def connect(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, lib_p0 : Int32, lib_p1 : LibC::Int, lib_p2 : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          object = Gtk::MovementStep.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::MovementStep.new(lib_object)
           p0 = lib_p0
           p1 = lib_p1
           p2 = lib_p2
@@ -1084,8 +1078,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, lib_p0 : Int32, lib_p1 : LibC::Int, lib_p2 : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          object = Gtk::MovementStep.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::MovementStep.new(lib_object)
           p0 = lib_p0
           p1 = lib_p1
           p2 = lib_p2
@@ -1100,8 +1094,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, lib_p0 : Int32, lib_p1 : LibC::Int, lib_p2 : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::ListBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          object = Gtk::MovementStep.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::MovementStep.new(lib_object)
           p0 = lib_p0
           p1 = lib_p1
           p2 = lib_p2
@@ -1116,8 +1110,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : UInt32, lib_p0 : Int32, lib_p1 : LibC::Int, lib_p2 : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::ListBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          object = Gtk::MovementStep.new(lib_object, :none)
+          # Generator::BuiltInTypeArgPlan
+          object = Gtk::MovementStep.new(lib_object)
           p0 = lib_p0
           p1 = lib_p1
           p2 = lib_p2
@@ -1165,7 +1159,7 @@ module Gtk
       def connect(handler : Proc(Gtk::ListBoxRow, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_row : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           row = Gtk::ListBoxRow.new(lib_row, :none)
           ::Box(Proc(Gtk::ListBoxRow, Nil)).unbox(_lib_box).call(row)
         }.pointer
@@ -1177,7 +1171,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::ListBoxRow, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_row : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           row = Gtk::ListBoxRow.new(lib_row, :none)
           ::Box(Proc(Gtk::ListBoxRow, Nil)).unbox(_lib_box).call(row)
         }.pointer
@@ -1190,7 +1184,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_row : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::ListBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           row = Gtk::ListBoxRow.new(lib_row, :none)
           ::Box(Proc(Gtk::ListBox, Gtk::ListBoxRow, Nil)).unbox(_lib_box).call(_sender, row)
         }.pointer
@@ -1203,7 +1197,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_row : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::ListBox.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           row = Gtk::ListBoxRow.new(lib_row, :none)
           ::Box(Proc(Gtk::ListBox, Gtk::ListBoxRow, Nil)).unbox(_lib_box).call(_sender, row)
         }.pointer
@@ -1256,8 +1250,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_row : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           row = (lib_row.null? ? nil : Gtk::ListBoxRow.new(lib_row, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          row = Gtk::ListBoxRow.new(lib_row, :none)
+          # Generator::BuiltInTypeArgPlan
+          row = Gtk::ListBoxRow.new(lib_row, :none) unless lib_row.null?
           ::Box(Proc(Gtk::ListBoxRow?, Nil)).unbox(_lib_box).call(row)
         }.pointer
 
@@ -1270,8 +1264,8 @@ module Gtk
         handler = ->(_lib_sender : Pointer(Void), lib_row : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           row = (lib_row.null? ? nil : Gtk::ListBoxRow.new(lib_row, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          row = Gtk::ListBoxRow.new(lib_row, :none)
+          # Generator::BuiltInTypeArgPlan
+          row = Gtk::ListBoxRow.new(lib_row, :none) unless lib_row.null?
           ::Box(Proc(Gtk::ListBoxRow?, Nil)).unbox(_lib_box).call(row)
         }.pointer
 
@@ -1285,8 +1279,8 @@ module Gtk
           _sender = Gtk::ListBox.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           row = (lib_row.null? ? nil : Gtk::ListBoxRow.new(lib_row, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          row = Gtk::ListBoxRow.new(lib_row, :none)
+          # Generator::BuiltInTypeArgPlan
+          row = Gtk::ListBoxRow.new(lib_row, :none) unless lib_row.null?
           ::Box(Proc(Gtk::ListBox, Gtk::ListBoxRow?, Nil)).unbox(_lib_box).call(_sender, row)
         }.pointer
 
@@ -1300,8 +1294,8 @@ module Gtk
           _sender = Gtk::ListBox.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           row = (lib_row.null? ? nil : Gtk::ListBoxRow.new(lib_row, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          row = Gtk::ListBoxRow.new(lib_row, :none)
+          # Generator::BuiltInTypeArgPlan
+          row = Gtk::ListBoxRow.new(lib_row, :none) unless lib_row.null?
           ::Box(Proc(Gtk::ListBox, Gtk::ListBoxRow?, Nil)).unbox(_lib_box).call(_sender, row)
         }.pointer
 
@@ -1310,6 +1304,13 @@ module Gtk
       end
 
       def emit(row : Gtk::ListBoxRow?) : Nil
+        # Generator::NullableArrayPlan
+        row = if row.nil?
+                Void.null
+              else
+                row.to_unsafe
+              end
+
         LibGObject.g_signal_emit_by_name(@source, "row-selected", row)
       end
     end

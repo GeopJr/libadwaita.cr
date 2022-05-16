@@ -184,15 +184,13 @@ module Gtk
         sizeof(LibGtk::ConstraintLayout), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ConstraintLayout, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ConstraintLayout`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -240,7 +238,7 @@ module Gtk
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(constraint)
       # C call
-      LibGtk.gtk_constraint_layout_add_constraint(self, constraint)
+      LibGtk.gtk_constraint_layout_add_constraint(@pointer, constraint)
 
       # Return value handling
     end
@@ -262,7 +260,7 @@ module Gtk
       lines = lines.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGtk.gtk_constraint_layout_add_constraints_from_descriptionv(self, lines, n_lines, hspacing, vspacing, views, pointerof(_error))
+      _retval = LibGtk.gtk_constraint_layout_add_constraints_from_descriptionv(@pointer, lines, n_lines, hspacing, vspacing, views, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -287,7 +285,7 @@ module Gtk
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(guide)
       # C call
-      LibGtk.gtk_constraint_layout_add_guide(self, guide)
+      LibGtk.gtk_constraint_layout_add_guide(@pointer, guide)
 
       # Return value handling
     end
@@ -306,11 +304,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_constraint_layout_observe_constraints(self)
+      _retval = LibGtk.gtk_constraint_layout_observe_constraints(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns a `GListModel` to track the guides that are
@@ -327,11 +325,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_constraint_layout_observe_guides(self)
+      _retval = LibGtk.gtk_constraint_layout_observe_guides(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Removes all constraints from the layout manager.
@@ -340,7 +338,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_constraint_layout_remove_all_constraints(self)
+      LibGtk.gtk_constraint_layout_remove_all_constraints(@pointer)
 
       # Return value handling
     end
@@ -352,7 +350,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_constraint_layout_remove_constraint(self, constraint)
+      LibGtk.gtk_constraint_layout_remove_constraint(@pointer, constraint)
 
       # Return value handling
     end
@@ -364,7 +362,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_constraint_layout_remove_guide(self, guide)
+      LibGtk.gtk_constraint_layout_remove_guide(@pointer, guide)
 
       # Return value handling
     end

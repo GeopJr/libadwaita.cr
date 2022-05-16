@@ -107,15 +107,13 @@ module Gtk
         sizeof(LibGtk::ScrolledWindow), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ScrolledWindow, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ScrolledWindow`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -640,7 +638,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_child(self)
+      _retval = LibGtk.gtk_scrolled_window_get_child(@pointer)
 
       # Return value handling
 
@@ -656,7 +654,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_hadjustment(self)
+      _retval = LibGtk.gtk_scrolled_window_get_hadjustment(@pointer)
 
       # Return value handling
 
@@ -669,7 +667,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_has_frame(self)
+      _retval = LibGtk.gtk_scrolled_window_get_has_frame(@pointer)
 
       # Return value handling
 
@@ -682,7 +680,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_hscrollbar(self)
+      _retval = LibGtk.gtk_scrolled_window_get_hscrollbar(@pointer)
 
       # Return value handling
 
@@ -695,7 +693,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_kinetic_scrolling(self)
+      _retval = LibGtk.gtk_scrolled_window_get_kinetic_scrolling(@pointer)
 
       # Return value handling
 
@@ -708,7 +706,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_max_content_height(self)
+      _retval = LibGtk.gtk_scrolled_window_get_max_content_height(@pointer)
 
       # Return value handling
 
@@ -721,7 +719,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_max_content_width(self)
+      _retval = LibGtk.gtk_scrolled_window_get_max_content_width(@pointer)
 
       # Return value handling
 
@@ -734,7 +732,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_min_content_height(self)
+      _retval = LibGtk.gtk_scrolled_window_get_min_content_height(@pointer)
 
       # Return value handling
 
@@ -747,7 +745,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_min_content_width(self)
+      _retval = LibGtk.gtk_scrolled_window_get_min_content_width(@pointer)
 
       # Return value handling
 
@@ -760,7 +758,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_overlay_scrolling(self)
+      _retval = LibGtk.gtk_scrolled_window_get_overlay_scrolling(@pointer)
 
       # Return value handling
 
@@ -773,7 +771,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_placement(self)
+      _retval = LibGtk.gtk_scrolled_window_get_placement(@pointer)
 
       # Return value handling
 
@@ -794,7 +792,7 @@ module Gtk
       hscrollbar_policy = Pointer(UInt32).null # Generator::OutArgUsedInReturnPlan
       vscrollbar_policy = Pointer(UInt32).null
       # C call
-      LibGtk.gtk_scrolled_window_get_policy(self, hscrollbar_policy, vscrollbar_policy)
+      LibGtk.gtk_scrolled_window_get_policy(@pointer, hscrollbar_policy, vscrollbar_policy)
 
       # Return value handling
     end
@@ -806,7 +804,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_propagate_natural_height(self)
+      _retval = LibGtk.gtk_scrolled_window_get_propagate_natural_height(@pointer)
 
       # Return value handling
 
@@ -820,7 +818,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_propagate_natural_width(self)
+      _retval = LibGtk.gtk_scrolled_window_get_propagate_natural_width(@pointer)
 
       # Return value handling
 
@@ -836,7 +834,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_vadjustment(self)
+      _retval = LibGtk.gtk_scrolled_window_get_vadjustment(@pointer)
 
       # Return value handling
 
@@ -849,7 +847,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrolled_window_get_vscrollbar(self)
+      _retval = LibGtk.gtk_scrolled_window_get_vscrollbar(@pointer)
 
       # Return value handling
 
@@ -870,7 +868,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_scrolled_window_set_child(self, child)
+      LibGtk.gtk_scrolled_window_set_child(@pointer, child)
 
       # Return value handling
     end
@@ -889,7 +887,7 @@ module Gtk
                     end
 
       # C call
-      LibGtk.gtk_scrolled_window_set_hadjustment(self, hadjustment)
+      LibGtk.gtk_scrolled_window_set_hadjustment(@pointer, hadjustment)
 
       # Return value handling
     end
@@ -900,7 +898,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_has_frame(self, has_frame)
+      LibGtk.gtk_scrolled_window_set_has_frame(@pointer, has_frame)
 
       # Return value handling
     end
@@ -914,7 +912,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_kinetic_scrolling(self, kinetic_scrolling)
+      LibGtk.gtk_scrolled_window_set_kinetic_scrolling(@pointer, kinetic_scrolling)
 
       # Return value handling
     end
@@ -931,7 +929,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_max_content_height(self, height)
+      LibGtk.gtk_scrolled_window_set_max_content_height(@pointer, height)
 
       # Return value handling
     end
@@ -948,7 +946,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_max_content_width(self, width)
+      LibGtk.gtk_scrolled_window_set_max_content_width(@pointer, width)
 
       # Return value handling
     end
@@ -965,7 +963,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_min_content_height(self, height)
+      LibGtk.gtk_scrolled_window_set_min_content_height(@pointer, height)
 
       # Return value handling
     end
@@ -982,7 +980,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_min_content_width(self, width)
+      LibGtk.gtk_scrolled_window_set_min_content_width(@pointer, width)
 
       # Return value handling
     end
@@ -993,7 +991,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_overlay_scrolling(self, overlay_scrolling)
+      LibGtk.gtk_scrolled_window_set_overlay_scrolling(@pointer, overlay_scrolling)
 
       # Return value handling
     end
@@ -1013,7 +1011,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_placement(self, window_placement)
+      LibGtk.gtk_scrolled_window_set_placement(@pointer, window_placement)
 
       # Return value handling
     end
@@ -1031,7 +1029,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_policy(self, hscrollbar_policy, vscrollbar_policy)
+      LibGtk.gtk_scrolled_window_set_policy(@pointer, hscrollbar_policy, vscrollbar_policy)
 
       # Return value handling
     end
@@ -1043,7 +1041,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_propagate_natural_height(self, propagate)
+      LibGtk.gtk_scrolled_window_set_propagate_natural_height(@pointer, propagate)
 
       # Return value handling
     end
@@ -1055,7 +1053,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_set_propagate_natural_width(self, propagate)
+      LibGtk.gtk_scrolled_window_set_propagate_natural_width(@pointer, propagate)
 
       # Return value handling
     end
@@ -1074,7 +1072,7 @@ module Gtk
                     end
 
       # C call
-      LibGtk.gtk_scrolled_window_set_vadjustment(self, vadjustment)
+      LibGtk.gtk_scrolled_window_set_vadjustment(@pointer, vadjustment)
 
       # Return value handling
     end
@@ -1088,7 +1086,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrolled_window_unset_placement(self)
+      LibGtk.gtk_scrolled_window_unset_placement(@pointer)
 
       # Return value handling
     end
@@ -1129,8 +1127,8 @@ module Gtk
       def connect(handler : Proc(Gtk::PositionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pos : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          pos = Gtk::PositionType.new(lib_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          pos = Gtk::PositionType.new(lib_pos)
           ::Box(Proc(Gtk::PositionType, Nil)).unbox(_lib_box).call(pos)
         }.pointer
 
@@ -1141,8 +1139,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::PositionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pos : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          pos = Gtk::PositionType.new(lib_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          pos = Gtk::PositionType.new(lib_pos)
           ::Box(Proc(Gtk::PositionType, Nil)).unbox(_lib_box).call(pos)
         }.pointer
 
@@ -1154,8 +1152,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pos : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::ScrolledWindow.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          pos = Gtk::PositionType.new(lib_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          pos = Gtk::PositionType.new(lib_pos)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::PositionType, Nil)).unbox(_lib_box).call(_sender, pos)
         }.pointer
 
@@ -1167,8 +1165,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pos : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::ScrolledWindow.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          pos = Gtk::PositionType.new(lib_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          pos = Gtk::PositionType.new(lib_pos)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::PositionType, Nil)).unbox(_lib_box).call(_sender, pos)
         }.pointer
 
@@ -1221,8 +1219,8 @@ module Gtk
       def connect(handler : Proc(Gtk::PositionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pos : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          pos = Gtk::PositionType.new(lib_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          pos = Gtk::PositionType.new(lib_pos)
           ::Box(Proc(Gtk::PositionType, Nil)).unbox(_lib_box).call(pos)
         }.pointer
 
@@ -1233,8 +1231,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::PositionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pos : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          pos = Gtk::PositionType.new(lib_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          pos = Gtk::PositionType.new(lib_pos)
           ::Box(Proc(Gtk::PositionType, Nil)).unbox(_lib_box).call(pos)
         }.pointer
 
@@ -1246,8 +1244,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pos : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::ScrolledWindow.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          pos = Gtk::PositionType.new(lib_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          pos = Gtk::PositionType.new(lib_pos)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::PositionType, Nil)).unbox(_lib_box).call(_sender, pos)
         }.pointer
 
@@ -1259,8 +1257,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pos : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::ScrolledWindow.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          pos = Gtk::PositionType.new(lib_pos, :none)
+          # Generator::BuiltInTypeArgPlan
+          pos = Gtk::PositionType.new(lib_pos)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::PositionType, Nil)).unbox(_lib_box).call(_sender, pos)
         }.pointer
 
@@ -1312,8 +1310,8 @@ module Gtk
       def connect(handler : Proc(Gtk::DirectionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction_type : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction_type = Gtk::DirectionType.new(lib_direction_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction_type = Gtk::DirectionType.new(lib_direction_type)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(_lib_box).call(direction_type)
         }.pointer
 
@@ -1324,8 +1322,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::DirectionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction_type : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction_type = Gtk::DirectionType.new(lib_direction_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction_type = Gtk::DirectionType.new(lib_direction_type)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(_lib_box).call(direction_type)
         }.pointer
 
@@ -1337,8 +1335,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction_type : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::ScrolledWindow.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction_type = Gtk::DirectionType.new(lib_direction_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction_type = Gtk::DirectionType.new(lib_direction_type)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::DirectionType, Nil)).unbox(_lib_box).call(_sender, direction_type)
         }.pointer
 
@@ -1350,8 +1348,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction_type : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::ScrolledWindow.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction_type = Gtk::DirectionType.new(lib_direction_type, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction_type = Gtk::DirectionType.new(lib_direction_type)
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::DirectionType, Nil)).unbox(_lib_box).call(_sender, direction_type)
         }.pointer
 
@@ -1401,8 +1399,8 @@ module Gtk
       def connect(handler : Proc(Gtk::ScrollType, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, lib_horizontal : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           horizontal = lib_horizontal
           ::Box(Proc(Gtk::ScrollType, Bool, Bool)).unbox(_lib_box).call(scroll, horizontal)
         }.pointer
@@ -1414,8 +1412,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::ScrollType, Bool, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, lib_horizontal : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           horizontal = lib_horizontal
           ::Box(Proc(Gtk::ScrollType, Bool, Bool)).unbox(_lib_box).call(scroll, horizontal)
         }.pointer
@@ -1428,8 +1426,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, lib_horizontal : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::ScrolledWindow.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           horizontal = lib_horizontal
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::ScrollType, Bool, Bool)).unbox(_lib_box).call(_sender, scroll, horizontal)
         }.pointer
@@ -1442,8 +1440,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scroll : UInt32, lib_horizontal : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::ScrolledWindow.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          scroll = Gtk::ScrollType.new(lib_scroll, :none)
+          # Generator::BuiltInTypeArgPlan
+          scroll = Gtk::ScrollType.new(lib_scroll)
           horizontal = lib_horizontal
           ::Box(Proc(Gtk::ScrolledWindow, Gtk::ScrollType, Bool, Bool)).unbox(_lib_box).call(_sender, scroll, horizontal)
         }.pointer

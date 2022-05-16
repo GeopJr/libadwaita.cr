@@ -25,7 +25,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_editable_editing_done(self)
+      LibGtk.gtk_cell_editable_editing_done(@pointer)
 
       # Return value handling
     end
@@ -35,7 +35,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_cell_editable_remove_widget(self)
+      LibGtk.gtk_cell_editable_remove_widget(@pointer)
 
       # Return value handling
     end
@@ -53,7 +53,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_cell_editable_start_editing(self, event)
+      LibGtk.gtk_cell_editable_start_editing(@pointer, event)
 
       # Return value handling
     end
@@ -105,7 +105,7 @@ module Gtk
       def connect(handler : Proc(Gtk::CellEditable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::CellEditable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractCellEditable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::CellEditable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -116,7 +116,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::CellEditable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::CellEditable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractCellEditable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::CellEditable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -180,7 +180,7 @@ module Gtk
       def connect(handler : Proc(Gtk::CellEditable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::CellEditable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractCellEditable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::CellEditable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -191,7 +191,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::CellEditable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::CellEditable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractCellEditable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::CellEditable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -213,8 +213,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class CellEditable__Impl < GObject::Object
+  class AbstractCellEditable < GObject::Object
     include CellEditable
+
+    GICrystal.define_new_method(Gtk::AbstractCellEditable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

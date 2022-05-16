@@ -33,15 +33,13 @@ module Gio
         sizeof(LibGio::DBusServer), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DBusServer, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DBusServer`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -237,7 +235,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_server_get_client_address(self)
+      _retval = LibGio.g_dbus_server_get_client_address(@pointer)
 
       # Return value handling
 
@@ -250,7 +248,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_server_get_flags(self)
+      _retval = LibGio.g_dbus_server_get_flags(@pointer)
 
       # Return value handling
 
@@ -263,7 +261,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_server_get_guid(self)
+      _retval = LibGio.g_dbus_server_get_guid(@pointer)
 
       # Return value handling
 
@@ -276,7 +274,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_server_is_active(self)
+      _retval = LibGio.g_dbus_server_is_active(@pointer)
 
       # Return value handling
 
@@ -289,7 +287,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_server_start(self)
+      LibGio.g_dbus_server_start(@pointer)
 
       # Return value handling
     end
@@ -300,7 +298,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_server_stop(self)
+      LibGio.g_dbus_server_stop(@pointer)
 
       # Return value handling
     end
@@ -353,7 +351,7 @@ module Gio
       def connect(handler : Proc(Gio::DBusConnection, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           connection = Gio::DBusConnection.new(lib_connection, :none)
           ::Box(Proc(Gio::DBusConnection, Bool)).unbox(_lib_box).call(connection)
         }.pointer
@@ -365,7 +363,7 @@ module Gio
       def connect_after(handler : Proc(Gio::DBusConnection, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           connection = Gio::DBusConnection.new(lib_connection, :none)
           ::Box(Proc(Gio::DBusConnection, Bool)).unbox(_lib_box).call(connection)
         }.pointer
@@ -378,7 +376,7 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusServer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           connection = Gio::DBusConnection.new(lib_connection, :none)
           ::Box(Proc(Gio::DBusServer, Gio::DBusConnection, Bool)).unbox(_lib_box).call(_sender, connection)
         }.pointer
@@ -391,7 +389,7 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusServer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           connection = Gio::DBusConnection.new(lib_connection, :none)
           ::Box(Proc(Gio::DBusServer, Gio::DBusConnection, Bool)).unbox(_lib_box).call(_sender, connection)
         }.pointer

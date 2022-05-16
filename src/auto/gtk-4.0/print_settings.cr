@@ -24,15 +24,13 @@ module Gtk
         sizeof(LibGtk::PrintSettings), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(PrintSettings, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `PrintSettings`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -142,7 +140,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_copy(self)
+      _retval = LibGtk.gtk_print_settings_copy(@pointer)
 
       # Return value handling
 
@@ -163,7 +161,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_print_settings_foreach(self, func, user_data)
+      LibGtk.gtk_print_settings_foreach(@pointer, func, user_data)
 
       # Return value handling
     end
@@ -174,7 +172,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get(self, key)
+      _retval = LibGtk.gtk_print_settings_get(@pointer, key)
 
       # Return value handling
 
@@ -191,7 +189,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_bool(self, key)
+      _retval = LibGtk.gtk_print_settings_get_bool(@pointer, key)
 
       # Return value handling
 
@@ -204,7 +202,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_collate(self)
+      _retval = LibGtk.gtk_print_settings_get_collate(@pointer)
 
       # Return value handling
 
@@ -217,7 +215,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_default_source(self)
+      _retval = LibGtk.gtk_print_settings_get_default_source(@pointer)
 
       # Return value handling
 
@@ -230,7 +228,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_dither(self)
+      _retval = LibGtk.gtk_print_settings_get_dither(@pointer)
 
       # Return value handling
 
@@ -243,7 +241,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_double(self, key)
+      _retval = LibGtk.gtk_print_settings_get_double(@pointer, key)
 
       # Return value handling
 
@@ -260,7 +258,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_double_with_default(self, key, _def)
+      _retval = LibGtk.gtk_print_settings_get_double_with_default(@pointer, key, _def)
 
       # Return value handling
 
@@ -273,7 +271,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_duplex(self)
+      _retval = LibGtk.gtk_print_settings_get_duplex(@pointer)
 
       # Return value handling
 
@@ -286,7 +284,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_finishings(self)
+      _retval = LibGtk.gtk_print_settings_get_finishings(@pointer)
 
       # Return value handling
 
@@ -299,7 +297,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_int(self, key)
+      _retval = LibGtk.gtk_print_settings_get_int(@pointer, key)
 
       # Return value handling
 
@@ -313,7 +311,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_int_with_default(self, key, _def)
+      _retval = LibGtk.gtk_print_settings_get_int_with_default(@pointer, key, _def)
 
       # Return value handling
 
@@ -329,7 +327,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_length(self, key, unit)
+      _retval = LibGtk.gtk_print_settings_get_length(@pointer, key, unit)
 
       # Return value handling
 
@@ -344,7 +342,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_media_type(self)
+      _retval = LibGtk.gtk_print_settings_get_media_type(@pointer)
 
       # Return value handling
 
@@ -357,7 +355,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_n_copies(self)
+      _retval = LibGtk.gtk_print_settings_get_n_copies(@pointer)
 
       # Return value handling
 
@@ -370,7 +368,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_number_up(self)
+      _retval = LibGtk.gtk_print_settings_get_number_up(@pointer)
 
       # Return value handling
 
@@ -383,7 +381,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_number_up_layout(self)
+      _retval = LibGtk.gtk_print_settings_get_number_up_layout(@pointer)
 
       # Return value handling
 
@@ -397,7 +395,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_orientation(self)
+      _retval = LibGtk.gtk_print_settings_get_orientation(@pointer)
 
       # Return value handling
 
@@ -410,7 +408,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_output_bin(self)
+      _retval = LibGtk.gtk_print_settings_get_output_bin(@pointer)
 
       # Return value handling
 
@@ -426,7 +424,7 @@ module Gtk
       # Generator::OutArgUsedInReturnPlan
       num_ranges = 0
       # C call
-      _retval = LibGtk.gtk_print_settings_get_page_ranges(self, pointerof(num_ranges))
+      _retval = LibGtk.gtk_print_settings_get_page_ranges(@pointer, pointerof(num_ranges))
 
       # Return value handling
 
@@ -439,7 +437,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_page_set(self)
+      _retval = LibGtk.gtk_print_settings_get_page_set(@pointer)
 
       # Return value handling
 
@@ -453,7 +451,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_paper_height(self, unit)
+      _retval = LibGtk.gtk_print_settings_get_paper_height(@pointer, unit)
 
       # Return value handling
 
@@ -467,7 +465,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_paper_size(self)
+      _retval = LibGtk.gtk_print_settings_get_paper_size(@pointer)
 
       # Return value handling
 
@@ -481,7 +479,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_paper_width(self, unit)
+      _retval = LibGtk.gtk_print_settings_get_paper_width(@pointer, unit)
 
       # Return value handling
 
@@ -494,7 +492,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_print_pages(self)
+      _retval = LibGtk.gtk_print_settings_get_print_pages(@pointer)
 
       # Return value handling
 
@@ -508,7 +506,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_printer(self)
+      _retval = LibGtk.gtk_print_settings_get_printer(@pointer)
 
       # Return value handling
 
@@ -521,7 +519,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_printer_lpi(self)
+      _retval = LibGtk.gtk_print_settings_get_printer_lpi(@pointer)
 
       # Return value handling
 
@@ -534,7 +532,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_quality(self)
+      _retval = LibGtk.gtk_print_settings_get_quality(@pointer)
 
       # Return value handling
 
@@ -547,7 +545,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_resolution(self)
+      _retval = LibGtk.gtk_print_settings_get_resolution(@pointer)
 
       # Return value handling
 
@@ -560,7 +558,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_resolution_x(self)
+      _retval = LibGtk.gtk_print_settings_get_resolution_x(@pointer)
 
       # Return value handling
 
@@ -573,7 +571,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_resolution_y(self)
+      _retval = LibGtk.gtk_print_settings_get_resolution_y(@pointer)
 
       # Return value handling
 
@@ -586,7 +584,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_reverse(self)
+      _retval = LibGtk.gtk_print_settings_get_reverse(@pointer)
 
       # Return value handling
 
@@ -599,7 +597,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_scale(self)
+      _retval = LibGtk.gtk_print_settings_get_scale(@pointer)
 
       # Return value handling
 
@@ -612,7 +610,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_get_use_color(self)
+      _retval = LibGtk.gtk_print_settings_get_use_color(@pointer)
 
       # Return value handling
 
@@ -625,7 +623,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_has_key(self, key)
+      _retval = LibGtk.gtk_print_settings_has_key(@pointer, key)
 
       # Return value handling
 
@@ -645,7 +643,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_print_settings_load_file(self, file_name, pointerof(_error))
+      _retval = LibGtk.gtk_print_settings_load_file(@pointer, file_name, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -674,7 +672,7 @@ module Gtk
                    end
 
       # C call
-      _retval = LibGtk.gtk_print_settings_load_key_file(self, key_file, group_name, pointerof(_error))
+      _retval = LibGtk.gtk_print_settings_load_key_file(@pointer, key_file, group_name, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -698,7 +696,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_print_settings_set(self, key, value)
+      LibGtk.gtk_print_settings_set(@pointer, key, value)
 
       # Return value handling
     end
@@ -709,7 +707,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_bool(self, key, value)
+      LibGtk.gtk_print_settings_set_bool(@pointer, key, value)
 
       # Return value handling
     end
@@ -720,7 +718,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_collate(self, collate)
+      LibGtk.gtk_print_settings_set_collate(@pointer, collate)
 
       # Return value handling
     end
@@ -731,7 +729,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_default_source(self, default_source)
+      LibGtk.gtk_print_settings_set_default_source(@pointer, default_source)
 
       # Return value handling
     end
@@ -742,7 +740,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_dither(self, dither)
+      LibGtk.gtk_print_settings_set_dither(@pointer, dither)
 
       # Return value handling
     end
@@ -753,7 +751,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_double(self, key, value)
+      LibGtk.gtk_print_settings_set_double(@pointer, key, value)
 
       # Return value handling
     end
@@ -764,7 +762,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_duplex(self, duplex)
+      LibGtk.gtk_print_settings_set_duplex(@pointer, duplex)
 
       # Return value handling
     end
@@ -775,7 +773,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_finishings(self, finishings)
+      LibGtk.gtk_print_settings_set_finishings(@pointer, finishings)
 
       # Return value handling
     end
@@ -786,7 +784,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_int(self, key, value)
+      LibGtk.gtk_print_settings_set_int(@pointer, key, value)
 
       # Return value handling
     end
@@ -797,7 +795,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_length(self, key, value, unit)
+      LibGtk.gtk_print_settings_set_length(@pointer, key, value, unit)
 
       # Return value handling
     end
@@ -810,7 +808,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_media_type(self, media_type)
+      LibGtk.gtk_print_settings_set_media_type(@pointer, media_type)
 
       # Return value handling
     end
@@ -821,7 +819,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_n_copies(self, num_copies)
+      LibGtk.gtk_print_settings_set_n_copies(@pointer, num_copies)
 
       # Return value handling
     end
@@ -832,7 +830,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_number_up(self, number_up)
+      LibGtk.gtk_print_settings_set_number_up(@pointer, number_up)
 
       # Return value handling
     end
@@ -843,7 +841,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_number_up_layout(self, number_up_layout)
+      LibGtk.gtk_print_settings_set_number_up_layout(@pointer, number_up_layout)
 
       # Return value handling
     end
@@ -854,7 +852,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_orientation(self, orientation)
+      LibGtk.gtk_print_settings_set_orientation(@pointer, orientation)
 
       # Return value handling
     end
@@ -865,7 +863,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_output_bin(self, output_bin)
+      LibGtk.gtk_print_settings_set_output_bin(@pointer, output_bin)
 
       # Return value handling
     end
@@ -881,7 +879,7 @@ module Gtk
       page_ranges = page_ranges.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_print_settings_set_page_ranges(self, page_ranges, num_ranges)
+      LibGtk.gtk_print_settings_set_page_ranges(@pointer, page_ranges, num_ranges)
 
       # Return value handling
     end
@@ -892,7 +890,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_page_set(self, page_set)
+      LibGtk.gtk_print_settings_set_page_set(@pointer, page_set)
 
       # Return value handling
     end
@@ -903,7 +901,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_paper_height(self, height, unit)
+      LibGtk.gtk_print_settings_set_paper_height(@pointer, height, unit)
 
       # Return value handling
     end
@@ -916,7 +914,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_paper_size(self, paper_size)
+      LibGtk.gtk_print_settings_set_paper_size(@pointer, paper_size)
 
       # Return value handling
     end
@@ -927,7 +925,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_paper_width(self, width, unit)
+      LibGtk.gtk_print_settings_set_paper_width(@pointer, width, unit)
 
       # Return value handling
     end
@@ -938,7 +936,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_print_pages(self, pages)
+      LibGtk.gtk_print_settings_set_print_pages(@pointer, pages)
 
       # Return value handling
     end
@@ -950,7 +948,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_printer(self, printer)
+      LibGtk.gtk_print_settings_set_printer(@pointer, printer)
 
       # Return value handling
     end
@@ -961,7 +959,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_printer_lpi(self, lpi)
+      LibGtk.gtk_print_settings_set_printer_lpi(@pointer, lpi)
 
       # Return value handling
     end
@@ -972,7 +970,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_quality(self, quality)
+      LibGtk.gtk_print_settings_set_quality(@pointer, quality)
 
       # Return value handling
     end
@@ -985,7 +983,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_resolution(self, resolution)
+      LibGtk.gtk_print_settings_set_resolution(@pointer, resolution)
 
       # Return value handling
     end
@@ -998,7 +996,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_resolution_xy(self, resolution_x, resolution_y)
+      LibGtk.gtk_print_settings_set_resolution_xy(@pointer, resolution_x, resolution_y)
 
       # Return value handling
     end
@@ -1009,7 +1007,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_reverse(self, reverse)
+      LibGtk.gtk_print_settings_set_reverse(@pointer, reverse)
 
       # Return value handling
     end
@@ -1020,7 +1018,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_scale(self, scale)
+      LibGtk.gtk_print_settings_set_scale(@pointer, scale)
 
       # Return value handling
     end
@@ -1031,7 +1029,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_set_use_color(self, use_color)
+      LibGtk.gtk_print_settings_set_use_color(@pointer, use_color)
 
       # Return value handling
     end
@@ -1047,7 +1045,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_print_settings_to_file(self, file_name, pointerof(_error))
+      _retval = LibGtk.gtk_print_settings_to_file(@pointer, file_name, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -1063,7 +1061,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_settings_to_gvariant(self)
+      _retval = LibGtk.gtk_print_settings_to_gvariant(@pointer)
 
       # Return value handling
 
@@ -1084,7 +1082,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_print_settings_to_key_file(self, key_file, group_name)
+      LibGtk.gtk_print_settings_to_key_file(@pointer, key_file, group_name)
 
       # Return value handling
     end
@@ -1097,7 +1095,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_settings_unset(self, key)
+      LibGtk.gtk_print_settings_unset(@pointer, key)
 
       # Return value handling
     end

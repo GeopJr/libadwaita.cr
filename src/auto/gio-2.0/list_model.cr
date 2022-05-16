@@ -52,7 +52,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_list_model_get_item_type(self)
+      _retval = LibGio.g_list_model_get_item_type(@pointer)
 
       # Return value handling
 
@@ -64,7 +64,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_list_model_get_n_items(self)
+      _retval = LibGio.g_list_model_get_n_items(@pointer)
 
       # Return value handling
 
@@ -76,7 +76,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_list_model_get_object(self, position)
+      _retval = LibGio.g_list_model_get_object(@pointer, position)
 
       # Return value handling
 
@@ -88,7 +88,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_list_model_items_changed(self, position, removed, added)
+      LibGio.g_list_model_items_changed(@pointer, position, removed, added)
 
       # Return value handling
     end
@@ -146,7 +146,7 @@ module Gio
       def connect(handler : Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_removed : UInt32, lib_added : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gio::ListModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractListModel.new(_lib_sender, GICrystal::Transfer::None)
           position = lib_position
           removed = lib_removed
           added = lib_added
@@ -160,7 +160,7 @@ module Gio
       def connect_after(handler : Proc(Gio::ListModel, UInt32, UInt32, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_removed : UInt32, lib_added : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gio::ListModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gio::AbstractListModel.new(_lib_sender, GICrystal::Transfer::None)
           position = lib_position
           removed = lib_removed
           added = lib_added
@@ -185,8 +185,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class ListModel__Impl < GObject::Object
+  class AbstractListModel < GObject::Object
     include ListModel
+
+    GICrystal.define_new_method(Gio::AbstractListModel, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

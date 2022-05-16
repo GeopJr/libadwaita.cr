@@ -18,15 +18,13 @@ module Gdk
         sizeof(LibGdk::TouchpadEvent), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TouchpadEvent, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TouchpadEvent`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -47,7 +45,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_touchpad_event_get_deltas(self, dx, dy)
+      LibGdk.gdk_touchpad_event_get_deltas(@pointer, dx, dy)
 
       # Return value handling
     end
@@ -58,7 +56,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_touchpad_event_get_gesture_phase(self)
+      _retval = LibGdk.gdk_touchpad_event_get_gesture_phase(@pointer)
 
       # Return value handling
 
@@ -71,7 +69,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_touchpad_event_get_n_fingers(self)
+      _retval = LibGdk.gdk_touchpad_event_get_n_fingers(@pointer)
 
       # Return value handling
 
@@ -84,7 +82,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_touchpad_event_get_pinch_angle_delta(self)
+      _retval = LibGdk.gdk_touchpad_event_get_pinch_angle_delta(@pointer)
 
       # Return value handling
 
@@ -97,7 +95,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_touchpad_event_get_pinch_scale(self)
+      _retval = LibGdk.gdk_touchpad_event_get_pinch_scale(@pointer)
 
       # Return value handling
 

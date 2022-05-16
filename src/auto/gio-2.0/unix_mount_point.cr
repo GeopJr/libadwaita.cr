@@ -32,7 +32,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_compare(self, mount2)
+      _retval = LibGio.g_unix_mount_point_compare(@pointer, mount2)
 
       # Return value handling
 
@@ -44,7 +44,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_copy(self)
+      _retval = LibGio.g_unix_mount_point_copy(@pointer)
 
       # Return value handling
 
@@ -56,7 +56,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_unix_mount_point_free(self)
+      LibGio.g_unix_mount_point_free(@pointer)
 
       # Return value handling
     end
@@ -66,7 +66,7 @@ module Gio
       # Returns: (transfer none Filename)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_get_device_path(self)
+      _retval = LibGio.g_unix_mount_point_get_device_path(@pointer)
 
       # Return value handling
 
@@ -78,7 +78,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_get_fs_type(self)
+      _retval = LibGio.g_unix_mount_point_get_fs_type(@pointer)
 
       # Return value handling
 
@@ -90,7 +90,7 @@ module Gio
       # Returns: (transfer none Filename)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_get_mount_path(self)
+      _retval = LibGio.g_unix_mount_point_get_mount_path(@pointer)
 
       # Return value handling
 
@@ -102,7 +102,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_get_options(self)
+      _retval = LibGio.g_unix_mount_point_get_options(@pointer)
 
       # Return value handling
 
@@ -114,7 +114,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_guess_can_eject(self)
+      _retval = LibGio.g_unix_mount_point_guess_can_eject(@pointer)
 
       # Return value handling
 
@@ -126,11 +126,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_guess_icon(self)
+      _retval = LibGio.g_unix_mount_point_guess_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     def guess_name : ::String
@@ -138,7 +138,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_guess_name(self)
+      _retval = LibGio.g_unix_mount_point_guess_name(@pointer)
 
       # Return value handling
 
@@ -150,11 +150,11 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_guess_symbolic_icon(self)
+      _retval = LibGio.g_unix_mount_point_guess_symbolic_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     def is_loopback : Bool
@@ -162,7 +162,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_is_loopback(self)
+      _retval = LibGio.g_unix_mount_point_is_loopback(@pointer)
 
       # Return value handling
 
@@ -174,7 +174,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_is_readonly(self)
+      _retval = LibGio.g_unix_mount_point_is_readonly(@pointer)
 
       # Return value handling
 
@@ -186,7 +186,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_unix_mount_point_is_user_mountable(self)
+      _retval = LibGio.g_unix_mount_point_is_user_mountable(@pointer)
 
       # Return value handling
 

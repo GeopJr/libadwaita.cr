@@ -70,15 +70,13 @@ module Gtk
         sizeof(LibGtk::ProgressBar), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ProgressBar, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ProgressBar`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -430,7 +428,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_progress_bar_get_ellipsize(self)
+      _retval = LibGtk.gtk_progress_bar_get_ellipsize(@pointer)
 
       # Return value handling
 
@@ -443,7 +441,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_progress_bar_get_fraction(self)
+      _retval = LibGtk.gtk_progress_bar_get_fraction(@pointer)
 
       # Return value handling
 
@@ -456,7 +454,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_progress_bar_get_inverted(self)
+      _retval = LibGtk.gtk_progress_bar_get_inverted(@pointer)
 
       # Return value handling
 
@@ -471,7 +469,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_progress_bar_get_pulse_step(self)
+      _retval = LibGtk.gtk_progress_bar_get_pulse_step(@pointer)
 
       # Return value handling
 
@@ -486,7 +484,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_progress_bar_get_show_text(self)
+      _retval = LibGtk.gtk_progress_bar_get_show_text(@pointer)
 
       # Return value handling
 
@@ -502,7 +500,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_progress_bar_get_text(self)
+      _retval = LibGtk.gtk_progress_bar_get_text(@pointer)
 
       # Return value handling
 
@@ -520,7 +518,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_progress_bar_pulse(self)
+      LibGtk.gtk_progress_bar_pulse(@pointer)
 
       # Return value handling
     end
@@ -534,7 +532,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_progress_bar_set_ellipsize(self, mode)
+      LibGtk.gtk_progress_bar_set_ellipsize(@pointer, mode)
 
       # Return value handling
     end
@@ -548,7 +546,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_progress_bar_set_fraction(self, fraction)
+      LibGtk.gtk_progress_bar_set_fraction(@pointer, fraction)
 
       # Return value handling
     end
@@ -562,7 +560,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_progress_bar_set_inverted(self, inverted)
+      LibGtk.gtk_progress_bar_set_inverted(@pointer, inverted)
 
       # Return value handling
     end
@@ -577,7 +575,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_progress_bar_set_pulse_step(self, fraction)
+      LibGtk.gtk_progress_bar_set_pulse_step(@pointer, fraction)
 
       # Return value handling
     end
@@ -596,7 +594,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_progress_bar_set_show_text(self, show_text)
+      LibGtk.gtk_progress_bar_set_show_text(@pointer, show_text)
 
       # Return value handling
     end
@@ -625,7 +623,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_progress_bar_set_text(self, text)
+      LibGtk.gtk_progress_bar_set_text(@pointer, text)
 
       # Return value handling
     end

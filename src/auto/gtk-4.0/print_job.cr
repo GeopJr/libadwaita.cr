@@ -22,15 +22,13 @@ module Gtk
         sizeof(LibGtk::PrintJob), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(PrintJob, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `PrintJob`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -178,7 +176,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_collate(self)
+      _retval = LibGtk.gtk_print_job_get_collate(@pointer)
 
       # Return value handling
 
@@ -191,7 +189,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_n_up(self)
+      _retval = LibGtk.gtk_print_job_get_n_up(@pointer)
 
       # Return value handling
 
@@ -204,7 +202,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_n_up_layout(self)
+      _retval = LibGtk.gtk_print_job_get_n_up_layout(@pointer)
 
       # Return value handling
 
@@ -217,7 +215,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_num_copies(self)
+      _retval = LibGtk.gtk_print_job_get_num_copies(@pointer)
 
       # Return value handling
 
@@ -233,7 +231,7 @@ module Gtk
       # Generator::OutArgUsedInReturnPlan
       n_ranges = 0
       # C call
-      _retval = LibGtk.gtk_print_job_get_page_ranges(self, pointerof(n_ranges))
+      _retval = LibGtk.gtk_print_job_get_page_ranges(@pointer, pointerof(n_ranges))
 
       # Return value handling
 
@@ -246,7 +244,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_page_set(self)
+      _retval = LibGtk.gtk_print_job_get_page_set(@pointer)
 
       # Return value handling
 
@@ -259,7 +257,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_pages(self)
+      _retval = LibGtk.gtk_print_job_get_pages(@pointer)
 
       # Return value handling
 
@@ -272,7 +270,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_printer(self)
+      _retval = LibGtk.gtk_print_job_get_printer(@pointer)
 
       # Return value handling
 
@@ -285,7 +283,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_reverse(self)
+      _retval = LibGtk.gtk_print_job_get_reverse(@pointer)
 
       # Return value handling
 
@@ -298,7 +296,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_rotate(self)
+      _retval = LibGtk.gtk_print_job_get_rotate(@pointer)
 
       # Return value handling
 
@@ -311,7 +309,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_scale(self)
+      _retval = LibGtk.gtk_print_job_get_scale(@pointer)
 
       # Return value handling
 
@@ -324,7 +322,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_settings(self)
+      _retval = LibGtk.gtk_print_job_get_settings(@pointer)
 
       # Return value handling
 
@@ -337,7 +335,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_status(self)
+      _retval = LibGtk.gtk_print_job_get_status(@pointer)
 
       # Return value handling
 
@@ -353,7 +351,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_surface(self, pointerof(_error))
+      _retval = LibGtk.gtk_print_job_get_surface(@pointer, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -369,7 +367,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_title(self)
+      _retval = LibGtk.gtk_print_job_get_title(@pointer)
 
       # Return value handling
 
@@ -384,7 +382,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_job_get_track_print_status(self)
+      _retval = LibGtk.gtk_print_job_get_track_print_status(@pointer)
 
       # Return value handling
 
@@ -401,12 +399,11 @@ module Gtk
       if callback
         _box = ::Box.box(callback)
         callback = ->(lib_print_job : Pointer(Void), lib_user_data : Pointer(Void), lib_error : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           print_job = Gtk::PrintJob.new(lib_print_job, :none)
           # Generator::NullableArrayPlan
           user_data = (lib_user_data.null? ? nil : lib_user_data)
-          error = lib_error
-          ::Box(Proc(Gtk::PrintJob, Pointer(Void)?, Nil)).unbox(error).call(print_job, user_data)
+          ::Box(Proc(Gtk::PrintJob, Pointer(Void)?, Nil)).unbox(lib_error).call(print_job, user_data)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         dnotify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -415,7 +412,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_print_job_send(self, callback, user_data, dnotify)
+      LibGtk.gtk_print_job_send(@pointer, callback, user_data, dnotify)
 
       # Return value handling
     end
@@ -426,7 +423,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_collate(self, collate)
+      LibGtk.gtk_print_job_set_collate(@pointer, collate)
 
       # Return value handling
     end
@@ -437,7 +434,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_n_up(self, n_up)
+      LibGtk.gtk_print_job_set_n_up(@pointer, n_up)
 
       # Return value handling
     end
@@ -448,7 +445,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_n_up_layout(self, layout)
+      LibGtk.gtk_print_job_set_n_up_layout(@pointer, layout)
 
       # Return value handling
     end
@@ -459,7 +456,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_num_copies(self, num_copies)
+      LibGtk.gtk_print_job_set_num_copies(@pointer, num_copies)
 
       # Return value handling
     end
@@ -475,7 +472,7 @@ module Gtk
       ranges = ranges.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_print_job_set_page_ranges(self, ranges, n_ranges)
+      LibGtk.gtk_print_job_set_page_ranges(@pointer, ranges, n_ranges)
 
       # Return value handling
     end
@@ -486,7 +483,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_page_set(self, page_set)
+      LibGtk.gtk_print_job_set_page_set(@pointer, page_set)
 
       # Return value handling
     end
@@ -497,7 +494,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_pages(self, pages)
+      LibGtk.gtk_print_job_set_pages(@pointer, pages)
 
       # Return value handling
     end
@@ -508,7 +505,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_reverse(self, reverse)
+      LibGtk.gtk_print_job_set_reverse(@pointer, reverse)
 
       # Return value handling
     end
@@ -519,7 +516,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_rotate(self, rotate)
+      LibGtk.gtk_print_job_set_rotate(@pointer, rotate)
 
       # Return value handling
     end
@@ -532,7 +529,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_scale(self, scale)
+      LibGtk.gtk_print_job_set_scale(@pointer, scale)
 
       # Return value handling
     end
@@ -555,7 +552,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_print_job_set_source_fd(self, fd, pointerof(_error))
+      _retval = LibGtk.gtk_print_job_set_source_fd(@pointer, fd, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -579,7 +576,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_print_job_set_source_file(self, filename, pointerof(_error))
+      _retval = LibGtk.gtk_print_job_set_source_file(@pointer, filename, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -602,7 +599,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_job_set_track_print_status(self, track_status)
+      LibGtk.gtk_print_job_set_track_print_status(@pointer, track_status)
 
       # Return value handling
     end

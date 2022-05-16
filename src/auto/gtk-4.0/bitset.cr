@@ -69,7 +69,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_add(self, value)
+      _retval = LibGtk.gtk_bitset_add(@pointer, value)
 
       # Return value handling
 
@@ -81,7 +81,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_add_range(self, start, n_items)
+      LibGtk.gtk_bitset_add_range(@pointer, start, n_items)
 
       # Return value handling
     end
@@ -91,7 +91,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_add_range_closed(self, first, last)
+      LibGtk.gtk_bitset_add_range_closed(@pointer, first, last)
 
       # Return value handling
     end
@@ -101,7 +101,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_add_rectangle(self, start, width, height, stride)
+      LibGtk.gtk_bitset_add_rectangle(@pointer, start, width, height, stride)
 
       # Return value handling
     end
@@ -111,7 +111,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_contains(self, value)
+      _retval = LibGtk.gtk_bitset_contains(@pointer, value)
 
       # Return value handling
 
@@ -123,7 +123,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_bitset_copy(self)
+      _retval = LibGtk.gtk_bitset_copy(@pointer)
 
       # Return value handling
 
@@ -135,7 +135,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_difference(self, other)
+      LibGtk.gtk_bitset_difference(@pointer, other)
 
       # Return value handling
     end
@@ -145,7 +145,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_equals(self, other)
+      _retval = LibGtk.gtk_bitset_equals(@pointer, other)
 
       # Return value handling
 
@@ -157,7 +157,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_get_maximum(self)
+      _retval = LibGtk.gtk_bitset_get_maximum(@pointer)
 
       # Return value handling
 
@@ -169,7 +169,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_get_minimum(self)
+      _retval = LibGtk.gtk_bitset_get_minimum(@pointer)
 
       # Return value handling
 
@@ -181,7 +181,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_get_nth(self, nth)
+      _retval = LibGtk.gtk_bitset_get_nth(@pointer, nth)
 
       # Return value handling
 
@@ -193,7 +193,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_get_size(self)
+      _retval = LibGtk.gtk_bitset_get_size(@pointer)
 
       # Return value handling
 
@@ -205,7 +205,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_get_size_in_range(self, first, last)
+      _retval = LibGtk.gtk_bitset_get_size_in_range(@pointer, first, last)
 
       # Return value handling
 
@@ -217,7 +217,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_intersect(self, other)
+      LibGtk.gtk_bitset_intersect(@pointer, other)
 
       # Return value handling
     end
@@ -227,7 +227,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_is_empty(self)
+      _retval = LibGtk.gtk_bitset_is_empty(@pointer)
 
       # Return value handling
 
@@ -239,7 +239,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_ref(self)
+      _retval = LibGtk.gtk_bitset_ref(@pointer)
 
       # Return value handling
 
@@ -251,7 +251,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_bitset_remove(self, value)
+      _retval = LibGtk.gtk_bitset_remove(@pointer, value)
 
       # Return value handling
 
@@ -263,7 +263,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_remove_all(self)
+      LibGtk.gtk_bitset_remove_all(@pointer)
 
       # Return value handling
     end
@@ -273,7 +273,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_remove_range(self, start, n_items)
+      LibGtk.gtk_bitset_remove_range(@pointer, start, n_items)
 
       # Return value handling
     end
@@ -283,7 +283,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_remove_range_closed(self, first, last)
+      LibGtk.gtk_bitset_remove_range_closed(@pointer, first, last)
 
       # Return value handling
     end
@@ -293,7 +293,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_remove_rectangle(self, start, width, height, stride)
+      LibGtk.gtk_bitset_remove_rectangle(@pointer, start, width, height, stride)
 
       # Return value handling
     end
@@ -303,7 +303,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_shift_left(self, amount)
+      LibGtk.gtk_bitset_shift_left(@pointer, amount)
 
       # Return value handling
     end
@@ -313,7 +313,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_shift_right(self, amount)
+      LibGtk.gtk_bitset_shift_right(@pointer, amount)
 
       # Return value handling
     end
@@ -323,7 +323,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_splice(self, position, removed, added)
+      LibGtk.gtk_bitset_splice(@pointer, position, removed, added)
 
       # Return value handling
     end
@@ -333,7 +333,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_subtract(self, other)
+      LibGtk.gtk_bitset_subtract(@pointer, other)
 
       # Return value handling
     end
@@ -343,7 +343,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_union(self, other)
+      LibGtk.gtk_bitset_union(@pointer, other)
 
       # Return value handling
     end
@@ -353,7 +353,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_bitset_unref(self)
+      LibGtk.gtk_bitset_unref(@pointer)
 
       # Return value handling
     end

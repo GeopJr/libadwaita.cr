@@ -33,15 +33,13 @@ module Gio
         sizeof(LibGio::MountOperation), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(MountOperation, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `MountOperation`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -270,7 +268,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_operation_get_anonymous(self)
+      _retval = LibGio.g_mount_operation_get_anonymous(@pointer)
 
       # Return value handling
 
@@ -283,7 +281,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_operation_get_choice(self)
+      _retval = LibGio.g_mount_operation_get_choice(@pointer)
 
       # Return value handling
 
@@ -296,7 +294,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_operation_get_domain(self)
+      _retval = LibGio.g_mount_operation_get_domain(@pointer)
 
       # Return value handling
 
@@ -310,7 +308,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_operation_get_is_tcrypt_hidden_volume(self)
+      _retval = LibGio.g_mount_operation_get_is_tcrypt_hidden_volume(@pointer)
 
       # Return value handling
 
@@ -324,7 +322,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_operation_get_is_tcrypt_system_volume(self)
+      _retval = LibGio.g_mount_operation_get_is_tcrypt_system_volume(@pointer)
 
       # Return value handling
 
@@ -337,7 +335,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_operation_get_password(self)
+      _retval = LibGio.g_mount_operation_get_password(@pointer)
 
       # Return value handling
 
@@ -350,7 +348,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_operation_get_password_save(self)
+      _retval = LibGio.g_mount_operation_get_password_save(@pointer)
 
       # Return value handling
 
@@ -363,7 +361,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_operation_get_pim(self)
+      _retval = LibGio.g_mount_operation_get_pim(@pointer)
 
       # Return value handling
 
@@ -376,7 +374,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_mount_operation_get_username(self)
+      _retval = LibGio.g_mount_operation_get_username(@pointer)
 
       # Return value handling
 
@@ -389,7 +387,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_mount_operation_reply(self, result)
+      LibGio.g_mount_operation_reply(@pointer, result)
 
       # Return value handling
     end
@@ -400,7 +398,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_mount_operation_set_anonymous(self, anonymous)
+      LibGio.g_mount_operation_set_anonymous(@pointer, anonymous)
 
       # Return value handling
     end
@@ -411,7 +409,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_mount_operation_set_choice(self, choice)
+      LibGio.g_mount_operation_set_choice(@pointer, choice)
 
       # Return value handling
     end
@@ -430,7 +428,7 @@ module Gio
                end
 
       # C call
-      LibGio.g_mount_operation_set_domain(self, domain)
+      LibGio.g_mount_operation_set_domain(@pointer, domain)
 
       # Return value handling
     end
@@ -441,7 +439,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_mount_operation_set_is_tcrypt_hidden_volume(self, hidden_volume)
+      LibGio.g_mount_operation_set_is_tcrypt_hidden_volume(@pointer, hidden_volume)
 
       # Return value handling
     end
@@ -452,7 +450,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_mount_operation_set_is_tcrypt_system_volume(self, system_volume)
+      LibGio.g_mount_operation_set_is_tcrypt_system_volume(@pointer, system_volume)
 
       # Return value handling
     end
@@ -471,7 +469,7 @@ module Gio
                  end
 
       # C call
-      LibGio.g_mount_operation_set_password(self, password)
+      LibGio.g_mount_operation_set_password(@pointer, password)
 
       # Return value handling
     end
@@ -482,7 +480,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_mount_operation_set_password_save(self, save)
+      LibGio.g_mount_operation_set_password_save(@pointer, save)
 
       # Return value handling
     end
@@ -493,7 +491,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_mount_operation_set_pim(self, pim)
+      LibGio.g_mount_operation_set_pim(@pointer, pim)
 
       # Return value handling
     end
@@ -512,7 +510,7 @@ module Gio
                  end
 
       # C call
-      LibGio.g_mount_operation_set_username(self, username)
+      LibGio.g_mount_operation_set_username(@pointer, username)
 
       # Return value handling
     end
@@ -629,11 +627,14 @@ module Gio
       def connect(handler : Proc(::String, ::String, ::String, Gio::AskPasswordFlags, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_default_user : Pointer(LibC::Char), lib_default_domain : Pointer(LibC::Char), lib_flags : UInt32, _lib_box : Pointer(Void)) {
-          message = lib_message
-          default_user = lib_default_user
-          default_domain = lib_default_domain
-          # Generator::GObjectArgPlan
-          flags = Gio::AskPasswordFlags.new(lib_flags, :none)
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
+          # Generator::BuiltInTypeArgPlan
+          default_user = ::String.new(lib_default_user)
+          # Generator::BuiltInTypeArgPlan
+          default_domain = ::String.new(lib_default_domain)
+          # Generator::BuiltInTypeArgPlan
+          flags = Gio::AskPasswordFlags.new(lib_flags)
           ::Box(Proc(::String, ::String, ::String, Gio::AskPasswordFlags, Nil)).unbox(_lib_box).call(message, default_user, default_domain, flags)
         }.pointer
 
@@ -644,11 +645,14 @@ module Gio
       def connect_after(handler : Proc(::String, ::String, ::String, Gio::AskPasswordFlags, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_default_user : Pointer(LibC::Char), lib_default_domain : Pointer(LibC::Char), lib_flags : UInt32, _lib_box : Pointer(Void)) {
-          message = lib_message
-          default_user = lib_default_user
-          default_domain = lib_default_domain
-          # Generator::GObjectArgPlan
-          flags = Gio::AskPasswordFlags.new(lib_flags, :none)
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
+          # Generator::BuiltInTypeArgPlan
+          default_user = ::String.new(lib_default_user)
+          # Generator::BuiltInTypeArgPlan
+          default_domain = ::String.new(lib_default_domain)
+          # Generator::BuiltInTypeArgPlan
+          flags = Gio::AskPasswordFlags.new(lib_flags)
           ::Box(Proc(::String, ::String, ::String, Gio::AskPasswordFlags, Nil)).unbox(_lib_box).call(message, default_user, default_domain, flags)
         }.pointer
 
@@ -660,11 +664,14 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_default_user : Pointer(LibC::Char), lib_default_domain : Pointer(LibC::Char), lib_flags : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          message = lib_message
-          default_user = lib_default_user
-          default_domain = lib_default_domain
-          # Generator::GObjectArgPlan
-          flags = Gio::AskPasswordFlags.new(lib_flags, :none)
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
+          # Generator::BuiltInTypeArgPlan
+          default_user = ::String.new(lib_default_user)
+          # Generator::BuiltInTypeArgPlan
+          default_domain = ::String.new(lib_default_domain)
+          # Generator::BuiltInTypeArgPlan
+          flags = Gio::AskPasswordFlags.new(lib_flags)
           ::Box(Proc(Gio::MountOperation, ::String, ::String, ::String, Gio::AskPasswordFlags, Nil)).unbox(_lib_box).call(_sender, message, default_user, default_domain, flags)
         }.pointer
 
@@ -676,11 +683,14 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_default_user : Pointer(LibC::Char), lib_default_domain : Pointer(LibC::Char), lib_flags : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          message = lib_message
-          default_user = lib_default_user
-          default_domain = lib_default_domain
-          # Generator::GObjectArgPlan
-          flags = Gio::AskPasswordFlags.new(lib_flags, :none)
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
+          # Generator::BuiltInTypeArgPlan
+          default_user = ::String.new(lib_default_user)
+          # Generator::BuiltInTypeArgPlan
+          default_domain = ::String.new(lib_default_domain)
+          # Generator::BuiltInTypeArgPlan
+          flags = Gio::AskPasswordFlags.new(lib_flags)
           ::Box(Proc(Gio::MountOperation, ::String, ::String, ::String, Gio::AskPasswordFlags, Nil)).unbox(_lib_box).call(_sender, message, default_user, default_domain, flags)
         }.pointer
 
@@ -730,8 +740,10 @@ module Gio
       def connect(handler : Proc(::String, Enumerable(::String), Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_choices : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(::String, Enumerable(::String), Nil)).unbox(_lib_box).call(message, choices)
         }.pointer
 
@@ -742,8 +754,10 @@ module Gio
       def connect_after(handler : Proc(::String, Enumerable(::String), Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_choices : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(::String, Enumerable(::String), Nil)).unbox(_lib_box).call(message, choices)
         }.pointer
 
@@ -755,8 +769,10 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_choices : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::MountOperation, ::String, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, message, choices)
         }.pointer
 
@@ -768,8 +784,10 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_choices : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::MountOperation, ::String, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, message, choices)
         }.pointer
 
@@ -778,6 +796,9 @@ module Gio
       end
 
       def emit(message : ::String, choices : Enumerable(::String)) : Nil
+        # Generator::ArrayArgPlan
+        choices = choices.to_a.map(&.to_unsafe).to_unsafe
+
         LibGObject.g_signal_emit_by_name(@source, "ask-question", message, choices)
       end
     end
@@ -814,8 +835,8 @@ module Gio
       def connect(handler : Proc(Gio::MountOperationResult, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_result : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          result = Gio::MountOperationResult.new(lib_result, :none)
+          # Generator::BuiltInTypeArgPlan
+          result = Gio::MountOperationResult.new(lib_result)
           ::Box(Proc(Gio::MountOperationResult, Nil)).unbox(_lib_box).call(result)
         }.pointer
 
@@ -826,8 +847,8 @@ module Gio
       def connect_after(handler : Proc(Gio::MountOperationResult, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_result : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          result = Gio::MountOperationResult.new(lib_result, :none)
+          # Generator::BuiltInTypeArgPlan
+          result = Gio::MountOperationResult.new(lib_result)
           ::Box(Proc(Gio::MountOperationResult, Nil)).unbox(_lib_box).call(result)
         }.pointer
 
@@ -839,8 +860,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_result : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          result = Gio::MountOperationResult.new(lib_result, :none)
+          # Generator::BuiltInTypeArgPlan
+          result = Gio::MountOperationResult.new(lib_result)
           ::Box(Proc(Gio::MountOperation, Gio::MountOperationResult, Nil)).unbox(_lib_box).call(_sender, result)
         }.pointer
 
@@ -852,8 +873,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_result : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          result = Gio::MountOperationResult.new(lib_result, :none)
+          # Generator::BuiltInTypeArgPlan
+          result = Gio::MountOperationResult.new(lib_result)
           ::Box(Proc(Gio::MountOperation, Gio::MountOperationResult, Nil)).unbox(_lib_box).call(_sender, result)
         }.pointer
 
@@ -909,9 +930,12 @@ module Gio
       def connect(handler : Proc(::String, Enumerable(Int32), Enumerable(::String), Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_processes : Pointer(Int32), lib_choices : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(::String, Enumerable(Int32), Enumerable(::String), Nil)).unbox(_lib_box).call(message, processes, choices)
         }.pointer
 
@@ -922,9 +946,12 @@ module Gio
       def connect_after(handler : Proc(::String, Enumerable(Int32), Enumerable(::String), Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_processes : Pointer(Int32), lib_choices : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(::String, Enumerable(Int32), Enumerable(::String), Nil)).unbox(_lib_box).call(message, processes, choices)
         }.pointer
 
@@ -936,9 +963,12 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_processes : Pointer(Int32), lib_choices : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::MountOperation, ::String, Enumerable(Int32), Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, message, processes, choices)
         }.pointer
 
@@ -950,9 +980,12 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_processes : Pointer(Int32), lib_choices : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::MountOperation, ::String, Enumerable(Int32), Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, message, processes, choices)
         }.pointer
 
@@ -961,6 +994,11 @@ module Gio
       end
 
       def emit(message : ::String, processes : Enumerable(Int32), choices : Enumerable(::String)) : Nil
+        # Generator::ArrayArgPlan
+        processes = processes.to_a.to_unsafe
+        # Generator::ArrayArgPlan
+        choices = choices.to_a.map(&.to_unsafe).to_unsafe
+
         LibGObject.g_signal_emit_by_name(@source, "show-processes", message, processes, choices)
       end
     end
@@ -1012,7 +1050,8 @@ module Gio
       def connect(handler : Proc(::String, Int64, Int64, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_time_left : Int64, lib_bytes_left : Int64, _lib_box : Pointer(Void)) {
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           time_left = lib_time_left
           bytes_left = lib_bytes_left
           ::Box(Proc(::String, Int64, Int64, Nil)).unbox(_lib_box).call(message, time_left, bytes_left)
@@ -1025,7 +1064,8 @@ module Gio
       def connect_after(handler : Proc(::String, Int64, Int64, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_time_left : Int64, lib_bytes_left : Int64, _lib_box : Pointer(Void)) {
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           time_left = lib_time_left
           bytes_left = lib_bytes_left
           ::Box(Proc(::String, Int64, Int64, Nil)).unbox(_lib_box).call(message, time_left, bytes_left)
@@ -1039,7 +1079,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_time_left : Int64, lib_bytes_left : Int64, _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           time_left = lib_time_left
           bytes_left = lib_bytes_left
           ::Box(Proc(Gio::MountOperation, ::String, Int64, Int64, Nil)).unbox(_lib_box).call(_sender, message, time_left, bytes_left)
@@ -1053,7 +1094,8 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_message : Pointer(LibC::Char), lib_time_left : Int64, lib_bytes_left : Int64, _lib_box : Pointer(Void)) {
           _sender = Gio::MountOperation.new(_lib_sender, GICrystal::Transfer::None)
-          message = lib_message
+          # Generator::BuiltInTypeArgPlan
+          message = ::String.new(lib_message)
           time_left = lib_time_left
           bytes_left = lib_bytes_left
           ::Box(Proc(Gio::MountOperation, ::String, Int64, Int64, Nil)).unbox(_lib_box).call(_sender, message, time_left, bytes_left)

@@ -406,15 +406,13 @@ module Gtk
         sizeof(LibGtk::Widget), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Widget, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Widget`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -962,7 +960,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "root", pointerof(value), Pointer(Void).null)
-      Gtk::Root__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractRoot.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def scale_factor : Int32
@@ -1128,7 +1126,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_action_set_enabled(self, action_name, enabled)
+      LibGtk.gtk_widget_action_set_enabled(@pointer, action_name, enabled)
 
       # Return value handling
     end
@@ -1152,7 +1150,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_activate(self)
+      _retval = LibGtk.gtk_widget_activate(@pointer)
 
       # Return value handling
 
@@ -1179,7 +1177,7 @@ module Gtk
              end
 
       # C call
-      _retval = LibGtk.gtk_widget_activate_action_variant(self, name, args)
+      _retval = LibGtk.gtk_widget_activate_action_variant(@pointer, name, args)
 
       # Return value handling
 
@@ -1192,7 +1190,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_activate_default(self)
+      LibGtk.gtk_widget_activate_default(@pointer)
 
       # Return value handling
     end
@@ -1209,7 +1207,7 @@ module Gtk
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(controller)
       # C call
-      LibGtk.gtk_widget_add_controller(self, controller)
+      LibGtk.gtk_widget_add_controller(@pointer, controller)
 
       # Return value handling
     end
@@ -1226,7 +1224,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_add_css_class(self, css_class)
+      LibGtk.gtk_widget_add_css_class(@pointer, css_class)
 
       # Return value handling
     end
@@ -1242,7 +1240,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_add_mnemonic_label(self, label)
+      LibGtk.gtk_widget_add_mnemonic_label(@pointer, label)
 
       # Return value handling
     end
@@ -1278,12 +1276,11 @@ module Gtk
       if callback
         _box = ::Box.box(callback)
         callback = ->(lib_widget : Pointer(Void), lib_frame_clock : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           widget = Gtk::Widget.new(lib_widget, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           frame_clock = Gdk::FrameClock.new(lib_frame_clock, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::Widget, Gdk::FrameClock, Bool)).unbox(user_data).call(widget, frame_clock)
+          ::Box(Proc(Gtk::Widget, Gdk::FrameClock, Bool)).unbox(lib_user_data).call(widget, frame_clock)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -1292,7 +1289,7 @@ module Gtk
       end
 
       # C call
-      _retval = LibGtk.gtk_widget_add_tick_callback(self, callback, user_data, notify)
+      _retval = LibGtk.gtk_widget_add_tick_callback(@pointer, callback, user_data, notify)
 
       # Return value handling
 
@@ -1322,7 +1319,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_widget_allocate(self, width, height, baseline, transform)
+      LibGtk.gtk_widget_allocate(@pointer, width, height, baseline, transform)
 
       # Return value handling
     end
@@ -1352,7 +1349,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_child_focus(self, direction)
+      _retval = LibGtk.gtk_widget_child_focus(@pointer, direction)
 
       # Return value handling
 
@@ -1377,7 +1374,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       out_bounds = Graphene::Rect.new
       # C call
-      _retval = LibGtk.gtk_widget_compute_bounds(self, target, out_bounds)
+      _retval = LibGtk.gtk_widget_compute_bounds(@pointer, target, out_bounds)
 
       # Return value handling
 
@@ -1402,7 +1399,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_compute_expand(self, orientation)
+      _retval = LibGtk.gtk_widget_compute_expand(@pointer, orientation)
 
       # Return value handling
 
@@ -1422,7 +1419,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       out_point = Graphene::Point.new
       # C call
-      _retval = LibGtk.gtk_widget_compute_point(self, target, point, out_point)
+      _retval = LibGtk.gtk_widget_compute_point(@pointer, target, point, out_point)
 
       # Return value handling
 
@@ -1443,7 +1440,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       out_transform = Graphene::Matrix.new
       # C call
-      _retval = LibGtk.gtk_widget_compute_transform(self, target, out_transform)
+      _retval = LibGtk.gtk_widget_compute_transform(@pointer, target, out_transform)
 
       # Return value handling
 
@@ -1459,7 +1456,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_contains(self, x, y)
+      _retval = LibGtk.gtk_widget_contains(@pointer, x, y)
 
       # Return value handling
 
@@ -1476,7 +1473,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_widget_create_pango_context(self)
+      _retval = LibGtk.gtk_widget_create_pango_context(@pointer)
 
       # Return value handling
 
@@ -1504,7 +1501,7 @@ module Gtk
              end
 
       # C call
-      _retval = LibGtk.gtk_widget_create_pango_layout(self, text)
+      _retval = LibGtk.gtk_widget_create_pango_layout(@pointer, text)
 
       # Return value handling
 
@@ -1517,7 +1514,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_drag_check_threshold(self, start_x, start_y, current_x, current_y)
+      _retval = LibGtk.gtk_drag_check_threshold(@pointer, start_x, start_y, current_x, current_y)
 
       # Return value handling
 
@@ -1537,7 +1534,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_error_bell(self)
+      LibGtk.gtk_widget_error_bell(@pointer)
 
       # Return value handling
     end
@@ -1552,7 +1549,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_allocated_baseline(self)
+      _retval = LibGtk.gtk_widget_get_allocated_baseline(@pointer)
 
       # Return value handling
 
@@ -1565,7 +1562,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_allocated_height(self)
+      _retval = LibGtk.gtk_widget_get_allocated_height(@pointer)
 
       # Return value handling
 
@@ -1578,7 +1575,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_allocated_width(self)
+      _retval = LibGtk.gtk_widget_get_allocated_width(@pointer)
 
       # Return value handling
 
@@ -1608,7 +1605,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       allocation = Gdk::Rectangle.new
       # C call
-      LibGtk.gtk_widget_get_allocation(self, allocation)
+      LibGtk.gtk_widget_get_allocation(@pointer, allocation)
 
       # Return value handling
 
@@ -1629,7 +1626,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_ancestor(self, widget_type)
+      _retval = LibGtk.gtk_widget_get_ancestor(@pointer, widget_type)
 
       # Return value handling
 
@@ -1645,7 +1642,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_can_focus(self)
+      _retval = LibGtk.gtk_widget_get_can_focus(@pointer)
 
       # Return value handling
 
@@ -1658,7 +1655,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_can_target(self)
+      _retval = LibGtk.gtk_widget_get_can_target(@pointer)
 
       # Return value handling
 
@@ -1677,7 +1674,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_child_visible(self)
+      _retval = LibGtk.gtk_widget_get_child_visible(@pointer)
 
       # Return value handling
 
@@ -1696,7 +1693,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_clipboard(self)
+      _retval = LibGtk.gtk_widget_get_clipboard(@pointer)
 
       # Return value handling
 
@@ -1709,7 +1706,7 @@ module Gtk
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_css_classes(self)
+      _retval = LibGtk.gtk_widget_get_css_classes(@pointer)
 
       # Return value handling
 
@@ -1722,7 +1719,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_css_name(self)
+      _retval = LibGtk.gtk_widget_get_css_name(@pointer)
 
       # Return value handling
 
@@ -1737,7 +1734,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_cursor(self)
+      _retval = LibGtk.gtk_widget_get_cursor(@pointer)
 
       # Return value handling
 
@@ -1752,7 +1749,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_direction(self)
+      _retval = LibGtk.gtk_widget_get_direction(@pointer)
 
       # Return value handling
 
@@ -1773,7 +1770,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_display(self)
+      _retval = LibGtk.gtk_widget_get_display(@pointer)
 
       # Return value handling
 
@@ -1788,7 +1785,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_first_child(self)
+      _retval = LibGtk.gtk_widget_get_first_child(@pointer)
 
       # Return value handling
 
@@ -1801,7 +1798,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_focus_child(self)
+      _retval = LibGtk.gtk_widget_get_focus_child(@pointer)
 
       # Return value handling
 
@@ -1817,7 +1814,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_focus_on_click(self)
+      _retval = LibGtk.gtk_widget_get_focus_on_click(@pointer)
 
       # Return value handling
 
@@ -1832,7 +1829,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_focusable(self)
+      _retval = LibGtk.gtk_widget_get_focusable(@pointer)
 
       # Return value handling
 
@@ -1847,7 +1844,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_font_map(self)
+      _retval = LibGtk.gtk_widget_get_font_map(@pointer)
 
       # Return value handling
 
@@ -1862,7 +1859,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_font_options(self)
+      _retval = LibGtk.gtk_widget_get_font_options(@pointer)
 
       # Return value handling
 
@@ -1896,7 +1893,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_frame_clock(self)
+      _retval = LibGtk.gtk_widget_get_frame_clock(@pointer)
 
       # Return value handling
 
@@ -1914,7 +1911,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_halign(self)
+      _retval = LibGtk.gtk_widget_get_halign(@pointer)
 
       # Return value handling
 
@@ -1927,7 +1924,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_has_tooltip(self)
+      _retval = LibGtk.gtk_widget_get_has_tooltip(@pointer)
 
       # Return value handling
 
@@ -1946,7 +1943,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_height(self)
+      _retval = LibGtk.gtk_widget_get_height(@pointer)
 
       # Return value handling
 
@@ -1974,7 +1971,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_hexpand(self)
+      _retval = LibGtk.gtk_widget_get_hexpand(@pointer)
 
       # Return value handling
 
@@ -1996,7 +1993,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_hexpand_set(self)
+      _retval = LibGtk.gtk_widget_get_hexpand_set(@pointer)
 
       # Return value handling
 
@@ -2011,7 +2008,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_last_child(self)
+      _retval = LibGtk.gtk_widget_get_last_child(@pointer)
 
       # Return value handling
 
@@ -2026,7 +2023,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_layout_manager(self)
+      _retval = LibGtk.gtk_widget_get_layout_manager(@pointer)
 
       # Return value handling
 
@@ -2039,7 +2036,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_mapped(self)
+      _retval = LibGtk.gtk_widget_get_mapped(@pointer)
 
       # Return value handling
 
@@ -2052,7 +2049,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_margin_bottom(self)
+      _retval = LibGtk.gtk_widget_get_margin_bottom(@pointer)
 
       # Return value handling
 
@@ -2065,7 +2062,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_margin_end(self)
+      _retval = LibGtk.gtk_widget_get_margin_end(@pointer)
 
       # Return value handling
 
@@ -2078,7 +2075,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_margin_start(self)
+      _retval = LibGtk.gtk_widget_get_margin_start(@pointer)
 
       # Return value handling
 
@@ -2091,7 +2088,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_margin_top(self)
+      _retval = LibGtk.gtk_widget_get_margin_top(@pointer)
 
       # Return value handling
 
@@ -2106,7 +2103,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_name(self)
+      _retval = LibGtk.gtk_widget_get_name(@pointer)
 
       # Return value handling
 
@@ -2124,11 +2121,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_native(self)
+      _retval = LibGtk.gtk_widget_get_native(@pointer)
 
       # Return value handling
 
-      Gtk::Native__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractNative.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns the widgets next sibling.
@@ -2139,7 +2136,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_next_sibling(self)
+      _retval = LibGtk.gtk_widget_get_next_sibling(@pointer)
 
       # Return value handling
 
@@ -2154,7 +2151,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_opacity(self)
+      _retval = LibGtk.gtk_widget_get_opacity(@pointer)
 
       # Return value handling
 
@@ -2167,7 +2164,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_overflow(self)
+      _retval = LibGtk.gtk_widget_get_overflow(@pointer)
 
       # Return value handling
 
@@ -2188,7 +2185,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_pango_context(self)
+      _retval = LibGtk.gtk_widget_get_pango_context(@pointer)
 
       # Return value handling
 
@@ -2201,7 +2198,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_parent(self)
+      _retval = LibGtk.gtk_widget_get_parent(@pointer)
 
       # Return value handling
 
@@ -2234,7 +2231,7 @@ module Gtk
       natural_size = Pointer(Void).null   # Generator::CallerAllocatesPlan
       natural_size = Gtk::Requisition.new
       # C call
-      LibGtk.gtk_widget_get_preferred_size(self, minimum_size, natural_size)
+      LibGtk.gtk_widget_get_preferred_size(@pointer, minimum_size, natural_size)
 
       # Return value handling
 
@@ -2249,7 +2246,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_prev_sibling(self)
+      _retval = LibGtk.gtk_widget_get_prev_sibling(@pointer)
 
       # Return value handling
 
@@ -2268,7 +2265,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_primary_clipboard(self)
+      _retval = LibGtk.gtk_widget_get_primary_clipboard(@pointer)
 
       # Return value handling
 
@@ -2281,7 +2278,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_realized(self)
+      _retval = LibGtk.gtk_widget_get_realized(@pointer)
 
       # Return value handling
 
@@ -2298,7 +2295,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_receives_default(self)
+      _retval = LibGtk.gtk_widget_get_receives_default(@pointer)
 
       # Return value handling
 
@@ -2317,7 +2314,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_request_mode(self)
+      _retval = LibGtk.gtk_widget_get_request_mode(@pointer)
 
       # Return value handling
 
@@ -2335,11 +2332,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_root(self)
+      _retval = LibGtk.gtk_widget_get_root(@pointer)
 
       # Return value handling
 
-      Gtk::Root__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gtk::AbstractRoot.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Retrieves the internal scale factor that maps from window
@@ -2354,7 +2351,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_scale_factor(self)
+      _retval = LibGtk.gtk_widget_get_scale_factor(@pointer)
 
       # Return value handling
 
@@ -2374,7 +2371,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_sensitive(self)
+      _retval = LibGtk.gtk_widget_get_sensitive(@pointer)
 
       # Return value handling
 
@@ -2392,7 +2389,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_settings(self)
+      _retval = LibGtk.gtk_widget_get_settings(@pointer)
 
       # Return value handling
 
@@ -2413,7 +2410,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_size(self, orientation)
+      _retval = LibGtk.gtk_widget_get_size(@pointer, orientation)
 
       # Return value handling
 
@@ -2439,7 +2436,7 @@ module Gtk
       width = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       height = Pointer(Int32).null
       # C call
-      LibGtk.gtk_widget_get_size_request(self, width, height)
+      LibGtk.gtk_widget_get_size_request(@pointer, width, height)
 
       # Return value handling
     end
@@ -2458,7 +2455,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_state_flags(self)
+      _retval = LibGtk.gtk_widget_get_state_flags(@pointer)
 
       # Return value handling
 
@@ -2474,7 +2471,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_style_context(self)
+      _retval = LibGtk.gtk_widget_get_style_context(@pointer)
 
       # Return value handling
 
@@ -2496,7 +2493,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_template_child(self, widget_type, name)
+      _retval = LibGtk.gtk_widget_get_template_child(@pointer, widget_type, name)
 
       # Return value handling
 
@@ -2513,7 +2510,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_tooltip_markup(self)
+      _retval = LibGtk.gtk_widget_get_tooltip_markup(@pointer)
 
       # Return value handling
 
@@ -2530,7 +2527,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_tooltip_text(self)
+      _retval = LibGtk.gtk_widget_get_tooltip_text(@pointer)
 
       # Return value handling
 
@@ -2543,7 +2540,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_valign(self)
+      _retval = LibGtk.gtk_widget_get_valign(@pointer)
 
       # Return value handling
 
@@ -2559,7 +2556,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_vexpand(self)
+      _retval = LibGtk.gtk_widget_get_vexpand(@pointer)
 
       # Return value handling
 
@@ -2575,7 +2572,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_vexpand_set(self)
+      _retval = LibGtk.gtk_widget_get_vexpand_set(@pointer)
 
       # Return value handling
 
@@ -2597,7 +2594,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_visible(self)
+      _retval = LibGtk.gtk_widget_get_visible(@pointer)
 
       # Return value handling
 
@@ -2616,7 +2613,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_get_width(self)
+      _retval = LibGtk.gtk_widget_get_width(@pointer)
 
       # Return value handling
 
@@ -2636,7 +2633,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_grab_focus(self)
+      _retval = LibGtk.gtk_widget_grab_focus(@pointer)
 
       # Return value handling
 
@@ -2649,7 +2646,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_has_css_class(self, css_class)
+      _retval = LibGtk.gtk_widget_has_css_class(@pointer, css_class)
 
       # Return value handling
 
@@ -2663,7 +2660,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_has_default(self)
+      _retval = LibGtk.gtk_widget_has_default(@pointer)
 
       # Return value handling
 
@@ -2680,7 +2677,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_has_focus(self)
+      _retval = LibGtk.gtk_widget_has_focus(@pointer)
 
       # Return value handling
 
@@ -2702,7 +2699,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_has_visible_focus(self)
+      _retval = LibGtk.gtk_widget_has_visible_focus(@pointer)
 
       # Return value handling
 
@@ -2717,7 +2714,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_hide(self)
+      LibGtk.gtk_widget_hide(@pointer)
 
       # Return value handling
     end
@@ -2731,7 +2728,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_in_destruction(self)
+      _retval = LibGtk.gtk_widget_in_destruction(@pointer)
 
       # Return value handling
 
@@ -2763,7 +2760,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_init_template(self)
+      LibGtk.gtk_widget_init_template(@pointer)
 
       # Return value handling
     end
@@ -2794,7 +2791,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_widget_insert_action_group(self, name, group)
+      LibGtk.gtk_widget_insert_action_group(@pointer, name, group)
 
       # Return value handling
     end
@@ -2826,7 +2823,7 @@ module Gtk
                          end
 
       # C call
-      LibGtk.gtk_widget_insert_after(self, parent, previous_sibling)
+      LibGtk.gtk_widget_insert_after(@pointer, parent, previous_sibling)
 
       # Return value handling
     end
@@ -2857,7 +2854,7 @@ module Gtk
                      end
 
       # C call
-      LibGtk.gtk_widget_insert_before(self, parent, next_sibling)
+      LibGtk.gtk_widget_insert_before(@pointer, parent, next_sibling)
 
       # Return value handling
     end
@@ -2869,7 +2866,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_is_ancestor(self, ancestor)
+      _retval = LibGtk.gtk_widget_is_ancestor(@pointer, ancestor)
 
       # Return value handling
 
@@ -2884,7 +2881,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_is_drawable(self)
+      _retval = LibGtk.gtk_widget_is_drawable(@pointer)
 
       # Return value handling
 
@@ -2903,7 +2900,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_is_focus(self)
+      _retval = LibGtk.gtk_widget_is_focus(@pointer)
 
       # Return value handling
 
@@ -2919,7 +2916,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_is_sensitive(self)
+      _retval = LibGtk.gtk_widget_is_sensitive(@pointer)
 
       # Return value handling
 
@@ -2938,7 +2935,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_is_visible(self)
+      _retval = LibGtk.gtk_widget_is_visible(@pointer)
 
       # Return value handling
 
@@ -2977,7 +2974,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_keynav_failed(self, direction)
+      _retval = LibGtk.gtk_widget_keynav_failed(@pointer, direction)
 
       # Return value handling
 
@@ -3000,7 +2997,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_widget_list_mnemonic_labels(self)
+      _retval = LibGtk.gtk_widget_list_mnemonic_labels(@pointer)
 
       # Return value handling
 
@@ -3015,7 +3012,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_map(self)
+      LibGtk.gtk_widget_map(@pointer)
 
       # Return value handling
     end
@@ -3042,7 +3039,7 @@ module Gtk
       minimum_baseline = Pointer(Int32).null # Generator::OutArgUsedInReturnPlan
       natural_baseline = Pointer(Int32).null
       # C call
-      LibGtk.gtk_widget_measure(self, orientation, for_size, minimum, natural, minimum_baseline, natural_baseline)
+      LibGtk.gtk_widget_measure(@pointer, orientation, for_size, minimum, natural, minimum_baseline, natural_baseline)
 
       # Return value handling
     end
@@ -3055,7 +3052,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_mnemonic_activate(self, group_cycling)
+      _retval = LibGtk.gtk_widget_mnemonic_activate(@pointer, group_cycling)
 
       # Return value handling
 
@@ -3075,11 +3072,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_widget_observe_children(self)
+      _retval = LibGtk.gtk_widget_observe_children(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns a `GListModel` to track the `Gtk#EventController`s
@@ -3096,11 +3093,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_widget_observe_controllers(self)
+      _retval = LibGtk.gtk_widget_observe_controllers(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Finds the descendant of @widget closest to the point (@x, @y).
@@ -3122,7 +3119,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_pick(self, x, y, flags)
+      _retval = LibGtk.gtk_widget_pick(@pointer, x, y, flags)
 
       # Return value handling
 
@@ -3144,7 +3141,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_queue_allocate(self)
+      LibGtk.gtk_widget_queue_allocate(@pointer)
 
       # Return value handling
     end
@@ -3159,7 +3156,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_queue_draw(self)
+      LibGtk.gtk_widget_queue_draw(@pointer)
 
       # Return value handling
     end
@@ -3182,7 +3179,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_queue_resize(self)
+      LibGtk.gtk_widget_queue_resize(@pointer)
 
       # Return value handling
     end
@@ -3208,7 +3205,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_realize(self)
+      LibGtk.gtk_widget_realize(@pointer)
 
       # Return value handling
     end
@@ -3225,7 +3222,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_remove_controller(self, controller)
+      LibGtk.gtk_widget_remove_controller(@pointer, controller)
 
       # Return value handling
     end
@@ -3238,7 +3235,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_remove_css_class(self, css_class)
+      LibGtk.gtk_widget_remove_css_class(@pointer, css_class)
 
       # Return value handling
     end
@@ -3253,7 +3250,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_remove_mnemonic_label(self, label)
+      LibGtk.gtk_widget_remove_mnemonic_label(@pointer, label)
 
       # Return value handling
     end
@@ -3265,7 +3262,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_remove_tick_callback(self, id)
+      LibGtk.gtk_widget_remove_tick_callback(@pointer, id)
 
       # Return value handling
     end
@@ -3289,7 +3286,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_can_focus(self, can_focus)
+      LibGtk.gtk_widget_set_can_focus(@pointer, can_focus)
 
       # Return value handling
     end
@@ -3300,7 +3297,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_can_target(self, can_target)
+      LibGtk.gtk_widget_set_can_target(@pointer, can_target)
 
       # Return value handling
     end
@@ -3326,7 +3323,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_child_visible(self, child_visible)
+      LibGtk.gtk_widget_set_child_visible(@pointer, child_visible)
 
       # Return value handling
     end
@@ -3342,7 +3339,7 @@ module Gtk
       classes = classes.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_widget_set_css_classes(self, classes)
+      LibGtk.gtk_widget_set_css_classes(@pointer, classes)
 
       # Return value handling
     end
@@ -3365,7 +3362,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_widget_set_cursor(self, cursor)
+      LibGtk.gtk_widget_set_cursor(@pointer, cursor)
 
       # Return value handling
     end
@@ -3394,7 +3391,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_widget_set_cursor_from_name(self, name)
+      LibGtk.gtk_widget_set_cursor_from_name(@pointer, name)
 
       # Return value handling
     end
@@ -3417,7 +3414,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_direction(self, dir)
+      LibGtk.gtk_widget_set_direction(@pointer, dir)
 
       # Return value handling
     end
@@ -3440,7 +3437,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_widget_set_focus_child(self, child)
+      LibGtk.gtk_widget_set_focus_child(@pointer, child)
 
       # Return value handling
     end
@@ -3456,7 +3453,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_focus_on_click(self, focus_on_click)
+      LibGtk.gtk_widget_set_focus_on_click(@pointer, focus_on_click)
 
       # Return value handling
     end
@@ -3479,7 +3476,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_focusable(self, focusable)
+      LibGtk.gtk_widget_set_focusable(@pointer, focusable)
 
       # Return value handling
     end
@@ -3505,7 +3502,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_widget_set_font_map(self, font_map)
+      LibGtk.gtk_widget_set_font_map(@pointer, font_map)
 
       # Return value handling
     end
@@ -3528,7 +3525,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_widget_set_font_options(self, options)
+      LibGtk.gtk_widget_set_font_options(@pointer, options)
 
       # Return value handling
     end
@@ -3539,7 +3536,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_halign(self, align)
+      LibGtk.gtk_widget_set_halign(@pointer, align)
 
       # Return value handling
     end
@@ -3550,7 +3547,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_has_tooltip(self, has_tooltip)
+      LibGtk.gtk_widget_set_has_tooltip(@pointer, has_tooltip)
 
       # Return value handling
     end
@@ -3587,7 +3584,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_hexpand(self, expand)
+      LibGtk.gtk_widget_set_hexpand(@pointer, expand)
 
       # Return value handling
     end
@@ -3611,7 +3608,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_hexpand_set(self, set)
+      LibGtk.gtk_widget_set_hexpand_set(@pointer, set)
 
       # Return value handling
     end
@@ -3632,7 +3629,7 @@ module Gtk
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(layout_manager)
       # C call
-      LibGtk.gtk_widget_set_layout_manager(self, layout_manager)
+      LibGtk.gtk_widget_set_layout_manager(@pointer, layout_manager)
 
       # Return value handling
     end
@@ -3643,7 +3640,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_margin_bottom(self, margin)
+      LibGtk.gtk_widget_set_margin_bottom(@pointer, margin)
 
       # Return value handling
     end
@@ -3654,7 +3651,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_margin_end(self, margin)
+      LibGtk.gtk_widget_set_margin_end(@pointer, margin)
 
       # Return value handling
     end
@@ -3665,7 +3662,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_margin_start(self, margin)
+      LibGtk.gtk_widget_set_margin_start(@pointer, margin)
 
       # Return value handling
     end
@@ -3676,7 +3673,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_margin_top(self, margin)
+      LibGtk.gtk_widget_set_margin_top(@pointer, margin)
 
       # Return value handling
     end
@@ -3697,7 +3694,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_name(self, name)
+      LibGtk.gtk_widget_set_name(@pointer, name)
 
       # Return value handling
     end
@@ -3729,7 +3726,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_opacity(self, opacity)
+      LibGtk.gtk_widget_set_opacity(@pointer, opacity)
 
       # Return value handling
     end
@@ -3748,7 +3745,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_overflow(self, overflow)
+      LibGtk.gtk_widget_set_overflow(@pointer, overflow)
 
       # Return value handling
     end
@@ -3766,7 +3763,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_parent(self, parent)
+      LibGtk.gtk_widget_set_parent(@pointer, parent)
 
       # Return value handling
     end
@@ -3779,7 +3776,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_receives_default(self, receives_default)
+      LibGtk.gtk_widget_set_receives_default(@pointer, receives_default)
 
       # Return value handling
     end
@@ -3795,7 +3792,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_sensitive(self, sensitive)
+      LibGtk.gtk_widget_set_sensitive(@pointer, sensitive)
 
       # Return value handling
     end
@@ -3840,7 +3837,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_size_request(self, width, height)
+      LibGtk.gtk_widget_set_size_request(@pointer, width, height)
 
       # Return value handling
     end
@@ -3859,7 +3856,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_state_flags(self, flags, clear)
+      LibGtk.gtk_widget_set_state_flags(@pointer, flags, clear)
 
       # Return value handling
     end
@@ -3885,7 +3882,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_widget_set_tooltip_markup(self, markup)
+      LibGtk.gtk_widget_set_tooltip_markup(@pointer, markup)
 
       # Return value handling
     end
@@ -3913,7 +3910,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_widget_set_tooltip_text(self, text)
+      LibGtk.gtk_widget_set_tooltip_text(@pointer, text)
 
       # Return value handling
     end
@@ -3924,7 +3921,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_valign(self, align)
+      LibGtk.gtk_widget_set_valign(@pointer, align)
 
       # Return value handling
     end
@@ -3938,7 +3935,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_vexpand(self, expand)
+      LibGtk.gtk_widget_set_vexpand(@pointer, expand)
 
       # Return value handling
     end
@@ -3951,7 +3948,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_vexpand_set(self, set)
+      LibGtk.gtk_widget_set_vexpand_set(@pointer, set)
 
       # Return value handling
     end
@@ -3969,7 +3966,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_set_visible(self, visible)
+      LibGtk.gtk_widget_set_visible(@pointer, visible)
 
       # Return value handling
     end
@@ -3984,7 +3981,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_widget_should_layout(self)
+      _retval = LibGtk.gtk_widget_should_layout(@pointer)
 
       # Return value handling
 
@@ -4006,7 +4003,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_show(self)
+      LibGtk.gtk_widget_show(@pointer)
 
       # Return value handling
     end
@@ -4020,7 +4017,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_size_allocate(self, allocation, baseline)
+      LibGtk.gtk_widget_size_allocate(@pointer, allocation, baseline)
 
       # Return value handling
     end
@@ -4044,7 +4041,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_snapshot_child(self, child, snapshot)
+      LibGtk.gtk_widget_snapshot_child(@pointer, child, snapshot)
 
       # Return value handling
     end
@@ -4064,7 +4061,7 @@ module Gtk
       dest_x = Pointer(Float64).null # Generator::OutArgUsedInReturnPlan
       dest_y = Pointer(Float64).null
       # C call
-      _retval = LibGtk.gtk_widget_translate_coordinates(self, dest_widget, src_x, src_y, dest_x, dest_y)
+      _retval = LibGtk.gtk_widget_translate_coordinates(@pointer, dest_widget, src_x, src_y, dest_x, dest_y)
 
       # Return value handling
 
@@ -4078,7 +4075,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_trigger_tooltip_query(self)
+      LibGtk.gtk_widget_trigger_tooltip_query(@pointer)
 
       # Return value handling
     end
@@ -4091,7 +4088,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_unmap(self)
+      LibGtk.gtk_widget_unmap(@pointer)
 
       # Return value handling
     end
@@ -4105,7 +4102,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_unparent(self)
+      LibGtk.gtk_widget_unparent(@pointer)
 
       # Return value handling
     end
@@ -4119,7 +4116,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_unrealize(self)
+      LibGtk.gtk_widget_unrealize(@pointer)
 
       # Return value handling
     end
@@ -4134,7 +4131,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_widget_unset_state_flags(self, flags)
+      LibGtk.gtk_widget_unset_state_flags(@pointer, flags)
 
       # Return value handling
     end
@@ -4248,8 +4245,8 @@ module Gtk
       def connect(handler : Proc(Gtk::TextDirection, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_previous_direction : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          previous_direction = Gtk::TextDirection.new(lib_previous_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          previous_direction = Gtk::TextDirection.new(lib_previous_direction)
           ::Box(Proc(Gtk::TextDirection, Nil)).unbox(_lib_box).call(previous_direction)
         }.pointer
 
@@ -4260,8 +4257,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TextDirection, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_previous_direction : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          previous_direction = Gtk::TextDirection.new(lib_previous_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          previous_direction = Gtk::TextDirection.new(lib_previous_direction)
           ::Box(Proc(Gtk::TextDirection, Nil)).unbox(_lib_box).call(previous_direction)
         }.pointer
 
@@ -4273,8 +4270,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_previous_direction : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Widget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          previous_direction = Gtk::TextDirection.new(lib_previous_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          previous_direction = Gtk::TextDirection.new(lib_previous_direction)
           ::Box(Proc(Gtk::Widget, Gtk::TextDirection, Nil)).unbox(_lib_box).call(_sender, previous_direction)
         }.pointer
 
@@ -4286,8 +4283,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_previous_direction : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Widget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          previous_direction = Gtk::TextDirection.new(lib_previous_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          previous_direction = Gtk::TextDirection.new(lib_previous_direction)
           ::Box(Proc(Gtk::Widget, Gtk::TextDirection, Nil)).unbox(_lib_box).call(_sender, previous_direction)
         }.pointer
 
@@ -4410,8 +4407,8 @@ module Gtk
       def connect(handler : Proc(Gtk::DirectionType, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction = Gtk::DirectionType.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::DirectionType.new(lib_direction)
           ::Box(Proc(Gtk::DirectionType, Bool)).unbox(_lib_box).call(direction)
         }.pointer
 
@@ -4422,8 +4419,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::DirectionType, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction = Gtk::DirectionType.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::DirectionType.new(lib_direction)
           ::Box(Proc(Gtk::DirectionType, Bool)).unbox(_lib_box).call(direction)
         }.pointer
 
@@ -4435,8 +4432,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Widget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction = Gtk::DirectionType.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::DirectionType.new(lib_direction)
           ::Box(Proc(Gtk::Widget, Gtk::DirectionType, Bool)).unbox(_lib_box).call(_sender, direction)
         }.pointer
 
@@ -4448,8 +4445,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Widget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction = Gtk::DirectionType.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::DirectionType.new(lib_direction)
           ::Box(Proc(Gtk::Widget, Gtk::DirectionType, Bool)).unbox(_lib_box).call(_sender, direction)
         }.pointer
 
@@ -4661,8 +4658,8 @@ module Gtk
       def connect(handler : Proc(Gtk::DirectionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction = Gtk::DirectionType.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::DirectionType.new(lib_direction)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(_lib_box).call(direction)
         }.pointer
 
@@ -4673,8 +4670,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::DirectionType, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction = Gtk::DirectionType.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::DirectionType.new(lib_direction)
           ::Box(Proc(Gtk::DirectionType, Nil)).unbox(_lib_box).call(direction)
         }.pointer
 
@@ -4686,8 +4683,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Widget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction = Gtk::DirectionType.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::DirectionType.new(lib_direction)
           ::Box(Proc(Gtk::Widget, Gtk::DirectionType, Nil)).unbox(_lib_box).call(_sender, direction)
         }.pointer
 
@@ -4699,8 +4696,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Widget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction = Gtk::DirectionType.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::DirectionType.new(lib_direction)
           ::Box(Proc(Gtk::Widget, Gtk::DirectionType, Nil)).unbox(_lib_box).call(_sender, direction)
         }.pointer
 
@@ -4761,7 +4758,7 @@ module Gtk
           x = lib_x
           y = lib_y
           keyboard_mode = lib_keyboard_mode
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tooltip = Gtk::Tooltip.new(lib_tooltip, :none)
           ::Box(Proc(Int32, Int32, Bool, Gtk::Tooltip, Bool)).unbox(_lib_box).call(x, y, keyboard_mode, tooltip)
         }.pointer
@@ -4776,7 +4773,7 @@ module Gtk
           x = lib_x
           y = lib_y
           keyboard_mode = lib_keyboard_mode
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tooltip = Gtk::Tooltip.new(lib_tooltip, :none)
           ::Box(Proc(Int32, Int32, Bool, Gtk::Tooltip, Bool)).unbox(_lib_box).call(x, y, keyboard_mode, tooltip)
         }.pointer
@@ -4792,7 +4789,7 @@ module Gtk
           x = lib_x
           y = lib_y
           keyboard_mode = lib_keyboard_mode
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tooltip = Gtk::Tooltip.new(lib_tooltip, :none)
           ::Box(Proc(Gtk::Widget, Int32, Int32, Bool, Gtk::Tooltip, Bool)).unbox(_lib_box).call(_sender, x, y, keyboard_mode, tooltip)
         }.pointer
@@ -4808,7 +4805,7 @@ module Gtk
           x = lib_x
           y = lib_y
           keyboard_mode = lib_keyboard_mode
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           tooltip = Gtk::Tooltip.new(lib_tooltip, :none)
           ::Box(Proc(Gtk::Widget, Int32, Int32, Bool, Gtk::Tooltip, Bool)).unbox(_lib_box).call(_sender, x, y, keyboard_mode, tooltip)
         }.pointer
@@ -5011,8 +5008,8 @@ module Gtk
       def connect(handler : Proc(Gtk::StateFlags, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_flags : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          flags = Gtk::StateFlags.new(lib_flags, :none)
+          # Generator::BuiltInTypeArgPlan
+          flags = Gtk::StateFlags.new(lib_flags)
           ::Box(Proc(Gtk::StateFlags, Nil)).unbox(_lib_box).call(flags)
         }.pointer
 
@@ -5023,8 +5020,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::StateFlags, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_flags : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          flags = Gtk::StateFlags.new(lib_flags, :none)
+          # Generator::BuiltInTypeArgPlan
+          flags = Gtk::StateFlags.new(lib_flags)
           ::Box(Proc(Gtk::StateFlags, Nil)).unbox(_lib_box).call(flags)
         }.pointer
 
@@ -5036,8 +5033,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_flags : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Widget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          flags = Gtk::StateFlags.new(lib_flags, :none)
+          # Generator::BuiltInTypeArgPlan
+          flags = Gtk::StateFlags.new(lib_flags)
           ::Box(Proc(Gtk::Widget, Gtk::StateFlags, Nil)).unbox(_lib_box).call(_sender, flags)
         }.pointer
 
@@ -5049,8 +5046,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_flags : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Widget.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          flags = Gtk::StateFlags.new(lib_flags, :none)
+          # Generator::BuiltInTypeArgPlan
+          flags = Gtk::StateFlags.new(lib_flags)
           ::Box(Proc(Gtk::Widget, Gtk::StateFlags, Nil)).unbox(_lib_box).call(_sender, flags)
         }.pointer
 

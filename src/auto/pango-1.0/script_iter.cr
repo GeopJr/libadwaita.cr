@@ -45,7 +45,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_script_iter_free(self)
+      LibPango.pango_script_iter_free(@pointer)
 
       # Return value handling
     end
@@ -62,7 +62,7 @@ module Pango
       _end = Pointer(Pointer(LibC::Char)).null  # Generator::OutArgUsedInReturnPlan
       script = Pointer(Int32).null
       # C call
-      LibPango.pango_script_iter_get_range(self, start, _end, script)
+      LibPango.pango_script_iter_get_range(@pointer, start, _end, script)
 
       # Return value handling
     end
@@ -72,7 +72,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_script_iter_next(self)
+      _retval = LibPango.pango_script_iter_next(@pointer)
 
       # Return value handling
 

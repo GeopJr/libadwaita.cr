@@ -44,7 +44,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_attribute_matcher_enumerate_namespace(self, ns)
+      _retval = LibGio.g_file_attribute_matcher_enumerate_namespace(@pointer, ns)
 
       # Return value handling
 
@@ -56,7 +56,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_attribute_matcher_enumerate_next(self)
+      _retval = LibGio.g_file_attribute_matcher_enumerate_next(@pointer)
 
       # Return value handling
 
@@ -68,7 +68,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_attribute_matcher_matches(self, attribute)
+      _retval = LibGio.g_file_attribute_matcher_matches(@pointer, attribute)
 
       # Return value handling
 
@@ -80,7 +80,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_attribute_matcher_matches_only(self, attribute)
+      _retval = LibGio.g_file_attribute_matcher_matches_only(@pointer, attribute)
 
       # Return value handling
 
@@ -92,7 +92,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_attribute_matcher_ref(self)
+      _retval = LibGio.g_file_attribute_matcher_ref(@pointer)
 
       # Return value handling
 
@@ -112,7 +112,7 @@ module Gio
                  end
 
       # C call
-      _retval = LibGio.g_file_attribute_matcher_subtract(self, subtract)
+      _retval = LibGio.g_file_attribute_matcher_subtract(@pointer, subtract)
 
       # Return value handling
 
@@ -124,7 +124,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_file_attribute_matcher_to_string(self)
+      _retval = LibGio.g_file_attribute_matcher_to_string(@pointer)
 
       # Return value handling
 
@@ -136,7 +136,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_file_attribute_matcher_unref(self)
+      LibGio.g_file_attribute_matcher_unref(@pointer)
 
       # Return value handling
     end

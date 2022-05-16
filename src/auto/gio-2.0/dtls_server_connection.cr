@@ -39,7 +39,7 @@ module Gio
 
       # Return value handling
 
-      Gio::DtlsServerConnection__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractDtlsServerConnection.new(_retval, GICrystal::Transfer::Full)
     end
 
     abstract def to_unsafe
@@ -47,8 +47,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class DtlsServerConnection__Impl < GObject::Object
+  class AbstractDtlsServerConnection < GObject::Object
     include DtlsServerConnection
+
+    GICrystal.define_new_method(Gio::AbstractDtlsServerConnection, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

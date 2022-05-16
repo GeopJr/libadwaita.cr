@@ -13,15 +13,13 @@ module Gtk
         sizeof(LibGtk::CustomFilter), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CustomFilter, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CustomFilter`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -51,10 +49,9 @@ module Gtk
       if match_func
         _box = ::Box.box(match_func)
         match_func = ->(lib_item : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           item = GObject::Object.new(lib_item, :none)
-          user_data = lib_user_data
-          ::Box(Proc(GObject::Object, Bool)).unbox(user_data).call(item)
+          ::Box(Proc(GObject::Object, Bool)).unbox(lib_user_data).call(item)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -90,10 +87,9 @@ module Gtk
       if match_func
         _box = ::Box.box(match_func)
         match_func = ->(lib_item : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           item = GObject::Object.new(lib_item, :none)
-          user_data = lib_user_data
-          ::Box(Proc(GObject::Object, Bool)).unbox(user_data).call(item)
+          ::Box(Proc(GObject::Object, Bool)).unbox(lib_user_data).call(item)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -102,7 +98,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_custom_filter_set_filter_func(self, match_func, user_data, user_destroy)
+      LibGtk.gtk_custom_filter_set_filter_func(@pointer, match_func, user_data, user_destroy)
 
       # Return value handling
     end

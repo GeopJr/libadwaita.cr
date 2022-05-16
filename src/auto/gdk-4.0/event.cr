@@ -16,15 +16,13 @@ module Gdk
         sizeof(LibGdk::Event), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_param_spec_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Event, g_param_spec_get_qdata, g_param_spec_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_param_spec_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Event`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -82,7 +80,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_events_get_angle(self, event2, angle)
+      _retval = LibGdk.gdk_events_get_angle(@pointer, event2, angle)
 
       # Return value handling
 
@@ -100,7 +98,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_events_get_center(self, event2, x, y)
+      _retval = LibGdk.gdk_events_get_center(@pointer, event2, x, y)
 
       # Return value handling
 
@@ -117,7 +115,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_events_get_distance(self, event2, distance)
+      _retval = LibGdk.gdk_events_get_distance(@pointer, event2, distance)
 
       # Return value handling
 
@@ -139,7 +137,7 @@ module Gdk
       axes = axes.to_a.to_unsafe
 
       # C call
-      _retval = LibGdk.gdk_event_get_axes(self, axes, n_axes)
+      _retval = LibGdk.gdk_event_get_axes(@pointer, axes, n_axes)
 
       # Return value handling
 
@@ -161,7 +159,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_axis(self, axis_use, value)
+      _retval = LibGdk.gdk_event_get_axis(@pointer, axis_use, value)
 
       # Return value handling
 
@@ -174,7 +172,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_device(self)
+      _retval = LibGdk.gdk_event_get_device(@pointer)
 
       # Return value handling
 
@@ -196,7 +194,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_device_tool(self)
+      _retval = LibGdk.gdk_event_get_device_tool(@pointer)
 
       # Return value handling
 
@@ -209,7 +207,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_display(self)
+      _retval = LibGdk.gdk_event_get_display(@pointer)
 
       # Return value handling
 
@@ -225,7 +223,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_event_sequence(self)
+      _retval = LibGdk.gdk_event_get_event_sequence(@pointer)
 
       # Return value handling
 
@@ -238,7 +236,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_event_type(self)
+      _retval = LibGdk.gdk_event_get_event_type(@pointer)
 
       # Return value handling
 
@@ -262,7 +260,7 @@ module Gdk
       # Generator::OutArgUsedInReturnPlan
       out_n_coords = 0_u32
       # C call
-      _retval = LibGdk.gdk_event_get_history(self, pointerof(out_n_coords))
+      _retval = LibGdk.gdk_event_get_history(@pointer, pointerof(out_n_coords))
 
       # Return value handling
 
@@ -275,7 +273,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_modifier_state(self)
+      _retval = LibGdk.gdk_event_get_modifier_state(@pointer)
 
       # Return value handling
 
@@ -290,7 +288,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_pointer_emulated(self)
+      _retval = LibGdk.gdk_event_get_pointer_emulated(@pointer)
 
       # Return value handling
 
@@ -305,7 +303,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_position(self, x, y)
+      _retval = LibGdk.gdk_event_get_position(@pointer, x, y)
 
       # Return value handling
 
@@ -318,7 +316,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_seat(self)
+      _retval = LibGdk.gdk_event_get_seat(@pointer)
 
       # Return value handling
 
@@ -331,7 +329,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_surface(self)
+      _retval = LibGdk.gdk_event_get_surface(@pointer)
 
       # Return value handling
 
@@ -347,7 +345,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_get_time(self)
+      _retval = LibGdk.gdk_event_get_time(@pointer)
 
       # Return value handling
 
@@ -360,7 +358,7 @@ module Gdk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGdk.gdk_event_ref(self)
+      _retval = LibGdk.gdk_event_ref(@pointer)
 
       # Return value handling
 
@@ -379,7 +377,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_event_triggers_context_menu(self)
+      _retval = LibGdk.gdk_event_triggers_context_menu(@pointer)
 
       # Return value handling
 
@@ -394,7 +392,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_event_unref(self)
+      LibGdk.gdk_event_unref(@pointer)
 
       # Return value handling
     end

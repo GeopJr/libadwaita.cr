@@ -219,7 +219,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_assign(self, other)
+      LibGtk.gtk_text_iter_assign(@pointer, other)
 
       # Return value handling
     end
@@ -229,7 +229,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_char(self)
+      _retval = LibGtk.gtk_text_iter_backward_char(@pointer)
 
       # Return value handling
 
@@ -241,7 +241,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_chars(self, count)
+      _retval = LibGtk.gtk_text_iter_backward_chars(@pointer, count)
 
       # Return value handling
 
@@ -253,7 +253,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_cursor_position(self)
+      _retval = LibGtk.gtk_text_iter_backward_cursor_position(@pointer)
 
       # Return value handling
 
@@ -265,7 +265,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_cursor_positions(self, count)
+      _retval = LibGtk.gtk_text_iter_backward_cursor_positions(@pointer, count)
 
       # Return value handling
 
@@ -292,7 +292,7 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_find_char(self, pred, user_data, limit)
+      _retval = LibGtk.gtk_text_iter_backward_find_char(@pointer, pred, user_data, limit)
 
       # Return value handling
 
@@ -304,7 +304,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_line(self)
+      _retval = LibGtk.gtk_text_iter_backward_line(@pointer)
 
       # Return value handling
 
@@ -316,7 +316,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_lines(self, count)
+      _retval = LibGtk.gtk_text_iter_backward_lines(@pointer, count)
 
       # Return value handling
 
@@ -342,7 +342,7 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_search(self, str, flags, match_start, match_end, limit)
+      _retval = LibGtk.gtk_text_iter_backward_search(@pointer, str, flags, match_start, match_end, limit)
 
       # Return value handling
 
@@ -354,7 +354,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_sentence_start(self)
+      _retval = LibGtk.gtk_text_iter_backward_sentence_start(@pointer)
 
       # Return value handling
 
@@ -366,7 +366,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_sentence_starts(self, count)
+      _retval = LibGtk.gtk_text_iter_backward_sentence_starts(@pointer, count)
 
       # Return value handling
 
@@ -386,7 +386,7 @@ module Gtk
             end
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_to_tag_toggle(self, tag)
+      _retval = LibGtk.gtk_text_iter_backward_to_tag_toggle(@pointer, tag)
 
       # Return value handling
 
@@ -398,7 +398,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_visible_cursor_position(self)
+      _retval = LibGtk.gtk_text_iter_backward_visible_cursor_position(@pointer)
 
       # Return value handling
 
@@ -410,7 +410,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_visible_cursor_positions(self, count)
+      _retval = LibGtk.gtk_text_iter_backward_visible_cursor_positions(@pointer, count)
 
       # Return value handling
 
@@ -422,7 +422,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_visible_line(self)
+      _retval = LibGtk.gtk_text_iter_backward_visible_line(@pointer)
 
       # Return value handling
 
@@ -434,7 +434,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_visible_lines(self, count)
+      _retval = LibGtk.gtk_text_iter_backward_visible_lines(@pointer, count)
 
       # Return value handling
 
@@ -446,7 +446,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_visible_word_start(self)
+      _retval = LibGtk.gtk_text_iter_backward_visible_word_start(@pointer)
 
       # Return value handling
 
@@ -458,7 +458,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_visible_word_starts(self, count)
+      _retval = LibGtk.gtk_text_iter_backward_visible_word_starts(@pointer, count)
 
       # Return value handling
 
@@ -470,7 +470,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_word_start(self)
+      _retval = LibGtk.gtk_text_iter_backward_word_start(@pointer)
 
       # Return value handling
 
@@ -482,7 +482,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_backward_word_starts(self, count)
+      _retval = LibGtk.gtk_text_iter_backward_word_starts(@pointer, count)
 
       # Return value handling
 
@@ -494,7 +494,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_can_insert(self, default_editability)
+      _retval = LibGtk.gtk_text_iter_can_insert(@pointer, default_editability)
 
       # Return value handling
 
@@ -506,7 +506,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_compare(self, rhs)
+      _retval = LibGtk.gtk_text_iter_compare(@pointer, rhs)
 
       # Return value handling
 
@@ -518,7 +518,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_copy(self)
+      _retval = LibGtk.gtk_text_iter_copy(@pointer)
 
       # Return value handling
 
@@ -530,7 +530,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_editable(self, default_setting)
+      _retval = LibGtk.gtk_text_iter_editable(@pointer, default_setting)
 
       # Return value handling
 
@@ -542,7 +542,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_ends_line(self)
+      _retval = LibGtk.gtk_text_iter_ends_line(@pointer)
 
       # Return value handling
 
@@ -554,7 +554,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_ends_sentence(self)
+      _retval = LibGtk.gtk_text_iter_ends_sentence(@pointer)
 
       # Return value handling
 
@@ -574,7 +574,7 @@ module Gtk
             end
 
       # C call
-      _retval = LibGtk.gtk_text_iter_ends_tag(self, tag)
+      _retval = LibGtk.gtk_text_iter_ends_tag(@pointer, tag)
 
       # Return value handling
 
@@ -586,7 +586,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_ends_word(self)
+      _retval = LibGtk.gtk_text_iter_ends_word(@pointer)
 
       # Return value handling
 
@@ -598,7 +598,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_equal(self, rhs)
+      _retval = LibGtk.gtk_text_iter_equal(@pointer, rhs)
 
       # Return value handling
 
@@ -610,7 +610,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_char(self)
+      _retval = LibGtk.gtk_text_iter_forward_char(@pointer)
 
       # Return value handling
 
@@ -622,7 +622,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_chars(self, count)
+      _retval = LibGtk.gtk_text_iter_forward_chars(@pointer, count)
 
       # Return value handling
 
@@ -634,7 +634,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_cursor_position(self)
+      _retval = LibGtk.gtk_text_iter_forward_cursor_position(@pointer)
 
       # Return value handling
 
@@ -646,7 +646,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_cursor_positions(self, count)
+      _retval = LibGtk.gtk_text_iter_forward_cursor_positions(@pointer, count)
 
       # Return value handling
 
@@ -673,7 +673,7 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_find_char(self, pred, user_data, limit)
+      _retval = LibGtk.gtk_text_iter_forward_find_char(@pointer, pred, user_data, limit)
 
       # Return value handling
 
@@ -685,7 +685,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_line(self)
+      _retval = LibGtk.gtk_text_iter_forward_line(@pointer)
 
       # Return value handling
 
@@ -697,7 +697,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_lines(self, count)
+      _retval = LibGtk.gtk_text_iter_forward_lines(@pointer, count)
 
       # Return value handling
 
@@ -723,7 +723,7 @@ module Gtk
               end
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_search(self, str, flags, match_start, match_end, limit)
+      _retval = LibGtk.gtk_text_iter_forward_search(@pointer, str, flags, match_start, match_end, limit)
 
       # Return value handling
 
@@ -735,7 +735,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_sentence_end(self)
+      _retval = LibGtk.gtk_text_iter_forward_sentence_end(@pointer)
 
       # Return value handling
 
@@ -747,7 +747,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_sentence_ends(self, count)
+      _retval = LibGtk.gtk_text_iter_forward_sentence_ends(@pointer, count)
 
       # Return value handling
 
@@ -759,7 +759,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_forward_to_end(self)
+      LibGtk.gtk_text_iter_forward_to_end(@pointer)
 
       # Return value handling
     end
@@ -769,7 +769,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_to_line_end(self)
+      _retval = LibGtk.gtk_text_iter_forward_to_line_end(@pointer)
 
       # Return value handling
 
@@ -789,7 +789,7 @@ module Gtk
             end
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_to_tag_toggle(self, tag)
+      _retval = LibGtk.gtk_text_iter_forward_to_tag_toggle(@pointer, tag)
 
       # Return value handling
 
@@ -801,7 +801,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_visible_cursor_position(self)
+      _retval = LibGtk.gtk_text_iter_forward_visible_cursor_position(@pointer)
 
       # Return value handling
 
@@ -813,7 +813,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_visible_cursor_positions(self, count)
+      _retval = LibGtk.gtk_text_iter_forward_visible_cursor_positions(@pointer, count)
 
       # Return value handling
 
@@ -825,7 +825,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_visible_line(self)
+      _retval = LibGtk.gtk_text_iter_forward_visible_line(@pointer)
 
       # Return value handling
 
@@ -837,7 +837,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_visible_lines(self, count)
+      _retval = LibGtk.gtk_text_iter_forward_visible_lines(@pointer, count)
 
       # Return value handling
 
@@ -849,7 +849,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_visible_word_end(self)
+      _retval = LibGtk.gtk_text_iter_forward_visible_word_end(@pointer)
 
       # Return value handling
 
@@ -861,7 +861,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_visible_word_ends(self, count)
+      _retval = LibGtk.gtk_text_iter_forward_visible_word_ends(@pointer, count)
 
       # Return value handling
 
@@ -873,7 +873,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_word_end(self)
+      _retval = LibGtk.gtk_text_iter_forward_word_end(@pointer)
 
       # Return value handling
 
@@ -885,7 +885,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_forward_word_ends(self, count)
+      _retval = LibGtk.gtk_text_iter_forward_word_ends(@pointer, count)
 
       # Return value handling
 
@@ -897,7 +897,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_free(self)
+      LibGtk.gtk_text_iter_free(@pointer)
 
       # Return value handling
     end
@@ -907,7 +907,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_buffer(self)
+      _retval = LibGtk.gtk_text_iter_get_buffer(@pointer)
 
       # Return value handling
 
@@ -919,7 +919,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_bytes_in_line(self)
+      _retval = LibGtk.gtk_text_iter_get_bytes_in_line(@pointer)
 
       # Return value handling
 
@@ -931,7 +931,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_char(self)
+      _retval = LibGtk.gtk_text_iter_get_char(@pointer)
 
       # Return value handling
 
@@ -943,7 +943,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_chars_in_line(self)
+      _retval = LibGtk.gtk_text_iter_get_chars_in_line(@pointer)
 
       # Return value handling
 
@@ -955,7 +955,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_child_anchor(self)
+      _retval = LibGtk.gtk_text_iter_get_child_anchor(@pointer)
 
       # Return value handling
 
@@ -967,7 +967,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_language(self)
+      _retval = LibGtk.gtk_text_iter_get_language(@pointer)
 
       # Return value handling
 
@@ -979,7 +979,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_line(self)
+      _retval = LibGtk.gtk_text_iter_get_line(@pointer)
 
       # Return value handling
 
@@ -991,7 +991,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_line_index(self)
+      _retval = LibGtk.gtk_text_iter_get_line_index(@pointer)
 
       # Return value handling
 
@@ -1003,7 +1003,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_line_offset(self)
+      _retval = LibGtk.gtk_text_iter_get_line_offset(@pointer)
 
       # Return value handling
 
@@ -1015,7 +1015,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_marks(self)
+      _retval = LibGtk.gtk_text_iter_get_marks(@pointer)
 
       # Return value handling
 
@@ -1027,7 +1027,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_offset(self)
+      _retval = LibGtk.gtk_text_iter_get_offset(@pointer)
 
       # Return value handling
 
@@ -1039,11 +1039,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_paintable(self)
+      _retval = LibGtk.gtk_text_iter_get_paintable(@pointer)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     def slice(end _end : Gtk::TextIter) : ::String
@@ -1051,7 +1051,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_slice(self, _end)
+      _retval = LibGtk.gtk_text_iter_get_slice(@pointer, _end)
 
       # Return value handling
 
@@ -1063,7 +1063,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_tags(self)
+      _retval = LibGtk.gtk_text_iter_get_tags(@pointer)
 
       # Return value handling
 
@@ -1075,7 +1075,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_text(self, _end)
+      _retval = LibGtk.gtk_text_iter_get_text(@pointer, _end)
 
       # Return value handling
 
@@ -1087,7 +1087,7 @@ module Gtk
       # Returns: (transfer container)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_toggled_tags(self, toggled_on)
+      _retval = LibGtk.gtk_text_iter_get_toggled_tags(@pointer, toggled_on)
 
       # Return value handling
 
@@ -1099,7 +1099,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_visible_line_index(self)
+      _retval = LibGtk.gtk_text_iter_get_visible_line_index(@pointer)
 
       # Return value handling
 
@@ -1111,7 +1111,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_visible_line_offset(self)
+      _retval = LibGtk.gtk_text_iter_get_visible_line_offset(@pointer)
 
       # Return value handling
 
@@ -1123,7 +1123,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_visible_slice(self, _end)
+      _retval = LibGtk.gtk_text_iter_get_visible_slice(@pointer, _end)
 
       # Return value handling
 
@@ -1135,7 +1135,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_get_visible_text(self, _end)
+      _retval = LibGtk.gtk_text_iter_get_visible_text(@pointer, _end)
 
       # Return value handling
 
@@ -1147,7 +1147,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_has_tag(self, tag)
+      _retval = LibGtk.gtk_text_iter_has_tag(@pointer, tag)
 
       # Return value handling
 
@@ -1159,7 +1159,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_in_range(self, start, _end)
+      _retval = LibGtk.gtk_text_iter_in_range(@pointer, start, _end)
 
       # Return value handling
 
@@ -1171,7 +1171,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_inside_sentence(self)
+      _retval = LibGtk.gtk_text_iter_inside_sentence(@pointer)
 
       # Return value handling
 
@@ -1183,7 +1183,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_inside_word(self)
+      _retval = LibGtk.gtk_text_iter_inside_word(@pointer)
 
       # Return value handling
 
@@ -1195,7 +1195,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_is_cursor_position(self)
+      _retval = LibGtk.gtk_text_iter_is_cursor_position(@pointer)
 
       # Return value handling
 
@@ -1207,7 +1207,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_is_end(self)
+      _retval = LibGtk.gtk_text_iter_is_end(@pointer)
 
       # Return value handling
 
@@ -1219,7 +1219,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_is_start(self)
+      _retval = LibGtk.gtk_text_iter_is_start(@pointer)
 
       # Return value handling
 
@@ -1231,7 +1231,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_order(self, second)
+      LibGtk.gtk_text_iter_order(@pointer, second)
 
       # Return value handling
     end
@@ -1241,7 +1241,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_set_line(self, line_number)
+      LibGtk.gtk_text_iter_set_line(@pointer, line_number)
 
       # Return value handling
     end
@@ -1251,7 +1251,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_set_line_index(self, byte_on_line)
+      LibGtk.gtk_text_iter_set_line_index(@pointer, byte_on_line)
 
       # Return value handling
     end
@@ -1261,7 +1261,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_set_line_offset(self, char_on_line)
+      LibGtk.gtk_text_iter_set_line_offset(@pointer, char_on_line)
 
       # Return value handling
     end
@@ -1271,7 +1271,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_set_offset(self, char_offset)
+      LibGtk.gtk_text_iter_set_offset(@pointer, char_offset)
 
       # Return value handling
     end
@@ -1281,7 +1281,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_set_visible_line_index(self, byte_on_line)
+      LibGtk.gtk_text_iter_set_visible_line_index(@pointer, byte_on_line)
 
       # Return value handling
     end
@@ -1291,7 +1291,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_text_iter_set_visible_line_offset(self, char_on_line)
+      LibGtk.gtk_text_iter_set_visible_line_offset(@pointer, char_on_line)
 
       # Return value handling
     end
@@ -1301,7 +1301,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_starts_line(self)
+      _retval = LibGtk.gtk_text_iter_starts_line(@pointer)
 
       # Return value handling
 
@@ -1313,7 +1313,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_starts_sentence(self)
+      _retval = LibGtk.gtk_text_iter_starts_sentence(@pointer)
 
       # Return value handling
 
@@ -1333,7 +1333,7 @@ module Gtk
             end
 
       # C call
-      _retval = LibGtk.gtk_text_iter_starts_tag(self, tag)
+      _retval = LibGtk.gtk_text_iter_starts_tag(@pointer, tag)
 
       # Return value handling
 
@@ -1345,7 +1345,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_text_iter_starts_word(self)
+      _retval = LibGtk.gtk_text_iter_starts_word(@pointer)
 
       # Return value handling
 
@@ -1365,7 +1365,7 @@ module Gtk
             end
 
       # C call
-      _retval = LibGtk.gtk_text_iter_toggles_tag(self, tag)
+      _retval = LibGtk.gtk_text_iter_toggles_tag(@pointer, tag)
 
       # Return value handling
 

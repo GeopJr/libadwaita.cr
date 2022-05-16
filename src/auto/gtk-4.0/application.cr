@@ -81,15 +81,13 @@ module Gtk
         sizeof(LibGtk::Application), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Application, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Application`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -282,7 +280,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_application_add_window(self, window)
+      LibGtk.gtk_application_add_window(@pointer, window)
 
       # Return value handling
     end
@@ -294,7 +292,7 @@ module Gtk
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_application_get_accels_for_action(self, detailed_action_name)
+      _retval = LibGtk.gtk_application_get_accels_for_action(@pointer, detailed_action_name)
 
       # Return value handling
 
@@ -323,7 +321,7 @@ module Gtk
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_application_get_actions_for_accel(self, accel)
+      _retval = LibGtk.gtk_application_get_actions_for_accel(@pointer, accel)
 
       # Return value handling
 
@@ -341,7 +339,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_application_get_active_window(self)
+      _retval = LibGtk.gtk_application_get_active_window(@pointer)
 
       # Return value handling
 
@@ -357,7 +355,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_application_get_menu_by_id(self, id)
+      _retval = LibGtk.gtk_application_get_menu_by_id(@pointer, id)
 
       # Return value handling
 
@@ -371,7 +369,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_application_get_menubar(self)
+      _retval = LibGtk.gtk_application_get_menubar(@pointer)
 
       # Return value handling
 
@@ -387,7 +385,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_application_get_window_by_id(self, id)
+      _retval = LibGtk.gtk_application_get_window_by_id(@pointer, id)
 
       # Return value handling
 
@@ -408,7 +406,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_application_get_windows(self)
+      _retval = LibGtk.gtk_application_get_windows(@pointer)
 
       # Return value handling
 
@@ -458,7 +456,7 @@ module Gtk
                end
 
       # C call
-      _retval = LibGtk.gtk_application_inhibit(self, window, flags, reason)
+      _retval = LibGtk.gtk_application_inhibit(@pointer, window, flags, reason)
 
       # Return value handling
 
@@ -473,7 +471,7 @@ module Gtk
       # Returns: (transfer full) (array zero-terminated=1 element-type Utf8)
 
       # C call
-      _retval = LibGtk.gtk_application_list_action_descriptions(self)
+      _retval = LibGtk.gtk_application_list_action_descriptions(@pointer)
 
       # Return value handling
 
@@ -493,7 +491,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_application_remove_window(self, window)
+      LibGtk.gtk_application_remove_window(@pointer, window)
 
       # Return value handling
     end
@@ -518,7 +516,7 @@ module Gtk
       accels = accels.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGtk.gtk_application_set_accels_for_action(self, detailed_action_name, accels)
+      LibGtk.gtk_application_set_accels_for_action(@pointer, detailed_action_name, accels)
 
       # Return value handling
     end
@@ -554,7 +552,7 @@ module Gtk
                 end
 
       # C call
-      LibGtk.gtk_application_set_menubar(self, menubar)
+      LibGtk.gtk_application_set_menubar(@pointer, menubar)
 
       # Return value handling
     end
@@ -569,7 +567,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_application_uninhibit(self, cookie)
+      LibGtk.gtk_application_uninhibit(@pointer, cookie)
 
       # Return value handling
     end
@@ -684,7 +682,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Window, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_window : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           window = Gtk::Window.new(lib_window, :none)
           ::Box(Proc(Gtk::Window, Nil)).unbox(_lib_box).call(window)
         }.pointer
@@ -696,7 +694,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Window, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_window : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           window = Gtk::Window.new(lib_window, :none)
           ::Box(Proc(Gtk::Window, Nil)).unbox(_lib_box).call(window)
         }.pointer
@@ -709,7 +707,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_window : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Application.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           window = Gtk::Window.new(lib_window, :none)
           ::Box(Proc(Gtk::Application, Gtk::Window, Nil)).unbox(_lib_box).call(_sender, window)
         }.pointer
@@ -722,7 +720,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_window : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Application.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           window = Gtk::Window.new(lib_window, :none)
           ::Box(Proc(Gtk::Application, Gtk::Window, Nil)).unbox(_lib_box).call(_sender, window)
         }.pointer
@@ -771,7 +769,7 @@ module Gtk
       def connect(handler : Proc(Gtk::Window, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_window : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           window = Gtk::Window.new(lib_window, :none)
           ::Box(Proc(Gtk::Window, Nil)).unbox(_lib_box).call(window)
         }.pointer
@@ -783,7 +781,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::Window, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_window : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           window = Gtk::Window.new(lib_window, :none)
           ::Box(Proc(Gtk::Window, Nil)).unbox(_lib_box).call(window)
         }.pointer
@@ -796,7 +794,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_window : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Application.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           window = Gtk::Window.new(lib_window, :none)
           ::Box(Proc(Gtk::Application, Gtk::Window, Nil)).unbox(_lib_box).call(_sender, window)
         }.pointer
@@ -809,7 +807,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_window : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Application.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           window = Gtk::Window.new(lib_window, :none)
           ::Box(Proc(Gtk::Application, Gtk::Window, Nil)).unbox(_lib_box).call(_sender, window)
         }.pointer

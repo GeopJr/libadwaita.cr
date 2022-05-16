@@ -96,15 +96,13 @@ module Gio
         sizeof(LibGio::DBusObjectManagerClient), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DBusObjectManagerClient, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DBusObjectManagerClient`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -512,7 +510,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_object_manager_client_get_connection(self)
+      _retval = LibGio.g_dbus_object_manager_client_get_connection(@pointer)
 
       # Return value handling
 
@@ -525,7 +523,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_object_manager_client_get_flags(self)
+      _retval = LibGio.g_dbus_object_manager_client_get_flags(@pointer)
 
       # Return value handling
 
@@ -539,7 +537,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_object_manager_client_get_name(self)
+      _retval = LibGio.g_dbus_object_manager_client_get_name(@pointer)
 
       # Return value handling
 
@@ -555,7 +553,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_object_manager_client_get_name_owner(self)
+      _retval = LibGio.g_dbus_object_manager_client_get_name_owner(@pointer)
 
       # Return value handling
 
@@ -600,15 +598,14 @@ module Gio
       def connect(handler : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
           # Generator::HandmadeArgPlan
           changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::GObjectArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(object_proxy, interface_proxy, changed_properties, invalidated_properties)
         }.pointer
 
@@ -619,15 +616,14 @@ module Gio
       def connect_after(handler : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
           # Generator::HandmadeArgPlan
           changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::GObjectArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(object_proxy, interface_proxy, changed_properties, invalidated_properties)
         }.pointer
 
@@ -639,15 +635,14 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusObjectManagerClient.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
           # Generator::HandmadeArgPlan
           changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::GObjectArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, object_proxy, interface_proxy, changed_properties, invalidated_properties)
         }.pointer
 
@@ -659,15 +654,14 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusObjectManagerClient.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
           # Generator::HandmadeArgPlan
           changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::GObjectArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
           # Generator::ArrayArgPlan
+          raise NotImplementedError.new
           ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, object_proxy, interface_proxy, changed_properties, invalidated_properties)
         }.pointer
 
@@ -676,7 +670,15 @@ module Gio
       end
 
       def emit(object_proxy : Gio::DBusObjectProxy, interface_proxy : Gio::DBusProxy, changed_properties : _, invalidated_properties : Enumerable(::String)) : Nil
-        changed_properties = GLib::Variant.new(changed_properties) unless changed_properties.is_a?(GLib::Variant)
+        # Generator::HandmadeArgPlan
+        changed_properties = if !changed_properties.is_a?(GLib::Variant)
+                               GLib::Variant.new(changed_properties).to_unsafe
+                             else
+                               changed_properties.to_unsafe
+                             end
+        # Generator::ArrayArgPlan
+        invalidated_properties = invalidated_properties.to_a.map(&.to_unsafe).to_unsafe
+
         LibGObject.g_signal_emit_by_name(@source, "interface-proxy-properties-changed", object_proxy, interface_proxy, changed_properties, invalidated_properties)
       end
     end
@@ -720,15 +722,15 @@ module Gio
       def connect(handler : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
-          sender_name = lib_sender_name
-          signal_name = lib_signal_name
+          # Generator::BuiltInTypeArgPlan
+          sender_name = ::String.new(lib_sender_name)
+          # Generator::BuiltInTypeArgPlan
+          signal_name = ::String.new(lib_signal_name)
           # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          # Generator::GObjectArgPlan
           parameters = GLib::Variant.new(lib_parameters, :none)
           ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(object_proxy, interface_proxy, sender_name, signal_name, parameters)
         }.pointer
@@ -740,15 +742,15 @@ module Gio
       def connect_after(handler : Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
-          sender_name = lib_sender_name
-          signal_name = lib_signal_name
+          # Generator::BuiltInTypeArgPlan
+          sender_name = ::String.new(lib_sender_name)
+          # Generator::BuiltInTypeArgPlan
+          signal_name = ::String.new(lib_signal_name)
           # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          # Generator::GObjectArgPlan
           parameters = GLib::Variant.new(lib_parameters, :none)
           ::Box(Proc(Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(object_proxy, interface_proxy, sender_name, signal_name, parameters)
         }.pointer
@@ -761,15 +763,15 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusObjectManagerClient.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
-          sender_name = lib_sender_name
-          signal_name = lib_signal_name
+          # Generator::BuiltInTypeArgPlan
+          sender_name = ::String.new(lib_sender_name)
+          # Generator::BuiltInTypeArgPlan
+          signal_name = ::String.new(lib_signal_name)
           # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          # Generator::GObjectArgPlan
           parameters = GLib::Variant.new(lib_parameters, :none)
           ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, object_proxy, interface_proxy, sender_name, signal_name, parameters)
         }.pointer
@@ -782,15 +784,15 @@ module Gio
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object_proxy : Pointer(Void), lib_interface_proxy : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusObjectManagerClient.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           object_proxy = Gio::DBusObjectProxy.new(lib_object_proxy, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           interface_proxy = Gio::DBusProxy.new(lib_interface_proxy, :none)
-          sender_name = lib_sender_name
-          signal_name = lib_signal_name
+          # Generator::BuiltInTypeArgPlan
+          sender_name = ::String.new(lib_sender_name)
+          # Generator::BuiltInTypeArgPlan
+          signal_name = ::String.new(lib_signal_name)
           # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          # Generator::GObjectArgPlan
           parameters = GLib::Variant.new(lib_parameters, :none)
           ::Box(Proc(Gio::DBusObjectManagerClient, Gio::DBusObjectProxy, Gio::DBusProxy, ::String, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, object_proxy, interface_proxy, sender_name, signal_name, parameters)
         }.pointer
@@ -800,7 +802,13 @@ module Gio
       end
 
       def emit(object_proxy : Gio::DBusObjectProxy, interface_proxy : Gio::DBusProxy, sender_name : ::String, signal_name : ::String, parameters : _) : Nil
-        parameters = GLib::Variant.new(parameters) unless parameters.is_a?(GLib::Variant)
+        # Generator::HandmadeArgPlan
+        parameters = if !parameters.is_a?(GLib::Variant)
+                       GLib::Variant.new(parameters).to_unsafe
+                     else
+                       parameters.to_unsafe
+                     end
+
         LibGObject.g_signal_emit_by_name(@source, "interface-proxy-signal", object_proxy, interface_proxy, sender_name, signal_name, parameters)
       end
     end

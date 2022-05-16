@@ -12,7 +12,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_sortable_get_sort_column_id(self, sort_column_id, order)
+      _retval = LibGtk.gtk_tree_sortable_get_sort_column_id(@pointer, sort_column_id, order)
 
       # Return value handling
 
@@ -24,7 +24,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_sortable_has_default_sort_func(self)
+      _retval = LibGtk.gtk_tree_sortable_has_default_sort_func(@pointer)
 
       # Return value handling
 
@@ -41,14 +41,13 @@ module Gtk
       if sort_func
         _box = ::Box.box(sort_func)
         sort_func = ->(lib_model : Pointer(Void), lib_a : Pointer(Void), lib_b : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           a = Gtk::TreeIter.new(lib_a, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           b = Gtk::TreeIter.new(lib_b, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Gtk::TreeIter, Int32)).unbox(user_data).call(model, a, b)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Gtk::TreeIter, Int32)).unbox(lib_user_data).call(model, a, b)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -57,7 +56,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_tree_sortable_set_default_sort_func(self, sort_func, user_data, destroy)
+      LibGtk.gtk_tree_sortable_set_default_sort_func(@pointer, sort_func, user_data, destroy)
 
       # Return value handling
     end
@@ -67,7 +66,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_sortable_set_sort_column_id(self, sort_column_id, order)
+      LibGtk.gtk_tree_sortable_set_sort_column_id(@pointer, sort_column_id, order)
 
       # Return value handling
     end
@@ -82,14 +81,13 @@ module Gtk
       if sort_func
         _box = ::Box.box(sort_func)
         sort_func = ->(lib_model : Pointer(Void), lib_a : Pointer(Void), lib_b : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           model = Gtk::TreeModel.new(lib_model, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           a = Gtk::TreeIter.new(lib_a, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           b = Gtk::TreeIter.new(lib_b, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Gtk::TreeIter, Int32)).unbox(user_data).call(model, a, b)
+          ::Box(Proc(Gtk::TreeModel, Gtk::TreeIter, Gtk::TreeIter, Int32)).unbox(lib_user_data).call(model, a, b)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -98,7 +96,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_tree_sortable_set_sort_func(self, sort_column_id, sort_func, user_data, destroy)
+      LibGtk.gtk_tree_sortable_set_sort_func(@pointer, sort_column_id, sort_func, user_data, destroy)
 
       # Return value handling
     end
@@ -108,7 +106,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_sortable_sort_column_changed(self)
+      LibGtk.gtk_tree_sortable_sort_column_changed(@pointer)
 
       # Return value handling
     end
@@ -160,7 +158,7 @@ module Gtk
       def connect(handler : Proc(Gtk::TreeSortable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeSortable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractTreeSortable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TreeSortable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -171,7 +169,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::TreeSortable, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeSortable__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractTreeSortable.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TreeSortable, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
@@ -193,8 +191,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class TreeSortable__Impl < GObject::Object
+  class AbstractTreeSortable < GObject::Object
     include TreeSortable
+
+    GICrystal.define_new_method(Gtk::AbstractTreeSortable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

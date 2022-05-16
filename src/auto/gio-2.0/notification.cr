@@ -56,15 +56,13 @@ module Gio
         sizeof(LibGio::Notification), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Notification, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Notification`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -109,7 +107,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_notification_add_button(self, label, detailed_action)
+      LibGio.g_notification_add_button(@pointer, label, detailed_action)
 
       # Return value handling
     end
@@ -136,7 +134,7 @@ module Gio
                end
 
       # C call
-      LibGio.g_notification_add_button_with_target_value(self, label, action, target)
+      LibGio.g_notification_add_button_with_target_value(@pointer, label, action, target)
 
       # Return value handling
     end
@@ -155,7 +153,7 @@ module Gio
              end
 
       # C call
-      LibGio.g_notification_set_body(self, body)
+      LibGio.g_notification_set_body(@pointer, body)
 
       # Return value handling
     end
@@ -179,7 +177,7 @@ module Gio
                  end
 
       # C call
-      LibGio.g_notification_set_category(self, category)
+      LibGio.g_notification_set_category(@pointer, category)
 
       # Return value handling
     end
@@ -200,7 +198,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_notification_set_default_action(self, detailed_action)
+      LibGio.g_notification_set_default_action(@pointer, detailed_action)
 
       # Return value handling
     end
@@ -231,7 +229,7 @@ module Gio
                end
 
       # C call
-      LibGio.g_notification_set_default_action_and_target_value(self, action, target)
+      LibGio.g_notification_set_default_action_and_target_value(@pointer, action, target)
 
       # Return value handling
     end
@@ -242,7 +240,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_notification_set_icon(self, icon)
+      LibGio.g_notification_set_icon(@pointer, icon)
 
       # Return value handling
     end
@@ -254,7 +252,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_notification_set_priority(self, priority)
+      LibGio.g_notification_set_priority(@pointer, priority)
 
       # Return value handling
     end
@@ -265,7 +263,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_notification_set_title(self, title)
+      LibGio.g_notification_set_title(@pointer, title)
 
       # Return value handling
     end
@@ -276,7 +274,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_notification_set_urgent(self, urgent)
+      LibGio.g_notification_set_urgent(@pointer, urgent)
 
       # Return value handling
     end

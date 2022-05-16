@@ -129,15 +129,13 @@ module Gtk
         sizeof(LibGtk::GLArea), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(GLArea, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `GLArea`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -463,7 +461,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gl_area_attach_buffers(self)
+      LibGtk.gtk_gl_area_attach_buffers(@pointer)
 
       # Return value handling
     end
@@ -474,7 +472,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gl_area_get_auto_render(self)
+      _retval = LibGtk.gtk_gl_area_get_auto_render(@pointer)
 
       # Return value handling
 
@@ -487,7 +485,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gl_area_get_context(self)
+      _retval = LibGtk.gtk_gl_area_get_context(@pointer)
 
       # Return value handling
 
@@ -500,7 +498,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gl_area_get_error(self)
+      _retval = LibGtk.gtk_gl_area_get_error(@pointer)
 
       # Return value handling
 
@@ -513,7 +511,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gl_area_get_has_depth_buffer(self)
+      _retval = LibGtk.gtk_gl_area_get_has_depth_buffer(@pointer)
 
       # Return value handling
 
@@ -526,7 +524,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gl_area_get_has_stencil_buffer(self)
+      _retval = LibGtk.gtk_gl_area_get_has_stencil_buffer(@pointer)
 
       # Return value handling
 
@@ -543,7 +541,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gl_area_get_required_version(self, major, minor)
+      LibGtk.gtk_gl_area_get_required_version(@pointer, major, minor)
 
       # Return value handling
     end
@@ -556,7 +554,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gl_area_get_use_es(self)
+      _retval = LibGtk.gtk_gl_area_get_use_es(@pointer)
 
       # Return value handling
 
@@ -574,7 +572,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gl_area_make_current(self)
+      LibGtk.gtk_gl_area_make_current(@pointer)
 
       # Return value handling
     end
@@ -593,7 +591,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gl_area_queue_render(self)
+      LibGtk.gtk_gl_area_queue_render(@pointer)
 
       # Return value handling
     end
@@ -614,7 +612,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gl_area_set_auto_render(self, auto_render)
+      LibGtk.gtk_gl_area_set_auto_render(@pointer, auto_render)
 
       # Return value handling
     end
@@ -637,7 +635,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_gl_area_set_error(self, error)
+      LibGtk.gtk_gl_area_set_error(@pointer, error)
 
       # Return value handling
     end
@@ -652,7 +650,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gl_area_set_has_depth_buffer(self, has_depth_buffer)
+      LibGtk.gtk_gl_area_set_has_depth_buffer(@pointer, has_depth_buffer)
 
       # Return value handling
     end
@@ -667,7 +665,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gl_area_set_has_stencil_buffer(self, has_stencil_buffer)
+      LibGtk.gtk_gl_area_set_has_stencil_buffer(@pointer, has_stencil_buffer)
 
       # Return value handling
     end
@@ -681,7 +679,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gl_area_set_required_version(self, major, minor)
+      LibGtk.gtk_gl_area_set_required_version(@pointer, major, minor)
 
       # Return value handling
     end
@@ -695,7 +693,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gl_area_set_use_es(self, use_es)
+      LibGtk.gtk_gl_area_set_use_es(@pointer, use_es)
 
       # Return value handling
     end
@@ -815,7 +813,7 @@ module Gtk
       def connect(handler : Proc(Gdk::GLContext, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           context = Gdk::GLContext.new(lib_context, :none)
           ::Box(Proc(Gdk::GLContext, Bool)).unbox(_lib_box).call(context)
         }.pointer
@@ -827,7 +825,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::GLContext, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           context = Gdk::GLContext.new(lib_context, :none)
           ::Box(Proc(Gdk::GLContext, Bool)).unbox(_lib_box).call(context)
         }.pointer
@@ -840,7 +838,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::GLArea.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           context = Gdk::GLContext.new(lib_context, :none)
           ::Box(Proc(Gtk::GLArea, Gdk::GLContext, Bool)).unbox(_lib_box).call(_sender, context)
         }.pointer
@@ -853,7 +851,7 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::GLArea.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           context = Gdk::GLContext.new(lib_context, :none)
           ::Box(Proc(Gtk::GLArea, Gdk::GLContext, Bool)).unbox(_lib_box).call(_sender, context)
         }.pointer

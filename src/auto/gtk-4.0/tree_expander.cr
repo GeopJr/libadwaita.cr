@@ -60,15 +60,13 @@ module Gtk
         sizeof(LibGtk::TreeExpander), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TreeExpander, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TreeExpander`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -366,7 +364,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_expander_get_child(self)
+      _retval = LibGtk.gtk_tree_expander_get_child(@pointer)
 
       # Return value handling
 
@@ -379,7 +377,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_expander_get_indent_for_icon(self)
+      _retval = LibGtk.gtk_tree_expander_get_indent_for_icon(@pointer)
 
       # Return value handling
 
@@ -401,7 +399,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_expander_get_item(self)
+      _retval = LibGtk.gtk_tree_expander_get_item(@pointer)
 
       # Return value handling
 
@@ -414,7 +412,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_expander_get_list_row(self)
+      _retval = LibGtk.gtk_tree_expander_get_list_row(@pointer)
 
       # Return value handling
 
@@ -435,7 +433,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_tree_expander_set_child(self, child)
+      LibGtk.gtk_tree_expander_set_child(@pointer, child)
 
       # Return value handling
     end
@@ -446,7 +444,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_expander_set_indent_for_icon(self, indent_for_icon)
+      LibGtk.gtk_tree_expander_set_indent_for_icon(@pointer, indent_for_icon)
 
       # Return value handling
     end
@@ -465,7 +463,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_tree_expander_set_list_row(self, list_row)
+      LibGtk.gtk_tree_expander_set_list_row(@pointer, list_row)
 
       # Return value handling
     end

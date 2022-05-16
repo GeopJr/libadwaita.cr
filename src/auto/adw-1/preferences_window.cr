@@ -44,15 +44,13 @@ module Adw
         sizeof(LibAdw::PreferencesWindow), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(PreferencesWindow, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `PreferencesWindow`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -482,7 +480,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_preferences_window_add(self, page)
+      LibAdw.adw_preferences_window_add(@pointer, page)
 
       # Return value handling
     end
@@ -498,7 +496,7 @@ module Adw
       # Generator::TransferFullArgPlan
       LibGObject.g_object_ref_sink(toast)
       # C call
-      LibAdw.adw_preferences_window_add_toast(self, toast)
+      LibAdw.adw_preferences_window_add_toast(@pointer, toast)
 
       # Return value handling
     end
@@ -511,7 +509,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_preferences_window_close_subpage(self)
+      LibAdw.adw_preferences_window_close_subpage(@pointer)
 
       # Return value handling
     end
@@ -522,7 +520,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_preferences_window_get_can_navigate_back(self)
+      _retval = LibAdw.adw_preferences_window_get_can_navigate_back(@pointer)
 
       # Return value handling
 
@@ -535,7 +533,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_preferences_window_get_search_enabled(self)
+      _retval = LibAdw.adw_preferences_window_get_search_enabled(@pointer)
 
       # Return value handling
 
@@ -548,7 +546,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_preferences_window_get_visible_page(self)
+      _retval = LibAdw.adw_preferences_window_get_visible_page(@pointer)
 
       # Return value handling
 
@@ -561,7 +559,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_preferences_window_get_visible_page_name(self)
+      _retval = LibAdw.adw_preferences_window_get_visible_page_name(@pointer)
 
       # Return value handling
 
@@ -577,7 +575,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_preferences_window_present_subpage(self, subpage)
+      LibAdw.adw_preferences_window_present_subpage(@pointer, subpage)
 
       # Return value handling
     end
@@ -588,7 +586,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_preferences_window_remove(self, page)
+      LibAdw.adw_preferences_window_remove(@pointer, page)
 
       # Return value handling
     end
@@ -599,7 +597,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_preferences_window_set_can_navigate_back(self, can_navigate_back)
+      LibAdw.adw_preferences_window_set_can_navigate_back(@pointer, can_navigate_back)
 
       # Return value handling
     end
@@ -610,7 +608,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_preferences_window_set_search_enabled(self, search_enabled)
+      LibAdw.adw_preferences_window_set_search_enabled(@pointer, search_enabled)
 
       # Return value handling
     end
@@ -621,7 +619,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_preferences_window_set_visible_page(self, page)
+      LibAdw.adw_preferences_window_set_visible_page(@pointer, page)
 
       # Return value handling
     end
@@ -632,7 +630,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_preferences_window_set_visible_page_name(self, name)
+      LibAdw.adw_preferences_window_set_visible_page_name(@pointer, name)
 
       # Return value handling
     end

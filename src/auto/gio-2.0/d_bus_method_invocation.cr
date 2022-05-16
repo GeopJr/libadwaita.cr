@@ -19,15 +19,13 @@ module Gio
         sizeof(LibGio::DBusMethodInvocation), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DBusMethodInvocation, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DBusMethodInvocation`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -46,7 +44,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_method_invocation_get_connection(self)
+      _retval = LibGio.g_dbus_method_invocation_get_connection(@pointer)
 
       # Return value handling
 
@@ -64,7 +62,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_method_invocation_get_interface_name(self)
+      _retval = LibGio.g_dbus_method_invocation_get_interface_name(@pointer)
 
       # Return value handling
 
@@ -84,7 +82,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_method_invocation_get_message(self)
+      _retval = LibGio.g_dbus_method_invocation_get_message(@pointer)
 
       # Return value handling
 
@@ -102,7 +100,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_method_invocation_get_method_info(self)
+      _retval = LibGio.g_dbus_method_invocation_get_method_info(@pointer)
 
       # Return value handling
 
@@ -115,7 +113,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_method_invocation_get_method_name(self)
+      _retval = LibGio.g_dbus_method_invocation_get_method_name(@pointer)
 
       # Return value handling
 
@@ -128,7 +126,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_method_invocation_get_object_path(self)
+      _retval = LibGio.g_dbus_method_invocation_get_object_path(@pointer)
 
       # Return value handling
 
@@ -142,7 +140,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_method_invocation_get_parameters(self)
+      _retval = LibGio.g_dbus_method_invocation_get_parameters(@pointer)
 
       # Return value handling
 
@@ -165,7 +163,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_method_invocation_get_property_info(self)
+      _retval = LibGio.g_dbus_method_invocation_get_property_info(@pointer)
 
       # Return value handling
 
@@ -178,7 +176,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_method_invocation_get_sender(self)
+      _retval = LibGio.g_dbus_method_invocation_get_sender(@pointer)
 
       # Return value handling
 
@@ -195,7 +193,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_method_invocation_return_dbus_error(self, error_name, error_message)
+      LibGio.g_dbus_method_invocation_return_dbus_error(@pointer, error_name, error_message)
 
       # Return value handling
     end
@@ -210,7 +208,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_method_invocation_return_error_literal(self, domain, code, message)
+      LibGio.g_dbus_method_invocation_return_error_literal(@pointer, domain, code, message)
 
       # Return value handling
     end
@@ -226,7 +224,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_method_invocation_return_gerror(self, error)
+      LibGio.g_dbus_method_invocation_return_gerror(@pointer, error)
 
       # Return value handling
     end
@@ -278,7 +276,7 @@ module Gio
                    end
 
       # C call
-      LibGio.g_dbus_method_invocation_return_value(self, parameters)
+      LibGio.g_dbus_method_invocation_return_value(@pointer, parameters)
 
       # Return value handling
     end
@@ -312,7 +310,7 @@ module Gio
                 end
 
       # C call
-      LibGio.g_dbus_method_invocation_return_value_with_unix_fd_list(self, parameters, fd_list)
+      LibGio.g_dbus_method_invocation_return_value_with_unix_fd_list(@pointer, parameters, fd_list)
 
       # Return value handling
     end

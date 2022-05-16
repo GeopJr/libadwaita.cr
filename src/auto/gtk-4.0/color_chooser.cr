@@ -52,7 +52,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_color_chooser_add_palette(self, orientation, colors_per_line, n_colors, colors)
+      LibGtk.gtk_color_chooser_add_palette(@pointer, orientation, colors_per_line, n_colors, colors)
 
       # Return value handling
     end
@@ -65,7 +65,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       color = Gdk::RGBA.new
       # C call
-      LibGtk.gtk_color_chooser_get_rgba(self, color)
+      LibGtk.gtk_color_chooser_get_rgba(@pointer, color)
 
       # Return value handling
 
@@ -77,7 +77,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_color_chooser_get_use_alpha(self)
+      _retval = LibGtk.gtk_color_chooser_get_use_alpha(@pointer)
 
       # Return value handling
 
@@ -89,7 +89,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_color_chooser_set_rgba(self, color)
+      LibGtk.gtk_color_chooser_set_rgba(@pointer, color)
 
       # Return value handling
     end
@@ -99,7 +99,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_color_chooser_set_use_alpha(self, use_alpha)
+      LibGtk.gtk_color_chooser_set_use_alpha(@pointer, use_alpha)
 
       # Return value handling
     end
@@ -131,7 +131,7 @@ module Gtk
       def connect(handler : Proc(Gdk::RGBA, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           color = Gdk::RGBA.new(lib_color, :none)
           ::Box(Proc(Gdk::RGBA, Nil)).unbox(_lib_box).call(color)
         }.pointer
@@ -143,7 +143,7 @@ module Gtk
       def connect_after(handler : Proc(Gdk::RGBA, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           color = Gdk::RGBA.new(lib_color, :none)
           ::Box(Proc(Gdk::RGBA, Nil)).unbox(_lib_box).call(color)
         }.pointer
@@ -155,8 +155,8 @@ module Gtk
       def connect(handler : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::ColorChooser__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractColorChooser.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           color = Gdk::RGBA.new(lib_color, :none)
           ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(_lib_box).call(_sender, color)
         }.pointer
@@ -168,8 +168,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::ColorChooser__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractColorChooser.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           color = Gdk::RGBA.new(lib_color, :none)
           ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(_lib_box).call(_sender, color)
         }.pointer
@@ -192,8 +192,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class ColorChooser__Impl < GObject::Object
+  class AbstractColorChooser < GObject::Object
     include ColorChooser
+
+    GICrystal.define_new_method(Gtk::AbstractColorChooser, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

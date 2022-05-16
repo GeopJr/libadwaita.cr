@@ -29,15 +29,13 @@ module Gio
         sizeof(LibGio::BufferedInputStream), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(BufferedInputStream, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `BufferedInputStream`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -163,7 +161,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_buffered_input_stream_fill(self, count, cancellable, pointerof(_error))
+      _retval = LibGio.g_buffered_input_stream_fill(@pointer, count, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -200,7 +198,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_buffered_input_stream_fill_async(self, count, io_priority, cancellable, callback, user_data)
+      LibGio.g_buffered_input_stream_fill_async(@pointer, count, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -213,7 +211,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_buffered_input_stream_fill_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_buffered_input_stream_fill_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -229,7 +227,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_buffered_input_stream_get_available(self)
+      _retval = LibGio.g_buffered_input_stream_get_available(@pointer)
 
       # Return value handling
 
@@ -242,7 +240,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_buffered_input_stream_get_buffer_size(self)
+      _retval = LibGio.g_buffered_input_stream_get_buffer_size(@pointer)
 
       # Return value handling
 
@@ -261,7 +259,7 @@ module Gio
       buffer = buffer.to_a.to_unsafe
 
       # C call
-      _retval = LibGio.g_buffered_input_stream_peek(self, buffer, offset, count)
+      _retval = LibGio.g_buffered_input_stream_peek(@pointer, buffer, offset, count)
 
       # Return value handling
 
@@ -279,7 +277,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       count = 0_u64
       # C call
-      _retval = LibGio.g_buffered_input_stream_peek_buffer(self, pointerof(count))
+      _retval = LibGio.g_buffered_input_stream_peek_buffer(@pointer, pointerof(count))
 
       # Return value handling
 
@@ -314,7 +312,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_buffered_input_stream_read_byte(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_buffered_input_stream_read_byte(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -332,7 +330,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_buffered_input_stream_set_buffer_size(self, size)
+      LibGio.g_buffered_input_stream_set_buffer_size(@pointer, size)
 
       # Return value handling
     end

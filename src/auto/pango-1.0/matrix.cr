@@ -109,7 +109,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_matrix_concat(self, new_matrix)
+      LibPango.pango_matrix_concat(@pointer, new_matrix)
 
       # Return value handling
     end
@@ -119,7 +119,7 @@ module Pango
       # Returns: (transfer full)
 
       # C call
-      _retval = LibPango.pango_matrix_copy(self)
+      _retval = LibPango.pango_matrix_copy(@pointer)
 
       # Return value handling
 
@@ -131,7 +131,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_matrix_free(self)
+      LibPango.pango_matrix_free(@pointer)
 
       # Return value handling
     end
@@ -141,7 +141,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_matrix_get_font_scale_factor(self)
+      _retval = LibPango.pango_matrix_get_font_scale_factor(@pointer)
 
       # Return value handling
 
@@ -158,7 +158,7 @@ module Pango
       xscale = Pointer(Float64).null # Generator::OutArgUsedInReturnPlan
       yscale = Pointer(Float64).null
       # C call
-      LibPango.pango_matrix_get_font_scale_factors(self, xscale, yscale)
+      LibPango.pango_matrix_get_font_scale_factors(@pointer, xscale, yscale)
 
       # Return value handling
     end
@@ -168,7 +168,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_matrix_get_slant_ratio(self)
+      _retval = LibPango.pango_matrix_get_slant_ratio(@pointer)
 
       # Return value handling
 
@@ -180,7 +180,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_matrix_rotate(self, degrees)
+      LibPango.pango_matrix_rotate(@pointer, degrees)
 
       # Return value handling
     end
@@ -190,7 +190,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_matrix_scale(self, scale_x, scale_y)
+      LibPango.pango_matrix_scale(@pointer, scale_x, scale_y)
 
       # Return value handling
     end
@@ -202,7 +202,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_matrix_transform_distance(self, dx, dy)
+      LibPango.pango_matrix_transform_distance(@pointer, dx, dy)
 
       # Return value handling
     end
@@ -215,7 +215,7 @@ module Pango
       # Generator::OutArgUsedInReturnPlan
       rect = Pointer(Void).null
       # C call
-      LibPango.pango_matrix_transform_pixel_rectangle(self, rect)
+      LibPango.pango_matrix_transform_pixel_rectangle(@pointer, rect)
 
       # Return value handling
     end
@@ -227,7 +227,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_matrix_transform_point(self, x, y)
+      LibPango.pango_matrix_transform_point(@pointer, x, y)
 
       # Return value handling
     end
@@ -240,7 +240,7 @@ module Pango
       # Generator::OutArgUsedInReturnPlan
       rect = Pointer(Void).null
       # C call
-      LibPango.pango_matrix_transform_rectangle(self, rect)
+      LibPango.pango_matrix_transform_rectangle(@pointer, rect)
 
       # Return value handling
     end
@@ -250,7 +250,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      LibPango.pango_matrix_translate(self, tx, ty)
+      LibPango.pango_matrix_translate(@pointer, tx, ty)
 
       # Return value handling
     end

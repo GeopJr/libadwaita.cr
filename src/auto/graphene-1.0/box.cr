@@ -72,7 +72,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_box_contains_box(self, b)
+      _retval = LibGraphene.graphene_box_contains_box(@pointer, b)
 
       # Return value handling
 
@@ -84,7 +84,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_box_contains_point(self, point)
+      _retval = LibGraphene.graphene_box_contains_point(@pointer, point)
 
       # Return value handling
 
@@ -96,7 +96,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_box_equal(self, b)
+      _retval = LibGraphene.graphene_box_equal(@pointer, b)
 
       # Return value handling
 
@@ -111,7 +111,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
       # C call
-      LibGraphene.graphene_box_expand(self, point, res)
+      LibGraphene.graphene_box_expand(@pointer, point, res)
 
       # Return value handling
 
@@ -126,7 +126,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
       # C call
-      LibGraphene.graphene_box_expand_scalar(self, scalar, res)
+      LibGraphene.graphene_box_expand_scalar(@pointer, scalar, res)
 
       # Return value handling
 
@@ -141,7 +141,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
       # C call
-      LibGraphene.graphene_box_expand_vec3(self, vec, res)
+      LibGraphene.graphene_box_expand_vec3(@pointer, vec, res)
 
       # Return value handling
 
@@ -153,7 +153,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      LibGraphene.graphene_box_free(self)
+      LibGraphene.graphene_box_free(@pointer)
 
       # Return value handling
     end
@@ -166,7 +166,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       sphere = Graphene::Sphere.new
       # C call
-      LibGraphene.graphene_box_get_bounding_sphere(self, sphere)
+      LibGraphene.graphene_box_get_bounding_sphere(@pointer, sphere)
 
       # Return value handling
 
@@ -181,7 +181,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       center = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_box_get_center(self, center)
+      LibGraphene.graphene_box_get_center(@pointer, center)
 
       # Return value handling
 
@@ -193,7 +193,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_box_get_depth(self)
+      _retval = LibGraphene.graphene_box_get_depth(@pointer)
 
       # Return value handling
 
@@ -205,7 +205,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_box_get_height(self)
+      _retval = LibGraphene.graphene_box_get_height(@pointer)
 
       # Return value handling
 
@@ -220,7 +220,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       max = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_box_get_max(self, max)
+      LibGraphene.graphene_box_get_max(@pointer, max)
 
       # Return value handling
 
@@ -235,7 +235,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       min = Graphene::Point3D.new
       # C call
-      LibGraphene.graphene_box_get_min(self, min)
+      LibGraphene.graphene_box_get_min(@pointer, min)
 
       # Return value handling
 
@@ -250,7 +250,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       size = Graphene::Vec3.new
       # C call
-      LibGraphene.graphene_box_get_size(self, size)
+      LibGraphene.graphene_box_get_size(@pointer, size)
 
       # Return value handling
 
@@ -268,7 +268,7 @@ module Graphene
       vertices = vertices.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      LibGraphene.graphene_box_get_vertices(self, vertices)
+      LibGraphene.graphene_box_get_vertices(@pointer, vertices)
 
       # Return value handling
     end
@@ -282,7 +282,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_box_get_width(self)
+      _retval = LibGraphene.graphene_box_get_width(@pointer)
 
       # Return value handling
 
@@ -309,7 +309,7 @@ module Graphene
             end
 
       # C call
-      _retval = LibGraphene.graphene_box_init(self, min, max)
+      _retval = LibGraphene.graphene_box_init(@pointer, min, max)
 
       # Return value handling
 
@@ -321,7 +321,7 @@ module Graphene
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGraphene.graphene_box_init_from_box(self, src)
+      _retval = LibGraphene.graphene_box_init_from_box(@pointer, src)
 
       # Return value handling
 
@@ -338,7 +338,7 @@ module Graphene
       points = points.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGraphene.graphene_box_init_from_points(self, n_points, points)
+      _retval = LibGraphene.graphene_box_init_from_points(@pointer, n_points, points)
 
       # Return value handling
 
@@ -369,7 +369,7 @@ module Graphene
             end
 
       # C call
-      _retval = LibGraphene.graphene_box_init_from_vec3(self, min, max)
+      _retval = LibGraphene.graphene_box_init_from_vec3(@pointer, min, max)
 
       # Return value handling
 
@@ -386,7 +386,7 @@ module Graphene
       vectors = vectors.to_a.map(&.to_unsafe).to_unsafe
 
       # C call
-      _retval = LibGraphene.graphene_box_init_from_vectors(self, n_vectors, vectors)
+      _retval = LibGraphene.graphene_box_init_from_vectors(@pointer, n_vectors, vectors)
 
       # Return value handling
 
@@ -406,7 +406,7 @@ module Graphene
       res = Pointer(Void).null # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
       # C call
-      _retval = LibGraphene.graphene_box_intersection(self, b, res)
+      _retval = LibGraphene.graphene_box_intersection(@pointer, b, res)
 
       # Return value handling
 
@@ -421,7 +421,7 @@ module Graphene
       # Generator::CallerAllocatesPlan
       res = Graphene::Box.new
       # C call
-      LibGraphene.graphene_box_union(self, b, res)
+      LibGraphene.graphene_box_union(@pointer, b, res)
 
       # Return value handling
 

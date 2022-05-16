@@ -13,15 +13,13 @@ module Adw
         sizeof(LibAdw::SqueezerPage), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SqueezerPage, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SqueezerPage`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -95,7 +93,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_page_get_child(self)
+      _retval = LibAdw.adw_squeezer_page_get_child(@pointer)
 
       # Return value handling
 
@@ -108,7 +106,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_page_get_enabled(self)
+      _retval = LibAdw.adw_squeezer_page_get_enabled(@pointer)
 
       # Return value handling
 
@@ -121,7 +119,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_page_set_enabled(self, enabled)
+      LibAdw.adw_squeezer_page_set_enabled(@pointer, enabled)
 
       # Return value handling
     end

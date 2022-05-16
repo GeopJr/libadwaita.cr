@@ -21,15 +21,13 @@ module Gio
         sizeof(LibGio::TlsDatabase), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TlsDatabase, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TlsDatabase`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -55,7 +53,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_tls_database_create_certificate_handle(self, certificate)
+      _retval = LibGio.g_tls_database_create_certificate_handle(@pointer, certificate)
 
       # Return value handling
 
@@ -96,7 +94,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_tls_database_lookup_certificate_for_handle(self, handle, interaction, flags, cancellable, pointerof(_error))
+      _retval = LibGio.g_tls_database_lookup_certificate_for_handle(@pointer, handle, interaction, flags, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -136,7 +134,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_tls_database_lookup_certificate_for_handle_async(self, handle, interaction, flags, cancellable, callback, user_data)
+      LibGio.g_tls_database_lookup_certificate_for_handle_async(@pointer, handle, interaction, flags, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -153,7 +151,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_tls_database_lookup_certificate_for_handle_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_tls_database_lookup_certificate_for_handle_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -205,7 +203,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_tls_database_lookup_certificate_issuer(self, certificate, interaction, flags, cancellable, pointerof(_error))
+      _retval = LibGio.g_tls_database_lookup_certificate_issuer(@pointer, certificate, interaction, flags, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -245,7 +243,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_tls_database_lookup_certificate_issuer_async(self, certificate, interaction, flags, cancellable, callback, user_data)
+      LibGio.g_tls_database_lookup_certificate_issuer_async(@pointer, certificate, interaction, flags, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -259,7 +257,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_tls_database_lookup_certificate_issuer_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_tls_database_lookup_certificate_issuer_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -298,7 +296,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_tls_database_lookup_certificates_issued_by(self, issuer_raw_dn, interaction, flags, cancellable, pointerof(_error))
+      _retval = LibGio.g_tls_database_lookup_certificates_issued_by(@pointer, issuer_raw_dn, interaction, flags, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -345,7 +343,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_tls_database_lookup_certificates_issued_by_async(self, issuer_raw_dn, interaction, flags, cancellable, callback, user_data)
+      LibGio.g_tls_database_lookup_certificates_issued_by_async(@pointer, issuer_raw_dn, interaction, flags, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -359,7 +357,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_tls_database_lookup_certificates_issued_by_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_tls_database_lookup_certificates_issued_by_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -458,7 +456,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_tls_database_verify_chain(self, chain, purpose, identity, interaction, flags, cancellable, pointerof(_error))
+      _retval = LibGio.g_tls_database_verify_chain(@pointer, chain, purpose, identity, interaction, flags, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -506,7 +504,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_tls_database_verify_chain_async(self, chain, purpose, identity, interaction, flags, cancellable, callback, user_data)
+      LibGio.g_tls_database_verify_chain_async(@pointer, chain, purpose, identity, interaction, flags, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -529,7 +527,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_tls_database_verify_chain_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_tls_database_verify_chain_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?

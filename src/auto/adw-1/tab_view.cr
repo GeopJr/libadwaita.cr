@@ -63,15 +63,13 @@ module Adw
         sizeof(LibAdw::TabView), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(TabView, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `TabView`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -322,7 +320,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "default-icon", pointerof(value), Pointer(Void).null)
-      Gio::Icon__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractIcon.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def is_transferring_page? : Bool
@@ -369,7 +367,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
-      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractSelectionModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def selected_page=(value : Adw::TabPage?) : Adw::TabPage?
@@ -422,7 +420,7 @@ module Adw
                end
 
       # C call
-      _retval = LibAdw.adw_tab_view_add_page(self, child, parent)
+      _retval = LibAdw.adw_tab_view_add_page(@pointer, child, parent)
 
       # Return value handling
 
@@ -435,7 +433,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_append(self, child)
+      _retval = LibAdw.adw_tab_view_append(@pointer, child)
 
       # Return value handling
 
@@ -448,7 +446,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_append_pinned(self, child)
+      _retval = LibAdw.adw_tab_view_append_pinned(@pointer, child)
 
       # Return value handling
 
@@ -461,7 +459,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_view_close_other_pages(self, page)
+      LibAdw.adw_tab_view_close_other_pages(@pointer, page)
 
       # Return value handling
     end
@@ -493,7 +491,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_view_close_page(self, page)
+      LibAdw.adw_tab_view_close_page(@pointer, page)
 
       # Return value handling
     end
@@ -511,7 +509,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_view_close_page_finish(self, page, confirm)
+      LibAdw.adw_tab_view_close_page_finish(@pointer, page, confirm)
 
       # Return value handling
     end
@@ -522,7 +520,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_view_close_pages_after(self, page)
+      LibAdw.adw_tab_view_close_pages_after(@pointer, page)
 
       # Return value handling
     end
@@ -533,7 +531,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_view_close_pages_before(self, page)
+      LibAdw.adw_tab_view_close_pages_before(@pointer, page)
 
       # Return value handling
     end
@@ -544,11 +542,11 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_default_icon(self)
+      _retval = LibAdw.adw_tab_view_get_default_icon(@pointer)
 
       # Return value handling
 
-      Gio::Icon__Impl.new(_retval, GICrystal::Transfer::None)
+      Gio::AbstractIcon.new(_retval, GICrystal::Transfer::None)
     end
 
     # Whether a page is being transferred.
@@ -557,7 +555,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_is_transferring_page(self)
+      _retval = LibAdw.adw_tab_view_get_is_transferring_page(@pointer)
 
       # Return value handling
 
@@ -570,7 +568,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_menu_model(self)
+      _retval = LibAdw.adw_tab_view_get_menu_model(@pointer)
 
       # Return value handling
 
@@ -583,7 +581,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_n_pages(self)
+      _retval = LibAdw.adw_tab_view_get_n_pages(@pointer)
 
       # Return value handling
 
@@ -596,7 +594,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_n_pinned_pages(self)
+      _retval = LibAdw.adw_tab_view_get_n_pinned_pages(@pointer)
 
       # Return value handling
 
@@ -609,7 +607,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_nth_page(self, position)
+      _retval = LibAdw.adw_tab_view_get_nth_page(@pointer, position)
 
       # Return value handling
 
@@ -622,7 +620,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_page(self, child)
+      _retval = LibAdw.adw_tab_view_get_page(@pointer, child)
 
       # Return value handling
 
@@ -635,7 +633,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_page_position(self, page)
+      _retval = LibAdw.adw_tab_view_get_page_position(@pointer, page)
 
       # Return value handling
 
@@ -652,11 +650,11 @@ module Adw
       # Returns: (transfer full)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_pages(self)
+      _retval = LibAdw.adw_tab_view_get_pages(@pointer)
 
       # Return value handling
 
-      Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gtk::AbstractSelectionModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the currently selected page in @self.
@@ -665,7 +663,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_get_selected_page(self)
+      _retval = LibAdw.adw_tab_view_get_selected_page(@pointer)
 
       # Return value handling
 
@@ -681,7 +679,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_insert(self, child, position)
+      _retval = LibAdw.adw_tab_view_insert(@pointer, child, position)
 
       # Return value handling
 
@@ -697,7 +695,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_insert_pinned(self, child, position)
+      _retval = LibAdw.adw_tab_view_insert_pinned(@pointer, child, position)
 
       # Return value handling
 
@@ -710,7 +708,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_prepend(self, child)
+      _retval = LibAdw.adw_tab_view_prepend(@pointer, child)
 
       # Return value handling
 
@@ -723,7 +721,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_prepend_pinned(self, child)
+      _retval = LibAdw.adw_tab_view_prepend_pinned(@pointer, child)
 
       # Return value handling
 
@@ -736,7 +734,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_reorder_backward(self, page)
+      _retval = LibAdw.adw_tab_view_reorder_backward(@pointer, page)
 
       # Return value handling
 
@@ -749,7 +747,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_reorder_first(self, page)
+      _retval = LibAdw.adw_tab_view_reorder_first(@pointer, page)
 
       # Return value handling
 
@@ -762,7 +760,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_reorder_forward(self, page)
+      _retval = LibAdw.adw_tab_view_reorder_forward(@pointer, page)
 
       # Return value handling
 
@@ -775,7 +773,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_reorder_last(self, page)
+      _retval = LibAdw.adw_tab_view_reorder_last(@pointer, page)
 
       # Return value handling
 
@@ -791,7 +789,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_reorder_page(self, page, position)
+      _retval = LibAdw.adw_tab_view_reorder_page(@pointer, page, position)
 
       # Return value handling
 
@@ -806,7 +804,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_select_next_page(self)
+      _retval = LibAdw.adw_tab_view_select_next_page(@pointer)
 
       # Return value handling
 
@@ -821,7 +819,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_tab_view_select_previous_page(self)
+      _retval = LibAdw.adw_tab_view_select_previous_page(@pointer)
 
       # Return value handling
 
@@ -834,7 +832,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_view_set_default_icon(self, default_icon)
+      LibAdw.adw_tab_view_set_default_icon(@pointer, default_icon)
 
       # Return value handling
     end
@@ -853,7 +851,7 @@ module Adw
                    end
 
       # C call
-      LibAdw.adw_tab_view_set_menu_model(self, menu_model)
+      LibAdw.adw_tab_view_set_menu_model(@pointer, menu_model)
 
       # Return value handling
     end
@@ -888,7 +886,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_view_set_page_pinned(self, page, pinned)
+      LibAdw.adw_tab_view_set_page_pinned(@pointer, page, pinned)
 
       # Return value handling
     end
@@ -899,7 +897,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_view_set_selected_page(self, selected_page)
+      LibAdw.adw_tab_view_set_selected_page(@pointer, selected_page)
 
       # Return value handling
     end
@@ -915,7 +913,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_tab_view_transfer_page(self, page, other_view, position)
+      LibAdw.adw_tab_view_transfer_page(@pointer, page, other_view, position)
 
       # Return value handling
     end
@@ -976,7 +974,7 @@ module Adw
       def connect(handler : Proc(Adw::TabPage, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           ::Box(Proc(Adw::TabPage, Bool)).unbox(_lib_box).call(page)
         }.pointer
@@ -988,7 +986,7 @@ module Adw
       def connect_after(handler : Proc(Adw::TabPage, Bool))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           ::Box(Proc(Adw::TabPage, Bool)).unbox(_lib_box).call(page)
         }.pointer
@@ -1001,7 +999,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           ::Box(Proc(Adw::TabView, Adw::TabPage, Bool)).unbox(_lib_box).call(_sender, page)
         }.pointer
@@ -1014,7 +1012,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           ::Box(Proc(Adw::TabView, Adw::TabPage, Bool)).unbox(_lib_box).call(_sender, page)
         }.pointer
@@ -1144,7 +1142,7 @@ module Adw
       def connect(handler : Proc(Adw::TabPage, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           ::Box(Proc(Adw::TabPage, Nil)).unbox(_lib_box).call(page)
         }.pointer
@@ -1156,7 +1154,7 @@ module Adw
       def connect_after(handler : Proc(Adw::TabPage, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           ::Box(Proc(Adw::TabPage, Nil)).unbox(_lib_box).call(page)
         }.pointer
@@ -1169,7 +1167,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           ::Box(Proc(Adw::TabView, Adw::TabPage, Nil)).unbox(_lib_box).call(_sender, page)
         }.pointer
@@ -1182,7 +1180,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           ::Box(Proc(Adw::TabView, Adw::TabPage, Nil)).unbox(_lib_box).call(_sender, page)
         }.pointer
@@ -1231,7 +1229,7 @@ module Adw
       def connect(handler : Proc(Adw::TabPage, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
@@ -1244,7 +1242,7 @@ module Adw
       def connect_after(handler : Proc(Adw::TabPage, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
@@ -1258,7 +1256,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
@@ -1272,7 +1270,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
@@ -1327,7 +1325,7 @@ module Adw
       def connect(handler : Proc(Adw::TabPage, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
@@ -1340,7 +1338,7 @@ module Adw
       def connect_after(handler : Proc(Adw::TabPage, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
@@ -1354,7 +1352,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
@@ -1368,7 +1366,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
@@ -1415,7 +1413,7 @@ module Adw
       def connect(handler : Proc(Adw::TabPage, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
@@ -1428,7 +1426,7 @@ module Adw
       def connect_after(handler : Proc(Adw::TabPage, Int32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
@@ -1442,7 +1440,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
@@ -1456,7 +1454,7 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page = Adw::TabPage.new(lib_page, :none)
           position = lib_position
           ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
@@ -1510,8 +1508,8 @@ module Adw
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           page = (lib_page.null? ? nil : Adw::TabPage.new(lib_page, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
+          # Generator::BuiltInTypeArgPlan
+          page = Adw::TabPage.new(lib_page, :none) unless lib_page.null?
           ::Box(Proc(Adw::TabPage?, Nil)).unbox(_lib_box).call(page)
         }.pointer
 
@@ -1524,8 +1522,8 @@ module Adw
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
           page = (lib_page.null? ? nil : Adw::TabPage.new(lib_page, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
+          # Generator::BuiltInTypeArgPlan
+          page = Adw::TabPage.new(lib_page, :none) unless lib_page.null?
           ::Box(Proc(Adw::TabPage?, Nil)).unbox(_lib_box).call(page)
         }.pointer
 
@@ -1539,8 +1537,8 @@ module Adw
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           page = (lib_page.null? ? nil : Adw::TabPage.new(lib_page, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
+          # Generator::BuiltInTypeArgPlan
+          page = Adw::TabPage.new(lib_page, :none) unless lib_page.null?
           ::Box(Proc(Adw::TabView, Adw::TabPage?, Nil)).unbox(_lib_box).call(_sender, page)
         }.pointer
 
@@ -1554,8 +1552,8 @@ module Adw
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::NullableArrayPlan
           page = (lib_page.null? ? nil : Adw::TabPage.new(lib_page, GICrystal::Transfer::None))
-          # Generator::GObjectArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
+          # Generator::BuiltInTypeArgPlan
+          page = Adw::TabPage.new(lib_page, :none) unless lib_page.null?
           ::Box(Proc(Adw::TabView, Adw::TabPage?, Nil)).unbox(_lib_box).call(_sender, page)
         }.pointer
 
@@ -1564,6 +1562,13 @@ module Adw
       end
 
       def emit(page : Adw::TabPage?) : Nil
+        # Generator::NullableArrayPlan
+        page = if page.nil?
+                 Void.null
+               else
+                 page.to_unsafe
+               end
+
         LibGObject.g_signal_emit_by_name(@source, "setup-menu", page)
       end
     end

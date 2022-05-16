@@ -1,5 +1,4 @@
 @[Link("pangocairo-1.0", pkg_config: "pangocairo-1.0")]
-
 lib LibPangoCairo
   # Flags
 

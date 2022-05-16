@@ -106,15 +106,13 @@ module Gtk
         sizeof(LibGtk::Popover), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Popover, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Popover`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -502,7 +500,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_popover_get_autohide(self)
+      _retval = LibGtk.gtk_popover_get_autohide(@pointer)
 
       # Return value handling
 
@@ -515,7 +513,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_popover_get_cascade_popdown(self)
+      _retval = LibGtk.gtk_popover_get_cascade_popdown(@pointer)
 
       # Return value handling
 
@@ -528,7 +526,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_popover_get_child(self)
+      _retval = LibGtk.gtk_popover_get_child(@pointer)
 
       # Return value handling
 
@@ -542,7 +540,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_popover_get_has_arrow(self)
+      _retval = LibGtk.gtk_popover_get_has_arrow(@pointer)
 
       # Return value handling
 
@@ -555,7 +553,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_popover_get_mnemonics_visible(self)
+      _retval = LibGtk.gtk_popover_get_mnemonics_visible(@pointer)
 
       # Return value handling
 
@@ -583,7 +581,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_popover_get_offset(self, x_offset, y_offset)
+      LibGtk.gtk_popover_get_offset(@pointer, x_offset, y_offset)
 
       # Return value handling
     end
@@ -602,7 +600,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       rect = Gdk::Rectangle.new
       # C call
-      _retval = LibGtk.gtk_popover_get_pointing_to(self, rect)
+      _retval = LibGtk.gtk_popover_get_pointing_to(@pointer, rect)
 
       # Return value handling
 
@@ -615,7 +613,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_popover_get_position(self)
+      _retval = LibGtk.gtk_popover_get_position(@pointer)
 
       # Return value handling
 
@@ -631,7 +629,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_popover_popdown(self)
+      LibGtk.gtk_popover_popdown(@pointer)
 
       # Return value handling
     end
@@ -642,7 +640,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_popover_popup(self)
+      LibGtk.gtk_popover_popup(@pointer)
 
       # Return value handling
     end
@@ -653,7 +651,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_popover_present(self)
+      LibGtk.gtk_popover_present(@pointer)
 
       # Return value handling
     end
@@ -672,7 +670,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_popover_set_autohide(self, autohide)
+      LibGtk.gtk_popover_set_autohide(@pointer, autohide)
 
       # Return value handling
     end
@@ -686,7 +684,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_popover_set_cascade_popdown(self, cascade_popdown)
+      LibGtk.gtk_popover_set_cascade_popdown(@pointer, cascade_popdown)
 
       # Return value handling
     end
@@ -705,7 +703,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_popover_set_child(self, child)
+      LibGtk.gtk_popover_set_child(@pointer, child)
 
       # Return value handling
     end
@@ -728,7 +726,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_popover_set_default_widget(self, widget)
+      LibGtk.gtk_popover_set_default_widget(@pointer, widget)
 
       # Return value handling
     end
@@ -740,7 +738,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_popover_set_has_arrow(self, has_arrow)
+      LibGtk.gtk_popover_set_has_arrow(@pointer, has_arrow)
 
       # Return value handling
     end
@@ -751,7 +749,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_popover_set_mnemonics_visible(self, mnemonics_visible)
+      LibGtk.gtk_popover_set_mnemonics_visible(@pointer, mnemonics_visible)
 
       # Return value handling
     end
@@ -766,7 +764,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_popover_set_offset(self, x_offset, y_offset)
+      LibGtk.gtk_popover_set_offset(@pointer, x_offset, y_offset)
 
       # Return value handling
     end
@@ -787,7 +785,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_popover_set_pointing_to(self, rect)
+      LibGtk.gtk_popover_set_pointing_to(@pointer, rect)
 
       # Return value handling
     end
@@ -805,7 +803,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_popover_set_position(self, position)
+      LibGtk.gtk_popover_set_position(@pointer, position)
 
       # Return value handling
     end

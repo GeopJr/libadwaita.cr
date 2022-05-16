@@ -46,15 +46,13 @@ module Adw
         sizeof(LibAdw::Squeezer), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Squeezer, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Squeezer`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -368,7 +366,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
-      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractSelectionModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def switch_threshold_policy=(value : Adw::FoldThresholdPolicy) : Adw::FoldThresholdPolicy
@@ -483,7 +481,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_add(self, child)
+      _retval = LibAdw.adw_squeezer_add(@pointer, child)
 
       # Return value handling
 
@@ -496,7 +494,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_allow_none(self)
+      _retval = LibAdw.adw_squeezer_get_allow_none(@pointer)
 
       # Return value handling
 
@@ -509,7 +507,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_homogeneous(self)
+      _retval = LibAdw.adw_squeezer_get_homogeneous(@pointer)
 
       # Return value handling
 
@@ -522,7 +520,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_interpolate_size(self)
+      _retval = LibAdw.adw_squeezer_get_interpolate_size(@pointer)
 
       # Return value handling
 
@@ -535,7 +533,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_page(self, child)
+      _retval = LibAdw.adw_squeezer_get_page(@pointer, child)
 
       # Return value handling
 
@@ -551,11 +549,11 @@ module Adw
       # Returns: (transfer full)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_pages(self)
+      _retval = LibAdw.adw_squeezer_get_pages(@pointer)
 
       # Return value handling
 
-      Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gtk::AbstractSelectionModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the fold threshold policy for @self.
@@ -564,7 +562,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_switch_threshold_policy(self)
+      _retval = LibAdw.adw_squeezer_get_switch_threshold_policy(@pointer)
 
       # Return value handling
 
@@ -577,7 +575,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_transition_duration(self)
+      _retval = LibAdw.adw_squeezer_get_transition_duration(@pointer)
 
       # Return value handling
 
@@ -590,7 +588,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_transition_running(self)
+      _retval = LibAdw.adw_squeezer_get_transition_running(@pointer)
 
       # Return value handling
 
@@ -603,7 +601,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_transition_type(self)
+      _retval = LibAdw.adw_squeezer_get_transition_type(@pointer)
 
       # Return value handling
 
@@ -616,7 +614,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_visible_child(self)
+      _retval = LibAdw.adw_squeezer_get_visible_child(@pointer)
 
       # Return value handling
 
@@ -629,7 +627,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_xalign(self)
+      _retval = LibAdw.adw_squeezer_get_xalign(@pointer)
 
       # Return value handling
 
@@ -642,7 +640,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_squeezer_get_yalign(self)
+      _retval = LibAdw.adw_squeezer_get_yalign(@pointer)
 
       # Return value handling
 
@@ -655,7 +653,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_remove(self, child)
+      LibAdw.adw_squeezer_remove(@pointer, child)
 
       # Return value handling
     end
@@ -666,7 +664,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_set_allow_none(self, allow_none)
+      LibAdw.adw_squeezer_set_allow_none(@pointer, allow_none)
 
       # Return value handling
     end
@@ -677,7 +675,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_set_homogeneous(self, homogeneous)
+      LibAdw.adw_squeezer_set_homogeneous(@pointer, homogeneous)
 
       # Return value handling
     end
@@ -688,7 +686,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_set_interpolate_size(self, interpolate_size)
+      LibAdw.adw_squeezer_set_interpolate_size(@pointer, interpolate_size)
 
       # Return value handling
     end
@@ -699,7 +697,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_set_switch_threshold_policy(self, policy)
+      LibAdw.adw_squeezer_set_switch_threshold_policy(@pointer, policy)
 
       # Return value handling
     end
@@ -710,7 +708,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_set_transition_duration(self, duration)
+      LibAdw.adw_squeezer_set_transition_duration(@pointer, duration)
 
       # Return value handling
     end
@@ -721,7 +719,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_set_transition_type(self, transition)
+      LibAdw.adw_squeezer_set_transition_type(@pointer, transition)
 
       # Return value handling
     end
@@ -732,7 +730,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_set_xalign(self, xalign)
+      LibAdw.adw_squeezer_set_xalign(@pointer, xalign)
 
       # Return value handling
     end
@@ -743,7 +741,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_squeezer_set_yalign(self, yalign)
+      LibAdw.adw_squeezer_set_yalign(@pointer, yalign)
 
       # Return value handling
     end

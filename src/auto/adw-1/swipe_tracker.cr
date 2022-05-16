@@ -25,15 +25,13 @@ module Adw
         sizeof(LibAdw::SwipeTracker), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(SwipeTracker, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `SwipeTracker`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -163,7 +161,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "swipeable", pointerof(value), Pointer(Void).null)
-      Adw::Swipeable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Adw::AbstractSwipeable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     # Creates a new `AdwSwipeTracker` for @widget.
@@ -186,7 +184,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_swipe_tracker_get_allow_long_swipes(self)
+      _retval = LibAdw.adw_swipe_tracker_get_allow_long_swipes(@pointer)
 
       # Return value handling
 
@@ -199,7 +197,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_swipe_tracker_get_allow_mouse_drag(self)
+      _retval = LibAdw.adw_swipe_tracker_get_allow_mouse_drag(@pointer)
 
       # Return value handling
 
@@ -212,7 +210,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_swipe_tracker_get_enabled(self)
+      _retval = LibAdw.adw_swipe_tracker_get_enabled(@pointer)
 
       # Return value handling
 
@@ -225,7 +223,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_swipe_tracker_get_reversed(self)
+      _retval = LibAdw.adw_swipe_tracker_get_reversed(@pointer)
 
       # Return value handling
 
@@ -238,11 +236,11 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_swipe_tracker_get_swipeable(self)
+      _retval = LibAdw.adw_swipe_tracker_get_swipeable(@pointer)
 
       # Return value handling
 
-      Adw::Swipeable__Impl.new(_retval, GICrystal::Transfer::None)
+      Adw::AbstractSwipeable.new(_retval, GICrystal::Transfer::None)
     end
 
     # Sets whether to allow swiping for more than one snap point at a time.
@@ -251,7 +249,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_swipe_tracker_set_allow_long_swipes(self, allow_long_swipes)
+      LibAdw.adw_swipe_tracker_set_allow_long_swipes(@pointer, allow_long_swipes)
 
       # Return value handling
     end
@@ -262,7 +260,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_swipe_tracker_set_allow_mouse_drag(self, allow_mouse_drag)
+      LibAdw.adw_swipe_tracker_set_allow_mouse_drag(@pointer, allow_mouse_drag)
 
       # Return value handling
     end
@@ -273,7 +271,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_swipe_tracker_set_enabled(self, enabled)
+      LibAdw.adw_swipe_tracker_set_enabled(@pointer, enabled)
 
       # Return value handling
     end
@@ -284,7 +282,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_swipe_tracker_set_reversed(self, reversed)
+      LibAdw.adw_swipe_tracker_set_reversed(@pointer, reversed)
 
       # Return value handling
     end
@@ -298,7 +296,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_swipe_tracker_shift_position(self, delta)
+      LibAdw.adw_swipe_tracker_shift_position(@pointer, delta)
 
       # Return value handling
     end
@@ -500,8 +498,8 @@ module Adw
       def connect(handler : Proc(Adw::NavigationDirection, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction = Adw::NavigationDirection.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Adw::NavigationDirection.new(lib_direction)
           ::Box(Proc(Adw::NavigationDirection, Nil)).unbox(_lib_box).call(direction)
         }.pointer
 
@@ -512,8 +510,8 @@ module Adw
       def connect_after(handler : Proc(Adw::NavigationDirection, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction = Adw::NavigationDirection.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Adw::NavigationDirection.new(lib_direction)
           ::Box(Proc(Adw::NavigationDirection, Nil)).unbox(_lib_box).call(direction)
         }.pointer
 
@@ -525,8 +523,8 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
           _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction = Adw::NavigationDirection.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Adw::NavigationDirection.new(lib_direction)
           ::Box(Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil)).unbox(_lib_box).call(_sender, direction)
         }.pointer
 
@@ -538,8 +536,8 @@ module Adw
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, _lib_box : Pointer(Void)) {
           _sender = Adw::SwipeTracker.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction = Adw::NavigationDirection.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Adw::NavigationDirection.new(lib_direction)
           ::Box(Proc(Adw::SwipeTracker, Adw::NavigationDirection, Nil)).unbox(_lib_box).call(_sender, direction)
         }.pointer
 

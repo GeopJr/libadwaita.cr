@@ -26,15 +26,13 @@ module Gtk
         sizeof(LibGtk::GesturePan), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(GesturePan, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `GesturePan`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -142,7 +140,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_gesture_pan_get_orientation(self)
+      _retval = LibGtk.gtk_gesture_pan_get_orientation(@pointer)
 
       # Return value handling
 
@@ -155,7 +153,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_gesture_pan_set_orientation(self, orientation)
+      LibGtk.gtk_gesture_pan_set_orientation(@pointer, orientation)
 
       # Return value handling
     end
@@ -188,8 +186,8 @@ module Gtk
       def connect(handler : Proc(Gtk::PanDirection, Float64, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, lib_offset : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction = Gtk::PanDirection.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::PanDirection.new(lib_direction)
           offset = lib_offset
           ::Box(Proc(Gtk::PanDirection, Float64, Nil)).unbox(_lib_box).call(direction, offset)
         }.pointer
@@ -201,8 +199,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::PanDirection, Float64, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, lib_offset : Float64, _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
-          direction = Gtk::PanDirection.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::PanDirection.new(lib_direction)
           offset = lib_offset
           ::Box(Proc(Gtk::PanDirection, Float64, Nil)).unbox(_lib_box).call(direction, offset)
         }.pointer
@@ -215,8 +213,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, lib_offset : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::GesturePan.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction = Gtk::PanDirection.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::PanDirection.new(lib_direction)
           offset = lib_offset
           ::Box(Proc(Gtk::GesturePan, Gtk::PanDirection, Float64, Nil)).unbox(_lib_box).call(_sender, direction, offset)
         }.pointer
@@ -229,8 +227,8 @@ module Gtk
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, lib_offset : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::GesturePan.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
-          direction = Gtk::PanDirection.new(lib_direction, :none)
+          # Generator::BuiltInTypeArgPlan
+          direction = Gtk::PanDirection.new(lib_direction)
           offset = lib_offset
           ::Box(Proc(Gtk::GesturePan, Gtk::PanDirection, Float64, Nil)).unbox(_lib_box).call(_sender, direction, offset)
         }.pointer

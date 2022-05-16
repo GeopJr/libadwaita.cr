@@ -24,15 +24,13 @@ module Gtk
         sizeof(LibGtk::FilterListModel), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FilterListModel, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FilterListModel`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -122,7 +120,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "model", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def pending : UInt32
@@ -170,7 +168,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_filter_list_model_get_filter(self)
+      _retval = LibGtk.gtk_filter_list_model_get_filter(@pointer)
 
       # Return value handling
 
@@ -185,7 +183,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_filter_list_model_get_incremental(self)
+      _retval = LibGtk.gtk_filter_list_model_get_incremental(@pointer)
 
       # Return value handling
 
@@ -198,11 +196,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_filter_list_model_get_model(self)
+      _retval = LibGtk.gtk_filter_list_model_get_model(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns the number of items that have not been filtered yet.
@@ -229,7 +227,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_filter_list_model_get_pending(self)
+      _retval = LibGtk.gtk_filter_list_model_get_pending(@pointer)
 
       # Return value handling
 
@@ -250,7 +248,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_filter_list_model_set_filter(self, filter)
+      LibGtk.gtk_filter_list_model_set_filter(@pointer, filter)
 
       # Return value handling
     end
@@ -276,7 +274,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_filter_list_model_set_incremental(self, incremental)
+      LibGtk.gtk_filter_list_model_set_incremental(@pointer, incremental)
 
       # Return value handling
     end
@@ -300,7 +298,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_filter_list_model_set_model(self, model)
+      LibGtk.gtk_filter_list_model_set_model(@pointer, model)
 
       # Return value handling
     end

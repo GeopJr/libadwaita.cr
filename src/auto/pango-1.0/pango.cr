@@ -96,11 +96,11 @@ module Pango
   # The major component of the version of Pango available at compile-time.
   VERSION_MAJOR = 1
   # The micro component of the version of Pango available at compile-time.
-  VERSION_MICRO = 4
+  VERSION_MICRO = 7
   # The minor component of the version of Pango available at compile-time.
   VERSION_MINOR = 50
   # A string literal containing the version of Pango available at compile-time.
-  VERSION_STRING = "1.50.4"
+  VERSION_STRING = "1.50.7"
 
   # Callbacks
 

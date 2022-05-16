@@ -14,15 +14,13 @@ module Gio
         sizeof(LibGio::DBusMessage), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DBusMessage, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DBusMessage`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -185,7 +183,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_message_copy(self, pointerof(_error))
+      _retval = LibGio.g_dbus_message_copy(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -201,7 +199,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_arg0(self)
+      _retval = LibGio.g_dbus_message_get_arg0(@pointer)
 
       # Return value handling
 
@@ -214,7 +212,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_body(self)
+      _retval = LibGio.g_dbus_message_get_body(@pointer)
 
       # Return value handling
 
@@ -227,7 +225,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_byte_order(self)
+      _retval = LibGio.g_dbus_message_get_byte_order(@pointer)
 
       # Return value handling
 
@@ -240,7 +238,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_destination(self)
+      _retval = LibGio.g_dbus_message_get_destination(@pointer)
 
       # Return value handling
 
@@ -253,7 +251,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_error_name(self)
+      _retval = LibGio.g_dbus_message_get_error_name(@pointer)
 
       # Return value handling
 
@@ -266,7 +264,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_flags(self)
+      _retval = LibGio.g_dbus_message_get_flags(@pointer)
 
       # Return value handling
 
@@ -282,7 +280,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_header(self, header_field)
+      _retval = LibGio.g_dbus_message_get_header(@pointer, header_field)
 
       # Return value handling
 
@@ -295,7 +293,7 @@ module Gio
       # Returns: (transfer none) (array zero-terminated=1 element-type UInt8)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_header_fields(self)
+      _retval = LibGio.g_dbus_message_get_header_fields(@pointer)
 
       # Return value handling
 
@@ -308,7 +306,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_interface(self)
+      _retval = LibGio.g_dbus_message_get_interface(@pointer)
 
       # Return value handling
 
@@ -323,7 +321,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_locked(self)
+      _retval = LibGio.g_dbus_message_get_locked(@pointer)
 
       # Return value handling
 
@@ -336,7 +334,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_member(self)
+      _retval = LibGio.g_dbus_message_get_member(@pointer)
 
       # Return value handling
 
@@ -349,7 +347,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_message_type(self)
+      _retval = LibGio.g_dbus_message_get_message_type(@pointer)
 
       # Return value handling
 
@@ -362,7 +360,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_num_unix_fds(self)
+      _retval = LibGio.g_dbus_message_get_num_unix_fds(@pointer)
 
       # Return value handling
 
@@ -375,7 +373,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_path(self)
+      _retval = LibGio.g_dbus_message_get_path(@pointer)
 
       # Return value handling
 
@@ -388,7 +386,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_reply_serial(self)
+      _retval = LibGio.g_dbus_message_get_reply_serial(@pointer)
 
       # Return value handling
 
@@ -401,7 +399,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_sender(self)
+      _retval = LibGio.g_dbus_message_get_sender(@pointer)
 
       # Return value handling
 
@@ -414,7 +412,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_serial(self)
+      _retval = LibGio.g_dbus_message_get_serial(@pointer)
 
       # Return value handling
 
@@ -429,7 +427,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_signature(self)
+      _retval = LibGio.g_dbus_message_get_signature(@pointer)
 
       # Return value handling
 
@@ -450,7 +448,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_message_get_unix_fd_list(self)
+      _retval = LibGio.g_dbus_message_get_unix_fd_list(@pointer)
 
       # Return value handling
 
@@ -463,7 +461,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_message_lock(self)
+      LibGio.g_dbus_message_lock(@pointer)
 
       # Return value handling
     end
@@ -474,7 +472,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_message_new_method_error_literal(self, error_name, error_message)
+      _retval = LibGio.g_dbus_message_new_method_error_literal(@pointer, error_name, error_message)
 
       # Return value handling
 
@@ -487,7 +485,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_message_new_method_reply(self)
+      _retval = LibGio.g_dbus_message_new_method_reply(@pointer)
 
       # Return value handling
 
@@ -531,7 +529,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_dbus_message_print(self, indent)
+      _retval = LibGio.g_dbus_message_print(@pointer, indent)
 
       # Return value handling
 
@@ -555,7 +553,7 @@ module Gio
              end
 
       # C call
-      LibGio.g_dbus_message_set_body(self, body)
+      LibGio.g_dbus_message_set_body(@pointer, body)
 
       # Return value handling
     end
@@ -566,7 +564,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_message_set_byte_order(self, byte_order)
+      LibGio.g_dbus_message_set_byte_order(@pointer, byte_order)
 
       # Return value handling
     end
@@ -585,7 +583,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_dbus_message_set_destination(self, value)
+      LibGio.g_dbus_message_set_destination(@pointer, value)
 
       # Return value handling
     end
@@ -596,7 +594,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_message_set_error_name(self, value)
+      LibGio.g_dbus_message_set_error_name(@pointer, value)
 
       # Return value handling
     end
@@ -607,7 +605,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_message_set_flags(self, flags)
+      LibGio.g_dbus_message_set_flags(@pointer, flags)
 
       # Return value handling
     end
@@ -630,7 +628,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_dbus_message_set_header(self, header_field, value)
+      LibGio.g_dbus_message_set_header(@pointer, header_field, value)
 
       # Return value handling
     end
@@ -649,7 +647,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_dbus_message_set_interface(self, value)
+      LibGio.g_dbus_message_set_interface(@pointer, value)
 
       # Return value handling
     end
@@ -668,7 +666,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_dbus_message_set_member(self, value)
+      LibGio.g_dbus_message_set_member(@pointer, value)
 
       # Return value handling
     end
@@ -679,7 +677,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_message_set_message_type(self, type)
+      LibGio.g_dbus_message_set_message_type(@pointer, type)
 
       # Return value handling
     end
@@ -690,7 +688,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_message_set_num_unix_fds(self, value)
+      LibGio.g_dbus_message_set_num_unix_fds(@pointer, value)
 
       # Return value handling
     end
@@ -709,7 +707,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_dbus_message_set_path(self, value)
+      LibGio.g_dbus_message_set_path(@pointer, value)
 
       # Return value handling
     end
@@ -720,7 +718,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_message_set_reply_serial(self, value)
+      LibGio.g_dbus_message_set_reply_serial(@pointer, value)
 
       # Return value handling
     end
@@ -739,7 +737,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_dbus_message_set_sender(self, value)
+      LibGio.g_dbus_message_set_sender(@pointer, value)
 
       # Return value handling
     end
@@ -750,7 +748,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_message_set_serial(self, serial)
+      LibGio.g_dbus_message_set_serial(@pointer, serial)
 
       # Return value handling
     end
@@ -769,7 +767,7 @@ module Gio
               end
 
       # C call
-      LibGio.g_dbus_message_set_signature(self, value)
+      LibGio.g_dbus_message_set_signature(@pointer, value)
 
       # Return value handling
     end
@@ -798,7 +796,7 @@ module Gio
                 end
 
       # C call
-      LibGio.g_dbus_message_set_unix_fd_list(self, fd_list)
+      LibGio.g_dbus_message_set_unix_fd_list(@pointer, fd_list)
 
       # Return value handling
     end
@@ -815,7 +813,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       out_size = 0_u64
       # C call
-      _retval = LibGio.g_dbus_message_to_blob(self, pointerof(out_size), capabilities, pointerof(_error))
+      _retval = LibGio.g_dbus_message_to_blob(@pointer, pointerof(out_size), capabilities, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -839,7 +837,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_message_to_gerror(self, pointerof(_error))
+      _retval = LibGio.g_dbus_message_to_gerror(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?

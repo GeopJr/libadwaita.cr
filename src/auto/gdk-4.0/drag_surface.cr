@@ -6,7 +6,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drag_surface_present(self, width, height)
+      _retval = LibGdk.gdk_drag_surface_present(@pointer, width, height)
 
       # Return value handling
 
@@ -18,8 +18,14 @@ module Gdk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class DragSurface__Impl < GObject::Object
+  class AbstractDragSurface < GObject::Object
     include DragSurface
+
+    GICrystal.define_new_method(Gdk::AbstractDragSurface, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

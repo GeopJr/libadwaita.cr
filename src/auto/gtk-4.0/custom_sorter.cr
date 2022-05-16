@@ -14,15 +14,13 @@ module Gtk
         sizeof(LibGtk::CustomSorter), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CustomSorter, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CustomSorter`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -54,8 +52,7 @@ module Gtk
           a = (lib_a.null? ? nil : lib_a)
           # Generator::NullableArrayPlan
           b = (lib_b.null? ? nil : lib_b)
-          user_data = lib_user_data
-          ::Box(Proc(Pointer(Void)?, Pointer(Void)?, Int32)).unbox(user_data).call(a, b)
+          ::Box(Proc(Pointer(Void)?, Pointer(Void)?, Int32)).unbox(lib_user_data).call(a, b)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -95,8 +92,7 @@ module Gtk
           a = (lib_a.null? ? nil : lib_a)
           # Generator::NullableArrayPlan
           b = (lib_b.null? ? nil : lib_b)
-          user_data = lib_user_data
-          ::Box(Proc(Pointer(Void)?, Pointer(Void)?, Int32)).unbox(user_data).call(a, b)
+          ::Box(Proc(Pointer(Void)?, Pointer(Void)?, Int32)).unbox(lib_user_data).call(a, b)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_destroy = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -105,7 +101,7 @@ module Gtk
       end
 
       # C call
-      LibGtk.gtk_custom_sorter_set_sort_func(self, sort_func, user_data, user_destroy)
+      LibGtk.gtk_custom_sorter_set_sort_func(@pointer, sort_func, user_data, user_destroy)
 
       # Return value handling
     end

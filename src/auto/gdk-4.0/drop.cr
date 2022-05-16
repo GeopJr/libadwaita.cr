@@ -26,15 +26,13 @@ module Gdk
         sizeof(LibGdk::Drop), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Drop, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Drop`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -184,7 +182,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_drop_finish(self, action)
+      LibGdk.gdk_drop_finish(@pointer, action)
 
       # Return value handling
     end
@@ -208,7 +206,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drop_get_actions(self)
+      _retval = LibGdk.gdk_drop_get_actions(@pointer)
 
       # Return value handling
 
@@ -221,7 +219,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drop_get_device(self)
+      _retval = LibGdk.gdk_drop_get_device(@pointer)
 
       # Return value handling
 
@@ -234,7 +232,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drop_get_display(self)
+      _retval = LibGdk.gdk_drop_get_display(@pointer)
 
       # Return value handling
 
@@ -250,7 +248,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drop_get_drag(self)
+      _retval = LibGdk.gdk_drop_get_drag(@pointer)
 
       # Return value handling
 
@@ -264,7 +262,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drop_get_formats(self)
+      _retval = LibGdk.gdk_drop_get_formats(@pointer)
 
       # Return value handling
 
@@ -277,7 +275,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_drop_get_surface(self)
+      _retval = LibGdk.gdk_drop_get_surface(@pointer)
 
       # Return value handling
 
@@ -310,7 +308,7 @@ module Gdk
                   end
 
       # C call
-      LibGdk.gdk_drop_read_async(self, mime_types, io_priority, cancellable, callback, user_data)
+      LibGdk.gdk_drop_read_async(@pointer, mime_types, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -331,7 +329,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_drop_read_finish(self, result, out_mime_type, pointerof(_error))
+      _retval = LibGdk.gdk_drop_read_finish(@pointer, result, out_mime_type, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -372,7 +370,7 @@ module Gdk
                   end
 
       # C call
-      LibGdk.gdk_drop_read_value_async(self, type, io_priority, cancellable, callback, user_data)
+      LibGdk.gdk_drop_read_value_async(@pointer, type, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -387,7 +385,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_drop_read_value_finish(self, result, pointerof(_error))
+      _retval = LibGdk.gdk_drop_read_value_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -415,7 +413,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_drop_status(self, actions, preferred)
+      LibGdk.gdk_drop_status(@pointer, actions, preferred)
 
       # Return value handling
     end

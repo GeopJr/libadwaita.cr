@@ -125,15 +125,13 @@ module Gio
         sizeof(LibGio::MenuModel), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(MenuModel, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `MenuModel`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -170,7 +168,7 @@ module Gio
                       end
 
       # C call
-      _retval = LibGio.g_menu_model_get_item_attribute_value(self, item_index, attribute, expected_type)
+      _retval = LibGio.g_menu_model_get_item_attribute_value(@pointer, item_index, attribute, expected_type)
 
       # Return value handling
 
@@ -187,7 +185,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_menu_model_get_item_link(self, item_index, link)
+      _retval = LibGio.g_menu_model_get_item_link(@pointer, item_index, link)
 
       # Return value handling
 
@@ -200,7 +198,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_menu_model_get_n_items(self)
+      _retval = LibGio.g_menu_model_get_n_items(@pointer)
 
       # Return value handling
 
@@ -216,7 +214,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_menu_model_is_mutable(self)
+      _retval = LibGio.g_menu_model_is_mutable(@pointer)
 
       # Return value handling
 
@@ -243,7 +241,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_menu_model_items_changed(self, position, removed, added)
+      LibGio.g_menu_model_items_changed(@pointer, position, removed, added)
 
       # Return value handling
     end
@@ -257,7 +255,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_menu_model_iterate_item_attributes(self, item_index)
+      _retval = LibGio.g_menu_model_iterate_item_attributes(@pointer, item_index)
 
       # Return value handling
 
@@ -273,7 +271,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_menu_model_iterate_item_links(self, item_index)
+      _retval = LibGio.g_menu_model_iterate_item_links(@pointer, item_index)
 
       # Return value handling
 

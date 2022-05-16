@@ -67,15 +67,13 @@ module Gio
         sizeof(LibGio::DBusConnection), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(DBusConnection, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `DBusConnection`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -536,14 +534,13 @@ module Gio
       if filter_function
         _box = ::Box.box(filter_function)
         filter_function = ->(lib_connection : Pointer(Void), lib_message : Pointer(Void), lib_incoming : LibC::Int, lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           connection = Gio::DBusConnection.new(lib_connection, :none)
           # Generator::TransferFullArgPlan
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           message = Gio::DBusMessage.new(lib_message, :none)
           incoming = lib_incoming
-          user_data = lib_user_data
-          ::Box(Proc(Gio::DBusConnection, Gio::DBusMessage, Bool, Gio::DBusMessage)).unbox(user_data).call(connection, message, incoming)
+          ::Box(Proc(Gio::DBusConnection, Gio::DBusMessage, Bool, Gio::DBusMessage)).unbox(lib_user_data).call(connection, message, incoming)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_data_free_func = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -552,7 +549,7 @@ module Gio
       end
 
       # C call
-      _retval = LibGio.g_dbus_connection_add_filter(self, filter_function, user_data, user_data_free_func)
+      _retval = LibGio.g_dbus_connection_add_filter(@pointer, filter_function, user_data, user_data_free_func)
 
       # Return value handling
 
@@ -648,7 +645,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dbus_connection_call(self, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, cancellable, callback, user_data)
+      LibGio.g_dbus_connection_call(@pointer, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -661,7 +658,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_connection_call_finish(self, res, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_call_finish(@pointer, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -745,7 +742,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dbus_connection_call_sync(self, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, cancellable, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_call_sync(@pointer, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -821,7 +818,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dbus_connection_call_with_unix_fd_list(self, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, cancellable, callback, user_data)
+      LibGio.g_dbus_connection_call_with_unix_fd_list(@pointer, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -848,7 +845,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       out_fd_list = Pointer(Pointer(Void)).null
       # C call
-      _retval = LibGio.g_dbus_connection_call_with_unix_fd_list_finish(self, out_fd_list, res, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_call_with_unix_fd_list_finish(@pointer, out_fd_list, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -910,7 +907,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dbus_connection_call_with_unix_fd_list_sync(self, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, out_fd_list, cancellable, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_call_with_unix_fd_list_sync(@pointer, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, out_fd_list, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -965,7 +962,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dbus_connection_close(self, cancellable, callback, user_data)
+      LibGio.g_dbus_connection_close(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -978,7 +975,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_connection_close_finish(self, res, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_close_finish(@pointer, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1007,7 +1004,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dbus_connection_close_sync(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_close_sync(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1048,7 +1045,7 @@ module Gio
                    end
 
       # C call
-      _retval = LibGio.g_dbus_connection_emit_signal(self, destination_bus_name, object_path, interface_name, signal_name, parameters, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_emit_signal(@pointer, destination_bus_name, object_path, interface_name, signal_name, parameters, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1086,7 +1083,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_connection_export_action_group(self, object_path, action_group, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_export_action_group(@pointer, object_path, action_group, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1115,7 +1112,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_connection_export_menu_model(self, object_path, menu, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_export_menu_model(@pointer, object_path, menu, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1160,7 +1157,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dbus_connection_flush(self, cancellable, callback, user_data)
+      LibGio.g_dbus_connection_flush(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -1173,7 +1170,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_connection_flush_finish(self, res, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_flush_finish(@pointer, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1202,7 +1199,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dbus_connection_flush_sync(self, cancellable, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_flush_sync(@pointer, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1218,7 +1215,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_get_capabilities(self)
+      _retval = LibGio.g_dbus_connection_get_capabilities(@pointer)
 
       # Return value handling
 
@@ -1233,7 +1230,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_get_exit_on_close(self)
+      _retval = LibGio.g_dbus_connection_get_exit_on_close(@pointer)
 
       # Return value handling
 
@@ -1246,7 +1243,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_get_flags(self)
+      _retval = LibGio.g_dbus_connection_get_flags(@pointer)
 
       # Return value handling
 
@@ -1260,7 +1257,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_get_guid(self)
+      _retval = LibGio.g_dbus_connection_get_guid(@pointer)
 
       # Return value handling
 
@@ -1277,7 +1274,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_get_last_serial(self)
+      _retval = LibGio.g_dbus_connection_get_last_serial(@pointer)
 
       # Return value handling
 
@@ -1298,7 +1295,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_get_peer_credentials(self)
+      _retval = LibGio.g_dbus_connection_get_peer_credentials(@pointer)
 
       # Return value handling
 
@@ -1315,7 +1312,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_get_stream(self)
+      _retval = LibGio.g_dbus_connection_get_stream(@pointer)
 
       # Return value handling
 
@@ -1330,7 +1327,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_get_unique_name(self)
+      _retval = LibGio.g_dbus_connection_get_unique_name(@pointer)
 
       # Return value handling
 
@@ -1343,7 +1340,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_is_closed(self)
+      _retval = LibGio.g_dbus_connection_is_closed(@pointer)
 
       # Return value handling
 
@@ -1417,7 +1414,7 @@ module Gio
                              end
 
       # C call
-      _retval = LibGio.g_dbus_connection_register_object_with_closures(self, object_path, interface_info, method_call_closure, get_property_closure, set_property_closure, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_register_object_with_closures(@pointer, object_path, interface_info, method_call_closure, get_property_closure, set_property_closure, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1476,7 +1473,7 @@ module Gio
                   end
 
       # C call
-      _retval = LibGio.g_dbus_connection_register_subtree(self, object_path, vtable, flags, user_data, user_data_free_func, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_register_subtree(@pointer, object_path, vtable, flags, user_data, user_data_free_func, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1499,7 +1496,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_connection_remove_filter(self, filter_id)
+      LibGio.g_dbus_connection_remove_filter(@pointer, filter_id)
 
       # Return value handling
     end
@@ -1535,7 +1532,7 @@ module Gio
       # Generator::OutArgUsedInReturnPlan
       out_serial = Pointer(UInt32).null
       # C call
-      _retval = LibGio.g_dbus_connection_send_message(self, message, flags, out_serial, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_send_message(@pointer, message, flags, out_serial, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1597,7 +1594,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_dbus_connection_send_message_with_reply(self, message, flags, timeout_msec, out_serial, cancellable, callback, user_data)
+      LibGio.g_dbus_connection_send_message_with_reply(@pointer, message, flags, timeout_msec, out_serial, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -1619,7 +1616,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_dbus_connection_send_message_with_reply_finish(self, res, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_send_message_with_reply_finish(@pointer, res, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1676,7 +1673,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_dbus_connection_send_message_with_reply_sync(self, message, flags, timeout_msec, out_serial, cancellable, pointerof(_error))
+      _retval = LibGio.g_dbus_connection_send_message_with_reply_sync(@pointer, message, flags, timeout_msec, out_serial, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -1701,7 +1698,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_connection_set_exit_on_close(self, exit_on_close)
+      LibGio.g_dbus_connection_set_exit_on_close(@pointer, exit_on_close)
 
       # Return value handling
     end
@@ -1800,19 +1797,21 @@ module Gio
       if callback
         _box = ::Box.box(callback)
         callback = ->(lib_connection : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_object_path : Pointer(LibC::Char), lib_interface_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), lib_user_data : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           connection = Gio::DBusConnection.new(lib_connection, :none)
           # Generator::NullableArrayPlan
           sender_name = (lib_sender_name.null? ? nil : ::String.new(lib_sender_name))
-          object_path = lib_object_path
-          interface_name = lib_interface_name
-          signal_name = lib_signal_name
+          # Generator::BuiltInTypeArgPlan
+          sender_name = ::String.new(lib_sender_name) unless lib_sender_name.null?
+          # Generator::BuiltInTypeArgPlan
+          object_path = ::String.new(lib_object_path)
+          # Generator::BuiltInTypeArgPlan
+          interface_name = ::String.new(lib_interface_name)
+          # Generator::BuiltInTypeArgPlan
+          signal_name = ::String.new(lib_signal_name)
           # Generator::HandmadeArgPlan
           parameters = GLib::Variant.new(lib_parameters, :none)
-          # Generator::GObjectArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          user_data = lib_user_data
-          ::Box(Proc(Gio::DBusConnection, ::String?, ::String, ::String, ::String, GLib::Variant, Nil)).unbox(user_data).call(connection, sender_name, object_path, interface_name, signal_name, parameters)
+          ::Box(Proc(Gio::DBusConnection, ::String?, ::String, ::String, ::String, GLib::Variant, Nil)).unbox(lib_user_data).call(connection, sender_name, object_path, interface_name, signal_name, parameters)
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         user_data_free_func = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -1821,7 +1820,7 @@ module Gio
       end
 
       # C call
-      _retval = LibGio.g_dbus_connection_signal_subscribe(self, sender, interface_name, member, object_path, arg0, flags, callback, user_data, user_data_free_func)
+      _retval = LibGio.g_dbus_connection_signal_subscribe(@pointer, sender, interface_name, member, object_path, arg0, flags, callback, user_data, user_data_free_func)
 
       # Return value handling
 
@@ -1845,7 +1844,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_connection_signal_unsubscribe(self, subscription_id)
+      LibGio.g_dbus_connection_signal_unsubscribe(@pointer, subscription_id)
 
       # Return value handling
     end
@@ -1859,7 +1858,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_connection_start_message_processing(self)
+      LibGio.g_dbus_connection_start_message_processing(@pointer)
 
       # Return value handling
     end
@@ -1875,7 +1874,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_connection_unexport_action_group(self, export_id)
+      LibGio.g_dbus_connection_unexport_action_group(@pointer, export_id)
 
       # Return value handling
     end
@@ -1891,7 +1890,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_dbus_connection_unexport_menu_model(self, export_id)
+      LibGio.g_dbus_connection_unexport_menu_model(@pointer, export_id)
 
       # Return value handling
     end
@@ -1902,7 +1901,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_unregister_object(self, registration_id)
+      _retval = LibGio.g_dbus_connection_unregister_object(@pointer, registration_id)
 
       # Return value handling
 
@@ -1915,7 +1914,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_dbus_connection_unregister_subtree(self, registration_id)
+      _retval = LibGio.g_dbus_connection_unregister_subtree(@pointer, registration_id)
 
       # Return value handling
 
@@ -2017,6 +2016,13 @@ module Gio
       end
 
       def emit(remote_peer_vanished : Bool, error : GLib::Error?) : Nil
+        # Generator::NullableArrayPlan
+        error = if error.nil?
+                  Pointer(Void).null
+                else
+                  error.to_unsafe
+                end
+
         LibGObject.g_signal_emit_by_name(@source, "closed", remote_peer_vanished, error)
       end
     end

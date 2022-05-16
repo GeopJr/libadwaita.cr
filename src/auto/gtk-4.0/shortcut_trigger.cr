@@ -23,15 +23,13 @@ module Gtk
         sizeof(LibGtk::ShortcutTrigger), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ShortcutTrigger, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ShortcutTrigger`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -81,7 +79,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_shortcut_trigger_compare(self, trigger2)
+      _retval = LibGtk.gtk_shortcut_trigger_compare(@pointer, trigger2)
 
       # Return value handling
 
@@ -97,7 +95,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_shortcut_trigger_equal(self, trigger2)
+      _retval = LibGtk.gtk_shortcut_trigger_equal(@pointer, trigger2)
 
       # Return value handling
 
@@ -118,7 +116,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_shortcut_trigger_hash(self)
+      _retval = LibGtk.gtk_shortcut_trigger_hash(@pointer)
 
       # Return value handling
 
@@ -135,7 +133,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_shortcut_trigger_print(self, string)
+      LibGtk.gtk_shortcut_trigger_print(@pointer, string)
 
       # Return value handling
     end
@@ -156,7 +154,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_shortcut_trigger_print_label(self, display, string)
+      _retval = LibGtk.gtk_shortcut_trigger_print_label(@pointer, display, string)
 
       # Return value handling
 
@@ -180,7 +178,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_shortcut_trigger_to_label(self, display)
+      _retval = LibGtk.gtk_shortcut_trigger_to_label(@pointer, display)
 
       # Return value handling
 
@@ -196,7 +194,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_shortcut_trigger_to_string(self)
+      _retval = LibGtk.gtk_shortcut_trigger_to_string(@pointer)
 
       # Return value handling
 
@@ -209,7 +207,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_shortcut_trigger_trigger(self, event, enable_mnemonics)
+      _retval = LibGtk.gtk_shortcut_trigger_trigger(@pointer, event, enable_mnemonics)
 
       # Return value handling
 

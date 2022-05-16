@@ -11,7 +11,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_operation_preview_end_preview(self)
+      LibGtk.gtk_print_operation_preview_end_preview(@pointer)
 
       # Return value handling
     end
@@ -21,7 +21,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_print_operation_preview_is_selected(self, page_nr)
+      _retval = LibGtk.gtk_print_operation_preview_is_selected(@pointer, page_nr)
 
       # Return value handling
 
@@ -33,7 +33,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_print_operation_preview_render_page(self, page_nr)
+      LibGtk.gtk_print_operation_preview_render_page(@pointer, page_nr)
 
       # Return value handling
     end
@@ -65,9 +65,9 @@ module Gtk
       def connect(handler : Proc(Gtk::PrintContext, Gtk::PageSetup, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), lib_page_setup : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           context = Gtk::PrintContext.new(lib_context, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page_setup = Gtk::PageSetup.new(lib_page_setup, :none)
           ::Box(Proc(Gtk::PrintContext, Gtk::PageSetup, Nil)).unbox(_lib_box).call(context, page_setup)
         }.pointer
@@ -79,9 +79,9 @@ module Gtk
       def connect_after(handler : Proc(Gtk::PrintContext, Gtk::PageSetup, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), lib_page_setup : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           context = Gtk::PrintContext.new(lib_context, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page_setup = Gtk::PageSetup.new(lib_page_setup, :none)
           ::Box(Proc(Gtk::PrintContext, Gtk::PageSetup, Nil)).unbox(_lib_box).call(context, page_setup)
         }.pointer
@@ -93,10 +93,10 @@ module Gtk
       def connect(handler : Proc(Gtk::PrintOperationPreview, Gtk::PrintContext, Gtk::PageSetup, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), lib_page_setup : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::PrintOperationPreview__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractPrintOperationPreview.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           context = Gtk::PrintContext.new(lib_context, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page_setup = Gtk::PageSetup.new(lib_page_setup, :none)
           ::Box(Proc(Gtk::PrintOperationPreview, Gtk::PrintContext, Gtk::PageSetup, Nil)).unbox(_lib_box).call(_sender, context, page_setup)
         }.pointer
@@ -108,10 +108,10 @@ module Gtk
       def connect_after(handler : Proc(Gtk::PrintOperationPreview, Gtk::PrintContext, Gtk::PageSetup, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), lib_page_setup : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::PrintOperationPreview__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractPrintOperationPreview.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           context = Gtk::PrintContext.new(lib_context, :none)
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           page_setup = Gtk::PageSetup.new(lib_page_setup, :none)
           ::Box(Proc(Gtk::PrintOperationPreview, Gtk::PrintContext, Gtk::PageSetup, Nil)).unbox(_lib_box).call(_sender, context, page_setup)
         }.pointer
@@ -156,7 +156,7 @@ module Gtk
       def connect(handler : Proc(Gtk::PrintContext, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           context = Gtk::PrintContext.new(lib_context, :none)
           ::Box(Proc(Gtk::PrintContext, Nil)).unbox(_lib_box).call(context)
         }.pointer
@@ -168,7 +168,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::PrintContext, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::GObjectArgPlan
+          # Generator::BuiltInTypeArgPlan
           context = Gtk::PrintContext.new(lib_context, :none)
           ::Box(Proc(Gtk::PrintContext, Nil)).unbox(_lib_box).call(context)
         }.pointer
@@ -180,8 +180,8 @@ module Gtk
       def connect(handler : Proc(Gtk::PrintOperationPreview, Gtk::PrintContext, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::PrintOperationPreview__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractPrintOperationPreview.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           context = Gtk::PrintContext.new(lib_context, :none)
           ::Box(Proc(Gtk::PrintOperationPreview, Gtk::PrintContext, Nil)).unbox(_lib_box).call(_sender, context)
         }.pointer
@@ -193,8 +193,8 @@ module Gtk
       def connect_after(handler : Proc(Gtk::PrintOperationPreview, Gtk::PrintContext, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::PrintOperationPreview__Impl.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::GObjectArgPlan
+          _sender = Gtk::AbstractPrintOperationPreview.new(_lib_sender, GICrystal::Transfer::None)
+          # Generator::BuiltInTypeArgPlan
           context = Gtk::PrintContext.new(lib_context, :none)
           ::Box(Proc(Gtk::PrintOperationPreview, Gtk::PrintContext, Nil)).unbox(_lib_box).call(_sender, context)
         }.pointer
@@ -217,8 +217,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class PrintOperationPreview__Impl < GObject::Object
+  class AbstractPrintOperationPreview < GObject::Object
     include PrintOperationPreview
+
+    GICrystal.define_new_method(Gtk::AbstractPrintOperationPreview, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

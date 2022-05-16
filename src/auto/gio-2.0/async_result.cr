@@ -89,7 +89,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_async_result_get_source_object(self)
+      _retval = LibGio.g_async_result_get_source_object(@pointer)
 
       # Return value handling
 
@@ -101,7 +101,7 @@ module Gio
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGio.g_async_result_get_user_data(self)
+      _retval = LibGio.g_async_result_get_user_data(@pointer)
 
       # Return value handling
 
@@ -121,7 +121,7 @@ module Gio
                    end
 
       # C call
-      _retval = LibGio.g_async_result_is_tagged(self, source_tag)
+      _retval = LibGio.g_async_result_is_tagged(@pointer, source_tag)
 
       # Return value handling
 
@@ -135,7 +135,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_async_result_legacy_propagate_error(self, pointerof(_error))
+      _retval = LibGio.g_async_result_legacy_propagate_error(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -150,8 +150,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class AsyncResult__Impl < GObject::Object
+  class AbstractAsyncResult < GObject::Object
     include AsyncResult
+
+    GICrystal.define_new_method(Gio::AbstractAsyncResult, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

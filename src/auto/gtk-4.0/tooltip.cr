@@ -39,15 +39,13 @@ module Gtk
         sizeof(LibGtk::Tooltip), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Tooltip, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Tooltip`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -79,7 +77,7 @@ module Gtk
                       end
 
       # C call
-      LibGtk.gtk_tooltip_set_custom(self, custom_widget)
+      LibGtk.gtk_tooltip_set_custom(@pointer, custom_widget)
 
       # Return value handling
     end
@@ -99,7 +97,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_tooltip_set_icon(self, paintable)
+      LibGtk.gtk_tooltip_set_icon(@pointer, paintable)
 
       # Return value handling
     end
@@ -120,7 +118,7 @@ module Gtk
               end
 
       # C call
-      LibGtk.gtk_tooltip_set_icon_from_gicon(self, gicon)
+      LibGtk.gtk_tooltip_set_icon_from_gicon(@pointer, gicon)
 
       # Return value handling
     end
@@ -141,7 +139,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_tooltip_set_icon_from_icon_name(self, icon_name)
+      LibGtk.gtk_tooltip_set_icon_from_icon_name(@pointer, icon_name)
 
       # Return value handling
     end
@@ -163,7 +161,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_tooltip_set_markup(self, markup)
+      LibGtk.gtk_tooltip_set_markup(@pointer, markup)
 
       # Return value handling
     end
@@ -185,7 +183,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_tooltip_set_text(self, text)
+      LibGtk.gtk_tooltip_set_text(@pointer, text)
 
       # Return value handling
     end
@@ -203,7 +201,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tooltip_set_tip_area(self, rect)
+      LibGtk.gtk_tooltip_set_tip_area(@pointer, rect)
 
       # Return value handling
     end

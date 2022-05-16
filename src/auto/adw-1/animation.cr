@@ -60,15 +60,13 @@ module Adw
         sizeof(LibAdw::Animation), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Animation, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Animation`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -171,7 +169,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_animation_get_state(self)
+      _retval = LibAdw.adw_animation_get_state(@pointer)
 
       # Return value handling
 
@@ -184,7 +182,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_animation_get_target(self)
+      _retval = LibAdw.adw_animation_get_target(@pointer)
 
       # Return value handling
 
@@ -197,7 +195,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_animation_get_value(self)
+      _retval = LibAdw.adw_animation_get_value(@pointer)
 
       # Return value handling
 
@@ -210,7 +208,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_animation_get_widget(self)
+      _retval = LibAdw.adw_animation_get_widget(@pointer)
 
       # Return value handling
 
@@ -227,7 +225,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_animation_pause(self)
+      LibAdw.adw_animation_pause(@pointer)
 
       # Return value handling
     end
@@ -252,7 +250,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_animation_play(self)
+      LibAdw.adw_animation_play(@pointer)
 
       # Return value handling
     end
@@ -265,7 +263,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_animation_reset(self)
+      LibAdw.adw_animation_reset(@pointer)
 
       # Return value handling
     end
@@ -281,7 +279,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_animation_resume(self)
+      LibAdw.adw_animation_resume(@pointer)
 
       # Return value handling
     end
@@ -298,7 +296,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_animation_skip(self)
+      LibAdw.adw_animation_skip(@pointer)
 
       # Return value handling
     end

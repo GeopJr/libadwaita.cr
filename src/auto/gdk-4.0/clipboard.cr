@@ -29,15 +29,13 @@ module Gdk
         sizeof(LibGdk::Clipboard), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Clipboard, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Clipboard`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -133,7 +131,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_clipboard_get_content(self)
+      _retval = LibGdk.gdk_clipboard_get_content(@pointer)
 
       # Return value handling
 
@@ -146,7 +144,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_clipboard_get_display(self)
+      _retval = LibGdk.gdk_clipboard_get_display(@pointer)
 
       # Return value handling
 
@@ -159,7 +157,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_clipboard_get_formats(self)
+      _retval = LibGdk.gdk_clipboard_get_formats(@pointer)
 
       # Return value handling
 
@@ -178,7 +176,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGdk.gdk_clipboard_is_local(self)
+      _retval = LibGdk.gdk_clipboard_is_local(@pointer)
 
       # Return value handling
 
@@ -217,7 +215,7 @@ module Gdk
                   end
 
       # C call
-      LibGdk.gdk_clipboard_read_async(self, mime_types, io_priority, cancellable, callback, user_data)
+      LibGdk.gdk_clipboard_read_async(@pointer, mime_types, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -235,7 +233,7 @@ module Gdk
       # Generator::OutArgUsedInReturnPlan
       out_mime_type = Pointer(Pointer(LibC::Char)).null
       # C call
-      _retval = LibGdk.gdk_clipboard_read_finish(self, result, out_mime_type, pointerof(_error))
+      _retval = LibGdk.gdk_clipboard_read_finish(@pointer, result, out_mime_type, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -274,7 +272,7 @@ module Gdk
                   end
 
       # C call
-      LibGdk.gdk_clipboard_read_text_async(self, cancellable, callback, user_data)
+      LibGdk.gdk_clipboard_read_text_async(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -289,7 +287,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_clipboard_read_text_finish(self, result, pointerof(_error))
+      _retval = LibGdk.gdk_clipboard_read_text_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -328,7 +326,7 @@ module Gdk
                   end
 
       # C call
-      LibGdk.gdk_clipboard_read_texture_async(self, cancellable, callback, user_data)
+      LibGdk.gdk_clipboard_read_texture_async(@pointer, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -343,7 +341,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_clipboard_read_texture_finish(self, result, pointerof(_error))
+      _retval = LibGdk.gdk_clipboard_read_texture_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -383,7 +381,7 @@ module Gdk
                   end
 
       # C call
-      LibGdk.gdk_clipboard_read_value_async(self, type, io_priority, cancellable, callback, user_data)
+      LibGdk.gdk_clipboard_read_value_async(@pointer, type, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -398,7 +396,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_clipboard_read_value_finish(self, result, pointerof(_error))
+      _retval = LibGdk.gdk_clipboard_read_value_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?
@@ -433,7 +431,7 @@ module Gdk
                  end
 
       # C call
-      _retval = LibGdk.gdk_clipboard_set_content(self, provider)
+      _retval = LibGdk.gdk_clipboard_set_content(@pointer, provider)
 
       # Return value handling
 
@@ -466,7 +464,7 @@ module Gdk
               end
 
       # C call
-      LibGdk.gdk_clipboard_set_value(self, value)
+      LibGdk.gdk_clipboard_set_value(@pointer, value)
 
       # Return value handling
     end
@@ -505,7 +503,7 @@ module Gdk
                   end
 
       # C call
-      LibGdk.gdk_clipboard_store_async(self, io_priority, cancellable, callback, user_data)
+      LibGdk.gdk_clipboard_store_async(@pointer, io_priority, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -520,7 +518,7 @@ module Gdk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGdk.gdk_clipboard_store_finish(self, result, pointerof(_error))
+      _retval = LibGdk.gdk_clipboard_store_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gdk.raise_exception(_error) unless _error.null?

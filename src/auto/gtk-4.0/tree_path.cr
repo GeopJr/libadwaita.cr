@@ -89,7 +89,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_path_append_index(self, index_)
+      LibGtk.gtk_tree_path_append_index(@pointer, index_)
 
       # Return value handling
     end
@@ -99,7 +99,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_path_compare(self, b)
+      _retval = LibGtk.gtk_tree_path_compare(@pointer, b)
 
       # Return value handling
 
@@ -111,7 +111,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_path_copy(self)
+      _retval = LibGtk.gtk_tree_path_copy(@pointer)
 
       # Return value handling
 
@@ -123,7 +123,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_path_down(self)
+      LibGtk.gtk_tree_path_down(@pointer)
 
       # Return value handling
     end
@@ -133,7 +133,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_path_free(self)
+      LibGtk.gtk_tree_path_free(@pointer)
 
       # Return value handling
     end
@@ -143,7 +143,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_path_get_depth(self)
+      _retval = LibGtk.gtk_tree_path_get_depth(@pointer)
 
       # Return value handling
 
@@ -158,7 +158,7 @@ module Gtk
       # Generator::OutArgUsedInReturnPlan
       depth = 0
       # C call
-      _retval = LibGtk.gtk_tree_path_get_indices_with_depth(self, pointerof(depth))
+      _retval = LibGtk.gtk_tree_path_get_indices_with_depth(@pointer, pointerof(depth))
 
       # Return value handling
 
@@ -170,7 +170,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_path_is_ancestor(self, descendant)
+      _retval = LibGtk.gtk_tree_path_is_ancestor(@pointer, descendant)
 
       # Return value handling
 
@@ -182,7 +182,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_path_is_descendant(self, ancestor)
+      _retval = LibGtk.gtk_tree_path_is_descendant(@pointer, ancestor)
 
       # Return value handling
 
@@ -194,7 +194,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_path_next(self)
+      LibGtk.gtk_tree_path_next(@pointer)
 
       # Return value handling
     end
@@ -204,7 +204,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_tree_path_prepend_index(self, index_)
+      LibGtk.gtk_tree_path_prepend_index(@pointer, index_)
 
       # Return value handling
     end
@@ -214,7 +214,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_path_prev(self)
+      _retval = LibGtk.gtk_tree_path_prev(@pointer)
 
       # Return value handling
 
@@ -226,7 +226,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_tree_path_to_string(self)
+      _retval = LibGtk.gtk_tree_path_to_string(@pointer)
 
       # Return value handling
 
@@ -238,7 +238,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_tree_path_up(self)
+      _retval = LibGtk.gtk_tree_path_up(@pointer)
 
       # Return value handling
 

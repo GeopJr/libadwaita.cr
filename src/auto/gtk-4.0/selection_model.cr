@@ -40,7 +40,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_get_selection(self)
+      _retval = LibGtk.gtk_selection_model_get_selection(@pointer)
 
       # Return value handling
 
@@ -52,7 +52,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_get_selection_in_range(self, position, n_items)
+      _retval = LibGtk.gtk_selection_model_get_selection_in_range(@pointer, position, n_items)
 
       # Return value handling
 
@@ -64,7 +64,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_is_selected(self, position)
+      _retval = LibGtk.gtk_selection_model_is_selected(@pointer, position)
 
       # Return value handling
 
@@ -76,7 +76,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_select_all(self)
+      _retval = LibGtk.gtk_selection_model_select_all(@pointer)
 
       # Return value handling
 
@@ -88,7 +88,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_select_item(self, position, unselect_rest)
+      _retval = LibGtk.gtk_selection_model_select_item(@pointer, position, unselect_rest)
 
       # Return value handling
 
@@ -100,7 +100,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_select_range(self, position, n_items, unselect_rest)
+      _retval = LibGtk.gtk_selection_model_select_range(@pointer, position, n_items, unselect_rest)
 
       # Return value handling
 
@@ -112,7 +112,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_selection_model_selection_changed(self, position, n_items)
+      LibGtk.gtk_selection_model_selection_changed(@pointer, position, n_items)
 
       # Return value handling
     end
@@ -122,7 +122,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_set_selection(self, selected, mask)
+      _retval = LibGtk.gtk_selection_model_set_selection(@pointer, selected, mask)
 
       # Return value handling
 
@@ -134,7 +134,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_unselect_all(self)
+      _retval = LibGtk.gtk_selection_model_unselect_all(@pointer)
 
       # Return value handling
 
@@ -146,7 +146,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_unselect_item(self, position)
+      _retval = LibGtk.gtk_selection_model_unselect_item(@pointer, position)
 
       # Return value handling
 
@@ -158,7 +158,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_selection_model_unselect_range(self, position, n_items)
+      _retval = LibGtk.gtk_selection_model_unselect_range(@pointer, position, n_items)
 
       # Return value handling
 
@@ -216,7 +216,7 @@ module Gtk
       def connect(handler : Proc(Gtk::SelectionModel, UInt32, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_n_items : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::SelectionModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractSelectionModel.new(_lib_sender, GICrystal::Transfer::None)
           position = lib_position
           n_items = lib_n_items
           ::Box(Proc(Gtk::SelectionModel, UInt32, UInt32, Nil)).unbox(_lib_box).call(_sender, position, n_items)
@@ -229,7 +229,7 @@ module Gtk
       def connect_after(handler : Proc(Gtk::SelectionModel, UInt32, UInt32, Nil))
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_n_items : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::SelectionModel__Impl.new(_lib_sender, GICrystal::Transfer::None)
+          _sender = Gtk::AbstractSelectionModel.new(_lib_sender, GICrystal::Transfer::None)
           position = lib_position
           n_items = lib_n_items
           ::Box(Proc(Gtk::SelectionModel, UInt32, UInt32, Nil)).unbox(_lib_box).call(_sender, position, n_items)
@@ -253,8 +253,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class SelectionModel__Impl < GObject::Object
+  class AbstractSelectionModel < GObject::Object
     include SelectionModel
+
+    GICrystal.define_new_method(Gtk::AbstractSelectionModel, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

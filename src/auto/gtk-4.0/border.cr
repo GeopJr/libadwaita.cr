@@ -94,7 +94,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_border_copy(self)
+      _retval = LibGtk.gtk_border_copy(@pointer)
 
       # Return value handling
 
@@ -106,7 +106,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_border_free(self)
+      LibGtk.gtk_border_free(@pointer)
 
       # Return value handling
     end

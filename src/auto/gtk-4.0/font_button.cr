@@ -41,15 +41,13 @@ module Gtk
         sizeof(LibGtk::FontButton), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(FontButton, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `FontButton`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -403,7 +401,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_font_button_get_modal(self)
+      _retval = LibGtk.gtk_font_button_get_modal(@pointer)
 
       # Return value handling
 
@@ -416,7 +414,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_font_button_get_title(self)
+      _retval = LibGtk.gtk_font_button_get_title(@pointer)
 
       # Return value handling
 
@@ -429,7 +427,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_font_button_get_use_font(self)
+      _retval = LibGtk.gtk_font_button_get_use_font(@pointer)
 
       # Return value handling
 
@@ -442,7 +440,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_font_button_get_use_size(self)
+      _retval = LibGtk.gtk_font_button_get_use_size(@pointer)
 
       # Return value handling
 
@@ -455,7 +453,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_button_set_modal(self, modal)
+      LibGtk.gtk_font_button_set_modal(@pointer, modal)
 
       # Return value handling
     end
@@ -466,7 +464,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_button_set_title(self, title)
+      LibGtk.gtk_font_button_set_title(@pointer, title)
 
       # Return value handling
     end
@@ -478,7 +476,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_button_set_use_font(self, use_font)
+      LibGtk.gtk_font_button_set_use_font(@pointer, use_font)
 
       # Return value handling
     end
@@ -490,7 +488,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_font_button_set_use_size(self, use_size)
+      LibGtk.gtk_font_button_set_use_size(@pointer, use_size)
 
       # Return value handling
     end

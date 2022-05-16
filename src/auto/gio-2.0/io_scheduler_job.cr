@@ -26,8 +26,7 @@ module Gio
       if func
         _box = ::Box.box(func)
         func = ->(lib_user_data : Pointer(Void)) {
-          user_data = lib_user_data
-          ::Box(Proc(Bool)).unbox(user_data).call
+          ::Box(Proc(Bool)).unbox(lib_user_data).call
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -36,7 +35,7 @@ module Gio
       end
 
       # C call
-      _retval = LibGio.g_io_scheduler_job_send_to_mainloop(self, func, user_data, notify)
+      _retval = LibGio.g_io_scheduler_job_send_to_mainloop(@pointer, func, user_data, notify)
 
       # Return value handling
 
@@ -53,8 +52,7 @@ module Gio
       if func
         _box = ::Box.box(func)
         func = ->(lib_user_data : Pointer(Void)) {
-          user_data = lib_user_data
-          ::Box(Proc(Bool)).unbox(user_data).call
+          ::Box(Proc(Bool)).unbox(lib_user_data).call
         }.pointer
         user_data = GICrystal::ClosureDataManager.register(_box)
         notify = ->GICrystal::ClosureDataManager.deregister(Pointer(Void)).pointer
@@ -63,7 +61,7 @@ module Gio
       end
 
       # C call
-      LibGio.g_io_scheduler_job_send_to_mainloop_async(self, func, user_data, notify)
+      LibGio.g_io_scheduler_job_send_to_mainloop_async(@pointer, func, user_data, notify)
 
       # Return value handling
     end

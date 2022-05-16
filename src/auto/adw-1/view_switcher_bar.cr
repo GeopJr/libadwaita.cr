@@ -78,15 +78,13 @@ module Adw
         sizeof(LibAdw::ViewSwitcherBar), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ViewSwitcherBar, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ViewSwitcherBar`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -351,7 +349,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_switcher_bar_get_reveal(self)
+      _retval = LibAdw.adw_view_switcher_bar_get_reveal(@pointer)
 
       # Return value handling
 
@@ -364,7 +362,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_switcher_bar_get_stack(self)
+      _retval = LibAdw.adw_view_switcher_bar_get_stack(@pointer)
 
       # Return value handling
 
@@ -377,7 +375,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_view_switcher_bar_set_reveal(self, reveal)
+      LibAdw.adw_view_switcher_bar_set_reveal(@pointer, reveal)
 
       # Return value handling
     end
@@ -396,7 +394,7 @@ module Adw
               end
 
       # C call
-      LibAdw.adw_view_switcher_bar_set_stack(self, stack)
+      LibAdw.adw_view_switcher_bar_set_stack(@pointer, stack)
 
       # Return value handling
     end

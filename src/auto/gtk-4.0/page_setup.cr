@@ -57,15 +57,13 @@ module Gtk
         sizeof(LibGtk::PageSetup), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(PageSetup, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `PageSetup`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -173,7 +171,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_copy(self)
+      _retval = LibGtk.gtk_page_setup_copy(@pointer)
 
       # Return value handling
 
@@ -186,7 +184,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_bottom_margin(self, unit)
+      _retval = LibGtk.gtk_page_setup_get_bottom_margin(@pointer, unit)
 
       # Return value handling
 
@@ -199,7 +197,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_left_margin(self, unit)
+      _retval = LibGtk.gtk_page_setup_get_left_margin(@pointer, unit)
 
       # Return value handling
 
@@ -212,7 +210,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_orientation(self)
+      _retval = LibGtk.gtk_page_setup_get_orientation(@pointer)
 
       # Return value handling
 
@@ -229,7 +227,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_page_height(self, unit)
+      _retval = LibGtk.gtk_page_setup_get_page_height(@pointer, unit)
 
       # Return value handling
 
@@ -246,7 +244,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_page_width(self, unit)
+      _retval = LibGtk.gtk_page_setup_get_page_width(@pointer, unit)
 
       # Return value handling
 
@@ -263,7 +261,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_paper_height(self, unit)
+      _retval = LibGtk.gtk_page_setup_get_paper_height(@pointer, unit)
 
       # Return value handling
 
@@ -276,7 +274,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_paper_size(self)
+      _retval = LibGtk.gtk_page_setup_get_paper_size(@pointer)
 
       # Return value handling
 
@@ -293,7 +291,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_paper_width(self, unit)
+      _retval = LibGtk.gtk_page_setup_get_paper_width(@pointer, unit)
 
       # Return value handling
 
@@ -306,7 +304,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_right_margin(self, unit)
+      _retval = LibGtk.gtk_page_setup_get_right_margin(@pointer, unit)
 
       # Return value handling
 
@@ -319,7 +317,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_get_top_margin(self, unit)
+      _retval = LibGtk.gtk_page_setup_get_top_margin(@pointer, unit)
 
       # Return value handling
 
@@ -336,7 +334,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_page_setup_load_file(self, file_name, pointerof(_error))
+      _retval = LibGtk.gtk_page_setup_load_file(@pointer, file_name, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -363,7 +361,7 @@ module Gtk
                    end
 
       # C call
-      _retval = LibGtk.gtk_page_setup_load_key_file(self, key_file, group_name, pointerof(_error))
+      _retval = LibGtk.gtk_page_setup_load_key_file(@pointer, key_file, group_name, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -379,7 +377,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_page_setup_set_bottom_margin(self, margin, unit)
+      LibGtk.gtk_page_setup_set_bottom_margin(@pointer, margin, unit)
 
       # Return value handling
     end
@@ -390,7 +388,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_page_setup_set_left_margin(self, margin, unit)
+      LibGtk.gtk_page_setup_set_left_margin(@pointer, margin, unit)
 
       # Return value handling
     end
@@ -401,7 +399,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_page_setup_set_orientation(self, orientation)
+      LibGtk.gtk_page_setup_set_orientation(@pointer, orientation)
 
       # Return value handling
     end
@@ -415,7 +413,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_page_setup_set_paper_size(self, size)
+      LibGtk.gtk_page_setup_set_paper_size(@pointer, size)
 
       # Return value handling
     end
@@ -427,7 +425,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_page_setup_set_paper_size_and_default_margins(self, size)
+      LibGtk.gtk_page_setup_set_paper_size_and_default_margins(@pointer, size)
 
       # Return value handling
     end
@@ -438,7 +436,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_page_setup_set_right_margin(self, margin, unit)
+      LibGtk.gtk_page_setup_set_right_margin(@pointer, margin, unit)
 
       # Return value handling
     end
@@ -449,7 +447,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_page_setup_set_top_margin(self, margin, unit)
+      LibGtk.gtk_page_setup_set_top_margin(@pointer, margin, unit)
 
       # Return value handling
     end
@@ -462,7 +460,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_page_setup_to_file(self, file_name, pointerof(_error))
+      _retval = LibGtk.gtk_page_setup_to_file(@pointer, file_name, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -478,7 +476,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_page_setup_to_gvariant(self)
+      _retval = LibGtk.gtk_page_setup_to_gvariant(@pointer)
 
       # Return value handling
 
@@ -499,7 +497,7 @@ module Gtk
                    end
 
       # C call
-      LibGtk.gtk_page_setup_to_key_file(self, key_file, group_name)
+      LibGtk.gtk_page_setup_to_key_file(@pointer, key_file, group_name)
 
       # Return value handling
     end

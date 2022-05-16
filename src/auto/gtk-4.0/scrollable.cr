@@ -97,7 +97,7 @@ module Gtk
       # Generator::CallerAllocatesPlan
       border = Gtk::Border.new
       # C call
-      _retval = LibGtk.gtk_scrollable_get_border(self, border)
+      _retval = LibGtk.gtk_scrollable_get_border(@pointer, border)
 
       # Return value handling
 
@@ -109,7 +109,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrollable_get_hadjustment(self)
+      _retval = LibGtk.gtk_scrollable_get_hadjustment(@pointer)
 
       # Return value handling
 
@@ -121,7 +121,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrollable_get_hscroll_policy(self)
+      _retval = LibGtk.gtk_scrollable_get_hscroll_policy(@pointer)
 
       # Return value handling
 
@@ -133,7 +133,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrollable_get_vadjustment(self)
+      _retval = LibGtk.gtk_scrollable_get_vadjustment(@pointer)
 
       # Return value handling
 
@@ -145,7 +145,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_scrollable_get_vscroll_policy(self)
+      _retval = LibGtk.gtk_scrollable_get_vscroll_policy(@pointer)
 
       # Return value handling
 
@@ -165,7 +165,7 @@ module Gtk
                     end
 
       # C call
-      LibGtk.gtk_scrollable_set_hadjustment(self, hadjustment)
+      LibGtk.gtk_scrollable_set_hadjustment(@pointer, hadjustment)
 
       # Return value handling
     end
@@ -175,7 +175,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrollable_set_hscroll_policy(self, policy)
+      LibGtk.gtk_scrollable_set_hscroll_policy(@pointer, policy)
 
       # Return value handling
     end
@@ -193,7 +193,7 @@ module Gtk
                     end
 
       # C call
-      LibGtk.gtk_scrollable_set_vadjustment(self, vadjustment)
+      LibGtk.gtk_scrollable_set_vadjustment(@pointer, vadjustment)
 
       # Return value handling
     end
@@ -203,7 +203,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_scrollable_set_vscroll_policy(self, policy)
+      LibGtk.gtk_scrollable_set_vscroll_policy(@pointer, policy)
 
       # Return value handling
     end
@@ -213,8 +213,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class Scrollable__Impl < GObject::Object
+  class AbstractScrollable < GObject::Object
     include Scrollable
+
+    GICrystal.define_new_method(Gtk::AbstractScrollable, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

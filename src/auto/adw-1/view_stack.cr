@@ -73,15 +73,13 @@ module Adw
         sizeof(LibAdw::ViewStack), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(ViewStack, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `ViewStack`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -330,7 +328,7 @@ module Adw
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "pages", pointerof(value), Pointer(Void).null)
-      Gtk::SelectionModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gtk::AbstractSelectionModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def vhomogeneous=(value : Bool) : Bool
@@ -399,7 +397,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_stack_add(self, child)
+      _retval = LibAdw.adw_view_stack_add(@pointer, child)
 
       # Return value handling
 
@@ -422,7 +420,7 @@ module Adw
              end
 
       # C call
-      _retval = LibAdw.adw_view_stack_add_named(self, child, name)
+      _retval = LibAdw.adw_view_stack_add_named(@pointer, child, name)
 
       # Return value handling
 
@@ -446,7 +444,7 @@ module Adw
              end
 
       # C call
-      _retval = LibAdw.adw_view_stack_add_titled(self, child, name, title)
+      _retval = LibAdw.adw_view_stack_add_titled(@pointer, child, name, title)
 
       # Return value handling
 
@@ -459,7 +457,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_stack_get_child_by_name(self, name)
+      _retval = LibAdw.adw_view_stack_get_child_by_name(@pointer, name)
 
       # Return value handling
 
@@ -472,7 +470,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_stack_get_hhomogeneous(self)
+      _retval = LibAdw.adw_view_stack_get_hhomogeneous(@pointer)
 
       # Return value handling
 
@@ -485,7 +483,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_stack_get_page(self, child)
+      _retval = LibAdw.adw_view_stack_get_page(@pointer, child)
 
       # Return value handling
 
@@ -502,11 +500,11 @@ module Adw
       # Returns: (transfer full)
 
       # C call
-      _retval = LibAdw.adw_view_stack_get_pages(self)
+      _retval = LibAdw.adw_view_stack_get_pages(@pointer)
 
       # Return value handling
 
-      Gtk::SelectionModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gtk::AbstractSelectionModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets whether @self is vertically homogeneous.
@@ -515,7 +513,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_stack_get_vhomogeneous(self)
+      _retval = LibAdw.adw_view_stack_get_vhomogeneous(@pointer)
 
       # Return value handling
 
@@ -528,7 +526,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_stack_get_visible_child(self)
+      _retval = LibAdw.adw_view_stack_get_visible_child(@pointer)
 
       # Return value handling
 
@@ -541,7 +539,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      _retval = LibAdw.adw_view_stack_get_visible_child_name(self)
+      _retval = LibAdw.adw_view_stack_get_visible_child_name(@pointer)
 
       # Return value handling
 
@@ -554,7 +552,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_view_stack_remove(self, child)
+      LibAdw.adw_view_stack_remove(@pointer, child)
 
       # Return value handling
     end
@@ -565,7 +563,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_view_stack_set_hhomogeneous(self, hhomogeneous)
+      LibAdw.adw_view_stack_set_hhomogeneous(@pointer, hhomogeneous)
 
       # Return value handling
     end
@@ -576,7 +574,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_view_stack_set_vhomogeneous(self, vhomogeneous)
+      LibAdw.adw_view_stack_set_vhomogeneous(@pointer, vhomogeneous)
 
       # Return value handling
     end
@@ -587,7 +585,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_view_stack_set_visible_child(self, child)
+      LibAdw.adw_view_stack_set_visible_child(@pointer, child)
 
       # Return value handling
     end
@@ -598,7 +596,7 @@ module Adw
       # Returns: (transfer none)
 
       # C call
-      LibAdw.adw_view_stack_set_visible_child_name(self, name)
+      LibAdw.adw_view_stack_set_visible_child_name(@pointer, name)
 
       # Return value handling
     end

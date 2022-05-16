@@ -20,15 +20,13 @@ module Gio
         sizeof(LibGio::CharsetConverter), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(CharsetConverter, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `CharsetConverter`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -141,7 +139,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_charset_converter_get_num_fallbacks(self)
+      _retval = LibGio.g_charset_converter_get_num_fallbacks(@pointer)
 
       # Return value handling
 
@@ -154,7 +152,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_charset_converter_get_use_fallback(self)
+      _retval = LibGio.g_charset_converter_get_use_fallback(@pointer)
 
       # Return value handling
 
@@ -167,7 +165,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_charset_converter_set_use_fallback(self, use_fallback)
+      LibGio.g_charset_converter_set_use_fallback(@pointer, use_fallback)
 
       # Return value handling
     end

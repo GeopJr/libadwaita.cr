@@ -70,15 +70,13 @@ module Gtk
         sizeof(LibGtk::Picture), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Picture, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Picture`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -349,7 +347,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "file", pointerof(value), Pointer(Void).null)
-      Gio::File__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractFile.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def keep_aspect_ratio=(value : Bool) : Bool
@@ -379,7 +377,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "paintable", pointerof(value), Pointer(Void).null)
-      Gdk::Paintable__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gdk::AbstractPaintable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     # Creates a new empty `GtkPicture` widget.
@@ -536,7 +534,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_picture_get_alternative_text(self)
+      _retval = LibGtk.gtk_picture_get_alternative_text(@pointer)
 
       # Return value handling
 
@@ -549,7 +547,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_picture_get_can_shrink(self)
+      _retval = LibGtk.gtk_picture_get_can_shrink(@pointer)
 
       # Return value handling
 
@@ -565,11 +563,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_picture_get_file(self)
+      _retval = LibGtk.gtk_picture_get_file(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Returns whether the `GtkPicture` preserves its contents aspect ratio.
@@ -578,7 +576,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_picture_get_keep_aspect_ratio(self)
+      _retval = LibGtk.gtk_picture_get_keep_aspect_ratio(@pointer)
 
       # Return value handling
 
@@ -591,11 +589,11 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_picture_get_paintable(self)
+      _retval = LibGtk.gtk_picture_get_paintable(@pointer)
 
       # Return value handling
 
-      Gdk::Paintable__Impl.new(_retval, GICrystal::Transfer::None) unless _retval.null?
+      Gdk::AbstractPaintable.new(_retval, GICrystal::Transfer::None) unless _retval.null?
     end
 
     # Sets an alternative textual description for the picture contents.
@@ -618,7 +616,7 @@ module Gtk
                          end
 
       # C call
-      LibGtk.gtk_picture_set_alternative_text(self, alternative_text)
+      LibGtk.gtk_picture_set_alternative_text(@pointer, alternative_text)
 
       # Return value handling
     end
@@ -638,7 +636,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_picture_set_can_shrink(self, can_shrink)
+      LibGtk.gtk_picture_set_can_shrink(@pointer, can_shrink)
 
       # Return value handling
     end
@@ -659,7 +657,7 @@ module Gtk
              end
 
       # C call
-      LibGtk.gtk_picture_set_file(self, file)
+      LibGtk.gtk_picture_set_file(@pointer, file)
 
       # Return value handling
     end
@@ -680,7 +678,7 @@ module Gtk
                  end
 
       # C call
-      LibGtk.gtk_picture_set_filename(self, filename)
+      LibGtk.gtk_picture_set_filename(@pointer, filename)
 
       # Return value handling
     end
@@ -698,7 +696,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_picture_set_keep_aspect_ratio(self, keep_aspect_ratio)
+      LibGtk.gtk_picture_set_keep_aspect_ratio(@pointer, keep_aspect_ratio)
 
       # Return value handling
     end
@@ -721,7 +719,7 @@ module Gtk
                   end
 
       # C call
-      LibGtk.gtk_picture_set_paintable(self, paintable)
+      LibGtk.gtk_picture_set_paintable(@pointer, paintable)
 
       # Return value handling
     end
@@ -744,7 +742,7 @@ module Gtk
                end
 
       # C call
-      LibGtk.gtk_picture_set_pixbuf(self, pixbuf)
+      LibGtk.gtk_picture_set_pixbuf(@pointer, pixbuf)
 
       # Return value handling
     end
@@ -766,7 +764,7 @@ module Gtk
                       end
 
       # C call
-      LibGtk.gtk_picture_set_resource(self, resource_path)
+      LibGtk.gtk_picture_set_resource(@pointer, resource_path)
 
       # Return value handling
     end

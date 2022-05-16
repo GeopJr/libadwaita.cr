@@ -24,7 +24,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_toplevel_size_get_bounds(self, bounds_width, bounds_height)
+      LibGdk.gdk_toplevel_size_get_bounds(@pointer, bounds_width, bounds_height)
 
       # Return value handling
     end
@@ -34,7 +34,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_toplevel_size_set_min_size(self, min_width, min_height)
+      LibGdk.gdk_toplevel_size_set_min_size(@pointer, min_width, min_height)
 
       # Return value handling
     end
@@ -44,7 +44,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_toplevel_size_set_shadow_width(self, left, right, top, bottom)
+      LibGdk.gdk_toplevel_size_set_shadow_width(@pointer, left, right, top, bottom)
 
       # Return value handling
     end
@@ -54,7 +54,7 @@ module Gdk
       # Returns: (transfer none)
 
       # C call
-      LibGdk.gdk_toplevel_size_set_size(self, width, height)
+      LibGdk.gdk_toplevel_size_set_size(@pointer, width, height)
 
       # Return value handling
     end

@@ -90,7 +90,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "filters", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def select_multiple=(value : Bool) : Bool
@@ -113,7 +113,7 @@ module Gtk
 
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "shortcut-folders", pointerof(value), Pointer(Void).null)
-      Gio::ListModel__Impl.new(value, GICrystal::Transfer::None) unless value.null?
+      Gio::AbstractListModel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
     def add_choice(id : ::String, label : ::String, options : Enumerable(::String)?, option_labels : Enumerable(::String)?) : Nil
@@ -136,7 +136,7 @@ module Gtk
                       end
 
       # C call
-      LibGtk.gtk_file_chooser_add_choice(self, id, label, options, option_labels)
+      LibGtk.gtk_file_chooser_add_choice(@pointer, id, label, options, option_labels)
 
       # Return value handling
     end
@@ -146,7 +146,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_chooser_add_filter(self, filter)
+      LibGtk.gtk_file_chooser_add_filter(@pointer, filter)
 
       # Return value handling
     end
@@ -158,7 +158,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_add_shortcut_folder(self, folder, pointerof(_error))
+      _retval = LibGtk.gtk_file_chooser_add_shortcut_folder(@pointer, folder, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -173,7 +173,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_action(self)
+      _retval = LibGtk.gtk_file_chooser_get_action(@pointer)
 
       # Return value handling
 
@@ -185,7 +185,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_choice(self, id)
+      _retval = LibGtk.gtk_file_chooser_get_choice(@pointer, id)
 
       # Return value handling
 
@@ -197,7 +197,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_create_folders(self)
+      _retval = LibGtk.gtk_file_chooser_get_create_folders(@pointer)
 
       # Return value handling
 
@@ -209,11 +209,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_current_folder(self)
+      _retval = LibGtk.gtk_file_chooser_get_current_folder(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def current_name : ::String?
@@ -221,7 +221,7 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_current_name(self)
+      _retval = LibGtk.gtk_file_chooser_get_current_name(@pointer)
 
       # Return value handling
 
@@ -233,11 +233,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_file(self)
+      _retval = LibGtk.gtk_file_chooser_get_file(@pointer)
 
       # Return value handling
 
-      Gio::File__Impl.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
+      Gio::AbstractFile.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def files : Gio::ListModel
@@ -245,11 +245,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_files(self)
+      _retval = LibGtk.gtk_file_chooser_get_files(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     def filter : Gtk::FileFilter?
@@ -257,7 +257,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_filter(self)
+      _retval = LibGtk.gtk_file_chooser_get_filter(@pointer)
 
       # Return value handling
 
@@ -269,11 +269,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_filters(self)
+      _retval = LibGtk.gtk_file_chooser_get_filters(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     def select_multiple : Bool
@@ -281,7 +281,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_select_multiple(self)
+      _retval = LibGtk.gtk_file_chooser_get_select_multiple(@pointer)
 
       # Return value handling
 
@@ -293,11 +293,11 @@ module Gtk
       # Returns: (transfer full)
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_get_shortcut_folders(self)
+      _retval = LibGtk.gtk_file_chooser_get_shortcut_folders(@pointer)
 
       # Return value handling
 
-      Gio::ListModel__Impl.new(_retval, GICrystal::Transfer::Full)
+      Gio::AbstractListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     def remove_choice(id : ::String) : Nil
@@ -305,7 +305,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_chooser_remove_choice(self, id)
+      LibGtk.gtk_file_chooser_remove_choice(@pointer, id)
 
       # Return value handling
     end
@@ -315,7 +315,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_chooser_remove_filter(self, filter)
+      LibGtk.gtk_file_chooser_remove_filter(@pointer, filter)
 
       # Return value handling
     end
@@ -327,7 +327,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_remove_shortcut_folder(self, folder, pointerof(_error))
+      _retval = LibGtk.gtk_file_chooser_remove_shortcut_folder(@pointer, folder, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -342,7 +342,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_chooser_set_action(self, action)
+      LibGtk.gtk_file_chooser_set_action(@pointer, action)
 
       # Return value handling
     end
@@ -352,7 +352,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_chooser_set_choice(self, id, option)
+      LibGtk.gtk_file_chooser_set_choice(@pointer, id, option)
 
       # Return value handling
     end
@@ -362,7 +362,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_chooser_set_create_folders(self, create_folders)
+      LibGtk.gtk_file_chooser_set_create_folders(@pointer, create_folders)
 
       # Return value handling
     end
@@ -382,7 +382,7 @@ module Gtk
              end
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_set_current_folder(self, file, pointerof(_error))
+      _retval = LibGtk.gtk_file_chooser_set_current_folder(@pointer, file, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -397,7 +397,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_chooser_set_current_name(self, name)
+      LibGtk.gtk_file_chooser_set_current_name(@pointer, name)
 
       # Return value handling
     end
@@ -409,7 +409,7 @@ module Gtk
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGtk.gtk_file_chooser_set_file(self, file, pointerof(_error))
+      _retval = LibGtk.gtk_file_chooser_set_file(@pointer, file, pointerof(_error))
 
       # Error check
       Gtk.raise_exception(_error) unless _error.null?
@@ -424,7 +424,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_chooser_set_filter(self, filter)
+      LibGtk.gtk_file_chooser_set_filter(@pointer, filter)
 
       # Return value handling
     end
@@ -434,7 +434,7 @@ module Gtk
       # Returns: (transfer none)
 
       # C call
-      LibGtk.gtk_file_chooser_set_select_multiple(self, select_multiple)
+      LibGtk.gtk_file_chooser_set_select_multiple(@pointer, select_multiple)
 
       # Return value handling
     end
@@ -444,8 +444,14 @@ module Gtk
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class FileChooser__Impl < GObject::Object
+  class AbstractFileChooser < GObject::Object
     include FileChooser
+
+    GICrystal.define_new_method(Gtk::AbstractFileChooser, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

@@ -11,7 +11,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_file_descriptor_based_get_fd(self)
+      _retval = LibGio.g_file_descriptor_based_get_fd(@pointer)
 
       # Return value handling
 
@@ -23,8 +23,14 @@ module Gio
 
   # :nodoc:
   @[GObject::GeneratedWrapper]
-  class FileDescriptorBased__Impl < GObject::Object
+  class AbstractFileDescriptorBased < GObject::Object
     include FileDescriptorBased
+
+    GICrystal.define_new_method(Gio::AbstractFileDescriptorBased, g_object_get_qdata, g_object_set_qdata)
+
+    # Forbid users to create instances of this.
+    private def initialize
+    end
 
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64

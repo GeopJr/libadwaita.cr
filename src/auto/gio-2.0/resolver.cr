@@ -20,15 +20,13 @@ module Gio
         sizeof(LibGio::Resolver), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Resolver, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Resolver`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -80,7 +78,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_resolver_lookup_by_address(self, address, cancellable, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_by_address(@pointer, address, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -114,7 +112,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_resolver_lookup_by_address_async(self, address, cancellable, callback, user_data)
+      LibGio.g_resolver_lookup_by_address_async(@pointer, address, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -132,7 +130,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_resolver_lookup_by_address_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_by_address_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -180,7 +178,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_resolver_lookup_by_name(self, hostname, cancellable, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_by_name(@pointer, hostname, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -215,7 +213,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_resolver_lookup_by_name_async(self, hostname, cancellable, callback, user_data)
+      LibGio.g_resolver_lookup_by_name_async(@pointer, hostname, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -233,7 +231,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_resolver_lookup_by_name_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_by_name_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -261,7 +259,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_resolver_lookup_by_name_with_flags(self, hostname, flags, cancellable, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_by_name_with_flags(@pointer, hostname, flags, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -296,7 +294,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_resolver_lookup_by_name_with_flags_async(self, hostname, flags, cancellable, callback, user_data)
+      LibGio.g_resolver_lookup_by_name_with_flags_async(@pointer, hostname, flags, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -314,7 +312,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_resolver_lookup_by_name_with_flags_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_by_name_with_flags_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -349,7 +347,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_resolver_lookup_records(self, rrname, record_type, cancellable, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_records(@pointer, rrname, record_type, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -384,7 +382,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_resolver_lookup_records_async(self, rrname, record_type, cancellable, callback, user_data)
+      LibGio.g_resolver_lookup_records_async(@pointer, rrname, record_type, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -404,7 +402,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_resolver_lookup_records_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_records_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -450,7 +448,7 @@ module Gio
                     end
 
       # C call
-      _retval = LibGio.g_resolver_lookup_service(self, service, protocol, domain, cancellable, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_service(@pointer, service, protocol, domain, cancellable, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -486,7 +484,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_resolver_lookup_service_async(self, service, protocol, domain, cancellable, callback, user_data)
+      LibGio.g_resolver_lookup_service_async(@pointer, service, protocol, domain, cancellable, callback, user_data)
 
       # Return value handling
     end
@@ -504,7 +502,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_resolver_lookup_service_finish(self, result, pointerof(_error))
+      _retval = LibGio.g_resolver_lookup_service_finish(@pointer, result, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -528,7 +526,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_resolver_set_default(self)
+      LibGio.g_resolver_set_default(@pointer)
 
       # Return value handling
     end

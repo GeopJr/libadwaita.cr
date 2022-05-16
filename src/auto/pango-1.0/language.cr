@@ -35,7 +35,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_language_get_sample_string(self)
+      _retval = LibPango.pango_language_get_sample_string(@pointer)
 
       # Return value handling
 
@@ -51,7 +51,7 @@ module Pango
       num_scripts = 0 # Generator::CallerAllocatesPlan
       num_scripts = Int32.new
       # C call
-      _retval = LibPango.pango_language_get_scripts(self, pointerof(num_scripts))
+      _retval = LibPango.pango_language_get_scripts(@pointer, pointerof(num_scripts))
 
       # Return value handling
 
@@ -63,7 +63,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_language_includes_script(self, script)
+      _retval = LibPango.pango_language_includes_script(@pointer, script)
 
       # Return value handling
 
@@ -75,7 +75,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_language_matches(self, range_list)
+      _retval = LibPango.pango_language_matches(@pointer, range_list)
 
       # Return value handling
 
@@ -87,7 +87,7 @@ module Pango
       # Returns: (transfer none)
 
       # C call
-      _retval = LibPango.pango_language_to_string(self)
+      _retval = LibPango.pango_language_to_string(@pointer)
 
       # Return value handling
 

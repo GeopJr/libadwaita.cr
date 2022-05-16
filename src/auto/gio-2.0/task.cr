@@ -514,15 +514,13 @@ module Gio
         sizeof(LibGio::Task), instance_init, 0)
     end
 
-    def self.new(pointer : Pointer(Void), transfer : GICrystal::Transfer) : self
-      instance = LibGObject.g_object_get_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY)
-      return instance.as(self) if instance
+    GICrystal.define_new_method(Task, g_object_get_qdata, g_object_set_qdata)
 
-      instance = {{ @type }}.allocate
-      LibGObject.g_object_set_qdata(pointer, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(instance.object_id))
-      instance.initialize(pointer, transfer)
-      GC.add_finalizer(instance)
-      instance
+    # Initialize a new `Task`.
+    def initialize
+      @pointer = LibGObject.g_object_newv(self.class.g_type, 0, Pointer(Void).null)
+      LibGObject.g_object_ref_sink(self) if LibGObject.g_object_is_floating(self) == 1
+      LibGObject.g_object_set_qdata(self, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # :nodoc:
@@ -686,7 +684,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_cancellable(self)
+      _retval = LibGio.g_task_get_cancellable(@pointer)
 
       # Return value handling
 
@@ -700,7 +698,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_check_cancellable(self)
+      _retval = LibGio.g_task_get_check_cancellable(@pointer)
 
       # Return value handling
 
@@ -715,7 +713,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_completed(self)
+      _retval = LibGio.g_task_get_completed(@pointer)
 
       # Return value handling
 
@@ -734,7 +732,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_context(self)
+      _retval = LibGio.g_task_get_context(@pointer)
 
       # Return value handling
 
@@ -747,7 +745,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_name(self)
+      _retval = LibGio.g_task_get_name(@pointer)
 
       # Return value handling
 
@@ -760,7 +758,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_priority(self)
+      _retval = LibGio.g_task_get_priority(@pointer)
 
       # Return value handling
 
@@ -774,7 +772,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_return_on_cancel(self)
+      _retval = LibGio.g_task_get_return_on_cancel(@pointer)
 
       # Return value handling
 
@@ -788,7 +786,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_source_object(self)
+      _retval = LibGio.g_task_get_source_object(@pointer)
 
       # Return value handling
 
@@ -801,7 +799,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_source_tag(self)
+      _retval = LibGio.g_task_get_source_tag(@pointer)
 
       # Return value handling
 
@@ -814,7 +812,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_get_task_data(self)
+      _retval = LibGio.g_task_get_task_data(@pointer)
 
       # Return value handling
 
@@ -827,7 +825,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_had_error(self)
+      _retval = LibGio.g_task_had_error(@pointer)
 
       # Return value handling
 
@@ -848,7 +846,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_task_propagate_boolean(self, pointerof(_error))
+      _retval = LibGio.g_task_propagate_boolean(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -872,7 +870,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_task_propagate_int(self, pointerof(_error))
+      _retval = LibGio.g_task_propagate_int(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -897,7 +895,7 @@ module Gio
       _error = Pointer(LibGLib::Error).null
 
       # C call
-      _retval = LibGio.g_task_propagate_pointer(self, pointerof(_error))
+      _retval = LibGio.g_task_propagate_pointer(@pointer, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -927,7 +925,7 @@ module Gio
       # Generator::CallerAllocatesPlan
       value = GObject::Value.new
       # C call
-      _retval = LibGio.g_task_propagate_value(self, value, pointerof(_error))
+      _retval = LibGio.g_task_propagate_value(@pointer, value, pointerof(_error))
 
       # Error check
       Gio.raise_exception(_error) unless _error.null?
@@ -945,7 +943,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_task_return_boolean(self, result)
+      LibGio.g_task_return_boolean(@pointer, result)
 
       # Return value handling
     end
@@ -967,7 +965,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_task_return_error(self, error)
+      LibGio.g_task_return_error(@pointer, error)
 
       # Return value handling
     end
@@ -981,7 +979,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_return_error_if_cancelled(self)
+      _retval = LibGio.g_task_return_error_if_cancelled(@pointer)
 
       # Return value handling
 
@@ -996,7 +994,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_task_return_int(self, result)
+      LibGio.g_task_return_int(@pointer, result)
 
       # Return value handling
     end
@@ -1033,7 +1031,7 @@ module Gio
                end
 
       # C call
-      LibGio.g_task_return_pointer(self, result, result_destroy)
+      LibGio.g_task_return_pointer(@pointer, result, result_destroy)
 
       # Return value handling
     end
@@ -1061,7 +1059,7 @@ module Gio
                end
 
       # C call
-      LibGio.g_task_return_value(self, result)
+      LibGio.g_task_return_value(@pointer, result)
 
       # Return value handling
     end
@@ -1083,7 +1081,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_task_run_in_thread(self, task_func)
+      LibGio.g_task_run_in_thread(@pointer, task_func)
 
       # Return value handling
     end
@@ -1109,7 +1107,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_task_run_in_thread_sync(self, task_func)
+      LibGio.g_task_run_in_thread_sync(@pointer, task_func)
 
       # Return value handling
     end
@@ -1133,7 +1131,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_task_set_check_cancellable(self, check_cancellable)
+      LibGio.g_task_set_check_cancellable(@pointer, check_cancellable)
 
       # Return value handling
     end
@@ -1161,7 +1159,7 @@ module Gio
              end
 
       # C call
-      LibGio.g_task_set_name(self, name)
+      LibGio.g_task_set_name(@pointer, name)
 
       # Return value handling
     end
@@ -1178,7 +1176,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      LibGio.g_task_set_priority(self, priority)
+      LibGio.g_task_set_priority(@pointer, priority)
 
       # Return value handling
     end
@@ -1216,7 +1214,7 @@ module Gio
       # Returns: (transfer none)
 
       # C call
-      _retval = LibGio.g_task_set_return_on_cancel(self, return_on_cancel)
+      _retval = LibGio.g_task_set_return_on_cancel(@pointer, return_on_cancel)
 
       # Return value handling
 
@@ -1248,7 +1246,7 @@ module Gio
                    end
 
       # C call
-      LibGio.g_task_set_source_tag(self, source_tag)
+      LibGio.g_task_set_source_tag(@pointer, source_tag)
 
       # Return value handling
     end
@@ -1268,7 +1266,7 @@ module Gio
                   end
 
       # C call
-      LibGio.g_task_set_task_data(self, task_data, task_data_destroy)
+      LibGio.g_task_set_task_data(@pointer, task_data, task_data_destroy)
 
       # Return value handling
     end
