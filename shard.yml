@@ -9,7 +9,7 @@ authors:
 dependencies:
   gtk4:
     github: hugopl/gtk4.cr
-    version: "~> 0.9.0"
+    version: "~> 0.10.0"
 
 crystal: ">= 1.0.0"
 
