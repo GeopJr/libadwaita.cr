@@ -329,21 +329,6 @@ module Adw
       value
     end
 
-    # Creates a new `AdwClampScrollable`.
-    def initialize
-      # adw_clamp_scrollable_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_clamp_scrollable_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the child widget of @self.
     def child : Gtk::Widget?
       # adw_clamp_scrollable_get_child: (Method | Getter)

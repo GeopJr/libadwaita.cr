@@ -343,21 +343,6 @@ module Gtk
       Gtk::TreeListRow.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new `GtkTreeExpander`
-    def initialize
-      # gtk_tree_expander_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_tree_expander_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the child widget displayed by @self.
     def child : Gtk::Widget?
       # gtk_tree_expander_get_child: (Method | Getter)

@@ -162,20 +162,6 @@ module Gtk
       Gio::InputStream.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new empty media file.
-    def initialize
-      # gtk_media_file_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_media_file_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a new media file to play @file.
     def self.new_for_file(file : Gio::File) : self
       # gtk_media_file_new_for_file: (Constructor)

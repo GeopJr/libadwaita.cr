@@ -67,7 +67,7 @@ module Gtk
     end
 
     # Creates a new `GtkStringList` with the given @strings.
-    def initialize(strings : Enumerable(::String)?)
+    def self.new(strings : Enumerable(::String)?) : self
       # gtk_string_list_new: (Constructor)
       # @strings: (nullable) (array zero-terminated=1 element-type Utf8)
       # Returns: (transfer full)
@@ -84,12 +84,11 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::StringList.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def initialize(*strings : ::String)
-      initialize(strings)
+    def self.new(*strings : ::String)
+      self.new(strings)
     end
 
     # Appends @string to @self.

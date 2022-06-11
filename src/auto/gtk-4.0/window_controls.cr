@@ -338,7 +338,7 @@ module Gtk
     end
 
     # Creates a new `GtkWindowControls`.
-    def initialize(side : Gtk::PackType)
+    def self.new(side : Gtk::PackType) : self
       # gtk_window_controls_new: (Constructor)
       # Returns: (transfer none)
 
@@ -348,8 +348,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::WindowControls.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the decoration layout of this `GtkWindowControls`.

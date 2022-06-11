@@ -118,7 +118,7 @@ module Gio
     # want to export all of your objects before doing so to avoid
     # [InterfacesAdded](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
     # signals being emitted.
-    def initialize(object_path : ::String)
+    def self.new(object_path : ::String) : self
       # g_dbus_object_manager_server_new: (Constructor)
       # Returns: (transfer full)
 
@@ -127,8 +127,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::DBusObjectManagerServer.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Exports @object on @manager.

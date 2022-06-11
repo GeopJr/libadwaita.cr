@@ -95,7 +95,7 @@ module Gio
 
     # Creates a new #GInputStream from the given @base_stream, with
     # a buffer set to the default size (4 kilobytes).
-    def initialize(base_stream : Gio::InputStream)
+    def self.new(base_stream : Gio::InputStream) : self
       # g_buffered_input_stream_new: (Constructor)
       # Returns: (transfer full)
 
@@ -104,8 +104,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::BufferedInputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new #GBufferedInputStream from the given @base_stream,

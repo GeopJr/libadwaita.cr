@@ -5,11 +5,10 @@ module GdkPixbuf
   class PixbufNonAnim < PixbufAnimation
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGdkPixbuf::PixbufNonAnim), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(PixbufNonAnim, g_object_get_qdata, g_object_set_qdata)
@@ -31,7 +30,7 @@ module GdkPixbuf
       LibGdkPixbuf.gdk_pixbuf_non_anim_get_type
     end
 
-    def initialize(pixbuf : GdkPixbuf::Pixbuf)
+    def self.new(pixbuf : GdkPixbuf::Pixbuf) : self
       # gdk_pixbuf_non_anim_new: (Constructor)
       # Returns: (transfer full)
 
@@ -40,8 +39,7 @@ module GdkPixbuf
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GdkPixbuf::PixbufNonAnim.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

@@ -54,11 +54,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::LockButton), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(LockButton, g_object_get_qdata, g_object_set_qdata)
@@ -427,7 +426,7 @@ module Gtk
     end
 
     # Creates a new lock button which reflects the @permission.
-    def initialize(permission : Gio::Permission?)
+    def self.new(permission : Gio::Permission?) : self
       # gtk_lock_button_new: (Constructor)
       # @permission: (nullable)
       # Returns: (transfer none)
@@ -445,8 +444,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::LockButton.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Obtains the `GPermission` object that controls @button.

@@ -40,11 +40,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::FontChooserDialog), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(FontChooserDialog, g_object_get_qdata, g_object_set_qdata)
@@ -418,7 +417,7 @@ module Gtk
     end
 
     # Creates a new `GtkFontChooserDialog`.
-    def initialize(title : ::String?, parent : Gtk::Window?)
+    def self.new(title : ::String?, parent : Gtk::Window?) : self
       # gtk_font_chooser_dialog_new: (Constructor)
       # @title: (nullable)
       # @parent: (nullable)
@@ -443,8 +442,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::FontChooserDialog.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

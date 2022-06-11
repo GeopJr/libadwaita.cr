@@ -17,11 +17,10 @@ module Gtk
   class CellRendererSpinner < CellRenderer
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::CellRendererSpinner), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(CellRendererSpinner, g_object_get_qdata, g_object_set_qdata)
@@ -192,22 +191,6 @@ module Gtk
       value = uninitialized UInt32
       LibGObject.g_object_get(self, "size", pointerof(value), Pointer(Void).null)
       Gtk::IconSize.new(value)
-    end
-
-    # Returns a new cell renderer which will show a spinner to indicate
-    # activity.
-    def initialize
-      # gtk_cell_renderer_spinner_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_cell_renderer_spinner_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
   end
 end

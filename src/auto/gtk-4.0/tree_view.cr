@@ -683,21 +683,6 @@ module Gtk
       value
     end
 
-    # Creates a new `GtkTreeView` widget.
-    def initialize
-      # gtk_tree_view_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_tree_view_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a new `GtkTreeView` widget with the model initialized to @model.
     def self.new_with_model(model : Gtk::TreeModel) : self
       # gtk_tree_view_new_with_model: (Constructor)
@@ -2278,70 +2263,36 @@ module Gtk
     end
 
     # The number of columns of the treeview has changed.
-    struct ColumnsChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ColumnsChangedSignal < GObject::Signal
+      def name : String
         @detail ? "columns-changed::#{@detail}" : "columns-changed"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Nil))
+      def connect(handler : Proc(Gtk::TreeView, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TreeView, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeView, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -2354,70 +2305,36 @@ module Gtk
     end
 
     # The position of the cursor (focused cell) has changed.
-    struct CursorChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct CursorChangedSignal < GObject::Signal
+      def name : String
         @detail ? "cursor-changed::#{@detail}" : "cursor-changed"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Nil))
+      def connect(handler : Proc(Gtk::TreeView, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TreeView, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeView, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -2429,31 +2346,16 @@ module Gtk
       CursorChangedSignal.new(self)
     end
 
-    struct ExpandCollapseCursorRowSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ExpandCollapseCursorRowSignal < GObject::Signal
+      def name : String
         @detail ? "expand-collapse-cursor-row::#{@detail}" : "expand-collapse-cursor-row"
       end
 
-      def connect(&block : Proc(Bool, Bool, Bool, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Bool, Bool, Bool, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Bool, Bool, Bool, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Bool, Bool, Bool, Bool))
+      def connect(handler : Proc(Bool, Bool, Bool, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : LibC::Int, lib_p0 : LibC::Int, lib_p1 : LibC::Int, _lib_box : Pointer(Void)) {
           object = lib_object
@@ -2462,24 +2364,12 @@ module Gtk
           ::Box(Proc(Bool, Bool, Bool, Bool)).unbox(_lib_box).call(object, p0, p1)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Bool, Bool, Bool, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_object : LibC::Int, lib_p0 : LibC::Int, lib_p1 : LibC::Int, _lib_box : Pointer(Void)) {
-          object = lib_object
-          p0 = lib_p0
-          p1 = lib_p1
-          ::Box(Proc(Bool, Bool, Bool, Bool)).unbox(_lib_box).call(object, p0, p1)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Bool, Bool, Bool, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Bool, Bool, Bool, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : LibC::Int, lib_p0 : LibC::Int, lib_p1 : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
@@ -2489,22 +2379,9 @@ module Gtk
           ::Box(Proc(Gtk::TreeView, Bool, Bool, Bool, Bool)).unbox(_lib_box).call(_sender, object, p0, p1)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Bool, Bool, Bool, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_object : LibC::Int, lib_p0 : LibC::Int, lib_p1 : LibC::Int, _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          object = lib_object
-          p0 = lib_p0
-          p1 = lib_p1
-          ::Box(Proc(Gtk::TreeView, Bool, Bool, Bool, Bool)).unbox(_lib_box).call(_sender, object, p0, p1)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(object : Bool, p0 : Bool, p1 : Bool) : Nil
@@ -2525,31 +2402,16 @@ module Gtk
     # programmatically. In contrast to gtk_tree_view_set_cursor() and
     # gtk_tree_view_set_cursor_on_cell() when moving horizontally
     # `GtkTreeView`::move-cursor does not reset the current selection.
-    struct MoveCursorSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct MoveCursorSignal < GObject::Signal
+      def name : String
         @detail ? "move-cursor::#{@detail}" : "move-cursor"
       end
 
-      def connect(&block : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
+      def connect(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_direction : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2560,26 +2422,12 @@ module Gtk
           ::Box(Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool)).unbox(_lib_box).call(step, direction, _extend, modify)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_direction : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          step = Gtk::MovementStep.new(lib_step)
-          direction = lib_direction
-          _extend = lib_extend
-          modify = lib_modify
-          ::Box(Proc(Gtk::MovementStep, Int32, Bool, Bool, Bool)).unbox(_lib_box).call(step, direction, _extend, modify)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Gtk::MovementStep, Int32, Bool, Bool, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Gtk::MovementStep, Int32, Bool, Bool, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_direction : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
@@ -2591,24 +2439,9 @@ module Gtk
           ::Box(Proc(Gtk::TreeView, Gtk::MovementStep, Int32, Bool, Bool, Bool)).unbox(_lib_box).call(_sender, step, direction, _extend, modify)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Gtk::MovementStep, Int32, Bool, Bool, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_step : UInt32, lib_direction : Int32, lib__extend : LibC::Int, lib_modify : LibC::Int, _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          step = Gtk::MovementStep.new(lib_step)
-          direction = lib_direction
-          _extend = lib_extend
-          modify = lib_modify
-          ::Box(Proc(Gtk::TreeView, Gtk::MovementStep, Int32, Bool, Bool, Bool)).unbox(_lib_box).call(_sender, step, direction, _extend, modify)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(step : Gtk::MovementStep, direction : Int32, extend _extend : Bool, modify : Bool) : Nil
@@ -2634,31 +2467,16 @@ module Gtk
     # For selection handling refer to the
     # [tree widget conceptual overview](section-tree-widget.html)
     # as well as `GtkTreeSelection`.
-    struct RowActivatedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct RowActivatedSignal < GObject::Signal
+      def name : String
         @detail ? "row-activated::#{@detail}" : "row-activated"
       end
 
-      def connect(&block : Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil))
+      def connect(handler : Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_column : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2670,27 +2488,12 @@ module Gtk
           ::Box(Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil)).unbox(_lib_box).call(path, column)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_column : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::NullableArrayPlan
-          column = (lib_column.null? ? nil : Gtk::TreeViewColumn.new(lib_column, GICrystal::Transfer::None))
-          # Generator::BuiltInTypeArgPlan
-          column = Gtk::TreeViewColumn.new(lib_column, :none) unless lib_column.null?
-          ::Box(Proc(Gtk::TreePath, Gtk::TreeViewColumn?, Nil)).unbox(_lib_box).call(path, column)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Gtk::TreePath, Gtk::TreeViewColumn?, Nil))
+      def connect(handler : Proc(Gtk::TreeView, Gtk::TreePath, Gtk::TreeViewColumn?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_column : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
@@ -2703,25 +2506,9 @@ module Gtk
           ::Box(Proc(Gtk::TreeView, Gtk::TreePath, Gtk::TreeViewColumn?, Nil)).unbox(_lib_box).call(_sender, path, column)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Gtk::TreePath, Gtk::TreeViewColumn?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(Void), lib_column : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          # Generator::NullableArrayPlan
-          column = (lib_column.null? ? nil : Gtk::TreeViewColumn.new(lib_column, GICrystal::Transfer::None))
-          # Generator::BuiltInTypeArgPlan
-          column = Gtk::TreeViewColumn.new(lib_column, :none) unless lib_column.null?
-          ::Box(Proc(Gtk::TreeView, Gtk::TreePath, Gtk::TreeViewColumn?, Nil)).unbox(_lib_box).call(_sender, path, column)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(path : Gtk::TreePath, column : Gtk::TreeViewColumn?) : Nil
@@ -2741,31 +2528,16 @@ module Gtk
     end
 
     # The given row has been collapsed (child nodes are hidden).
-    struct RowCollapsedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct RowCollapsedSignal < GObject::Signal
+      def name : String
         @detail ? "row-collapsed::#{@detail}" : "row-collapsed"
       end
 
-      def connect(&block : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TreeIter, Gtk::TreePath, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
+      def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2775,25 +2547,12 @@ module Gtk
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(iter, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(iter, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil))
+      def connect(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
@@ -2804,23 +2563,9 @@ module Gtk
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, iter, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(iter : Gtk::TreeIter, path : Gtk::TreePath) : Nil
@@ -2833,31 +2578,16 @@ module Gtk
     end
 
     # The given row has been expanded (child nodes are shown).
-    struct RowExpandedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct RowExpandedSignal < GObject::Signal
+      def name : String
         @detail ? "row-expanded::#{@detail}" : "row-expanded"
       end
 
-      def connect(&block : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TreeIter, Gtk::TreePath, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
+      def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2867,25 +2597,12 @@ module Gtk
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(iter, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(iter, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil))
+      def connect(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
@@ -2896,23 +2613,9 @@ module Gtk
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Nil)).unbox(_lib_box).call(_sender, iter, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(iter : Gtk::TreeIter, path : Gtk::TreePath) : Nil
@@ -2924,70 +2627,36 @@ module Gtk
       RowExpandedSignal.new(self)
     end
 
-    struct SelectAllSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct SelectAllSignal < GObject::Signal
+      def name : String
         @detail ? "select-all::#{@detail}" : "select-all"
       end
 
-      def connect(&block : Proc(Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Bool))
+      def connect(handler : Proc(Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Bool)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -2999,70 +2668,36 @@ module Gtk
       SelectAllSignal.new(self)
     end
 
-    struct SelectCursorParentSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct SelectCursorParentSignal < GObject::Signal
+      def name : String
         @detail ? "select-cursor-parent::#{@detail}" : "select-cursor-parent"
       end
 
-      def connect(&block : Proc(Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Bool))
+      def connect(handler : Proc(Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Bool)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -3074,53 +2709,28 @@ module Gtk
       SelectCursorParentSignal.new(self)
     end
 
-    struct SelectCursorRowSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct SelectCursorRowSignal < GObject::Signal
+      def name : String
         @detail ? "select-cursor-row::#{@detail}" : "select-cursor-row"
       end
 
-      def connect(&block : Proc(Bool, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Bool, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Bool, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Bool, Bool))
+      def connect(handler : Proc(Bool, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : LibC::Int, _lib_box : Pointer(Void)) {
           object = lib_object
           ::Box(Proc(Bool, Bool)).unbox(_lib_box).call(object)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Bool, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_object : LibC::Int, _lib_box : Pointer(Void)) {
-          object = lib_object
-          ::Box(Proc(Bool, Bool)).unbox(_lib_box).call(object)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Bool, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Bool, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_object : LibC::Int, _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
@@ -3128,20 +2738,9 @@ module Gtk
           ::Box(Proc(Gtk::TreeView, Bool, Bool)).unbox(_lib_box).call(_sender, object)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Bool, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_object : LibC::Int, _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          object = lib_object
-          ::Box(Proc(Gtk::TreeView, Bool, Bool)).unbox(_lib_box).call(_sender, object)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(object : Bool) : Nil
@@ -3153,70 +2752,36 @@ module Gtk
       SelectCursorRowSignal.new(self)
     end
 
-    struct StartInteractiveSearchSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct StartInteractiveSearchSignal < GObject::Signal
+      def name : String
         @detail ? "start-interactive-search::#{@detail}" : "start-interactive-search"
       end
 
-      def connect(&block : Proc(Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Bool))
+      def connect(handler : Proc(Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Bool)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -3230,31 +2795,16 @@ module Gtk
 
     # The given row is about to be collapsed (hide its children nodes). Use this
     # signal if you need to control the collapsibility of individual rows.
-    struct TestCollapseRowSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct TestCollapseRowSignal < GObject::Signal
+      def name : String
         @detail ? "test-collapse-row::#{@detail}" : "test-collapse-row"
       end
 
-      def connect(&block : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TreeIter, Gtk::TreePath, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
+      def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -3264,25 +2814,12 @@ module Gtk
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(iter, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(iter, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
@@ -3293,23 +2830,9 @@ module Gtk
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(_sender, iter, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(iter : Gtk::TreeIter, path : Gtk::TreePath) : Nil
@@ -3323,31 +2846,16 @@ module Gtk
 
     # The given row is about to be expanded (show its children nodes). Use this
     # signal if you need to control the expandability of individual rows.
-    struct TestExpandRowSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct TestExpandRowSignal < GObject::Signal
+      def name : String
         @detail ? "test-expand-row::#{@detail}" : "test-expand-row"
       end
 
-      def connect(&block : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TreeIter, Gtk::TreePath, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
+      def connect(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -3357,25 +2865,12 @@ module Gtk
           ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(iter, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TreeIter, Gtk::TreePath, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          ::Box(Proc(Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(iter, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
@@ -3386,23 +2881,9 @@ module Gtk
           ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(_sender, iter, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_iter : Pointer(Void), lib_path : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          iter = Gtk::TreeIter.new(lib_iter, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = Gtk::TreePath.new(lib_path, :none)
-          ::Box(Proc(Gtk::TreeView, Gtk::TreeIter, Gtk::TreePath, Bool)).unbox(_lib_box).call(_sender, iter, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(iter : Gtk::TreeIter, path : Gtk::TreePath) : Nil
@@ -3414,70 +2895,36 @@ module Gtk
       TestExpandRowSignal.new(self)
     end
 
-    struct ToggleCursorRowSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ToggleCursorRowSignal < GObject::Signal
+      def name : String
         @detail ? "toggle-cursor-row::#{@detail}" : "toggle-cursor-row"
       end
 
-      def connect(&block : Proc(Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Bool))
+      def connect(handler : Proc(Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Bool)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -3489,70 +2936,36 @@ module Gtk
       ToggleCursorRowSignal.new(self)
     end
 
-    struct UnselectAllSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct UnselectAllSignal < GObject::Signal
+      def name : String
         @detail ? "unselect-all::#{@detail}" : "unselect-all"
       end
 
-      def connect(&block : Proc(Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Bool))
+      def connect(handler : Proc(Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Bool)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TreeView, Bool))
+      def connect(handler : Proc(Gtk::TreeView, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TreeView, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TreeView.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TreeView, Bool)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil

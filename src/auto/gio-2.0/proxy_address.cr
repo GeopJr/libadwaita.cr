@@ -221,7 +221,7 @@ module Gio
     # (Note that this method doesn't set the #GProxyAddress:uri or
     # #GProxyAddress:destination-protocol fields; use g_object_new()
     # directly if you want to set those.)
-    def initialize(inetaddr : Gio::InetAddress, port : UInt16, protocol : ::String, dest_hostname : ::String, dest_port : UInt16, username : ::String?, password : ::String?)
+    def self.new(inetaddr : Gio::InetAddress, port : UInt16, protocol : ::String, dest_hostname : ::String, dest_port : UInt16, username : ::String?, password : ::String?) : self
       # g_proxy_address_new: (Constructor)
       # @username: (nullable)
       # @password: (nullable)
@@ -245,8 +245,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::ProxyAddress.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets @proxy's destination hostname; that is, the name of the host

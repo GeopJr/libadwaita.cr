@@ -75,7 +75,7 @@ module Gio
     end
 
     # Creates a new #GDBusObjectSkeleton.
-    def initialize(object_path : ::String)
+    def self.new(object_path : ::String) : self
       # g_dbus_object_skeleton_new: (Constructor)
       # Returns: (transfer full)
 
@@ -84,8 +84,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::DBusObjectSkeleton.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Adds @interface_ to @object.
@@ -162,31 +161,16 @@ module Gio
     # except that it is for the enclosing object.
     #
     # The default class handler just returns %TRUE.
-    struct AuthorizeMethodSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct AuthorizeMethodSignal < GObject::Signal
+      def name : String
         @detail ? "authorize-method::#{@detail}" : "authorize-method"
       end
 
-      def connect(&block : Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool))
+      def connect(handler : Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), lib_invocation : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -196,25 +180,12 @@ module Gio
           ::Box(Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(_lib_box).call(interface, invocation)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), lib_invocation : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          interface = Gio::DBusInterfaceSkeleton.new(lib_interface, :none)
-          # Generator::BuiltInTypeArgPlan
-          invocation = Gio::DBusMethodInvocation.new(lib_invocation, :none)
-          ::Box(Proc(Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(_lib_box).call(interface, invocation)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gio::DBusObjectSkeleton, Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool))
+      def connect(handler : Proc(Gio::DBusObjectSkeleton, Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), lib_invocation : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusObjectSkeleton.new(_lib_sender, GICrystal::Transfer::None)
@@ -225,23 +196,9 @@ module Gio
           ::Box(Proc(Gio::DBusObjectSkeleton, Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(_lib_box).call(_sender, interface, invocation)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gio::DBusObjectSkeleton, Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_interface : Pointer(Void), lib_invocation : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::DBusObjectSkeleton.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          interface = Gio::DBusInterfaceSkeleton.new(lib_interface, :none)
-          # Generator::BuiltInTypeArgPlan
-          invocation = Gio::DBusMethodInvocation.new(lib_invocation, :none)
-          ::Box(Proc(Gio::DBusObjectSkeleton, Gio::DBusInterfaceSkeleton, Gio::DBusMethodInvocation, Bool)).unbox(_lib_box).call(_sender, interface, invocation)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(interface : Gio::DBusInterfaceSkeleton, invocation : Gio::DBusMethodInvocation) : Nil

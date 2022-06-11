@@ -63,18 +63,6 @@ module Graphene
       LibGraphene.graphene_point3d_get_type
     end
 
-    def self.alloc : self
-      # graphene_point3d_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_point3d_alloc
-
-      # Return value handling
-
-      Graphene::Point3D.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def cross(b : Graphene::Point3D) : Graphene::Point3D
       # graphene_point3d_cross: (Method)
       # @res: (out) (caller-allocates)

@@ -6,11 +6,10 @@ module Gsk
   class TextureNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::TextureNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(TextureNode, g_object_get_qdata, g_object_set_qdata)
@@ -34,7 +33,7 @@ module Gsk
 
     # Creates a `GskRenderNode` that will render the given
     # @texture into the area given by @bounds.
-    def initialize(texture : Gdk::Texture, bounds : Graphene::Rect)
+    def self.new(texture : Gdk::Texture, bounds : Graphene::Rect) : self
       # gsk_texture_node_new: (Constructor)
       # Returns: (transfer full)
 
@@ -43,8 +42,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::TextureNode.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Retrieves the `GdkTexture` used when creating this `GskRenderNode`.

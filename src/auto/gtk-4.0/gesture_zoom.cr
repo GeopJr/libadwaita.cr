@@ -76,21 +76,6 @@ module Gtk
       LibGtk.gtk_gesture_zoom_get_type
     end
 
-    # Returns a newly created `GtkGesture` that recognizes
-    # pinch/zoom gestures.
-    def initialize
-      # gtk_gesture_zoom_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_gesture_zoom_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the scale delta.
     #
     # If @gesture is active, this function returns the zooming
@@ -110,53 +95,28 @@ module Gtk
     end
 
     # Emitted whenever the distance between both tracked sequences changes.
-    struct ScaleChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ScaleChangedSignal < GObject::Signal
+      def name : String
         @detail ? "scale-changed::#{@detail}" : "scale-changed"
       end
 
-      def connect(&block : Proc(Float64, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Float64, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Float64, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Float64, Nil))
+      def connect(handler : Proc(Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scale : Float64, _lib_box : Pointer(Void)) {
           scale = lib_scale
           ::Box(Proc(Float64, Nil)).unbox(_lib_box).call(scale)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_scale : Float64, _lib_box : Pointer(Void)) {
-          scale = lib_scale
-          ::Box(Proc(Float64, Nil)).unbox(_lib_box).call(scale)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::GestureZoom, Float64, Nil))
+      def connect(handler : Proc(Gtk::GestureZoom, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_scale : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::GestureZoom.new(_lib_sender, GICrystal::Transfer::None)
@@ -164,20 +124,9 @@ module Gtk
           ::Box(Proc(Gtk::GestureZoom, Float64, Nil)).unbox(_lib_box).call(_sender, scale)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::GestureZoom, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_scale : Float64, _lib_box : Pointer(Void)) {
-          _sender = Gtk::GestureZoom.new(_lib_sender, GICrystal::Transfer::None)
-          scale = lib_scale
-          ::Box(Proc(Gtk::GestureZoom, Float64, Nil)).unbox(_lib_box).call(_sender, scale)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(scale : Float64) : Nil

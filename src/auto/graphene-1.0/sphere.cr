@@ -53,18 +53,6 @@ module Graphene
       LibGraphene.graphene_sphere_get_type
     end
 
-    def self.alloc : self
-      # graphene_sphere_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_sphere_alloc
-
-      # Return value handling
-
-      Graphene::Sphere.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def contains_point(point : Graphene::Point3D) : Bool
       # graphene_sphere_contains_point: (Method)
       # Returns: (transfer none)

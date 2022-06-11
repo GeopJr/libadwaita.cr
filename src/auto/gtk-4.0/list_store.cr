@@ -198,7 +198,7 @@ module Gtk
     # As an example, `gtk_list_store_new (3, G_TYPE_INT, G_TYPE_STRING,
     # GDK_TYPE_TEXTURE);` will create a new `GtkListStore` with three columns, of type
     # int, string and `GdkTexture`, respectively.
-    def initialize(types : Enumerable(UInt64))
+    def self.new(types : Enumerable(UInt64)) : self
       # gtk_list_store_newv: (Constructor)
       # @types: (array length=n_columns element-type Gtype)
       # Returns: (transfer full)
@@ -212,12 +212,11 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::ListStore.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def initialize(*types : UInt64)
-      initialize(types)
+    def self.new(*types : UInt64)
+      self.new(types)
     end
 
     # Appends a new row to @list_store.  @iter will be changed to point to this new

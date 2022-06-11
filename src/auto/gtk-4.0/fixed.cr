@@ -268,21 +268,6 @@ module Gtk
       LibGtk.gtk_fixed_get_type
     end
 
-    # Creates a new `GtkFixed`.
-    def initialize
-      # gtk_fixed_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_fixed_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Retrieves the translation transformation of the
     # given child `GtkWidget` in the `GtkFixed`.
     #

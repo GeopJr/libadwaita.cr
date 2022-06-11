@@ -38,20 +38,6 @@ module Gtk
       LibGtk.gtk_center_layout_get_type
     end
 
-    # Creates a new `GtkCenterLayout`.
-    def initialize
-      # gtk_center_layout_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_center_layout_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Returns the baseline position of the layout.
     def baseline_position : Gtk::BaselinePosition
       # gtk_center_layout_get_baseline_position: (Method)

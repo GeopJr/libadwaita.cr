@@ -2,7 +2,7 @@ require "../g_object-2.0/object"
 
 module Gtk
   # A `GtkFilter` object describes the filtering to be performed by a
-  # `GtkFilterListModel`.
+  # `Gtk#FilterListModel`.
   #
   # The model will use the filter to determine if it should include items
   # or not by calling `Gtk::Filter#match` for each item and only
@@ -115,31 +115,16 @@ module Gtk
     # Depending on the @change parameter, not all items need
     # to be checked, but only some. Refer to the `Gtk#FilterChange`
     # documentation for details.
-    struct ChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ChangedSignal < GObject::Signal
+      def name : String
         @detail ? "changed::#{@detail}" : "changed"
       end
 
-      def connect(&block : Proc(Gtk::FilterChange, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::FilterChange, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::FilterChange, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::FilterChange, Nil))
+      def connect(handler : Proc(Gtk::FilterChange, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -147,23 +132,12 @@ module Gtk
           ::Box(Proc(Gtk::FilterChange, Nil)).unbox(_lib_box).call(change)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::FilterChange, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          change = Gtk::FilterChange.new(lib_change)
-          ::Box(Proc(Gtk::FilterChange, Nil)).unbox(_lib_box).call(change)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::Filter, Gtk::FilterChange, Nil))
+      def connect(handler : Proc(Gtk::Filter, Gtk::FilterChange, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Filter.new(_lib_sender, GICrystal::Transfer::None)
@@ -172,21 +146,9 @@ module Gtk
           ::Box(Proc(Gtk::Filter, Gtk::FilterChange, Nil)).unbox(_lib_box).call(_sender, change)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::Filter, Gtk::FilterChange, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::Filter.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          change = Gtk::FilterChange.new(lib_change)
-          ::Box(Proc(Gtk::Filter, Gtk::FilterChange, Nil)).unbox(_lib_box).call(_sender, change)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(change : Gtk::FilterChange) : Nil

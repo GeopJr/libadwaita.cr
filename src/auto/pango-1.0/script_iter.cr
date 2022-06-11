@@ -27,7 +27,7 @@ module Pango
       LibPango.pango_script_iter_get_type
     end
 
-    def initialize(text : ::String, length : Int32)
+    def self.new(text : ::String, length : Int32) : self
       # pango_script_iter_new: (Constructor)
       # Returns: (transfer full)
 
@@ -36,8 +36,7 @@ module Pango
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Pango::ScriptIter.new(_retval, GICrystal::Transfer::Full)
     end
 
     def free : Nil

@@ -160,20 +160,6 @@ module Gtk
       value
     end
 
-    # Creates a new `GtkGridLayout`.
-    def initialize
-      # gtk_grid_layout_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_grid_layout_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Retrieves the row set with gtk_grid_layout_set_baseline_row().
     def baseline_row : Int32
       # gtk_grid_layout_get_baseline_row: (Method | Getter)

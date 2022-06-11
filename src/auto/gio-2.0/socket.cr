@@ -382,7 +382,7 @@ module Gio
     # The protocol id is passed directly to the operating
     # system, so you can use protocols not listed in #GSocketProtocol if you
     # know the protocol number used for it.
-    def initialize(family : Gio::SocketFamily, type : Gio::SocketType, protocol : Gio::SocketProtocol)
+    def self.new(family : Gio::SocketFamily, type : Gio::SocketType, protocol : Gio::SocketProtocol) : self
       # g_socket_new: (Constructor | Throws)
       # Returns: (transfer full)
 
@@ -396,8 +396,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::Socket.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new #GSocket from a native file descriptor

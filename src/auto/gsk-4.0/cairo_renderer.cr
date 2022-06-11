@@ -59,26 +59,5 @@ module Gsk
     def self.g_type : UInt64
       LibGsk.gsk_cairo_renderer_get_type
     end
-
-    # Creates a new Cairo renderer.
-    #
-    # The Cairo renderer is the fallback renderer drawing in ways similar
-    # to how GTK 3 drew its content. Its primary use is as comparison tool.
-    #
-    # The Cairo renderer is incomplete. It cannot render 3D transformed
-    # content and will instead render an error marker. Its usage should be
-    # avoided.
-    def initialize
-      # gsk_cairo_renderer_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGsk.gsk_cairo_renderer_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
   end
 end

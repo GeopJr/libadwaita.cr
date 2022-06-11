@@ -305,47 +305,17 @@ module Gtk
       LibGtk.gtk_emoji_chooser_get_type
     end
 
-    # Creates a new `GtkEmojiChooser`.
-    def initialize
-      # gtk_emoji_chooser_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_emoji_chooser_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Emitted when the user selects an Emoji.
-    struct EmojiPickedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct EmojiPickedSignal < GObject::Signal
+      def name : String
         @detail ? "emoji-picked::#{@detail}" : "emoji-picked"
       end
 
-      def connect(&block : Proc(::String, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(::String, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(::String, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(::String, Nil))
+      def connect(handler : Proc(::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -353,23 +323,12 @@ module Gtk
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(text)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          text = ::String.new(lib_text)
-          ::Box(Proc(::String, Nil)).unbox(_lib_box).call(text)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::EmojiChooser, ::String, Nil))
+      def connect(handler : Proc(Gtk::EmojiChooser, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::EmojiChooser.new(_lib_sender, GICrystal::Transfer::None)
@@ -378,21 +337,9 @@ module Gtk
           ::Box(Proc(Gtk::EmojiChooser, ::String, Nil)).unbox(_lib_box).call(_sender, text)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::EmojiChooser, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gtk::EmojiChooser.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          text = ::String.new(lib_text)
-          ::Box(Proc(Gtk::EmojiChooser, ::String, Nil)).unbox(_lib_box).call(_sender, text)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(text : ::String) : Nil

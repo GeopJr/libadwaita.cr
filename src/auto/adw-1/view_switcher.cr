@@ -298,21 +298,6 @@ module Adw
       Adw::ViewStack.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new `AdwViewSwitcher`.
-    def initialize
-      # adw_view_switcher_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_view_switcher_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the policy of @self.
     def policy : Adw::ViewSwitcherPolicy
       # adw_view_switcher_get_policy: (Method | Getter)

@@ -380,21 +380,6 @@ module Gtk
       Gdk::AbstractPaintable.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new empty `GtkPicture` widget.
-    def initialize
-      # gtk_picture_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_picture_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a new `GtkPicture` displaying the given @file.
     #
     # If the file isn’t found or can’t be loaded, the resulting

@@ -32,7 +32,7 @@ module GLib
       LibGLib.g_variant_builder_get_type
     end
 
-    def initialize(type : GLib::VariantType)
+    def self.new(type : GLib::VariantType) : self
       # g_variant_builder_new: (Constructor)
       # Returns: (transfer full)
 
@@ -41,8 +41,7 @@ module GLib
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GLib::VariantBuilder.new(_retval, GICrystal::Transfer::Full)
     end
 
     def add_value(value : _) : Nil

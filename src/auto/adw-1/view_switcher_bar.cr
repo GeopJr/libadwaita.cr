@@ -328,21 +328,6 @@ module Adw
       Adw::ViewStack.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new `AdwViewSwitcherBar`.
-    def initialize
-      # adw_view_switcher_bar_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_view_switcher_bar_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets whether @self should be revealed or hidden.
     def reveal : Bool
       # adw_view_switcher_bar_get_reveal: (Method | Getter)

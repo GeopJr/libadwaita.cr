@@ -13,11 +13,10 @@ module Gio
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::BytesIcon), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(BytesIcon, g_object_get_qdata, g_object_set_qdata)
@@ -78,7 +77,7 @@ module Gio
     #
     # This cannot fail, but loading and interpreting the bytes may fail later on
     # (for example, if g_loadable_icon_load() is called) if the image is invalid.
-    def initialize(bytes : GLib::Bytes)
+    def self.new(bytes : GLib::Bytes) : self
       # g_bytes_icon_new: (Constructor)
       # Returns: (transfer full)
 
@@ -87,8 +86,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::BytesIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the #GBytes associated with the given @icon.

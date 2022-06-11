@@ -115,7 +115,7 @@ module Gio
     end
 
     # Creates a new #GCharsetConverter.
-    def initialize(to_charset : ::String, from_charset : ::String)
+    def self.new(to_charset : ::String, from_charset : ::String) : self
       # g_charset_converter_new: (Constructor | Throws)
       # Returns: (transfer full)
 
@@ -129,8 +129,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::CharsetConverter.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the number of fallbacks that @converter has applied so far.

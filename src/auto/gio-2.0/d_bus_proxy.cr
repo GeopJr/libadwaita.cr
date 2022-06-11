@@ -1023,31 +1023,16 @@ module Gio
     # This signal corresponds to the
     # `PropertiesChanged` D-Bus signal on the
     # `org.freedesktop.DBus.Properties` interface.
-    struct GPropertiesChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct GPropertiesChangedSignal < GObject::Signal
+      def name : String
         @detail ? "g-properties-changed::#{@detail}" : "g-properties-changed"
       end
 
-      def connect(&block : Proc(GLib::Variant, Enumerable(::String), Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(GLib::Variant, Enumerable(::String), Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(GLib::Variant, Enumerable(::String), Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(GLib::Variant, Enumerable(::String), Nil))
+      def connect(handler : Proc(GLib::Variant, Enumerable(::String), Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
@@ -1057,25 +1042,12 @@ module Gio
           ::Box(Proc(GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(changed_properties, invalidated_properties)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(GLib::Variant, Enumerable(::String), Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
-          # Generator::HandmadeArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::ArrayArgPlan
-          raise NotImplementedError.new
-          ::Box(Proc(GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(changed_properties, invalidated_properties)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
+      def connect(handler : Proc(Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusProxy.new(_lib_sender, GICrystal::Transfer::None)
@@ -1086,23 +1058,9 @@ module Gio
           ::Box(Proc(Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, changed_properties, invalidated_properties)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_changed_properties : Pointer(Void), lib_invalidated_properties : Pointer(Pointer(LibC::Char)), _lib_box : Pointer(Void)) {
-          _sender = Gio::DBusProxy.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::HandmadeArgPlan
-          changed_properties = GLib::Variant.new(lib_changed_properties, :none)
-          # Generator::ArrayArgPlan
-          raise NotImplementedError.new
-          ::Box(Proc(Gio::DBusProxy, GLib::Variant, Enumerable(::String), Nil)).unbox(_lib_box).call(_sender, changed_properties, invalidated_properties)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(changed_properties : _, invalidated_properties : Enumerable(::String)) : Nil
@@ -1128,31 +1086,16 @@ module Gio
     # Since 2.72 this signal supports detailed connections. You can connect to
     # the detailed signal `g-signal::x` in order to receive callbacks only when
     # signal `x` is received from the remote object.
-    struct GSignalSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct GSignalSignal < GObject::Signal
+      def name : String
         @detail ? "g-signal::#{@detail}" : "g-signal"
       end
 
-      def connect(&block : Proc(::String?, ::String, GLib::Variant, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(::String?, ::String, GLib::Variant, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(::String?, ::String, GLib::Variant, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(::String?, ::String, GLib::Variant, Nil))
+      def connect(handler : Proc(::String?, ::String, GLib::Variant, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
@@ -1166,29 +1109,12 @@ module Gio
           ::Box(Proc(::String?, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(sender_name, signal_name, parameters)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(::String?, ::String, GLib::Variant, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::NullableArrayPlan
-          sender_name = (lib_sender_name.null? ? nil : ::String.new(lib_sender_name))
-          # Generator::BuiltInTypeArgPlan
-          sender_name = ::String.new(lib_sender_name) unless lib_sender_name.null?
-          # Generator::BuiltInTypeArgPlan
-          signal_name = ::String.new(lib_signal_name)
-          # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          ::Box(Proc(::String?, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(sender_name, signal_name, parameters)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gio::DBusProxy, ::String?, ::String, GLib::Variant, Nil))
+      def connect(handler : Proc(Gio::DBusProxy, ::String?, ::String, GLib::Variant, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusProxy.new(_lib_sender, GICrystal::Transfer::None)
@@ -1203,27 +1129,9 @@ module Gio
           ::Box(Proc(Gio::DBusProxy, ::String?, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, sender_name, signal_name, parameters)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gio::DBusProxy, ::String?, ::String, GLib::Variant, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_sender_name : Pointer(LibC::Char), lib_signal_name : Pointer(LibC::Char), lib_parameters : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::DBusProxy.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::NullableArrayPlan
-          sender_name = (lib_sender_name.null? ? nil : ::String.new(lib_sender_name))
-          # Generator::BuiltInTypeArgPlan
-          sender_name = ::String.new(lib_sender_name) unless lib_sender_name.null?
-          # Generator::BuiltInTypeArgPlan
-          signal_name = ::String.new(lib_signal_name)
-          # Generator::HandmadeArgPlan
-          parameters = GLib::Variant.new(lib_parameters, :none)
-          ::Box(Proc(Gio::DBusProxy, ::String?, ::String, GLib::Variant, Nil)).unbox(_lib_box).call(_sender, sender_name, signal_name, parameters)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(sender_name : ::String?, signal_name : ::String, parameters : _) : Nil

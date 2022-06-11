@@ -57,18 +57,6 @@ module Graphene
       LibGraphene.graphene_ray_get_type
     end
 
-    def self.alloc : self
-      # graphene_ray_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_ray_alloc
-
-      # Return value handling
-
-      Graphene::Ray.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def equal(b : Graphene::Ray) : Bool
       # graphene_ray_equal: (Method)
       # Returns: (transfer none)

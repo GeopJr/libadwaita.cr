@@ -71,7 +71,7 @@ module Pango
 
     # Create a new `PangoLayout` object with attributes initialized to
     # default values for a particular `PangoContext`.
-    def initialize(context : Pango::Context)
+    def self.new(context : Pango::Context) : self
       # pango_layout_new: (Constructor)
       # Returns: (transfer full)
 
@@ -80,8 +80,7 @@ module Pango
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Pango::Layout.new(_retval, GICrystal::Transfer::Full)
     end
 
     def deserialize(context : Pango::Context, bytes : GLib::Bytes, flags : Pango::LayoutDeserializeFlags) : Pango::Layout?

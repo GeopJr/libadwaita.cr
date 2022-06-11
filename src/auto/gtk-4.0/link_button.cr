@@ -43,11 +43,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::LinkButton), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(LinkButton, g_object_get_qdata, g_object_set_qdata)
@@ -336,7 +335,7 @@ module Gtk
     end
 
     # Creates a new `GtkLinkButton` with the URI as its text.
-    def initialize(uri : ::String)
+    def self.new(uri : ::String) : self
       # gtk_link_button_new: (Constructor)
       # Returns: (transfer none)
 
@@ -346,8 +345,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::LinkButton.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new `GtkLinkButton` containing a label.
@@ -437,70 +435,36 @@ module Gtk
     # To override the default behavior, you can connect to the
     # ::activate-link signal and stop the propagation of the signal
     # by returning %TRUE from your handler.
-    struct ActivateLinkSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ActivateLinkSignal < GObject::Signal
+      def name : String
         @detail ? "activate-link::#{@detail}" : "activate-link"
       end
 
-      def connect(&block : Proc(Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Bool))
+      def connect(handler : Proc(Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Bool)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Bool)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::LinkButton, Bool))
+      def connect(handler : Proc(Gtk::LinkButton, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::LinkButton.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::LinkButton, Bool)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::LinkButton, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::LinkButton.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::LinkButton, Bool)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil

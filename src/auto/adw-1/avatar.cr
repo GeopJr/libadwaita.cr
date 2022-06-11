@@ -355,7 +355,7 @@ module Adw
     end
 
     # Creates a new `AdwAvatar`.
-    def initialize(size : Int32, text : ::String?, show_initials : Bool)
+    def self.new(size : Int32, text : ::String?, show_initials : Bool) : self
       # adw_avatar_new: (Constructor)
       # @text: (nullable)
       # Returns: (transfer none)
@@ -373,8 +373,7 @@ module Adw
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Adw::Avatar.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Renders @self into a `Gdk#Texture` at @scale_factor.

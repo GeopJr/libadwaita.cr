@@ -27,7 +27,7 @@ module GLib
       LibGLib.g_main_loop_get_type
     end
 
-    def initialize(context : GLib::MainContext?, is_running : Bool)
+    def self.new(context : GLib::MainContext?, is_running : Bool) : self
       # g_main_loop_new: (Constructor)
       # @context: (nullable)
       # Returns: (transfer full)
@@ -44,8 +44,7 @@ module GLib
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GLib::MainLoop.new(_retval, GICrystal::Transfer::Full)
     end
 
     def context : GLib::MainContext

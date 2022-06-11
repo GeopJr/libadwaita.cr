@@ -10,11 +10,10 @@ module Gtk
   class CellRendererAccel < CellRendererText
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::CellRendererAccel), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(CellRendererAccel, g_object_get_qdata, g_object_set_qdata)
@@ -437,47 +436,17 @@ module Gtk
       value
     end
 
-    # Creates a new `GtkCellRendererAccel`.
-    def initialize
-      # gtk_cell_renderer_accel_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_cell_renderer_accel_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets emitted when the user has removed the accelerator.
-    struct AccelClearedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct AccelClearedSignal < GObject::Signal
+      def name : String
         @detail ? "accel-cleared::#{@detail}" : "accel-cleared"
       end
 
-      def connect(&block : Proc(::String, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(::String, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(::String, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(::String, Nil))
+      def connect(handler : Proc(::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -485,23 +454,12 @@ module Gtk
           ::Box(Proc(::String, Nil)).unbox(_lib_box).call(path_string)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          path_string = ::String.new(lib_path_string)
-          ::Box(Proc(::String, Nil)).unbox(_lib_box).call(path_string)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::CellRendererAccel, ::String, Nil))
+      def connect(handler : Proc(Gtk::CellRendererAccel, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererAccel.new(_lib_sender, GICrystal::Transfer::None)
@@ -510,21 +468,9 @@ module Gtk
           ::Box(Proc(Gtk::CellRendererAccel, ::String, Nil)).unbox(_lib_box).call(_sender, path_string)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::CellRendererAccel, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gtk::CellRendererAccel.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          path_string = ::String.new(lib_path_string)
-          ::Box(Proc(Gtk::CellRendererAccel, ::String, Nil)).unbox(_lib_box).call(_sender, path_string)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(path_string : ::String) : Nil
@@ -537,31 +483,16 @@ module Gtk
     end
 
     # Gets emitted when the user has selected a new accelerator.
-    struct AccelEditedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct AccelEditedSignal < GObject::Signal
+      def name : String
         @detail ? "accel-edited::#{@detail}" : "accel-edited"
       end
 
-      def connect(&block : Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil))
+      def connect(handler : Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_accel_key : UInt32, lib_accel_mods : UInt32, lib_hardware_keycode : UInt32, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -573,27 +504,12 @@ module Gtk
           ::Box(Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil)).unbox(_lib_box).call(path_string, accel_key, accel_mods, hardware_keycode)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_accel_key : UInt32, lib_accel_mods : UInt32, lib_hardware_keycode : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          path_string = ::String.new(lib_path_string)
-          accel_key = lib_accel_key
-          # Generator::BuiltInTypeArgPlan
-          accel_mods = Gdk::ModifierType.new(lib_accel_mods)
-          hardware_keycode = lib_hardware_keycode
-          ::Box(Proc(::String, UInt32, Gdk::ModifierType, UInt32, Nil)).unbox(_lib_box).call(path_string, accel_key, accel_mods, hardware_keycode)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::CellRendererAccel, ::String, UInt32, Gdk::ModifierType, UInt32, Nil))
+      def connect(handler : Proc(Gtk::CellRendererAccel, ::String, UInt32, Gdk::ModifierType, UInt32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_accel_key : UInt32, lib_accel_mods : UInt32, lib_hardware_keycode : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererAccel.new(_lib_sender, GICrystal::Transfer::None)
@@ -606,25 +522,9 @@ module Gtk
           ::Box(Proc(Gtk::CellRendererAccel, ::String, UInt32, Gdk::ModifierType, UInt32, Nil)).unbox(_lib_box).call(_sender, path_string, accel_key, accel_mods, hardware_keycode)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::CellRendererAccel, ::String, UInt32, Gdk::ModifierType, UInt32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_path_string : Pointer(LibC::Char), lib_accel_key : UInt32, lib_accel_mods : UInt32, lib_hardware_keycode : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::CellRendererAccel.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          path_string = ::String.new(lib_path_string)
-          accel_key = lib_accel_key
-          # Generator::BuiltInTypeArgPlan
-          accel_mods = Gdk::ModifierType.new(lib_accel_mods)
-          hardware_keycode = lib_hardware_keycode
-          ::Box(Proc(Gtk::CellRendererAccel, ::String, UInt32, Gdk::ModifierType, UInt32, Nil)).unbox(_lib_box).call(_sender, path_string, accel_key, accel_mods, hardware_keycode)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(path_string : ::String, accel_key : UInt32, accel_mods : Gdk::ModifierType, hardware_keycode : UInt32) : Nil

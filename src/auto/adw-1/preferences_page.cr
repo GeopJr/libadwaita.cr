@@ -323,21 +323,6 @@ module Adw
       GICrystal.to_bool(value)
     end
 
-    # Creates a new `AdwPreferencesPage`.
-    def initialize
-      # adw_preferences_page_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_preferences_page_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds a preferences group to @self.
     def add(group : Adw::PreferencesGroup) : Nil
       # adw_preferences_page_add: (Method)

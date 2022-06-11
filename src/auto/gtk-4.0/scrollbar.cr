@@ -59,11 +59,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::Scrollbar), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(Scrollbar, g_object_get_qdata, g_object_set_qdata)
@@ -302,7 +301,7 @@ module Gtk
     end
 
     # Creates a new scrollbar with the given orientation.
-    def initialize(orientation : Gtk::Orientation, adjustment : Gtk::Adjustment?)
+    def self.new(orientation : Gtk::Orientation, adjustment : Gtk::Adjustment?) : self
       # gtk_scrollbar_new: (Constructor)
       # @adjustment: (nullable)
       # Returns: (transfer none)
@@ -320,8 +319,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::Scrollbar.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns the scrollbar's adjustment.

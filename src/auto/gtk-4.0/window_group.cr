@@ -47,23 +47,6 @@ module Gtk
       LibGtk.gtk_window_group_get_type
     end
 
-    # Creates a new `GtkWindowGroup` object.
-    #
-    # Modality of windows only affects windows
-    # within the same `GtkWindowGroup`.
-    def initialize
-      # gtk_window_group_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_window_group_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds a window to a `GtkWindowGroup`.
     def add_window(window : Gtk::Window) : Nil
       # gtk_window_group_add_window: (Method)

@@ -39,20 +39,6 @@ module Gio
       LibGio.g_simple_action_group_get_type
     end
 
-    # Creates a new, empty, #GSimpleActionGroup.
-    def initialize
-      # g_simple_action_group_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGio.g_simple_action_group_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # A convenience function for creating multiple #GSimpleAction instances
     # and adding them to the action group.
     def add_entries(entries : Enumerable(Gio::ActionEntry), user_data : Pointer(Void)?) : Nil

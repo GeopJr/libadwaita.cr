@@ -7,11 +7,10 @@ module Gio
   class MenuItem < GObject::Object
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::MenuItem), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(MenuItem, g_object_get_qdata, g_object_set_qdata)
@@ -41,7 +40,7 @@ module Gio
     # If @detailed_action is non-%NULL it is used to set the "action" and
     # possibly the "target" attribute of the new item.  See
     # g_menu_item_set_detailed_action() for more information.
-    def initialize(label : ::String?, detailed_action : ::String?)
+    def self.new(label : ::String?, detailed_action : ::String?) : self
       # g_menu_item_new: (Constructor)
       # @label: (nullable)
       # @detailed_action: (nullable)
@@ -65,8 +64,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::MenuItem.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a #GMenuItem as an exact copy of an existing menu item in a

@@ -316,7 +316,7 @@ module Gtk
     end
 
     # Creates a new `GtkEditableLabel` widget.
-    def initialize(str : ::String)
+    def self.new(str : ::String) : self
       # gtk_editable_label_new: (Constructor)
       # Returns: (transfer none)
 
@@ -326,8 +326,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::EditableLabel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns whether the label is currently in “editing mode”.

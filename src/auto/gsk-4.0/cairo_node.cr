@@ -6,11 +6,10 @@ module Gsk
   class CairoNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::CairoNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(CairoNode, g_object_get_qdata, g_object_set_qdata)
@@ -36,7 +35,7 @@ module Gsk
     # into the area given by @bounds.
     #
     # You can draw to the cairo surface using `Gsk::CairoNode#draw_context`.
-    def initialize(bounds : Graphene::Rect)
+    def self.new(bounds : Graphene::Rect) : self
       # gsk_cairo_node_new: (Constructor)
       # Returns: (transfer full)
 
@@ -45,8 +44,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::CairoNode.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a Cairo context for drawing using the surface associated

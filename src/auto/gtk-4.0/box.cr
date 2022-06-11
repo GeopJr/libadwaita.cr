@@ -332,7 +332,7 @@ module Gtk
     end
 
     # Creates a new `GtkBox`.
-    def initialize(orientation : Gtk::Orientation, spacing : Int32)
+    def self.new(orientation : Gtk::Orientation, spacing : Int32) : self
       # gtk_box_new: (Constructor)
       # Returns: (transfer none)
 
@@ -342,8 +342,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::Box.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Adds @child as the last child to @box.

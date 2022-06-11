@@ -76,20 +76,6 @@ module GdkPixbuf
       LibGdkPixbuf.gdk_pixbuf_loader_get_type
     end
 
-    # Creates a new pixbuf loader object.
-    def initialize
-      # gdk_pixbuf_loader_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGdkPixbuf.gdk_pixbuf_loader_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a new pixbuf loader object that always attempts to parse
     # image data as if it were an image of MIME type @mime_type, instead of
     # identifying the type automatically.
@@ -315,70 +301,36 @@ module GdkPixbuf
     # After this signal is emitted, applications can call
     # gdk_pixbuf_loader_get_pixbuf() to fetch the partially-loaded
     # pixbuf.
-    struct AreaPreparedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct AreaPreparedSignal < GObject::Signal
+      def name : String
         @detail ? "area-prepared::#{@detail}" : "area-prepared"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Nil))
+      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(GdkPixbuf::PixbufLoader, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -398,31 +350,16 @@ module GdkPixbuf
     #
     # Applications can use this signal to know when to repaint
     # areas of an image that is being loaded.
-    struct AreaUpdatedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct AreaUpdatedSignal < GObject::Signal
+      def name : String
         @detail ? "area-updated::#{@detail}" : "area-updated"
       end
 
-      def connect(&block : Proc(Int32, Int32, Int32, Int32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Int32, Int32, Int32, Int32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Int32, Int32, Int32, Int32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Int32, Int32, Int32, Int32, Nil))
+      def connect(handler : Proc(Int32, Int32, Int32, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Int32, lib_y : Int32, lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
           x = lib_x
@@ -432,25 +369,12 @@ module GdkPixbuf
           ::Box(Proc(Int32, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(x, y, width, height)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Int32, Int32, Int32, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Int32, lib_y : Int32, lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
-          x = lib_x
-          y = lib_y
-          width = lib_width
-          height = lib_height
-          ::Box(Proc(Int32, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(x, y, width, height)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil))
+      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Int32, lib_y : Int32, lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
           _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
@@ -461,23 +385,9 @@ module GdkPixbuf
           ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, x, y, width, height)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Int32, lib_y : Int32, lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
-          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
-          x = lib_x
-          y = lib_y
-          width = lib_width
-          height = lib_height
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, x, y, width, height)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(x : Int32, y : Int32, width : Int32, height : Int32) : Nil
@@ -494,70 +404,36 @@ module GdkPixbuf
     # It can be used by different parts of an application to receive
     # notification when an image loader is closed by the code that
     # drives it.
-    struct ClosedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ClosedSignal < GObject::Signal
+      def name : String
         @detail ? "closed::#{@detail}" : "closed"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Nil))
+      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(GdkPixbuf::PixbufLoader, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -576,31 +452,16 @@ module GdkPixbuf
     # Applications can call gdk_pixbuf_loader_set_size() in response
     # to this signal to set the desired size to which the image
     # should be scaled.
-    struct SizePreparedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct SizePreparedSignal < GObject::Signal
+      def name : String
         @detail ? "size-prepared::#{@detail}" : "size-prepared"
       end
 
-      def connect(&block : Proc(Int32, Int32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Int32, Int32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Int32, Int32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Int32, Int32, Nil))
+      def connect(handler : Proc(Int32, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
           width = lib_width
@@ -608,23 +469,12 @@ module GdkPixbuf
           ::Box(Proc(Int32, Int32, Nil)).unbox(_lib_box).call(width, height)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Int32, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
-          width = lib_width
-          height = lib_height
-          ::Box(Proc(Int32, Int32, Nil)).unbox(_lib_box).call(width, height)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil))
+      def connect(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
           _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
@@ -633,21 +483,9 @@ module GdkPixbuf
           ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, width, height)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
-          _sender = GdkPixbuf::PixbufLoader.new(_lib_sender, GICrystal::Transfer::None)
-          width = lib_width
-          height = lib_height
-          ::Box(Proc(GdkPixbuf::PixbufLoader, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, width, height)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(width : Int32, height : Int32) : Nil

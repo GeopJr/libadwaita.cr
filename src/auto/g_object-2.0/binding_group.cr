@@ -12,11 +12,10 @@ module GObject
   class BindingGroup < Object
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGObject::BindingGroup), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(BindingGroup, g_object_get_qdata, g_object_set_qdata)
@@ -71,20 +70,6 @@ module GObject
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "source", pointerof(value), Pointer(Void).null)
       GObject::Object.new(value, GICrystal::Transfer::None) unless value.null?
-    end
-
-    # Creates a new #GBindingGroup.
-    def initialize
-      # g_binding_group_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGObject.g_binding_group_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Creates a binding between @source_property on the source object

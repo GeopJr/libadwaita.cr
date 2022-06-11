@@ -6,11 +6,10 @@ module Gtk
   class PropertyExpression < Expression
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::PropertyExpression), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(PropertyExpression, g_object_get_qdata, g_object_set_qdata)
@@ -42,7 +41,7 @@ module Gtk
     # evaluation will fail.
     #
     # The given `this_type` must have a property with `property_name`.
-    def initialize(this_type : UInt64, expression : Gtk::Expression?, property_name : ::String)
+    def self.new(this_type : UInt64, expression : Gtk::Expression?, property_name : ::String) : self
       # gtk_property_expression_new: (Constructor)
       # @expression: (transfer full) (nullable)
       # Returns: (transfer full)
@@ -60,8 +59,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::PropertyExpression.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates an expression that looks up a property.

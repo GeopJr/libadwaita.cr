@@ -35,25 +35,6 @@ module Gtk
       LibGtk.gtk_text_child_anchor_get_type
     end
 
-    # Creates a new `GtkTextChildAnchor`.
-    #
-    # Usually you would then insert it into a `GtkTextBuffer` with
-    # `Gtk::TextBuffer#insert_child_anchor`. To perform the
-    # creation and insertion in one step, use the convenience
-    # function `Gtk::TextBuffer#create_child_anchor`.
-    def initialize
-      # gtk_text_child_anchor_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_text_child_anchor_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a new `GtkTextChildAnchor` with the given replacement character.
     #
     # Usually you would then insert it into a `GtkTextBuffer` with

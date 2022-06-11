@@ -52,18 +52,6 @@ module Graphene
       LibGraphene.graphene_point_get_type
     end
 
-    def self.alloc : self
-      # graphene_point_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_point_alloc
-
-      # Return value handling
-
-      Graphene::Point.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def distance(b : Graphene::Point) : Float32
       # graphene_point_distance: (Method)
       # @d_x: (out) (transfer full) (optional)

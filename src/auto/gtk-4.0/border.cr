@@ -76,19 +76,6 @@ module Gtk
       LibGtk.gtk_border_get_type
     end
 
-    def initialize
-      # gtk_border_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_border_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     def copy : Gtk::Border
       # gtk_border_copy: (Method)
       # Returns: (transfer full)

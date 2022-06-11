@@ -55,18 +55,6 @@ module Graphene
       LibGraphene.graphene_box_get_type
     end
 
-    def self.alloc : self
-      # graphene_box_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_box_alloc
-
-      # Return value handling
-
-      Graphene::Box.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def contains_box(b : Graphene::Box) : Bool
       # graphene_box_contains_box: (Method)
       # Returns: (transfer none)

@@ -14,12 +14,14 @@ module Gtk
   # [signal@Gtk.SelectionModel::selection-changed] signal by calling the
   # `Gtk::SelectionModel#selection_changed` function. The positions given
   # in that signal may have their selection state changed, though that is not a
-  # requirement. If new items added to the model via the ::items-changed signal
-  # are selected or not is up to the implementation.
+  # requirement. If new items added to the model via the
+  # [signal@Gio.ListModel::items-changed] signal are selected or not is up to the
+  # implementation.
   #
-  # Note that items added via ::items-changed may already be selected and no
-  # [Gtk.SelectionModel::selection-changed] will be emitted for them. So to
-  # track which items are selected, it is necessary to listen to both signals.
+  # Note that items added via [signal@Gio.ListModel::items-changed] may already
+  # be selected and no [signal@Gtk.SelectionModel::selection-changed] will be
+  # emitted for them. So to track which items are selected, it is necessary to
+  # listen to both signals.
   #
   # Additionally, the interface can expose functionality to select and unselect
   # items. If these functions are implemented, GTK's list widgets will allow users
@@ -165,31 +167,16 @@ module Gtk
       GICrystal.to_bool(_retval)
     end
 
-    struct SelectionChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct SelectionChangedSignal < GObject::Signal
+      def name : String
         @detail ? "selection-changed::#{@detail}" : "selection-changed"
       end
 
-      def connect(&block : Proc(UInt32, UInt32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(UInt32, UInt32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(UInt32, UInt32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(UInt32, UInt32, Nil))
+      def connect(handler : Proc(UInt32, UInt32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_n_items : UInt32, _lib_box : Pointer(Void)) {
           position = lib_position
@@ -197,23 +184,12 @@ module Gtk
           ::Box(Proc(UInt32, UInt32, Nil)).unbox(_lib_box).call(position, n_items)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(UInt32, UInt32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_n_items : UInt32, _lib_box : Pointer(Void)) {
-          position = lib_position
-          n_items = lib_n_items
-          ::Box(Proc(UInt32, UInt32, Nil)).unbox(_lib_box).call(position, n_items)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::SelectionModel, UInt32, UInt32, Nil))
+      def connect(handler : Proc(Gtk::SelectionModel, UInt32, UInt32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_n_items : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::AbstractSelectionModel.new(_lib_sender, GICrystal::Transfer::None)
@@ -222,21 +198,9 @@ module Gtk
           ::Box(Proc(Gtk::SelectionModel, UInt32, UInt32, Nil)).unbox(_lib_box).call(_sender, position, n_items)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::SelectionModel, UInt32, UInt32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, lib_n_items : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::AbstractSelectionModel.new(_lib_sender, GICrystal::Transfer::None)
-          position = lib_position
-          n_items = lib_n_items
-          ::Box(Proc(Gtk::SelectionModel, UInt32, UInt32, Nil)).unbox(_lib_box).call(_sender, position, n_items)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(position : UInt32, n_items : UInt32) : Nil

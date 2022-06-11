@@ -68,7 +68,7 @@ module GObject
       LibGObject.g_value_array_get_type
     end
 
-    def initialize(n_prealloced : UInt32)
+    def self.new(n_prealloced : UInt32) : self
       # g_value_array_new: (Constructor)
       # Returns: (transfer full)
 
@@ -77,8 +77,7 @@ module GObject
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GObject::ValueArray.new(_retval, GICrystal::Transfer::Full)
     end
 
     def append(value : _?) : GObject::ValueArray

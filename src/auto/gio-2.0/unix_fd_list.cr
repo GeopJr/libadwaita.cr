@@ -41,20 +41,6 @@ module Gio
       LibGio.g_unix_fd_list_get_type
     end
 
-    # Creates a new #GUnixFDList containing no file descriptors.
-    def initialize
-      # g_unix_fd_list_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGio.g_unix_fd_list_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a new #GUnixFDList containing the file descriptors given in
     # @fds.  The file descriptors become the property of the new list and
     # may no longer be used by the caller.  The array itself is owned by

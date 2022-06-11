@@ -73,7 +73,7 @@ module Gtk
 
     # Creates a new `GtkSelectionFilterModel` that will include the
     # selected items from the underlying selection model.
-    def initialize(model : Gtk::SelectionModel?)
+    def self.new(model : Gtk::SelectionModel?) : self
       # gtk_selection_filter_model_new: (Constructor)
       # @model: (nullable)
       # Returns: (transfer full)
@@ -90,8 +90,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::SelectionFilterModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the model currently filtered or %NULL if none.

@@ -74,7 +74,7 @@ module Gtk
     end
 
     # Creates a new `GtkFlattenListModel` that flattens @list.
-    def initialize(model : Gio::ListModel?)
+    def self.new(model : Gio::ListModel?) : self
       # gtk_flatten_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)
       # Returns: (transfer full)
@@ -91,8 +91,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::FlattenListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the model set via gtk_flatten_list_model_set_model().

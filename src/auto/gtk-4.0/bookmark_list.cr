@@ -131,7 +131,7 @@ module Gtk
     end
 
     # Creates a new `GtkBookmarkList` with the given @attributes.
-    def initialize(filename : ::String?, attributes : ::String?)
+    def self.new(filename : ::String?, attributes : ::String?) : self
       # gtk_bookmark_list_new: (Constructor)
       # @filename: (nullable)
       # @attributes: (nullable)
@@ -155,8 +155,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::BookmarkList.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the attributes queried on the children.

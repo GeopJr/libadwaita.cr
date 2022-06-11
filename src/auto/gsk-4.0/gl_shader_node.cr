@@ -6,11 +6,10 @@ module Gsk
   class GLShaderNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::GLShaderNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(GLShaderNode, g_object_get_qdata, g_object_set_qdata)
@@ -49,7 +48,7 @@ module Gsk
     # when compiling the shader, then the node will draw pink. You should use
     # `Gsk::GLShader#compile` to ensure the @shader will work for the
     # renderer before using it.
-    def initialize(shader : Gsk::GLShader, bounds : Graphene::Rect, args : GLib::Bytes, children : Enumerable(Gsk::RenderNode)?)
+    def self.new(shader : Gsk::GLShader, bounds : Graphene::Rect, args : GLib::Bytes, children : Enumerable(Gsk::RenderNode)?) : self
       # gsk_gl_shader_node_new: (Constructor)
       # @children: (nullable) (array length=n_children element-type Interface)
       # Returns: (transfer full)
@@ -67,8 +66,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::GLShaderNode.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets args for the node.

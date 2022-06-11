@@ -172,7 +172,7 @@ module GLib
       LibGLib.g_variant_type_get_gtype
     end
 
-    def initialize(type_string : ::String)
+    def self.new(type_string : ::String) : self
       # g_variant_type_new: (Constructor)
       # Returns: (transfer full)
 
@@ -181,8 +181,7 @@ module GLib
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GLib::VariantType.new(_retval, GICrystal::Transfer::Full)
     end
 
     def self.new_array(element : GLib::VariantType) : self

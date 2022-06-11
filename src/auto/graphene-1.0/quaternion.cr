@@ -77,18 +77,6 @@ module Graphene
       LibGraphene.graphene_quaternion_get_type
     end
 
-    def self.alloc : self
-      # graphene_quaternion_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_quaternion_alloc
-
-      # Return value handling
-
-      Graphene::Quaternion.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def add(b : Graphene::Quaternion) : Graphene::Quaternion
       # graphene_quaternion_add: (Method)
       # @res: (out) (caller-allocates)

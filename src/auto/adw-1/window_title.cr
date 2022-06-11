@@ -285,7 +285,7 @@ module Adw
     end
 
     # Creates a new `AdwWindowTitle`.
-    def initialize(title : ::String, subtitle : ::String)
+    def self.new(title : ::String, subtitle : ::String) : self
       # adw_window_title_new: (Constructor)
       # Returns: (transfer none)
 
@@ -295,8 +295,7 @@ module Adw
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Adw::WindowTitle.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the subtitle of @self.

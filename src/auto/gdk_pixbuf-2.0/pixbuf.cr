@@ -152,11 +152,10 @@ module GdkPixbuf
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGdkPixbuf::Pixbuf), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(Pixbuf, g_object_get_qdata, g_object_set_qdata)
@@ -379,7 +378,7 @@ module GdkPixbuf
     #
     # The buffer has an optimal rowstride. Note that the buffer is not cleared;
     # you will have to fill it completely yourself.
-    def initialize(colorspace : GdkPixbuf::Colorspace, has_alpha : Bool, bits_per_sample : Int32, width : Int32, height : Int32)
+    def self.new(colorspace : GdkPixbuf::Colorspace, has_alpha : Bool, bits_per_sample : Int32, width : Int32, height : Int32) : self?
       # gdk_pixbuf_new: (Constructor)
       # Returns: (transfer full)
 
@@ -388,8 +387,7 @@ module GdkPixbuf
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id)) unless _retval.null?
+      GdkPixbuf::Pixbuf.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     # Creates a new #GdkPixbuf out of in-memory readonly image data.

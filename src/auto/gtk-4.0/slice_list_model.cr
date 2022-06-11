@@ -118,7 +118,7 @@ module Gtk
     #
     # It presents the slice from @offset to offset + @size
     # of the given @model.
-    def initialize(model : Gio::ListModel?, offset : UInt32, size : UInt32)
+    def self.new(model : Gio::ListModel?, offset : UInt32, size : UInt32) : self
       # gtk_slice_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)
       # Returns: (transfer full)
@@ -135,8 +135,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::SliceListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the model that is currently being used or %NULL if none.

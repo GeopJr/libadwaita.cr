@@ -45,18 +45,6 @@ module Graphene
       LibGraphene.graphene_matrix_get_type
     end
 
-    def self.alloc : self
-      # graphene_matrix_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_matrix_alloc
-
-      # Return value handling
-
-      Graphene::Matrix.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def decompose : Graphene::Vec3
       # graphene_matrix_decompose: (Method)
       # @translate: (out) (caller-allocates)

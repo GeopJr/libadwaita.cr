@@ -27,19 +27,6 @@ module GLib
       LibGLib.g_main_context_get_type
     end
 
-    def initialize
-      # g_main_context_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGLib.g_main_context_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     def self.new_with_flags(flags : GLib::MainContextFlags) : self
       # g_main_context_new_with_flags: (Constructor)
       # Returns: (transfer full)

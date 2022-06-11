@@ -105,7 +105,7 @@ module Gtk
   # a `GtkExpression` object is needed like in a `<property>` tag for an expression
   # property, or in a `<binding name="property">` tag to bind a property to an expression.
   #
-  # To create an property expression, use the `<lookup>` element. It can have a `type`
+  # To create a property expression, use the `<lookup>` element. It can have a `type`
   # attribute to specify the object type, and a `name` attribute to specify the property
   # to look up. The content of `<lookup>` can either be an element specfiying the expression
   # to use the object, or a string that specifies the name of the object to use.
@@ -148,11 +148,10 @@ module Gtk
   class Expression
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::Expression), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(Expression, g_param_spec_get_qdata, g_param_spec_set_qdata)

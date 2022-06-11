@@ -13,11 +13,10 @@ module Pango
   class Coverage < GObject::Object
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibPango::Coverage), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(Coverage, g_object_get_qdata, g_object_set_qdata)
@@ -37,20 +36,6 @@ module Pango
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibPango.pango_coverage_get_type
-    end
-
-    # Create a new `PangoCoverage`
-    def initialize
-      # pango_coverage_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibPango.pango_coverage_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Convert data generated from `Pango::Coverage#to_bytes`

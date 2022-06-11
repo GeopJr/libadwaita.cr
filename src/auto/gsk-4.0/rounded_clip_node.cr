@@ -6,11 +6,10 @@ module Gsk
   class RoundedClipNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::RoundedClipNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(RoundedClipNode, g_object_get_qdata, g_object_set_qdata)
@@ -34,7 +33,7 @@ module Gsk
 
     # Creates a `GskRenderNode` that will clip the @child to the area
     # given by @clip.
-    def initialize(child : Gsk::RenderNode, clip : Gsk::RoundedRect)
+    def self.new(child : Gsk::RenderNode, clip : Gsk::RoundedRect) : self
       # gsk_rounded_clip_node_new: (Constructor)
       # Returns: (transfer none)
 
@@ -44,8 +43,7 @@ module Gsk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::RoundedClipNode.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the child node that is getting clipped by the given @node.

@@ -141,7 +141,7 @@ module Gio
     # Creates a new #GNetworkService representing the given @service,
     # @protocol, and @domain. This will initially be unresolved; use the
     # #GSocketConnectable interface to resolve it.
-    def initialize(service : ::String, protocol : ::String, domain : ::String)
+    def self.new(service : ::String, protocol : ::String, domain : ::String) : self
       # g_network_service_new: (Constructor)
       # Returns: (transfer full)
 
@@ -150,8 +150,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::NetworkService.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the domain that @srv serves. This might be either UTF-8 or

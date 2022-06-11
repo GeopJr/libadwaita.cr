@@ -89,7 +89,7 @@ module Gtk
 
     # Creates a `GtkShortcutTrigger` that will trigger whenever
     # the key with the given @keyval and @modifiers is pressed.
-    def initialize(keyval : UInt32, modifiers : Gdk::ModifierType)
+    def self.new(keyval : UInt32, modifiers : Gdk::ModifierType) : self
       # gtk_keyval_trigger_new: (Constructor)
       # Returns: (transfer full)
 
@@ -98,8 +98,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::KeyvalTrigger.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the keyval that must be pressed to succeed

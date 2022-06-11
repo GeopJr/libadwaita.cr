@@ -10,11 +10,10 @@ module Gio
   class SimplePermission < Permission
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::SimplePermission), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(SimplePermission, g_object_get_qdata, g_object_set_qdata)
@@ -68,7 +67,7 @@ module Gio
 
     # Creates a new #GPermission instance that represents an action that is
     # either always or never allowed.
-    def initialize(allowed : Bool)
+    def self.new(allowed : Bool) : self
       # g_simple_permission_new: (Constructor)
       # Returns: (transfer full)
 
@@ -77,8 +76,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::SimplePermission.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

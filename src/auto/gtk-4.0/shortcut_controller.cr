@@ -167,20 +167,6 @@ module Gtk
       Gtk::ShortcutScope.new(value)
     end
 
-    # Creates a new shortcut controller.
-    def initialize
-      # gtk_shortcut_controller_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_shortcut_controller_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a new shortcut controller that takes its shortcuts from
     # the given list model.
     #

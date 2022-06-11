@@ -1026,27 +1026,6 @@ module Gtk
       value
     end
 
-    # Creates a new `GtkCellRendererText`. Adjust how text is drawn using
-    # object properties. Object properties can be
-    # set globally (with g_object_set()). Also, with `GtkTreeViewColumn`,
-    # you can bind a property to a value in a `GtkTreeModel`. For example,
-    # you can bind the “text” property on the cell renderer to a string
-    # value in the model, thus rendering a different string in each row
-    # of the `GtkTreeView`.
-    def initialize
-      # gtk_cell_renderer_text_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_cell_renderer_text_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Sets the height of a renderer to explicitly be determined by the “font” and
     # “y_pad” property set on it.  Further changes in these properties do not
     # affect the height, so they must be accompanied by a subsequent call to this
@@ -1068,31 +1047,16 @@ module Gtk
     #
     # It is the responsibility of the application to update the model
     # and store @new_text at the position indicated by @path.
-    struct EditedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct EditedSignal < GObject::Signal
+      def name : String
         @detail ? "edited::#{@detail}" : "edited"
       end
 
-      def connect(&block : Proc(::String, ::String, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(::String, ::String, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(::String, ::String, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(::String, ::String, Nil))
+      def connect(handler : Proc(::String, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), lib_new_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -1102,25 +1066,12 @@ module Gtk
           ::Box(Proc(::String, ::String, Nil)).unbox(_lib_box).call(path, new_text)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(::String, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), lib_new_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          path = ::String.new(lib_path)
-          # Generator::BuiltInTypeArgPlan
-          new_text = ::String.new(lib_new_text)
-          ::Box(Proc(::String, ::String, Nil)).unbox(_lib_box).call(path, new_text)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::CellRendererText, ::String, ::String, Nil))
+      def connect(handler : Proc(Gtk::CellRendererText, ::String, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), lib_new_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRendererText.new(_lib_sender, GICrystal::Transfer::None)
@@ -1131,23 +1082,9 @@ module Gtk
           ::Box(Proc(Gtk::CellRendererText, ::String, ::String, Nil)).unbox(_lib_box).call(_sender, path, new_text)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::CellRendererText, ::String, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_path : Pointer(LibC::Char), lib_new_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gtk::CellRendererText.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          path = ::String.new(lib_path)
-          # Generator::BuiltInTypeArgPlan
-          new_text = ::String.new(lib_new_text)
-          ::Box(Proc(Gtk::CellRendererText, ::String, ::String, Nil)).unbox(_lib_box).call(_sender, path, new_text)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(path : ::String, new_text : ::String) : Nil

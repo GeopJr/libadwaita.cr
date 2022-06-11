@@ -276,21 +276,6 @@ module Adw
       Adw::Carousel.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new `AdwCarouselIndicatorLines`.
-    def initialize
-      # adw_carousel_indicator_lines_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_carousel_indicator_lines_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the displayed carousel.
     def carousel : Adw::Carousel?
       # adw_carousel_indicator_lines_get_carousel: (Method | Getter)

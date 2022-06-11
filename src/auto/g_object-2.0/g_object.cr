@@ -4,6 +4,9 @@ require "../g_lib-2.0/g_lib.cr"
 # C lib declaration
 require "./lib_g_object.cr"
 
+require "../../../lib/gi-crystal/src/bindings/g_object/type.cr"
+require "../../../lib/gi-crystal/src/bindings/g_object/signal.cr"
+
 # Wrappers
 require "./binding.cr"
 require "./binding_group.cr"
@@ -19,31 +22,7 @@ require "./interface_info.cr"
 require "./object.cr"
 require "./object_construct_param.cr"
 require "./param_spec.cr"
-require "./param_spec_boolean.cr"
-require "./param_spec_boxed.cr"
-require "./param_spec_char.cr"
-require "./param_spec_double.cr"
-require "./param_spec_enum.cr"
-require "./param_spec_flags.cr"
-require "./param_spec_float.cr"
-require "./param_spec_g_type.cr"
-require "./param_spec_int.cr"
-require "./param_spec_int64.cr"
-require "./param_spec_long.cr"
-require "./param_spec_object.cr"
-require "./param_spec_override.cr"
-require "./param_spec_param.cr"
-require "./param_spec_pointer.cr"
 require "./param_spec_pool.cr"
-require "./param_spec_string.cr"
-require "./param_spec_type_info.cr"
-require "./param_spec_u_char.cr"
-require "./param_spec_u_int.cr"
-require "./param_spec_u_int64.cr"
-require "./param_spec_u_long.cr"
-require "./param_spec_unichar.cr"
-require "./param_spec_value_array.cr"
-require "./param_spec_variant.cr"
 require "./parameter.cr"
 require "./signal_group.cr"
 require "./signal_invocation_hint.cr"
@@ -392,6 +371,11 @@ module GObject
       super(String.new(message_ptr)) unless message_ptr.null?
       LibGLib.g_error_free(error)
     end
+
+    # :inherit:
+    def initialize(message : String)
+      super
+    end
   end
 
   # Enums
@@ -484,5 +468,5 @@ end
 
 # Extra includes
 require "../../../lib/gi-crystal/src/bindings/g_object/param_spec.cr"
-require "../../../lib/gi-crystal/src/bindings/g_object/type.cr"
 require "../../../lib/gi-crystal/src/bindings/g_object/value.cr"
+require "../../../lib/gi-crystal/src/bindings/g_object/signal_connection.cr"

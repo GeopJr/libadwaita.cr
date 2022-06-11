@@ -6,11 +6,10 @@ module Gsk
   class RepeatNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::RepeatNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(RepeatNode, g_object_get_qdata, g_object_set_qdata)
@@ -34,7 +33,7 @@ module Gsk
 
     # Creates a `GskRenderNode` that will repeat the drawing of @child across
     # the given @bounds.
-    def initialize(bounds : Graphene::Rect, child : Gsk::RenderNode, child_bounds : Graphene::Rect?)
+    def self.new(bounds : Graphene::Rect, child : Gsk::RenderNode, child_bounds : Graphene::Rect?) : self
       # gsk_repeat_node_new: (Constructor)
       # @child_bounds: (nullable)
       # Returns: (transfer full)
@@ -51,8 +50,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::RepeatNode.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Retrieves the child of @node.

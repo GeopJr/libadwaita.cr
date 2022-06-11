@@ -402,21 +402,6 @@ module Adw
       ::String.new(value)
     end
 
-    # Creates a new `AdwExpanderRow`.
-    def initialize
-      # adw_expander_row_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_expander_row_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds an action widget to @self.
     def add_action(widget : Gtk::Widget) : Nil
       # adw_expander_row_add_action: (Method)

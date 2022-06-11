@@ -56,18 +56,5 @@ module Gsk
     def self.g_type : UInt64
       LibGsk.gsk_vulkan_renderer_get_type
     end
-
-    def initialize
-      # gsk_vulkan_renderer_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGsk.gsk_vulkan_renderer_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
   end
 end

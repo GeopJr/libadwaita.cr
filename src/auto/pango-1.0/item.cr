@@ -78,19 +78,6 @@ module Pango
       LibPango.pango_item_get_type
     end
 
-    def initialize
-      # pango_item_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibPango.pango_item_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     def apply_attrs(iter : Pango::AttrIterator) : Nil
       # pango_item_apply_attrs: (Method)
       # Returns: (transfer none)

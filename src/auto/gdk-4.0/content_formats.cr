@@ -57,7 +57,7 @@ module Gdk
       LibGdk.gdk_content_formats_get_type
     end
 
-    def initialize(mime_types : Enumerable(::String)?)
+    def self.new(mime_types : Enumerable(::String)?) : self
       # gdk_content_formats_new: (Constructor)
       # @mime_types: (nullable) (array length=n_mime_types element-type Utf8)
       # Returns: (transfer full)
@@ -75,12 +75,11 @@ module Gdk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gdk::ContentFormats.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def initialize(*mime_types : ::String)
-      initialize(mime_types)
+    def self.new(*mime_types : ::String)
+      self.new(mime_types)
     end
 
     def self.new_for_gtype(type : UInt64) : self

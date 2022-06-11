@@ -95,7 +95,7 @@ module Gio
 
     # Creates a new #GDBusObjectProxy for the given connection and
     # object path.
-    def initialize(connection : Gio::DBusConnection, object_path : ::String)
+    def self.new(connection : Gio::DBusConnection, object_path : ::String) : self
       # g_dbus_object_proxy_new: (Constructor)
       # Returns: (transfer full)
 
@@ -104,8 +104,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::DBusObjectProxy.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the connection that @proxy is for.

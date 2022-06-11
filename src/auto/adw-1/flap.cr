@@ -605,21 +605,6 @@ module Adw
       Adw::FlapTransitionType.new(value)
     end
 
-    # Creates a new `AdwFlap`.
-    def initialize
-      # adw_flap_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_flap_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the content widget for @self.
     def content : Gtk::Widget?
       # adw_flap_get_content: (Method | Getter)

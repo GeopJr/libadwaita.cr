@@ -6,11 +6,10 @@ module Gsk
   class BlendNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::BlendNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(BlendNode, g_object_get_qdata, g_object_set_qdata)
@@ -34,7 +33,7 @@ module Gsk
 
     # Creates a `GskRenderNode` that will use @blend_mode to blend the @top
     # node onto the @bottom node.
-    def initialize(bottom : Gsk::RenderNode, top : Gsk::RenderNode, blend_mode : Gsk::BlendMode)
+    def self.new(bottom : Gsk::RenderNode, top : Gsk::RenderNode, blend_mode : Gsk::BlendMode) : self
       # gsk_blend_node_new: (Constructor)
       # Returns: (transfer full)
 
@@ -43,8 +42,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::BlendNode.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Retrieves the blend mode used by @node.

@@ -88,19 +88,6 @@ module Pango
       LibPango.pango_glyph_string_get_type
     end
 
-    def initialize
-      # pango_glyph_string_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibPango.pango_glyph_string_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     def copy : Pango::GlyphString?
       # pango_glyph_string_copy: (Method)
       # Returns: (transfer full)

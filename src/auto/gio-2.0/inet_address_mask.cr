@@ -108,7 +108,7 @@ module Gio
 
     # Creates a new #GInetAddressMask representing all addresses whose
     # first @length bits match @addr.
-    def initialize(addr : Gio::InetAddress, length : UInt32)
+    def self.new(addr : Gio::InetAddress, length : UInt32) : self
       # g_inet_address_mask_new: (Constructor | Throws)
       # Returns: (transfer full)
 
@@ -122,8 +122,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::InetAddressMask.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Parses @mask_string as an IP address and (optional) length, and

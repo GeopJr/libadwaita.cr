@@ -125,31 +125,16 @@ module Gtk
     # Depending on the @change parameter, it may be possible to update
     # the sort order without a full resorting. Refer to the
     # `Gtk#SorterChange` documentation for details.
-    struct ChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ChangedSignal < GObject::Signal
+      def name : String
         @detail ? "changed::#{@detail}" : "changed"
       end
 
-      def connect(&block : Proc(Gtk::SorterChange, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::SorterChange, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::SorterChange, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::SorterChange, Nil))
+      def connect(handler : Proc(Gtk::SorterChange, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -157,23 +142,12 @@ module Gtk
           ::Box(Proc(Gtk::SorterChange, Nil)).unbox(_lib_box).call(change)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::SorterChange, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          change = Gtk::SorterChange.new(lib_change)
-          ::Box(Proc(Gtk::SorterChange, Nil)).unbox(_lib_box).call(change)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::Sorter, Gtk::SorterChange, Nil))
+      def connect(handler : Proc(Gtk::Sorter, Gtk::SorterChange, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::Sorter.new(_lib_sender, GICrystal::Transfer::None)
@@ -182,21 +156,9 @@ module Gtk
           ::Box(Proc(Gtk::Sorter, Gtk::SorterChange, Nil)).unbox(_lib_box).call(_sender, change)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::Sorter, Gtk::SorterChange, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_change : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::Sorter.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          change = Gtk::SorterChange.new(lib_change)
-          ::Box(Proc(Gtk::Sorter, Gtk::SorterChange, Nil)).unbox(_lib_box).call(_sender, change)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(change : Gtk::SorterChange) : Nil

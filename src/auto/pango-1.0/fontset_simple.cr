@@ -37,7 +37,7 @@ module Pango
     end
 
     # Creates a new `PangoFontsetSimple` for the given language.
-    def initialize(language : Pango::Language)
+    def self.new(language : Pango::Language) : self
       # pango_fontset_simple_new: (Constructor)
       # Returns: (transfer full)
 
@@ -46,8 +46,7 @@ module Pango
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Pango::FontsetSimple.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Adds a font to the fontset.

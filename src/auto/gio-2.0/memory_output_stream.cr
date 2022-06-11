@@ -110,20 +110,6 @@ module Gio
       value
     end
 
-    # Creates a new #GMemoryOutputStream, using g_realloc() and g_free()
-    # for memory allocation.
-    def self.new_resizable : self
-      # g_memory_output_stream_new_resizable: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGio.g_memory_output_stream_new_resizable
-
-      # Return value handling
-
-      Gio::MemoryOutputStream.new(_retval, GICrystal::Transfer::Full)
-    end
-
     # Gets any loaded data from the @ostream.
     #
     # Note that the returned pointer may become invalid on the next

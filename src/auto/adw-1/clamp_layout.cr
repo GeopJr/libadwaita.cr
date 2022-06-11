@@ -116,20 +116,6 @@ module Adw
       value
     end
 
-    # Creates a new `AdwClampLayout`.
-    def initialize
-      # adw_clamp_layout_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibAdw.adw_clamp_layout_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the maximum size allocated to the children.
     def maximum_size : Int32
       # adw_clamp_layout_get_maximum_size: (Method | Getter)

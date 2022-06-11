@@ -133,7 +133,7 @@ module Gtk
 
     # Creates a new `GtkFilterListModel` that will filter @model using the given
     # @filter.
-    def initialize(model : Gio::ListModel?, filter : Gtk::Filter?)
+    def self.new(model : Gio::ListModel?, filter : Gtk::Filter?) : self
       # gtk_filter_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)
       # @filter: (transfer full) (nullable)
@@ -158,8 +158,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::FilterListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the `GtkFilter` currently set on @self.

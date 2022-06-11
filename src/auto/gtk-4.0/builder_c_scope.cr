@@ -50,24 +50,6 @@ module Gtk
       LibGtk.gtk_builder_cscope_get_type
     end
 
-    # Creates a new `GtkBuilderCScope` object to use with future
-    # `GtkBuilder` instances.
-    #
-    # Calling this function is only necessary if you want to add
-    # custom callbacks via `Gtk::BuilderCScope#add_callback_symbol`.
-    def initialize
-      # gtk_builder_cscope_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_builder_cscope_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds the @callback_symbol to the scope of @builder under the
     # given @callback_name.
     #

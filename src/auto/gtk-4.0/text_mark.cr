@@ -130,7 +130,7 @@ module Gtk
     # on the right of newly-inserted text. The standard left-to-right cursor
     # is a mark with right gravity (when you type, the cursor stays on the
     # right side of the text you’re typing).
-    def initialize(name : ::String?, left_gravity : Bool)
+    def self.new(name : ::String?, left_gravity : Bool) : self
       # gtk_text_mark_new: (Constructor)
       # @name: (nullable)
       # Returns: (transfer full)
@@ -147,8 +147,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::TextMark.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the buffer this mark is located inside.

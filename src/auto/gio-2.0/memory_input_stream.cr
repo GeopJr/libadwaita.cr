@@ -42,20 +42,6 @@ module Gio
       LibGio.g_memory_input_stream_get_type
     end
 
-    # Creates a new empty #GMemoryInputStream.
-    def initialize
-      # g_memory_input_stream_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGio.g_memory_input_stream_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a new #GMemoryInputStream with data from the given @bytes.
     def self.new_from_bytes(bytes : GLib::Bytes) : self
       # g_memory_input_stream_new_from_bytes: (Constructor)

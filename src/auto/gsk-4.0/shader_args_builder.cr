@@ -26,7 +26,7 @@ module Gsk
       LibGsk.gsk_shader_args_builder_get_type
     end
 
-    def initialize(shader : Gsk::GLShader, initial_values : GLib::Bytes?)
+    def self.new(shader : Gsk::GLShader, initial_values : GLib::Bytes?) : self
       # gsk_shader_args_builder_new: (Constructor)
       # @initial_values: (nullable)
       # Returns: (transfer full)
@@ -43,8 +43,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::ShaderArgsBuilder.new(_retval, GICrystal::Transfer::Full)
     end
 
     def ref : Gsk::ShaderArgsBuilder

@@ -50,11 +50,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::Statusbar), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(Statusbar, g_object_get_qdata, g_object_set_qdata)
@@ -267,21 +266,6 @@ module Gtk
       LibGtk.gtk_statusbar_get_type
     end
 
-    # Creates a new `GtkStatusbar` ready for messages.
-    def initialize
-      # gtk_statusbar_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_statusbar_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Returns a new context identifier, given a description
     # of the actual context.
     #
@@ -352,31 +336,16 @@ module Gtk
     end
 
     # Emitted whenever a new message is popped off a statusbar's stack.
-    struct TextPoppedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct TextPoppedSignal < GObject::Signal
+      def name : String
         @detail ? "text-popped::#{@detail}" : "text-popped"
       end
 
-      def connect(&block : Proc(UInt32, ::String, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(UInt32, ::String, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(UInt32, ::String, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(UInt32, ::String, Nil))
+      def connect(handler : Proc(UInt32, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           context_id = lib_context_id
@@ -385,24 +354,12 @@ module Gtk
           ::Box(Proc(UInt32, ::String, Nil)).unbox(_lib_box).call(context_id, text)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(UInt32, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          context_id = lib_context_id
-          # Generator::BuiltInTypeArgPlan
-          text = ::String.new(lib_text)
-          ::Box(Proc(UInt32, ::String, Nil)).unbox(_lib_box).call(context_id, text)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::Statusbar, UInt32, ::String, Nil))
+      def connect(handler : Proc(Gtk::Statusbar, UInt32, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Statusbar.new(_lib_sender, GICrystal::Transfer::None)
@@ -412,22 +369,9 @@ module Gtk
           ::Box(Proc(Gtk::Statusbar, UInt32, ::String, Nil)).unbox(_lib_box).call(_sender, context_id, text)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::Statusbar, UInt32, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gtk::Statusbar.new(_lib_sender, GICrystal::Transfer::None)
-          context_id = lib_context_id
-          # Generator::BuiltInTypeArgPlan
-          text = ::String.new(lib_text)
-          ::Box(Proc(Gtk::Statusbar, UInt32, ::String, Nil)).unbox(_lib_box).call(_sender, context_id, text)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(context_id : UInt32, text : ::String) : Nil
@@ -440,31 +384,16 @@ module Gtk
     end
 
     # Emitted whenever a new message gets pushed onto a statusbar's stack.
-    struct TextPushedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct TextPushedSignal < GObject::Signal
+      def name : String
         @detail ? "text-pushed::#{@detail}" : "text-pushed"
       end
 
-      def connect(&block : Proc(UInt32, ::String, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(UInt32, ::String, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(UInt32, ::String, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(UInt32, ::String, Nil))
+      def connect(handler : Proc(UInt32, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           context_id = lib_context_id
@@ -473,24 +402,12 @@ module Gtk
           ::Box(Proc(UInt32, ::String, Nil)).unbox(_lib_box).call(context_id, text)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(UInt32, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          context_id = lib_context_id
-          # Generator::BuiltInTypeArgPlan
-          text = ::String.new(lib_text)
-          ::Box(Proc(UInt32, ::String, Nil)).unbox(_lib_box).call(context_id, text)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::Statusbar, UInt32, ::String, Nil))
+      def connect(handler : Proc(Gtk::Statusbar, UInt32, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::Statusbar.new(_lib_sender, GICrystal::Transfer::None)
@@ -500,22 +417,9 @@ module Gtk
           ::Box(Proc(Gtk::Statusbar, UInt32, ::String, Nil)).unbox(_lib_box).call(_sender, context_id, text)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::Statusbar, UInt32, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_context_id : UInt32, lib_text : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gtk::Statusbar.new(_lib_sender, GICrystal::Transfer::None)
-          context_id = lib_context_id
-          # Generator::BuiltInTypeArgPlan
-          text = ::String.new(lib_text)
-          ::Box(Proc(Gtk::Statusbar, UInt32, ::String, Nil)).unbox(_lib_box).call(_sender, context_id, text)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(context_id : UInt32, text : ::String) : Nil

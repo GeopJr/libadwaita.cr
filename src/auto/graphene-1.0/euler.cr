@@ -57,18 +57,6 @@ module Graphene
       LibGraphene.graphene_euler_get_type
     end
 
-    def self.alloc : self
-      # graphene_euler_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_euler_alloc
-
-      # Return value handling
-
-      Graphene::Euler.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def equal(b : Graphene::Euler) : Bool
       # graphene_euler_equal: (Method)
       # Returns: (transfer none)

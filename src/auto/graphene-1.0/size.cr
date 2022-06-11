@@ -52,18 +52,6 @@ module Graphene
       LibGraphene.graphene_size_get_type
     end
 
-    def self.alloc : self
-      # graphene_size_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_size_alloc
-
-      # Return value handling
-
-      Graphene::Size.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def equal(b : Graphene::Size) : Bool
       # graphene_size_equal: (Method)
       # Returns: (transfer none)

@@ -39,7 +39,7 @@ module Gio
 
     # Creates a new GIOModule that will load the specific
     # shared library when in use.
-    def initialize(filename : ::String)
+    def self.new(filename : ::String) : self
       # g_io_module_new: (Constructor)
       # Returns: (transfer full)
 
@@ -48,8 +48,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::IOModule.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Optional API for GIO modules to implement.

@@ -123,7 +123,7 @@ module Gtk
 
     # Creates a new `GtkShortcut` that is triggered by
     # @trigger and then activates @action.
-    def initialize(trigger : Gtk::ShortcutTrigger?, action : Gtk::ShortcutAction?)
+    def self.new(trigger : Gtk::ShortcutTrigger?, action : Gtk::ShortcutAction?) : self
       # gtk_shortcut_new: (Constructor)
       # @trigger: (transfer full) (nullable)
       # @action: (transfer full) (nullable)
@@ -149,8 +149,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::Shortcut.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the action that is activated by this shortcut.

@@ -37,7 +37,7 @@ module Gtk
     # @sort_func to compare items.
     #
     # If @sort_func is %NULL, all items are considered equal.
-    def initialize(sort_func : GLib::CompareDataFunc?)
+    def self.new(sort_func : GLib::CompareDataFunc?) : self
       # gtk_custom_sorter_new: (Constructor)
       # @sort_func: (nullable)
       # @user_data: (nullable)
@@ -65,8 +65,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::CustomSorter.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Sets (or unsets) the function used for sorting items.

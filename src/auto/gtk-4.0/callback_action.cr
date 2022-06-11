@@ -34,7 +34,7 @@ module Gtk
 
     # Create a custom action that calls the given @callback when
     # activated.
-    def initialize(callback : Gtk::ShortcutFunc?)
+    def self.new(callback : Gtk::ShortcutFunc?) : self
       # gtk_callback_action_new: (Constructor)
       # @callback: (nullable)
       # @data: (nullable)
@@ -47,7 +47,7 @@ module Gtk
           # Generator::BuiltInTypeArgPlan
           widget = Gtk::Widget.new(lib_widget, :none)
           # Generator::HandmadeArgPlan
-          args = GLib::Variant.new(lib_args, :none)
+          args = GLib::Variant.new(lib_args, :none) unless lib_args.null?
           ::Box(Proc(Gtk::Widget, GLib::Variant?, Bool)).unbox(lib_user_data).call(widget, args)
         }.pointer
         data = GICrystal::ClosureDataManager.register(_box)
@@ -61,8 +61,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::CallbackAction.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

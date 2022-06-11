@@ -45,18 +45,6 @@ module Graphene
       LibGraphene.graphene_vec2_get_type
     end
 
-    def self.alloc : self
-      # graphene_vec2_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_vec2_alloc
-
-      # Return value handling
-
-      Graphene::Vec2.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def add(b : Graphene::Vec2) : Graphene::Vec2
       # graphene_vec2_add: (Method)
       # @res: (out) (caller-allocates)

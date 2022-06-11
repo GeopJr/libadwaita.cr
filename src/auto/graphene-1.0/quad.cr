@@ -44,18 +44,6 @@ module Graphene
       LibGraphene.graphene_quad_get_type
     end
 
-    def self.alloc : self
-      # graphene_quad_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_quad_alloc
-
-      # Return value handling
-
-      Graphene::Quad.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def bounds : Graphene::Rect
       # graphene_quad_bounds: (Method)
       # @r: (out) (caller-allocates)

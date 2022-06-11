@@ -209,7 +209,7 @@ module Gio
     # probably should) then you should provide the user's cancellable to
     # g_simple_async_result_set_check_cancellable() immediately after
     # this function returns.
-    def initialize(source_object : GObject::Object?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?, source_tag : Pointer(Void)?)
+    def self.new(source_object : GObject::Object?, callback : Gio::AsyncReadyCallback?, user_data : Pointer(Void)?, source_tag : Pointer(Void)?) : self
       # g_simple_async_result_new: (Constructor)
       # @source_object: (nullable)
       # @callback: (nullable)
@@ -241,8 +241,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::SimpleAsyncResult.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a #GSimpleAsyncResult from an error condition.

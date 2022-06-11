@@ -34,19 +34,6 @@ module Gsk
       LibGsk.gsk_transform_get_type
     end
 
-    def initialize
-      # gsk_transform_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGsk.gsk_transform_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     def equal(second : Gsk::Transform?) : Bool
       # gsk_transform_equal: (Method)
       # @second: (nullable)

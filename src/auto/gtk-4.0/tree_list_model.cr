@@ -105,7 +105,7 @@ module Gtk
 
     # Creates a new empty `GtkTreeListModel` displaying @root
     # with all rows collapsed.
-    def initialize(root : Gio::ListModel, passthrough : Bool, autoexpand : Bool, create_func : Gtk::TreeListModelCreateModelFunc)
+    def self.new(root : Gio::ListModel, passthrough : Bool, autoexpand : Bool, create_func : Gtk::TreeListModelCreateModelFunc) : self
       # gtk_tree_list_model_new: (Constructor)
       # @root: (transfer full)
       # @user_data: (nullable)
@@ -130,8 +130,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::TreeListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets whether the model is set to automatically expand new rows

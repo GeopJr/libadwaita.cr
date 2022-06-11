@@ -65,11 +65,10 @@ module Gio
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::Subprocess), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(Subprocess, g_object_get_qdata, g_object_set_qdata)
@@ -137,7 +136,7 @@ module Gio
     # @flags to control this behavior.
     #
     # The argument list must be terminated with %NULL.
-    def initialize(argv : Enumerable(::String), flags : Gio::SubprocessFlags)
+    def self.new(argv : Enumerable(::String), flags : Gio::SubprocessFlags) : self
       # g_subprocess_newv: (Constructor | Throws)
       # @argv: (array zero-terminated=1 element-type Filename)
       # Returns: (transfer full)
@@ -155,8 +154,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::Subprocess.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Communicate with the subprocess until it terminates, and all input

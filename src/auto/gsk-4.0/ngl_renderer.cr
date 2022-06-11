@@ -5,11 +5,10 @@ module Gsk
   class NglRenderer < Renderer
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::NglRenderer), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(NglRenderer, g_object_get_qdata, g_object_set_qdata)
@@ -54,20 +53,6 @@ module Gsk
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGsk.gsk_ngl_renderer_get_type
-    end
-
-    # Same as gsk_gl_renderer_new().
-    def initialize
-      # gsk_ngl_renderer_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGsk.gsk_ngl_renderer_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
   end
 end

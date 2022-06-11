@@ -13,11 +13,10 @@ module Gio
   class SimpleIOStream < IOStream
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::SimpleIOStream), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(SimpleIOStream, g_object_get_qdata, g_object_set_qdata)
@@ -101,7 +100,7 @@ module Gio
 
     # Creates a new #GSimpleIOStream wrapping @input_stream and @output_stream.
     # See also #GIOStream.
-    def initialize(input_stream : Gio::InputStream, output_stream : Gio::OutputStream)
+    def self.new(input_stream : Gio::InputStream, output_stream : Gio::OutputStream) : self
       # g_simple_io_stream_new: (Constructor)
       # Returns: (transfer full)
 
@@ -110,8 +109,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::SimpleIOStream.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

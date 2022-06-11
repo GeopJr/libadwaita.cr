@@ -359,7 +359,7 @@ module Gtk
     # Creates a new `GtkFrame`, with optional label @label.
     #
     # If @label is %NULL, the label is omitted.
-    def initialize(label : ::String?)
+    def self.new(label : ::String?) : self
       # gtk_frame_new: (Constructor)
       # @label: (nullable)
       # Returns: (transfer none)
@@ -377,8 +377,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::Frame.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the child widget of @frame.

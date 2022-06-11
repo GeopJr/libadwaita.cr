@@ -8,9 +8,9 @@ module Gtk
   # item.
   #
   # Note that the selection is *persistent* -- if the selected item is removed
-  # and re-added in the same ::items-changed emission, it stays selected.
-  # In particular, this means that changing the sort order of an underlying sort
-  # model will preserve the selection.
+  # and re-added in the same [signal@Gio.ListModel::items-changed] emission, it
+  # stays selected. In particular, this means that changing the sort order of an
+  # underlying sort model will preserve the selection.
   @[GObject::GeneratedWrapper]
   class SingleSelection < GObject::Object
     include Gio::ListModel
@@ -153,7 +153,7 @@ module Gtk
     end
 
     # Creates a new selection to handle @model.
-    def initialize(model : Gio::ListModel?)
+    def self.new(model : Gio::ListModel?) : self
       # gtk_single_selection_new: (Constructor)
       # @model: (transfer full) (nullable)
       # Returns: (transfer full)
@@ -170,8 +170,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::SingleSelection.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Checks if autoselect has been enabled or disabled via

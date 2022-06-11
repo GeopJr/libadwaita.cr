@@ -474,6 +474,7 @@ lib LibHarfBuzz
   fun hb_map_get_population(map : Pointer(Void)) : UInt32
   fun hb_map_has(map : Pointer(Void), key : UInt32) : Int32
   fun hb_map_is_empty(map : Pointer(Void)) : Int32
+  fun hb_map_is_equal(map : Pointer(Void), other : Pointer(Void)) : Int32
   fun hb_map_set(map : Pointer(Void), key : UInt32, value : UInt32) : Void
   fun hb_ot_color_glyph_get_layers(face : Pointer(Void), glyph : UInt32, start_offset : UInt32, layer_count : Pointer(UInt32), layers : Pointer(Pointer(Void))) : UInt32
   fun hb_ot_color_glyph_reference_png(font : Pointer(Void), glyph : UInt32) : Pointer(Void)

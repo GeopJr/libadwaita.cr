@@ -776,70 +776,36 @@ module Gtk
     # editing when the user presses Escape.
     #
     # See also: gtk_cell_renderer_stop_editing().
-    struct EditingCanceledSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct EditingCanceledSignal < GObject::Signal
+      def name : String
         @detail ? "editing-canceled::#{@detail}" : "editing-canceled"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::CellRenderer, Nil))
+      def connect(handler : Proc(Gtk::CellRenderer, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRenderer.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::CellRenderer, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::CellRenderer, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::CellRenderer.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::CellRenderer, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -880,31 +846,16 @@ module Gtk
     #     }
     # }
     # ]|
-    struct EditingStartedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct EditingStartedSignal < GObject::Signal
+      def name : String
         @detail ? "editing-started::#{@detail}" : "editing-started"
       end
 
-      def connect(&block : Proc(Gtk::CellEditable, ::String, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::CellEditable, ::String, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::CellEditable, ::String, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::CellEditable, ::String, Nil))
+      def connect(handler : Proc(Gtk::CellEditable, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_editable : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -914,25 +865,12 @@ module Gtk
           ::Box(Proc(Gtk::CellEditable, ::String, Nil)).unbox(_lib_box).call(editable, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::CellEditable, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_editable : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          editable = Gtk::CellEditable.new(lib_editable, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = ::String.new(lib_path)
-          ::Box(Proc(Gtk::CellEditable, ::String, Nil)).unbox(_lib_box).call(editable, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::CellRenderer, Gtk::CellEditable, ::String, Nil))
+      def connect(handler : Proc(Gtk::CellRenderer, Gtk::CellEditable, ::String, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_editable : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
           _sender = Gtk::CellRenderer.new(_lib_sender, GICrystal::Transfer::None)
@@ -943,23 +881,9 @@ module Gtk
           ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, ::String, Nil)).unbox(_lib_box).call(_sender, editable, path)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::CellRenderer, Gtk::CellEditable, ::String, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_editable : Pointer(Void), lib_path : Pointer(LibC::Char), _lib_box : Pointer(Void)) {
-          _sender = Gtk::CellRenderer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          editable = Gtk::CellEditable.new(lib_editable, :none)
-          # Generator::BuiltInTypeArgPlan
-          path = ::String.new(lib_path)
-          ::Box(Proc(Gtk::CellRenderer, Gtk::CellEditable, ::String, Nil)).unbox(_lib_box).call(_sender, editable, path)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(editable : Gtk::CellEditable, path : ::String) : Nil

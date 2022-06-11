@@ -75,7 +75,7 @@ module Gio
     end
 
     # Creates a new icon for a file.
-    def initialize(file : Gio::File)
+    def self.new(file : Gio::File) : self
       # g_file_icon_new: (Constructor)
       # Returns: (transfer full)
 
@@ -84,8 +84,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::FileIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the #GFile associated with the given @icon.

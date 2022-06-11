@@ -64,7 +64,7 @@ module Gtk
     end
 
     # Wraps a string in an object for use with `GListModel`.
-    def initialize(string : ::String)
+    def self.new(string : ::String) : self
       # gtk_string_object_new: (Constructor)
       # Returns: (transfer full)
 
@@ -73,8 +73,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::StringObject.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns the string contained in a `GtkStringObject`.

@@ -158,7 +158,7 @@ module Gtk
     end
 
     # Creates a new `GtkMountOperation`.
-    def initialize(parent : Gtk::Window?)
+    def self.new(parent : Gtk::Window?) : self
       # gtk_mount_operation_new: (Constructor)
       # @parent: (nullable)
       # Returns: (transfer full)
@@ -175,8 +175,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::MountOperation.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the display on which windows of the `GtkMountOperation`

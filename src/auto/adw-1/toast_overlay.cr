@@ -283,21 +283,6 @@ module Adw
       Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new `AdwToastOverlay`.
-    def initialize
-      # adw_toast_overlay_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_toast_overlay_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Displays @toast.
     #
     # Only one toast can be shown at a time; if a toast is already being displayed,

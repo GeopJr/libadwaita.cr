@@ -223,7 +223,7 @@ module Gtk
 
     # Creates a new constraint representing a relation between a layout
     # attribute on a source and a layout attribute on a target.
-    def initialize(target : Gtk::ConstraintTarget?, target_attribute : Gtk::ConstraintAttribute, relation : Gtk::ConstraintRelation, source : Gtk::ConstraintTarget?, source_attribute : Gtk::ConstraintAttribute, multiplier : Float64, constant : Float64, strength : Int32)
+    def self.new(target : Gtk::ConstraintTarget?, target_attribute : Gtk::ConstraintAttribute, relation : Gtk::ConstraintRelation, source : Gtk::ConstraintTarget?, source_attribute : Gtk::ConstraintAttribute, multiplier : Float64, constant : Float64, strength : Int32) : self
       # gtk_constraint_new: (Constructor)
       # @target: (nullable)
       # @source: (nullable)
@@ -247,8 +247,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::Constraint.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new constraint representing a relation between a layout

@@ -42,7 +42,7 @@ module Gtk
     # Legacy layout managers map to the old `GtkWidget` size negotiation
     # virtual functions, and are meant to be used during the transition
     # from layout containers to layout manager delegates.
-    def initialize(request_mode : Gtk::CustomRequestModeFunc?, measure : Gtk::CustomMeasureFunc, allocate : Gtk::CustomAllocateFunc)
+    def self.new(request_mode : Gtk::CustomRequestModeFunc?, measure : Gtk::CustomMeasureFunc, allocate : Gtk::CustomAllocateFunc) : self
       # gtk_custom_layout_new: (Constructor)
       # @request_mode: (nullable)
       # Returns: (transfer full)
@@ -52,8 +52,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::CustomLayout.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

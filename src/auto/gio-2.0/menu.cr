@@ -13,11 +13,10 @@ module Gio
   class Menu < MenuModel
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::Menu), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(Menu, g_object_get_qdata, g_object_set_qdata)
@@ -37,22 +36,6 @@ module Gio
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGio.g_menu_get_type
-    end
-
-    # Creates a new #GMenu.
-    #
-    # The new menu has no items.
-    def initialize
-      # g_menu_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGio.g_menu_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Convenience function for appending a normal menu item to the end of

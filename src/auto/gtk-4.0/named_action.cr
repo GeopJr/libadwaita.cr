@@ -74,7 +74,7 @@ module Gtk
     #
     # See `Gtk::Widget#insert_action_group` for
     # how to add actions to widgets.
-    def initialize(name : ::String)
+    def self.new(name : ::String) : self
       # gtk_named_action_new: (Constructor)
       # Returns: (transfer full)
 
@@ -83,8 +83,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::NamedAction.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns the name of the action that will be activated.

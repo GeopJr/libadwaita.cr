@@ -70,7 +70,7 @@ module Gdk
     #
     # The `GBytes` must contain @stride × @height pixels
     # in the given format.
-    def initialize(width : Int32, height : Int32, format : Gdk::MemoryFormat, bytes : GLib::Bytes, stride : UInt64)
+    def self.new(width : Int32, height : Int32, format : Gdk::MemoryFormat, bytes : GLib::Bytes, stride : UInt64) : self
       # gdk_memory_texture_new: (Constructor)
       # Returns: (transfer full)
 
@@ -79,8 +79,7 @@ module Gdk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gdk::MemoryTexture.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

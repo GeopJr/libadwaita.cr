@@ -90,7 +90,7 @@ module Gtk
     end
 
     # Creates a new widget paintable observing the given widget.
-    def initialize(widget : Gtk::Widget?)
+    def self.new(widget : Gtk::Widget?) : self
       # gtk_widget_paintable_new: (Constructor)
       # @widget: (nullable)
       # Returns: (transfer full)
@@ -107,8 +107,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::WidgetPaintable.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns the widget that is observed or %NULL if none.

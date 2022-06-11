@@ -87,7 +87,7 @@ module Gtk
     #
     # Note that this sorter relies on `Gtk::TreeListModel#passthrough`
     # being %FALSE as it can only sort `Gtk#TreeListRow`s.
-    def initialize(sorter : Gtk::Sorter?)
+    def self.new(sorter : Gtk::Sorter?) : self
       # gtk_tree_list_row_sorter_new: (Constructor)
       # @sorter: (transfer full) (nullable)
       # Returns: (transfer full)
@@ -105,8 +105,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::TreeListRowSorter.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns the sorter used by @self.

@@ -46,11 +46,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::Overlay), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(Overlay, g_object_get_qdata, g_object_set_qdata)
@@ -283,21 +282,6 @@ module Gtk
       Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new `GtkOverlay`.
-    def initialize
-      # gtk_overlay_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_overlay_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds @widget to @overlay.
     #
     # The widget will be stacked on top of the main widget
@@ -426,31 +410,16 @@ module Gtk
     # be full-width/height). If the main child is a
     # `GtkScrolledWindow`, the overlays are placed relative
     # to its contents.
-    struct GetChildPositionSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct GetChildPositionSignal < GObject::Signal
+      def name : String
         @detail ? "get-child-position::#{@detail}" : "get-child-position"
       end
 
-      def connect(&block : Proc(Gtk::Widget, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::Widget, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::Widget, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::Widget, Bool))
+      def connect(handler : Proc(Gtk::Widget, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_widget : Pointer(Void), lib_allocation : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -459,24 +428,12 @@ module Gtk
           ::Box(Proc(Gtk::Widget, Bool)).unbox(_lib_box).call(widget)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::Widget, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_widget : Pointer(Void), lib_allocation : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          widget = Gtk::Widget.new(lib_widget, :none)
-          # Generator::CallerAllocatesPlan
-          ::Box(Proc(Gtk::Widget, Bool)).unbox(_lib_box).call(widget)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::Overlay, Gtk::Widget, Bool))
+      def connect(handler : Proc(Gtk::Overlay, Gtk::Widget, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_widget : Pointer(Void), lib_allocation : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::Overlay.new(_lib_sender, GICrystal::Transfer::None)
@@ -486,22 +443,9 @@ module Gtk
           ::Box(Proc(Gtk::Overlay, Gtk::Widget, Bool)).unbox(_lib_box).call(_sender, widget)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::Overlay, Gtk::Widget, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_widget : Pointer(Void), lib_allocation : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::Overlay.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          widget = Gtk::Widget.new(lib_widget, :none)
-          # Generator::CallerAllocatesPlan
-          ::Box(Proc(Gtk::Overlay, Gtk::Widget, Bool)).unbox(_lib_box).call(_sender, widget)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(widget : Gtk::Widget) : Nil

@@ -35,7 +35,7 @@ module Adw
 
     # Creates a new `AdwAnimationTarget` that calls the given @callback during
     # the animation.
-    def initialize(callback : Adw::AnimationTargetFunc?)
+    def self.new(callback : Adw::AnimationTargetFunc?) : self
       # adw_callback_animation_target_new: (Constructor)
       # @callback: (nullable)
       # @user_data: (nullable)
@@ -59,8 +59,7 @@ module Adw
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Adw::CallbackAnimationTarget.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

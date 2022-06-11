@@ -78,11 +78,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::ComboBoxText), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(ComboBoxText, g_object_get_qdata, g_object_set_qdata)
@@ -353,35 +352,6 @@ module Gtk
     # Returns the type id (GType) registered in GLib type system.
     def self.g_type : UInt64
       LibGtk.gtk_combo_box_text_get_type
-    end
-
-    # Creates a new `GtkComboBoxText`.
-    def initialize
-      # gtk_combo_box_text_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_combo_box_text_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
-    # Creates a new `GtkComboBoxText` with an entry.
-    def self.new_with_entry : self
-      # gtk_combo_box_text_new_with_entry: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_combo_box_text_new_with_entry
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      Gtk::ComboBoxText.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Appends @text to the list of strings stored in @combo_box.

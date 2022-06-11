@@ -292,7 +292,7 @@ module Gtk
     end
 
     # Creates a new `GtkFileChooserNative`.
-    def initialize(title : ::String?, parent : Gtk::Window?, action : Gtk::FileChooserAction, accept_label : ::String?, cancel_label : ::String?)
+    def self.new(title : ::String?, parent : Gtk::Window?, action : Gtk::FileChooserAction, accept_label : ::String?, cancel_label : ::String?) : self
       # gtk_file_chooser_native_new: (Constructor)
       # @title: (nullable)
       # @parent: (nullable)
@@ -330,8 +330,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::FileChooserNative.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Retrieves the custom label text for the accept button.

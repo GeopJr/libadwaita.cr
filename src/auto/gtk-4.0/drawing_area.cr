@@ -355,21 +355,6 @@ module Gtk
       value
     end
 
-    # Creates a new drawing area.
-    def initialize
-      # gtk_drawing_area_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_drawing_area_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Retrieves the content height of the `GtkDrawingArea`.
     def content_height : Int32
       # gtk_drawing_area_get_content_height: (Method | Getter)
@@ -481,31 +466,16 @@ module Gtk
     #
     # This is useful in order to keep state up to date with the widget size,
     # like for instance a backing surface.
-    struct ResizeSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ResizeSignal < GObject::Signal
+      def name : String
         @detail ? "resize::#{@detail}" : "resize"
       end
 
-      def connect(&block : Proc(Int32, Int32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Int32, Int32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Int32, Int32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Int32, Int32, Nil))
+      def connect(handler : Proc(Int32, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
           width = lib_width
@@ -513,23 +483,12 @@ module Gtk
           ::Box(Proc(Int32, Int32, Nil)).unbox(_lib_box).call(width, height)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Int32, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
-          width = lib_width
-          height = lib_height
-          ::Box(Proc(Int32, Int32, Nil)).unbox(_lib_box).call(width, height)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::DrawingArea, Int32, Int32, Nil))
+      def connect(handler : Proc(Gtk::DrawingArea, Int32, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
           _sender = Gtk::DrawingArea.new(_lib_sender, GICrystal::Transfer::None)
@@ -538,21 +497,9 @@ module Gtk
           ::Box(Proc(Gtk::DrawingArea, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, width, height)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::DrawingArea, Int32, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_width : Int32, lib_height : Int32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::DrawingArea.new(_lib_sender, GICrystal::Transfer::None)
-          width = lib_width
-          height = lib_height
-          ::Box(Proc(Gtk::DrawingArea, Int32, Int32, Nil)).unbox(_lib_box).call(_sender, width, height)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(width : Int32, height : Int32) : Nil

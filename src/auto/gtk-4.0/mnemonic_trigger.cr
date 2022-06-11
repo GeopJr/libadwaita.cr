@@ -75,7 +75,7 @@ module Gtk
     #
     # Mnemonics are activated by calling code when a key event with the right
     # modifiers is detected.
-    def initialize(keyval : UInt32)
+    def self.new(keyval : UInt32) : self
       # gtk_mnemonic_trigger_new: (Constructor)
       # Returns: (transfer full)
 
@@ -84,8 +84,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::MnemonicTrigger.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the keyval that must be pressed to succeed triggering @self.

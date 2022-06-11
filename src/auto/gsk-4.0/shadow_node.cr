@@ -6,11 +6,10 @@ module Gsk
   class ShadowNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::ShadowNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(ShadowNode, g_object_get_qdata, g_object_set_qdata)
@@ -34,7 +33,7 @@ module Gsk
 
     # Creates a `GskRenderNode` that will draw a @child with the given
     # @shadows below it.
-    def initialize(child : Gsk::RenderNode, shadows : Enumerable(Gsk::Shadow))
+    def self.new(child : Gsk::RenderNode, shadows : Enumerable(Gsk::Shadow)) : self
       # gsk_shadow_node_new: (Constructor)
       # @shadows: (array length=n_shadows element-type Interface)
       # Returns: (transfer full)
@@ -48,8 +47,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::ShadowNode.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Retrieves the child `GskRenderNode` of the shadow @node.

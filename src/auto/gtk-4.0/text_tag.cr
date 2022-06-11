@@ -1821,7 +1821,7 @@ module Gtk
     end
 
     # Creates a `GtkTextTag`.
-    def initialize(name : ::String?)
+    def self.new(name : ::String?) : self
       # gtk_text_tag_new: (Constructor)
       # @name: (nullable)
       # Returns: (transfer full)
@@ -1838,8 +1838,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::TextTag.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Emits the [signal@Gtk.TextTagTable::tag-changed] signal on the

@@ -430,7 +430,7 @@ module Gtk
     end
 
     # Creates a new `GtkScale`.
-    def initialize(orientation : Gtk::Orientation, adjustment : Gtk::Adjustment?)
+    def self.new(orientation : Gtk::Orientation, adjustment : Gtk::Adjustment?) : self
       # gtk_scale_new: (Constructor)
       # @adjustment: (nullable)
       # Returns: (transfer none)
@@ -448,8 +448,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::Scale.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new scale widget with a range from @min to @max.

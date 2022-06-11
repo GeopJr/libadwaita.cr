@@ -6,11 +6,10 @@ module Gsk
   class RepeatingRadialGradientNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::RepeatingRadialGradientNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(RepeatingRadialGradientNode, g_object_get_qdata, g_object_set_qdata)
@@ -37,7 +36,7 @@ module Gsk
     # The radial gradient starts around @center. The size of the gradient
     # is dictated by @hradius in horizontal orientation and by @vradius
     # in vertial orientation.
-    def initialize(bounds : Graphene::Rect, center : Graphene::Point, hradius : Float32, vradius : Float32, start : Float32, end _end : Float32, color_stops : Enumerable(Gsk::ColorStop))
+    def self.new(bounds : Graphene::Rect, center : Graphene::Point, hradius : Float32, vradius : Float32, start : Float32, end _end : Float32, color_stops : Enumerable(Gsk::ColorStop)) : self
       # gsk_repeating_radial_gradient_node_new: (Constructor)
       # @color_stops: (array length=n_color_stops element-type Interface)
       # Returns: (transfer full)
@@ -51,8 +50,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::RepeatingRadialGradientNode.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

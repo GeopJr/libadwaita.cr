@@ -109,7 +109,7 @@ module Gio
     end
 
     # Creates a new themed icon for @iconname.
-    def initialize(iconname : ::String)
+    def self.new(iconname : ::String) : self
       # g_themed_icon_new: (Constructor)
       # Returns: (transfer full)
 
@@ -118,8 +118,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::ThemedIcon.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new themed icon for @iconnames.

@@ -58,31 +58,16 @@ module Gio
       Gio::AbstractMemoryMonitor.new(_retval, GICrystal::Transfer::Full)
     end
 
-    struct LowMemoryWarningSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct LowMemoryWarningSignal < GObject::Signal
+      def name : String
         @detail ? "low-memory-warning::#{@detail}" : "low-memory-warning"
       end
 
-      def connect(&block : Proc(Gio::MemoryMonitorWarningLevel, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gio::MemoryMonitorWarningLevel, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gio::MemoryMonitorWarningLevel, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gio::MemoryMonitorWarningLevel, Nil))
+      def connect(handler : Proc(Gio::MemoryMonitorWarningLevel, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_level : UInt32, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -90,23 +75,12 @@ module Gio
           ::Box(Proc(Gio::MemoryMonitorWarningLevel, Nil)).unbox(_lib_box).call(level)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gio::MemoryMonitorWarningLevel, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_level : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          level = Gio::MemoryMonitorWarningLevel.new(lib_level)
-          ::Box(Proc(Gio::MemoryMonitorWarningLevel, Nil)).unbox(_lib_box).call(level)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil))
+      def connect(handler : Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_level : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gio::AbstractMemoryMonitor.new(_lib_sender, GICrystal::Transfer::None)
@@ -115,21 +89,9 @@ module Gio
           ::Box(Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil)).unbox(_lib_box).call(_sender, level)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_level : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gio::AbstractMemoryMonitor.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          level = Gio::MemoryMonitorWarningLevel.new(lib_level)
-          ::Box(Proc(Gio::MemoryMonitor, Gio::MemoryMonitorWarningLevel, Nil)).unbox(_lib_box).call(_sender, level)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(level : Gio::MemoryMonitorWarningLevel) : Nil

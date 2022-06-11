@@ -263,21 +263,6 @@ module Gtk
       Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new `GtkWindowHandle`.
-    def initialize
-      # gtk_window_handle_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_window_handle_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the child widget of @self.
     def child : Gtk::Widget?
       # gtk_window_handle_get_child: (Method | Getter)

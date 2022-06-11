@@ -460,21 +460,6 @@ module Adw
       value
     end
 
-    # Creates a new `AdwSqueezer`.
-    def initialize
-      # adw_squeezer_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_squeezer_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds a child to @self.
     def add(child : Gtk::Widget) : Adw::SqueezerPage
       # adw_squeezer_add: (Method)

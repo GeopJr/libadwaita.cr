@@ -55,26 +55,5 @@ module Gsk
     def self.g_type : UInt64
       LibGsk.gsk_broadway_renderer_get_type
     end
-
-    # Creates a new Broadway renderer.
-    #
-    # The Broadway renderer is the default renderer for the broadway backend.
-    # It will only work with broadway surfaces, otherwise it will fail the
-    # call to gsk_renderer_realize().
-    #
-    # This function is only available when GTK was compiled with Broadway
-    # support.
-    def initialize
-      # gsk_broadway_renderer_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGsk.gsk_broadway_renderer_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
   end
 end

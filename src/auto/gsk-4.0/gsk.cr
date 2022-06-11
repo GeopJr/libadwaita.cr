@@ -61,6 +61,11 @@ module Gsk
       super(String.new(message_ptr)) unless message_ptr.null?
       LibGLib.g_error_free(error)
     end
+
+    # :inherit:
+    def initialize(message : String)
+      super
+    end
   end
 
   # Enums

@@ -170,7 +170,7 @@ module Gtk
     #
     # Be aware that pad events will only be delivered to `GtkWindow`s, so adding
     # a pad controller to any other type of widget will not have an effect.
-    def initialize(group : Gio::ActionGroup, pad : Gdk::Device?)
+    def self.new(group : Gio::ActionGroup, pad : Gdk::Device?) : self
       # gtk_pad_controller_new: (Constructor)
       # @pad: (nullable)
       # Returns: (transfer full)
@@ -187,8 +187,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::PadController.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Adds an individual action to @controller.

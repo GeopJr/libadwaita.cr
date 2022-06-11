@@ -37,19 +37,5 @@ module Gtk
     def self.g_type : UInt64
       LibGtk.gtk_overlay_layout_get_type
     end
-
-    # Creates a new `GtkOverlayLayout` instance.
-    def initialize
-      # gtk_overlay_layout_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_overlay_layout_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
   end
 end

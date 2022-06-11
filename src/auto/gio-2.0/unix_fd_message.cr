@@ -79,21 +79,6 @@ module Gio
       Gio::UnixFDList.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new #GUnixFDMessage containing an empty file descriptor
-    # list.
-    def initialize
-      # g_unix_fd_message_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGio.g_unix_fd_message_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a new #GUnixFDMessage containing @list.
     def self.new_with_fd_list(fd_list : Gio::UnixFDList) : self
       # g_unix_fd_message_new_with_fd_list: (Constructor)

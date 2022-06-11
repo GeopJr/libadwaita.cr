@@ -291,21 +291,6 @@ module Gtk
       Gtk::BaselinePosition.new(value)
     end
 
-    # Creates a new `GtkCenterBox`.
-    def initialize
-      # gtk_center_box_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_center_box_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the value set by gtk_center_box_set_baseline_position().
     def baseline_position : Gtk::BaselinePosition
       # gtk_center_box_get_baseline_position: (Method | Getter)

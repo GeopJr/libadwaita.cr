@@ -143,7 +143,7 @@ module Gtk
     #
     # You will want to set up the filter by providing a string to search for
     # and by providing a property to look up on the item.
-    def initialize(expression : Gtk::Expression?)
+    def self.new(expression : Gtk::Expression?) : self
       # gtk_string_filter_new: (Constructor)
       # @expression: (transfer full) (nullable)
       # Returns: (transfer full)
@@ -161,8 +161,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::StringFilter.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the expression that the string filter uses to

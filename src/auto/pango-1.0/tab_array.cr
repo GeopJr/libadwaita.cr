@@ -30,7 +30,7 @@ module Pango
       LibPango.pango_tab_array_get_type
     end
 
-    def initialize(initial_size : Int32, positions_in_pixels : Bool)
+    def self.new(initial_size : Int32, positions_in_pixels : Bool) : self
       # pango_tab_array_new: (Constructor)
       # Returns: (transfer full)
 
@@ -39,8 +39,7 @@ module Pango
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Pango::TabArray.new(_retval, GICrystal::Transfer::Full)
     end
 
     def copy : Pango::TabArray

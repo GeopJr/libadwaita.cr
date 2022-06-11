@@ -42,25 +42,6 @@ module Gtk
       LibGtk.gtk_multi_sorter_get_type
     end
 
-    # Creates a new multi sorter.
-    #
-    # This sorter compares items by trying each of the sorters
-    # in turn, until one returns non-zero. In particular, if
-    # no sorter has been added to it, it will always compare
-    # items as equal.
-    def initialize
-      # gtk_multi_sorter_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_multi_sorter_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Add @sorter to @self to use for sorting at the end.
     #
     # @self will consult all existing sorters before it will

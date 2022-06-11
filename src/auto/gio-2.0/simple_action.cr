@@ -13,11 +13,10 @@ module Gio
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::SimpleAction), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(SimpleAction, g_object_get_qdata, g_object_set_qdata)
@@ -151,7 +150,7 @@ module Gio
     #
     # The created action is stateless. See g_simple_action_new_stateful() to create
     # an action that has state.
-    def initialize(name : ::String, parameter_type : GLib::VariantType?)
+    def self.new(name : ::String, parameter_type : GLib::VariantType?) : self
       # g_simple_action_new: (Constructor)
       # @parameter_type: (nullable)
       # Returns: (transfer full)
@@ -168,8 +167,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::SimpleAction.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new stateful action.
@@ -285,78 +283,40 @@ module Gio
     # type, the default is to forward them directly to
     # #GSimpleAction::change-state.  This should allow almost all users
     # of #GSimpleAction to connect only one handler or the other.
-    struct ActivateSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ActivateSignal < GObject::Signal
+      def name : String
         @detail ? "activate::#{@detail}" : "activate"
       end
 
-      def connect(&block : Proc(GLib::Variant?, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(GLib::Variant?, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(GLib::Variant?, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(GLib::Variant?, Nil))
+      def connect(handler : Proc(GLib::Variant?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_parameter : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
-          parameter = GLib::Variant.new(lib_parameter, :none)
+          parameter = GLib::Variant.new(lib_parameter, :none) unless lib_parameter.null?
           ::Box(Proc(GLib::Variant?, Nil)).unbox(_lib_box).call(parameter)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(GLib::Variant?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_parameter : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::HandmadeArgPlan
-          parameter = GLib::Variant.new(lib_parameter, :none)
-          ::Box(Proc(GLib::Variant?, Nil)).unbox(_lib_box).call(parameter)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gio::SimpleAction, GLib::Variant?, Nil))
+      def connect(handler : Proc(Gio::SimpleAction, GLib::Variant?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_parameter : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::SimpleAction.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
-          parameter = GLib::Variant.new(lib_parameter, :none)
+          parameter = GLib::Variant.new(lib_parameter, :none) unless lib_parameter.null?
           ::Box(Proc(Gio::SimpleAction, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, parameter)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gio::SimpleAction, GLib::Variant?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_parameter : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::SimpleAction.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::HandmadeArgPlan
-          parameter = GLib::Variant.new(lib_parameter, :none)
-          ::Box(Proc(Gio::SimpleAction, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, parameter)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(parameter : _?) : Nil
@@ -410,78 +370,40 @@ module Gio
     #
     # The handler need not set the state to the requested value.
     # It could set it to any value at all, or take some other action.
-    struct ChangeStateSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ChangeStateSignal < GObject::Signal
+      def name : String
         @detail ? "change-state::#{@detail}" : "change-state"
       end
 
-      def connect(&block : Proc(GLib::Variant?, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(GLib::Variant?, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(GLib::Variant?, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(GLib::Variant?, Nil))
+      def connect(handler : Proc(GLib::Variant?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::HandmadeArgPlan
-          value = GLib::Variant.new(lib_value, :none)
+          value = GLib::Variant.new(lib_value, :none) unless lib_value.null?
           ::Box(Proc(GLib::Variant?, Nil)).unbox(_lib_box).call(value)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(GLib::Variant?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::HandmadeArgPlan
-          value = GLib::Variant.new(lib_value, :none)
-          ::Box(Proc(GLib::Variant?, Nil)).unbox(_lib_box).call(value)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gio::SimpleAction, GLib::Variant?, Nil))
+      def connect(handler : Proc(Gio::SimpleAction, GLib::Variant?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::SimpleAction.new(_lib_sender, GICrystal::Transfer::None)
           # Generator::HandmadeArgPlan
-          value = GLib::Variant.new(lib_value, :none)
+          value = GLib::Variant.new(lib_value, :none) unless lib_value.null?
           ::Box(Proc(Gio::SimpleAction, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, value)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gio::SimpleAction, GLib::Variant?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_value : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::SimpleAction.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::HandmadeArgPlan
-          value = GLib::Variant.new(lib_value, :none)
-          ::Box(Proc(Gio::SimpleAction, GLib::Variant?, Nil)).unbox(_lib_box).call(_sender, value)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(value : _?) : Nil

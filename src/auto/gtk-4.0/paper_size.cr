@@ -36,7 +36,7 @@ module Gtk
       LibGtk.gtk_paper_size_get_type
     end
 
-    def initialize(name : ::String?)
+    def self.new(name : ::String?) : self
       # gtk_paper_size_new: (Constructor)
       # @name: (nullable)
       # Returns: (transfer full)
@@ -53,8 +53,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::PaperSize.new(_retval, GICrystal::Transfer::Full)
     end
 
     def self.new_custom(name : ::String, display_name : ::String, width : Float64, height : Float64, unit : Gtk::Unit) : self

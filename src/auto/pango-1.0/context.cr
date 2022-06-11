@@ -39,30 +39,6 @@ module Pango
       LibPango.pango_context_get_type
     end
 
-    # Creates a new `PangoContext` initialized to default values.
-    #
-    # This function is not particularly useful as it should always
-    # be followed by a `Pango::Context#font_map=` call, and the
-    # function `Pango::FontMap#create_context` does these two steps
-    # together and hence users are recommended to use that.
-    #
-    # If you are using Pango as part of a higher-level system,
-    # that system may have it's own way of create a `PangoContext`.
-    # For instance, the GTK toolkit has, among others,
-    # `gtk_widget_get_pango_context()`. Use those instead.
-    def initialize
-      # pango_context_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibPango.pango_context_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Forces a change in the context, which will cause any `PangoLayout`
     # using this context to re-layout.
     #

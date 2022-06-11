@@ -96,7 +96,7 @@ module Gio
     end
 
     # Creates a new emblem for @icon.
-    def initialize(icon : Gio::Icon)
+    def self.new(icon : Gio::Icon) : self
       # g_emblem_new: (Constructor)
       # Returns: (transfer full)
 
@@ -105,8 +105,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::Emblem.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new emblem for @icon.

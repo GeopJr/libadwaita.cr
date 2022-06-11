@@ -60,20 +60,6 @@ module Gio
       LibGio.g_file_info_get_type
     end
 
-    # Creates a new file info structure.
-    def initialize
-      # g_file_info_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGio.g_file_info_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Clears the status information from @info.
     def clear_status : Nil
       # g_file_info_clear_status: (Method)

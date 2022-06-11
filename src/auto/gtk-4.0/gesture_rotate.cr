@@ -75,21 +75,6 @@ module Gtk
       LibGtk.gtk_gesture_rotate_get_type
     end
 
-    # Returns a newly created `GtkGesture` that recognizes 2-touch
-    # rotation gestures.
-    def initialize
-      # gtk_gesture_rotate_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_gesture_rotate_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the angle delta in radians.
     #
     # If @gesture is active, this function returns the angle difference
@@ -108,31 +93,16 @@ module Gtk
     end
 
     # Emitted when the angle between both tracked points changes.
-    struct AngleChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct AngleChangedSignal < GObject::Signal
+      def name : String
         @detail ? "angle-changed::#{@detail}" : "angle-changed"
       end
 
-      def connect(&block : Proc(Float64, Float64, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Float64, Float64, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Float64, Float64, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Float64, Float64, Nil))
+      def connect(handler : Proc(Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_angle : Float64, lib_angle_delta : Float64, _lib_box : Pointer(Void)) {
           angle = lib_angle
@@ -140,23 +110,12 @@ module Gtk
           ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(angle, angle_delta)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_angle : Float64, lib_angle_delta : Float64, _lib_box : Pointer(Void)) {
-          angle = lib_angle
-          angle_delta = lib_angle_delta
-          ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(angle, angle_delta)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::GestureRotate, Float64, Float64, Nil))
+      def connect(handler : Proc(Gtk::GestureRotate, Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_angle : Float64, lib_angle_delta : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::GestureRotate.new(_lib_sender, GICrystal::Transfer::None)
@@ -165,21 +124,9 @@ module Gtk
           ::Box(Proc(Gtk::GestureRotate, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, angle, angle_delta)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::GestureRotate, Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_angle : Float64, lib_angle_delta : Float64, _lib_box : Pointer(Void)) {
-          _sender = Gtk::GestureRotate.new(_lib_sender, GICrystal::Transfer::None)
-          angle = lib_angle
-          angle_delta = lib_angle_delta
-          ::Box(Proc(Gtk::GestureRotate, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, angle, angle_delta)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(angle : Float64, angle_delta : Float64) : Nil

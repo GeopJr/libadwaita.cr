@@ -121,7 +121,7 @@ module Gtk
     end
 
     # Creates a new event controller that will handle scroll events.
-    def initialize(flags : Gtk::EventControllerScrollFlags)
+    def self.new(flags : Gtk::EventControllerScrollFlags) : self
       # gtk_event_controller_scroll_new: (Constructor)
       # Returns: (transfer full)
 
@@ -130,8 +130,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::EventControllerScroll.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the flags conditioning the scroll controller behavior.
@@ -164,31 +163,16 @@ module Gtk
     # @vel_x and @vel_y express the initial velocity that was
     # imprinted by the scroll events. @vel_x and @vel_y are expressed in
     # pixels/ms.
-    struct DecelerateSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct DecelerateSignal < GObject::Signal
+      def name : String
         @detail ? "decelerate::#{@detail}" : "decelerate"
       end
 
-      def connect(&block : Proc(Float64, Float64, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Float64, Float64, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Float64, Float64, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Float64, Float64, Nil))
+      def connect(handler : Proc(Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_vel_x : Float64, lib_vel_y : Float64, _lib_box : Pointer(Void)) {
           vel_x = lib_vel_x
@@ -196,23 +180,12 @@ module Gtk
           ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(vel_x, vel_y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_vel_x : Float64, lib_vel_y : Float64, _lib_box : Pointer(Void)) {
-          vel_x = lib_vel_x
-          vel_y = lib_vel_y
-          ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(vel_x, vel_y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::EventControllerScroll, Float64, Float64, Nil))
+      def connect(handler : Proc(Gtk::EventControllerScroll, Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_vel_x : Float64, lib_vel_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::EventControllerScroll.new(_lib_sender, GICrystal::Transfer::None)
@@ -221,21 +194,9 @@ module Gtk
           ::Box(Proc(Gtk::EventControllerScroll, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, vel_x, vel_y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::EventControllerScroll, Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_vel_x : Float64, lib_vel_y : Float64, _lib_box : Pointer(Void)) {
-          _sender = Gtk::EventControllerScroll.new(_lib_sender, GICrystal::Transfer::None)
-          vel_x = lib_vel_x
-          vel_y = lib_vel_y
-          ::Box(Proc(Gtk::EventControllerScroll, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, vel_x, vel_y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(vel_x : Float64, vel_y : Float64) : Nil
@@ -249,31 +210,16 @@ module Gtk
 
     # Signals that the widget should scroll by the
     # amount specified by @dx and @dy.
-    struct ScrollSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ScrollSignal < GObject::Signal
+      def name : String
         @detail ? "scroll::#{@detail}" : "scroll"
       end
 
-      def connect(&block : Proc(Float64, Float64, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Float64, Float64, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Float64, Float64, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Float64, Float64, Bool))
+      def connect(handler : Proc(Float64, Float64, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_dx : Float64, lib_dy : Float64, _lib_box : Pointer(Void)) {
           dx = lib_dx
@@ -281,23 +227,12 @@ module Gtk
           ::Box(Proc(Float64, Float64, Bool)).unbox(_lib_box).call(dx, dy)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Float64, Float64, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_dx : Float64, lib_dy : Float64, _lib_box : Pointer(Void)) {
-          dx = lib_dx
-          dy = lib_dy
-          ::Box(Proc(Float64, Float64, Bool)).unbox(_lib_box).call(dx, dy)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::EventControllerScroll, Float64, Float64, Bool))
+      def connect(handler : Proc(Gtk::EventControllerScroll, Float64, Float64, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_dx : Float64, lib_dy : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::EventControllerScroll.new(_lib_sender, GICrystal::Transfer::None)
@@ -306,21 +241,9 @@ module Gtk
           ::Box(Proc(Gtk::EventControllerScroll, Float64, Float64, Bool)).unbox(_lib_box).call(_sender, dx, dy)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::EventControllerScroll, Float64, Float64, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_dx : Float64, lib_dy : Float64, _lib_box : Pointer(Void)) {
-          _sender = Gtk::EventControllerScroll.new(_lib_sender, GICrystal::Transfer::None)
-          dx = lib_dx
-          dy = lib_dy
-          ::Box(Proc(Gtk::EventControllerScroll, Float64, Float64, Bool)).unbox(_lib_box).call(_sender, dx, dy)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(dx : Float64, dy : Float64) : Nil
@@ -335,70 +258,36 @@ module Gtk
     # Signals that a new scrolling operation has begun.
     #
     # It will only be emitted on devices capable of it.
-    struct ScrollBeginSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ScrollBeginSignal < GObject::Signal
+      def name : String
         @detail ? "scroll-begin::#{@detail}" : "scroll-begin"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::EventControllerScroll, Nil))
+      def connect(handler : Proc(Gtk::EventControllerScroll, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::EventControllerScroll.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::EventControllerScroll, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::EventControllerScroll, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::EventControllerScroll.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::EventControllerScroll, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -413,70 +302,36 @@ module Gtk
     # Signals that a scrolling operation has finished.
     #
     # It will only be emitted on devices capable of it.
-    struct ScrollEndSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ScrollEndSignal < GObject::Signal
+      def name : String
         @detail ? "scroll-end::#{@detail}" : "scroll-end"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::EventControllerScroll, Nil))
+      def connect(handler : Proc(Gtk::EventControllerScroll, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::EventControllerScroll.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::EventControllerScroll, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::EventControllerScroll, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::EventControllerScroll.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::EventControllerScroll, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil

@@ -13,11 +13,10 @@ module Gio
   class SubprocessLauncher < GObject::Object
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::SubprocessLauncher), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(SubprocessLauncher, g_object_get_qdata, g_object_set_qdata)
@@ -71,7 +70,7 @@ module Gio
     # The launcher is created with the default options.  A copy of the
     # environment of the calling process is made at the time of this call
     # and will be used as the environment that the process is launched in.
-    def initialize(flags : Gio::SubprocessFlags)
+    def self.new(flags : Gio::SubprocessFlags) : self
       # g_subprocess_launcher_new: (Constructor)
       # Returns: (transfer full)
 
@@ -80,8 +79,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::SubprocessLauncher.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Closes all the file descriptors previously passed to the object with

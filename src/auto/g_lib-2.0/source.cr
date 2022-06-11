@@ -219,7 +219,7 @@ module GLib
       LibGLib.g_source_get_type
     end
 
-    def initialize(source_funcs : GLib::SourceFuncs, struct_size : UInt32)
+    def self.new(source_funcs : GLib::SourceFuncs, struct_size : UInt32) : self
       # g_source_new: (Constructor)
       # Returns: (transfer full)
 
@@ -228,8 +228,7 @@ module GLib
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GLib::Source.new(_retval, GICrystal::Transfer::Full)
     end
 
     def add_child_source(child_source : GLib::Source) : Nil

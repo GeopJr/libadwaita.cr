@@ -418,21 +418,6 @@ module Adw
       Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new `AdwHeaderBar`.
-    def initialize
-      # adw_header_bar_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_header_bar_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the policy for aligning the center widget.
     def centering_policy : Adw::CenteringPolicy
       # adw_header_bar_get_centering_policy: (Method | Getter)

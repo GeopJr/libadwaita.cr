@@ -39,7 +39,7 @@ module Gtk
     #
     # If the filter func changes its filtering behavior,
     # gtk_filter_changed() needs to be called.
-    def initialize(match_func : Gtk::CustomFilterFunc?)
+    def self.new(match_func : Gtk::CustomFilterFunc?) : self
       # gtk_custom_filter_new: (Constructor)
       # @match_func: (nullable)
       # @user_data: (nullable)
@@ -64,8 +64,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::CustomFilter.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Sets the function used for filtering items.

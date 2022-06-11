@@ -71,7 +71,7 @@ module Gdk
     # Note that the GL texture must not be modified until @destroy is called,
     # which will happen when the GdkTexture object is finalized, or due to
     # an explicit call of `Gdk::GLTexture#release`.
-    def initialize(context : Gdk::GLContext, id : UInt32, width : Int32, height : Int32, destroy : GLib::DestroyNotify, data : Pointer(Void)?)
+    def self.new(context : Gdk::GLContext, id : UInt32, width : Int32, height : Int32, destroy : GLib::DestroyNotify, data : Pointer(Void)?) : self
       # gdk_gl_texture_new: (Constructor)
       # @data: (nullable)
       # Returns: (transfer full)
@@ -88,8 +88,7 @@ module Gdk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gdk::GLTexture.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Releases the GL resources held by a `GdkGLTexture`.

@@ -156,7 +156,7 @@ module Gio
     #
     # To create abstract socket addresses, on systems that support that,
     # use g_unix_socket_address_new_abstract().
-    def initialize(path : ::String)
+    def self.new(path : ::String) : self
       # g_unix_socket_address_new: (Constructor)
       # Returns: (transfer full)
 
@@ -165,8 +165,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::UnixSocketAddress.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new %G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED

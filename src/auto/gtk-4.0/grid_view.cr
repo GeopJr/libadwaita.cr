@@ -429,7 +429,7 @@ module Gtk
     # grid_view = gtk_grid_view_new (create_model (),
     #   gtk_builder_list_item_factory_new_from_resource ("/resource.ui"));
     # ```
-    def initialize(model : Gtk::SelectionModel?, factory : Gtk::ListItemFactory?)
+    def self.new(model : Gtk::SelectionModel?, factory : Gtk::ListItemFactory?) : self
       # gtk_grid_view_new: (Constructor)
       # @model: (transfer full) (nullable)
       # @factory: (transfer full) (nullable)
@@ -455,8 +455,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::GridView.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns whether rows can be selected by dragging with the mouse.
@@ -639,53 +638,28 @@ module Gtk
     # This allows for a convenient way to handle activation in a gridview.
     # See `Gtk::ListItem#activatable` for details on how to use
     # this signal.
-    struct ActivateSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ActivateSignal < GObject::Signal
+      def name : String
         @detail ? "activate::#{@detail}" : "activate"
       end
 
-      def connect(&block : Proc(UInt32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(UInt32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(UInt32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(UInt32, Nil))
+      def connect(handler : Proc(UInt32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, _lib_box : Pointer(Void)) {
           position = lib_position
           ::Box(Proc(UInt32, Nil)).unbox(_lib_box).call(position)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(UInt32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, _lib_box : Pointer(Void)) {
-          position = lib_position
-          ::Box(Proc(UInt32, Nil)).unbox(_lib_box).call(position)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::GridView, UInt32, Nil))
+      def connect(handler : Proc(Gtk::GridView, UInt32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gtk::GridView.new(_lib_sender, GICrystal::Transfer::None)
@@ -693,20 +667,9 @@ module Gtk
           ::Box(Proc(Gtk::GridView, UInt32, Nil)).unbox(_lib_box).call(_sender, position)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::GridView, UInt32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_position : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::GridView.new(_lib_sender, GICrystal::Transfer::None)
-          position = lib_position
-          ::Box(Proc(Gtk::GridView, UInt32, Nil)).unbox(_lib_box).call(_sender, position)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(position : UInt32) : Nil

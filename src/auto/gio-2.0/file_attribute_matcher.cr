@@ -26,7 +26,7 @@ module Gio
       LibGio.g_file_attribute_matcher_get_type
     end
 
-    def initialize(attributes : ::String)
+    def self.new(attributes : ::String) : self
       # g_file_attribute_matcher_new: (Constructor)
       # Returns: (transfer full)
 
@@ -35,8 +35,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::FileAttributeMatcher.new(_retval, GICrystal::Transfer::Full)
     end
 
     def enumerate_namespace(ns : ::String) : Bool

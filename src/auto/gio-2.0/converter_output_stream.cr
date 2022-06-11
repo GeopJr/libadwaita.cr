@@ -85,7 +85,7 @@ module Gio
     end
 
     # Creates a new converter output stream for the @base_stream.
-    def initialize(base_stream : Gio::OutputStream, converter : Gio::Converter)
+    def self.new(base_stream : Gio::OutputStream, converter : Gio::Converter) : self
       # g_converter_output_stream_new: (Constructor)
       # Returns: (transfer full)
 
@@ -94,8 +94,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::ConverterOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the #GConverter that is used by @converter_stream.

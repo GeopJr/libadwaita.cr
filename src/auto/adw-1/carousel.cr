@@ -424,21 +424,6 @@ module Adw
       value
     end
 
-    # Creates a new `AdwCarousel`.
-    def initialize
-      # adw_carousel_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_carousel_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Appends @child to @self.
     def append(child : Gtk::Widget) : Nil
       # adw_carousel_append: (Method)
@@ -726,53 +711,28 @@ module Adw
     #
     # It can be used to implement "infinite scrolling" by amending the pages
     # after every scroll.
-    struct PageChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct PageChangedSignal < GObject::Signal
+      def name : String
         @detail ? "page-changed::#{@detail}" : "page-changed"
       end
 
-      def connect(&block : Proc(UInt32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(UInt32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(UInt32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(UInt32, Nil))
+      def connect(handler : Proc(UInt32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_index : UInt32, _lib_box : Pointer(Void)) {
           index = lib_index
           ::Box(Proc(UInt32, Nil)).unbox(_lib_box).call(index)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(UInt32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_index : UInt32, _lib_box : Pointer(Void)) {
-          index = lib_index
-          ::Box(Proc(UInt32, Nil)).unbox(_lib_box).call(index)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Adw::Carousel, UInt32, Nil))
+      def connect(handler : Proc(Adw::Carousel, UInt32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_index : UInt32, _lib_box : Pointer(Void)) {
           _sender = Adw::Carousel.new(_lib_sender, GICrystal::Transfer::None)
@@ -780,20 +740,9 @@ module Adw
           ::Box(Proc(Adw::Carousel, UInt32, Nil)).unbox(_lib_box).call(_sender, index)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Adw::Carousel, UInt32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_index : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Adw::Carousel.new(_lib_sender, GICrystal::Transfer::None)
-          index = lib_index
-          ::Box(Proc(Adw::Carousel, UInt32, Nil)).unbox(_lib_box).call(_sender, index)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(index : UInt32) : Nil

@@ -82,7 +82,7 @@ module Gio
     end
 
     # Creates a new data output stream for @base_stream.
-    def initialize(base_stream : Gio::OutputStream)
+    def self.new(base_stream : Gio::OutputStream) : self
       # g_data_output_stream_new: (Constructor)
       # Returns: (transfer full)
 
@@ -91,8 +91,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::DataOutputStream.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the byte order for the stream.

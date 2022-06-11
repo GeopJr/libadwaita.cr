@@ -54,19 +54,6 @@ module Gtk
       LibGtk.gtk_requisition_get_type
     end
 
-    def initialize
-      # gtk_requisition_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_requisition_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     def copy : Gtk::Requisition
       # gtk_requisition_copy: (Method)
       # Returns: (transfer full)

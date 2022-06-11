@@ -49,57 +49,6 @@ module GLib
       LibGLib.g_bytes_get_type
     end
 
-    def initialize(data : Enumerable(UInt8)?)
-      # g_bytes_new: (Constructor)
-      # @data: (nullable) (array length=size element-type UInt8)
-      # Returns: (transfer full)
-
-      # Generator::ArrayLengthArgPlan
-      size = data.try(&.size) || 0 # Generator::NullableArrayPlan
-      data = if data.nil?
-               Pointer(UInt8).null
-             else
-               data.to_a.to_unsafe
-             end
-
-      # C call
-      _retval = LibGLib.g_bytes_new(data, size)
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
-    def initialize(*data : UInt8)
-      initialize(data)
-    end
-
-    def self.new_take(data : Enumerable(UInt8)?) : self
-      # g_bytes_new_take: (Constructor)
-      # @data: (transfer full) (nullable) (array length=size element-type UInt8)
-      # Returns: (transfer full)
-
-      # Generator::ArrayLengthArgPlan
-      size = data.try(&.size) || 0 # Generator::NullableArrayPlan
-      data = if data.nil?
-               Pointer(UInt8).null
-             else
-               data.to_a.to_unsafe
-             end
-
-      # C call
-      _retval = LibGLib.g_bytes_new_take(data, size)
-
-      # Return value handling
-
-      GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
-    end
-
-    def self.new_take(*data : UInt8)
-      self.new_take(data)
-    end
-
     def compare(bytes2 : GLib::Bytes) : Int32
       # g_bytes_compare: (Method)
       # Returns: (transfer none)
@@ -181,18 +130,6 @@ module GLib
 
       # C call
       _retval = LibGLib.g_bytes_new_from_bytes(@pointer, offset, length)
-
-      # Return value handling
-
-      GLib::Bytes.new(_retval, GICrystal::Transfer::Full)
-    end
-
-    def ref : GLib::Bytes
-      # g_bytes_ref: (Method)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGLib.g_bytes_ref(@pointer)
 
       # Return value handling
 

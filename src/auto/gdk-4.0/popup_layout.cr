@@ -58,7 +58,7 @@ module Gdk
       LibGdk.gdk_popup_layout_get_type
     end
 
-    def initialize(anchor_rect : Gdk::Rectangle, rect_anchor : Gdk::Gravity, surface_anchor : Gdk::Gravity)
+    def self.new(anchor_rect : Gdk::Rectangle, rect_anchor : Gdk::Gravity, surface_anchor : Gdk::Gravity) : self
       # gdk_popup_layout_new: (Constructor)
       # Returns: (transfer full)
 
@@ -67,8 +67,7 @@ module Gdk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gdk::PopupLayout.new(_retval, GICrystal::Transfer::Full)
     end
 
     def copy : Gdk::PopupLayout

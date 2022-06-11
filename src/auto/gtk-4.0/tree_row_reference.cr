@@ -28,7 +28,7 @@ module Gtk
       LibGtk.gtk_tree_row_reference_get_type
     end
 
-    def initialize(model : Gtk::TreeModel, path : Gtk::TreePath)
+    def self.new(model : Gtk::TreeModel, path : Gtk::TreePath) : self?
       # gtk_tree_row_reference_new: (Constructor)
       # Returns: (transfer full)
 
@@ -37,8 +37,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id)) unless _retval.null?
+      Gtk::TreeRowReference.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     def self.new_proxy(proxy : GObject::Object, model : Gtk::TreeModel, path : Gtk::TreePath) : self?

@@ -26,31 +26,6 @@ module Gtk
       LibGtk.gtk_tree_path_get_type
     end
 
-    def initialize
-      # gtk_tree_path_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_tree_path_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
-    def self.new_first : self
-      # gtk_tree_path_new_first: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_tree_path_new_first
-
-      # Return value handling
-
-      Gtk::TreePath.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def self.new_from_indices(indices : Enumerable(Int32)) : self
       # gtk_tree_path_new_from_indicesv: (Constructor)
       # @indices: (array length=length element-type Int32)

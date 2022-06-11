@@ -62,20 +62,6 @@ module Gtk
       LibGtk.gtk_im_multicontext_get_type
     end
 
-    # Creates a new `GtkIMMulticontext`.
-    def initialize
-      # gtk_im_multicontext_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_im_multicontext_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the id of the currently active delegate of the @context.
     def context_id : ::String
       # gtk_im_multicontext_get_context_id: (Method)

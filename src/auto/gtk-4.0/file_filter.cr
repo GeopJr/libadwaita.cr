@@ -57,11 +57,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::FileFilter), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(FileFilter, g_object_get_qdata, g_object_set_qdata)
@@ -116,36 +115,6 @@ module Gtk
       value = uninitialized Pointer(LibC::Char)
       LibGObject.g_object_get(self, "name", pointerof(value), Pointer(Void).null)
       ::String.new(value)
-    end
-
-    # Creates a new `GtkFileFilter` with no rules added to it.
-    #
-    # Such a filter doesn’t accept any files, so is not
-    # particularly useful until you add rules with
-    # `Gtk::FileFilter#add_mime_type`,
-    # `Gtk::FileFilter#add_pattern`,
-    # `Gtk::FileFilter#add_suffix` or
-    # `Gtk::FileFilter#add_pixbuf_formats`.
-    #
-    # To create a filter that accepts any file, use:
-    #
-    #
-    # WARNING: **⚠️ The following code is in c ⚠️**
-    # ```c
-    # GtkFileFilter *filter = gtk_file_filter_new ();
-    # gtk_file_filter_add_pattern (filter, "*");
-    # ```
-    def initialize
-      # gtk_file_filter_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_file_filter_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Deserialize a file filter from a `GVariant`.

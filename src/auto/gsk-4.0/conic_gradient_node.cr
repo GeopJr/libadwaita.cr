@@ -6,11 +6,10 @@ module Gsk
   class ConicGradientNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::ConicGradientNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(ConicGradientNode, g_object_get_qdata, g_object_set_qdata)
@@ -37,7 +36,7 @@ module Gsk
     # The conic gradient
     # starts around @center in the direction of @rotation. A rotation of 0 means
     # that the gradient points up. Color stops are then added clockwise.
-    def initialize(bounds : Graphene::Rect, center : Graphene::Point, rotation : Float32, color_stops : Enumerable(Gsk::ColorStop))
+    def self.new(bounds : Graphene::Rect, center : Graphene::Point, rotation : Float32, color_stops : Enumerable(Gsk::ColorStop)) : self
       # gsk_conic_gradient_node_new: (Constructor)
       # @color_stops: (array length=n_color_stops element-type Interface)
       # Returns: (transfer full)
@@ -51,8 +50,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::ConicGradientNode.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Retrieves the angle for the gradient in radians, normalized in [0, 2 * PI].

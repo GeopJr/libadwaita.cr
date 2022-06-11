@@ -26,11 +26,10 @@ module Gio
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::DBusServer), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(DBusServer, g_object_get_qdata, g_object_set_qdata)
@@ -324,31 +323,16 @@ module Gio
     # before incoming messages on @connection are processed. This means
     # that it's suitable to call g_dbus_connection_register_object() or
     # similar from the signal handler.
-    struct NewConnectionSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct NewConnectionSignal < GObject::Signal
+      def name : String
         @detail ? "new-connection::#{@detail}" : "new-connection"
       end
 
-      def connect(&block : Proc(Gio::DBusConnection, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gio::DBusConnection, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gio::DBusConnection, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gio::DBusConnection, Bool))
+      def connect(handler : Proc(Gio::DBusConnection, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -356,23 +340,12 @@ module Gio
           ::Box(Proc(Gio::DBusConnection, Bool)).unbox(_lib_box).call(connection)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gio::DBusConnection, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          connection = Gio::DBusConnection.new(lib_connection, :none)
-          ::Box(Proc(Gio::DBusConnection, Bool)).unbox(_lib_box).call(connection)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gio::DBusServer, Gio::DBusConnection, Bool))
+      def connect(handler : Proc(Gio::DBusServer, Gio::DBusConnection, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusServer.new(_lib_sender, GICrystal::Transfer::None)
@@ -381,21 +354,9 @@ module Gio
           ::Box(Proc(Gio::DBusServer, Gio::DBusConnection, Bool)).unbox(_lib_box).call(_sender, connection)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gio::DBusServer, Gio::DBusConnection, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_connection : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::DBusServer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          connection = Gio::DBusConnection.new(lib_connection, :none)
-          ::Box(Proc(Gio::DBusServer, Gio::DBusConnection, Bool)).unbox(_lib_box).call(_sender, connection)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(connection : Gio::DBusConnection) : Nil

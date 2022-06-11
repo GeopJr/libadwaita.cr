@@ -63,20 +63,6 @@ module Gtk
       LibGtk.gtk_css_provider_get_type
     end
 
-    # Returns a newly created `GtkCssProvider`.
-    def initialize
-      # gtk_css_provider_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_css_provider_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Loads @data into @css_provider.
     #
     # This clears any previously loaded information.
@@ -194,31 +180,16 @@ module Gtk
     # Note that this signal may be emitted at any time as the css provider
     # may opt to defer parsing parts or all of the input to a later time
     # than when a loading function was called.
-    struct ParsingErrorSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ParsingErrorSignal < GObject::Signal
+      def name : String
         @detail ? "parsing-error::#{@detail}" : "parsing-error"
       end
 
-      def connect(&block : Proc(Gtk::CssSection, GLib::Error, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::CssSection, GLib::Error, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::CssSection, GLib::Error, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::CssSection, GLib::Error, Nil))
+      def connect(handler : Proc(Gtk::CssSection, GLib::Error, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -227,24 +198,12 @@ module Gtk
           ::Box(Proc(Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(section, error)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::CssSection, GLib::Error, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          section = Gtk::CssSection.new(lib_section, :none)
-          error = lib_error
-          ::Box(Proc(Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(section, error)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil))
+      def connect(handler : Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::CssProvider.new(_lib_sender, GICrystal::Transfer::None)
@@ -254,22 +213,9 @@ module Gtk
           ::Box(Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(_sender, section, error)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_section : Pointer(Void), lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::CssProvider.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          section = Gtk::CssSection.new(lib_section, :none)
-          error = lib_error
-          ::Box(Proc(Gtk::CssProvider, Gtk::CssSection, GLib::Error, Nil)).unbox(_lib_box).call(_sender, section, error)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(section : Gtk::CssSection, error : GLib::Error) : Nil

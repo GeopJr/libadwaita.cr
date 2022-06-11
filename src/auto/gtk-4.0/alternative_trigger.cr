@@ -96,7 +96,7 @@ module Gtk
     #
     # Note that nesting is allowed, so if you want more than two
     # alternative, create a new alternative trigger for each option.
-    def initialize(first : Gtk::ShortcutTrigger, second : Gtk::ShortcutTrigger)
+    def self.new(first : Gtk::ShortcutTrigger, second : Gtk::ShortcutTrigger) : self
       # gtk_alternative_trigger_new: (Constructor)
       # @first: (transfer full)
       # @second: (transfer full)
@@ -110,8 +110,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::AlternativeTrigger.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the first of the two alternative triggers that may

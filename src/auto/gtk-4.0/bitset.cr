@@ -40,18 +40,6 @@ module Gtk
       LibGtk.gtk_bitset_get_type
     end
 
-    def self.new_empty : self
-      # gtk_bitset_new_empty: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_bitset_new_empty
-
-      # Return value handling
-
-      Gtk::Bitset.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def self.new_range(start : UInt32, n_items : UInt32) : self
       # gtk_bitset_new_range: (Constructor)
       # Returns: (transfer full)

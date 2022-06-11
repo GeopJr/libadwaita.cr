@@ -385,21 +385,6 @@ module Adw
       Adw::TabPage.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new `AdwTabView`.
-    def initialize
-      # adw_tab_view_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_tab_view_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds @child to @self with @parent as the parent.
     #
     # This function can be used to automatically position new pages, and to select
@@ -947,31 +932,16 @@ module Adw
     #
     # A typical reason to connect to this signal is to show a confirmation dialog
     # for closing a tab.
-    struct ClosePageSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ClosePageSignal < GObject::Signal
+      def name : String
         @detail ? "close-page::#{@detail}" : "close-page"
       end
 
-      def connect(&block : Proc(Adw::TabPage, Bool))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Adw::TabPage, Bool)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Adw::TabPage, Bool))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Adw::TabPage, Bool))
+      def connect(handler : Proc(Adw::TabPage, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -979,23 +949,12 @@ module Adw
           ::Box(Proc(Adw::TabPage, Bool)).unbox(_lib_box).call(page)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Adw::TabPage, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          ::Box(Proc(Adw::TabPage, Bool)).unbox(_lib_box).call(page)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Bool))
+      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Bool), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
@@ -1004,21 +963,9 @@ module Adw
           ::Box(Proc(Adw::TabView, Adw::TabPage, Bool)).unbox(_lib_box).call(_sender, page)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Adw::TabView, Adw::TabPage, Bool))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          ::Box(Proc(Adw::TabView, Adw::TabPage, Bool)).unbox(_lib_box).call(_sender, page)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(page : Adw::TabPage) : Nil
@@ -1036,70 +983,36 @@ module Adw
     #
     # The signal handler is expected to create a new window, position it as
     # needed and return its `AdwTabView` that the page will be transferred into.
-    struct CreateWindowSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct CreateWindowSignal < GObject::Signal
+      def name : String
         @detail ? "create-window::#{@detail}" : "create-window"
       end
 
-      def connect(&block : Proc(Adw::TabView))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Adw::TabView)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Adw::TabView))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Adw::TabView))
+      def connect(handler : Proc(Adw::TabView), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Adw::TabView)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Adw::TabView))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Adw::TabView)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Adw::TabView, Adw::TabView))
+      def connect(handler : Proc(Adw::TabView, Adw::TabView), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Adw::TabView, Adw::TabView)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Adw::TabView, Adw::TabView))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Adw::TabView, Adw::TabView)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -1115,31 +1028,16 @@ module Adw
     #
     # See [property@TabPage:indicator-icon] and
     # [property@TabPage:indicator-activatable].
-    struct IndicatorActivatedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct IndicatorActivatedSignal < GObject::Signal
+      def name : String
         @detail ? "indicator-activated::#{@detail}" : "indicator-activated"
       end
 
-      def connect(&block : Proc(Adw::TabPage, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Adw::TabPage, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Adw::TabPage, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Adw::TabPage, Nil))
+      def connect(handler : Proc(Adw::TabPage, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -1147,23 +1045,12 @@ module Adw
           ::Box(Proc(Adw::TabPage, Nil)).unbox(_lib_box).call(page)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Adw::TabPage, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          ::Box(Proc(Adw::TabPage, Nil)).unbox(_lib_box).call(page)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Nil))
+      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
@@ -1172,21 +1059,9 @@ module Adw
           ::Box(Proc(Adw::TabView, Adw::TabPage, Nil)).unbox(_lib_box).call(_sender, page)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Adw::TabView, Adw::TabPage, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          ::Box(Proc(Adw::TabView, Adw::TabPage, Nil)).unbox(_lib_box).call(_sender, page)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(page : Adw::TabPage) : Nil
@@ -1202,31 +1077,16 @@ module Adw
     #
     # A typical reason to connect to this signal would be to connect to page
     # signals for things such as updating window title.
-    struct PageAttachedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct PageAttachedSignal < GObject::Signal
+      def name : String
         @detail ? "page-attached::#{@detail}" : "page-attached"
       end
 
-      def connect(&block : Proc(Adw::TabPage, Int32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Adw::TabPage, Int32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Adw::TabPage, Int32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Adw::TabPage, Int32, Nil))
+      def connect(handler : Proc(Adw::TabPage, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -1235,24 +1095,12 @@ module Adw
           ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Adw::TabPage, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          position = lib_position
-          ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Int32, Nil))
+      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
@@ -1262,22 +1110,9 @@ module Adw
           ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Adw::TabView, Adw::TabPage, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          position = lib_position
-          ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(page : Adw::TabPage, position : Int32) : Nil
@@ -1298,31 +1133,16 @@ module Adw
     # this function as the child might merely be moved to another window; use
     # child dispose handler for that or do it in sync with your
     # `TabView#close_page_finish` calls.
-    struct PageDetachedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct PageDetachedSignal < GObject::Signal
+      def name : String
         @detail ? "page-detached::#{@detail}" : "page-detached"
       end
 
-      def connect(&block : Proc(Adw::TabPage, Int32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Adw::TabPage, Int32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Adw::TabPage, Int32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Adw::TabPage, Int32, Nil))
+      def connect(handler : Proc(Adw::TabPage, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -1331,24 +1151,12 @@ module Adw
           ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Adw::TabPage, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          position = lib_position
-          ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Int32, Nil))
+      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
@@ -1358,22 +1166,9 @@ module Adw
           ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Adw::TabView, Adw::TabPage, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          position = lib_position
-          ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(page : Adw::TabPage, position : Int32) : Nil
@@ -1386,31 +1181,16 @@ module Adw
     end
 
     # Emitted after @page has been reordered to @position.
-    struct PageReorderedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct PageReorderedSignal < GObject::Signal
+      def name : String
         @detail ? "page-reordered::#{@detail}" : "page-reordered"
       end
 
-      def connect(&block : Proc(Adw::TabPage, Int32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Adw::TabPage, Int32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Adw::TabPage, Int32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Adw::TabPage, Int32, Nil))
+      def connect(handler : Proc(Adw::TabPage, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -1419,24 +1199,12 @@ module Adw
           ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Adw::TabPage, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          position = lib_position
-          ::Box(Proc(Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(page, position)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Int32, Nil))
+      def connect(handler : Proc(Adw::TabView, Adw::TabPage, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
@@ -1446,22 +1214,9 @@ module Adw
           ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Adw::TabView, Adw::TabPage, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), lib_position : Int32, _lib_box : Pointer(Void)) {
-          _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none)
-          position = lib_position
-          ::Box(Proc(Adw::TabView, Adw::TabPage, Int32, Nil)).unbox(_lib_box).call(_sender, page, position)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(page : Adw::TabPage, position : Int32) : Nil
@@ -1479,31 +1234,16 @@ module Adw
     #
     # It can be used to set up menu actions before showing the menu, for example
     # disable actions not applicable to @page.
-    struct SetupMenuSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct SetupMenuSignal < GObject::Signal
+      def name : String
         @detail ? "setup-menu::#{@detail}" : "setup-menu"
       end
 
-      def connect(&block : Proc(Adw::TabPage?, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Adw::TabPage?, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Adw::TabPage?, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Adw::TabPage?, Nil))
+      def connect(handler : Proc(Adw::TabPage?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::NullableArrayPlan
@@ -1513,25 +1253,12 @@ module Adw
           ::Box(Proc(Adw::TabPage?, Nil)).unbox(_lib_box).call(page)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Adw::TabPage?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::NullableArrayPlan
-          page = (lib_page.null? ? nil : Adw::TabPage.new(lib_page, GICrystal::Transfer::None))
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none) unless lib_page.null?
-          ::Box(Proc(Adw::TabPage?, Nil)).unbox(_lib_box).call(page)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Adw::TabView, Adw::TabPage?, Nil))
+      def connect(handler : Proc(Adw::TabView, Adw::TabPage?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
@@ -1542,23 +1269,9 @@ module Adw
           ::Box(Proc(Adw::TabView, Adw::TabPage?, Nil)).unbox(_lib_box).call(_sender, page)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Adw::TabView, Adw::TabPage?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_page : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Adw::TabView.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::NullableArrayPlan
-          page = (lib_page.null? ? nil : Adw::TabPage.new(lib_page, GICrystal::Transfer::None))
-          # Generator::BuiltInTypeArgPlan
-          page = Adw::TabPage.new(lib_page, :none) unless lib_page.null?
-          ::Box(Proc(Adw::TabView, Adw::TabPage?, Nil)).unbox(_lib_box).call(_sender, page)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(page : Adw::TabPage?) : Nil

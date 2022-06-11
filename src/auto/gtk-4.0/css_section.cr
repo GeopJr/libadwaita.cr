@@ -29,7 +29,7 @@ module Gtk
       LibGtk.gtk_css_section_get_type
     end
 
-    def initialize(file : Gio::File?, start : Gtk::CssLocation, end _end : Gtk::CssLocation)
+    def self.new(file : Gio::File?, start : Gtk::CssLocation, end _end : Gtk::CssLocation) : self
       # gtk_css_section_new: (Constructor)
       # @file: (nullable)
       # Returns: (transfer full)
@@ -46,8 +46,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::CssSection.new(_retval, GICrystal::Transfer::Full)
     end
 
     def end_location : Gtk::CssLocation

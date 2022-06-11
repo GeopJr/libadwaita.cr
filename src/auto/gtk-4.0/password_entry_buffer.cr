@@ -64,19 +64,5 @@ module Gtk
     def self.g_type : UInt64
       LibGtk.gtk_password_entry_buffer_get_type
     end
-
-    # Creates a new `GtkEntryBuffer` using secure memory allocations.
-    def initialize
-      # gtk_password_entry_buffer_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_password_entry_buffer_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
   end
 end

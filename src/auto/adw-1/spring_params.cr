@@ -55,7 +55,7 @@ module Adw
       LibAdw.adw_spring_params_get_type
     end
 
-    def initialize(damping_ratio : Float64, mass : Float64, stiffness : Float64)
+    def self.new(damping_ratio : Float64, mass : Float64, stiffness : Float64) : self
       # adw_spring_params_new: (Constructor)
       # Returns: (transfer full)
 
@@ -64,8 +64,7 @@ module Adw
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Adw::SpringParams.new(_retval, GICrystal::Transfer::Full)
     end
 
     def self.new_full(damping : Float64, mass : Float64, stiffness : Float64) : self

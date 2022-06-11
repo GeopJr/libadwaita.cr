@@ -6,11 +6,10 @@ module Gsk
   class CrossFadeNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::CrossFadeNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(CrossFadeNode, g_object_get_qdata, g_object_set_qdata)
@@ -33,7 +32,7 @@ module Gsk
     end
 
     # Creates a `GskRenderNode` that will do a cross-fade between @start and @end.
-    def initialize(start : Gsk::RenderNode, end _end : Gsk::RenderNode, progress : Float32)
+    def self.new(start : Gsk::RenderNode, end _end : Gsk::RenderNode, progress : Float32) : self
       # gsk_cross_fade_node_new: (Constructor)
       # Returns: (transfer full)
 
@@ -42,8 +41,7 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::CrossFadeNode.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Retrieves the child `GskRenderNode` at the end of the cross-fade.

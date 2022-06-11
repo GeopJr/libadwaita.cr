@@ -75,7 +75,7 @@ module Gtk
     end
 
     # Creates a new selection to handle @model.
-    def initialize(model : Gio::ListModel?)
+    def self.new(model : Gio::ListModel?) : self
       # gtk_multi_selection_new: (Constructor)
       # @model: (transfer full) (nullable)
       # Returns: (transfer full)
@@ -92,8 +92,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::MultiSelection.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns the underlying model of @self.

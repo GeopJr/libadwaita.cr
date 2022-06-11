@@ -129,7 +129,7 @@ module Gtk
     end
 
     # Creates a new `GtkBoxLayout`.
-    def initialize(orientation : Gtk::Orientation)
+    def self.new(orientation : Gtk::Orientation) : self
       # gtk_box_layout_new: (Constructor)
       # Returns: (transfer full)
 
@@ -138,8 +138,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::BoxLayout.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the value set by gtk_box_layout_set_baseline_position().

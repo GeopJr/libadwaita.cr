@@ -6,11 +6,10 @@ module Gsk
   class ContainerNode < RenderNode
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGsk::ContainerNode), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(ContainerNode, g_object_get_qdata, g_object_set_qdata)
@@ -35,7 +34,7 @@ module Gsk
     # Creates a new `GskRenderNode` instance for holding the given @children.
     #
     # The new node will acquire a reference to each of the children.
-    def initialize(children : Enumerable(Gsk::RenderNode))
+    def self.new(children : Enumerable(Gsk::RenderNode)) : self
       # gsk_container_node_new: (Constructor)
       # @children: (array length=n_children element-type Interface)
       # Returns: (transfer full)
@@ -49,12 +48,11 @@ module Gsk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gsk::ContainerNode.new(_retval, GICrystal::Transfer::Full)
     end
 
-    def initialize(*children : Gsk::RenderNode)
-      initialize(children)
+    def self.new(*children : Gsk::RenderNode)
+      self.new(children)
     end
 
     # Gets one of the children of @container.

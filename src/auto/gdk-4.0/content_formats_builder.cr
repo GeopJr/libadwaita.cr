@@ -27,19 +27,6 @@ module Gdk
       LibGdk.gdk_content_formats_builder_get_type
     end
 
-    def initialize
-      # gdk_content_formats_builder_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGdk.gdk_content_formats_builder_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     def add_formats(formats : Gdk::ContentFormats) : Nil
       # gdk_content_formats_builder_add_formats: (Method)
       # Returns: (transfer none)

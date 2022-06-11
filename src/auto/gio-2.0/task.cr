@@ -577,7 +577,7 @@ module Gio
     # other objects that the task depends on have been destroyed. If you
     # do not want this behavior, you can use
     # g_task_set_check_cancellable() to change it.
-    def initialize(source_object : GObject::Object?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, callback_data : Pointer(Void)?)
+    def self.new(source_object : GObject::Object?, cancellable : Gio::Cancellable?, callback : Gio::AsyncReadyCallback?, callback_data : Pointer(Void)?) : self
       # g_task_new: (Constructor)
       # @source_object: (nullable)
       # @cancellable: (nullable)
@@ -609,8 +609,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::Task.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Checks that @result is a #GTask, and that @source_object is its

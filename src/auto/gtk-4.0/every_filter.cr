@@ -39,25 +39,5 @@ module Gtk
     def self.g_type : UInt64
       LibGtk.gtk_every_filter_get_type
     end
-
-    # Creates a new empty "every" filter.
-    #
-    # Use `Gtk::MultiFilter#append` to add filters to it.
-    #
-    # This filter matches an item if each of the filters added to it
-    # matches the item. In particular, this means that if no filter
-    # has been added to it, the filter matches every item.
-    def initialize
-      # gtk_every_filter_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_every_filter_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
   end
 end

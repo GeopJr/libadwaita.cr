@@ -74,7 +74,7 @@ module Gtk
     # on the provided widget.
     #
     # It will also unpack the args into arguments passed to the signal.
-    def initialize(signal_name : ::String)
+    def self.new(signal_name : ::String) : self
       # gtk_signal_action_new: (Constructor)
       # Returns: (transfer full)
 
@@ -83,8 +83,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::SignalAction.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns the name of the signal that will be emitted.

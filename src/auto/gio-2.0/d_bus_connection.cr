@@ -60,11 +60,10 @@ module Gio
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::DBusConnection), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(DBusConnection, g_object_get_qdata, g_object_set_qdata)
@@ -1937,31 +1936,16 @@ module Gio
     # Upon receiving this signal, you should give up your reference to
     # @connection. You are guaranteed that this signal is emitted only
     # once.
-    struct ClosedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ClosedSignal < GObject::Signal
+      def name : String
         @detail ? "closed::#{@detail}" : "closed"
       end
 
-      def connect(&block : Proc(Bool, GLib::Error?, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Bool, GLib::Error?, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Bool, GLib::Error?, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Bool, GLib::Error?, Nil))
+      def connect(handler : Proc(Bool, GLib::Error?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_remote_peer_vanished : LibC::Int, lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
           remote_peer_vanished = lib_remote_peer_vanished
@@ -1970,24 +1954,12 @@ module Gio
           ::Box(Proc(Bool, GLib::Error?, Nil)).unbox(_lib_box).call(remote_peer_vanished, error)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Bool, GLib::Error?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_remote_peer_vanished : LibC::Int, lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
-          remote_peer_vanished = lib_remote_peer_vanished
-          # Generator::NullableArrayPlan
-          error = (lib_error.null? ? nil : GLib::Error.new(lib_error, GICrystal::Transfer::None))
-          ::Box(Proc(Bool, GLib::Error?, Nil)).unbox(_lib_box).call(remote_peer_vanished, error)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil))
+      def connect(handler : Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_remote_peer_vanished : LibC::Int, lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gio::DBusConnection.new(_lib_sender, GICrystal::Transfer::None)
@@ -1997,22 +1969,9 @@ module Gio
           ::Box(Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil)).unbox(_lib_box).call(_sender, remote_peer_vanished, error)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_remote_peer_vanished : LibC::Int, lib_error : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gio::DBusConnection.new(_lib_sender, GICrystal::Transfer::None)
-          remote_peer_vanished = lib_remote_peer_vanished
-          # Generator::NullableArrayPlan
-          error = (lib_error.null? ? nil : GLib::Error.new(lib_error, GICrystal::Transfer::None))
-          ::Box(Proc(Gio::DBusConnection, Bool, GLib::Error?, Nil)).unbox(_lib_box).call(_sender, remote_peer_vanished, error)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(remote_peer_vanished : Bool, error : GLib::Error?) : Nil

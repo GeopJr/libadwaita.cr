@@ -71,22 +71,6 @@ module Gtk
       LibGtk.gtk_signal_list_item_factory_get_type
     end
 
-    # Creates a new `GtkSignalListItemFactory`.
-    #
-    # You need to connect signal handlers before you use it.
-    def initialize
-      # gtk_signal_list_item_factory_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_signal_list_item_factory_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Emitted when a new `Gtk::ListItem#item` has been set
     # on the @listitem and should be bound for use.
     #
@@ -96,31 +80,16 @@ module Gtk
     # The `Gtk::SignalListItemFactory::#unbind` signal is the
     # opposite of this signal and can be used to undo everything done
     # in this signal.
-    struct BindSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct BindSignal < GObject::Signal
+      def name : String
         @detail ? "bind::#{@detail}" : "bind"
       end
 
-      def connect(&block : Proc(Gtk::ListItem, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::ListItem, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::ListItem, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::ListItem, Nil))
+      def connect(handler : Proc(Gtk::ListItem, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -128,23 +97,12 @@ module Gtk
           ::Box(Proc(Gtk::ListItem, Nil)).unbox(_lib_box).call(listitem)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::ListItem, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          listitem = Gtk::ListItem.new(lib_listitem, :none)
-          ::Box(Proc(Gtk::ListItem, Nil)).unbox(_lib_box).call(listitem)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil))
+      def connect(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::SignalListItemFactory.new(_lib_sender, GICrystal::Transfer::None)
@@ -153,21 +111,9 @@ module Gtk
           ::Box(Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil)).unbox(_lib_box).call(_sender, listitem)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::SignalListItemFactory.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          listitem = Gtk::ListItem.new(lib_listitem, :none)
-          ::Box(Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil)).unbox(_lib_box).call(_sender, listitem)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(listitem : Gtk::ListItem) : Nil
@@ -185,31 +131,16 @@ module Gtk
     #
     # The `Gtk::SignalListItemFactory::#teardown` signal is the opposite
     # of this signal and can be used to undo everything done in this signal.
-    struct SetupSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct SetupSignal < GObject::Signal
+      def name : String
         @detail ? "setup::#{@detail}" : "setup"
       end
 
-      def connect(&block : Proc(Gtk::ListItem, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::ListItem, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::ListItem, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::ListItem, Nil))
+      def connect(handler : Proc(Gtk::ListItem, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -217,23 +148,12 @@ module Gtk
           ::Box(Proc(Gtk::ListItem, Nil)).unbox(_lib_box).call(listitem)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::ListItem, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          listitem = Gtk::ListItem.new(lib_listitem, :none)
-          ::Box(Proc(Gtk::ListItem, Nil)).unbox(_lib_box).call(listitem)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil))
+      def connect(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::SignalListItemFactory.new(_lib_sender, GICrystal::Transfer::None)
@@ -242,21 +162,9 @@ module Gtk
           ::Box(Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil)).unbox(_lib_box).call(_sender, listitem)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::SignalListItemFactory.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          listitem = Gtk::ListItem.new(lib_listitem, :none)
-          ::Box(Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil)).unbox(_lib_box).call(_sender, listitem)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(listitem : Gtk::ListItem) : Nil
@@ -274,31 +182,16 @@ module Gtk
     #
     # This signal is the opposite of the `Gtk::SignalListItemFactory::#setup`
     # signal and should be used to undo everything done in that signal.
-    struct TeardownSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct TeardownSignal < GObject::Signal
+      def name : String
         @detail ? "teardown::#{@detail}" : "teardown"
       end
 
-      def connect(&block : Proc(Gtk::ListItem, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::ListItem, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::ListItem, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::ListItem, Nil))
+      def connect(handler : Proc(Gtk::ListItem, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -306,23 +199,12 @@ module Gtk
           ::Box(Proc(Gtk::ListItem, Nil)).unbox(_lib_box).call(listitem)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::ListItem, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          listitem = Gtk::ListItem.new(lib_listitem, :none)
-          ::Box(Proc(Gtk::ListItem, Nil)).unbox(_lib_box).call(listitem)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil))
+      def connect(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::SignalListItemFactory.new(_lib_sender, GICrystal::Transfer::None)
@@ -331,21 +213,9 @@ module Gtk
           ::Box(Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil)).unbox(_lib_box).call(_sender, listitem)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::SignalListItemFactory.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          listitem = Gtk::ListItem.new(lib_listitem, :none)
-          ::Box(Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil)).unbox(_lib_box).call(_sender, listitem)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(listitem : Gtk::ListItem) : Nil
@@ -362,31 +232,16 @@ module Gtk
     #
     # This signal is the opposite of the `Gtk::SignalListItemFactory::#bind`
     # signal and should be used to undo everything done in that signal.
-    struct UnbindSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct UnbindSignal < GObject::Signal
+      def name : String
         @detail ? "unbind::#{@detail}" : "unbind"
       end
 
-      def connect(&block : Proc(Gtk::ListItem, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::ListItem, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::ListItem, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::ListItem, Nil))
+      def connect(handler : Proc(Gtk::ListItem, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -394,23 +249,12 @@ module Gtk
           ::Box(Proc(Gtk::ListItem, Nil)).unbox(_lib_box).call(listitem)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::ListItem, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          listitem = Gtk::ListItem.new(lib_listitem, :none)
-          ::Box(Proc(Gtk::ListItem, Nil)).unbox(_lib_box).call(listitem)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil))
+      def connect(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::SignalListItemFactory.new(_lib_sender, GICrystal::Transfer::None)
@@ -419,21 +263,9 @@ module Gtk
           ::Box(Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil)).unbox(_lib_box).call(_sender, listitem)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_listitem : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::SignalListItemFactory.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          listitem = Gtk::ListItem.new(lib_listitem, :none)
-          ::Box(Proc(Gtk::SignalListItemFactory, Gtk::ListItem, Nil)).unbox(_lib_box).call(_sender, listitem)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(listitem : Gtk::ListItem) : Nil

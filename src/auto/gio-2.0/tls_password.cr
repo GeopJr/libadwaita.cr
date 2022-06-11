@@ -108,7 +108,7 @@ module Gio
     end
 
     # Create a new #GTlsPassword object.
-    def initialize(flags : Gio::TlsPasswordFlags, description : ::String)
+    def self.new(flags : Gio::TlsPasswordFlags, description : ::String) : self
       # g_tls_password_new: (Constructor)
       # Returns: (transfer full)
 
@@ -117,8 +117,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::TlsPassword.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Get a description string about what the password will be used for.

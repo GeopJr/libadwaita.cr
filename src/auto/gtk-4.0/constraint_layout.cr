@@ -203,20 +203,6 @@ module Gtk
       LibGtk.gtk_constraint_layout_get_type
     end
 
-    # Creates a new `GtkConstraintLayout` layout manager.
-    def initialize
-      # gtk_constraint_layout_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_constraint_layout_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds a constraint to the layout manager.
     #
     # The `Gtk::Constraint#source` and `Gtk::Constraint#target`

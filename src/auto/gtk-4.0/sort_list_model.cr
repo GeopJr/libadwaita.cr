@@ -142,7 +142,7 @@ module Gtk
     end
 
     # Creates a new sort list model that uses the @sorter to sort @model.
-    def initialize(model : Gio::ListModel?, sorter : Gtk::Sorter?)
+    def self.new(model : Gio::ListModel?, sorter : Gtk::Sorter?) : self
       # gtk_sort_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)
       # @sorter: (transfer full) (nullable)
@@ -167,8 +167,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::SortListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns whether incremental sorting is enabled.

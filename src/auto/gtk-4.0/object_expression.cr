@@ -6,11 +6,10 @@ module Gtk
   class ObjectExpression < Expression
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::ObjectExpression), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(ObjectExpression, g_object_get_qdata, g_object_set_qdata)
@@ -39,7 +38,7 @@ module Gtk
     # This expression is meant to break reference cycles.
     #
     # If you want to keep a reference to `object`, use `Gtk::ConstantExpression.new`.
-    def initialize(object : GObject::Object)
+    def self.new(object : GObject::Object) : self
       # gtk_object_expression_new: (Constructor)
       # Returns: (transfer full)
 
@@ -48,8 +47,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::ObjectExpression.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the object that the expression evaluates to.

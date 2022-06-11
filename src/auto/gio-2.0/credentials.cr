@@ -68,21 +68,6 @@ module Gio
       LibGio.g_credentials_get_type
     end
 
-    # Creates a new #GCredentials object with credentials matching the
-    # the current process.
-    def initialize
-      # g_credentials_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGio.g_credentials_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Tries to get the UNIX process identifier from @credentials. This
     # method is only available on UNIX platforms.
     #

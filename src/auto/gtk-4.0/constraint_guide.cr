@@ -221,20 +221,6 @@ module Gtk
       Gtk::ConstraintStrength.new(value)
     end
 
-    # Creates a new `GtkConstraintGuide` object.
-    def initialize
-      # gtk_constraint_guide_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_constraint_guide_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the maximum size of @guide.
     def max_size : Nil
       # gtk_constraint_guide_get_max_size: (Method)

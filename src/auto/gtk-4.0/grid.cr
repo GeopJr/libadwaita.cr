@@ -424,21 +424,6 @@ module Gtk
       value
     end
 
-    # Creates a new grid widget.
-    def initialize
-      # gtk_grid_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_grid_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds a widget to the grid.
     #
     # The position of @child is determined by @column and @row.

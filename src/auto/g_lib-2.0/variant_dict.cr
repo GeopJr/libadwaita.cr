@@ -114,7 +114,7 @@ module GLib
       LibGLib.g_variant_dict_get_type
     end
 
-    def initialize(from_asv : _?)
+    def self.new(from_asv : _?) : self
       # g_variant_dict_new: (Constructor)
       # @from_asv: (nullable)
       # Returns: (transfer full)
@@ -133,8 +133,7 @@ module GLib
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GLib::VariantDict.new(_retval, GICrystal::Transfer::Full)
     end
 
     def clear : Nil

@@ -158,7 +158,7 @@ module Adw
     #
     # If no application ID is given then some features (most notably application
     # uniqueness) will be disabled.
-    def initialize(application_id : ::String?, flags : Gio::ApplicationFlags)
+    def self.new(application_id : ::String?, flags : Gio::ApplicationFlags) : self
       # adw_application_new: (Constructor)
       # @application_id: (nullable)
       # Returns: (transfer full)
@@ -175,8 +175,7 @@ module Adw
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Adw::Application.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the style manager for @self.

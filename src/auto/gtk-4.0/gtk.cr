@@ -197,7 +197,6 @@ require "./page_setup.cr"
 require "./page_setup_unix_dialog.cr"
 require "./paned.cr"
 require "./paper_size.cr"
-require "./param_spec_expression.cr"
 require "./password_entry.cr"
 require "./password_entry_buffer.cr"
 require "./picture.cr"
@@ -310,7 +309,7 @@ module Gtk
   # Like `#binary_age`, but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
-  BINARY_AGE                     = 602
+  BINARY_AGE                     = 605
   IM_MODULE_EXTENSION_POINT_NAME = "gtk-im-module"
   # Constant to return from a signal handler for the ::input
   # signal in case of conversion failure.
@@ -320,7 +319,7 @@ module Gtk
   # Like `#interface_age`, but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
-  INTERFACE_AGE = 2
+  INTERFACE_AGE = 5
   # The value used to refer to a guaranteed invalid position
   # in a `GListModel`.
   #
@@ -346,7 +345,7 @@ module Gtk
   # Like `#micro_version`, but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
-  MICRO_VERSION = 2
+  MICRO_VERSION = 5
   # Like `#minor_version`, but from the headers used at
   # application compile time, rather than from the library linked
   # against at application run time.
@@ -715,6 +714,11 @@ module Gtk
       message_ptr = error.value.message
       super(String.new(message_ptr)) unless message_ptr.null?
       LibGLib.g_error_free(error)
+    end
+
+    # :inherit:
+    def initialize(message : String)
+      super
     end
   end
 
@@ -4287,6 +4291,7 @@ require "../../../lib/gtk4/src/bindings/gtk/list_store.cr"
 require "../../../lib/gtk4/src/bindings/gtk/message_dialog.cr"
 require "../../../lib/gtk4/src/bindings/gtk/stack.cr"
 require "../../../lib/gtk4/src/bindings/gtk/tree_store.cr"
+require "../../../lib/gtk4/src/bindings/gtk/tree_selection.cr"
 require "../../../lib/gtk4/src/bindings/gtk/tree_view.cr"
 require "../../../lib/gtk4/src/bindings/gtk/widget.cr"
 require "../../../lib/gtk4/src/bindings/gtk/widget_template.cr"

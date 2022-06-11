@@ -77,11 +77,10 @@ module Gio
   class TestDBus < GObject::Object
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGio::TestDBus), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(TestDBus, g_object_get_qdata, g_object_set_qdata)
@@ -139,7 +138,7 @@ module Gio
     end
 
     # Create a new #GTestDBus object.
-    def initialize(flags : Gio::TestDBusFlags)
+    def self.new(flags : Gio::TestDBusFlags) : self
       # g_test_dbus_new: (Constructor)
       # Returns: (transfer full)
 
@@ -148,8 +147,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::TestDBus.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Unset DISPLAY and DBUS_SESSION_BUS_ADDRESS env variables to ensure the test

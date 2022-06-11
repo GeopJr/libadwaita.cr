@@ -34,19 +34,6 @@ module Gdk
       LibGdk.gdk_toplevel_layout_get_type
     end
 
-    def initialize
-      # gdk_toplevel_layout_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGdk.gdk_toplevel_layout_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     def copy : Gdk::ToplevelLayout
       # gdk_toplevel_layout_copy: (Method)
       # Returns: (transfer full)

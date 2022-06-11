@@ -121,7 +121,7 @@ module Gtk
     end
 
     # Returns a newly created `GtkGesture` that recognizes pan gestures.
-    def initialize(orientation : Gtk::Orientation)
+    def self.new(orientation : Gtk::Orientation) : self
       # gtk_gesture_pan_new: (Constructor)
       # Returns: (transfer full)
 
@@ -130,8 +130,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::GesturePan.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Returns the orientation of the pan gestures that this @gesture expects.
@@ -159,31 +158,16 @@ module Gtk
     end
 
     # Emitted once a panning gesture along the expected axis is detected.
-    struct PanSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct PanSignal < GObject::Signal
+      def name : String
         @detail ? "pan::#{@detail}" : "pan"
       end
 
-      def connect(&block : Proc(Gtk::PanDirection, Float64, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::PanDirection, Float64, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::PanDirection, Float64, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::PanDirection, Float64, Nil))
+      def connect(handler : Proc(Gtk::PanDirection, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, lib_offset : Float64, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -192,24 +176,12 @@ module Gtk
           ::Box(Proc(Gtk::PanDirection, Float64, Nil)).unbox(_lib_box).call(direction, offset)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::PanDirection, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, lib_offset : Float64, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          direction = Gtk::PanDirection.new(lib_direction)
-          offset = lib_offset
-          ::Box(Proc(Gtk::PanDirection, Float64, Nil)).unbox(_lib_box).call(direction, offset)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::GesturePan, Gtk::PanDirection, Float64, Nil))
+      def connect(handler : Proc(Gtk::GesturePan, Gtk::PanDirection, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, lib_offset : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::GesturePan.new(_lib_sender, GICrystal::Transfer::None)
@@ -219,22 +191,9 @@ module Gtk
           ::Box(Proc(Gtk::GesturePan, Gtk::PanDirection, Float64, Nil)).unbox(_lib_box).call(_sender, direction, offset)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::GesturePan, Gtk::PanDirection, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_direction : UInt32, lib_offset : Float64, _lib_box : Pointer(Void)) {
-          _sender = Gtk::GesturePan.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          direction = Gtk::PanDirection.new(lib_direction)
-          offset = lib_offset
-          ::Box(Proc(Gtk::GesturePan, Gtk::PanDirection, Float64, Nil)).unbox(_lib_box).call(_sender, direction, offset)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(direction : Gtk::PanDirection, offset : Float64) : Nil

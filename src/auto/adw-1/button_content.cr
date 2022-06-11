@@ -340,21 +340,6 @@ module Adw
       GICrystal.to_bool(value)
     end
 
-    # Creates a new `AdwButtonContent`.
-    def initialize
-      # adw_button_content_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_button_content_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the name of the displayed icon.
     def icon_name : ::String
       # adw_button_content_get_icon_name: (Method | Getter)

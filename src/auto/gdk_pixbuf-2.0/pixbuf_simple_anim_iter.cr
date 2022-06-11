@@ -5,11 +5,10 @@ module GdkPixbuf
   class PixbufSimpleAnimIter < PixbufAnimationIter
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGdkPixbuf::PixbufSimpleAnimIter), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(PixbufSimpleAnimIter, g_object_get_qdata, g_object_set_qdata)

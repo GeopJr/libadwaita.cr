@@ -289,25 +289,6 @@ module Gtk
       ::String.new(value)
     end
 
-    # Creates a new empty builder object.
-    #
-    # This function is only useful if you intend to make multiple calls
-    # to `Gtk::Builder#add_from_file`, `Gtk::Builder#add_from_resource`
-    # or `Gtk::Builder#add_from_string` in order to merge multiple UI
-    # descriptions into a single builder.
-    def initialize
-      # gtk_builder_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_builder_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Parses the UI definition in the file @filename.
     #
     # If there is an error opening the file or parsing the description then

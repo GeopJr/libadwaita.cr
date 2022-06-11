@@ -20,7 +20,97 @@ module GObject
   class Object
     @pointer : Pointer(Void)
 
+    # Declares a GObject signal.
+    #
+    # Supported signal parameter types are:
+    #
+    #  - Integer types
+    #  - Float types
+    macro signal(signature)
+      {%
+        raise "signal parameter must be a signature (Macros::Call), got #{signature.class_name}" unless signature.is_a?(Call)
+        raise "Signal signature #{signature} can't have a receiver" if signature.receiver
+        raise "Signal signature #{signature} can't have a block argument" if signature.block_arg
+      %}
+
+      struct {{ signature.name.titleize }}Signal < GObject::Signal
+        def name : String
+          @detail ? "{{ signature.name }}::#{@detail}" : {{ signature.name.stringify }}
+        end
+
+        alias LeanProc = Proc({{ (signature.args.map(&.type) << Nil).splat }})
+
+        def connect(*, after : Bool = false, &block : LeanProc) : GObject::SignalConnection
+          connect(block, after: after)
+        end
+
+        def connect(handler : LeanProc, *, after : Bool = false) : GObject::SignalConnection
+          _box = ::Box.box(handler)
+          {% if signature.args.empty? %}
+          handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) { ::Box(LeanProc).unbox(_lib_box).call }.pointer
+          {% else %}
+          handler = ->(_lib_sender : Pointer(Void),
+          {% for arg in signature.args %}
+          {%
+            resolved_type = arg.type.resolve
+            if resolved_type == String
+              type = ::Pointer(UInt8)
+            elsif resolved_type == Bool
+              type = ::Int32
+            else
+              type = arg.type
+            end
+          %}
+          {{ arg.var }} : {{ type }},
+          {% end %}
+          _lib_box : Pointer(Void)) {
+
+            {% for arg in signature.args %}
+            {% resolved_type = arg.type.resolve %}
+            {% if arg.type.resolve == String %}
+              {{ arg.var }} = String.new({{ arg.var }})
+            {% elsif arg.type.resolve == Bool %}
+              {{ arg.var }} = {{ arg.var }} != 0
+            {% end %}
+            {% end %}
+
+            ::Box(LeanProc).unbox(_lib_box).call({{ signature.args.map(&.var).splat }})
+          }.pointer
+          {% end %}
+
+          handler = LibGObject.g_signal_connect_data(@source, name, handler,
+            GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+          GObject::SignalConnection.new(@source, handler)
+        end
+
+        def emit({{ signature.args.splat }})
+          LibGObject.g_signal_emit_by_name(@source, {{ signature.name.stringify }}, {{ signature.args.map(&.var).splat }})
+        end
+      end
+
+      def {{ signature.name }}_signal
+        {{ signature.name.titleize }}Signal.new(self)
+      end
+
+      def self._class_init(klass : Pointer(LibGObject::TypeClass), user_data : Pointer(Void)) : Nil
+        LibGObject.g_signal_new({{ signature.name.stringify }}, g_type,
+        GObject::SignalFlags.flags(RunLast, NoRecurse, NoHooks),
+        0,                   # class_offset
+        Pointer(Void).null,  # accumulator
+        Pointer(Void).null,  # accumulator_data
+        Pointer(Void).null,  # marshaller
+        GObject::TYPE_NONE,  # return_type
+        {{ signature.args.size }}, # n_params
+        {% for arg in signature.args %}
+        {{ arg.type }}.g_type,
+        {% end %}
+        Pointer(Void).null)
+        previous_def
+      end
+    end
+
     macro inherited
+    
       {% unless @type.annotation(GObject::GeneratedWrapper) %}
       # GType for the new created type
       @@_g_type : UInt64 = 0
@@ -58,6 +148,7 @@ module GObject
         instance.as(self)
       end
       {% end %}
+    
     end
 
     # :nodoc:
@@ -628,31 +719,16 @@ module GObject
     # It is important to note that you must use
     # [canonical parameter names][canonical-parameter-names] as
     # detail strings for the notify signal.
-    struct NotifySignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct NotifySignal < GObject::Signal
+      def name : String
         @detail ? "notify::#{@detail}" : "notify"
       end
 
-      def connect(&block : Proc(GObject::ParamSpec, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(GObject::ParamSpec, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(GObject::ParamSpec, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(GObject::ParamSpec, Nil))
+      def connect(handler : Proc(GObject::ParamSpec, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -660,23 +736,12 @@ module GObject
           ::Box(Proc(GObject::ParamSpec, Nil)).unbox(_lib_box).call(pspec)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(GObject::ParamSpec, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          pspec = GObject::ParamSpec.new(lib_pspec, :none)
-          ::Box(Proc(GObject::ParamSpec, Nil)).unbox(_lib_box).call(pspec)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(GObject::Object, GObject::ParamSpec, Nil))
+      def connect(handler : Proc(GObject::Object, GObject::ParamSpec, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = GObject::Object.new(_lib_sender, GICrystal::Transfer::None)
@@ -685,21 +750,9 @@ module GObject
           ::Box(Proc(GObject::Object, GObject::ParamSpec, Nil)).unbox(_lib_box).call(_sender, pspec)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(GObject::Object, GObject::ParamSpec, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_pspec : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = GObject::Object.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          pspec = GObject::ParamSpec.new(lib_pspec, :none)
-          ::Box(Proc(GObject::Object, GObject::ParamSpec, Nil)).unbox(_lib_box).call(_sender, pspec)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(pspec : GObject::ParamSpec) : Nil

@@ -19,11 +19,10 @@ module Gtk
   class CellRendererPixbuf < CellRenderer
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::CellRendererPixbuf), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(CellRendererPixbuf, g_object_get_qdata, g_object_set_qdata)
@@ -266,27 +265,6 @@ module Gtk
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "texture", pointerof(value), Pointer(Void).null)
       Gdk::Texture.new(value, GICrystal::Transfer::None) unless value.null?
-    end
-
-    # Creates a new `GtkCellRendererPixbuf`. Adjust rendering
-    # parameters using object properties. Object properties can be set
-    # globally (with g_object_set()). Also, with `GtkTreeViewColumn`, you
-    # can bind a property to a value in a `GtkTreeModel`. For example, you
-    # can bind the “pixbuf” property on the cell renderer to a pixbuf value
-    # in the model, thus rendering a different image in each row of the
-    # `GtkTreeView`.
-    def initialize
-      # gtk_cell_renderer_pixbuf_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_cell_renderer_pixbuf_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
   end
 end

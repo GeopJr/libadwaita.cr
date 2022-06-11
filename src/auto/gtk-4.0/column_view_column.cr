@@ -245,7 +245,7 @@ module Gtk
     # column = gtk_column_view_column_new (_("Name"),
     #   gtk_builder_list_item_factory_new_from_resource ("/name.ui"));
     # ```
-    def initialize(title : ::String?, factory : Gtk::ListItemFactory?)
+    def self.new(title : ::String?, factory : Gtk::ListItemFactory?) : self
       # gtk_column_view_column_new: (Constructor)
       # @title: (nullable)
       # @factory: (transfer full) (nullable)
@@ -270,8 +270,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::ColumnViewColumn.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the column view that's currently displaying this column.

@@ -137,7 +137,7 @@ module Gio
     end
 
     # Creates a new #GInetSocketAddress for @address and @port.
-    def initialize(address : Gio::InetAddress, port : UInt16)
+    def self.new(address : Gio::InetAddress, port : UInt16) : self
       # g_inet_socket_address_new: (Constructor)
       # Returns: (transfer full)
 
@@ -146,8 +146,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gio::InetSocketAddress.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Creates a new #GInetSocketAddress for @address and @port.

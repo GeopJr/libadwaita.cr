@@ -66,18 +66,6 @@ module Graphene
       LibGraphene.graphene_triangle_get_type
     end
 
-    def self.alloc : self
-      # graphene_triangle_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_triangle_alloc
-
-      # Return value handling
-
-      Graphene::Triangle.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def contains_point(p : Graphene::Point3D) : Bool
       # graphene_triangle_contains_point: (Method)
       # Returns: (transfer none)

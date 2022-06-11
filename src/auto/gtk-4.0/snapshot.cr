@@ -43,20 +43,6 @@ module Gtk
       LibGtk.gtk_snapshot_get_type
     end
 
-    # Creates a new `GtkSnapshot`.
-    def initialize
-      # gtk_snapshot_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_snapshot_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Appends a stroked border rectangle inside the given @outline.
     #
     # The four sides of the border can have different widths and colors.

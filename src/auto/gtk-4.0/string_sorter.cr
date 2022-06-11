@@ -99,7 +99,7 @@ module Gtk
     #
     # Unless an expression is set on it, this sorter will always
     # compare items as invalid.
-    def initialize(expression : Gtk::Expression?)
+    def self.new(expression : Gtk::Expression?) : self
       # gtk_string_sorter_new: (Constructor)
       # @expression: (transfer full) (nullable)
       # Returns: (transfer full)
@@ -117,8 +117,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::StringSorter.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the expression that is evaluated to obtain strings from items.

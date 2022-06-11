@@ -104,31 +104,16 @@ module Gtk
       # Return value handling
     end
 
-    struct ColorActivatedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ColorActivatedSignal < GObject::Signal
+      def name : String
         @detail ? "color-activated::#{@detail}" : "color-activated"
       end
 
-      def connect(&block : Proc(Gdk::RGBA, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gdk::RGBA, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gdk::RGBA, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gdk::RGBA, Nil))
+      def connect(handler : Proc(Gdk::RGBA, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -136,23 +121,12 @@ module Gtk
           ::Box(Proc(Gdk::RGBA, Nil)).unbox(_lib_box).call(color)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gdk::RGBA, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          color = Gdk::RGBA.new(lib_color, :none)
-          ::Box(Proc(Gdk::RGBA, Nil)).unbox(_lib_box).call(color)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
+      def connect(handler : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::AbstractColorChooser.new(_lib_sender, GICrystal::Transfer::None)
@@ -161,21 +135,9 @@ module Gtk
           ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(_lib_box).call(_sender, color)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::ColorChooser, Gdk::RGBA, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_color : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::AbstractColorChooser.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          color = Gdk::RGBA.new(lib_color, :none)
-          ::Box(Proc(Gtk::ColorChooser, Gdk::RGBA, Nil)).unbox(_lib_box).call(_sender, color)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(color : Gdk::RGBA) : Nil

@@ -68,7 +68,7 @@ module GdkPixbuf
     end
 
     # Creates a new, empty animation.
-    def initialize(width : Int32, height : Int32, rate : Float32)
+    def self.new(width : Int32, height : Int32, rate : Float32) : self
       # gdk_pixbuf_simple_anim_new: (Constructor)
       # Returns: (transfer full)
 
@@ -77,8 +77,7 @@ module GdkPixbuf
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GdkPixbuf::PixbufSimpleAnim.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Adds a new frame to @animation. The @pixbuf must

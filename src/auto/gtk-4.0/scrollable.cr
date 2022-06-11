@@ -10,13 +10,11 @@ module Gtk
   # All scrollable widgets should do the following.
   #
   # - When a parent widget sets the scrollable child widget’s adjustments,
-  #   the widget should populate the adjustments’
-  #   `Gtk::Adjustment#lower`,
-  #   `Gtk::Adjustment#upper`,
-  #   [property@Gtk.Adjustment:step-increment],
-  #   [property@Gtk.Adjustment:page-increment] and
-  #   [property@Gtk.Adjustment:page-size] properties and connect to the
-  #   [signal@Gtk.Adjustment::value-changed] signal.
+  #   the widget should connect to the [signal@Gtk.Adjustment::value-changed]
+  #   signal. The child widget should then populate the adjustments’ properties
+  #   as soon as possible, which usually means queueing an allocation right away
+  #   and populating the properties in the `Gtk::Widget#size_allocate`
+  #   implementation.
   #
   # - Because its preferred size is the size for a fully expanded widget,
   #   the scrollable widget must be able to cope with underallocations.
@@ -24,7 +22,8 @@ module Gtk
   #   `Gtk::Widget#size_allocate` implementation.
   #
   # - When the parent allocates space to the scrollable child widget,
-  #   the widget should update the adjustments’ properties with new values.
+  #   the widget must ensure the adjustments’ property values are correct and up
+  #   to date, for example using `Gtk::Adjustment#configure`.
   #
   # - When any of the adjustments emits the [signal@Gtk.Adjustment::value-changed]
   #   signal, the scrollable widget should scroll its contents.

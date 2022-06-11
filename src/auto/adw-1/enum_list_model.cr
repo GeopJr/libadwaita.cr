@@ -73,7 +73,7 @@ module Adw
     end
 
     # Creates a new `AdwEnumListModel` for @enum_type.
-    def initialize(enum_type : UInt64)
+    def self.new(enum_type : UInt64) : self
       # adw_enum_list_model_new: (Constructor)
       # Returns: (transfer full)
 
@@ -82,8 +82,7 @@ module Adw
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Adw::EnumListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Finds the position of a given enum value in @self.

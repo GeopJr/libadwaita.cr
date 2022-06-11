@@ -23,11 +23,10 @@ module GObject
   class SignalGroup < Object
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGObject::SignalGroup), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(SignalGroup, g_object_get_qdata, g_object_set_qdata)
@@ -105,7 +104,7 @@ module GObject
     end
 
     # Creates a new #GSignalGroup for target instances of @target_type.
-    def initialize(target_type : UInt64)
+    def self.new(target_type : UInt64) : self
       # g_signal_group_new: (Constructor)
       # Returns: (transfer full)
 
@@ -114,8 +113,7 @@ module GObject
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GObject::SignalGroup.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Blocks all signal handlers managed by @self so they will not
@@ -235,31 +233,16 @@ module GObject
     # other than %NULL. It is similar to #GObject::notify on `target` except it
     # will not emit when #GSignalGroup:target is %NULL and also allows for
     # receiving the #GObject without a data-race.
-    struct BindSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct BindSignal < GObject::Signal
+      def name : String
         @detail ? "bind::#{@detail}" : "bind"
       end
 
-      def connect(&block : Proc(GObject::Object, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(GObject::Object, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(GObject::Object, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(GObject::Object, Nil))
+      def connect(handler : Proc(GObject::Object, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_instance : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -267,23 +250,12 @@ module GObject
           ::Box(Proc(GObject::Object, Nil)).unbox(_lib_box).call(instance)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(GObject::Object, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_instance : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          instance = GObject::Object.new(lib_instance, :none)
-          ::Box(Proc(GObject::Object, Nil)).unbox(_lib_box).call(instance)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(GObject::SignalGroup, GObject::Object, Nil))
+      def connect(handler : Proc(GObject::SignalGroup, GObject::Object, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_instance : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = GObject::SignalGroup.new(_lib_sender, GICrystal::Transfer::None)
@@ -292,21 +264,9 @@ module GObject
           ::Box(Proc(GObject::SignalGroup, GObject::Object, Nil)).unbox(_lib_box).call(_sender, instance)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(GObject::SignalGroup, GObject::Object, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_instance : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = GObject::SignalGroup.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          instance = GObject::Object.new(lib_instance, :none)
-          ::Box(Proc(GObject::SignalGroup, GObject::Object, Nil)).unbox(_lib_box).call(_sender, instance)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(instance : GObject::Object) : Nil
@@ -323,70 +283,36 @@ module GObject
     #
     # This signal will only be emitted if the previous target of @self is
     # non-%NULL.
-    struct UnbindSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct UnbindSignal < GObject::Signal
+      def name : String
         @detail ? "unbind::#{@detail}" : "unbind"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(GObject::SignalGroup, Nil))
+      def connect(handler : Proc(GObject::SignalGroup, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = GObject::SignalGroup.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(GObject::SignalGroup, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(GObject::SignalGroup, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = GObject::SignalGroup.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(GObject::SignalGroup, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil

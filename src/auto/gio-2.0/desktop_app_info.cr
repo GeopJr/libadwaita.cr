@@ -86,7 +86,7 @@ module Gio
     # [Menu Spec](http://standards.freedesktop.org/menu-spec/latest/)
     # (i.e. a desktop id of kde-foo.desktop will match
     # `/usr/share/applications/kde/foo.desktop`).
-    def initialize(desktop_id : ::String)
+    def self.new(desktop_id : ::String) : self?
       # g_desktop_app_info_new: (Constructor)
       # Returns: (transfer full)
 
@@ -95,8 +95,7 @@ module Gio
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id)) unless _retval.null?
+      Gio::DesktopAppInfo.new(_retval, GICrystal::Transfer::Full) unless _retval.null?
     end
 
     # Creates a new #GDesktopAppInfo.

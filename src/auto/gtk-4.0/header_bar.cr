@@ -88,11 +88,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::HeaderBar), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(HeaderBar, g_object_get_qdata, g_object_set_qdata)
@@ -363,21 +362,6 @@ module Gtk
       value = uninitialized Pointer(Void)
       LibGObject.g_object_get(self, "title-widget", pointerof(value), Pointer(Void).null)
       Gtk::Widget.new(value, GICrystal::Transfer::None) unless value.null?
-    end
-
-    # Creates a new `GtkHeaderBar` widget.
-    def initialize
-      # gtk_header_bar_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_header_bar_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
 
     # Gets the decoration layout of the `GtkHeaderBar`.

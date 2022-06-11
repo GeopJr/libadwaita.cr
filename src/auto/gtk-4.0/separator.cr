@@ -33,11 +33,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::Separator), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(Separator, g_object_get_qdata, g_object_set_qdata)
@@ -256,7 +255,7 @@ module Gtk
     end
 
     # Creates a new `GtkSeparator` with the given orientation.
-    def initialize(orientation : Gtk::Orientation)
+    def self.new(orientation : Gtk::Orientation) : self
       # gtk_separator_new: (Constructor)
       # Returns: (transfer none)
 
@@ -266,8 +265,7 @@ module Gtk
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::Separator.new(_retval, GICrystal::Transfer::Full)
     end
   end
 end

@@ -93,20 +93,6 @@ module Gtk
       LibGtk.gtk_im_context_simple_get_type
     end
 
-    # Creates a new `GtkIMContextSimple`.
-    def initialize
-      # gtk_im_context_simple_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_im_context_simple_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Adds an additional table from the X11 compose file.
     def add_compose_file(compose_file : ::String) : Nil
       # gtk_im_context_simple_add_compose_file: (Method)

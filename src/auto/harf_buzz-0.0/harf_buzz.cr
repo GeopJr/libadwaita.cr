@@ -69,9 +69,9 @@ module HarfBuzz
   # See Unicode 6.1 for details on the maximum decomposition length.
   UNICODE_MAX_DECOMPOSITION_LEN = 19
   VERSION_MAJOR                 =  4
-  VERSION_MICRO                 =  1
-  VERSION_MINOR                 =  2
-  VERSION_STRING                = "4.2.1"
+  VERSION_MICRO                 =  0
+  VERSION_MINOR                 =  3
+  VERSION_STRING                = "4.3.0"
 
   # Callbacks
 
@@ -252,6 +252,11 @@ module HarfBuzz
       message_ptr = error.value.message
       super(String.new(message_ptr)) unless message_ptr.null?
       LibGLib.g_error_free(error)
+    end
+
+    # :inherit:
+    def initialize(message : String)
+      super
     end
   end
 
@@ -4749,6 +4754,18 @@ module HarfBuzz
 
     # C call
     _retval = LibHarfBuzz.hb_map_is_empty(map)
+
+    # Return value handling
+
+    _retval
+  end
+
+  def self.map_is_equal(map : HarfBuzz::MapT, other : HarfBuzz::MapT) : Int32
+    # hb_map_is_equal: (None)
+    # Returns: (transfer none)
+
+    # C call
+    _retval = LibHarfBuzz.hb_map_is_equal(map, other)
 
     # Return value handling
 

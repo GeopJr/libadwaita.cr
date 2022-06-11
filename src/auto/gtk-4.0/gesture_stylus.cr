@@ -90,20 +90,6 @@ module Gtk
       LibGtk.gtk_gesture_stylus_get_type
     end
 
-    # Creates a new `GtkGestureStylus`.
-    def initialize
-      # gtk_gesture_stylus_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGtk.gtk_gesture_stylus_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Returns the current values for the requested @axes.
     #
     # This function must be called from the handler of one of the
@@ -202,31 +188,16 @@ module Gtk
     end
 
     # Emitted when the stylus touches the device.
-    struct DownSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct DownSignal < GObject::Signal
+      def name : String
         @detail ? "down::#{@detail}" : "down"
       end
 
-      def connect(&block : Proc(Float64, Float64, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Float64, Float64, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Float64, Float64, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Float64, Float64, Nil))
+      def connect(handler : Proc(Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           x = lib_x
@@ -234,23 +205,12 @@ module Gtk
           ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(x, y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          x = lib_x
-          y = lib_y
-          ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(x, y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil))
+      def connect(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::GestureStylus.new(_lib_sender, GICrystal::Transfer::None)
@@ -259,21 +219,9 @@ module Gtk
           ::Box(Proc(Gtk::GestureStylus, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, x, y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          _sender = Gtk::GestureStylus.new(_lib_sender, GICrystal::Transfer::None)
-          x = lib_x
-          y = lib_y
-          ::Box(Proc(Gtk::GestureStylus, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, x, y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(x : Float64, y : Float64) : Nil
@@ -286,31 +234,16 @@ module Gtk
     end
 
     # Emitted when the stylus moves while touching the device.
-    struct MotionSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct MotionSignal < GObject::Signal
+      def name : String
         @detail ? "motion::#{@detail}" : "motion"
       end
 
-      def connect(&block : Proc(Float64, Float64, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Float64, Float64, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Float64, Float64, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Float64, Float64, Nil))
+      def connect(handler : Proc(Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           x = lib_x
@@ -318,23 +251,12 @@ module Gtk
           ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(x, y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          x = lib_x
-          y = lib_y
-          ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(x, y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil))
+      def connect(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::GestureStylus.new(_lib_sender, GICrystal::Transfer::None)
@@ -343,21 +265,9 @@ module Gtk
           ::Box(Proc(Gtk::GestureStylus, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, x, y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          _sender = Gtk::GestureStylus.new(_lib_sender, GICrystal::Transfer::None)
-          x = lib_x
-          y = lib_y
-          ::Box(Proc(Gtk::GestureStylus, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, x, y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(x : Float64, y : Float64) : Nil
@@ -370,31 +280,16 @@ module Gtk
     end
 
     # Emitted when the stylus is in proximity of the device.
-    struct ProximitySignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ProximitySignal < GObject::Signal
+      def name : String
         @detail ? "proximity::#{@detail}" : "proximity"
       end
 
-      def connect(&block : Proc(Float64, Float64, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Float64, Float64, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Float64, Float64, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Float64, Float64, Nil))
+      def connect(handler : Proc(Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           x = lib_x
@@ -402,23 +297,12 @@ module Gtk
           ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(x, y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          x = lib_x
-          y = lib_y
-          ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(x, y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil))
+      def connect(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::GestureStylus.new(_lib_sender, GICrystal::Transfer::None)
@@ -427,21 +311,9 @@ module Gtk
           ::Box(Proc(Gtk::GestureStylus, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, x, y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          _sender = Gtk::GestureStylus.new(_lib_sender, GICrystal::Transfer::None)
-          x = lib_x
-          y = lib_y
-          ::Box(Proc(Gtk::GestureStylus, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, x, y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(x : Float64, y : Float64) : Nil
@@ -454,31 +326,16 @@ module Gtk
     end
 
     # Emitted when the stylus no longer touches the device.
-    struct UpSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct UpSignal < GObject::Signal
+      def name : String
         @detail ? "up::#{@detail}" : "up"
       end
 
-      def connect(&block : Proc(Float64, Float64, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Float64, Float64, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Float64, Float64, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Float64, Float64, Nil))
+      def connect(handler : Proc(Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           x = lib_x
@@ -486,23 +343,12 @@ module Gtk
           ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(x, y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          x = lib_x
-          y = lib_y
-          ::Box(Proc(Float64, Float64, Nil)).unbox(_lib_box).call(x, y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil))
+      def connect(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
           _sender = Gtk::GestureStylus.new(_lib_sender, GICrystal::Transfer::None)
@@ -511,21 +357,9 @@ module Gtk
           ::Box(Proc(Gtk::GestureStylus, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, x, y)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::GestureStylus, Float64, Float64, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_x : Float64, lib_y : Float64, _lib_box : Pointer(Void)) {
-          _sender = Gtk::GestureStylus.new(_lib_sender, GICrystal::Transfer::None)
-          x = lib_x
-          y = lib_y
-          ::Box(Proc(Gtk::GestureStylus, Float64, Float64, Nil)).unbox(_lib_box).call(_sender, x, y)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(x : Float64, y : Float64) : Nil

@@ -459,21 +459,6 @@ module Adw
       GICrystal.to_bool(value)
     end
 
-    # Creates a new `AdwComboRow`.
-    def initialize
-      # adw_combo_row_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibAdw.adw_combo_row_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Gets the expression used to obtain strings from items.
     def expression : Gtk::Expression?
       # adw_combo_row_get_expression: (Method | Getter)

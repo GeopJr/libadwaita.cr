@@ -113,7 +113,7 @@ module Gtk
     end
 
     # Creates a new `GtkMapListModel` for the given arguments.
-    def initialize(model : Gio::ListModel?, map_func : Gtk::MapListModelMapFunc?)
+    def self.new(model : Gio::ListModel?, map_func : Gtk::MapListModelMapFunc?) : self
       # gtk_map_list_model_new: (Constructor)
       # @model: (transfer full) (nullable)
       # @map_func: (nullable)
@@ -146,8 +146,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::MapListModel.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the model that is currently being mapped or %NULL if none.

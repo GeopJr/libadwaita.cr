@@ -325,21 +325,6 @@ module Gtk
       Gtk::MediaStream.new(value, GICrystal::Transfer::None) unless value.null?
     end
 
-    # Creates a new empty `GtkVideo`.
-    def initialize
-      # gtk_video_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_video_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     # Creates a `GtkVideo` to play back the given @file.
     def self.new_for_file(file : Gio::File?) : self
       # gtk_video_new_for_file: (Constructor)

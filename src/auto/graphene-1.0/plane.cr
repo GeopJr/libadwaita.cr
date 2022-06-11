@@ -56,18 +56,6 @@ module Graphene
       LibGraphene.graphene_plane_get_type
     end
 
-    def self.alloc : self
-      # graphene_plane_alloc: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibGraphene.graphene_plane_alloc
-
-      # Return value handling
-
-      Graphene::Plane.new(_retval, GICrystal::Transfer::Full)
-    end
-
     def distance(point : Graphene::Point3D) : Float32
       # graphene_plane_distance: (Method)
       # Returns: (transfer none)

@@ -168,7 +168,7 @@ module Gtk
     end
 
     # Creates a new text buffer.
-    def initialize(table : Gtk::TextTagTable?)
+    def self.new(table : Gtk::TextTagTable?) : self
       # gtk_text_buffer_new: (Constructor)
       # @table: (nullable)
       # Returns: (transfer full)
@@ -185,8 +185,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::TextBuffer.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Adds the mark at position @where.
@@ -1412,31 +1411,16 @@ module Gtk
     # `Gtk::TextBuffer#apply_tag`,
     # `Gtk::TextBuffer#insert_with_tags`,
     # `Gtk::TextBuffer#insert_range`.
-    struct ApplyTagSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ApplyTagSignal < GObject::Signal
+      def name : String
         @detail ? "apply-tag::#{@detail}" : "apply-tag"
       end
 
-      def connect(&block : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
+      def connect(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -1448,27 +1432,12 @@ module Gtk
           ::Box(Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(tag, start, _end)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::BuiltInTypeArgPlan
-          start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::BuiltInTypeArgPlan
-          _end = Gtk::TextIter.new(lib__end, :none)
-          ::Box(Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(tag, start, _end)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
@@ -1481,25 +1450,9 @@ module Gtk
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, tag, start, _end)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::BuiltInTypeArgPlan
-          start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::BuiltInTypeArgPlan
-          _end = Gtk::TextIter.new(lib__end, :none)
-          ::Box(Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, tag, start, _end)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(tag : Gtk::TextTag, start : Gtk::TextIter, end _end : Gtk::TextIter) : Nil
@@ -1521,70 +1474,36 @@ module Gtk
     # `Gtk::TextBuffer#delete_interactive`,
     # `Gtk::TextBuffer#backspace`,
     # `Gtk::TextBuffer#delete_selection`.
-    struct BeginUserActionSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct BeginUserActionSignal < GObject::Signal
+      def name : String
         @detail ? "begin-user-action::#{@detail}" : "begin-user-action"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -1597,70 +1516,36 @@ module Gtk
     end
 
     # Emitted when the content of a `GtkTextBuffer` has changed.
-    struct ChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ChangedSignal < GObject::Signal
+      def name : String
         @detail ? "changed::#{@detail}" : "changed"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -1683,31 +1568,16 @@ module Gtk
     # the deleted text.
     #
     # See also: `Gtk::TextBuffer#delete`.
-    struct DeleteRangeSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct DeleteRangeSignal < GObject::Signal
+      def name : String
         @detail ? "delete-range::#{@detail}" : "delete-range"
       end
 
-      def connect(&block : Proc(Gtk::TextIter, Gtk::TextIter, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TextIter, Gtk::TextIter, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TextIter, Gtk::TextIter, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TextIter, Gtk::TextIter, Nil))
+      def connect(handler : Proc(Gtk::TextIter, Gtk::TextIter, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -1717,25 +1587,12 @@ module Gtk
           ::Box(Proc(Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(start, _end)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TextIter, Gtk::TextIter, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::BuiltInTypeArgPlan
-          _end = Gtk::TextIter.new(lib__end, :none)
-          ::Box(Proc(Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(start, _end)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextIter, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextIter, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
@@ -1746,23 +1603,9 @@ module Gtk
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, start, _end)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextIter, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::BuiltInTypeArgPlan
-          _end = Gtk::TextIter.new(lib__end, :none)
-          ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, start, _end)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(start : Gtk::TextIter, end _end : Gtk::TextIter) : Nil
@@ -1785,70 +1628,36 @@ module Gtk
     # `Gtk::TextBuffer#backspace`,
     # `Gtk::TextBuffer#delete_selection`,
     # `Gtk::TextBuffer#backspace`.
-    struct EndUserActionSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct EndUserActionSignal < GObject::Signal
+      def name : String
         @detail ? "end-user-action::#{@detail}" : "end-user-action"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -1870,31 +1679,16 @@ module Gtk
     # it to be placed after the inserted @anchor.
     #
     # See also: `Gtk::TextBuffer#insert_child_anchor`.
-    struct InsertChildAnchorSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct InsertChildAnchorSignal < GObject::Signal
+      def name : String
         @detail ? "insert-child-anchor::#{@detail}" : "insert-child-anchor"
       end
 
-      def connect(&block : Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil))
+      def connect(handler : Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_anchor : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -1904,25 +1698,12 @@ module Gtk
           ::Box(Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil)).unbox(_lib_box).call(location, anchor)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_anchor : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::BuiltInTypeArgPlan
-          anchor = Gtk::TextChildAnchor.new(lib_anchor, :none)
-          ::Box(Proc(Gtk::TextIter, Gtk::TextChildAnchor, Nil)).unbox(_lib_box).call(location, anchor)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextChildAnchor, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextChildAnchor, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_anchor : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
@@ -1933,23 +1714,9 @@ module Gtk
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextChildAnchor, Nil)).unbox(_lib_box).call(_sender, location, anchor)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextChildAnchor, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_anchor : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::BuiltInTypeArgPlan
-          anchor = Gtk::TextChildAnchor.new(lib_anchor, :none)
-          ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextChildAnchor, Nil)).unbox(_lib_box).call(_sender, location, anchor)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(location : Gtk::TextIter, anchor : Gtk::TextChildAnchor) : Nil
@@ -1971,31 +1738,16 @@ module Gtk
     # it to be placed after the inserted @paintable.
     #
     # See also: `Gtk::TextBuffer#insert_paintable`.
-    struct InsertPaintableSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct InsertPaintableSignal < GObject::Signal
+      def name : String
         @detail ? "insert-paintable::#{@detail}" : "insert-paintable"
       end
 
-      def connect(&block : Proc(Gtk::TextIter, Gdk::Paintable, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TextIter, Gdk::Paintable, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TextIter, Gdk::Paintable, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TextIter, Gdk::Paintable, Nil))
+      def connect(handler : Proc(Gtk::TextIter, Gdk::Paintable, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_paintable : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2005,25 +1757,12 @@ module Gtk
           ::Box(Proc(Gtk::TextIter, Gdk::Paintable, Nil)).unbox(_lib_box).call(location, paintable)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TextIter, Gdk::Paintable, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_paintable : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::BuiltInTypeArgPlan
-          paintable = Gdk::Paintable.new(lib_paintable, :none)
-          ::Box(Proc(Gtk::TextIter, Gdk::Paintable, Nil)).unbox(_lib_box).call(location, paintable)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gdk::Paintable, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gdk::Paintable, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_paintable : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
@@ -2034,23 +1773,9 @@ module Gtk
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gdk::Paintable, Nil)).unbox(_lib_box).call(_sender, location, paintable)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gdk::Paintable, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_paintable : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::BuiltInTypeArgPlan
-          paintable = Gdk::Paintable.new(lib_paintable, :none)
-          ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gdk::Paintable, Nil)).unbox(_lib_box).call(_sender, location, paintable)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(location : Gtk::TextIter, paintable : Gdk::Paintable) : Nil
@@ -2073,31 +1798,16 @@ module Gtk
     #
     # See also: `Gtk::TextBuffer#insert`,
     # `Gtk::TextBuffer#insert_range`.
-    struct InsertTextSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct InsertTextSignal < GObject::Signal
+      def name : String
         @detail ? "insert-text::#{@detail}" : "insert-text"
       end
 
-      def connect(&block : Proc(Gtk::TextIter, ::String, Int32, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TextIter, ::String, Int32, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TextIter, ::String, Int32, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TextIter, ::String, Int32, Nil))
+      def connect(handler : Proc(Gtk::TextIter, ::String, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_text : Pointer(LibC::Char), lib_len : Int32, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2108,26 +1818,12 @@ module Gtk
           ::Box(Proc(Gtk::TextIter, ::String, Int32, Nil)).unbox(_lib_box).call(location, text, len)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TextIter, ::String, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_text : Pointer(LibC::Char), lib_len : Int32, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::BuiltInTypeArgPlan
-          text = ::String.new(lib_text)
-          len = lib_len
-          ::Box(Proc(Gtk::TextIter, ::String, Int32, Nil)).unbox(_lib_box).call(location, text, len)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, ::String, Int32, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, ::String, Int32, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_text : Pointer(LibC::Char), lib_len : Int32, _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
@@ -2139,24 +1835,9 @@ module Gtk
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, ::String, Int32, Nil)).unbox(_lib_box).call(_sender, location, text, len)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, ::String, Int32, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_text : Pointer(LibC::Char), lib_len : Int32, _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::BuiltInTypeArgPlan
-          text = ::String.new(lib_text)
-          len = lib_len
-          ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, ::String, Int32, Nil)).unbox(_lib_box).call(_sender, location, text, len)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(location : Gtk::TextIter, text : ::String, len : Int32) : Nil
@@ -2171,31 +1852,16 @@ module Gtk
     # Emitted as notification after a `GtkTextMark` is deleted.
     #
     # See also: `Gtk::TextBuffer#delete_mark`.
-    struct MarkDeletedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct MarkDeletedSignal < GObject::Signal
+      def name : String
         @detail ? "mark-deleted::#{@detail}" : "mark-deleted"
       end
 
-      def connect(&block : Proc(Gtk::TextMark, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TextMark, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TextMark, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TextMark, Nil))
+      def connect(handler : Proc(Gtk::TextMark, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2203,23 +1869,12 @@ module Gtk
           ::Box(Proc(Gtk::TextMark, Nil)).unbox(_lib_box).call(mark)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TextMark, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          mark = Gtk::TextMark.new(lib_mark, :none)
-          ::Box(Proc(Gtk::TextMark, Nil)).unbox(_lib_box).call(mark)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextMark, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextMark, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
@@ -2228,21 +1883,9 @@ module Gtk
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextMark, Nil)).unbox(_lib_box).call(_sender, mark)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Gtk::TextMark, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          mark = Gtk::TextMark.new(lib_mark, :none)
-          ::Box(Proc(Gtk::TextBuffer, Gtk::TextMark, Nil)).unbox(_lib_box).call(_sender, mark)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(mark : Gtk::TextMark) : Nil
@@ -2259,31 +1902,16 @@ module Gtk
     # See also:
     # `Gtk::TextBuffer#create_mark`,
     # `Gtk::TextBuffer#move_mark`.
-    struct MarkSetSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct MarkSetSignal < GObject::Signal
+      def name : String
         @detail ? "mark-set::#{@detail}" : "mark-set"
       end
 
-      def connect(&block : Proc(Gtk::TextIter, Gtk::TextMark, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TextIter, Gtk::TextMark, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TextIter, Gtk::TextMark, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TextIter, Gtk::TextMark, Nil))
+      def connect(handler : Proc(Gtk::TextIter, Gtk::TextMark, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2293,25 +1921,12 @@ module Gtk
           ::Box(Proc(Gtk::TextIter, Gtk::TextMark, Nil)).unbox(_lib_box).call(location, mark)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TextIter, Gtk::TextMark, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::BuiltInTypeArgPlan
-          mark = Gtk::TextMark.new(lib_mark, :none)
-          ::Box(Proc(Gtk::TextIter, Gtk::TextMark, Nil)).unbox(_lib_box).call(location, mark)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextMark, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextMark, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
@@ -2322,23 +1937,9 @@ module Gtk
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextMark, Nil)).unbox(_lib_box).call(_sender, location, mark)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextMark, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_location : Pointer(Void), lib_mark : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          location = Gtk::TextIter.new(lib_location, :none)
-          # Generator::BuiltInTypeArgPlan
-          mark = Gtk::TextMark.new(lib_mark, :none)
-          ::Box(Proc(Gtk::TextBuffer, Gtk::TextIter, Gtk::TextMark, Nil)).unbox(_lib_box).call(_sender, location, mark)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(location : Gtk::TextIter, mark : Gtk::TextMark) : Nil
@@ -2353,70 +1954,36 @@ module Gtk
     # Emitted when the modified bit of a `GtkTextBuffer` flips.
     #
     # See also: `Gtk::TextBuffer#modified=`.
-    struct ModifiedChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ModifiedChangedSignal < GObject::Signal
+      def name : String
         @detail ? "modified-changed::#{@detail}" : "modified-changed"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -2433,31 +2000,16 @@ module Gtk
     # This is useful to properly scroll the view to the end
     # of the pasted text. See `Gtk::TextBuffer#paste_clipboard`
     # for more details.
-    struct PasteDoneSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct PasteDoneSignal < GObject::Signal
+      def name : String
         @detail ? "paste-done::#{@detail}" : "paste-done"
       end
 
-      def connect(&block : Proc(Gdk::Clipboard, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gdk::Clipboard, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gdk::Clipboard, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gdk::Clipboard, Nil))
+      def connect(handler : Proc(Gdk::Clipboard, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_clipboard : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2465,23 +2017,12 @@ module Gtk
           ::Box(Proc(Gdk::Clipboard, Nil)).unbox(_lib_box).call(clipboard)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gdk::Clipboard, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_clipboard : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          clipboard = Gdk::Clipboard.new(lib_clipboard, :none)
-          ::Box(Proc(Gdk::Clipboard, Nil)).unbox(_lib_box).call(clipboard)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Gdk::Clipboard, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Gdk::Clipboard, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_clipboard : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
@@ -2490,21 +2031,9 @@ module Gtk
           ::Box(Proc(Gtk::TextBuffer, Gdk::Clipboard, Nil)).unbox(_lib_box).call(_sender, clipboard)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Gdk::Clipboard, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_clipboard : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          clipboard = Gdk::Clipboard.new(lib_clipboard, :none)
-          ::Box(Proc(Gtk::TextBuffer, Gdk::Clipboard, Nil)).unbox(_lib_box).call(_sender, clipboard)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(clipboard : Gdk::Clipboard) : Nil
@@ -2518,70 +2047,36 @@ module Gtk
 
     # Emitted when a request has been made to redo the
     # previously undone operation.
-    struct RedoSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct RedoSignal < GObject::Signal
+      def name : String
         @detail ? "redo::#{@detail}" : "redo"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil
@@ -2603,31 +2098,16 @@ module Gtk
     # to revalidate them).
     #
     # See also: `Gtk::TextBuffer#remove_tag`.
-    struct RemoveTagSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct RemoveTagSignal < GObject::Signal
+      def name : String
         @detail ? "remove-tag::#{@detail}" : "remove-tag"
       end
 
-      def connect(&block : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
+      def connect(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -2639,27 +2119,12 @@ module Gtk
           ::Box(Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(tag, start, _end)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::BuiltInTypeArgPlan
-          start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::BuiltInTypeArgPlan
-          _end = Gtk::TextIter.new(lib__end, :none)
-          ::Box(Proc(Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(tag, start, _end)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
@@ -2672,25 +2137,9 @@ module Gtk
           ::Box(Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, tag, start, _end)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_tag : Pointer(Void), lib_start : Pointer(Void), lib__end : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          tag = Gtk::TextTag.new(lib_tag, :none)
-          # Generator::BuiltInTypeArgPlan
-          start = Gtk::TextIter.new(lib_start, :none)
-          # Generator::BuiltInTypeArgPlan
-          _end = Gtk::TextIter.new(lib__end, :none)
-          ::Box(Proc(Gtk::TextBuffer, Gtk::TextTag, Gtk::TextIter, Gtk::TextIter, Nil)).unbox(_lib_box).call(_sender, tag, start, _end)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(tag : Gtk::TextTag, start : Gtk::TextIter, end _end : Gtk::TextIter) : Nil
@@ -2705,70 +2154,36 @@ module Gtk
     # Emitted when a request has been made to undo the
     # previous operation or set of operations that have
     # been grouped together.
-    struct UndoSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct UndoSignal < GObject::Signal
+      def name : String
         @detail ? "undo::#{@detail}" : "undo"
       end
 
-      def connect(&block : Proc(Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Nil))
+      def connect(handler : Proc(Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           ::Box(Proc(Nil)).unbox(_lib_box).call
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          ::Box(Proc(Nil)).unbox(_lib_box).call
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gtk::TextBuffer, Nil))
+      def connect(handler : Proc(Gtk::TextBuffer, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
           _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
           ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gtk::TextBuffer, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), _lib_box : Pointer(Void)) {
-          _sender = Gtk::TextBuffer.new(_lib_sender, GICrystal::Transfer::None)
-          ::Box(Proc(Gtk::TextBuffer, Nil)).unbox(_lib_box).call(_sender)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit : Nil

@@ -75,11 +75,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::SizeGroup), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(SizeGroup, g_object_get_qdata, g_object_set_qdata)
@@ -137,7 +136,7 @@ module Gtk
     end
 
     # Create a new `GtkSizeGroup`.
-    def initialize(mode : Gtk::SizeGroupMode)
+    def self.new(mode : Gtk::SizeGroupMode) : self
       # gtk_size_group_new: (Constructor)
       # Returns: (transfer full)
 
@@ -146,8 +145,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::SizeGroup.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Adds a widget to a `GtkSizeGroup`.

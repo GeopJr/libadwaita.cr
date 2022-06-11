@@ -247,7 +247,7 @@ module Adw
     #
     # The animation will animate @target from @from to @to with the dynamics of a
     # spring described by @spring_params.
-    def initialize(widget : Gtk::Widget, from : Float64, to : Float64, spring_params : Adw::SpringParams, target : Adw::AnimationTarget)
+    def self.new(widget : Gtk::Widget, from : Float64, to : Float64, spring_params : Adw::SpringParams, target : Adw::AnimationTarget) : self
       # adw_spring_animation_new: (Constructor)
       # @spring_params: (transfer full)
       # @target: (transfer full)
@@ -261,8 +261,7 @@ module Adw
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Adw::SpringAnimation.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets whether @self should be clamped.

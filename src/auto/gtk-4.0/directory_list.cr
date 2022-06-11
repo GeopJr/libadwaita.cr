@@ -181,7 +181,7 @@ module Gtk
     #
     # The `GtkDirectoryList` is querying the given @file
     # with the given @attributes.
-    def initialize(attributes : ::String?, file : Gio::File?)
+    def self.new(attributes : ::String?, file : Gio::File?) : self
       # gtk_directory_list_new: (Constructor)
       # @attributes: (nullable)
       # @file: (nullable)
@@ -205,8 +205,7 @@ module Gtk
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Gtk::DirectoryList.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets the attributes queried on the children.

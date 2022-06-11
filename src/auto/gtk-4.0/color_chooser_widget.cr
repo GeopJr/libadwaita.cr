@@ -41,11 +41,10 @@ module Gtk
 
     @pointer : Pointer(Void)
 
-    # :nodoc:
-    def self._register_derived_type(klass : Class, class_init, instance_init)
-      LibGObject.g_type_register_static_simple(g_type, klass.name,
-        sizeof(LibGObject::ObjectClass), class_init,
-        sizeof(LibGtk::ColorChooserWidget), instance_init, 0)
+    macro inherited
+    
+    {{ raise "Cannot inherit from #{@type.superclass}" unless @type.annotation(GObject::GeneratedWrapper) }}
+    
     end
 
     GICrystal.define_new_method(ColorChooserWidget, g_object_get_qdata, g_object_set_qdata)
@@ -286,21 +285,6 @@ module Gtk
       value = uninitialized LibC::Int
       LibGObject.g_object_get(self, "show-editor", pointerof(value), Pointer(Void).null)
       GICrystal.to_bool(value)
-    end
-
-    # Creates a new `GtkColorChooserWidget`.
-    def initialize
-      # gtk_color_chooser_widget_new: (Constructor)
-      # Returns: (transfer none)
-
-      # C call
-      _retval = LibGtk.gtk_color_chooser_widget_new
-
-      # Return value handling
-      LibGObject.g_object_ref_sink(_retval)
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
     end
   end
 end

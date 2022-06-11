@@ -30,7 +30,7 @@ module GLib
       LibGLib.g_markup_parse_context_get_type
     end
 
-    def initialize(parser : GLib::MarkupParser, flags : GLib::MarkupParseFlags, user_data : Pointer(Void)?, user_data_dnotify : GLib::DestroyNotify)
+    def self.new(parser : GLib::MarkupParser, flags : GLib::MarkupParseFlags, user_data : Pointer(Void)?, user_data_dnotify : GLib::DestroyNotify) : self
       # g_markup_parse_context_new: (Constructor)
       # @user_data: (nullable)
       # Returns: (transfer full)
@@ -47,8 +47,7 @@ module GLib
 
       # Return value handling
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      GLib::MarkupParseContext.new(_retval, GICrystal::Transfer::Full)
     end
 
     def end_parse : Bool

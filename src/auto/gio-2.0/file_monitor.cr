@@ -176,31 +176,16 @@ module Gio
     # old path, and @other_file will be set to a #GFile containing the new path.
     #
     # In all the other cases, @other_file will be set to #NULL.
-    struct ChangedSignal
-      @source : GObject::Object
-      @detail : String?
-
-      def initialize(@source, @detail = nil)
-      end
-
-      def [](detail : String) : self
-        raise ArgumentError.new("This signal already have a detail") if @detail
-        self.class.new(@source, detail)
-      end
-
-      def name
+    struct ChangedSignal < GObject::Signal
+      def name : String
         @detail ? "changed::#{@detail}" : "changed"
       end
 
-      def connect(&block : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
-        connect(block)
+      def connect(*, after : Bool = false, &block : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)) : GObject::SignalConnection
+        connect(block, after: after)
       end
 
-      def connect_after(&block : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
-        connect(block)
-      end
-
-      def connect(handler : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
+      def connect(handler : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
           # Generator::BuiltInTypeArgPlan
@@ -214,29 +199,12 @@ module Gio
           ::Box(Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(file, other_file, event_type)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
-      def connect_after(handler : Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
-          # Generator::BuiltInTypeArgPlan
-          file = Gio::File.new(lib_file, :none)
-          # Generator::NullableArrayPlan
-          other_file = (lib_other_file.null? ? nil : Gio::AbstractFile.new(lib_other_file, GICrystal::Transfer::None))
-          # Generator::BuiltInTypeArgPlan
-          other_file = Gio::File.new(lib_other_file, :none) unless lib_other_file.null?
-          # Generator::BuiltInTypeArgPlan
-          event_type = Gio::FileMonitorEvent.new(lib_event_type)
-          ::Box(Proc(Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(file, other_file, event_type)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
-      end
-
-      def connect(handler : Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
+      def connect(handler : Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil), *, after : Bool = false) : GObject::SignalConnection
         _box = ::Box.box(handler)
         handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
           _sender = Gio::FileMonitor.new(_lib_sender, GICrystal::Transfer::None)
@@ -251,27 +219,9 @@ module Gio
           ::Box(Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(_sender, file, other_file, event_type)
         }.pointer
 
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 0)
-      end
-
-      def connect_after(handler : Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil))
-        _box = ::Box.box(handler)
-        handler = ->(_lib_sender : Pointer(Void), lib_file : Pointer(Void), lib_other_file : Pointer(Void), lib_event_type : UInt32, _lib_box : Pointer(Void)) {
-          _sender = Gio::FileMonitor.new(_lib_sender, GICrystal::Transfer::None)
-          # Generator::BuiltInTypeArgPlan
-          file = Gio::File.new(lib_file, :none)
-          # Generator::NullableArrayPlan
-          other_file = (lib_other_file.null? ? nil : Gio::AbstractFile.new(lib_other_file, GICrystal::Transfer::None))
-          # Generator::BuiltInTypeArgPlan
-          other_file = Gio::File.new(lib_other_file, :none) unless lib_other_file.null?
-          # Generator::BuiltInTypeArgPlan
-          event_type = Gio::FileMonitorEvent.new(lib_event_type)
-          ::Box(Proc(Gio::FileMonitor, Gio::File, Gio::File?, Gio::FileMonitorEvent, Nil)).unbox(_lib_box).call(_sender, file, other_file, event_type)
-        }.pointer
-
-        LibGObject.g_signal_connect_data(@source, name, handler,
-          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, 1)
+        handler = LibGObject.g_signal_connect_data(@source, name, handler,
+          GICrystal::ClosureDataManager.register(_box), ->GICrystal::ClosureDataManager.deregister, after.to_unsafe)
+        GObject::SignalConnection.new(@source, handler)
       end
 
       def emit(file : Gio::File, other_file : Gio::File?, event_type : Gio::FileMonitorEvent) : Nil

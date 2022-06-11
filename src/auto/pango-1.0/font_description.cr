@@ -31,19 +31,6 @@ module Pango
       LibPango.pango_font_description_get_type
     end
 
-    def initialize
-      # pango_font_description_new: (Constructor)
-      # Returns: (transfer full)
-
-      # C call
-      _retval = LibPango.pango_font_description_new
-
-      # Return value handling
-
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
-    end
-
     def better_match(old_match : Pango::FontDescription?, new_match : Pango::FontDescription) : Bool
       # pango_font_description_better_match: (Method)
       # @old_match: (nullable)

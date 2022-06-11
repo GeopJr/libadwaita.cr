@@ -224,7 +224,7 @@ module Adw
 
     # Creates a new `AdwTimedAnimation` on @widget to animate @target from @from
     # to @to.
-    def initialize(widget : Gtk::Widget, from : Float64, to : Float64, duration : UInt32, target : Adw::AnimationTarget)
+    def self.new(widget : Gtk::Widget, from : Float64, to : Float64, duration : UInt32, target : Adw::AnimationTarget) : self
       # adw_timed_animation_new: (Constructor)
       # @target: (transfer full)
       # Returns: (transfer none)
@@ -237,8 +237,7 @@ module Adw
       # Return value handling
       LibGObject.g_object_ref_sink(_retval)
 
-      @pointer = _retval
-      LibGObject.g_object_set_qdata(_retval, GICrystal::INSTANCE_QDATA_KEY, Pointer(Void).new(object_id))
+      Adw::TimedAnimation.new(_retval, GICrystal::Transfer::Full)
     end
 
     # Gets whether @self changes direction on every iteration.
