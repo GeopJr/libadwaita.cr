@@ -29,9 +29,7 @@
 
 <div class="main">
 	<div class="code">
-		<pre>
-            <code>
-                <span class="cyan">require</span> <span class="green">"libadwaita"</span>
+		<pre><code><span class="cyan">require</span> <span class="green">"libadwaita"</span>
 
 <span class="red">app</span> <span class="blue">=</span> <span class="yellow">Adw</span>::<span class="yellow">Application</span>.<span class="cyan">new</span><span class="yellow">(</span><span class="green">"hello.example.com"</span>, <span class="yellow">Gio</span>::<span class="yellow">ApplicationFlags</span>::<span class="yellow">None</span><span class="yellow">)</span>
 <span class="red">count</span> <span class="blue">=</span> <span class="orange">0</span>
@@ -74,9 +72,7 @@
   <span class="green">"You clicked me</span> <span class="purple">#</span><span class="yellow">{'{'}</span><span class="red">amount</span><span class="yellow">{'}'}</span> <span class="green">times!"</span>
 <span class="purple">end</span>
 
-<span class="blue">exit</span><span class="yellow">(</span><span class="red">app</span>.<span class="cyan">run</span><span class="purple">(</span><span class="yellow">ARGV</span><span class="purple">)</span><span class="yellow">)</span>
-            </code>
-        </pre>
+<span class="blue">exit</span><span class="yellow">(</span><span class="red">app</span>.<span class="cyan">run</span><span class="purple">(</span><span class="yellow">ARGV</span><span class="purple">)</span><span class="yellow">)</span></code></pre>
 	</div>
 	<div class="window">
 		<Window {title} minHeight="300px" minWidth="300px">

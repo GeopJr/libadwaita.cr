@@ -37,19 +37,11 @@
 	<div class="install center">
 		<h1 class="header">Installation</h1>
 		<h1 class="sub">Add the following inside your shard.yml...</h1>
-		<pre>
-        <code>
-            <span style="color:#8ff0a4">dependencies</span>:
+		<pre><code><span style="color:#8ff0a4">dependencies</span>:
     <span style="color:#8ff0a4">libadwaita</span>:
-        <span style="color:#8ff0a4">github</span>: <span style="color:#99c1f1">GeopJr/libadwaita.cr</span>
-        </code>
-    </pre>
+        <span style="color:#8ff0a4">github</span>: <span style="color:#99c1f1">GeopJr/libadwaita.cr</span></code></pre>
 		<h1 class="sub">... and run:</h1>
-		<pre>
-        <code>
-            <span style="color:#ffbe6f">$</span> <span style="color:#f9f06b">shards install</span>
-        </code>
-    </pre>
+		<pre><code><span style="color:#ffbe6f">$</span> <span style="color:#f9f06b">shards install</span></code></pre>
 	</div>
 
 	<div class="floaty right">
