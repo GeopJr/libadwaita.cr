@@ -10,31 +10,34 @@ html {
 }
 
 :root {
-	--window-header: #dfdcd8;
-	--window-header-border: #c4c3c0;
-	--window-border: #9b9b9b;
-	--window-background: #f6f5f4;
+	--window-header: #ebebeb;
+	--window-header-border: #cfcfcf;
+	--window-border: #fbfbfb;
+	--window-background: #fafafa;
 	--window-text-color: black;
-	--button: #e2e2e1;
-	--button-hover: #d8d8d7;
-	--button-focus: #c0c0c0;
+	--button: #e6e6e6;
+	--button-hover: #dcdcdc;
+	--button-focus: #bebebe;
 	--codeblock: #1e1e1e;
 	--background-color: #131416;
 	--text-color: white;
 }
 
-:root[theme='dark'] {
-	--window-header: #282828;
-	--window-header-border: #464645;
-	--window-border: #494949;
-	--window-background: #353535;
-	--window-text-color: white;
-	--button: #474747;
-	--button-hover: #515150;
-	--button-focus: #636363;
-	--codeblock: #1e1e1e;
-	--background-color: #131416;
-	--text-color: white;
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--window-header: #303030;
+		--window-header-border: #4f4f4f;
+		--window-border: #3a3a3a;
+		--window-background: #242424;
+		--window-text-color: white;
+		--button: #3a3a3a;
+		--button-hover: #454545;
+		--button-focus: #666666;
+		--codeblock: #1e1e1e;
+		--background-color: #131416;
+		--text-color: white;
+	}
 }
 
 html,
@@ -47,7 +50,8 @@ pre {
 	color: white;
 	padding: 1rem;
 	border-radius: 10px;
-	> code {
+
+	>code {
 		white-space: pre-wrap;
 	}
 }
