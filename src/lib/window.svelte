@@ -20,7 +20,7 @@
 <style lang="scss">
 	.window {
 		background-color: var(--window-background);
-		border-radius: 10px;
+		border-radius: 11px;
 		box-shadow: 0 0 12px -5px black;
 		border: 1px solid var(--window-border);
 		display: flex;
@@ -30,7 +30,7 @@
 		color: var(--window-text-color);
 		.header {
 			background-color: var(--window-header);
-			height: 52px;
+			height: 51px;
 			border-radius: 10px 10px 0 0;
 			border-bottom: 1px solid var(--window-header-border);
 			display: flex;
