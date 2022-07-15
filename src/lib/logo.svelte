@@ -59,7 +59,7 @@
 
 <style lang="scss">
 	path {
-		stroke: black;
+		stroke: var(--window-text-color);
 		fill-opacity: 0;
 		transition: 1.5s;
 		stroke-width: 15;
