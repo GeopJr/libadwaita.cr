@@ -1,2 +1,4 @@
 namespace: Adw
 version: "1"
+require_after:
+  - about_window.cr
