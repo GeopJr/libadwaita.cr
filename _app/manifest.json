@@ -1,0 +1,71 @@
+{
+  "src/lib/fonts/Cantarell-Regular.otf": {
+    "file": "immutable/assets/Cantarell-Regular-a7207f94.otf",
+    "src": "src/lib/fonts/Cantarell-Regular.otf"
+  },
+  "src/lib/fonts/Cantarell-Bold.otf": {
+    "file": "immutable/assets/Cantarell-Bold-ecc43416.otf",
+    "src": "src/lib/fonts/Cantarell-Bold.otf"
+  },
+  ".svelte-kit/runtime/client/start.js": {
+    "file": "immutable/start-4535c626.js",
+    "src": ".svelte-kit/runtime/client/start.js",
+    "isEntry": true,
+    "imports": [
+      "_index-1fdb9f5e.js"
+    ],
+    "dynamicImports": [
+      "src/routes/__layout.svelte",
+      ".svelte-kit/runtime/components/error.svelte",
+      "src/routes/index.svelte"
+    ]
+  },
+  "src/routes/__layout.svelte": {
+    "file": "immutable/pages/__layout.svelte-c571fa13.js",
+    "src": "src/routes/__layout.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-1fdb9f5e.js"
+    ],
+    "css": [
+      "immutable/assets/__layout-51c41ecc.css"
+    ],
+    "assets": [
+      "immutable/assets/Cantarell-Regular-a7207f94.otf",
+      "immutable/assets/Cantarell-Bold-ecc43416.otf"
+    ]
+  },
+  ".svelte-kit/runtime/components/error.svelte": {
+    "file": "immutable/error.svelte-6adc505b.js",
+    "src": ".svelte-kit/runtime/components/error.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-1fdb9f5e.js"
+    ]
+  },
+  "src/routes/index.svelte": {
+    "file": "immutable/pages/index.svelte-987bca9f.js",
+    "src": "src/routes/index.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-1fdb9f5e.js"
+    ],
+    "css": [
+      "immutable/assets/index-67bf9769.css"
+    ]
+  },
+  "_index-1fdb9f5e.js": {
+    "file": "immutable/chunks/index-1fdb9f5e.js"
+  },
+  "src/routes/__layout.css": {
+    "file": "immutable/assets/__layout-51c41ecc.css",
+    "src": "src/routes/__layout.css"
+  },
+  "src/routes/index.css": {
+    "file": "immutable/assets/index-67bf9769.css",
+    "src": "src/routes/index.css"
+  }
+}
