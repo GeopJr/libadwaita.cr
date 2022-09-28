@@ -4,9 +4,9 @@ module Adw
   # This is a convenience function for showing an application’s about box. The constructed dialog is associated with
   # the parent window and NOT reused for future invocations of this function.
   def show_about_window(
-    parent : Window?,
+    parent : Gtk::Window? | Adw::Window?,
     *,
-    application : Gtk::Application? = nil,
+    application : (Adw::Application? | Gtk::Application?) = nil,
     application_icon : ::String? = nil,
     application_name : ::String? = nil,
     artists : Enumerable(::String)? = nil,
