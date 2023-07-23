@@ -3,13 +3,13 @@ description: libadwaita bindings for Crystal
 version: 1.0.0
 
 authors:
-  - Hugo Parente Lima <hugo.pl@gmail.com>
   - Evangelos "GeopJr" Paterakis <evan@geopjr.dev>
+  - Hugo Parente Lima <hugo.pl@gmail.com>
 
 dependencies:
   gtk4:
     github: hugopl/gtk4.cr
-    version: "~> 0.14.0"
+    version: ">= 0.14.0"
 
 crystal: ">= 1.0.0"
 
