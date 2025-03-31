@@ -7,41 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     container: ghcr.io/geopjr/crystal-gtk:latest
     steps:
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - uses: actions/checkout@v2
-        with:
-          ref: website
-      - name: Cache pnpm modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
-      - uses: pnpm/action-setup@v2.0.1
-        with:
-          version: 6.17.2
-          run_install: true
-      - name: Build website
-        run: |
-          pnpm run build
-          echo "libadwaita.geopjr.dev" > ./build/CNAME
-      - name: Push to pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          force_orphan: true
       - uses: actions/checkout@v2
       - name: Build docs
         run: |
+          rm -rf ./docs
           shards install
           ./bin/gi-crystal --doc
           crystal docs lib/gi-crystal/src/gi-crystal.cr lib/gi-crystal/src/auto/adw-1/adw.cr
       - name: Push to pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
